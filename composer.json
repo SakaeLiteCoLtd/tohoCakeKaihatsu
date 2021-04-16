@@ -1,0 +1,5 @@
+{
+    "require": {
+        "friendsofcake/crud": "~4.0"
+    }
+}

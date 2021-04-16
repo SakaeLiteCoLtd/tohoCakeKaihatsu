@@ -1,0 +1,31 @@
+version: '2'
+services:
+  web:
+    container_name: toho-app-web
+    build:
+      context: .
+      dockerfile: ./Docker/php/Dockerfile
+    volumes:
+      - .:/var/www/html:cached
+    environment:
+      - APP_DEFAULT_LOCALE=ja_JP
+      - APP_DEFAULT_TIMEZONE=Asia/Tokyo
+      - DATABASE_HOST=toho-app-db
+      - DATABASE_USER=root
+      - DATABASE_PASS=secret
+      - DATABASE_NAME=tohodb
+    ports:
+      - "5050:80"
+
+  db:
+    container_name: toho-app-db
+    build:
+      context: .
+      dockerfile: ./Docker/mysql/Dockerfile
+    volumes:
+      - ./Docker/mysql/sqls:/docker-entrypoint-initdb.d
+      - ./Docker/mysql/data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret
+    ports:
+      - "23306:3306"
