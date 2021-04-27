@@ -1,48 +1,40 @@
 <?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Company[]|\Cake\Collection\CollectionInterface $companies
- */
+ use App\myClass\menulists\htmlcompanymenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
+ $htmlcompanymenu = new htmlcompanymenu();
+ $htmlcompany = $htmlcompanymenu->Companiesmenus();
+ $htmlloginmenu = new htmlloginmenu();
+ $htmllogin = $htmlloginmenu->Loginmenu();
 
  $i = 1;
 ?>
 <?php
-    $username = "ログイン中：".$this->request->Session()->read('Auth.User.user_code');
+     echo $htmllogin;
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar" style="width:98%">
-    <ul class="side-nav" style="background-color:#afeeee">
-      <table align="right" style="background-color:#afeeee">
-        <tr>
-          <td><?= __($username) ?></td>
-          <td><?= $this->Html->link(__('ログアウト'), ['controller' => 'Startmenus', 'action' => 'logout']) ?></td>
-        </tr>
-      </table>
-        <div class="heading">
-          <font size="5"><?= __('　会社メニュー') ?></font>
-        </div>
-        <br>
-        <li><font size="4" color=white><?= $this->Html->link(__('　・会社新規登録'), ['action' => 'addform']) ?></font></li>
-        <li><font size="4" color=white><?= $this->Html->link(__('　・総合メニューへ戻る'), ['controller' => 'Startmenus', 'action' => 'menu']) ?></font></li>
-        <br>
-    </ul>
-</nav>
+<?php
+     echo $htmlcompany;
+?>
 
+<?php
+$this->layout = false;
+echo $this->Html->css('index');
+?>
 
-<div class="companies index large-9 medium-8 columns content" style="width:100%">
-    <h3><?= __('会社一覧') ?></h3>
+<div class="companies index large-9 medium-8 columns content" style="width:70%">
+    <h2><font color=red><?= __('会社一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
-            <tr bgcolor="#f0e68c">
+            <tr>
                 <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('会社名') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('所在地') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('電話番号') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('FAX') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('代表者') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>"会社名"]) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('address', ['label'=>"所在地"]) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('tel', ['label'=>"電話番号"]) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('fax', ['label'=>"FAX"]) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('president', ['label'=>"代表者"]) ?></th>
                 <th scope="col" class="actions"><?= __('') ?></th>
             </tr>
         </thead>
-        <tbody bgcolor="#FFFFCC">
+        <tbody>
             <?php foreach ($companies as $company): ?>
             <tr>
                 <td><?= h($i) ?></td>
@@ -66,11 +58,11 @@
     </table>
     <div class="paginator">
         <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('最初のページ')) ?>
-            <?= $this->Paginator->prev('< ' . __('前へ')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('次へ') . ' >') ?>
-            <?= $this->Paginator->last(__('最後のページ') . ' >>') ?>
+          <?= $this->Paginator->first('<< ' . __('最初のページ')) ?>
+          <?= $this->Paginator->prev('< ' . __('前へ')) ?>
+          <?= $this->Paginator->numbers() ?>
+          <?= $this->Paginator->next(__('次へ') . ' >') ?>
+          <?= $this->Paginator->last(__('最後のページ') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
     </div>

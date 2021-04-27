@@ -1,62 +1,54 @@
 <?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Occupation[]|\Cake\Collection\CollectionInterface $occupations
- */
+ use App\myClass\menulists\htmloccupationmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
+ $htmloccupationmenu = new htmloccupationmenu();
+ $htmloccupation = $htmloccupationmenu->Occupationmenus();
+ $htmlloginmenu = new htmlloginmenu();
+ $htmllogin = $htmlloginmenu->Loginmenu();
+
+ $i = 1;
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Occupation'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Offices'), ['controller' => 'Offices', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Office'), ['controller' => 'Offices', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Staffs'), ['controller' => 'Staffs', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Staff'), ['controller' => 'Staffs', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="occupations index large-9 medium-8 columns content">
-    <h3><?= __('Occupations') ?></h3>
+<?php
+     echo $htmllogin;
+?>
+<?php
+     echo $htmloccupation;
+?>
+<div class="occupations index large-9 medium-8 columns content" style="width:70%">
+  <h2><font color=red><?= __('職種一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('office_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('occupation') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('delete_flag') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created_at') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created_staff') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('updated_at') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('updated_staff') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+          <tr bgcolor="#f0e68c">
+            <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
+            <th scope="col"><?= $this->Paginator->sort('office_id', ['label'=>"工場・営業所名"]) ?></th>
+            <th scope="col"><?= $this->Paginator->sort('occupation', ['label'=>"職種名"]) ?></th>
+                <th scope="col" class="actions"><?= __('') ?></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody bgcolor="#FFFFCC">
             <?php foreach ($occupations as $occupation): ?>
             <tr>
-                <td><?= $this->Number->format($occupation->id) ?></td>
+              <td><?= h($i) ?></td>
                 <td><?= $occupation->has('office') ? $this->Html->link($occupation->office->name, ['controller' => 'Offices', 'action' => 'view', $occupation->office->id]) : '' ?></td>
                 <td><?= h($occupation->occupation) ?></td>
-                <td><?= $this->Number->format($occupation->delete_flag) ?></td>
-                <td><?= h($occupation->created_at) ?></td>
-                <td><?= $this->Number->format($occupation->created_staff) ?></td>
-                <td><?= h($occupation->updated_at) ?></td>
-                <td><?= $this->Number->format($occupation->updated_staff) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $occupation->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $occupation->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $occupation->id], ['confirm' => __('Are you sure you want to delete # {0}?', $occupation->id)]) ?>
+                  <?= $this->Html->link(__('編集'), ['action' => 'editform', $occupation->id]) ?>
+                  <?= $this->Html->link(__('削除'), ['action' => 'deleteconfirm', $occupation->id]) ?>
                 </td>
             </tr>
+            <?php
+            $i = $i + 1;
+            ?>
             <?php endforeach; ?>
         </tbody>
     </table>
     <div class="paginator">
         <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
+          <?= $this->Paginator->first('<< ' . __('最初のページ')) ?>
+          <?= $this->Paginator->prev('< ' . __('前へ')) ?>
+          <?= $this->Paginator->numbers() ?>
+          <?= $this->Paginator->next(__('次へ') . ' >') ?>
+          <?= $this->Paginator->last(__('最後のページ') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
     </div>

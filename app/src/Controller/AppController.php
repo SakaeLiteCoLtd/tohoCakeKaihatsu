@@ -18,15 +18,15 @@ class AppController extends Controller
               'action' => 'login'
           ],
           'loginRedirect' => [
-    //        'controller' => 'Startmenus',
-    //        'action' => 'menu'
-            'controller' => 'Companies',
-            'action' => 'index'
+            'controller' => 'Startmenus',
+            'action' => 'menu'
+      //      'controller' => 'Companies',
+      //      'action' => 'index'
           ],
           'logoutRedirect' => [
               'controller' => 'Startmenus',
-              'action' => 'login',
-              'home'
+              'action' => 'menu',
+      //        'home'
           ],
           'authenticate' => [
               'Form' => [
@@ -40,7 +40,7 @@ class AppController extends Controller
   public function beforeFilter(Event $event)
   {
     $this->Auth->config('authError', "ログインしてください。");
-    //  $this->Auth->allow(['index','add']);
+//    $this->Auth->allow(['login']);
   }
 
 }

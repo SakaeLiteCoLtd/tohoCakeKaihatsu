@@ -1,52 +1,44 @@
 <?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\StaffAbility[]|\Cake\Collection\CollectionInterface $staffAbilities
- */
+ use App\myClass\menulists\htmlstaffAbilitymenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
+ $htmlstaffAbilitymenu = new htmlstaffAbilitymenu();
+ $htmlstaffAbility = $htmlstaffAbilitymenu->StaffAbilitymenus();
+ $htmlloginmenu = new htmlloginmenu();
+ $htmllogin = $htmlloginmenu->Loginmenu();
+
+ $i = 1;
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Staff Ability'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Staffs'), ['controller' => 'Staffs', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Staff'), ['controller' => 'Staffs', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Menus'), ['controller' => 'Menus', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Menu'), ['controller' => 'Menus', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="staffAbilities index large-9 medium-8 columns content">
-    <h3><?= __('Staff Abilities') ?></h3>
+<?php
+     echo $htmllogin;
+?>
+<?php
+     echo $htmlstaffAbility;
+?>
+<div class="staffAbilities index large-9 medium-8 columns content" style="width:70%">
+  <h2><font color=red><?= __('スタッフ権限一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('staff_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('menu_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('delete_flag') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created_at') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created_staff') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('updated_at') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('updated_staff') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+          <tr bgcolor="#f0e68c">
+              <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
+              <th scope="col"><?= $this->Paginator->sort('staff_id', ['label'=>"スタッフ"]) ?></th>
+              <th scope="col"><?= $this->Paginator->sort('menu_id', ['label'=>"取り扱い可能メニュー"]) ?></th>
+                <th scope="col" class="actions"><?= __('') ?></th>
             </tr>
         </thead>
-        <tbody>
+        <tbody bgcolor="#FFFFCC">
             <?php foreach ($staffAbilities as $staffAbility): ?>
             <tr>
-                <td><?= $this->Number->format($staffAbility->id) ?></td>
+              <td><?= h($i) ?></td>
                 <td><?= $staffAbility->has('staff') ? $this->Html->link($staffAbility->staff->name, ['controller' => 'Staffs', 'action' => 'view', $staffAbility->staff->id]) : '' ?></td>
-                <td><?= $staffAbility->has('menu') ? $this->Html->link($staffAbility->menu->id, ['controller' => 'Menus', 'action' => 'view', $staffAbility->menu->id]) : '' ?></td>
-                <td><?= $this->Number->format($staffAbility->delete_flag) ?></td>
-                <td><?= h($staffAbility->created_at) ?></td>
-                <td><?= $this->Number->format($staffAbility->created_staff) ?></td>
-                <td><?= h($staffAbility->updated_at) ?></td>
-                <td><?= $this->Number->format($staffAbility->updated_staff) ?></td>
+                <td><?= $staffAbility->has('menu') ? $this->Html->link($staffAbility->menu->name_menu, ['controller' => 'Staffs', 'action' => 'view', $staffAbility->menu->id]) : '' ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $staffAbility->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $staffAbility->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $staffAbility->id], ['confirm' => __('Are you sure you want to delete # {0}?', $staffAbility->id)]) ?>
+                  <?= $this->Html->link(__('編集'), ['action' => 'editform', $staffAbility->id]) ?>
+                  <?= $this->Html->link(__('削除'), ['action' => 'deleteconfirm', $staffAbility->id]) ?>
                 </td>
             </tr>
+            <?php
+            $i = $i + 1;
+            ?>
             <?php endforeach; ?>
         </tbody>
     </table>

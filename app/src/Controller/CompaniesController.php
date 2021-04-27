@@ -10,6 +10,15 @@ use Cake\ORM\TableRegistry;//独立したテーブルを扱う
 class CompaniesController extends AppController
 {
 
+      public function initialize()
+    {
+     parent::initialize();
+     $this->Companies = TableRegistry::get('Companies');
+     $this->Users = TableRegistry::get('Users');
+     $this->Menus = TableRegistry::get('Menus');
+     $this->Groups = TableRegistry::get('Groups');
+    }
+
     public function top()
     {
       return $this->redirect(
@@ -25,9 +34,21 @@ class CompaniesController extends AppController
     public function index()
     {
       $companies = $this->Companies->find()->where(['delete_flag' => 0]);
-  //    $companies = $this->paginate($this->Companies);
       $companies = $this->paginate($companies);
       $this->set(compact('companies'));
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+/*
+      $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
+      ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "会社"])->toArray();
+
+      if(count($Groups) < 1){
+        return $this->redirect(
+         ['controller' => 'Startmenus', 'action' => 'menu']
+        );
+      }
+*/
     }
 
     public function view($id = null)
@@ -105,7 +126,6 @@ class CompaniesController extends AppController
         $connection->rollback();//トランザクション9
       }//トランザクション10
 
-
     }
 
     public function editform($id = null)
@@ -173,7 +193,7 @@ class CompaniesController extends AppController
 
          $mes = "※更新されませんでした";
          $this->set('mes',$mes);
-         $this->Flash->error(__('The product could not be saved. Please, try again.'));
+         $this->Flash->error(__('The data could not be saved. Please, try again.'));
          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
 
        }
@@ -236,7 +256,7 @@ class CompaniesController extends AppController
 
          $mes = "※削除されませんでした";
          $this->set('mes',$mes);
-         $this->Flash->error(__('The product could not be saved. Please, try again.'));
+         $this->Flash->error(__('The data could not be saved. Please, try again.'));
          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
 
        }

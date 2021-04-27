@@ -2,39 +2,30 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Datasource\ConnectionManager;//トランザクション
+use Cake\Core\Exception\Exception;//トランザクション
+use Cake\Core\Configure;//トランザクション
+use Cake\ORM\TableRegistry;//独立したテーブルを扱う
 
-/**
- * Departments Controller
- *
- * @property \App\Model\Table\DepartmentsTable $Departments
- *
- * @method \App\Model\Entity\Department[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
- */
 class DepartmentsController extends AppController
 {
 
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
+      public function initialize()
+    {
+     parent::initialize();
+     $this->Offices = TableRegistry::get('Offices');
+    }
+
     public function index()
     {
         $this->paginate = [
             'contain' => ['Offices']
         ];
-        $departments = $this->paginate($this->Departments);
+        $departments = $this->paginate($this->Departments->find()->where(['Departments.delete_flag' => 0]));
 
         $this->set(compact('departments'));
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id Department id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
     public function view($id = null)
     {
         $department = $this->Departments->get($id, [
@@ -44,69 +35,246 @@ class DepartmentsController extends AppController
         $this->set('department', $department);
     }
 
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
-    public function add()
+    public function addform()
     {
-        $department = $this->Departments->newEntity();
-        if ($this->request->is('post')) {
-            $department = $this->Departments->patchEntity($department, $this->request->getData());
-            if ($this->Departments->save($department)) {
-                $this->Flash->success(__('The department has been saved.'));
+      $department = $this->Departments->newEntity();
+      $this->set('department', $department);
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The department could not be saved. Please, try again.'));
-        }
-        $offices = $this->Departments->Offices->find('list', ['limit' => 200]);
-        $this->set(compact('department', 'offices'));
+      $Offices = $this->Offices->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrOffices = array();
+      foreach ($Offices as $value) {
+        $arrOffices[] = array($value->id=>$value->name);
+      }
+      $this->set('arrOffices', $arrOffices);
+
     }
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Department id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit($id = null)
+    public function addcomfirm()
+    {
+      $department = $this->Departments->newEntity();
+      $this->set('department', $department);
+
+      $data = $this->request->getData();
+
+      $Offices = $this->Offices->find()
+      ->where(['id' => $data['office_id']])->toArray();
+      $Office_name = $Offices[0]['name'];
+      $this->set('Office_name', $Office_name);
+
+    }
+
+    public function adddo()
+    {
+      $department = $this->Departments->newEntity();
+      $this->set('department', $department);
+
+      $data = $this->request->getData();
+
+      $Offices = $this->Offices->find()
+      ->where(['id' => $data['office_id']])->toArray();
+      $Office_name = $Offices[0]['name'];
+      $this->set('Office_name', $Office_name);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $arrtourokudepartment = array();
+      $arrtourokudepartment = [
+        'department' => $data["department"],
+        'office_id' => $data["office_id"],
+        'delete_flag' => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        'created_staff' => $staff_id
+      ];
+/*
+      echo "<pre>";
+      print_r($arrtourokudepartment);
+      echo "</pre>";
+*/
+      //新しいデータを登録
+      $Departments = $this->Departments->patchEntity($this->Departments->newEntity(), $arrtourokudepartment);
+      $connection = ConnectionManager::get('default');//トランザクション1
+      // トランザクション開始2
+      $connection->begin();//トランザクション3
+      try {//トランザクション4
+        if ($this->Departments->save($Departments)) {
+
+          $connection->commit();// コミット5
+          $mes = "以下のように登録されました。";
+          $this->set('mes',$mes);
+
+        } else {
+
+          $this->Flash->error(__('The data could not be saved. Please, try again.'));
+          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+          $mes = "※登録されませんでした";
+          $this->set('mes',$mes);
+
+        }
+
+      } catch (Exception $e) {//トランザクション7
+      //ロールバック8
+        $connection->rollback();//トランザクション9
+      }//トランザクション10
+
+    }
+
+    public function editform($id = null)
     {
         $department = $this->Departments->get($id, [
             'contain' => []
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $department = $this->Departments->patchEntity($department, $this->request->getData());
-            if ($this->Departments->save($department)) {
-                $this->Flash->success(__('The department has been saved.'));
+        $this->set(compact('department'));
+        $this->set('id', $id);
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The department could not be saved. Please, try again.'));
+        $Offices = $this->Offices->find()
+        ->where(['delete_flag' => 0])->toArray();
+        $arrOffices = array();
+        foreach ($Offices as $value) {
+          $arrOffices[] = array($value->id=>$value->name);
         }
-        $offices = $this->Departments->Offices->find('list', ['limit' => 200]);
-        $this->set(compact('department', 'offices'));
+        $this->set('arrOffices', $arrOffices);
+
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Department id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
+    public function editconfirm()
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $department = $this->Departments->get($id);
-        if ($this->Departments->delete($department)) {
-            $this->Flash->success(__('The department has been deleted.'));
-        } else {
-            $this->Flash->error(__('The department could not be deleted. Please, try again.'));
-        }
+      $department = $this->Departments->newEntity();
+      $this->set('department', $department);
 
-        return $this->redirect(['action' => 'index']);
+      $data = $this->request->getData();
+
+      $Offices = $this->Offices->find()
+      ->where(['id' => $data['office_id']])->toArray();
+      $Office_name = $Offices[0]['name'];
+      $this->set('Office_name', $Office_name);
     }
+
+    public function editdo()
+    {
+      $department = $this->Departments->newEntity();
+      $this->set('department', $department);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $data = $this->request->getData();
+
+      $Offices = $this->Offices->find()
+      ->where(['id' => $data['office_id']])->toArray();
+      $Office_name = $Offices[0]['name'];
+      $this->set('Office_name', $Office_name);
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $arrupdatedepartment = array();
+      $arrupdatedepartment = [
+        'id' => $data["id"],
+        'department' => $data["department"],
+        'office_id' => $data["office_id"],
+      ];
+/*
+      echo "<pre>";
+      print_r($arrupdatedepartment);
+      echo "</pre>";
+*/
+      $Departments = $this->Departments->patchEntity($this->Departments->newEntity(), $arrupdatedepartment);
+      $connection = ConnectionManager::get('default');//トランザクション1
+       // トランザクション開始2
+       $connection->begin();//トランザクション3
+       try {//トランザクション4
+         if ($this->Departments->updateAll(
+           [ 'department' => $arrupdatedepartment['department'],
+             'office_id' => $arrupdatedepartment['office_id'],
+             'updated_at' => date('Y-m-d H:i:s'),
+             'updated_staff' => $staff_id],
+           ['id'  => $arrupdatedepartment['id']]
+         )){
+
+         $mes = "※下記のように更新されました";
+         $this->set('mes',$mes);
+         $connection->commit();// コミット5
+
+       } else {
+
+         $mes = "※更新されませんでした";
+         $this->set('mes',$mes);
+         $this->Flash->error(__('The data could not be saved. Please, try again.'));
+         throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+       }
+
+     } catch (Exception $e) {//トランザクション7
+     //ロールバック8
+       $connection->rollback();//トランザクション9
+     }//トランザクション10
+
+    }
+
+    public function deleteconfirm($id = null)
+    {
+        $department = $this->Departments->get($id, [
+          'contain' => ['Offices']
+        ]);
+        $this->set(compact('department'));
+    }
+
+    public function deletedo()
+    {
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $data = $this->request->getData();
+
+      $department = $this->Departments->get($data["id"], [
+        'contain' => ['Offices']
+      ]);
+      $this->set(compact('department'));
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $arrdeletedepartment = array();
+      $arrdeletedepartment = [
+        'id' => $data["id"]
+      ];
+/*
+      echo "<pre>";
+      print_r($arrdeletecompany);
+      echo "</pre>";
+*/
+      $Departments = $this->Departments->patchEntity($this->Departments->newEntity(), $arrdeletedepartment);
+      $connection = ConnectionManager::get('default');//トランザクション1
+       // トランザクション開始2
+       $connection->begin();//トランザクション3
+       try {//トランザクション4
+         if ($this->Departments->updateAll(
+           [ 'delete_flag' => 1,
+             'updated_at' => date('Y-m-d H:i:s'),
+             'updated_staff' => $staff_id],
+           ['id'  => $arrdeletedepartment['id']]
+         )){
+
+         $mes = "※以下のデータが削除されました。";
+         $this->set('mes',$mes);
+         $connection->commit();// コミット5
+
+       } else {
+
+         $mes = "※削除されませんでした";
+         $this->set('mes',$mes);
+         $this->Flash->error(__('The data could not be saved. Please, try again.'));
+         throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+       }
+
+     } catch (Exception $e) {//トランザクション7
+     //ロールバック8
+       $connection->rollback();//トランザクション9
+     }//トランザクション10
+
+    }
+
 }

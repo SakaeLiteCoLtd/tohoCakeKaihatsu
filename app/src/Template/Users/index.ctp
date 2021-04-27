@@ -1,66 +1,72 @@
 <?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\User[]|\Cake\Collection\CollectionInterface $users
- */
+ use App\myClass\menulists\htmlusermenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
+ $htmlusermenu = new htmlusermenu();
+ $htmluser = $htmlusermenu->Usermenus();
+ $htmlloginmenu = new htmlloginmenu();
+ $htmllogin = $htmlloginmenu->Loginmenu();
+
+ $i = 1;
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New User'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Staffs'), ['controller' => 'Staffs', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Staff'), ['controller' => 'Staffs', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="users index large-9 medium-8 columns content">
-    <h3><?= __('Users') ?></h3>
+<?php
+     echo $htmllogin;
+?>
+<?php
+     echo $htmluser;
+?>
+
+<?php
+$this->layout = false;
+echo $this->Html->css('index');
+?>
+
+<div class="users index large-9 medium-8 columns content" style="width:70%">
+  <h2><font><?= __('ユーザー一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
-            <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('user_code') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('password') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('staff_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('super_user') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('group_name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('delete_flag') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created_at') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created_staff') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('updated_at') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('updated_staff') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+          <tr>
+              <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
+              <th scope="col"><?= $this->Paginator->sort('user_code', ['label'=>"ユーザー名"]) ?></th>
+              <th scope="col"><?= $this->Paginator->sort('staff', ['label'=>"スタッフ"]) ?></th>
+              <th scope="col"><?= $this->Paginator->sort('super_user', ['label'=>"スーパーユーザー"]) ?></th>
+              <th scope="col"><?= $this->Paginator->sort('group_name', ['label'=>"グループ"]) ?></th>
+                <th scope="col" class="actions"><?= __('') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($users as $user): ?>
             <tr>
-                <td><?= $this->Number->format($user->id) ?></td>
+              <td><?= h($i) ?></td>
                 <td><?= h($user->user_code) ?></td>
-                <td><?= h($user->password) ?></td>
                 <td><?= $user->has('staff') ? $this->Html->link($user->staff->name, ['controller' => 'Staffs', 'action' => 'view', $user->staff->id]) : '' ?></td>
-                <td><?= $this->Number->format($user->super_user) ?></td>
+
+                <?php
+                if($this->Number->format($user->super_user) == 1){
+                  $super_user = "はい";
+                }else{
+                  $super_user = "いいえ";
+                }
+                $i = $i + 1;
+                ?>
+
+                <td><?= h($super_user) ?></td>
                 <td><?= h($user->group_name) ?></td>
-                <td><?= $this->Number->format($user->delete_flag) ?></td>
-                <td><?= h($user->created_at) ?></td>
-                <td><?= $this->Number->format($user->created_staff) ?></td>
-                <td><?= h($user->updated_at) ?></td>
-                <td><?= $this->Number->format($user->updated_staff) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $user->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $user->id], ['confirm' => __('Are you sure you want to delete # {0}?', $user->id)]) ?>
+                  <?= $this->Html->link(__('編集'), ['action' => 'editform', $user->id]) ?>
+                  <?= $this->Html->link(__('削除'), ['action' => 'deleteconfirm', $user->id]) ?>
                 </td>
             </tr>
+
             <?php endforeach; ?>
         </tbody>
     </table>
     <div class="paginator">
         <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
+          <?= $this->Paginator->first('<< ' . __('最初のページ')) ?>
+          <?= $this->Paginator->prev('< ' . __('前へ')) ?>
+          <?= $this->Paginator->numbers() ?>
+          <?= $this->Paginator->next(__('次へ') . ' >') ?>
+          <?= $this->Paginator->last(__('最後のページ') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
     </div>

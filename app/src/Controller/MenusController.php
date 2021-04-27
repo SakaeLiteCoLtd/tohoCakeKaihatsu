@@ -2,36 +2,21 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Datasource\ConnectionManager;//トランザクション
+use Cake\Core\Exception\Exception;//トランザクション
+use Cake\Core\Configure;//トランザクション
+use Cake\ORM\TableRegistry;//独立したテーブルを扱う
 
-/**
- * Menus Controller
- *
- * @property \App\Model\Table\MenusTable $Menus
- *
- * @method \App\Model\Entity\Menu[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
- */
 class MenusController extends AppController
 {
 
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
     public function index()
     {
-        $menus = $this->paginate($this->Menus);
+        $menus = $this->paginate($this->Menus->find()->where(['Menus.delete_flag' => 0]));
 
         $this->set(compact('menus'));
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id Menu id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
     public function view($id = null)
     {
         $menu = $this->Menus->get($id, [
@@ -41,67 +26,196 @@ class MenusController extends AppController
         $this->set('menu', $menu);
     }
 
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
-    public function add()
+    public function addform()
     {
-        $menu = $this->Menus->newEntity();
-        if ($this->request->is('post')) {
-            $menu = $this->Menus->patchEntity($menu, $this->request->getData());
-            if ($this->Menus->save($menu)) {
-                $this->Flash->success(__('The menu has been saved.'));
-
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The menu could not be saved. Please, try again.'));
-        }
-        $this->set(compact('menu'));
+      $menu = $this->Menus->newEntity();
+      $this->set('menu', $menu);
     }
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Menu id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit($id = null)
+    public function addcomfirm()
+    {
+      $menu = $this->Menus->newEntity();
+      $this->set('menu', $menu);
+    }
+
+    public function adddo()
+    {
+      $menus = $this->Menus->newEntity();
+      $this->set('menus', $menus);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $data = $this->request->getData();
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $arrtourokumenu = array();
+      $arrtourokumenu = [
+        'name_menu' => $data["name_menu"],
+        'delete_flag' => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        'created_staff' => $staff_id
+      ];
+
+      //新しいデータを登録
+      $Menus = $this->Menus->patchEntity($this->Menus->newEntity(), $arrtourokumenu);
+      $connection = ConnectionManager::get('default');//トランザクション1
+      // トランザクション開始2
+      $connection->begin();//トランザクション3
+      try {//トランザクション4
+        if ($this->Menus->save($Menus)) {
+
+          $connection->commit();// コミット5
+          $mes = "以下のように登録されました。";
+          $this->set('mes',$mes);
+
+        } else {
+
+          $this->Flash->error(__('The data could not be saved. Please, try again.'));
+          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+          $mes = "※登録されませんでした";
+          $this->set('mes',$mes);
+
+        }
+
+      } catch (Exception $e) {//トランザクション7
+      //ロールバック8
+        $connection->rollback();//トランザクション9
+      }//トランザクション10
+
+    }
+
+    public function editform($id = null)
     {
         $menu = $this->Menus->get($id, [
             'contain' => []
         ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $menu = $this->Menus->patchEntity($menu, $this->request->getData());
-            if ($this->Menus->save($menu)) {
-                $this->Flash->success(__('The menu has been saved.'));
+        $this->set(compact('menu'));
+        $this->set('id', $id);
+    }
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The menu could not be saved. Please, try again.'));
-        }
+    public function editconfirm()
+    {
+      $menu = $this->Menus->newEntity();
+      $this->set('menu', $menu);
+    }
+
+    public function editdo()
+    {
+      $menu = $this->Menus->newEntity();
+      $this->set('menu', $menu);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $data = $this->request->getData();
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $arrupdatemenus = array();
+      $arrupdatemenus = [
+        'id' => $data["id"],
+        'name_menu' => $data["name_menu"],
+      ];
+/*
+      echo "<pre>";
+      print_r($arrupdatemenus);
+      echo "</pre>";
+*/
+      $Menus = $this->Menus->patchEntity($this->Menus->newEntity(), $arrupdatemenus);
+      $connection = ConnectionManager::get('default');//トランザクション1
+       // トランザクション開始2
+       $connection->begin();//トランザクション3
+       try {//トランザクション4
+         if ($this->Menus->updateAll(
+           [ 'name_menu' => $arrupdatemenus['name_menu'],
+             'updated_at' => date('Y-m-d H:i:s'),
+             'updated_staff' => $staff_id],
+           ['id'  => $arrupdatemenus['id']]
+         )){
+
+         $mes = "※下記のように更新されました";
+         $this->set('mes',$mes);
+         $connection->commit();// コミット5
+
+       } else {
+
+         $mes = "※更新されませんでした";
+         $this->set('mes',$mes);
+         $this->Flash->error(__('The data could not be saved. Please, try again.'));
+         throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+       }
+
+     } catch (Exception $e) {//トランザクション7
+     //ロールバック8
+       $connection->rollback();//トランザクション9
+     }//トランザクション10
+
+    }
+
+    public function deleteconfirm($id = null)
+    {
+        $menu = $this->Menus->get($id, [
+          'contain' => []
+        ]);
         $this->set(compact('menu'));
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Menu id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
+    public function deletedo()
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $menu = $this->Menus->get($id);
-        if ($this->Menus->delete($menu)) {
-            $this->Flash->success(__('The menu has been deleted.'));
-        } else {
-            $this->Flash->error(__('The menu could not be deleted. Please, try again.'));
-        }
+      $session = $this->request->getSession();
+      $datasession = $session->read();
 
-        return $this->redirect(['action' => 'index']);
+      $data = $this->request->getData();
+
+      $menu = $this->Menus->get($data["id"], [
+        'contain' => []
+      ]);
+      $this->set(compact('menu'));
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $arrdeletemenu = array();
+      $arrdeletemenu = [
+        'id' => $data["id"]
+      ];
+/*
+      echo "<pre>";
+      print_r($arrdeletemenu);
+      echo "</pre>";
+*/
+      $Menus = $this->Menus->patchEntity($this->Menus->newEntity(), $arrdeletemenu);
+      $connection = ConnectionManager::get('default');//トランザクション1
+       // トランザクション開始2
+       $connection->begin();//トランザクション3
+       try {//トランザクション4
+         if ($this->Menus->updateAll(
+           [ 'delete_flag' => 1,
+             'updated_at' => date('Y-m-d H:i:s'),
+             'updated_staff' => $staff_id],
+           ['id'  => $arrdeletemenu['id']]
+         )){
+
+         $mes = "※以下のデータが削除されました。";
+         $this->set('mes',$mes);
+         $connection->commit();// コミット5
+
+       } else {
+
+         $mes = "※削除されませんでした";
+         $this->set('mes',$mes);
+         $this->Flash->error(__('The data could not be saved. Please, try again.'));
+         throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+       }
+
+     } catch (Exception $e) {//トランザクション7
+     //ロールバック8
+       $connection->rollback();//トランザクション9
+     }//トランザクション10
+
     }
+
 }

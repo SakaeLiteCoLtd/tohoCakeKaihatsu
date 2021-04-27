@@ -3,38 +3,19 @@ namespace App\Controller;
 
 use App\Controller\AppController;
 
-/**
- * StaffAbilities Controller
- *
- * @property \App\Model\Table\StaffAbilitiesTable $StaffAbilities
- *
- * @method \App\Model\Entity\StaffAbility[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
- */
 class StaffAbilitiesController extends AppController
 {
 
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
     public function index()
     {
         $this->paginate = [
             'contain' => ['Staffs', 'Menus']
         ];
-        $staffAbilities = $this->paginate($this->StaffAbilities);
+        $staffAbilities = $this->paginate($this->StaffAbilities->find()->where(['StaffAbilities.delete_flag' => 0]));
 
         $this->set(compact('staffAbilities'));
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id Staff Ability id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
     public function view($id = null)
     {
         $staffAbility = $this->StaffAbilities->get($id, [
@@ -44,11 +25,6 @@ class StaffAbilitiesController extends AppController
         $this->set('staffAbility', $staffAbility);
     }
 
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
     public function add()
     {
         $staffAbility = $this->StaffAbilities->newEntity();
@@ -66,13 +42,6 @@ class StaffAbilitiesController extends AppController
         $this->set(compact('staffAbility', 'staffs', 'menus'));
     }
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Staff Ability id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
     public function edit($id = null)
     {
         $staffAbility = $this->StaffAbilities->get($id, [
@@ -92,13 +61,6 @@ class StaffAbilitiesController extends AppController
         $this->set(compact('staffAbility', 'staffs', 'menus'));
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Staff Ability id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
     public function delete($id = null)
     {
         $this->request->allowMethod(['post', 'delete']);
