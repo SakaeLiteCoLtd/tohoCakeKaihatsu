@@ -144,6 +144,95 @@ class ProductsController extends AppController
         $this->set(compact('product', 'customers'));
     }
 
+    public function editform($id = null)
+    {
+      $product = $this->Products->get($id, [
+        'contain' => ['Customers']
+      ]);
+      $customers = $this->Products->Customers->find('list', ['limit' => 200]);
+      $this->set(compact('product', 'customers'));
+      $this->set('id', $id);
+    }
+
+    public function editconfirm()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->getData();
+
+      $Customers = $this->Customers->find()
+      ->where(['id' => $data['customer_id']])->toArray();
+      $customer_name = $Customers[0]["name"];
+      $this->set('customer_name', $customer_name);
+    }
+
+    public function editdo()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $data = $this->request->getData();
+
+      $Customers = $this->Customers->find()
+      ->where(['id' => $data['customer_id']])->toArray();
+      $customer_name = $Customers[0]["name"];
+      $this->set('customer_name', $customer_name);
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $arrupdateproduct = array();
+      $arrupdateproduct = [
+        'product_code' => $data["product_code"],
+        'customer_product_code' => $data["customer_product_code"],
+        'name' => $data["name"],
+        'customer_id' => $data["customer_id"],
+        'is_active' => 0,
+        'delete_flag' => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        'created_staff' => $staff_id
+      ];
+/*
+      echo "<pre>";
+      print_r($arrupdateproduct);
+      echo "</pre>";
+*/
+      $Products = $this->Products->patchEntity($this->Products->newEntity(), $arrupdateproduct);
+      $connection = ConnectionManager::get('default');//トランザクション1
+       // トランザクション開始2
+       $connection->begin();//トランザクション3
+       try {//トランザクション4
+         if ($this->Products->save($Products)) {
+
+         $this->Products->updateAll(
+           [ 'delete_flag' => 1,
+             'updated_at' => date('Y-m-d H:i:s'),
+             'updated_staff' => $staff_id],
+           ['id'  => $data['id']]);
+
+         $mes = "※下記のように更新されました";
+         $this->set('mes',$mes);
+         $connection->commit();// コミット5
+
+       } else {
+
+         $mes = "※更新されませんでした";
+         $this->set('mes',$mes);
+         $this->Flash->error(__('The data could not be saved. Please, try again.'));
+         throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+       }
+
+     } catch (Exception $e) {//トランザクション7
+     //ロールバック8
+       $connection->rollback();//トランザクション9
+     }//トランザクション10
+
+    }
+
     public function deleteconfirm($id = null)
     {
         $product = $this->Products->get($id, [

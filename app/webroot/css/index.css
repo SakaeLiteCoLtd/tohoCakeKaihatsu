@@ -5,7 +5,9 @@
  * 2. Prevent iOS text size adjust after orientation change, without disabling
  *    user zoom.
  */
-
+ .fullheight {
+   height: 100%;
+ }
  .non-sample{
  font-size: initial; /*文字サイズ*/
  font-weight: initial; /*文字太さ*/
@@ -14,10 +16,23 @@
  padding: initial; /*背景余白*/
  }
 
+nav {
+  height: 100%;
+  padding: 0rem 0.0rem 0.0rem;
+  margin: 0.0rem 0.0rem 0.0rem;
+  background-color: #afeeee;;
+}
+
+div {
+/*  height: 100%;*/
+}
+
 html {
-    font-family: sans-serif; /* 1 */
-    -ms-text-size-adjust: 100%; /* 2 */
-    -webkit-text-size-adjust: 100%; /* 2 */
+  height: 100%;
+    min-height: 100%;
+    /*    font-family: sans-serif; /* 1 */
+/*    -ms-text-size-adjust: 100%; /* 2 */
+/*    -webkit-text-size-adjust: 100%; /* 2 */
 }
 
 /**
@@ -26,7 +41,13 @@ html {
 
 body {
     margin: 0;
+    height: 100%;
+        min-height: 100%;
 }
+
+/**
+ * Remove default margin.
+ */
 
 /* HTML5 display definitions
    ========================================================================== */
@@ -449,7 +470,12 @@ div.side-menu {
 }
 
 .columns
-{padding-left:0.9375rem;padding-right:0.9375rem;width:100%;float:left}
+{
+/*  padding-left:0.9375rem;*/
+  padding-right:0.9375rem;
+  width:100%;
+  float:left
+}
 
 .disabled a,
 a.disabled {
@@ -794,7 +820,7 @@ pre {
 }
 
 #actions-sidebar {
-    background: #fafafa;
+  /*  background: #fafafa;*/
 }
 
 .index table {

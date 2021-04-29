@@ -499,6 +499,7 @@ div.message.hidden {
 #actions-sidebar {
     margin-bottom: -99999px;
     padding-bottom: 99999px;
+    background-color: #afeeee;;
 }
 @media(max-width: 640px) {
     #actions-sidebar {
