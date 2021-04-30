@@ -19,7 +19,7 @@
 
     <?= $this->Form->create($customer) ?>
     <fieldset>
-        <legend><strong style="font-size: 15pt; color:red"><?= __('原料種類新規登録') ?></strong></legend>
+        <legend><strong style="font-size: 15pt; color:red"><?= __('顧客新規登録') ?></strong></legend>
         <br>
         <table>
           <tbody class='sample non-sample'>

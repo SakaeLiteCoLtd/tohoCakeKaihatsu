@@ -13,6 +13,8 @@
      echo $htmlproduct;
 ?>
 
+<form method="post" action="/products/index">
+
 <?= $this->Form->create($product, ['url' => ['action' => 'index']]) ?>
 
 <nav class="large-3 medium-4 columns" style="width:70%">

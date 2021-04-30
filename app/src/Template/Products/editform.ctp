@@ -53,6 +53,8 @@
         <td><?= $this->Form->control('customer_id', ['options' => $customers, 'label'=>false]) ?></td>
       </tr>
     </table>
+    
+    <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$id, 'label'=>false)) ?>
 
     </fieldset>
 

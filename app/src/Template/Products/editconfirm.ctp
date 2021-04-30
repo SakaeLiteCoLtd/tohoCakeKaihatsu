@@ -13,6 +13,8 @@
      echo $htmlproduct;
 ?>
 
+<form method="post" action="/products/editdo">
+
 <?= $this->Form->create($product, ['url' => ['action' => 'editdo']]) ?>
 
 <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$this->request->getData('id'), 'label'=>false)) ?>

@@ -143,6 +143,107 @@ class MaterialsController extends AppController
         $this->set(compact('material', 'MaterialTypes'));
     }
 
+    public function editform($id = null)
+    {
+      $material = $this->Materials->get($id, [
+        'contain' => ['MaterialTypes']
+      ]);
+      $MaterialTypes = $this->Materials->MaterialTypes->find('list', ['limit' => 200]);
+      $this->set(compact('material', 'MaterialTypes'));
+      $this->set('id', $id);
+
+      $MaterialTypes = $this->MaterialTypes->find()
+      ->where(['delete_flag' => 0])->toArray();
+
+      $arrMaterialTypes = array();
+      foreach ($MaterialTypes as $value) {
+        $arrMaterialTypes[] = array($value->id=>$value->type);
+      }
+      $this->set('arrMaterialTypes', $arrMaterialTypes);
+
+    }
+
+    public function editconfirm()
+    {
+      $material = $this->Materials->newEntity();
+      $this->set('material', $material);
+
+      $data = $this->request->getData();
+
+      $MaterialTypes = $this->MaterialTypes->find()
+      ->where(['id' => $data['type_id']])->toArray();
+      $type_name = $MaterialTypes[0]['type'];
+      $this->set('type_name', $type_name);
+    }
+
+    public function editdo()
+    {
+      $material = $this->Materials->newEntity();
+      $this->set('material', $material);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $data = $this->request->getData();
+
+      $MaterialTypes = $this->MaterialTypes->find()
+      ->where(['id' => $data['type_id']])->toArray();
+      $type_name = $MaterialTypes[0]['type'];
+      $this->set('type_name', $type_name);
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $arrupdatematerial = array();
+      $arrupdatematerial = [
+        'material_code' => $data["material_code"],
+        'grade' => $data["grade"],
+        'color' => $data["color"],
+        'maker' => $data["maker"],
+        'type_id' => $data["type_id"],
+        'is_active' => 0,
+        'delete_flag' => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        'created_staff' => $staff_id
+      ];
+/*
+      echo "<pre>";
+      print_r($arrupdatematerial);
+      echo "</pre>";
+*/
+      $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $arrupdatematerial);
+      $connection = ConnectionManager::get('default');//トランザクション1
+       // トランザクション開始2
+       $connection->begin();//トランザクション3
+       try {//トランザクション4
+         if ($this->Materials->save($Materials)) {
+
+         $this->Materials->updateAll(
+           [ 'delete_flag' => 1,
+             'updated_at' => date('Y-m-d H:i:s'),
+             'updated_staff' => $staff_id],
+           ['id'  => $data['id']]);
+
+         $mes = "※下記のように更新されました";
+         $this->set('mes',$mes);
+         $connection->commit();// コミット5
+
+       } else {
+
+         $mes = "※更新されませんでした";
+         $this->set('mes',$mes);
+         $this->Flash->error(__('The data could not be saved. Please, try again.'));
+         throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+       }
+
+     } catch (Exception $e) {//トランザクション7
+     //ロールバック8
+       $connection->rollback();//トランザクション9
+     }//トランザクション10
+
+    }
+
+
     public function edit($id = null)
     {
         $material = $this->Materials->get($id, [
