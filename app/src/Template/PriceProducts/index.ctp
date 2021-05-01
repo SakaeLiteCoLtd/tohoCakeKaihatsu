@@ -1,8 +1,8 @@
 <?php
- use App\myClass\menulists\htmlpriceMaterialmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlpriceProductmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlpriceMaterialmenu = new htmlpriceMaterialmenu();
- $htmlpriceMaterial = $htmlpriceMaterialmenu->priceMaterialsmenus();
+ $htmlpriceProductmenu = new htmlpriceProductmenu();
+ $htmlpriceProduct = $htmlpriceProductmenu->priceProductsmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -12,7 +12,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlpriceMaterial;
+     echo $htmlpriceProduct;
 ?>
 
 <?php
@@ -20,7 +20,7 @@ $this->layout = false;
 echo $this->Html->css('index');
 ?>
 
-<div class="priceMaterials index large-9 medium-8 columns content" style="width:70%">
+<div class="priceProducts index large-9 medium-8 columns content" style="width:70%">
   <h2><font color=red><?= __('製品単価一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
@@ -44,8 +44,8 @@ echo $this->Html->css('index');
                 <td><?= h($priceProduct->start_deal) ?></td>
                 <td><?= h($priceProduct->finish_deal) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('編集'), ['action' => 'editform', $priceMaterial->id]) ?>
-                    <?= $this->Html->link(__('削除'), ['action' => 'deleteconfirm', $priceMaterial->id]) ?>
+                    <?= $this->Html->link(__('編集'), ['action' => 'editform', $priceProduct->id]) ?>
+                    <?= $this->Html->link(__('削除'), ['action' => 'deleteconfirm', $priceProduct->id]) ?>
                 </td>
             </tr>
 
