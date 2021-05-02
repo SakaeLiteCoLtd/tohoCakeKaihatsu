@@ -43,8 +43,8 @@
             <td width="280"><strong>部署</strong></td>
         	</tr>
           <tr>
-            <td><?= h($this->request->getData('office_id')) ?></td>
-            <td><?= h($this->request->getData('department_id')) ?></td>
+            <td><?= h($office_name) ?></td>
+            <td><?= h($department_name) ?></td>
         	</tr>
         </table>
         <table>
@@ -53,8 +53,8 @@
             <td width="280"><strong>役職</strong></td>
         	</tr>
           <tr>
-            <td><?= h($this->request->getData('occupation_id')) ?></td>
-            <td><?= h($this->request->getData('position_id')) ?></td>
+            <td><?= h($occupation_name) ?></td>
+            <td><?= h($position_name) ?></td>
         	</tr>
         </table>
         <table>

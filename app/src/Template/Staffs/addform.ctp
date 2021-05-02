@@ -70,8 +70,8 @@
             <td width="280"><strong>メール</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->control('tel', array('type'=>'text', 'label'=>false)) ?></td>
-            <td><?= $this->Form->control('mail', array('type'=>'text', 'label'=>false)) ?></td>
+            <td><?= $this->Form->control('tel', array('type'=>'text', 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
+            <td><?= $this->Form->control('mail', array('type'=>'text', 'pattern' => '^[0-9A-Za-z@._-]+$', 'title'=>'半角英数字で入力して下さい。', 'label'=>false)) ?></td>
         	</tr>
         </table>
         <table>
@@ -102,6 +102,5 @@
         </tr>
       </tbody>
     </table>
-
     <?= $this->Form->end() ?>
   </nav>

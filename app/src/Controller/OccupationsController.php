@@ -172,9 +172,11 @@ class OccupationsController extends AppController
 
       $arrupdateoccupation = array();
       $arrupdateoccupation = [
-        'id' => $data["id"],
         'occupation' => $data["occupation"],
         'office_id' => $data["office_id"],
+        'delete_flag' => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        'created_staff' => $staff_id
       ];
 /*
       echo "<pre>";
@@ -186,13 +188,13 @@ class OccupationsController extends AppController
        // トランザクション開始2
        $connection->begin();//トランザクション3
        try {//トランザクション4
-         if ($this->Occupations->updateAll(
-           [ 'occupation' => $arrupdateoccupation['occupation'],
-             'office_id' => $arrupdateoccupation['office_id'],
+         if ($this->Occupations->save($Occupations)) {
+
+         $this->Occupations->updateAll(
+           [ 'delete_flag' => 1,
              'updated_at' => date('Y-m-d H:i:s'),
              'updated_staff' => $staff_id],
-           ['id'  => $arrupdateoccupation['id']]
-         )){
+           ['id'  => $data['id']]);
 
          $mes = "※下記のように更新されました";
          $this->set('mes',$mes);

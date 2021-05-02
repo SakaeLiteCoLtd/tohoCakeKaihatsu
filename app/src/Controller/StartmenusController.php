@@ -15,6 +15,7 @@ class StartmenusController extends AppController
      $this->Users = TableRegistry::get('Users');
      $this->Menus = TableRegistry::get('Menus');
      $this->Groups = TableRegistry::get('Groups');
+     $this->LoginStaffs = TableRegistry::get('LoginStaffs');
 
      //loginをチェックしてlogoutしていたらログイン画面へ移動する
     }
@@ -28,7 +29,16 @@ class StartmenusController extends AppController
         $user = $this->Auth->identify();
         if ($user) {
           $this->Auth->setUser($user);
-    //      return $this->redirect(['action' => 'menu']);
+
+          $arrtourokulogin  = array();
+          $arrtourokulogin  = [
+            'staff_id' => $user["staff_id"],
+            'login_datetime' => date("Y-m-d H:i:s"),
+          ];
+
+          $LoginStaffs = $this->LoginStaffs->patchEntity($this->LoginStaffs->newEntity(), $arrtourokulogin);
+          $this->LoginStaffs->save($LoginStaffs);
+
           return $this->redirect($this->Auth->redirectUrl());
         }
         $this->Flash->error(__('ユーザ名もしくはパスワードが間違っています'));
@@ -121,6 +131,16 @@ class StartmenusController extends AppController
 
           $arrMenus[] = $Groups[$k]['menu']['name_menu'];
           $arrController[] = "staffAbilities";
+
+        }elseif($Groups[$k]['menu']['name_menu'] == "顧客"){
+
+          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
+          $arrController[] = "customers";
+
+        }elseif($Groups[$k]['menu']['name_menu'] == "製品・原料関係"){
+
+          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
+          $arrController[] = "products";
 
         }
 

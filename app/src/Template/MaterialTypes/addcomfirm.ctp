@@ -1,16 +1,18 @@
 <?php
- use App\myClass\menulists\htmlmaterialTypemenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlproductmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlmaterialTypemenu = new htmlmaterialTypemenu();
- $htmlmaterialType = $htmlmaterialTypemenu->materialTypemenus();
+ $htmlproductmenu = new htmlproductmenu();
+ $htmlproduct = $htmlproductmenu->productmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
+
+ $i = 1;
 ?>
 <?php
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlmaterialType;
+     echo $htmlproduct;
 ?>
 
 <?= $this->Form->create($materialType, ['url' => ['action' => 'adddo']]) ?>

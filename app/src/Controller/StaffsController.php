@@ -5,9 +5,19 @@ use App\Controller\AppController;
 use Cake\Datasource\ConnectionManager;//トランザクション
 use Cake\Core\Exception\Exception;//トランザクション
 use Cake\Core\Configure;//トランザクション
+use Cake\ORM\TableRegistry;//独立したテーブルを扱う
 
 class StaffsController extends AppController
 {
+
+      public function initialize()
+    {
+     parent::initialize();
+     $this->Offices = TableRegistry::get('Offices');
+     $this->Departments = TableRegistry::get('Departments');
+     $this->Occupations = TableRegistry::get('Occupations');
+     $this->Positions = TableRegistry::get('Positions');
+    }
 
     public function index()
     {
@@ -85,6 +95,46 @@ class StaffsController extends AppController
       }
       $this->set('sexhyouji', $sexhyouji);
 
+      if($data['office_id'] > 0){
+        $Offices = $this->Offices->find()
+        ->where(['id' => $data['office_id']])->toArray();
+        $office_name = $Offices[0]['name'];
+        $this->set('office_name', $office_name);
+      }else{
+        $office_name = "";
+        $this->set('office_name', $office_name);
+      }
+
+      if($data['department_id'] > 0){
+        $Departments = $this->Departments->find()
+        ->where(['id' => $data['department_id']])->toArray();
+        $department_name = $Departments[0]['department'];
+        $this->set('department_name', $department_name);
+      }else{
+        $department_name = "";
+        $this->set('department_name', $department_name);
+      }
+
+      if($data['occupation_id'] > 0){
+        $Occupations = $this->Occupations->find()
+        ->where(['id' => $data['occupation_id']])->toArray();
+        $occupation_name = $Occupations[0]['occupation'];
+        $this->set('occupation_name', $occupation_name);
+      }else{
+        $occupation_name = "";
+        $this->set('occupation_name', $occupation_name);
+      }
+
+      if($data['position_id'] > 0){
+        $Positions = $this->Positions->find()
+        ->where(['id' => $data['position_id']])->toArray();
+        $position_name = $Positions[0]['position'];
+        $this->set('position_name', $position_name);
+      }else{
+        $position_name = "";
+        $this->set('position_name', $position_name);
+      }
+
       if($data['birth']['year'] > 0){
         $birth = $data['birth']['year']."-".$data['birth']['month']."-".$data['birth']['day'];
       }else{
@@ -117,6 +167,45 @@ class StaffsController extends AppController
         $sexhyouji = "女";
       }
       $this->set('sexhyouji', $sexhyouji);
+      if($data['office_id'] > 0){
+        $Offices = $this->Offices->find()
+        ->where(['id' => $data['office_id']])->toArray();
+        $office_name = $Offices[0]['name'];
+        $this->set('office_name', $office_name);
+      }else{
+        $office_name = "";
+        $this->set('office_name', $office_name);
+      }
+
+      if($data['department_id'] > 0){
+        $Departments = $this->Departments->find()
+        ->where(['id' => $data['department_id']])->toArray();
+        $department_name = $Departments[0]['department'];
+        $this->set('department_name', $department_name);
+      }else{
+        $department_name = "";
+        $this->set('department_name', $department_name);
+      }
+
+      if($data['occupation_id'] > 0){
+        $Occupations = $this->Occupations->find()
+        ->where(['id' => $data['occupation_id']])->toArray();
+        $occupation_name = $Occupations[0]['occupation'];
+        $this->set('occupation_name', $occupation_name);
+      }else{
+        $occupation_name = "";
+        $this->set('occupation_name', $occupation_name);
+      }
+
+      if($data['position_id'] > 0){
+        $Positions = $this->Positions->find()
+        ->where(['id' => $data['position_id']])->toArray();
+        $position_name = $Positions[0]['position'];
+        $this->set('position_name', $position_name);
+      }else{
+        $position_name = "";
+        $this->set('position_name', $position_name);
+      }
 
       $birth = $data['birth'];
       $this->set('birth', $birth);
@@ -204,6 +293,46 @@ class StaffsController extends AppController
       }
       $this->set('sexhyouji', $sexhyouji);
 
+      if($data['office_id'] > 0){
+        $Offices = $this->Offices->find()
+        ->where(['id' => $data['office_id']])->toArray();
+        $office_name = $Offices[0]['name'];
+        $this->set('office_name', $office_name);
+      }else{
+        $office_name = "";
+        $this->set('office_name', $office_name);
+      }
+
+      if($data['department_id'] > 0){
+        $Departments = $this->Departments->find()
+        ->where(['id' => $data['department_id']])->toArray();
+        $department_name = $Departments[0]['department'];
+        $this->set('department_name', $department_name);
+      }else{
+        $department_name = "";
+        $this->set('department_name', $department_name);
+      }
+
+      if($data['occupation_id'] > 0){
+        $Occupations = $this->Occupations->find()
+        ->where(['id' => $data['occupation_id']])->toArray();
+        $occupation_name = $Occupations[0]['occupation'];
+        $this->set('occupation_name', $occupation_name);
+      }else{
+        $occupation_name = "";
+        $this->set('occupation_name', $occupation_name);
+      }
+
+      if($data['position_id'] > 0){
+        $Positions = $this->Positions->find()
+        ->where(['id' => $data['position_id']])->toArray();
+        $position_name = $Positions[0]['position'];
+        $this->set('position_name', $position_name);
+      }else{
+        $position_name = "";
+        $this->set('position_name', $position_name);
+      }
+
       if($data['birth']['year'] > 0){
         $birth = $data['birth']['year']."-".$data['birth']['month']."-".$data['birth']['day'];
       }else{
@@ -242,6 +371,45 @@ class StaffsController extends AppController
         $sexhyouji = "女";
       }
       $this->set('sexhyouji', $sexhyouji);
+      if($data['office_id'] > 0){
+        $Offices = $this->Offices->find()
+        ->where(['id' => $data['office_id']])->toArray();
+        $office_name = $Offices[0]['name'];
+        $this->set('office_name', $office_name);
+      }else{
+        $office_name = "";
+        $this->set('office_name', $office_name);
+      }
+
+      if($data['department_id'] > 0){
+        $Departments = $this->Departments->find()
+        ->where(['id' => $data['department_id']])->toArray();
+        $department_name = $Departments[0]['department'];
+        $this->set('department_name', $department_name);
+      }else{
+        $department_name = "";
+        $this->set('department_name', $department_name);
+      }
+
+      if($data['occupation_id'] > 0){
+        $Occupations = $this->Occupations->find()
+        ->where(['id' => $data['occupation_id']])->toArray();
+        $occupation_name = $Occupations[0]['occupation'];
+        $this->set('occupation_name', $occupation_name);
+      }else{
+        $occupation_name = "";
+        $this->set('occupation_name', $occupation_name);
+      }
+
+      if($data['position_id'] > 0){
+        $Positions = $this->Positions->find()
+        ->where(['id' => $data['position_id']])->toArray();
+        $position_name = $Positions[0]['position'];
+        $this->set('position_name', $position_name);
+      }else{
+        $position_name = "";
+        $this->set('position_name', $position_name);
+      }
 
       $birth = $data['birth'];
       $this->set('birth', $birth);
@@ -254,7 +422,6 @@ class StaffsController extends AppController
 
       $arrupdatestaff = array();
       $arrupdatestaff = [
-        'id' => $data["id"],
         'office_id' => $data["office_id"],
         'department_id' => $data["department_id"],
         'occupation_id' => $data["occupation_id"],
@@ -267,6 +434,9 @@ class StaffsController extends AppController
         'birth' => $data["birth"],
         'date_start' => $data["date_start"],
         'date_finish' => $data["date_finish"],
+        'delete_flag' => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        'created_staff' => $staff_id
       ];
 
       if(strlen($arrupdatestaff["birth"]) < 1){
@@ -296,23 +466,13 @@ class StaffsController extends AppController
        // トランザクション開始2
        $connection->begin();//トランザクション3
        try {//トランザクション4
-         if ($this->Staffs->updateAll(
-           [ 'office_id' => $arrupdatestaff['office_id'],
-             'department_id' => $arrupdatestaff['department_id'],
-             'occupation_id' => $arrupdatestaff['occupation_id'],
-             'position_id' => $arrupdatestaff['position_id'],
-             'name' => $arrupdatestaff['name'],
-             'sex' => $arrupdatestaff['sex'],
-             'mail' => $arrupdatestaff['mail'],
-             'tel' => $arrupdatestaff['tel'],
-             'address' => $arrupdatestaff['address'],
-             'birth' => $updatebirth,
-             'date_start' => $updatedate_start,
-             'date_finish' => $updatedate_finish,
+         if ($this->Staffs->save($Staffs)) {
+
+         $this->Staffs->updateAll(
+           [ 'delete_flag' => 1,
              'updated_at' => date('Y-m-d H:i:s'),
              'updated_staff' => $staff_id],
-           ['id'  => $arrupdatestaff['id']]
-         )){
+           ['id'  => $data['id']]);
 
          $mes = "※下記のように更新されました";
          $this->set('mes',$mes);

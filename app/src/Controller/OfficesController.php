@@ -170,9 +170,11 @@ class OfficesController extends AppController
 
       $arrupdateoffices = array();
       $arrupdateoffices = [
-        'id' => $data["id"],
         'name' => $data["name"],
         'company_id' => $data["company_id"],
+        'delete_flag' => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        'created_staff' => $staff_id
       ];
 /*
       echo "<pre>";
@@ -184,13 +186,13 @@ class OfficesController extends AppController
        // トランザクション開始2
        $connection->begin();//トランザクション3
        try {//トランザクション4
-         if ($this->Offices->updateAll(
-           [ 'name' => $arrupdateoffices['name'],
-             'company_id' => $arrupdateoffices['company_id'],
+         if ($this->Offices->save($Offices)) {
+
+         $this->Offices->updateAll(
+           [ 'delete_flag' => 1,
              'updated_at' => date('Y-m-d H:i:s'),
              'updated_staff' => $staff_id],
-           ['id'  => $arrupdateoffices['id']]
-         )){
+           ['id'  => $data['id']]);
 
          $mes = "※下記のように更新されました";
          $this->set('mes',$mes);

@@ -14,6 +14,12 @@
 <?php
      echo $htmloccupation;
 ?>
+
+<?php
+$this->layout = false;
+echo $this->Html->css('index');
+?>
+
 <div class="occupations index large-9 medium-8 columns content" style="width:70%">
   <h2><font color=red><?= __('職種一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">

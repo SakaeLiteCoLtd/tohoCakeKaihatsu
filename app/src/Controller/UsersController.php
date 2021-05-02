@@ -263,12 +263,14 @@ class UsersController extends AppController
 
       $arrupdateuser = array();
       $arrupdateuser = [
-        'id' => $data["id"],
         'user_code' => $data["user_code"],
         'password' => $password,
         'staff_id' => $data["staff_id"],
         'super_user' => $data["super_user"],
         'group_name' => $data["group_name"],
+        'delete_flag' => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        'created_staff' => $staff_id
       ];
 /*
       echo "<pre>";
@@ -280,16 +282,13 @@ class UsersController extends AppController
        // トランザクション開始2
        $connection->begin();//トランザクション3
        try {//トランザクション4
-         if ($this->Users->updateAll(
-           [ 'user_code' => $arrupdateuser['user_code'],
-             'password' => $arrupdateuser['password'],
-             'staff_id' => $arrupdateuser['staff_id'],
-             'super_user' => $arrupdateuser['super_user'],
-             'group_name' => $arrupdateuser['group_name'],
+         if ($this->Users->save($Users)) {
+
+         $this->Users->updateAll(
+           [ 'delete_flag' => 1,
              'updated_at' => date('Y-m-d H:i:s'),
              'updated_staff' => $staff_id],
-           ['id'  => $arrupdateuser['id']]
-         )){
+           ['id'  => $data['id']]);
 
          $mes = "※下記のように更新されました";
          $this->set('mes',$mes);

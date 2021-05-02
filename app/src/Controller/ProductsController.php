@@ -17,6 +17,16 @@ class ProductsController extends AppController
      $this->Customers = TableRegistry::get('Customers');
     }
 
+    public function ichiran()
+    {
+        $this->paginate = [
+            'contain' => ['Customers']
+        ];
+        $products = $this->paginate($this->Products);
+
+        $this->set(compact('products'));
+    }
+
     public function index()
     {
         $this->paginate = [

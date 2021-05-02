@@ -20,6 +20,10 @@ class htmlmaterialTypemenu extends AppController
                           "<br><br>\n".
                           "<font size='4'>　・</font><a href='/Startmenus/menu' /><font size='4' color=black>総合メニューへ戻る</font></a>\n".
                           "<br><br><br><br><br><br><br>\n".
+                          "<br><br><br><br><br><br><br>\n".
+                          "<br><br><br><br><br><br><br>\n".
+                          "<br><br><br><br><br><br><br>\n".
+                          "<br><br><br><br>\n".
                       "</ul>\n".
                   "</nav>\n";
 

@@ -157,12 +157,14 @@ class CompaniesController extends AppController
 
       $arrupdatecompany = array();
       $arrupdatecompany = [
-        'id' => $data["id"],
         'name' => $data["name"],
         'address' => $data["address"],
         'tel' => $data["tel"],
         'fax' => $data["fax"],
         'president' => $data["president"],
+        'delete_flag' => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        'created_staff' => $staff_id
       ];
 /*
       echo "<pre>";
@@ -174,16 +176,13 @@ class CompaniesController extends AppController
        // トランザクション開始2
        $connection->begin();//トランザクション3
        try {//トランザクション4
-         if ($this->Companies->updateAll(
-           [ 'name' => $arrupdatecompany['name'],
-             'address' => $arrupdatecompany['address'],
-             'tel' => $arrupdatecompany['tel'],
-             'fax' => $arrupdatecompany['fax'],
-             'president' => $arrupdatecompany['president'],
+         if ($this->Companies->save($Companies)) {
+
+         $this->Companies->updateAll(
+           [ 'delete_flag' => 1,
              'updated_at' => date('Y-m-d H:i:s'),
              'updated_staff' => $staff_id],
-           ['id'  => $arrupdatecompany['id']]
-         )){
+           ['id'  => $data['id']]);
 
          $mes = "※下記のように更新されました";
          $this->set('mes',$mes);

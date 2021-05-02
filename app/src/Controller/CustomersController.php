@@ -13,7 +13,7 @@ class CustomersController extends AppController
 
     public function index()
     {
-        $customers = $this->paginate($this->Customers);
+        $customers = $this->paginate($this->Customers->find()->where(['Customers.delete_flag' => 0]));
 
         $this->set(compact('customers'));
     }

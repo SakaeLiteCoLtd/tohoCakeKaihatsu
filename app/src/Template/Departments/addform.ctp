@@ -37,7 +37,7 @@
         </tr>
 
         <tr>
-          <td><?= $this->Form->control('department', array('type'=>'text', 'label'=>false)) ?></td>
+          <td><?= $this->Form->control('department', array('type'=>'text', 'label'=>false, 'autofocus'=>true)) ?></td>
           <td><?= $this->Form->control('office_id', ['options' => $arrOffices, 'label'=>false]) ?></td>
         </tr>
       </table>
