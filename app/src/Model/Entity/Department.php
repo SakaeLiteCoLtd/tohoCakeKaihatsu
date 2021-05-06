@@ -7,7 +7,7 @@ use Cake\ORM\Entity;
  * Department Entity
  *
  * @property int $id
- * @property int $office_id
+ * @property int $factory_id
  * @property string $department
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at
@@ -15,7 +15,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $updated_at
  * @property int|null $updated_staff
  *
- * @property \App\Model\Entity\Office $office
+ * @property \App\Model\Entity\factory $factory
  * @property \App\Model\Entity\Staff[] $staffs
  */
 class Department extends Entity
@@ -31,14 +31,14 @@ class Department extends Entity
      * @var array
      */
     protected $_accessible = [
-        'office_id' => true,
+        'factory_id' => true,
         'department' => true,
         'delete_flag' => true,
         'created_at' => true,
         'created_staff' => true,
         'updated_at' => true,
         'updated_staff' => true,
-        'office' => true,
+        'factory' => true,
         'staffs' => true
     ];
 }

@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * Staffs Model
  *
- * @property \App\Model\Table\OfficesTable|\Cake\ORM\Association\BelongsTo $Offices
+ * @property \App\Model\Table\FactoriesTable|\Cake\ORM\Association\BelongsTo $Factories
  * @property \App\Model\Table\DepartmentsTable|\Cake\ORM\Association\BelongsTo $Departments
  * @property \App\Model\Table\OccupationsTable|\Cake\ORM\Association\BelongsTo $Occupations
  * @property \App\Model\Table\PositionsTable|\Cake\ORM\Association\BelongsTo $Positions
@@ -42,8 +42,8 @@ class StaffsTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Offices', [
-            'foreignKey' => 'office_id',
+        $this->belongsTo('Factories', [
+            'foreignKey' => 'factory_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Departments', [
@@ -148,7 +148,7 @@ class StaffsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['office_id'], 'Offices'));
+        $rules->add($rules->existsIn(['factory_id'], 'Factories'));
         $rules->add($rules->existsIn(['department_id'], 'Departments'));
         $rules->add($rules->existsIn(['occupation_id'], 'Occupations'));
         $rules->add($rules->existsIn(['position_id'], 'Positions'));

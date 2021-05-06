@@ -31,6 +31,10 @@
             <td><?= $this->Number->format($productMaterialParent->id) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('Material Id') ?></th>
+            <td><?= $this->Number->format($productMaterialParent->material_id) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Version') ?></th>
             <td><?= $this->Number->format($productMaterialParent->version) ?></td>
         </tr>

@@ -55,9 +55,9 @@ class CustomersTable extends Table
             ->notEmpty('name');
 
         $validator
-            ->scalar('office')
-            ->maxLength('office', 255)
-            ->allowEmpty('office');
+            ->scalar('factory')
+            ->maxLength('factory', 255)
+            ->allowEmpty('factory');
 
         $validator
             ->scalar('department')

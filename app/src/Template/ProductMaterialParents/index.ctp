@@ -23,6 +23,7 @@
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('product_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('material_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('version') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('is_active') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('delete_flag') ?></th>
@@ -38,6 +39,7 @@
             <tr>
                 <td><?= $this->Number->format($productMaterialParent->id) ?></td>
                 <td><?= $productMaterialParent->has('product') ? $this->Html->link($productMaterialParent->product->name, ['controller' => 'Products', 'action' => 'view', $productMaterialParent->product->id]) : '' ?></td>
+                <td><?= $this->Number->format($productMaterialParent->material_id) ?></td>
                 <td><?= $this->Number->format($productMaterialParent->version) ?></td>
                 <td><?= $this->Number->format($productMaterialParent->is_active) ?></td>
                 <td><?= $this->Number->format($productMaterialParent->delete_flag) ?></td>

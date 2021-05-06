@@ -68,7 +68,7 @@ class MaterialSuppliersController extends AppController
       $arrtourokumaterialSupplier = array();
       $arrtourokumaterialSupplier = [
         'name' => $data["name"],
-        'office' => $data["office"],
+        'factory' => $data["factory"],
         'department' => $data["department"],
         'address' => $data["address"],
         'tel' => $data["tel"],

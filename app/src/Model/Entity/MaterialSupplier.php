@@ -8,7 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property string $name
- * @property string|null $office
+ * @property string|null $factory
  * @property string|null $department
  * @property string $address
  * @property string $tel
@@ -36,7 +36,7 @@ class MaterialSupplier extends Entity
      */
     protected $_accessible = [
         'name' => true,
-        'office' => true,
+        'factory' => true,
         'department' => true,
         'address' => true,
         'tel' => true,

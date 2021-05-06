@@ -19,6 +19,7 @@ class ProductMaterialParentsFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'product_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'material_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'version' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'is_active' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '0=維持、1=停止', 'precision' => null, 'autoIncrement' => null],
         'delete_flag' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
@@ -47,12 +48,13 @@ class ProductMaterialParentsFixture extends TestFixture
             [
                 'id' => 1,
                 'product_id' => 1,
+                'material_id' => 1,
                 'version' => 1,
                 'is_active' => 1,
                 'delete_flag' => 1,
-                'created_at' => '2021-05-01 17:33:40',
+                'created_at' => '2021-05-03 16:33:48',
                 'created_staff' => 1,
-                'updated_at' => '2021-05-01 17:33:40',
+                'updated_at' => '2021-05-03 16:33:48',
                 'updated_staff' => 1
             ],
         ];

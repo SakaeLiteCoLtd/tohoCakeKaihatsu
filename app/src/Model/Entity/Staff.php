@@ -7,7 +7,7 @@ use Cake\ORM\Entity;
  * Staff Entity
  *
  * @property int $id
- * @property int $office_id
+ * @property int $factory_id
  * @property int|null $department_id
  * @property int|null $occupation_id
  * @property int|null $position_id
@@ -25,7 +25,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $updated_at
  * @property int|null $updated_staff
  *
- * @property \App\Model\Entity\Office $office
+ * @property \App\Model\Entity\factory $factory
  * @property \App\Model\Entity\Department $department
  * @property \App\Model\Entity\Occupation $occupation
  * @property \App\Model\Entity\Position $position
@@ -45,7 +45,7 @@ class Staff extends Entity
      * @var array
      */
     protected $_accessible = [
-        'office_id' => true,
+        'factory_id' => true,
         'department_id' => true,
         'occupation_id' => true,
         'position_id' => true,
@@ -62,7 +62,7 @@ class Staff extends Entity
         'created_staff' => true,
         'updated_at' => true,
         'updated_staff' => true,
-        'office' => true,
+        'factory' => true,
         'department' => true,
         'occupation' => true,
         'position' => true,

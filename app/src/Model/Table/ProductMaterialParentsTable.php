@@ -10,6 +10,7 @@ use Cake\Validation\Validator;
  * ProductMaterialParents Model
  *
  * @property \App\Model\Table\ProductsTable|\Cake\ORM\Association\BelongsTo $Products
+ * @property |\Cake\ORM\Association\BelongsTo $Materials
  * @property \App\Model\Table\InspectionDataResultParentsTable|\Cake\ORM\Association\HasMany $InspectionDataResultParents
  * @property \App\Model\Table\ProductMaterialMachinesTable|\Cake\ORM\Association\HasMany $ProductMaterialMachines
  *
@@ -41,6 +42,10 @@ class ProductMaterialParentsTable extends Table
 
         $this->belongsTo('Products', [
             'foreignKey' => 'product_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Materials', [
+            'foreignKey' => 'material_id',
             'joinType' => 'INNER'
         ]);
         $this->hasMany('InspectionDataResultParents', [
@@ -109,6 +114,7 @@ class ProductMaterialParentsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['product_id'], 'Products'));
+        $rules->add($rules->existsIn(['material_id'], 'Materials'));
 
         return $rules;
     }

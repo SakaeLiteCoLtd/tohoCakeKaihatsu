@@ -13,13 +13,13 @@ class PositionsController extends AppController
       public function initialize()
     {
      parent::initialize();
-     $this->Offices = TableRegistry::get('Offices');
+     $this->Factories = TableRegistry::get('Factories');
     }
 
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Offices']
+            'contain' => ['Factories']
         ];
         $positions = $this->paginate($this->Positions->find()->where(['Positions.delete_flag' => 0]));
 
@@ -29,7 +29,7 @@ class PositionsController extends AppController
     public function view($id = null)
     {
         $position = $this->Positions->get($id, [
-            'contain' => ['Offices', 'Staffs']
+            'contain' => ['Factories', 'Staffs']
         ]);
 
         $this->set('position', $position);
@@ -40,13 +40,13 @@ class PositionsController extends AppController
       $position = $this->Positions->newEntity();
       $this->set('position', $position);
 
-      $Offices = $this->Offices->find()
+      $Factories = $this->Factories->find()
       ->where(['delete_flag' => 0])->toArray();
-      $arrOffices = array();
-      foreach ($Offices as $value) {
-        $arrOffices[] = array($value->id=>$value->name);
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
       }
-      $this->set('arrOffices', $arrOffices);
+      $this->set('arrFactories', $arrFactories);
 
     }
 
@@ -57,10 +57,10 @@ class PositionsController extends AppController
 
       $data = $this->request->getData();
 
-      $Offices = $this->Offices->find()
-      ->where(['id' => $data['office_id']])->toArray();
-      $Office_name = $Offices[0]['name'];
-      $this->set('Office_name', $Office_name);
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
 
     }
 
@@ -71,10 +71,10 @@ class PositionsController extends AppController
 
       $data = $this->request->getData();
 
-      $Offices = $this->Offices->find()
-      ->where(['id' => $data['office_id']])->toArray();
-      $Office_name = $Offices[0]['name'];
-      $this->set('Office_name', $Office_name);
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
 
       $session = $this->request->getSession();
       $datasession = $session->read();
@@ -84,7 +84,7 @@ class PositionsController extends AppController
       $arrtourokuposition = array();
       $arrtourokuposition = [
         'position' => $data["position"],
-        'office_id' => $data["office_id"],
+        'factory_id' => $data["factory_id"],
         'delete_flag' => 0,
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
@@ -130,13 +130,13 @@ class PositionsController extends AppController
         $this->set(compact('position'));
         $this->set('id', $id);
 
-        $Offices = $this->Offices->find()
+        $Factories = $this->Factories->find()
         ->where(['delete_flag' => 0])->toArray();
-        $arrOffices = array();
-        foreach ($Offices as $value) {
-          $arrOffices[] = array($value->id=>$value->name);
+        $arrFactories = array();
+        foreach ($Factories as $value) {
+          $arrFactories[] = array($value->id=>$value->name);
         }
-        $this->set('arrOffices', $arrOffices);
+        $this->set('arrFactories', $arrFactories);
 
     }
 
@@ -147,10 +147,10 @@ class PositionsController extends AppController
 
       $data = $this->request->getData();
 
-      $Offices = $this->Offices->find()
-      ->where(['id' => $data['office_id']])->toArray();
-      $Office_name = $Offices[0]['name'];
-      $this->set('Office_name', $Office_name);
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
     }
 
     public function editdo()
@@ -163,17 +163,17 @@ class PositionsController extends AppController
 
       $data = $this->request->getData();
 
-      $Offices = $this->Offices->find()
-      ->where(['id' => $data['office_id']])->toArray();
-      $Office_name = $Offices[0]['name'];
-      $this->set('Office_name', $Office_name);
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
       $arrupdateposition = array();
       $arrupdateposition = [
         'position' => $data["position"],
-        'office_id' => $data["office_id"],
+        'factory_id' => $data["factory_id"],
         'delete_flag' => 0,
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
@@ -219,7 +219,7 @@ class PositionsController extends AppController
     public function deleteconfirm($id = null)
     {
         $position = $this->Positions->get($id, [
-          'contain' => ['Offices']
+          'contain' => ['Factories']
         ]);
         $this->set(compact('position'));
     }
@@ -232,7 +232,7 @@ class PositionsController extends AppController
       $data = $this->request->getData();
 
       $position = $this->Positions->get($data["id"], [
-        'contain' => ['Offices']
+        'contain' => ['Factories']
       ]);
       $this->set(compact('position'));
 

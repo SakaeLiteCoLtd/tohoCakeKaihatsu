@@ -8,6 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $product_id
+ * @property int $material_id
  * @property int $version
  * @property int $is_active
  * @property int $delete_flag
@@ -34,6 +35,7 @@ class ProductMaterialParent extends Entity
      */
     protected $_accessible = [
         'product_id' => true,
+        'material_id' => true,
         'version' => true,
         'is_active' => true,
         'delete_flag' => true,

@@ -13,7 +13,7 @@ class StaffsController extends AppController
       public function initialize()
     {
      parent::initialize();
-     $this->Offices = TableRegistry::get('Offices');
+     $this->Factories = TableRegistry::get('Factories');
      $this->Departments = TableRegistry::get('Departments');
      $this->Occupations = TableRegistry::get('Occupations');
      $this->Positions = TableRegistry::get('Positions');
@@ -22,7 +22,7 @@ class StaffsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Offices', 'Departments', 'Occupations', 'Positions']
+            'contain' => ['Factories', 'Departments', 'Occupations', 'Positions']
         ];
         $staffs = $this->paginate($this->Staffs->find()->where(['Staffs.delete_flag' => 0]));
 
@@ -44,7 +44,7 @@ class StaffsController extends AppController
     public function view($id = null)
     {
         $staff = $this->Staffs->get($id, [
-            'contain' => ['Offices', 'Departments', 'Occupations', 'Positions', 'StaffAbilities', 'Users']
+            'contain' => ['Factories', 'Departments', 'Occupations', 'Positions', 'StaffAbilities', 'Users']
         ]);
 
         $this->set('staff', $staff);
@@ -62,11 +62,11 @@ class StaffsController extends AppController
             }
             $this->Flash->error(__('The staff could not be saved. Please, try again.'));
         }
-        $offices = $this->Staffs->Offices->find('list', ['limit' => 200]);
+        $Factories = $this->Staffs->Factories->find('list', ['limit' => 200]);
         $departments = $this->Staffs->Departments->find('list', ['limit' => 200]);
         $occupations = $this->Staffs->Occupations->find('list', ['limit' => 200]);
         $positions = $this->Staffs->Positions->find('list', ['limit' => 200]);
-        $this->set(compact('staff', 'offices', 'departments', 'occupations', 'positions'));
+        $this->set(compact('staff', 'Factories', 'departments', 'occupations', 'positions'));
     }
 */
     public function addform()
@@ -74,11 +74,11 @@ class StaffsController extends AppController
       $Staffs = $this->Staffs->newEntity();
       $this->set('Staffs', $Staffs);
 
-      $offices = $this->Staffs->Offices->find('list', ['limit' => 200]);
+      $Factories = $this->Staffs->Factories->find('list', ['limit' => 200]);
       $departments = $this->Staffs->Departments->find('list', ['limit' => 200]);
       $occupations = $this->Staffs->Occupations->find('list', ['limit' => 200]);
       $positions = $this->Staffs->Positions->find('list', ['limit' => 200]);
-      $this->set(compact('staff', 'offices', 'departments', 'occupations', 'positions'));
+      $this->set(compact('staff', 'Factories', 'departments', 'occupations', 'positions'));
     }
 
     public function addcomfirm()
@@ -95,14 +95,14 @@ class StaffsController extends AppController
       }
       $this->set('sexhyouji', $sexhyouji);
 
-      if($data['office_id'] > 0){
-        $Offices = $this->Offices->find()
-        ->where(['id' => $data['office_id']])->toArray();
-        $office_name = $Offices[0]['name'];
-        $this->set('office_name', $office_name);
+      if($data['factory_id'] > 0){
+        $Factories = $this->Factories->find()
+        ->where(['id' => $data['factory_id']])->toArray();
+        $factory_name = $Factories[0]['name'];
+        $this->set('factory_name', $factory_name);
       }else{
-        $office_name = "";
-        $this->set('office_name', $office_name);
+        $factory_name = "";
+        $this->set('factory_name', $factory_name);
       }
 
       if($data['department_id'] > 0){
@@ -167,14 +167,14 @@ class StaffsController extends AppController
         $sexhyouji = "女";
       }
       $this->set('sexhyouji', $sexhyouji);
-      if($data['office_id'] > 0){
-        $Offices = $this->Offices->find()
-        ->where(['id' => $data['office_id']])->toArray();
-        $office_name = $Offices[0]['name'];
-        $this->set('office_name', $office_name);
+      if($data['factory_id'] > 0){
+        $Factories = $this->Factories->find()
+        ->where(['id' => $data['factory_id']])->toArray();
+        $factory_name = $Factories[0]['name'];
+        $this->set('factory_name', $factory_name);
       }else{
-        $office_name = "";
-        $this->set('office_name', $office_name);
+        $factory_name = "";
+        $this->set('factory_name', $factory_name);
       }
 
       if($data['department_id'] > 0){
@@ -216,7 +216,7 @@ class StaffsController extends AppController
 
       $arrtourokustaff = array();
       $arrtourokustaff = [
-        'office_id' => $data["office_id"],
+        'factory_id' => $data["factory_id"],
         'department_id' => $data["department_id"],
         'occupation_id' => $data["occupation_id"],
         'position_id' => $data["position_id"],
@@ -272,11 +272,11 @@ class StaffsController extends AppController
         $this->set(compact('Staffs'));
         $this->set('id', $id);
 
-        $offices = $this->Staffs->Offices->find('list', ['limit' => 200]);
+        $Factories = $this->Staffs->Factories->find('list', ['limit' => 200]);
         $departments = $this->Staffs->Departments->find('list', ['limit' => 200]);
         $occupations = $this->Staffs->Occupations->find('list', ['limit' => 200]);
         $positions = $this->Staffs->Positions->find('list', ['limit' => 200]);
-        $this->set(compact('staff', 'offices', 'departments', 'occupations', 'positions'));
+        $this->set(compact('staff', 'Factories', 'departments', 'occupations', 'positions'));
     }
 
     public function editconfirm()
@@ -293,14 +293,14 @@ class StaffsController extends AppController
       }
       $this->set('sexhyouji', $sexhyouji);
 
-      if($data['office_id'] > 0){
-        $Offices = $this->Offices->find()
-        ->where(['id' => $data['office_id']])->toArray();
-        $office_name = $Offices[0]['name'];
-        $this->set('office_name', $office_name);
+      if($data['factory_id'] > 0){
+        $Factories = $this->Factories->find()
+        ->where(['id' => $data['factory_id']])->toArray();
+        $factory_name = $Factories[0]['name'];
+        $this->set('factory_name', $factory_name);
       }else{
-        $office_name = "";
-        $this->set('office_name', $office_name);
+        $factory_name = "";
+        $this->set('factory_name', $factory_name);
       }
 
       if($data['department_id'] > 0){
@@ -371,14 +371,14 @@ class StaffsController extends AppController
         $sexhyouji = "女";
       }
       $this->set('sexhyouji', $sexhyouji);
-      if($data['office_id'] > 0){
-        $Offices = $this->Offices->find()
-        ->where(['id' => $data['office_id']])->toArray();
-        $office_name = $Offices[0]['name'];
-        $this->set('office_name', $office_name);
+      if($data['factory_id'] > 0){
+        $Factories = $this->Factories->find()
+        ->where(['id' => $data['factory_id']])->toArray();
+        $factory_name = $Factories[0]['name'];
+        $this->set('factory_name', $factory_name);
       }else{
-        $office_name = "";
-        $this->set('office_name', $office_name);
+        $factory_name = "";
+        $this->set('factory_name', $factory_name);
       }
 
       if($data['department_id'] > 0){
@@ -422,7 +422,7 @@ class StaffsController extends AppController
 
       $arrupdatestaff = array();
       $arrupdatestaff = [
-        'office_id' => $data["office_id"],
+        'factory_id' => $data["factory_id"],
         'department_id' => $data["department_id"],
         'occupation_id' => $data["occupation_id"],
         'position_id' => $data["position_id"],
@@ -497,7 +497,7 @@ class StaffsController extends AppController
     public function deleteconfirm($id = null)
     {
         $staff = $this->Staffs->get($id, [
-          'contain' => ['Offices', 'Departments', 'Occupations', 'Positions']
+          'contain' => ['Factories', 'Departments', 'Occupations', 'Positions']
         ]);
         $this->set(compact('staff'));
 
@@ -518,7 +518,7 @@ class StaffsController extends AppController
       $data = $this->request->getData();
 
       $staff = $this->Staffs->get($data["id"], [
-        'contain' => ['Offices', 'Departments', 'Occupations', 'Positions']
+        'contain' => ['Factories', 'Departments', 'Occupations', 'Positions']
       ]);
       $this->set(compact('staff'));
 

@@ -28,6 +28,7 @@
         <legend><?= __('Edit Product Material Parent') ?></legend>
         <?php
             echo $this->Form->control('product_id', ['options' => $products]);
+            echo $this->Form->control('material_id');
             echo $this->Form->control('version');
             echo $this->Form->control('is_active');
             echo $this->Form->control('delete_flag');

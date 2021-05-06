@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * Departments Model
  *
- * @property \App\Model\Table\OfficesTable|\Cake\ORM\Association\BelongsTo $Offices
+ * @property \App\Model\Table\FactoriesTable|\Cake\ORM\Association\BelongsTo $Factories
  * @property \App\Model\Table\StaffsTable|\Cake\ORM\Association\HasMany $Staffs
  *
  * @method \App\Model\Entity\Department get($primaryKey, $options = [])
@@ -38,8 +38,8 @@ class DepartmentsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Offices', [
-            'foreignKey' => 'office_id',
+        $this->belongsTo('Factories', [
+            'foreignKey' => 'factory_id',
             'joinType' => 'INNER'
         ]);
         $this->hasMany('Staffs', [
@@ -100,7 +100,7 @@ class DepartmentsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['office_id'], 'Offices'));
+        $rules->add($rules->existsIn(['factory_id'], 'Factories'));
 
         return $rules;
     }
