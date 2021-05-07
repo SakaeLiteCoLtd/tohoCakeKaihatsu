@@ -34,7 +34,7 @@
         	</tr>
           <tr>
             <td><?= h($this->request->getData('department')) ?></td>
-            <td><?= h($Office_name) ?></td>
+            <td><?= h($factory_name) ?></td>
         	</tr>
         </table>
 

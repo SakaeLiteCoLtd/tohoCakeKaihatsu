@@ -21,7 +21,7 @@
 <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$this->request->getData('id'), 'label'=>false)) ?>
 <?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$this->request->getData('name'), 'label'=>false)) ?>
 <?= $this->Form->control('sex', array('type'=>'hidden', 'value'=>$this->request->getData('sex'), 'label'=>false)) ?>
-<?= $this->Form->control('office_id', array('type'=>'hidden', 'value'=>$this->request->getData('office_id'), 'label'=>false)) ?>
+<?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 <?= $this->Form->control('department_id', array('type'=>'hidden', 'value'=>$this->request->getData('department_id'), 'label'=>false)) ?>
 <?= $this->Form->control('occupation_id', array('type'=>'hidden', 'value'=>$this->request->getData('occupation_id'), 'label'=>false)) ?>
 <?= $this->Form->control('position_id', array('type'=>'hidden', 'value'=>$this->request->getData('position_id'), 'label'=>false)) ?>
@@ -59,7 +59,7 @@
             <td width="280"><strong>部署</strong></td>
         	</tr>
           <tr>
-            <td><?= h($office_name) ?></td>
+            <td><?= h($factory_name) ?></td>
             <td><?= h($department_name) ?></td>
         	</tr>
         </table>

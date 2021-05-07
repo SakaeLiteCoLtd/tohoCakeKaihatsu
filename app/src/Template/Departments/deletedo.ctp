@@ -38,7 +38,7 @@
         	</tr>
           <tr>
             <td><?= h($department['department']) ?></td>
-            <td><?= h($department->office->name) ?></td>
+            <td><?= h($department->factory->name) ?></td>
         	</tr>
         </table>
 

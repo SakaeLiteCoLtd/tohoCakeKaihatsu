@@ -15,12 +15,13 @@ class MaterialsController extends AppController
     {
      parent::initialize();
      $this->MaterialTypes = TableRegistry::get('MaterialTypes');
+     $this->Factories = TableRegistry::get('Factories');
     }
 
     public function index()
     {
         $this->paginate = [
-            'contain' => ['MaterialTypes']
+            'contain' => ['MaterialTypes', 'Factories']
         ];
         $materials = $this->paginate($this->Materials);
 
@@ -50,6 +51,14 @@ class MaterialsController extends AppController
       }
       $this->set('arrMaterialTypes', $arrMaterialTypes);
 
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
     }
 
     public function addcomfirm()
@@ -63,6 +72,12 @@ class MaterialsController extends AppController
       ->where(['id' => $data['type_id']])->toArray();
       $type_name = $MaterialTypes[0]['type'];
       $this->set('type_name', $type_name);
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
     }
 
     public function adddo()
@@ -77,6 +92,11 @@ class MaterialsController extends AppController
       $type_name = $MaterialTypes[0]['type'];
       $this->set('type_name', $type_name);
 
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
       $session = $this->request->getSession();
       $datasession = $session->read();
 
@@ -84,6 +104,7 @@ class MaterialsController extends AppController
 
       $arrtourokumaterial = array();
       $arrtourokumaterial = [
+        'factory_id' => $data["factory_id"],
         'material_code' => $data["material_code"],
         'grade' => $data["grade"],
         'color' => $data["color"],
@@ -161,6 +182,14 @@ class MaterialsController extends AppController
       }
       $this->set('arrMaterialTypes', $arrMaterialTypes);
 
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
     }
 
     public function editconfirm()
@@ -174,6 +203,12 @@ class MaterialsController extends AppController
       ->where(['id' => $data['type_id']])->toArray();
       $type_name = $MaterialTypes[0]['type'];
       $this->set('type_name', $type_name);
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
     }
 
     public function editdo()
@@ -191,10 +226,16 @@ class MaterialsController extends AppController
       $type_name = $MaterialTypes[0]['type'];
       $this->set('type_name', $type_name);
 
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
       $arrupdatematerial = array();
       $arrupdatematerial = [
+        'factory_id' => $data["factory_id"],
         'material_code' => $data["material_code"],
         'grade' => $data["grade"],
         'color' => $data["color"],

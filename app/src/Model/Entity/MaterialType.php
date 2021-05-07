@@ -7,6 +7,7 @@ use Cake\ORM\Entity;
  * MaterialType Entity
  *
  * @property int $id
+ * @property int $factory_id
  * @property string $type
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at
@@ -27,6 +28,7 @@ class MaterialType extends Entity
      * @var array
      */
     protected $_accessible = [
+        'factory_id' => true,
         'type' => true,
         'delete_flag' => true,
         'created_at' => true,

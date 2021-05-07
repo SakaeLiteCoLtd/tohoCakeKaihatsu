@@ -9,6 +9,7 @@ use Cake\Validation\Validator;
 /**
  * MaterialSuppliers Model
  *
+ * @property |\Cake\ORM\Association\BelongsTo $Factories
  * @property \App\Model\Table\PriceMaterialsTable|\Cake\ORM\Association\HasMany $PriceMaterials
  *
  * @method \App\Model\Entity\MaterialSupplier get($primaryKey, $options = [])
@@ -37,6 +38,10 @@ class MaterialSuppliersTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
+        $this->belongsTo('Factories', [
+            'foreignKey' => 'factory_id',
+            'joinType' => 'INNER'
+        ]);
         $this->hasMany('PriceMaterials', [
             'foreignKey' => 'material_supplier_id'
         ]);
@@ -116,5 +121,19 @@ class MaterialSuppliersTable extends Table
             ->allowEmpty('updated_staff');
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['factory_id'], 'Factories'));
+
+        return $rules;
     }
 }

@@ -22,6 +22,7 @@
 <?= $this->Form->control('tel', array('type'=>'hidden', 'value'=>$this->request->getData('tel'), 'label'=>false)) ?>
 <?= $this->Form->control('fax', array('type'=>'hidden', 'value'=>$this->request->getData('fax'), 'label'=>false)) ?>
 <?= $this->Form->control('address', array('type'=>'hidden', 'value'=>$this->request->getData('address'), 'label'=>false)) ?>
+<?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <fieldset>
@@ -34,10 +35,18 @@
         </table>
         <br>
 
+        <table>
+          <tr>
+            <td width="280"><strong>工場・営業所名</strong></td>
+        	</tr>
+          <tr>
+            <td><?= h($factory_name) ?></td>
+        	</tr>
+        </table>
       <table>
       <tr>
         <td width="280"><strong>顧客名</strong></td>
-        <td width="280"><strong>工場・営業所名</strong></td>
+        <td width="280"><strong>支店名</strong></td>
       </tr>
       <tr>
         <td><?= h($this->request->getData('name')) ?></td>

@@ -11,8 +11,17 @@ use Cake\Auth\DefaultPasswordHasher;//パスワードの更新時のハッシュ
 class MaterialTypesController extends AppController
 {
 
+      public function initialize()
+    {
+     parent::initialize();
+     $this->Factories = TableRegistry::get('Factories');
+    }
+
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Factories']
+        ];
         $materialTypes = $this->paginate($this->MaterialTypes);
 
         $this->set(compact('materialTypes'));
@@ -46,12 +55,29 @@ class MaterialTypesController extends AppController
     {
       $materialType = $this->MaterialTypes->newEntity();
       $this->set('materialType', $materialType);
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
     }
 
     public function addcomfirm()
     {
       $materialType = $this->MaterialTypes->newEntity();
       $this->set('materialType', $materialType);
+
+      $data = $this->request->getData();
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
     }
 
     public function adddo()
@@ -61,6 +87,11 @@ class MaterialTypesController extends AppController
 
       $data = $this->request->getData();
 
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
       $session = $this->request->getSession();
       $datasession = $session->read();
 
@@ -68,6 +99,7 @@ class MaterialTypesController extends AppController
 
       $arrtourokumaterialType = array();
       $arrtourokumaterialType = [
+        'factory_id' => $data["factory_id"],
         'type' => $data["type"],
         'delete_flag' => 0,
         'created_at' => date("Y-m-d H:i:s"),
@@ -130,12 +162,29 @@ class MaterialTypesController extends AppController
       ]);
       $this->set(compact('materialType'));
       $this->set('id', $id);
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
     }
 
     public function editconfirm()
     {
       $materialType = $this->MaterialTypes->newEntity();
       $this->set('materialType', $materialType);
+
+      $data = $this->request->getData();
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
     }
 
     public function editdo()
@@ -148,10 +197,16 @@ class MaterialTypesController extends AppController
 
       $data = $this->request->getData();
 
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
       $arrupdatematerialType = array();
       $arrupdatematerialType = [
+        'factory_id' => $data["factory_id"],
         'type' => $data["type"],
         'delete_flag' => 0,
         'created_at' => date("Y-m-d H:i:s"),

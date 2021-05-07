@@ -24,10 +24,10 @@ class ProductsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.products',
-        'app.custmoers',
-        'app.price_products',
-        'app.product_materials'
+        'app.Products',
+        'app.Customers',
+        'app.PriceProducts',
+        'app.ProductMaterials'
     ];
 
     /**

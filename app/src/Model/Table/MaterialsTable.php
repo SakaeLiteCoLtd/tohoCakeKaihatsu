@@ -9,9 +9,11 @@ use Cake\Validation\Validator;
 /**
  * Materials Model
  *
- * @property \App\Model\Table\TypesTable|\Cake\ORM\Association\BelongsTo $Types
+ * @property |\Cake\ORM\Association\BelongsTo $Factories
+ * @property |\Cake\ORM\Association\BelongsTo $Types
  * @property \App\Model\Table\PriceMaterialsTable|\Cake\ORM\Association\HasMany $PriceMaterials
- * @property \App\Model\Table\ProductMaterialsTable|\Cake\ORM\Association\HasMany $ProductMaterials
+ * @property |\Cake\ORM\Association\HasMany $ProductMaterialParents
+ * @property |\Cake\ORM\Association\HasMany $不使用productMaterials
  *
  * @method \App\Model\Entity\Material get($primaryKey, $options = [])
  * @method \App\Model\Entity\Material newEntity($data = null, array $options = [])
@@ -39,6 +41,10 @@ class MaterialsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->belongsTo('Factories', [
+            'foreignKey' => 'factory_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('MaterialTypes', [
             'foreignKey' => 'type_id',
             'joinType' => 'INNER'
@@ -46,7 +52,10 @@ class MaterialsTable extends Table
         $this->hasMany('PriceMaterials', [
             'foreignKey' => 'material_id'
         ]);
-        $this->hasMany('ProductMaterials', [
+        $this->hasMany('ProductMaterialParents', [
+            'foreignKey' => 'material_id'
+        ]);
+        $this->hasMany('不使用productMaterials', [
             'foreignKey' => 'material_id'
         ]);
     }
@@ -127,6 +136,7 @@ class MaterialsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->existsIn(['factory_id'], 'Factories'));
         $rules->add($rules->existsIn(['type_id'], 'MaterialTypes'));
 
         return $rules;

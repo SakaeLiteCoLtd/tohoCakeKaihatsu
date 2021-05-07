@@ -10,8 +10,17 @@ use Cake\ORM\TableRegistry;//独立したテーブルを扱う
 class MaterialSuppliersController extends AppController
 {
 
+      public function initialize()
+    {
+     parent::initialize();
+     $this->Factories = TableRegistry::get('Factories');
+    }
+
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Factories']
+        ];
         $materialSuppliers = $this->paginate($this->MaterialSuppliers);
 
         $this->set(compact('materialSuppliers'));
@@ -45,12 +54,29 @@ class MaterialSuppliersController extends AppController
     {
       $materialSupplier = $this->MaterialSuppliers->newEntity();
       $this->set('materialSupplier', $materialSupplier);
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
     }
 
     public function addcomfirm()
     {
       $materialSupplier = $this->MaterialSuppliers->newEntity();
       $this->set('materialSupplier', $materialSupplier);
+
+      $data = $this->request->getData();
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
     }
 
     public function adddo()
@@ -63,12 +89,18 @@ class MaterialSuppliersController extends AppController
 
       $data = $this->request->getData();
 
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
       $arrtourokumaterialSupplier = array();
       $arrtourokumaterialSupplier = [
+        'factory_id' => $data["factory_id"],
         'name' => $data["name"],
-        'factory' => $data["factory"],
+        'office' => $data["office"],
         'department' => $data["department"],
         'address' => $data["address"],
         'tel' => $data["tel"],
@@ -126,6 +158,107 @@ class MaterialSuppliersController extends AppController
             $this->Flash->error(__('The material supplier could not be saved. Please, try again.'));
         }
         $this->set(compact('materialSupplier'));
+    }
+
+    public function editform($id = null)
+    {
+      $materialSupplier = $this->MaterialSuppliers->get($id, [
+        'contain' => []
+      ]);
+      $this->set(compact('materialSupplier'));
+      $this->set('id', $id);
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
+    }
+
+    public function editconfirm()
+    {
+      $materialSupplier = $this->MaterialSuppliers->newEntity();
+      $this->set('materialSupplier', $materialSupplier);
+
+      $data = $this->request->getData();
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+    }
+
+    public function editdo()
+    {
+      $materialSupplier = $this->MaterialSuppliers->newEntity();
+      $this->set('materialSupplier', $materialSupplier);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $data = $this->request->getData();
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $arrupdatematerialSupplier = array();
+      $arrupdatematerialSupplier = [
+        'factory_id' => $data["factory_id"],
+        'name' => $data["name"],
+        'office' => $data["office"],
+        'department' => $data["department"],
+        'address' => $data["address"],
+        'tel' => $data["tel"],
+        'fax' => $data["fax"],
+        'is_active' => 0,
+        'delete_flag' => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        'created_staff' => $staff_id
+      ];
+/*
+      echo "<pre>";
+      print_r($arrupdatematerialType);
+      echo "</pre>";
+*/
+      $MaterialSuppliers = $this->MaterialSuppliers->patchEntity($this->MaterialSuppliers->newEntity(), $arrupdatematerialSupplier);
+      $connection = ConnectionManager::get('default');//トランザクション1
+       // トランザクション開始2
+       $connection->begin();//トランザクション3
+       try {//トランザクション4
+         if ($this->MaterialSuppliers->save($MaterialSuppliers)) {
+
+         $this->MaterialSuppliers->updateAll(
+           [ 'delete_flag' => 1,
+             'updated_at' => date('Y-m-d H:i:s'),
+             'updated_staff' => $staff_id],
+           ['id'  => $data['id']]);
+
+         $mes = "※下記のように更新されました";
+         $this->set('mes',$mes);
+         $connection->commit();// コミット5
+
+       } else {
+
+         $mes = "※更新されませんでした";
+         $this->set('mes',$mes);
+         $this->Flash->error(__('The data could not be saved. Please, try again.'));
+         throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+       }
+
+     } catch (Exception $e) {//トランザクション7
+     //ロールバック8
+       $connection->rollback();//トランザクション9
+     }//トランザクション10
+
     }
 
     public function delete($id = null)

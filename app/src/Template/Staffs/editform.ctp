@@ -51,7 +51,7 @@
             <td width="280"><strong>部署</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->control('office_id', ['options' => $offices, 'label'=>false]) ?></td>
+            <td><?= $this->Form->control('factory_id', ['options' => $Factories, 'label'=>false]) ?></td>
             <td><?= $this->Form->control('department_id', ['options' => $departments, 'label'=>false, 'empty' => true]) ?></td>
         	</tr>
         </table>

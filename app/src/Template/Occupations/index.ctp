@@ -27,7 +27,7 @@ echo $this->Html->css('index');
         <thead>
           <tr bgcolor="#f0e68c">
             <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('office_id', ['label'=>"工場・営業所名"]) ?></th>
+            <th scope="col"><?= $this->Paginator->sort('factory_id', ['label'=>"工場・営業所名"]) ?></th>
             <th scope="col"><?= $this->Paginator->sort('occupation', ['label'=>"職種名"]) ?></th>
                 <th scope="col" class="actions"><?= __('') ?></th>
             </tr>
@@ -36,7 +36,7 @@ echo $this->Html->css('index');
             <?php foreach ($occupations as $occupation): ?>
             <tr>
               <td><?= h($i) ?></td>
-                <td><?= $occupation->has('office') ? $this->Html->link($occupation->office->name, ['controller' => 'Offices', 'action' => 'view', $occupation->office->id]) : '' ?></td>
+                <td><?= $occupation->has('factory') ? $this->Html->link($occupation->factory->name, ['controller' => 'factorys', 'action' => 'view', $occupation->factory->id]) : '' ?></td>
                 <td><?= h($occupation->occupation) ?></td>
                 <td class="actions">
                   <?= $this->Html->link(__('編集'), ['action' => 'editform', $occupation->id]) ?>

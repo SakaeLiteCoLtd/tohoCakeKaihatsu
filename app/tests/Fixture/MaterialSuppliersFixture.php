@@ -18,6 +18,7 @@ class MaterialSuppliersFixture extends TestFixture
     // @codingStandardsIgnoreStart
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
+        'factory_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'name' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'office' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'department' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
@@ -50,6 +51,7 @@ class MaterialSuppliersFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
+                'factory_id' => 1,
                 'name' => 'Lorem ipsum dolor sit amet',
                 'office' => 'Lorem ipsum dolor sit amet',
                 'department' => 'Lorem ipsum dolor sit amet',
@@ -58,9 +60,9 @@ class MaterialSuppliersFixture extends TestFixture
                 'fax' => 'Lorem ipsum dolor sit amet',
                 'is_active' => 1,
                 'delete_flag' => 1,
-                'created_at' => '2021-04-26 13:52:51',
+                'created_at' => '2021-05-04 13:15:09',
                 'created_staff' => 1,
-                'updated_at' => '2021-04-26 13:52:51',
+                'updated_at' => '2021-05-04 13:15:09',
                 'updated_staff' => 1
             ],
         ];

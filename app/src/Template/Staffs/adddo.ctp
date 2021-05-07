@@ -46,7 +46,7 @@
             <td width="280"><strong>部署</strong></td>
         	</tr>
           <tr>
-            <td><?= h($office_name) ?></td>
+            <td><?= h($factory_name) ?></td>
             <td><?= h($department_name) ?></td>
         	</tr>
         </table>

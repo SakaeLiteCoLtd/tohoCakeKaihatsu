@@ -26,6 +26,7 @@
 <?= $this->Form->control('color', array('type'=>'hidden', 'value'=>$this->request->getData('color'), 'label'=>false)) ?>
 <?= $this->Form->control('maker', array('type'=>'hidden', 'value'=>$this->request->getData('maker'), 'label'=>false)) ?>
 <?= $this->Form->control('type_id', array('type'=>'hidden', 'value'=>$this->request->getData('type_id'), 'label'=>false)) ?>
+<?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <fieldset>
@@ -37,6 +38,17 @@
           </tbody>
         </table>
         <br>
+
+        <table>
+          <tr>
+            <td width="280"><strong>工場・営業所名</strong></td>
+            <td width="280"><strong>原料種類</strong></td>
+        	</tr>
+          <tr>
+            <td><?= h($factory_name) ?></td>
+            <td><?= h($type_name) ?></td>
+        	</tr>
+        </table>
 
         <table>
         <tr>
@@ -59,15 +71,6 @@
         <td><?= h($this->request->getData('maker')) ?></td>
       </tr>
     </table>
-
-    <table>
-    <tr>
-      <td width="280"><strong>原料種類</strong></td>
-    </tr>
-    <tr>
-      <td><?= h($type_name) ?></td>
-    </tr>
-  </table>
 
     </fieldset>
 

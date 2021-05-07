@@ -15,6 +15,7 @@ class FactoriesController extends AppController
     {
      parent::initialize();
      $this->Companies = TableRegistry::get('Companies');
+     $this->Staffs = TableRegistry::get('Staffs');
     }
 
     public function index()
@@ -48,6 +49,15 @@ class FactoriesController extends AppController
 				$arrCompanies[] = array($value->id=>$value->name);
 			}
       $this->set('arrCompanies', $arrCompanies);
+
+      $Staffs = $this->Staffs->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrStaffs = array();
+			foreach ($Staffs as $value) {
+				$arrStaffs[] = array($value->id=>$value->name);
+			}
+      $this->set('arrStaffs', $arrStaffs);
+
     }
 
     public function addcomfirm()
@@ -61,6 +71,11 @@ class FactoriesController extends AppController
       ->where(['id' => $data['company_id']])->toArray();
       $Company_name = $Companies[0]['name'];
       $this->set('Company_name', $Company_name);
+
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $data['staff_id']])->toArray();
+      $staff_name = $Staffs[0]['name'];
+      $this->set('staff_name', $staff_name);
     }
 
     public function adddo()
@@ -75,6 +90,11 @@ class FactoriesController extends AppController
       $Company_name = $Companies[0]['name'];
       $this->set('Company_name', $Company_name);
 
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $data['staff_id']])->toArray();
+      $staff_name = $Staffs[0]['name'];
+      $this->set('staff_name', $staff_name);
+
       $session = $this->request->getSession();
       $datasession = $session->read();
 
@@ -84,6 +104,7 @@ class FactoriesController extends AppController
       $arrtourokufactory = [
         'name' => $data["name"],
         'company_id' => $data["company_id"],
+        'staff_id' => $data["staff_id"],
         'delete_flag' => 0,
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
@@ -149,6 +170,14 @@ class FactoriesController extends AppController
       ->where(['id' => $data['company_id']])->toArray();
       $Company_name = $Companies[0]['name'];
       $this->set('Company_name', $Company_name);
+
+      $Staffs = $this->Staffs->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrStaffs = array();
+      foreach ($Staffs as $value) {
+        $arrStaffs[] = array($value->id=>$value->name);
+      }
+      $this->set('arrStaffs', $arrStaffs);
     }
 
     public function editdo()
@@ -165,6 +194,14 @@ class FactoriesController extends AppController
       ->where(['id' => $data['company_id']])->toArray();
       $Company_name = $Companies[0]['name'];
       $this->set('Company_name', $Company_name);
+
+      $Staffs = $this->Staffs->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrStaffs = array();
+      foreach ($Staffs as $value) {
+        $arrStaffs[] = array($value->id=>$value->name);
+      }
+      $this->set('arrStaffs', $arrStaffs);
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
@@ -217,7 +254,7 @@ class FactoriesController extends AppController
     public function deleteconfirm($id = null)
     {
         $factory = $this->Factories->get($id, [
-          'contain' => ['Companies']
+          'contain' => ['Companies', 'Staffs']
         ]);
         $this->set(compact('factory'));
     }
@@ -230,7 +267,7 @@ class FactoriesController extends AppController
       $data = $this->request->getData();
 
       $factory = $this->Factories->get($data["id"], [
-        'contain' => ['Companies']
+        'contain' => ['Companies', 'Staffs']
       ]);
       $this->set(compact('factory'));
 

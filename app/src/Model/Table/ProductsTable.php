@@ -9,9 +9,13 @@ use Cake\Validation\Validator;
 /**
  * Products Model
  *
- * @property \App\Model\Table\CustomerTable|\Cake\ORM\Association\BelongsTo $Customer
+ * @property |\Cake\ORM\Association\BelongsTo $Factories
+ * @property \App\Model\Table\CustomersTable|\Cake\ORM\Association\BelongsTo $Customers
+ * @property |\Cake\ORM\Association\HasMany $InspectionStandardSizeParents
  * @property \App\Model\Table\PriceProductsTable|\Cake\ORM\Association\HasMany $PriceProducts
- * @property \App\Model\Table\ProductMaterialsTable|\Cake\ORM\Association\HasMany $ProductMaterials
+ * @property |\Cake\ORM\Association\HasMany $ProductConditionParents
+ * @property |\Cake\ORM\Association\HasMany $ProductMaterialParents
+ * @property |\Cake\ORM\Association\HasMany $不使用productMaterials
  *
  * @method \App\Model\Entity\Product get($primaryKey, $options = [])
  * @method \App\Model\Entity\Product newEntity($data = null, array $options = [])
@@ -39,14 +43,27 @@ class ProductsTable extends Table
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
 
+        $this->belongsTo('Factories', [
+            'foreignKey' => 'factory_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('Customers', [
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'
         ]);
+        $this->hasMany('InspectionStandardSizeParents', [
+            'foreignKey' => 'product_id'
+        ]);
         $this->hasMany('PriceProducts', [
             'foreignKey' => 'product_id'
         ]);
-        $this->hasMany('ProductMaterials', [
+        $this->hasMany('ProductConditionParents', [
+            'foreignKey' => 'product_id'
+        ]);
+        $this->hasMany('ProductMaterialParents', [
+            'foreignKey' => 'product_id'
+        ]);
+        $this->hasMany('不使用productMaterials', [
             'foreignKey' => 'product_id'
         ]);
     }
@@ -121,6 +138,7 @@ class ProductsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->existsIn(['factory_id'], 'Factories'));
         $rules->add($rules->existsIn(['customer_id'], 'Customers'));
 
         return $rules;

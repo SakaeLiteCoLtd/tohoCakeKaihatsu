@@ -18,6 +18,7 @@ class MaterialTypesFixture extends TestFixture
     // @codingStandardsIgnoreStart
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
+        'factory_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'type' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'delete_flag' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'created_at' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
@@ -44,11 +45,12 @@ class MaterialTypesFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
+                'factory_id' => 1,
                 'type' => 'Lorem ipsum dolor sit amet',
                 'delete_flag' => 1,
-                'created_at' => '2021-04-26 13:49:57',
+                'created_at' => '2021-05-04 12:56:27',
                 'created_staff' => 1,
-                'updated_at' => '2021-04-26 13:49:57',
+                'updated_at' => '2021-05-04 12:56:27',
                 'updated_staff' => 1
             ],
         ];

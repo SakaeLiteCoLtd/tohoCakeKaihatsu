@@ -7,10 +7,11 @@ use Cake\ORM\Entity;
  * Product Entity
  *
  * @property int $id
+ * @property int $factory_id
  * @property string $product_code
  * @property string $customer_product_code
  * @property string $name
- * @property int $custmoer_id
+ * @property int $customer_id
  * @property int $is_active
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at
@@ -18,7 +19,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $updated_at
  * @property int|null $updated_staff
  *
- * @property \App\Model\Entity\Custmoer $custmoer
+ * @property \App\Model\Entity\Customer $customer
  * @property \App\Model\Entity\PriceProduct[] $price_products
  * @property \App\Model\Entity\ProductMaterial[] $product_materials
  */
@@ -35,6 +36,7 @@ class Product extends Entity
      * @var array
      */
     protected $_accessible = [
+        'factory_id' => true,
         'product_code' => true,
         'customer_product_code' => true,
         'name' => true,
@@ -45,7 +47,7 @@ class Product extends Entity
         'created_staff' => true,
         'updated_at' => true,
         'updated_staff' => true,
-        'custmoer' => true,
+        'customer' => true,
         'price_products' => true,
         'product_materials' => true
     ];

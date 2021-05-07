@@ -20,7 +20,7 @@
 
 <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$this->request->getData('id'), 'label'=>false)) ?>
 <?= $this->Form->control('department', array('type'=>'hidden', 'value'=>$this->request->getData('department'), 'label'=>false)) ?>
-<?= $this->Form->control('office_id', array('type'=>'hidden', 'value'=>$this->request->getData('office_id'), 'label'=>false)) ?>
+<?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <?= $this->Form->create($department) ?>
@@ -40,7 +40,7 @@
         	</tr>
           <tr>
             <td><?= h($this->request->getData('department')) ?></td>
-            <td><?= h($Office_name) ?></td>
+            <td><?= h($factory_name) ?></td>
         	</tr>
         </table>
     </fieldset>

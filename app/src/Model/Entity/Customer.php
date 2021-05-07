@@ -7,8 +7,9 @@ use Cake\ORM\Entity;
  * Customer Entity
  *
  * @property int $id
+ * @property int $factory_id
  * @property string $name
- * @property string|null $factory
+ * @property string|null $office
  * @property string|null $department
  * @property string $address
  * @property string $tel
@@ -19,6 +20,9 @@ use Cake\ORM\Entity;
  * @property int $created_staff
  * @property \Cake\I18n\FrozenTime|null $updated_at
  * @property int|null $updated_staff
+ *
+ * @property \App\Model\Entity\Factory $factory
+ * @property \App\Model\Entity\Product[] $products
  */
 class Customer extends Entity
 {
@@ -33,8 +37,9 @@ class Customer extends Entity
      * @var array
      */
     protected $_accessible = [
+        'factory_id' => true,
         'name' => true,
-        'factory' => true,
+        'office' => true,
         'department' => true,
         'address' => true,
         'tel' => true,
@@ -44,6 +49,8 @@ class Customer extends Entity
         'created_at' => true,
         'created_staff' => true,
         'updated_at' => true,
-        'updated_staff' => true
+        'updated_staff' => true,
+        'factory' => true,
+        'products' => true
     ];
 }

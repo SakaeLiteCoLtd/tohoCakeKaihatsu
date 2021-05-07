@@ -27,6 +27,7 @@ echo $this->Html->css('index');
         <thead>
             <tr>
               <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
+              <th scope="col"><?= $this->Paginator->sort('factory_id', ['label'=>"工場・営業所名"]) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('type') ?></th>
                 <th scope="col" class="actions"><?= __('') ?></th>
             </tr>
@@ -35,6 +36,8 @@ echo $this->Html->css('index');
             <?php foreach ($materialTypes as $materialType): ?>
             <tr>
               <td><?= h($i) ?></td>
+              <td><?= $materialType->has('factory') ? $this->Html->link($materialType->factory->name,
+               ['controller' => 'Factories', 'action' => 'view', $materialType->factory->id]) : '' ?></td>
                 <td><?= h($materialType->type) ?></td>
                 <td class="actions">
                     <?= $this->Html->link(__('編集'), ['action' => 'editform', $materialType->id]) ?>

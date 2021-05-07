@@ -24,7 +24,7 @@ class MaterialTypesTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.material_types'
+        'app.MaterialTypes'
     ];
 
     /**

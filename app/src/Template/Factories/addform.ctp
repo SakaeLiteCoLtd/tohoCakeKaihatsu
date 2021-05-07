@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlofficemenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlfactorymenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlofficemenu = new htmlofficemenu();
- $htmloffice = $htmlofficemenu->Officemenus();
+ $htmlfactorymenu = new htmlfactorymenu();
+ $htmlfactory = $htmlfactorymenu->factorymenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 ?>
@@ -11,14 +11,14 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmloffice;
+     echo $htmlfactory;
 ?>
 
-<?= $this->Form->create($Offices, ['url' => ['action' => 'addcomfirm']]) ?>
+<?= $this->Form->create($Factories, ['url' => ['action' => 'addcomfirm']]) ?>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
 
-    <?= $this->Form->create($Offices) ?>
+    <?= $this->Form->create($Factories) ?>
     <fieldset>
         <legend><strong style="font-size: 15pt; color:red"><?= __('工場・営業所新規登録') ?></strong></legend>
         <br>
@@ -31,13 +31,15 @@
 
         <table>
           <tr>
-            <td width="280"><strong>工場・営業所名</strong></td>
-            <td width="282"><strong>会社名</strong></td>
+            <td width="200"><strong>工場・営業所名</strong></td>
+            <td width="200"><strong>会社名</strong></td>
+            <td width="200"><strong>代表（担当）</strong></td>
         	</tr>
 
           <tr>
             <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false)) ?></td>
             <td><?= $this->Form->control('company_id', ['options' => $arrCompanies, 'label'=>false]) ?></td>
+            <td><?= $this->Form->control('staff_id', ['options' => $arrStaffs, 'label'=>false]) ?></td>
         	</tr>
         </table>
 

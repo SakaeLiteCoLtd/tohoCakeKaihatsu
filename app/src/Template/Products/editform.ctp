@@ -35,6 +35,14 @@
 
         <table>
         <tr>
+          <td width="280"><strong>工場・営業所名</strong></td>
+        </tr>
+        <tr>
+          <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>
+        </tr>
+      </table>
+        <table>
+        <tr>
           <td width="280"><strong>社内品番</strong></td>
           <td width="280"><strong>品番（顧客）</strong></td>
         </tr>

@@ -33,6 +33,16 @@
 
         <table>
         <tr>
+          <td width="280"><strong>工場・営業所名</strong></td>
+          <td width="280"><strong>原料種類</strong></td>
+        </tr>
+        <tr>
+          <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>
+          <td><?= $this->Form->control('type_id', ['options' => $arrMaterialTypes, 'label'=>false]) ?></td>
+        </tr>
+      </table>
+        <table>
+        <tr>
           <td width="280"><strong>原料コード</strong></td>
           <td width="280"><strong>グレード</strong></td>
         </tr>
@@ -52,14 +62,6 @@
         <td><?= $this->Form->control('maker', array('type'=>'text', 'label'=>false)) ?></td>
       </tr>
     </table>
-
-    <table>
-    <tr>
-      <td width="280"><strong>原料種類</strong></td>
-    <tr>
-      <td><?= $this->Form->control('type_id', ['options' => $arrMaterialTypes, 'label'=>false]) ?></td>
-    </tr>
-  </table>
 
     </fieldset>
 

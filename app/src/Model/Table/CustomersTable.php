@@ -9,6 +9,9 @@ use Cake\Validation\Validator;
 /**
  * Customers Model
  *
+ * @property \App\Model\Table\FactoriesTable|\Cake\ORM\Association\BelongsTo $Factories
+ * @property \App\Model\Table\ProductsTable|\Cake\ORM\Association\HasMany $Products
+ *
  * @method \App\Model\Entity\Customer get($primaryKey, $options = [])
  * @method \App\Model\Entity\Customer newEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Customer[] newEntities(array $data, array $options = [])
@@ -34,6 +37,14 @@ class CustomersTable extends Table
         $this->setTable('customers');
         $this->setDisplayField('name');
         $this->setPrimaryKey('id');
+
+        $this->belongsTo('Factories', [
+            'foreignKey' => 'factory_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->hasMany('Products', [
+            'foreignKey' => 'customer_id'
+        ]);
     }
 
     /**
@@ -55,9 +66,9 @@ class CustomersTable extends Table
             ->notEmpty('name');
 
         $validator
-            ->scalar('factory')
-            ->maxLength('factory', 255)
-            ->allowEmpty('factory');
+            ->scalar('office')
+            ->maxLength('office', 255)
+            ->allowEmpty('office');
 
         $validator
             ->scalar('department')
@@ -110,5 +121,19 @@ class CustomersTable extends Table
             ->allowEmpty('updated_staff');
 
         return $validator;
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['factory_id'], 'Factories'));
+
+        return $rules;
     }
 }

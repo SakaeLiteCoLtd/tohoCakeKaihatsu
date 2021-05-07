@@ -37,7 +37,7 @@
 
         <tr>
           <td><?= $this->Form->control('occupation', array('type'=>'text', 'label'=>false)) ?></td>
-          <td><?= $this->Form->control('office_id', ['options' => $arrOffices, 'label'=>false]) ?></td>
+          <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>
         </tr>
       </table>
     </fieldset>

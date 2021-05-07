@@ -11,8 +11,17 @@ use Cake\Auth\DefaultPasswordHasher;//パスワードの更新時のハッシュ
 class CustomersController extends AppController
 {
 
+      public function initialize()
+    {
+     parent::initialize();
+     $this->Factories = TableRegistry::get('Factories');
+    }
+
     public function index()
     {
+        $this->paginate = [
+            'contain' => ['Factories']
+        ];
         $customers = $this->paginate($this->Customers->find()->where(['Customers.delete_flag' => 0]));
 
         $this->set(compact('customers'));
@@ -31,12 +40,28 @@ class CustomersController extends AppController
     {
       $customer = $this->Customers->newEntity();
       $this->set('customer', $customer);
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
     }
 
     public function addcomfirm()
     {
       $customer = $this->Customers->newEntity();
       $this->set('customer', $customer);
+
+      $data = $this->request->getData();
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
     }
 
     public function adddo()
@@ -46,6 +71,11 @@ class CustomersController extends AppController
 
       $data = $this->request->getData();
 
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
       $session = $this->request->getSession();
       $datasession = $session->read();
 
@@ -53,8 +83,9 @@ class CustomersController extends AppController
 
       $arrtourokucustomer = array();
       $arrtourokucustomer = [
+        'factory_id' => $data["factory_id"],
         'name' => $data["name"],
-        'factory' => $data["factory"],
+        'office' => $data["office"],
         'department' => $data["department"],
         'tel' => $data["tel"],
         'fax' => $data["fax"],
@@ -121,12 +152,29 @@ class CustomersController extends AppController
       ]);
       $this->set(compact('customer'));
       $this->set('id', $id);
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
     }
 
     public function editconfirm()
     {
       $customer = $this->Customers->newEntity();
       $this->set('customer', $customer);
+
+      $data = $this->request->getData();
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
     }
 
     public function editdo()
@@ -139,12 +187,18 @@ class CustomersController extends AppController
 
       $data = $this->request->getData();
 
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
       $arrupdatecustomer = array();
       $arrupdatecustomer = [
+        'factory_id' => $data["factory_id"],
         'name' => $data["name"],
-        'factory' => $data["factory"],
+        'office' => $data["office"],
         'department' => $data["department"],
         'tel' => $data["tel"],
         'fax' => $data["fax"],

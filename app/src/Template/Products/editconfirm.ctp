@@ -23,6 +23,7 @@
 <?= $this->Form->control('customer_product_code', array('type'=>'hidden', 'value'=>$this->request->getData('customer_product_code'), 'label'=>false)) ?>
 <?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$this->request->getData('name'), 'label'=>false)) ?>
 <?= $this->Form->control('customer_id', array('type'=>'hidden', 'value'=>$this->request->getData('customer_id'), 'label'=>false)) ?>
+<?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <fieldset>
@@ -35,6 +36,14 @@
         </table>
         <br>
 
+        <table>
+          <tr>
+            <td width="280"><strong>工場・営業所名</strong></td>
+        	</tr>
+          <tr>
+            <td><?= h($factory_name) ?></td>
+        	</tr>
+        </table>
         <table>
         <tr>
           <td width="280"><strong>社内品番</strong></td>

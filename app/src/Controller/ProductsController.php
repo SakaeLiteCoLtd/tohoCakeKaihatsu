@@ -15,6 +15,7 @@ class ProductsController extends AppController
     {
      parent::initialize();
      $this->Customers = TableRegistry::get('Customers');
+     $this->Factories = TableRegistry::get('Factories');
     }
 
     public function ichiran()
@@ -60,6 +61,13 @@ class ProductsController extends AppController
       }
       $this->set('arrCustomers', $arrCustomers);
 
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
     }
 
     public function addcomfirm()
@@ -73,6 +81,11 @@ class ProductsController extends AppController
       ->where(['id' => $data['customer_id']])->toArray();
       $customer_name = $Customers[0]['name'];
       $this->set('customer_name', $customer_name);
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
     }
 
     public function adddo()
@@ -87,6 +100,11 @@ class ProductsController extends AppController
       $customer_name = $Customers[0]['name'];
       $this->set('customer_name', $customer_name);
 
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
       $session = $this->request->getSession();
       $datasession = $session->read();
 
@@ -94,6 +112,7 @@ class ProductsController extends AppController
 
       $arrtourokuproduct = array();
       $arrtourokuproduct = [
+        'factory_id' => $data["factory_id"],
         'product_code' => $data["product_code"],
         'customer_product_code' => $data["customer_product_code"],
         'name' => $data["name"],
@@ -162,6 +181,14 @@ class ProductsController extends AppController
       $customers = $this->Products->Customers->find('list', ['limit' => 200]);
       $this->set(compact('product', 'customers'));
       $this->set('id', $id);
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
     }
 
     public function editconfirm()
@@ -175,6 +202,11 @@ class ProductsController extends AppController
       ->where(['id' => $data['customer_id']])->toArray();
       $customer_name = $Customers[0]["name"];
       $this->set('customer_name', $customer_name);
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
     }
 
     public function editdo()
@@ -192,10 +224,16 @@ class ProductsController extends AppController
       $customer_name = $Customers[0]["name"];
       $this->set('customer_name', $customer_name);
 
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
       $arrupdateproduct = array();
       $arrupdateproduct = [
+        'factory_id' => $data["factory_id"],
         'product_code' => $data["product_code"],
         'customer_product_code' => $data["customer_product_code"],
         'name' => $data["name"],

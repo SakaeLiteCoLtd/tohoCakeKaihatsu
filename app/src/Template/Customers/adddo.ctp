@@ -28,9 +28,17 @@
         <br>
 
         <table>
+          <tr>
+            <td width="280"><strong>工場・営業所名</strong></td>
+        	</tr>
+          <tr>
+            <td><?= h($factory_name) ?></td>
+        	</tr>
+        </table>
+        <table>
         <tr>
           <td width="280"><strong>顧客名</strong></td>
-          <td width="280"><strong>工場・営業所名</strong></td>
+          <td width="280"><strong>支店名</strong></td>
         </tr>
         <tr>
           <td><?= h($this->request->getData('name')) ?></td>

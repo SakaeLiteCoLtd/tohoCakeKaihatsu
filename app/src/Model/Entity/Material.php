@@ -7,6 +7,7 @@ use Cake\ORM\Entity;
  * Material Entity
  *
  * @property int $id
+ * @property int $factory_id
  * @property string $material_code
  * @property string $grade
  * @property string $color
@@ -19,7 +20,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $updated_at
  * @property int|null $updated_staff
  *
- * @property \App\Model\Entity\Type $type
+ * @property \App\Model\Entity\MaterialType $material_type
  * @property \App\Model\Entity\PriceMaterial[] $price_materials
  * @property \App\Model\Entity\ProductMaterial[] $product_materials
  */
@@ -36,6 +37,7 @@ class Material extends Entity
      * @var array
      */
     protected $_accessible = [
+        'factory_id' => true,
         'material_code' => true,
         'grade' => true,
         'color' => true,
@@ -47,7 +49,7 @@ class Material extends Entity
         'created_staff' => true,
         'updated_at' => true,
         'updated_staff' => true,
-        'type' => true,
+        'material_type' => true,
         'price_materials' => true,
         'product_materials' => true
     ];

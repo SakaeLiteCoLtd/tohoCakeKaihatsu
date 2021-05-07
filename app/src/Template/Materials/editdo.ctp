@@ -32,6 +32,17 @@
         <br>
 
         <table>
+          <tr>
+            <td width="280"><strong>工場・営業所名</strong></td>
+            <td width="280"><strong>原料種類</strong></td>
+        	</tr>
+          <tr>
+            <td><?= h($factory_name) ?></td>
+            <td><?= h($type_name) ?></td>
+        	</tr>
+        </table>
+
+        <table>
         <tr>
           <td width="280"><strong>原料コード</strong></td>
           <td width="280"><strong>グレード</strong></td>
@@ -52,15 +63,6 @@
         <td><?= h($this->request->getData('maker')) ?></td>
       </tr>
     </table>
-
-    <table>
-    <tr>
-      <td width="280"><strong>原料種類</strong></td>
-    </tr>
-    <tr>
-      <td><?= h($type_name) ?></td>
-    </tr>
-  </table>
 
     </fieldset>
 

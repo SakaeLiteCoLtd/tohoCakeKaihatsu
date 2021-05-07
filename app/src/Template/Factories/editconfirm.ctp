@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlofficemenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlfactorymenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlofficemenu = new htmlofficemenu();
- $htmloffice = $htmlofficemenu->Officemenus();
+ $htmlfactorymenu = new htmlfactorymenu();
+ $htmlfactory = $htmlfactorymenu->factorymenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 ?>
@@ -11,17 +11,18 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmloffice;
+     echo $htmlfactory;
 ?>
 
-<?= $this->Form->create($Offices, ['url' => ['action' => 'editdo']]) ?>
+<?= $this->Form->create($Factories, ['url' => ['action' => 'editdo']]) ?>
 
 <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$this->request->getData('id'), 'label'=>false)) ?>
 <?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$this->request->getData('name'), 'label'=>false)) ?>
 <?= $this->Form->control('company_id', array('type'=>'hidden', 'value'=>$this->request->getData('company_id'), 'label'=>false)) ?>
+<?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$this->request->getData('staff_id'), 'label'=>false)) ?>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
-    <?= $this->Form->create($Offices) ?>
+    <?= $this->Form->create($Factories) ?>
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('工場・営業所情報編集') ?></strong></legend>
       <br>
@@ -33,12 +34,14 @@
         <br>
         <table>
           <tr>
-            <td width="280"><strong>工場・営業所名</strong></td>
-            <td width="280"><strong>会社名</strong></td>
+            <td width="200"><strong>工場・営業所名</strong></td>
+            <td width="200"><strong>会社名</strong></td>
+            <td width="200"><strong>代表（担当）</strong></td>
         	</tr>
           <tr>
             <td><?= h($this->request->getData('name')) ?></td>
             <td><?= h($Company_name) ?></td>
+            <td><?= h($staff_name) ?></td>
         	</tr>
         </table>
     </fieldset>

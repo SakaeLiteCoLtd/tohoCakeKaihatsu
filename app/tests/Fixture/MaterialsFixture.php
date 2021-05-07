@@ -18,6 +18,7 @@ class MaterialsFixture extends TestFixture
     // @codingStandardsIgnoreStart
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
+        'factory_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'material_code' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'grade' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'color' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
@@ -49,6 +50,7 @@ class MaterialsFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
+                'factory_id' => 1,
                 'material_code' => 'Lorem ipsum dolor sit amet',
                 'grade' => 'Lorem ipsum dolor sit amet',
                 'color' => 'Lorem ipsum dolor sit amet',
@@ -56,9 +58,9 @@ class MaterialsFixture extends TestFixture
                 'type_id' => 1,
                 'is_active' => 1,
                 'delete_flag' => 1,
-                'created_at' => '2021-04-26 13:50:39',
+                'created_at' => '2021-05-04 12:38:14',
                 'created_staff' => 1,
-                'updated_at' => '2021-04-26 13:50:39',
+                'updated_at' => '2021-05-04 12:38:14',
                 'updated_staff' => 1
             ],
         ];
