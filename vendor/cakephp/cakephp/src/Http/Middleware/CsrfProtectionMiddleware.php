@@ -46,7 +46,6 @@ class CsrfProtectionMiddleware
      *    Defaults to browser session.
      *  - `secure` Whether or not the cookie will be set with the Secure flag. Defaults to false.
      *  - `httpOnly` Whether or not the cookie will be set with the HttpOnly flag. Defaults to false.
-     * - `samesite` Value for "SameSite" attribute. Default to null.
      *  - `field` The form field to check. Changing this will also require configuring
      *    FormHelper.
      *
@@ -57,7 +56,6 @@ class CsrfProtectionMiddleware
         'expiry' => 0,
         'secure' => false,
         'httpOnly' => false,
-        'samesite' => null,
         'field' => '_csrfToken',
     ];
 
@@ -67,15 +65,6 @@ class CsrfProtectionMiddleware
      * @var array
      */
     protected $_config = [];
-
-    /**
-     * Callback for deciding whether or not to skip the token check for particular request.
-     *
-     * CSRF protection token check will be skipped if the callback returns `true`.
-     *
-     * @var callable|null
-     */
-    protected $whitelistCallback;
 
     /**
      * Constructor
@@ -97,17 +86,10 @@ class CsrfProtectionMiddleware
      */
     public function __invoke(ServerRequest $request, Response $response, $next)
     {
-        if (
-            $this->whitelistCallback !== null
-            && call_user_func($this->whitelistCallback, $request) === true
-        ) {
-            return $next($request, $response);
-        }
-
         $cookies = $request->getCookieParams();
         $cookieData = Hash::get($cookies, $this->_config['cookieName']);
 
-        if (is_string($cookieData) && strlen($cookieData) > 0) {
+        if (strlen($cookieData) > 0) {
             $params = $request->getAttribute('params');
             $params['_csrfToken'] = $cookieData;
             $request = $request->withAttribute('params', $params);
@@ -127,22 +109,6 @@ class CsrfProtectionMiddleware
     }
 
     /**
-     * Set callback for allowing to skip token check for particular request.
-     *
-     * The callback will receive request instance as argument and must return
-     * `true` if you want to skip token check for the current request.
-     *
-     * @param callable $callback A callable.
-     * @return $this
-     */
-    public function whitelistCallback(callable $callback)
-    {
-        $this->whitelistCallback = $callback;
-
-        return $this;
-    }
-
-    /**
      * Checks if the request is POST, PUT, DELETE or PATCH and validates the CSRF token
      *
      * @param \Cake\Http\ServerRequest $request The request object.
@@ -150,7 +116,7 @@ class CsrfProtectionMiddleware
      */
     protected function _validateAndUnsetTokenField(ServerRequest $request)
     {
-        if (in_array($request->getMethod(), ['PUT', 'POST', 'DELETE', 'PATCH'], true) || $request->getData()) {
+        if (in_array($request->getMethod(), ['PUT', 'POST', 'DELETE', 'PATCH']) || $request->getData()) {
             $this->_validateToken($request);
             $body = $request->getParsedBody();
             if (is_array($body)) {
@@ -206,8 +172,7 @@ class CsrfProtectionMiddleware
             $request->getAttribute('webroot'),
             '',
             (bool)$this->_config['secure'],
-            (bool)$this->_config['httpOnly'],
-            isset($this->_config['samesite']) ? $this->_config['samesite'] : $this->_defaultConfig['samesite']
+            (bool)$this->_config['httpOnly']
         );
 
         return $response->withCookie($cookie);

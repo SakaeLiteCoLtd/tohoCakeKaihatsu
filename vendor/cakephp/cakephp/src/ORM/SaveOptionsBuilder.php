@@ -27,6 +27,7 @@ use RuntimeException;
  */
 class SaveOptionsBuilder extends ArrayObject
 {
+
     use AssociationsNormalizerTrait;
 
     /**

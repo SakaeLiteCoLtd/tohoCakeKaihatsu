@@ -58,8 +58,6 @@ class HeaderEquals extends ResponseBase
      */
     public function toString()
     {
-        $responseHeader = $this->response->getHeaderLine($this->headerName);
-
-        return sprintf('equals content in header \'%s\' (`%s`)', $this->headerName, $responseHeader);
+        return sprintf('equals content in header \'%s\'', $this->headerName);
     }
 }

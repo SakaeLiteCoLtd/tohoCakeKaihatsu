@@ -1,3 +1,4 @@
+<?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
  use App\myClass\menulists\htmlproductmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
@@ -53,7 +54,7 @@
         <td><?= $this->Form->control('customer_id', ['options' => $customers, 'label'=>false]) ?></td>
       </tr>
     </table>
-    
+
     <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$id, 'label'=>false)) ?>
 
     </fieldset>

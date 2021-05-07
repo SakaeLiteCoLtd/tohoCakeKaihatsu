@@ -29,11 +29,12 @@ use InvalidArgumentException;
  *
  * You configure pagination when calling paginate(). See that method for more details.
  *
- * @link https://book.cakephp.org/3/en/controllers/components/pagination.html
+ * @link https://book.cakephp.org/3.0/en/controllers/components/pagination.html
  * @mixin \Cake\Datasource\Paginator
  */
 class PaginatorComponent extends Component
 {
+
     /**
      * Default pagination settings.
      *
@@ -53,7 +54,7 @@ class PaginatorComponent extends Component
         'page' => 1,
         'limit' => 20,
         'maxLimit' => 100,
-        'whitelist' => ['limit', 'sort', 'page', 'direction'],
+        'whitelist' => ['limit', 'sort', 'page', 'direction']
     ];
 
     /**
@@ -240,7 +241,7 @@ class PaginatorComponent extends Component
      * Set paginator instance.
      *
      * @param \Cake\Datasource\Paginator $paginator Paginator instance.
-     * @return $this
+     * @return self
      */
     public function setPaginator(Paginator $paginator)
     {

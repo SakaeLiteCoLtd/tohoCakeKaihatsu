@@ -20,6 +20,7 @@ namespace Cake\TestSuite\Constraint\Response;
  */
 class FileSent extends ResponseBase
 {
+
     /**
      * Checks assertion
      *

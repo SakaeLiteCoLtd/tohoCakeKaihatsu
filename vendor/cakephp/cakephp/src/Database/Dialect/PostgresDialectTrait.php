@@ -26,6 +26,7 @@ use Cake\Database\SqlDialectTrait;
  */
 trait PostgresDialectTrait
 {
+
     use SqlDialectTrait;
 
     /**
@@ -87,7 +88,7 @@ trait PostgresDialectTrait
         $namespace = 'Cake\Database\Expression';
 
         return [
-            $namespace . '\FunctionExpression' => '_transformFunctionExpression',
+            $namespace . '\FunctionExpression' => '_transformFunctionExpression'
         ];
     }
 

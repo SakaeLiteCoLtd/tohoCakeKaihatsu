@@ -17,6 +17,7 @@ namespace Cake\Http\Exception;
  */
 class ForbiddenException extends HttpException
 {
+
     /**
      * {@inheritDoc}
      */

@@ -24,6 +24,7 @@ use Cake\ORM\Association;
  */
 class DependentDeleteHelper
 {
+
     /**
      * Cascade a delete to remove dependent records.
      *

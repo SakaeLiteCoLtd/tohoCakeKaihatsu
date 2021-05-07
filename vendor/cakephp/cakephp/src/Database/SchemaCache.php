@@ -16,7 +16,6 @@ namespace Cake\Database;
 
 use Cake\Cache\Cache;
 use Cake\Database\Connection;
-use Cake\Log\Log;
 use RuntimeException;
 
 /**
@@ -26,11 +25,10 @@ use RuntimeException;
  * can prevent thundering herd effects on the metadata cache when new
  * versions of your application are deployed, or when migrations
  * requiring updated metadata are required.
- *
- * @link https://en.wikipedia.org/wiki/Thundering_herd_problem About the thundering herd problem
  */
 class SchemaCache
 {
+
     /**
      * Schema
      *
@@ -105,7 +103,6 @@ class SchemaCache
 
         $config = $connection->config();
         if (empty($config['cacheMetadata'])) {
-            Log::info(sprintf('Metadata cache was disabled in config for `%s`. Enabling to clear cache.', $connection->configName()));
             $connection->cacheMetadata(true);
         }
 

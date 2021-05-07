@@ -33,7 +33,7 @@ abstract class BaseLog extends AbstractLogger
      */
     protected $_defaultConfig = [
         'levels' => [],
-        'scopes' => [],
+        'scopes' => []
     ];
 
     /**
@@ -71,7 +71,7 @@ abstract class BaseLog extends AbstractLogger
     /**
      * Get the scopes this logger is interested in.
      *
-     * @return array|false
+     * @return array
      */
     public function scopes()
     {

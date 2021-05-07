@@ -23,6 +23,7 @@ use Cake\Utility\Inflector;
  */
 class DashedRoute extends Route
 {
+
     /**
      * Flag for tracking whether or not the defaults have been inflected.
      *

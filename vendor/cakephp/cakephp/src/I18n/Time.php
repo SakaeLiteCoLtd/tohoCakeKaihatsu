@@ -74,7 +74,7 @@ class Time extends MutableDateTime implements JsonSerializable
      * The format to use when formatting a time using `Time::timeAgoInWords()`
      * and the difference is less than `Time::$wordEnd`
      *
-     * @var string[]
+     * @var array
      * @see \Cake\I18n\Time::timeAgoInWords()
      */
     public static $wordAccuracy = [
@@ -109,7 +109,7 @@ class Time extends MutableDateTime implements JsonSerializable
     {
         if ($time instanceof DateTimeInterface) {
             $tz = $time->getTimezone();
-            $time = $time->format('Y-m-d H:i:s.u');
+            $time = $time->format('Y-m-d H:i:s');
         }
 
         if (is_numeric($time)) {
@@ -168,11 +168,11 @@ class Time extends MutableDateTime implements JsonSerializable
      * Returns the quarter
      *
      * @param bool $range Range.
-     * @return string[]|int 1, 2, 3, or 4 quarter of year, or array if $range true
+     * @return int|array 1, 2, 3, or 4 quarter of year, or array if $range true
      */
     public function toQuarter($range = false)
     {
-        $quarter = (int)ceil((int)$this->format('m') / 3);
+        $quarter = (int)ceil($this->format('m') / 3);
         if ($range === false) {
             return $quarter;
         }

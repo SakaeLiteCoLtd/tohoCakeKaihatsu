@@ -17,6 +17,7 @@ namespace Cake\Http\Exception;
  */
 class BadRequestException extends HttpException
 {
+
     /**
      * {@inheritDoc}
      */

@@ -21,6 +21,7 @@ use Cake\ORM\TableRegistry;
  */
 trait LocatorAwareTrait
 {
+
     /**
      * Table locator instance
      *
@@ -69,7 +70,7 @@ trait LocatorAwareTrait
      */
     public function getTableLocator()
     {
-        if ($this->_tableLocator === null) {
+        if (!$this->_tableLocator) {
             $this->_tableLocator = TableRegistry::getTableLocator();
         }
 

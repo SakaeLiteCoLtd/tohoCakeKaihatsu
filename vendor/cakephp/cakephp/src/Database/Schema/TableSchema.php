@@ -31,6 +31,7 @@ use Cake\Database\Type;
  */
 class TableSchema implements TableSchemaInterface, SqlGeneratorInterface
 {
+
     /**
      * The name of the table
      *
@@ -109,7 +110,7 @@ class TableSchema implements TableSchemaInterface, SqlGeneratorInterface
     public static $columnLengths = [
         'tiny' => self::LENGTH_TINY,
         'medium' => self::LENGTH_MEDIUM,
-        'long' => self::LENGTH_LONG,
+        'long' => self::LENGTH_LONG
     ];
 
     /**
@@ -487,7 +488,6 @@ class TableSchema implements TableSchemaInterface, SqlGeneratorInterface
 
     /**
      * {@inheritDoc}
-     *
      * @throws \Cake\Database\Exception
      */
     public function addIndex($name, $attrs)
@@ -573,7 +573,6 @@ class TableSchema implements TableSchemaInterface, SqlGeneratorInterface
 
     /**
      * {@inheritDoc}
-     *
      * @throws \Cake\Database\Exception
      */
     public function addConstraint($name, $attrs)

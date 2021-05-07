@@ -20,6 +20,7 @@ namespace Cake\TestSuite\Constraint\Response;
  */
 class BodyNotEquals extends BodyEquals
 {
+
     /**
      * Checks assertion
      *

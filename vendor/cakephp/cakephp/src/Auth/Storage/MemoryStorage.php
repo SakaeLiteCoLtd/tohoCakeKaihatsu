@@ -19,6 +19,7 @@ namespace Cake\Auth\Storage;
  */
 class MemoryStorage implements StorageInterface
 {
+
     /**
      * User record.
      *
@@ -27,9 +28,9 @@ class MemoryStorage implements StorageInterface
     protected $_user;
 
     /**
-     * Redirect URL.
+     * Redirect url.
      *
-     * @var string|array|null
+     * @var string|null
      */
     protected $_redirectUrl;
 

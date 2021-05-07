@@ -17,13 +17,14 @@ namespace Cake\I18n\Parser;
 use RuntimeException;
 
 /**
- * Parses file in MO format
+ * Parses file in PO format
  *
  * @copyright Copyright (c) 2010, Union of RAD http://union-of-rad.org (http://lithify.me/)
  * @copyright Copyright (c) 2014, Fabien Potencier https://github.com/symfony/Translation/blob/master/LICENSE
  */
 class MoFileParser
 {
+
     /**
      * Magic used for validating the format of a MO file as well as
      * detecting if the machine used to create that file was little endian.
@@ -52,6 +53,7 @@ class MoFileParser
      * was created on. Both 32bit and 64bit systems are supported.
      *
      * @param resource $resource The file to be parsed.
+     *
      * @return array List of messages extracted from the file
      * @throws \RuntimeException If stream content has an invalid format.
      */
@@ -67,9 +69,9 @@ class MoFileParser
         $magic = unpack('V1', fread($stream, 4));
         $magic = hexdec(substr(dechex(current($magic)), -8));
 
-        if ($magic === self::MO_LITTLE_ENDIAN_MAGIC) {
+        if ($magic == self::MO_LITTLE_ENDIAN_MAGIC) {
             $isBigEndian = false;
-        } elseif ($magic === self::MO_BIG_ENDIAN_MAGIC) {
+        } elseif ($magic == self::MO_BIG_ENDIAN_MAGIC) {
             $isBigEndian = true;
         } else {
             throw new RuntimeException('Invalid format for MO translations file');
@@ -119,11 +121,11 @@ class MoFileParser
 
             if ($pluralId !== null || strpos($translated, "\000") !== false) {
                 $translated = explode("\000", $translated);
-                $plurals = $pluralId !== null ? $translated : null;
+                $plurals = $pluralId !== null ? array_map('stripcslashes', $translated) : null;
                 $translated = $translated[0];
             }
 
-            $singular = $translated;
+            $singular = stripcslashes($translated);
             if ($context !== null) {
                 $messages[$singularId]['_context'][$context] = $singular;
                 if ($pluralId !== null) {
@@ -155,6 +157,6 @@ class MoFileParser
         $result = unpack($isBigEndian ? 'N1' : 'V1', fread($stream, 4));
         $result = current($result);
 
-        return (int)substr((string)$result, -8);
+        return (int)substr($result, -8);
     }
 }

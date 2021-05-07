@@ -26,6 +26,7 @@ use JsonSerializable;
  */
 interface CollectionInterface extends Iterator, JsonSerializable
 {
+
     /**
      * Executes the passed callable for each of the elements in this collection
      * and passes both the value and key for them on each step.
@@ -41,7 +42,7 @@ interface CollectionInterface extends Iterator, JsonSerializable
      *
      * @param callable $c callable function that will receive each of the elements
      * in this collection
-     * @return $this
+     * @return \Cake\Collection\CollectionInterface
      */
     public function each(callable $c);
 
@@ -255,7 +256,7 @@ interface CollectionInterface extends Iterator, JsonSerializable
      * @param callable|string $callback the callback or column name to use for sorting
      * @param int $type the type of comparison to perform, either SORT_STRING
      * SORT_NUMERIC or SORT_NATURAL
-     * @see \Cake\Collection\CollectionInterface::sortBy()
+     * @see \Cake\Collection\CollectionIterface::sortBy()
      * @return mixed The value of the top element in the collection
      */
     public function max($callback, $type = \SORT_NUMERIC);
@@ -761,8 +762,7 @@ interface CollectionInterface extends Iterator, JsonSerializable
     public function toList();
 
     /**
-     * Returns the data that can be converted to JSON. This returns the same data
-     * as `toArray()` which contains only unique keys.
+     * Convert a result set into JSON.
      *
      * Part of JsonSerializable interface.
      *
@@ -1113,12 +1113,13 @@ interface CollectionInterface extends Iterator, JsonSerializable
      * Calling this method at the same time that you are iterating this collections, for example in
      * a foreach, will result in undefined behavior. Avoid doing this.
      *
+     *
      * @return int
      */
     public function count();
 
     /**
-     * Returns the number of unique keys in this iterator. This is the same as the number of
+     * Returns the number of unique keys in this iterator. This is, the number of
      * elements the collection will contain after calling `toArray()`
      *
      * This method comes with a number of caveats. Please refer to `CollectionInterface::count()`

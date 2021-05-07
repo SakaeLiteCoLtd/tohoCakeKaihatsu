@@ -19,6 +19,7 @@ namespace Cake\Validation;
  */
 interface ValidatorAwareInterface
 {
+
     /**
      * Name of default validation set.
      *

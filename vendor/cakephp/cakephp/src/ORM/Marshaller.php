@@ -35,6 +35,7 @@ use RuntimeException;
  */
 class Marshaller
 {
+
     use AssociationsNormalizerTrait;
 
     /**
@@ -158,14 +159,6 @@ class Marshaller
      * ]);
      * ```
      *
-     * ```
-     * $result = $marshaller->one($data, [
-     *   'associated' => [
-     *     'Tags' => ['accessibleFields' => ['*' => true]]
-     *   ]
-     * ]);
-     * ```
-     *
      * @param array $data The data to hydrate.
      * @param array $options List of options
      * @return \Cake\Datasource\EntityInterface
@@ -230,7 +223,6 @@ class Marshaller
         }
 
         $entity->setErrors($errors);
-        $this->dispatchAfterMarshal($entity, $data, $options);
 
         return $entity;
     }
@@ -266,7 +258,7 @@ class Marshaller
             );
         }
 
-        return $validator->validate($data, $isNew);
+        return $validator->errors($data, $isNew);
     }
 
     /**
@@ -317,11 +309,10 @@ class Marshaller
         $targetTable = $assoc->getTarget();
         $marshaller = $targetTable->marshaller();
         $types = [Association::ONE_TO_ONE, Association::MANY_TO_ONE];
-        $type = $assoc->type();
-        if (in_array($type, $types, true)) {
+        if (in_array($assoc->type(), $types)) {
             return $marshaller->one($value, (array)$options);
         }
-        if ($type === Association::ONE_TO_MANY || $type === Association::MANY_TO_MANY) {
+        if ($assoc->type() === Association::ONE_TO_MANY || $assoc->type() === Association::MANY_TO_MANY) {
             $hasIds = array_key_exists('_ids', $value);
             $onlyIds = array_key_exists('onlyIds', $options) && $options['onlyIds'];
 
@@ -332,7 +323,7 @@ class Marshaller
                 return [];
             }
         }
-        if ($type === Association::MANY_TO_MANY) {
+        if ($assoc->type() === Association::MANY_TO_MANY) {
             return $marshaller->_belongsToMany($assoc, $value, (array)$options);
         }
 
@@ -428,7 +419,7 @@ class Marshaller
             $query = $target->find();
             $query->andWhere(function ($exp) use ($conditions) {
                 /** @var \Cake\Database\Expression\QueryExpression $exp */
-                return $exp->or($conditions);
+                return $exp->or_($conditions);
             });
 
             $keyFields = array_keys($primaryKey);
@@ -596,8 +587,7 @@ class Marshaller
                 // change. Arrays will always be marked as dirty because
                 // the original/updated list could contain references to the
                 // same objects, even though those objects may have changed internally.
-                if (
-                    (is_scalar($value) && $original === $value) ||
+                if ((is_scalar($value) && $original === $value) ||
                     ($value === null && $original === $value) ||
                     (is_object($value) && !($value instanceof EntityInterface) && $original == $value)
                 ) {
@@ -616,7 +606,6 @@ class Marshaller
                     $entity->setDirty($field, $value->isDirty());
                 }
             }
-            $this->dispatchAfterMarshal($entity, $data, $options);
 
             return $entity;
         }
@@ -630,7 +619,6 @@ class Marshaller
                 $entity->setDirty($field, $properties[$field]->isDirty());
             }
         }
-        $this->dispatchAfterMarshal($entity, $data, $options);
 
         return $entity;
     }
@@ -759,17 +747,14 @@ class Marshaller
         $targetTable = $assoc->getTarget();
         $marshaller = $targetTable->marshaller();
         $types = [Association::ONE_TO_ONE, Association::MANY_TO_ONE];
-        $type = $assoc->type();
-        if (in_array($type, $types, true)) {
-            /** @psalm-suppress PossiblyInvalidArgument */
+        if (in_array($assoc->type(), $types)) {
             return $marshaller->merge($original, $value, (array)$options);
         }
-        if ($type === Association::MANY_TO_MANY) {
-            /** @psalm-suppress PossiblyInvalidArgument */
+        if ($assoc->type() === Association::MANY_TO_MANY) {
             return $marshaller->_mergeBelongsToMany($original, $assoc, $value, (array)$options);
         }
 
-        if ($type === Association::ONE_TO_MANY) {
+        if ($assoc->type() === Association::ONE_TO_MANY) {
             $hasIds = array_key_exists('_ids', $value);
             $onlyIds = array_key_exists('onlyIds', $options) && $options['onlyIds'];
             if ($hasIds && is_array($value['_ids'])) {
@@ -807,7 +792,7 @@ class Marshaller
             return [];
         }
 
-        if (!empty($associated) && !in_array('_joinData', $associated, true) && !isset($associated['_joinData'])) {
+        if (!empty($associated) && !in_array('_joinData', $associated) && !isset($associated['_joinData'])) {
             return $this->mergeMany($original, $value, $options);
         }
 
@@ -873,20 +858,5 @@ class Marshaller
         }
 
         return $records;
-    }
-
-    /**
-     * dispatch Model.afterMarshal event.
-     *
-     * @param \Cake\Datasource\EntityInterface $entity The entity that was marshaled.
-     * @param array $data readOnly $data to use.
-     * @param array $options List of options that are readOnly.
-     * @return void
-     */
-    protected function dispatchAfterMarshal(EntityInterface $entity, array $data, array $options)
-    {
-        $data = new ArrayObject($data);
-        $options = new ArrayObject($options);
-        $this->_table->dispatchEvent('Model.afterMarshal', compact('entity', 'data', 'options'));
     }
 }

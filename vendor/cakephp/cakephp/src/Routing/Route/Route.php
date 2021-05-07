@@ -28,6 +28,7 @@ use Psr\Http\Message\ServerRequestInterface;
  */
 class Route
 {
+
     /**
      * An array of named segments in a Route.
      * `/:controller/:action/:id` has 3 key elements
@@ -82,7 +83,7 @@ class Route
     /**
      * List of connected extensions for this route.
      *
-     * @var string[]
+     * @var array
      */
     protected $_extensions = [];
 
@@ -142,7 +143,7 @@ class Route
      * Get/Set the supported extensions for this route.
      *
      * @deprecated 3.3.9 Use getExtensions/setExtensions instead.
-     * @param array|string|null $extensions The extensions to set. Use null to get.
+     * @param null|string|array $extensions The extensions to set. Use null to get.
      * @return array|null The extensions or null.
      */
     public function extensions($extensions = null)
@@ -160,7 +161,7 @@ class Route
     /**
      * Set the supported extensions for this route.
      *
-     * @param string[] $extensions The extensions to set.
+     * @param array $extensions The extensions to set.
      * @return $this
      */
     public function setExtensions(array $extensions)
@@ -176,7 +177,7 @@ class Route
     /**
      * Get the supported extensions for this route.
      *
-     * @return string[]
+     * @return array
      */
     public function getExtensions()
     {
@@ -186,7 +187,7 @@ class Route
     /**
      * Set the accepted HTTP methods for this route.
      *
-     * @param string[] $methods The HTTP methods to accept.
+     * @param array $methods The HTTP methods to accept.
      * @return $this
      * @throws \InvalidArgumentException
      */
@@ -210,16 +211,16 @@ class Route
      * If any of your patterns contain multibyte values, the `multibytePattern`
      * mode will be enabled.
      *
-     * @param string[] $patterns The patterns to apply to routing elements
+     * @param array $patterns The patterns to apply to routing elements
      * @return $this
      */
     public function setPatterns(array $patterns)
     {
-        $patternValues = implode('', $patterns);
+        $patternValues = implode("", $patterns);
         if (mb_strlen($patternValues) < strlen($patternValues)) {
             $this->options['multibytePattern'] = true;
         }
-        $this->options = $patterns + $this->options;
+        $this->options = array_merge($this->options, $patterns);
 
         return $this;
     }
@@ -240,7 +241,7 @@ class Route
     /**
      * Set the names of parameters that will be converted into passed parameters
      *
-     * @param string[] $names The names of the parameters that should be passed.
+     * @param array $names The names of the parameters that should be passed.
      * @return $this
      */
     public function setPass(array $names)
@@ -279,7 +280,7 @@ class Route
      */
     public function compiled()
     {
-        return $this->_compiledRoute !== null;
+        return !empty($this->_compiledRoute);
     }
 
     /**
@@ -387,14 +388,11 @@ class Route
             'prefix' => ':',
             'plugin' => '.',
             'controller' => ':',
-            'action' => '',
+            'action' => ''
         ];
         foreach ($keys as $key => $glue) {
             $value = null;
-            if (
-                strpos($this->template, ':' . $key) !== false
-                || strpos($this->template, '{' . $key . '}') !== false
-            ) {
+            if (strpos($this->template, ':' . $key) !== false) {
                 $value = '_' . $key;
             } elseif (isset($this->defaults[$key])) {
                 $value = $this->defaults[$key];
@@ -624,8 +622,7 @@ class Route
         $defaults = $this->defaults;
         $context += ['params' => [], '_port' => null, '_scheme' => null, '_host' => null];
 
-        if (
-            !empty($this->options['persist']) &&
+        if (!empty($this->options['persist']) &&
             is_array($this->options['persist'])
         ) {
             $url = $this->_persistParams($url, $context['params']);
@@ -650,8 +647,7 @@ class Route
 
         // Check for properties that will cause an
         // absolute url. Copy the other properties over.
-        if (
-            isset($hostOptions['_scheme']) ||
+        if (isset($hostOptions['_scheme']) ||
             isset($hostOptions['_port']) ||
             isset($hostOptions['_host'])
         ) {
@@ -746,20 +742,12 @@ class Route
         // check patterns for routed params
         if (!empty($this->options)) {
             foreach ($this->options as $key => $pattern) {
-                if (isset($url[$key]) && !preg_match('#^' . $pattern . '$#u', (string)$url[$key])) {
+                if (isset($url[$key]) && !preg_match('#^' . $pattern . '$#u', $url[$key])) {
                     return false;
                 }
             }
         }
         $url += $hostOptions;
-
-        // Ensure controller/action keys are not null.
-        if (
-            (isset($keyNames['controller']) && !isset($url['controller'])) ||
-            (isset($keyNames['action']) && !isset($url['action']))
-        ) {
-            return false;
-        }
 
         return $this->_writeUrl($url, $pass, $query);
     }
@@ -811,10 +799,12 @@ class Route
 
         $search = $replace = [];
         foreach ($this->keys as $key) {
-            if (!array_key_exists($key, $params)) {
-                throw new InvalidArgumentException("Missing required route key `{$key}`");
+            $string = null;
+            if (isset($params[$key])) {
+                $string = $params[$key];
+            } elseif (strpos($out, $key) != strlen($out) - strlen($key)) {
+                $key .= '/';
             }
-            $string = $params[$key];
             if ($this->braceKeys) {
                 $search[] = "{{$key}}";
             } else {
@@ -839,8 +829,7 @@ class Route
         }
 
         $out = str_replace('//', '/', $out);
-        if (
-            isset($params['_scheme']) ||
+        if (isset($params['_scheme']) ||
             isset($params['_host']) ||
             isset($params['_port'])
         ) {

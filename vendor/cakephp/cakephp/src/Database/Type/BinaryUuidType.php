@@ -83,7 +83,7 @@ class BinaryUuidType extends Type implements TypeInterface
     /**
      * Convert binary uuid into resource handles
      *
-     * @param resource|string|null $value The value to convert.
+     * @param null|string|resource $value The value to convert.
      * @param \Cake\Database\Driver $driver The driver instance to convert with.
      * @return resource|string|null
      * @throws \Cake\Core\Exception\Exception
@@ -116,12 +116,13 @@ class BinaryUuidType extends Type implements TypeInterface
     }
 
     /**
-     * Marshals flat data into PHP objects.
+     * Marshalls flat data into PHP objects.
      *
      * Most useful for converting request data into PHP objects
      * that make sense for the rest of the ORM/Database layers.
      *
      * @param mixed $value The value to convert.
+     *
      * @return mixed Converted value.
      */
     public function marshal($value)
@@ -132,7 +133,9 @@ class BinaryUuidType extends Type implements TypeInterface
     /**
      * Converts a binary uuid to a string representation
      *
+     *
      * @param mixed $binary The value to convert.
+     *
      * @return string Converted value.
      */
     protected function convertBinaryUuidToString($binary)
@@ -151,8 +154,10 @@ class BinaryUuidType extends Type implements TypeInterface
     /**
      * Converts a string uuid to a binary representation
      *
-     * @param string $string The value to convert.
-     * @return string Converted value.
+     *
+     * @param mixed $string The value to convert.
+     *
+     * @return mixed Converted value.
      */
     protected function convertStringToBinaryUuid($string)
     {

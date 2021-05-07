@@ -21,6 +21,7 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class FeaturedTagsFixture extends TestFixture
 {
+
     /**
      * fields property
      *
@@ -29,7 +30,7 @@ class FeaturedTagsFixture extends TestFixture
     public $fields = [
         'tag_id' => ['type' => 'integer', 'null' => false],
         'priority' => ['type' => 'integer', 'null' => false],
-        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['tag_id']]],
+        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['tag_id']]]
     ];
 
     /**
@@ -40,6 +41,6 @@ class FeaturedTagsFixture extends TestFixture
     public $records = [
         ['priority' => 1],
         ['priority' => 2],
-        ['priority' => 3],
+        ['priority' => 3]
     ];
 }

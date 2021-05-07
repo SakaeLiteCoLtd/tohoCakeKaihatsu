@@ -21,6 +21,7 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class OrdersFixture extends TestFixture
 {
+
     /**
      * {@inheritDoc}
      */
@@ -38,12 +39,12 @@ class OrdersFixture extends TestFixture
         '_indexes' => [
             'product_category' => [
                 'type' => 'index',
-                'columns' => ['product_category', 'product_id'],
-            ],
+                'columns' => ['product_category', 'product_id']
+            ]
         ],
         '_constraints' => [
             'primary' => [
-                'type' => 'primary', 'columns' => ['id'],
+                'type' => 'primary', 'columns' => ['id']
             ],
             'product_category_fk' => [
                 'type' => 'foreign',
@@ -51,8 +52,8 @@ class OrdersFixture extends TestFixture
                 'references' => ['products', ['category', 'id']],
                 'update' => 'cascade',
                 'delete' => 'cascade',
-            ],
-        ],
+            ]
+        ]
     ];
 
     /**
@@ -61,6 +62,6 @@ class OrdersFixture extends TestFixture
      * @var array
      */
     public $records = [
-        ['product_category' => 1, 'product_id' => 1],
+        ['product_category' => 1, 'product_id' => 1]
     ];
 }

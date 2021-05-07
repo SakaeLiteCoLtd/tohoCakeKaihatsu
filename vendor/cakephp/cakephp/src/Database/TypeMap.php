@@ -19,15 +19,16 @@ namespace Cake\Database;
  */
 class TypeMap
 {
+
     /**
      * Associative array with the default fields and the related types this query might contain.
      *
      * Used to avoid repetition when calling multiple functions inside this class that
      * may require a custom type for a specific field.
      *
-     * @var string[]
+     * @var array
      */
-    protected $_defaults = [];
+    protected $_defaults;
 
     /**
      * Associative array with the fields and the related types that override defaults this query might contain
@@ -35,14 +36,14 @@ class TypeMap
      * Used to avoid repetition when calling multiple functions inside this class that
      * may require a custom type for a specific field.
      *
-     * @var string[]
+     * @var array
      */
     protected $_types = [];
 
     /**
      * Creates an instance with the given defaults
      *
-     * @param string[] $defaults The defaults to use.
+     * @param array $defaults The defaults to use.
      */
     public function __construct(array $defaults = [])
     {
@@ -67,7 +68,7 @@ class TypeMap
      * This method will replace all the existing default mappings with the ones provided.
      * To add into the mappings use `addDefaults()`.
      *
-     * @param string[] $defaults Associative array where keys are field names and values
+     * @param array $defaults Associative array where keys are field names and values
      * are the correspondent type.
      * @return $this
      */
@@ -81,7 +82,7 @@ class TypeMap
     /**
      * Returns the currently configured types.
      *
-     * @return string[]
+     * @return array
      */
     public function getDefaults()
     {
@@ -128,7 +129,7 @@ class TypeMap
      *
      * If a key already exists it will not be overwritten.
      *
-     * @param string[] $types The additional types to add.
+     * @param array $types The additional types to add.
      * @return void
      */
     public function addDefaults(array $types)
@@ -147,7 +148,7 @@ class TypeMap
      *
      * This method will replace all the existing type maps with the ones provided.
      *
-     * @param string[] $types Associative array where keys are field names and values
+     * @param array $types Associative array where keys are field names and values
      * are the correspondent type.
      * @return $this
      */
@@ -161,7 +162,7 @@ class TypeMap
     /**
      * Gets a map of fields and their associated types for single-use.
      *
-     * @return string[]
+     * @return array
      */
     public function getTypes()
     {
@@ -204,8 +205,8 @@ class TypeMap
      * the column type will be looked for inside the default mapping. If neither exist,
      * null will be returned.
      *
-     * @param string|int $column The type for a given column
-     * @return string|null
+     * @param string $column The type for a given column
+     * @return null|string
      */
     public function type($column)
     {
@@ -222,7 +223,7 @@ class TypeMap
     /**
      * Returns an array of all types mapped types
      *
-     * @return string[]
+     * @return array
      */
     public function toArray()
     {

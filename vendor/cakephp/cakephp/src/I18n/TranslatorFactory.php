@@ -32,7 +32,7 @@ class TranslatorFactory extends BaseTranslatorFactory
      *
      * @var string
      */
-    protected $class = Translator::class;
+    protected $class = 'Cake\I18n\Translator';
 
     /**
      * Returns a new Translator.

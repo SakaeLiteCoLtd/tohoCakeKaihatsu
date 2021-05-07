@@ -87,7 +87,7 @@ class MiddlewareQueue implements Countable
                     $class
                 ));
             }
-            $callable = new $className();
+            $callable = new $className;
         } else {
             $callable = $this->queue[$index];
         }
@@ -174,10 +174,9 @@ class MiddlewareQueue implements Countable
     public function insertBefore($class, $middleware)
     {
         $found = false;
-        $i = 0;
+        $i = null;
         foreach ($this->queue as $i => $object) {
-            if (
-                (is_string($object) && $object === $class)
+            if ((is_string($object) && $object === $class)
                 || is_a($object, $class)
             ) {
                 $found = true;
@@ -204,10 +203,9 @@ class MiddlewareQueue implements Countable
     public function insertAfter($class, $middleware)
     {
         $found = false;
-        $i = 0;
+        $i = null;
         foreach ($this->queue as $i => $object) {
-            if (
-                (is_string($object) && $object === $class)
+            if ((is_string($object) && $object === $class)
                 || is_a($object, $class)
             ) {
                 $found = true;

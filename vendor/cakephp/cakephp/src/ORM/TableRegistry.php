@@ -55,6 +55,7 @@ use Cake\ORM\Locator\LocatorInterface;
  */
 class TableRegistry
 {
+
     /**
      * LocatorInterface implementation instance.
      *

@@ -28,6 +28,7 @@ use RuntimeException;
  */
 class StringTemplate
 {
+
     use InstanceConfigTrait {
         getConfig as get;
     }
@@ -121,7 +122,7 @@ class StringTemplate
     {
         $this->_configStack[] = [
             $this->_config,
-            $this->_compiled,
+            $this->_compiled
         ];
     }
 
@@ -150,7 +151,7 @@ class StringTemplate
      * ]);
      * ```
      *
-     * @param string[] $templates An associative list of named templates.
+     * @param array $templates An associative list of named templates.
      * @return $this
      */
     public function add(array $templates)
@@ -164,7 +165,7 @@ class StringTemplate
     /**
      * Compile templates into a more efficient printf() compatible format.
      *
-     * @param string[] $templates The template names to compile. If empty all templates will be compiled.
+     * @param array $templates The template names to compile. If empty all templates will be compiled.
      * @return void
      */
     protected function _compileTemplates(array $templates = [])
@@ -182,7 +183,7 @@ class StringTemplate
             preg_match_all('#\{\{([\w\._]+)\}\}#', $template, $matches);
             $this->_compiled[$name] = [
                 str_replace($matches[0], '%s', $template),
-                $matches[1],
+                $matches[1]
             ];
         }
     }
@@ -300,7 +301,7 @@ class StringTemplate
      * Works with minimized attributes that have the same value as their name such as 'disabled' and 'checked'
      *
      * @param string $key The name of the attribute to create
-     * @param string|string[] $value The value of the attribute to create.
+     * @param string|array $value The value of the attribute to create.
      * @param bool $escape Define if the value must be escaped
      * @return string The composed attribute.
      */
@@ -333,7 +334,7 @@ class StringTemplate
      * @param array|string $input The array or string to add the class to
      * @param array|string $newClass the new class or classes to add
      * @param string $useIndex if you are inputting an array with an element other than default of 'class'.
-     * @return string|string[]
+     * @return array|string
      */
     public function addClass($input, $newClass, $useIndex = 'class')
     {

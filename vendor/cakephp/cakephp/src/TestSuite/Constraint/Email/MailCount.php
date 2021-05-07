@@ -21,6 +21,7 @@ namespace Cake\TestSuite\Constraint\Email;
  */
 class MailCount extends MailConstraintBase
 {
+
     /**
      * Checks constraint
      *

@@ -23,6 +23,7 @@ use PHPUnit\Framework\Constraint\Constraint;
  */
 abstract class ResponseBase extends Constraint
 {
+
     /**
      * @var \Cake\Http\Response
      */

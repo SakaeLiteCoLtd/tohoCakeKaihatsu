@@ -52,7 +52,7 @@ class Entity implements EntityInterface, InvalidPropertyInterface
             'markClean' => false,
             'markNew' => null,
             'guard' => false,
-            'source' => null,
+            'source' => null
         ];
 
         if (!empty($options['source'])) {
@@ -60,7 +60,7 @@ class Entity implements EntityInterface, InvalidPropertyInterface
         }
 
         if ($options['markNew'] !== null) {
-            $this->setNew($options['markNew']);
+            $this->isNew($options['markNew']);
         }
 
         if (!empty($properties) && $options['markClean'] && !$options['useSetters']) {
@@ -72,7 +72,7 @@ class Entity implements EntityInterface, InvalidPropertyInterface
         if (!empty($properties)) {
             $this->set($properties, [
                 'setter' => $options['useSetters'],
-                'guard' => $options['guard'],
+                'guard' => $options['guard']
             ]);
         }
 

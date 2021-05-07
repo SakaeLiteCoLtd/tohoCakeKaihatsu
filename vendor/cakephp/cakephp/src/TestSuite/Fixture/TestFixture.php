@@ -32,6 +32,7 @@ use Exception;
  */
 class TestFixture implements FixtureInterface, TableSchemaInterface, TableSchemaAwareInterface
 {
+
     use LocatorAwareTrait;
 
     /**
@@ -179,7 +180,7 @@ class TestFixture implements FixtureInterface, TableSchemaInterface, TableSchema
     protected function _schemaFromFields()
     {
         $connection = ConnectionManager::get($this->connection());
-        $this->_schema = $connection->getDriver()->newTableSchema($this->table);
+        $this->_schema = new TableSchema($this->table);
         foreach ($this->fields as $field => $data) {
             if ($field === '_constraints' || $field === '_indexes' || $field === '_options') {
                 continue;
@@ -249,7 +250,7 @@ class TestFixture implements FixtureInterface, TableSchemaInterface, TableSchema
         $schemaCollection = $db->getSchemaCollection();
         $tables = $schemaCollection->listTables();
 
-        if (!in_array($this->table, $tables, true)) {
+        if (!in_array($this->table, $tables)) {
             throw new CakeException(
                 sprintf(
                     'Cannot describe schema for table `%s` for fixture `%s` : the table does not exist.',

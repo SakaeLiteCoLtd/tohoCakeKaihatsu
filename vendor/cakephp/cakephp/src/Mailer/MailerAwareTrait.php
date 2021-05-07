@@ -26,6 +26,7 @@ use Cake\Mailer\Exception\MissingMailerException;
  */
 trait MailerAwareTrait
 {
+
     /**
      * Returns a mailer instance.
      *

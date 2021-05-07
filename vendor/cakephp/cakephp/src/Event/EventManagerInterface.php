@@ -18,6 +18,7 @@ namespace Cake\Event;
  */
 interface EventManagerInterface
 {
+
     /**
      * Adds a new listener to an event.
      *
@@ -51,6 +52,7 @@ interface EventManagerInterface
      * added to the same priority queue will be treated in the order of insertion.
      *
      * @param callable|null $callable The callable function you want invoked.
+     *
      * @return $this
      * @throws \InvalidArgumentException When event key is missing or callable is not an
      *   instance of Cake\Event\EventListenerInterface.

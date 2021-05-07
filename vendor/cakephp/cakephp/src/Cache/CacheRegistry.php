@@ -23,11 +23,10 @@ use RuntimeException;
  * An object registry for cache engines.
  *
  * Used by Cake\Cache\Cache to load and manage cache engines.
- *
- * @extends \Cake\Core\ObjectRegistry<\Cake\Cache\CacheEngine>
  */
 class CacheRegistry extends ObjectRegistry
 {
+
     /**
      * Resolve a cache engine classname.
      *
@@ -51,7 +50,7 @@ class CacheRegistry extends ObjectRegistry
      * Part of the template method for Cake\Core\ObjectRegistry::load()
      *
      * @param string $class The classname that is missing.
-     * @param string|null $plugin The plugin the cache is missing in.
+     * @param string $plugin The plugin the cache is missing in.
      * @return void
      * @throws \BadMethodCallException
      */
@@ -95,7 +94,7 @@ class CacheRegistry extends ObjectRegistry
         }
 
         $config = $instance->getConfig();
-        if (!empty($config['probability']) && time() % $config['probability'] === 0) {
+        if ($config['probability'] && time() % $config['probability'] === 0) {
             $instance->gc();
         }
 
@@ -106,12 +105,10 @@ class CacheRegistry extends ObjectRegistry
      * Remove a single adapter from the registry.
      *
      * @param string $name The adapter name.
-     * @return $this
+     * @return void
      */
     public function unload($name)
     {
         unset($this->_loaded[$name]);
-
-        return $this;
     }
 }

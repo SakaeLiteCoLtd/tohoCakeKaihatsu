@@ -22,6 +22,7 @@ use Cake\Http\Response;
  */
 class BodyContains extends ResponseBase
 {
+
     /**
      * @var bool
      */

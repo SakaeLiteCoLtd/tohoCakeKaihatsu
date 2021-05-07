@@ -62,10 +62,7 @@ abstract class AbstractTransport
             if ($value === false || $value === null || $value === '') {
                 continue;
             }
-
-            foreach ((array)$value as $val) {
-                $out .= $key . ': ' . $val . $eol;
-            }
+            $out .= $key . ': ' . $value . $eol;
         }
         if (!empty($out)) {
             $out = substr($out, 0, -1 * strlen($eol));

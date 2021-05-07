@@ -22,6 +22,7 @@ use Cake\Utility\Text;
  */
 class UuidType extends StringType
 {
+
     /**
      * Casts given value from a PHP type to one acceptable by database
      *
@@ -31,7 +32,7 @@ class UuidType extends StringType
      */
     public function toDatabase($value, Driver $driver)
     {
-        if ($value === null || $value === '' || $value === false) {
+        if ($value === null || $value === '') {
             return null;
         }
 

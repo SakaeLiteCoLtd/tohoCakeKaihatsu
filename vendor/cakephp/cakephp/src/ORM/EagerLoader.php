@@ -28,6 +28,7 @@ use InvalidArgumentException;
  */
 class EagerLoader
 {
+
     /**
      * Nested array describing the association to be fetched
      * and the options to apply for each of them, if any
@@ -61,7 +62,7 @@ class EagerLoader
         'finder' => 1,
         'joinType' => 1,
         'strategy' => 1,
-        'negateMatch' => 1,
+        'negateMatch' => 1
     ];
 
     /**
@@ -152,8 +153,8 @@ class EagerLoader
 
             $associations = [
                 $associations => [
-                    'queryBuilder' => $queryBuilder,
-                ],
+                    'queryBuilder' => $queryBuilder
+                ]
             ];
         }
 
@@ -556,15 +557,7 @@ class EagerLoader
 
         $paths += ['aliasPath' => '', 'propertyPath' => '', 'root' => $alias];
         $paths['aliasPath'] .= '.' . $alias;
-
-        if (
-            isset($options['matching']) &&
-            $options['matching'] === true
-        ) {
-            $paths['propertyPath'] = '_matchingData.' . $alias;
-        } else {
-            $paths['propertyPath'] .= '.' . $instance->getProperty();
-        }
+        $paths['propertyPath'] .= '.' . $instance->getProperty();
 
         $table = $instance->getTarget();
 
@@ -575,7 +568,7 @@ class EagerLoader
             'config' => array_diff_key($options, $extra),
             'aliasPath' => trim($paths['aliasPath'], '.'),
             'propertyPath' => trim($paths['propertyPath'], '.'),
-            'targetProperty' => $instance->getProperty(),
+            'targetProperty' => $instance->getProperty()
         ];
         $config['canBeJoined'] = $instance->canBeJoined($config['config']);
         $eagerLoadable = new EagerLoadable($alias, $config);
@@ -612,7 +605,7 @@ class EagerLoader
                 if (count($configs) < 2) {
                     continue;
                 }
-                /** @var \Cake\ORM\EagerLoadable $loadable */
+                /* @var \Cake\ORM\EagerLoadable $loadable */
                 foreach ($configs as $loadable) {
                     if (strpos($loadable->aliasPath(), '.')) {
                         $this->_correctStrategy($loadable);
@@ -716,7 +709,7 @@ class EagerLoader
                     'query' => $query,
                     'contain' => $contain,
                     'keys' => $keys,
-                    'nestKey' => $meta->aliasPath(),
+                    'nestKey' => $meta->aliasPath()
                 ]
             );
             $statement = new CallbackStatement($statement, $driver, $f);
@@ -766,7 +759,7 @@ class EagerLoader
      */
     protected function _buildAssociationsMap($map, $level, $matching = false)
     {
-        /** @var \Cake\ORM\EagerLoadable $meta */
+        /* @var \Cake\ORM\EagerLoadable $meta */
         foreach ($level as $assoc => $meta) {
             $canBeJoined = $meta->canBeJoined();
             $instance = $meta->instance();
@@ -779,7 +772,7 @@ class EagerLoader
                 'entityClass' => $instance->getTarget()->getEntityClass(),
                 'nestKey' => $canBeJoined ? $assoc : $meta->aliasPath(),
                 'matching' => $forMatching !== null ? $forMatching : $matching,
-                'targetProperty' => $meta->targetProperty(),
+                'targetProperty' => $meta->targetProperty()
             ];
             if ($canBeJoined && $associations) {
                 $map = $this->_buildAssociationsMap($map, $associations, $matching);
@@ -810,7 +803,7 @@ class EagerLoader
             'instance' => $assoc,
             'canBeJoined' => true,
             'forMatching' => $asMatching,
-            'targetProperty' => $targetProperty ?: $assoc->getProperty(),
+            'targetProperty' => $targetProperty ?: $assoc->getProperty()
         ]);
     }
 
@@ -826,7 +819,7 @@ class EagerLoader
     protected function _collectKeys($external, $query, $statement)
     {
         $collectKeys = [];
-        /** @var \Cake\ORM\EagerLoadable $meta */
+        /* @var \Cake\ORM\EagerLoadable $meta */
         foreach ($external as $meta) {
             $instance = $meta->instance();
             if (!$instance->requiresKeys($meta->getConfig())) {

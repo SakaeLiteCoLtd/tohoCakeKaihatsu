@@ -25,6 +25,7 @@ use PDO;
  */
 class Sqlserver extends Driver
 {
+
     use SqlserverDialectTrait;
 
     /**
@@ -75,7 +76,7 @@ class Sqlserver extends Driver
 
         $config['flags'] += [
             PDO::ATTR_EMULATE_PREPARES => false,
-            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         ];
 
         if (!empty($config['encoding'])) {
@@ -131,7 +132,7 @@ class Sqlserver extends Driver
      */
     public function enabled()
     {
-        return in_array('sqlsrv', PDO::getAvailableDrivers(), true);
+        return in_array('sqlsrv', PDO::getAvailableDrivers());
     }
 
     /**

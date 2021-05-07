@@ -26,6 +26,7 @@ use Cake\Database\ValueBinder;
  */
 class Comparison implements ExpressionInterface, FieldInterface
 {
+
     use ExpressionTypeCasterTrait;
     use FieldTrait;
 
@@ -70,7 +71,7 @@ class Comparison implements ExpressionInterface, FieldInterface
      *
      * @param string|\Cake\Database\ExpressionInterface $field the field name to compare to a value
      * @param mixed $value The value to be used in comparison
-     * @param string|null $type the type name used to cast the value
+     * @param string $type the type name used to cast the value
      * @param string $operator the operator used for comparing field and value
      */
     public function __construct($field, $value, $type, $operator)
@@ -164,22 +165,23 @@ class Comparison implements ExpressionInterface, FieldInterface
 
     /**
      * {@inheritDoc}
+     *
      */
-    public function traverse(callable $visitor)
+    public function traverse(callable $callable)
     {
         if ($this->_field instanceof ExpressionInterface) {
-            $visitor($this->_field);
-            $this->_field->traverse($visitor);
+            $callable($this->_field);
+            $this->_field->traverse($callable);
         }
 
         if ($this->_value instanceof ExpressionInterface) {
-            $visitor($this->_value);
-            $this->_value->traverse($visitor);
+            $callable($this->_value);
+            $this->_value->traverse($callable);
         }
 
         foreach ($this->_valueExpressions as $v) {
-            $visitor($v);
-            $v->traverse($visitor);
+            $callable($v);
+            $v->traverse($callable);
         }
     }
 

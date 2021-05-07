@@ -20,6 +20,7 @@ namespace Cake\TestSuite\Constraint\Response;
  */
 class HeaderContains extends HeaderEquals
 {
+
     /**
      * Checks assertion
      *
@@ -38,6 +39,6 @@ class HeaderContains extends HeaderEquals
      */
     public function toString()
     {
-        return sprintf('is in header \'%s\' (`%s`)', $this->headerName, $this->response->getHeaderLine($this->headerName));
+        return sprintf('is in header \'%s\'', $this->headerName);
     }
 }

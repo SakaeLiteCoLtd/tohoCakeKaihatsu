@@ -20,6 +20,7 @@ namespace Cake\TestSuite\Constraint\Response;
  */
 class BodyRegExp extends ResponseBase
 {
+
     /**
      * Checks assertion
      *
@@ -47,6 +48,6 @@ class BodyRegExp extends ResponseBase
      */
     public function failureDescription($other)
     {
-        return '`' . $other . '`' . ' ' . $this->toString();
+        return $other . ' ' . $this->toString();
     }
 }

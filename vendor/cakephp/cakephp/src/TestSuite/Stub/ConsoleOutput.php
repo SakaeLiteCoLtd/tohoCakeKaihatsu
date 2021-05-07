@@ -31,6 +31,7 @@ use Cake\Console\ConsoleOutput as ConsoleOutputBase;
  */
 class ConsoleOutput extends ConsoleOutputBase
 {
+
     /**
      * Buffered messages.
      *
@@ -41,7 +42,7 @@ class ConsoleOutput extends ConsoleOutputBase
     /**
      * Write output to the buffer.
      *
-     * @param string|string[] $message A string or an array of strings to output
+     * @param string|array $message A string or an array of strings to output
      * @param int $newlines Number of newlines to append
      * @return void
      */

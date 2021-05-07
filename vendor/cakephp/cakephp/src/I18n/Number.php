@@ -21,31 +21,24 @@ use NumberFormatter;
  *
  * Methods to make numbers more readable.
  *
- * @link https://book.cakephp.org/3/en/core-libraries/number.html
+ * @link https://book.cakephp.org/3.0/en/core-libraries/number.html
  */
 class Number
 {
+
     /**
      * Default locale
+     *
+     * @var string
      */
     const DEFAULT_LOCALE = 'en_US';
 
     /**
      * Format type to format as currency
+     *
+     * @var string
      */
     const FORMAT_CURRENCY = 'currency';
-
-    /**
-     * Format type to format as currency, accounting style (negative numbers in parentheses)
-     */
-    const FORMAT_CURRENCY_ACCOUNTING = 'currency_accounting';
-
-    /**
-     * ICU Constant for accounting format; not yet widely supported by INTL library.
-     * This will be able to go away once CakePHP minimum PHP requirement is 7.4.1 or higher.
-     * See UNUM_CURRENCY_ACCOUNTING in https://unicode-org.github.io/icu-docs/apidoc/released/icu4c/unum_8h.html
-     */
-    const CURRENCY_ACCOUNTING = 12;
 
     /**
      * A list of number formatters indexed by locale and type
@@ -62,24 +55,17 @@ class Number
     protected static $_defaultCurrency;
 
     /**
-     * Default currency format used by Number::currency()
-     *
-     * @var string
-     */
-    protected static $_defaultCurrencyFormat;
-
-    /**
      * Formats a number with a level of precision.
      *
      * Options:
      *
      * - `locale`: The locale name to use for formatting the number, e.g. fr_FR
      *
-     * @param float|string $value A floating point number.
+     * @param float $value A floating point number.
      * @param int $precision The precision of the returned number.
      * @param array $options Additional options
      * @return string Formatted float.
-     * @link https://book.cakephp.org/3/en/core-libraries/number.html#formatting-floating-point-numbers
+     * @link https://book.cakephp.org/3.0/en/core-libraries/number.html#formatting-floating-point-numbers
      */
     public static function precision($value, $precision = 3, array $options = [])
     {
@@ -91,14 +77,12 @@ class Number
     /**
      * Returns a formatted-for-humans file size.
      *
-     * @param int|string $size Size in bytes
+     * @param int $size Size in bytes
      * @return string Human readable size
-     * @link https://book.cakephp.org/3/en/core-libraries/number.html#interacting-with-human-readable-values
+     * @link https://book.cakephp.org/3.0/en/core-libraries/number.html#interacting-with-human-readable-values
      */
     public static function toReadableSize($size)
     {
-        $size = (int)$size;
-
         switch (true) {
             case $size < 1024:
                 return __dn('cake', '{0,number,integer} Byte', '{0,number,integer} Bytes', $size, $size);
@@ -121,20 +105,20 @@ class Number
      * - `multiply`: Multiply the input value by 100 for decimal percentages.
      * - `locale`: The locale name to use for formatting the number, e.g. fr_FR
      *
-     * @param float|string $value A floating point number
+     * @param float $value A floating point number
      * @param int $precision The precision of the returned number
      * @param array $options Options
      * @return string Percentage string
-     * @link https://book.cakephp.org/3/en/core-libraries/number.html#formatting-percentages
+     * @link https://book.cakephp.org/3.0/en/core-libraries/number.html#formatting-percentages
      */
     public static function toPercentage($value, $precision = 2, array $options = [])
     {
-        $options += ['multiply' => false, 'type' => NumberFormatter::PERCENT];
-        if (!$options['multiply']) {
-            $value /= 100;
+        $options += ['multiply' => false];
+        if ($options['multiply']) {
+            $value *= 100;
         }
 
-        return static::precision($value, $precision, $options);
+        return static::precision($value, $precision, $options) . '%';
     }
 
     /**
@@ -149,7 +133,7 @@ class Number
      * - `before` - The string to place before whole numbers, e.g. '['
      * - `after` - The string to place after decimal numbers, e.g. ']'
      *
-     * @param float|string $value A floating point number.
+     * @param float $value A floating point number.
      * @param array $options An array with options.
      * @return string Formatted number
      */
@@ -158,7 +142,7 @@ class Number
         $formatter = static::formatter($options);
         $options += ['before' => '', 'after' => ''];
 
-        return $options['before'] . $formatter->format((float)$value) . $options['after'];
+        return $options['before'] . $formatter->format($value) . $options['after'];
     }
 
     /**
@@ -192,14 +176,14 @@ class Number
      * - `before` - The string to place before whole numbers, e.g. '['
      * - `after` - The string to place after decimal numbers, e.g. ']'
      *
-     * @param float|string $value A floating point number
+     * @param float $value A floating point number
      * @param array $options Options list.
      * @return string formatted delta
      */
     public static function formatDelta($value, array $options = [])
     {
         $options += ['places' => 0];
-        $value = number_format((float)$value, $options['places'], '.', '');
+        $value = number_format($value, $options['places'], '.', '');
         $sign = $value > 0 ? '+' : '';
         $options['before'] = isset($options['before']) ? $options['before'] . $sign : $sign;
 
@@ -224,7 +208,7 @@ class Number
      * - `useIntlCode` - Whether or not to replace the currency symbol with the international
      *   currency code.
      *
-     * @param float|string $value Value to format.
+     * @param float $value Value to format.
      * @param string|null $currency International currency name such as 'USD', 'EUR', 'JPY', 'CAD'
      * @param array $options Options list.
      * @return string Number formatted as a currency.
@@ -232,13 +216,13 @@ class Number
     public static function currency($value, $currency = null, array $options = [])
     {
         $value = (float)$value;
-        $currency = $currency ?: static::getDefaultCurrency();
+        $currency = $currency ?: static::defaultCurrency();
 
         if (isset($options['zero']) && !$value) {
             return $options['zero'];
         }
 
-        $formatter = static::formatter(['type' => static::getDefaultCurrencyFormat()] + $options);
+        $formatter = static::formatter(['type' => static::FORMAT_CURRENCY] + $options);
         $abs = abs($value);
         if (!empty($options['fractionSymbol']) && $abs > 0 && $abs < 1) {
             $value *= 100;
@@ -254,89 +238,30 @@ class Number
     }
 
     /**
-     * Getter/setter for default currency. This behavior is *deprecated* and will be
-     * removed in future versions of CakePHP.
+     * Getter/setter for default currency
      *
-     * @deprecated 3.9 Use getDefaultCurrency() and setDefaultCurrency()
-     * @param string|false|null $currency Default currency string to be used by currency()
+     * @param string|bool|null $currency Default currency string to be used by currency()
      * if $currency argument is not provided. If boolean false is passed, it will clear the
      * currently stored value
      * @return string|null Currency
      */
     public static function defaultCurrency($currency = null)
     {
-        deprecationWarning(
-            'Number::defaultCurrency() is deprecated. ' .
-            'Use Number::setDefaultCurrency()/getDefaultCurrency() instead.'
-        );
+        if (!empty($currency)) {
+            return self::$_defaultCurrency = $currency;
+        }
 
         if ($currency === false) {
-            static::setDefaultCurrency(null);
-
-            // This doesn't seem like a useful result to return, but it's what the old version did.
-            // Retaining it for backward compatibility.
-            return null;
-        } elseif ($currency !== null) {
-            static::setDefaultCurrency($currency);
+            return self::$_defaultCurrency = null;
         }
 
-        return static::getDefaultCurrency();
-    }
-
-    /**
-     * Getter for default currency
-     *
-     * @return string Currency
-     */
-    public static function getDefaultCurrency()
-    {
-        if (static::$_defaultCurrency === null) {
+        if (empty(self::$_defaultCurrency)) {
             $locale = ini_get('intl.default_locale') ?: static::DEFAULT_LOCALE;
             $formatter = new NumberFormatter($locale, NumberFormatter::CURRENCY);
-            static::$_defaultCurrency = $formatter->getTextAttribute(NumberFormatter::CURRENCY_CODE);
+            self::$_defaultCurrency = $formatter->getTextAttribute(NumberFormatter::CURRENCY_CODE);
         }
 
-        return static::$_defaultCurrency;
-    }
-
-    /**
-     * Setter for default currency
-     *
-     * @param string|null $currency Default currency string to be used by currency()
-     * if $currency argument is not provided. If null is passed, it will clear the
-     * currently stored value
-     * @return void
-     */
-    public static function setDefaultCurrency($currency = null)
-    {
-        static::$_defaultCurrency = $currency;
-    }
-
-    /**
-     * Getter for default currency format
-     *
-     * @return string Currency Format
-     */
-    public static function getDefaultCurrencyFormat()
-    {
-        if (static::$_defaultCurrencyFormat === null) {
-            static::$_defaultCurrencyFormat = static::FORMAT_CURRENCY;
-        }
-
-        return static::$_defaultCurrencyFormat;
-    }
-
-    /**
-     * Setter for default currency format
-     *
-     * @param string|null $currencyFormat Default currency format to be used by currency()
-     * if $currencyFormat argument is not provided. If null is passed, it will clear the
-     * currently stored value
-     * @return void
-     */
-    public static function setDefaultCurrencyFormat($currencyFormat = null)
-    {
-        static::$_defaultCurrencyFormat = $currencyFormat;
+        return self::$_defaultCurrency;
     }
 
     /**
@@ -372,12 +297,6 @@ class Number
             $type = $options['type'];
             if ($options['type'] === static::FORMAT_CURRENCY) {
                 $type = NumberFormatter::CURRENCY;
-            } elseif ($options['type'] === static::FORMAT_CURRENCY_ACCOUNTING) {
-                if (defined('NumberFormatter::CURRENCY_ACCOUNTING')) {
-                    $type = NumberFormatter::CURRENCY_ACCOUNTING;
-                } else {
-                    $type = static::CURRENCY_ACCOUNTING;
-                }
             }
         }
 
@@ -385,14 +304,13 @@ class Number
             static::$_formatters[$locale][$type] = new NumberFormatter($locale, $type);
         }
 
-        /** @var \NumberFormatter $formatter */
         $formatter = static::$_formatters[$locale][$type];
 
         $options = array_intersect_key($options, [
             'places' => null,
             'precision' => null,
             'pattern' => null,
-            'useIntlCode' => null,
+            'useIntlCode' => null
         ]);
         if (empty($options)) {
             return $formatter;

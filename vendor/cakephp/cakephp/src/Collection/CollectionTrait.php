@@ -35,25 +35,12 @@ use RecursiveIteratorIterator;
 use Traversable;
 
 /**
- * Offers a handful of methods to manipulate iterators
+ * Offers a handful of method to manipulate iterators
  */
 trait CollectionTrait
 {
-    use ExtractTrait;
 
-    /**
-     * Returns a new collection.
-     *
-     * Allows classes which use this trait to determine their own
-     * type of returned collection interface
-     *
-     * @param mixed ...$args Constructor arguments.
-     * @return \Cake\Collection\CollectionInterface
-     */
-    protected function newCollection(...$args)
-    {
-        return new Collection(...$args);
-    }
+    use ExtractTrait;
 
     /**
      * {@inheritDoc}
@@ -271,7 +258,7 @@ trait CollectionTrait
             $group[$callback($value)][] = $value;
         }
 
-        return $this->newCollection($group);
+        return new Collection($group);
     }
 
     /**
@@ -285,7 +272,7 @@ trait CollectionTrait
             $group[$callback($value)] = $value;
         }
 
-        return $this->newCollection($group);
+        return new Collection($group);
     }
 
     /**
@@ -305,7 +292,7 @@ trait CollectionTrait
             $mr->emit(count($values), $key);
         };
 
-        return $this->newCollection(new MapReduce($this->unwrap(), $mapper, $reducer));
+        return new Collection(new MapReduce($this->unwrap(), $mapper, $reducer));
     }
 
     /**
@@ -331,10 +318,10 @@ trait CollectionTrait
      */
     public function shuffle()
     {
-        $elements = $this->toList();
+        $elements = $this->toArray();
         shuffle($elements);
 
-        return $this->newCollection($elements);
+        return new Collection($elements);
     }
 
     /**
@@ -342,7 +329,7 @@ trait CollectionTrait
      */
     public function sample($size = 10)
     {
-        return $this->newCollection(new LimitIterator($this->shuffle(), 0, $size));
+        return new Collection(new LimitIterator($this->shuffle(), 0, $size));
     }
 
     /**
@@ -350,7 +337,7 @@ trait CollectionTrait
      */
     public function take($size = 1, $from = 0)
     {
-        return $this->newCollection(new LimitIterator($this, $from, $size));
+        return new Collection(new LimitIterator($this, $from, $size));
     }
 
     /**
@@ -358,7 +345,7 @@ trait CollectionTrait
      */
     public function skip($howMany)
     {
-        return $this->newCollection(new LimitIterator($this, $howMany));
+        return new Collection(new LimitIterator($this, $howMany));
     }
 
     /**
@@ -425,19 +412,19 @@ trait CollectionTrait
 
         $iterator = $this->optimizeUnwrap();
         if (is_array($iterator)) {
-            return $this->newCollection(array_slice($iterator, $howMany * -1));
+            return new Collection(array_slice($iterator, $howMany * -1));
         }
 
         if ($iterator instanceof Countable) {
             $count = count($iterator);
 
             if ($count === 0) {
-                return $this->newCollection([]);
+                return new Collection([]);
             }
 
             $iterator = new LimitIterator($iterator, max(0, $count - $howMany), $howMany);
 
-            return $this->newCollection($iterator);
+            return new Collection($iterator);
         }
 
         $generator = function ($iterator, $howMany) {
@@ -510,7 +497,7 @@ trait CollectionTrait
             }
         };
 
-        return $this->newCollection($generator($iterator, $howMany));
+        return new Collection($generator($iterator, $howMany));
     }
 
     /**
@@ -520,9 +507,9 @@ trait CollectionTrait
     {
         $list = new AppendIterator();
         $list->append($this->unwrap());
-        $list->append($this->newCollection($items)->unwrap());
+        $list->append((new Collection($items))->unwrap());
 
-        return $this->newCollection($list);
+        return new Collection($list);
     }
 
     /**
@@ -544,7 +531,7 @@ trait CollectionTrait
      */
     public function prepend($items)
     {
-        return $this->newCollection($items)->append($this);
+        return (new Collection($items))->append($this);
     }
 
     /**
@@ -569,7 +556,7 @@ trait CollectionTrait
         $options = [
             'keyPath' => $this->_propertyExtractor($keyPath),
             'valuePath' => $this->_propertyExtractor($valuePath),
-            'groupPath' => $groupPath ? $this->_propertyExtractor($groupPath) : null,
+            'groupPath' => $groupPath ? $this->_propertyExtractor($groupPath) : null
         ];
 
         $mapper = function ($value, $key, $mapReduce) use ($options) {
@@ -599,7 +586,7 @@ trait CollectionTrait
             $mapReduce->emit($result, $key);
         };
 
-        return $this->newCollection(new MapReduce($this->unwrap(), $mapper, $reducer));
+        return new Collection(new MapReduce($this->unwrap(), $mapper, $reducer));
     }
 
     /**
@@ -644,7 +631,7 @@ trait CollectionTrait
             $parents[$key][$nestingKey] = $children;
         };
 
-        return $this->newCollection(new MapReduce($this->unwrap(), $mapper, $reducer))
+        return (new Collection(new MapReduce($this->unwrap(), $mapper, $reducer)))
             ->map(function ($value) use (&$isObject) {
                 /** @var \ArrayIterator $value */
                 return $isObject ? $value : $value->getArrayCopy();
@@ -702,7 +689,7 @@ trait CollectionTrait
      */
     public function compile($preserveKeys = true)
     {
-        return $this->newCollection($this->toArray($preserveKeys));
+        return new Collection($this->toArray($preserveKeys));
     }
 
     /**
@@ -716,7 +703,7 @@ trait CollectionTrait
             }
         };
 
-        return $this->newCollection($generator());
+        return new Collection($generator());
     }
 
     /**
@@ -740,7 +727,7 @@ trait CollectionTrait
         $modes = [
             'desc' => TreeIterator::SELF_FIRST,
             'asc' => TreeIterator::CHILD_FIRST,
-            'leaves' => TreeIterator::LEAVES_ONLY,
+            'leaves' => TreeIterator::LEAVES_ONLY
         ];
 
         return new TreeIterator(
@@ -774,7 +761,7 @@ trait CollectionTrait
             };
         }
 
-        return $this->newCollection(
+        return new Collection(
             new RecursiveIteratorIterator(
                 new UnfoldIterator($this->unwrap(), $transformer),
                 RecursiveIteratorIterator::LEAVES_ONLY
@@ -789,7 +776,7 @@ trait CollectionTrait
     {
         $result = $handler($this);
 
-        return $result instanceof CollectionInterface ? $result : $this->newCollection($result);
+        return $result instanceof CollectionInterface ? $result : new Collection($result);
     }
 
     /**
@@ -913,7 +900,7 @@ trait CollectionTrait
     public function cartesianProduct(callable $operation = null, callable $filter = null)
     {
         if ($this->isEmpty()) {
-            return $this->newCollection([]);
+            return new Collection([]);
         }
 
         $collectionArrays = [];
@@ -955,7 +942,7 @@ trait CollectionTrait
             }
         }
 
-        return $this->newCollection($result);
+        return new Collection($result);
     }
 
     /**
@@ -979,7 +966,7 @@ trait CollectionTrait
             $result[] = array_column($arrayValue, $column);
         }
 
-        return $this->newCollection($result);
+        return new Collection($result);
     }
 
     /**

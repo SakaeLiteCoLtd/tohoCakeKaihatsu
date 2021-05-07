@@ -27,6 +27,7 @@ use Cake\Routing\Router;
  */
 class RedirectRoute extends Route
 {
+
     /**
      * A Response object
      *

@@ -30,6 +30,7 @@ use UnexpectedValueException;
  */
 class FixtureManager
 {
+
     /**
      * Was this instance already initialized?
      *
@@ -93,8 +94,11 @@ class FixtureManager
     public function fixturize($test)
     {
         $this->_initDb();
-        if (!$test->getFixtures() || !empty($this->_processed[get_class($test)])) {
+        if (empty($test->fixtures) || !empty($this->_processed[get_class($test)])) {
             return;
+        }
+        if (!is_array($test->fixtures)) {
+            $test->fixtures = array_map('trim', explode(',', $test->fixtures));
         }
         $this->_loadFixtures($test);
         $this->_processed[get_class($test)] = true;
@@ -164,11 +168,10 @@ class FixtureManager
      */
     protected function _loadFixtures($test)
     {
-        $fixtures = $test->getFixtures();
-        if (!$fixtures) {
+        if (empty($test->fixtures)) {
             return;
         }
-        foreach ($fixtures as $fixture) {
+        foreach ($test->fixtures as $fixture) {
             if (isset($this->_loaded[$fixture])) {
                 continue;
             }
@@ -228,7 +231,7 @@ class FixtureManager
                     $baseNamespace,
                     'Test\Fixture',
                     $additionalPath,
-                    $name . 'Fixture',
+                    $name . 'Fixture'
                 ];
                 $className = implode('\\', array_filter($nameSegments));
             } else {
@@ -256,7 +259,7 @@ class FixtureManager
      *
      * @param \Cake\Datasource\FixtureInterface $fixture the fixture object to create
      * @param \Cake\Database\Connection $db The Connection object instance to use
-     * @param string[] $sources The existing tables in the datasource.
+     * @param array $sources The existing tables in the datasource.
      * @param bool $drop whether drop the fixture if it is already created or not
      * @return void
      */
@@ -291,11 +294,14 @@ class FixtureManager
      * @param \Cake\TestSuite\TestCase $test The test to inspect for fixture loading.
      * @return void
      * @throws \Cake\Core\Exception\Exception When fixture records cannot be inserted.
-     * @throws \RuntimeException
      */
     public function load($test)
     {
-        $fixtures = $test->getFixtures();
+        if (empty($test->fixtures)) {
+            return;
+        }
+
+        $fixtures = $test->fixtures;
         if (empty($fixtures) || !$test->autoFixtures) {
             return;
         }
@@ -378,7 +384,7 @@ class FixtureManager
     /**
      * Run a function on each connection and collection of fixtures.
      *
-     * @param string[] $fixtures A list of fixtures to operate on.
+     * @param array $fixtures A list of fixtures to operate on.
      * @param callable $operation The operation to run on each connection + fixture set.
      * @return void
      */
@@ -419,16 +425,16 @@ class FixtureManager
     /**
      * Get the unique list of connections that a set of fixtures contains.
      *
-     * @param string[] $fixtures The array of fixtures a list of connections is needed from.
+     * @param array $fixtures The array of fixtures a list of connections is needed from.
      * @return array An array of connection names.
      */
     protected function _fixtureConnections($fixtures)
     {
         $dbs = [];
-        foreach ($fixtures as $name) {
-            if (!empty($this->_loaded[$name])) {
-                $fixture = $this->_loaded[$name];
-                $dbs[$fixture->connection()][$name] = $fixture;
+        foreach ($fixtures as $f) {
+            if (!empty($this->_loaded[$f])) {
+                $fixture = $this->_loaded[$f];
+                $dbs[$fixture->connection()][$f] = $fixture;
             }
         }
 
@@ -443,8 +449,7 @@ class FixtureManager
      */
     public function unload($test)
     {
-        $fixtures = $test->getFixtures();
-        if (!$fixtures) {
+        if (empty($test->fixtures)) {
             return;
         }
         $truncate = function ($db, $fixtures) {
@@ -462,7 +467,7 @@ class FixtureManager
                 }
             }
         };
-        $this->_runOperation($fixtures, $truncate);
+        $this->_runOperation($test->fixtures, $truncate);
     }
 
     /**

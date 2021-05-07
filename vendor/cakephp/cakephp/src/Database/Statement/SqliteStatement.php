@@ -21,10 +21,12 @@ namespace Cake\Database\Statement;
  */
 class SqliteStatement extends StatementDecorator
 {
+
     use BufferResultsTrait;
 
     /**
      * {@inheritDoc}
+     *
      */
     public function execute($params = null)
     {

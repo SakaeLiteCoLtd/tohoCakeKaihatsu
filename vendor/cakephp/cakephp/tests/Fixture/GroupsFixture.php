@@ -21,6 +21,7 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class GroupsFixture extends TestFixture
 {
+
     /**
      * fields property
      *
@@ -29,7 +30,7 @@ class GroupsFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer'],
         'title' => ['type' => 'string'],
-        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
+        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]]
     ];
 
     /**

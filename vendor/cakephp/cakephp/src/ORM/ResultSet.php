@@ -30,6 +30,7 @@ use SplFixedArray;
  */
 class ResultSet implements ResultSetInterface
 {
+
     use CollectionTrait;
 
     /**
@@ -123,7 +124,7 @@ class ResultSet implements ResultSetInterface
     /**
      * Tracks value of $_autoFields property of $query passed to constructor.
      *
-     * @var bool|null
+     * @var bool
      */
     protected $_autoFields;
 
@@ -505,7 +506,7 @@ class ResultSet implements ResultSetInterface
             'useSetters' => false,
             'markClean' => true,
             'markNew' => false,
-            'guard' => false,
+            'guard' => false
         ];
 
         foreach ($this->_matchingMapColumns as $alias => $keys) {
@@ -515,10 +516,10 @@ class ResultSet implements ResultSetInterface
                 array_intersect_key($row, $keys)
             );
             if ($this->_hydrate) {
-                /** @var \Cake\ORM\Table $table */
+                /* @var \Cake\ORM\Table $table */
                 $table = $matching['instance'];
                 $options['source'] = $table->getRegistryAlias();
-                /** @var \Cake\Datasource\EntityInterface $entity */
+                /* @var \Cake\Datasource\EntityInterface $entity */
                 $entity = new $matching['entityClass']($results['_matchingData'][$alias], $options);
                 $results['_matchingData'][$alias] = $entity;
             }
@@ -545,7 +546,7 @@ class ResultSet implements ResultSetInterface
                 continue;
             }
 
-            /** @var \Cake\ORM\Association $instance */
+            /* @var \Cake\ORM\Association $instance */
             $instance = $assoc['instance'];
 
             if (!$assoc['canBeJoined'] && !isset($row[$alias])) {

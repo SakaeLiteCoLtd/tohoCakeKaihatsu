@@ -25,6 +25,7 @@ use Cake\Utility\Hash;
  */
 class FormContext implements ContextInterface
 {
+
     /**
      * The request object.
      *
@@ -79,19 +80,13 @@ class FormContext implements ContextInterface
     }
 
     /**
-     * Get the value for a given path.
-     *
-     * Traverses the request and form data and finds the value for $path.
-     *
-     * @param string $field The dot separated path to the value.
-     * @param array $options options
-     * @return mixed The value of the field or null on a miss.
+     * {@inheritDoc}
      */
     public function val($field, $options = [])
     {
         $options += [
             'default' => null,
-            'schemaDefault' => true,
+            'schemaDefault' => true
         ];
 
         $val = $this->_request->getData($field);

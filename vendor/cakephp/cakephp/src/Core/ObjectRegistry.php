@@ -39,6 +39,7 @@ use RuntimeException;
  */
 abstract class ObjectRegistry implements Countable, IteratorAggregate
 {
+
     /**
      * Map of loaded objects.
      *
@@ -119,7 +120,7 @@ abstract class ObjectRegistry implements Countable, IteratorAggregate
     {
         /** @var \Cake\Core\InstanceConfigTrait $existing */
         $existing = $this->_loaded[$name];
-        $msg = sprintf('The "%s" alias has already been loaded.', $name);
+        $msg = sprintf('The "%s" alias has already been loaded', $name);
         $hasConfig = method_exists($existing, 'config');
         if (!$hasConfig) {
             throw new RuntimeException($msg);
@@ -130,24 +131,22 @@ abstract class ObjectRegistry implements Countable, IteratorAggregate
         $existingConfig = $existing->getConfig();
         unset($config['enabled'], $existingConfig['enabled']);
 
-        $failure = null;
+        $fail = false;
         foreach ($config as $key => $value) {
             if (!array_key_exists($key, $existingConfig)) {
-                $failure = " The `{$key}` was not defined in the previous configuration data.";
+                $fail = true;
                 break;
             }
             if (isset($existingConfig[$key]) && $existingConfig[$key] !== $value) {
-                $failure = sprintf(
-                    ' The `%s` key has a value of `%s` but previously had a value of `%s`',
-                    $key,
-                    json_encode($value),
-                    json_encode($existingConfig[$key])
-                );
+                $fail = true;
                 break;
             }
         }
-        if ($failure) {
-            throw new RuntimeException($msg . $failure);
+        if ($fail) {
+            $msg .= ' with the following config: ';
+            $msg .= var_export($existingConfig, true);
+            $msg .= ' which differs from ' . var_export($config, true);
+            throw new RuntimeException($msg);
         }
     }
 
@@ -155,7 +154,7 @@ abstract class ObjectRegistry implements Countable, IteratorAggregate
      * Should resolve the classname for a given object type.
      *
      * @param string $class The class to resolve.
-     * @return string|false The resolved name or false for failure.
+     * @return string|bool The resolved name or false for failure.
      */
     abstract protected function _resolveClassName($class);
 
@@ -163,7 +162,7 @@ abstract class ObjectRegistry implements Countable, IteratorAggregate
      * Throw an exception when the requested object name is missing.
      *
      * @param string $class The class that is missing.
-     * @param string|null $plugin The plugin $class is missing from.
+     * @param string $plugin The plugin $class is missing from.
      * @return void
      * @throws \Exception
      */

@@ -17,6 +17,7 @@ namespace Cake\Console;
 /**
  * An interface for shells that take a CommandCollection
  * during initialization.
+ *
  */
 interface CommandCollectionAwareInterface
 {

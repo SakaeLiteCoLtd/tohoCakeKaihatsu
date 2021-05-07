@@ -29,6 +29,7 @@ use Cake\Database\ValueBinder;
  */
 class ValuesExpression implements ExpressionInterface
 {
+
     use ExpressionTypeCasterTrait;
     use TypeMapTrait;
 
@@ -83,8 +84,7 @@ class ValuesExpression implements ExpressionInterface
      */
     public function add($data)
     {
-        if (
-            (count($this->_values) && $data instanceof Query) ||
+        if ((count($this->_values) && $data instanceof Query) ||
             ($this->_query && is_array($data))
         ) {
             throw new Exception(
@@ -376,7 +376,7 @@ class ValuesExpression implements ExpressionInterface
 
         foreach ($this->_values as $row => $values) {
             foreach ($types as $col => $type) {
-                /** @var \Cake\Database\Type\ExpressionTypeInterface $type */
+                /* @var \Cake\Database\Type\ExpressionTypeInterface $type */
                 $this->_values[$row][$col] = $type->toExpression($values[$col]);
             }
         }

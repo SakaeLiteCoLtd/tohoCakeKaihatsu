@@ -16,7 +16,6 @@ namespace Cake\Core;
 
 use Cake\Core\Exception\Exception;
 use Cake\Utility\Hash;
-use InvalidArgumentException;
 
 /**
  * A trait for reading and writing instance config
@@ -25,6 +24,7 @@ use InvalidArgumentException;
  */
 trait InstanceConfigTrait
 {
+
     /**
      * Runtime config
      *
@@ -110,8 +110,8 @@ trait InstanceConfigTrait
      * ```
      *
      * @param string|null $key The key to get or null for the whole config.
-     * @param mixed|null $default The return value when the key does not exist.
-     * @return mixed|null Configuration data at the named key or null if the key does not exist.
+     * @param mixed $default The return value when the key does not exist.
+     * @return mixed Config value being read.
      */
     public function getConfig($key = null, $default = null)
     {
@@ -185,29 +185,6 @@ trait InstanceConfigTrait
         }
 
         return $this->getConfig($key);
-    }
-
-    /**
-     * Returns the config for this specific key.
-     *
-     * The config value for this key must exist, it can never be null.
-     *
-     * @param string|null $key The key to get.
-     * @return mixed Configuration data at the named key
-     * @throws \InvalidArgumentException
-     */
-    public function getConfigOrFail($key)
-    {
-        if (!isset($key)) {
-            throw new InvalidArgumentException('$key must not be null.');
-        }
-
-        $config = $this->getConfig($key);
-        if ($config === null) {
-            throw new InvalidArgumentException(sprintf('Expected configuration `%s` not found.', $key));
-        }
-
-        return $config;
     }
 
     /**

@@ -23,6 +23,7 @@ use Cake\Utility\Text;
  */
 class FileLog extends BaseLog
 {
+
     /**
      * Default config for this class
      *
@@ -85,8 +86,7 @@ class FileLog extends BaseLog
         if (!empty($this->_config['path'])) {
             $this->_path = $this->_config['path'];
         }
-        if (
-            $this->_path !== null &&
+        if ($this->_path !== null &&
             Configure::read('debug') &&
             !is_dir($this->_path)
         ) {
@@ -185,8 +185,7 @@ class FileLog extends BaseLog
         $filePath = $this->_path . $filename;
         clearstatcache(true, $filePath);
 
-        if (
-            !file_exists($filePath) ||
+        if (!file_exists($filePath) ||
             filesize($filePath) < $this->_size
         ) {
             return null;

@@ -21,6 +21,7 @@ namespace Cake\TestSuite\Constraint\Email;
  */
 class MailContains extends MailConstraintBase
 {
+
     /**
      * Mail type to check contents of
      *
@@ -40,7 +41,6 @@ class MailContains extends MailConstraintBase
         foreach ($emails as $email) {
             $message = implode("\r\n", (array)$email->message($this->type));
 
-            $other = preg_quote($other, '/');
             if (preg_match("/$other/", $message) > 0) {
                 return true;
             }

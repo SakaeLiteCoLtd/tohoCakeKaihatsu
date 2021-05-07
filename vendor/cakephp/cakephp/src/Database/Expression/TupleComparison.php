@@ -23,12 +23,6 @@ use Cake\Database\ValueBinder;
  */
 class TupleComparison extends Comparison
 {
-    /**
-     * The type to be used for casting the value to a database representation
-     *
-     * @var array
-     */
-    protected $_type;
 
     /**
      * Constructor
@@ -103,7 +97,7 @@ class TupleComparison extends Comparison
             if ($isMulti) {
                 $bound = [];
                 foreach ($value as $k => $val) {
-                    $valType = $multiType && isset($type[$k]) ? $type[$k] : $type;
+                    $valType = $multiType ? $type[$k] : $type;
                     $bound[] = $this->_bindValue($generator, $val, $valType);
                 }
 
@@ -141,19 +135,19 @@ class TupleComparison extends Comparison
      *
      * Callback function receives as its only argument an instance of an ExpressionInterface
      *
-     * @param callable $visitor The callable to apply to sub-expressions
+     * @param callable $callable The callable to apply to sub-expressions
      * @return void
      */
-    public function traverse(callable $visitor)
+    public function traverse(callable $callable)
     {
         foreach ($this->getField() as $field) {
-            $this->_traverseValue($field, $visitor);
+            $this->_traverseValue($field, $callable);
         }
 
         $value = $this->getValue();
         if ($value instanceof ExpressionInterface) {
-            $visitor($value);
-            $value->traverse($visitor);
+            $callable($value);
+            $value->traverse($callable);
 
             return;
         }
@@ -161,10 +155,10 @@ class TupleComparison extends Comparison
         foreach ($value as $i => $val) {
             if ($this->isMulti()) {
                 foreach ($val as $v) {
-                    $this->_traverseValue($v, $visitor);
+                    $this->_traverseValue($v, $callable);
                 }
             } else {
-                $this->_traverseValue($val, $visitor);
+                $this->_traverseValue($val, $callable);
             }
         }
     }

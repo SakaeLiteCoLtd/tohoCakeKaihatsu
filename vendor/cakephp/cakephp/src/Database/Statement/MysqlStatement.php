@@ -23,10 +23,12 @@ use PDO;
  */
 class MysqlStatement extends PDOStatement
 {
+
     use BufferResultsTrait;
 
     /**
      * {@inheritDoc}
+     *
      */
     public function execute($params = null)
     {

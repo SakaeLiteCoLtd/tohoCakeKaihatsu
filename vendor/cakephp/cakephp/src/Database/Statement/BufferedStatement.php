@@ -147,10 +147,7 @@ class BufferedStatement implements Iterator, StatementInterface
     }
 
     /**
-     * Returns the value of the result at position.
-     *
-     * @param int $position The numeric position of the column to retrieve in the result
-     * @return mixed Returns the specific value of the column designated at $position
+     * {@inheritDoc}
      */
     public function fetchColumn($position)
     {
@@ -192,7 +189,7 @@ class BufferedStatement implements Iterator, StatementInterface
     /**
      * {@inheritDoc}
      *
-     * @param int|string $type The type to fetch.
+     * @param string $type The type to fetch.
      * @return array|false
      */
     public function fetch($type = self::FETCH_TYPE_NUM)

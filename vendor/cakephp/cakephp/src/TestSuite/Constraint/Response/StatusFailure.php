@@ -20,9 +20,7 @@ namespace Cake\TestSuite\Constraint\Response;
  */
 class StatusFailure extends StatusCodeBase
 {
-    /**
-     * @inheritDoc
-     */
+
     protected $code = [500, 505];
 
     /**

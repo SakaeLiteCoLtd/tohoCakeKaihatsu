@@ -26,6 +26,7 @@ use PDOException;
  */
 class Collection
 {
+
     /**
      * Connection object
      *
@@ -54,7 +55,7 @@ class Collection
     /**
      * Get the list of tables available in the current connection.
      *
-     * @return string[] The list of tables in the connected database/schema.
+     * @return array The list of tables in the connected database/schema.
      */
     public function listTables()
     {
@@ -93,7 +94,7 @@ class Collection
         if (strpos($name, '.')) {
             list($config['schema'], $name) = explode('.', $name);
         }
-        $table = $this->_connection->getDriver()->newTableSchema($name);
+        $table = new TableSchema($name);
 
         $this->_reflect('Column', $name, $config, $table);
         if (count($table->columns()) === 0) {
@@ -113,7 +114,7 @@ class Collection
      * @param string $stage The stage name.
      * @param string $name The table name.
      * @param array $config The config data.
-     * @param \Cake\Database\Schema\TableSchemaInterface $schema The table schema instance.
+     * @param \Cake\Database\Schema\TableSchema $schema The table instance
      * @return void
      * @throws \Cake\Database\Exception on query failure.
      */

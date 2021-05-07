@@ -1,5 +1,7 @@
 {
     "require": {
-        "friendsofcake/crud": "~4.0"
+        "friendsofcake/crud": "~4.0",
+        "cakephp/cakephp": "3.7.*",
+        "cakephp/app": "3.7.*"
     }
 }

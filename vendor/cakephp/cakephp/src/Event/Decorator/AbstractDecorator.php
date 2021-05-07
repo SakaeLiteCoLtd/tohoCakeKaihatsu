@@ -19,6 +19,7 @@ namespace Cake\Event\Decorator;
  */
 abstract class AbstractDecorator
 {
+
     /**
      * Callable
      *

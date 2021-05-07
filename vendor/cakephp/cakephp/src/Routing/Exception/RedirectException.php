@@ -28,6 +28,7 @@ use Cake\Core\Exception\Exception;
  */
 class RedirectException extends Exception
 {
+
     /**
      * {@inheritDoc}
      */

@@ -21,6 +21,7 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class CakeSessionsFixture extends TestFixture
 {
+
     /**
      * fields property
      *
@@ -30,7 +31,7 @@ class CakeSessionsFixture extends TestFixture
         'id' => ['type' => 'string', 'length' => 128],
         'data' => ['type' => 'text', 'null' => true],
         'expires' => ['type' => 'integer', 'length' => 11, 'null' => true],
-        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
+        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]]
     ];
 
     /**

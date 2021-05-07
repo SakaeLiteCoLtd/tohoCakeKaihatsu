@@ -21,6 +21,7 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class UuidportfoliosFixture extends TestFixture
 {
+
     /**
      * fields property
      *
@@ -29,7 +30,7 @@ class UuidportfoliosFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'uuid'],
         'name' => ['type' => 'string', 'null' => false],
-        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
+        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]]
     ];
 
     /**

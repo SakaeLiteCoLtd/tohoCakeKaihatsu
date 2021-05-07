@@ -35,6 +35,7 @@ use ReflectionMethod;
  */
 abstract class Cell
 {
+
     use EventDispatcherTrait;
     use LocatorAwareTrait;
     use ModelAwareTrait;
@@ -86,7 +87,7 @@ abstract class Cell
      * @deprecated 3.7.0 Use ViewBuilder::setOptions() or any one of it's setter methods instead.
      */
     protected $_validViewOptions = [
-        'viewPath',
+        'viewPath'
     ];
 
     /**
@@ -180,6 +181,12 @@ abstract class Cell
 
             $builder = $this->viewBuilder()->setLayout(false);
 
+            if ($template !== null &&
+                strpos($template, '/') === false &&
+                strpos($template, '.') === false
+            ) {
+                $template = Inflector::underscore($template);
+            }
             if ($template !== null) {
                 $builder->setTemplate($template);
             }
@@ -197,10 +204,7 @@ abstract class Cell
             try {
                 return $this->View->render($template);
             } catch (MissingTemplateException $e) {
-                $attributes = $e->getAttributes();
-                $attributes = ['file' => basename($attributes['file']), 'name' => $name];
-
-                throw new MissingCellViewException($attributes, null, $e);
+                throw new MissingCellViewException(['file' => $template, 'name' => $name], null, $e);
             }
         };
 
@@ -230,7 +234,7 @@ abstract class Cell
         $key = str_replace('\\', '_', $key);
         $default = [
             'config' => 'default',
-            'key' => $key,
+            'key' => $key
         ];
         if ($this->_cache === true) {
             return $default;

@@ -24,6 +24,7 @@ use Cake\Http\Client\Request;
  */
 class Digest
 {
+
     /**
      * Instance of Cake\Http\Client
      *

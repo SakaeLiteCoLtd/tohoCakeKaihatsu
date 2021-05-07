@@ -47,17 +47,18 @@ use Cake\Http\ServerRequest;
  * valid credentials are not provided, required authentication headers will be sent
  * by this authentication provider which triggers the login dialog in the browser/client.
  *
- * @see https://book.cakephp.org/3/en/controllers/components/authentication.html
+ * @see https://book.cakephp.org/3.0/en/controllers/components/authentication.html
  */
 class BasicAuthenticate extends BaseAuthenticate
 {
+
     /**
      * Authenticate a user using HTTP auth. Will use the configured User model and attempt a
      * login using HTTP auth.
      *
      * @param \Cake\Http\ServerRequest $request The request to authenticate with.
      * @param \Cake\Http\Response $response The response to add headers to.
-     * @return array|false Either false on failure, or an array of user data on success.
+     * @return mixed Either false on failure, or an array of user data on success.
      */
     public function authenticate(ServerRequest $request, Response $response)
     {
@@ -68,7 +69,7 @@ class BasicAuthenticate extends BaseAuthenticate
      * Get a user based on information in the request. Used by cookie-less auth for stateless clients.
      *
      * @param \Cake\Http\ServerRequest $request Request object.
-     * @return array|false Either false or an array of user information
+     * @return mixed Either false or an array of user information
      */
     public function getUser(ServerRequest $request)
     {
@@ -92,24 +93,23 @@ class BasicAuthenticate extends BaseAuthenticate
      */
     public function unauthenticated(ServerRequest $request, Response $response)
     {
-        $unauthorizedException = new UnauthorizedException();
-        $unauthorizedException->responseHeader($this->loginHeaders($request));
-
-        throw $unauthorizedException;
+        $Exception = new UnauthorizedException();
+        $Exception->responseHeader($this->loginHeaders($request));
+        throw $Exception;
     }
 
     /**
      * Generate the login headers
      *
      * @param \Cake\Http\ServerRequest $request Request object.
-     * @return string[] Headers for logging in.
+     * @return array Headers for logging in.
      */
     public function loginHeaders(ServerRequest $request)
     {
         $realm = $this->getConfig('realm') ?: $request->getEnv('SERVER_NAME');
 
         return [
-            'WWW-Authenticate' => sprintf('Basic realm="%s"', $realm),
+            'WWW-Authenticate' => sprintf('Basic realm="%s"', $realm)
         ];
     }
 }

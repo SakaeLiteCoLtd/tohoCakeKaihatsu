@@ -17,6 +17,7 @@ namespace Cake\Http\Exception;
  */
 class ServiceUnavailableException extends HttpException
 {
+
     /**
      * {@inheritDoc}
      */

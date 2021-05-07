@@ -27,4 +27,5 @@ namespace Cake\Shell;
  */
 class OrmCacheShell extends SchemaCacheShell
 {
+
 }

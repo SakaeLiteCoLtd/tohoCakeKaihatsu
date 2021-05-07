@@ -21,19 +21,20 @@ namespace Cake\Auth;
  */
 class FallbackPasswordHasher extends AbstractPasswordHasher
 {
+
     /**
      * Default config for this object.
      *
      * @var array
      */
     protected $_defaultConfig = [
-        'hashers' => [],
+        'hashers' => []
     ];
 
     /**
      * Holds the list of password hasher objects that will be used
      *
-     * @var \Cake\Auth\AbstractPasswordHasher[]
+     * @var array
      */
     protected $_hashers = [];
 
@@ -61,7 +62,7 @@ class FallbackPasswordHasher extends AbstractPasswordHasher
      * Uses the first password hasher in the list to generate the hash
      *
      * @param string $password Plain text password to hash.
-     * @return string|false Password hash or false
+     * @return string Password hash
      */
     public function hash($password)
     {

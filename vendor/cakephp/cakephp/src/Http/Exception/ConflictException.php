@@ -17,6 +17,7 @@ namespace Cake\Http\Exception;
  */
 class ConflictException extends HttpException
 {
+
     /**
      * {@inheritDoc}
      */

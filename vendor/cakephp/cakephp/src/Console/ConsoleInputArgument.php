@@ -25,6 +25,7 @@ use SimpleXMLElement;
  */
 class ConsoleInputArgument
 {
+
     /**
      * Name of the argument.
      *
@@ -49,7 +50,7 @@ class ConsoleInputArgument
     /**
      * An array of valid choices for this argument.
      *
-     * @var string[]
+     * @var array
      */
     protected $_choices;
 
@@ -59,7 +60,7 @@ class ConsoleInputArgument
      * @param string|array $name The long name of the option, or an array with all the properties.
      * @param string $help The help text for this option
      * @param bool $required Whether this argument is required. Missing required args will trigger exceptions
-     * @param string[] $choices Valid choices for this option.
+     * @param array $choices Valid choices for this option.
      */
     public function __construct($name, $help = '', $required = false, $choices = [])
     {
@@ -152,7 +153,7 @@ class ConsoleInputArgument
      * Check that $value is a valid choice for this argument.
      *
      * @param string $value The choice to validate.
-     * @return true
+     * @return bool
      * @throws \Cake\Console\Exception\ConsoleException
      */
     public function validChoice($value)
@@ -160,7 +161,7 @@ class ConsoleInputArgument
         if (empty($this->_choices)) {
             return true;
         }
-        if (!in_array($value, $this->_choices, true)) {
+        if (!in_array($value, $this->_choices)) {
             throw new ConsoleException(
                 sprintf(
                     '"%s" is not a valid value for %s. Please use one of "%s"',

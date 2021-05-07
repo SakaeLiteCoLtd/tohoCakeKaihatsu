@@ -30,6 +30,7 @@ use Cake\Http\ServerRequest;
  */
 class Dispatcher
 {
+
     use EventDispatcherTrait;
 
     /**

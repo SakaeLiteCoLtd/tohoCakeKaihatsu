@@ -40,6 +40,7 @@ use Cake\Event\EventListenerInterface;
  */
 class Helper implements EventListenerInterface
 {
+
     use InstanceConfigTrait;
 
     /**
@@ -109,7 +110,7 @@ class Helper implements EventListenerInterface
      *
      * @param string $method Method to invoke
      * @param array $params Array of params for the method.
-     * @return mixed|void
+     * @return void
      */
     public function __call($method, $params)
     {
@@ -256,7 +257,7 @@ class Helper implements EventListenerInterface
      *
      * @param array $options Array options/attributes to add a class to
      * @param string|null $class The class name being added.
-     * @param string $key the key to use for class. Defaults to `'class'`.
+     * @param string $key the key to use for class.
      * @return array Array of options with $key set.
      */
     public function addClass(array $options = [], $class = null, $key = 'class')
@@ -291,7 +292,7 @@ class Helper implements EventListenerInterface
             'View.beforeRender' => 'beforeRender',
             'View.afterRender' => 'afterRender',
             'View.beforeLayout' => 'beforeLayout',
-            'View.afterLayout' => 'afterLayout',
+            'View.afterLayout' => 'afterLayout'
         ];
         $events = [];
         foreach ($eventMap as $event => $method) {

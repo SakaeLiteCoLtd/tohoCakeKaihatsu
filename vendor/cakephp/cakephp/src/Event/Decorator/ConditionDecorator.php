@@ -25,6 +25,7 @@ use RuntimeException;
  */
 class ConditionDecorator extends AbstractDecorator
 {
+
     /**
      * {@inheritDoc}
      */

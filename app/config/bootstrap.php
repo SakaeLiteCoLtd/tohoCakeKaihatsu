@@ -43,6 +43,7 @@ use Cake\Log\Log;
 use Cake\Mailer\Email;
 use Cake\Utility\Inflector;
 use Cake\Utility\Security;
+use Cake\Mailer\TransportFactory;//210506追加
 
 /**
  * Uncomment block of code below if you want to use `.env` file during development.
@@ -145,7 +146,8 @@ if (!Configure::read('App.fullBaseUrl')) {
 
 Cache::setConfig(Configure::consume('Cache'));
 ConnectionManager::setConfig(Configure::consume('Datasources'));
-Email::setConfigTransport(Configure::consume('EmailTransport'));
+//Email::setConfigTransport(Configure::consume('EmailTransport'));//210506削除
+TransportFactory::setConfig(Configure::consume('EmailTransport'));//210506追加
 Email::setConfig(Configure::consume('Email'));
 Log::setConfig(Configure::consume('Log'));
 Security::setSalt(Configure::consume('Security.salt'));

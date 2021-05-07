@@ -21,6 +21,7 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class CategoriesFixture extends TestFixture
 {
+
     /**
      * fields property
      *
@@ -32,7 +33,7 @@ class CategoriesFixture extends TestFixture
         'name' => ['type' => 'string', 'null' => false],
         'created' => 'datetime',
         'updated' => 'datetime',
-        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
+        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]]
     ];
 
     /**

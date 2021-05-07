@@ -130,6 +130,7 @@ class ErrorHandlerMiddleware
 
     /**
      * @param \Psr\Http\Message\ResponseInterface $response The response
+     *
      * @return \Psr\Http\Message\ResponseInterface A response
      */
     protected function handleInternalError($response)
@@ -229,12 +230,10 @@ class ErrorHandlerMiddleware
     protected function getMessageForException($exception, $isPrevious = false)
     {
         $message = sprintf(
-            '%s[%s] %s (%s:%s)',
+            '%s[%s] %s',
             $isPrevious ? "\nCaused by: " : '',
             get_class($exception),
-            $exception->getMessage(),
-            $exception->getFile(),
-            $exception->getLine()
+            $exception->getMessage()
         );
         $debug = Configure::read('debug');
 

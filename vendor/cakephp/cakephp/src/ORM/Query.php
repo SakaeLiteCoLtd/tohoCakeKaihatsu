@@ -43,9 +43,9 @@ use RuntimeException;
  * @method \Cake\Collection\CollectionInterface extract($field) Extracts a single column from each row
  * @method mixed max($field, $type = SORT_NUMERIC) Returns the maximum value for a single column in all the results.
  * @method mixed min($field, $type = SORT_NUMERIC) Returns the minimum value for a single column in all the results.
- * @method \Cake\Collection\CollectionInterface groupBy(string|callable $callable) In-memory group all results by the value of a column.
- * @method \Cake\Collection\CollectionInterface indexBy(string|callable $callable) Returns the results indexed by the value of a column.
- * @method \Cake\Collection\CollectionInterface countBy(string|callable $callable) Returns the number of unique values for a column
+ * @method \Cake\Collection\CollectionInterface groupBy(string|callable $field) In-memory group all results by the value of a column.
+ * @method \Cake\Collection\CollectionInterface indexBy(string|callable $field) Returns the results indexed by the value of a column.
+ * @method \Cake\Collection\CollectionInterface countBy(string|callable $field) Returns the number of unique values for a column
  * @method float sumOf(string|callable $field) Returns the sum of all values for a single column
  * @method \Cake\Collection\CollectionInterface shuffle() In-memory randomize the order the results are returned
  * @method \Cake\Collection\CollectionInterface sample($size = 10) In-memory shuffle the results and return a subset of them.
@@ -101,7 +101,7 @@ class Query extends DatabaseQuery implements JsonSerializable, QueryInterface
      * Whether the user select any fields before being executed, this is used
      * to determined if any fields should be automatically be selected.
      *
-     * @var bool|null
+     * @var bool
      */
     protected $_hasFields;
 
@@ -109,7 +109,7 @@ class Query extends DatabaseQuery implements JsonSerializable, QueryInterface
      * Tracks whether or not the original query should include
      * fields from the top level table.
      *
-     * @var bool|null
+     * @var bool
      */
     protected $_autoFields;
 
@@ -124,7 +124,7 @@ class Query extends DatabaseQuery implements JsonSerializable, QueryInterface
      * A callable function that can be used to calculate the total amount of
      * records this query will match when not using `limit`
      *
-     * @var callable|null
+     * @var callable
      */
     protected $_counter;
 
@@ -132,7 +132,7 @@ class Query extends DatabaseQuery implements JsonSerializable, QueryInterface
      * Instance of a class responsible for storing association containments and
      * for eager loading them when this query is executed
      *
-     * @var \Cake\ORM\EagerLoader|null
+     * @var \Cake\ORM\EagerLoader
      */
     protected $_eagerLoader;
 
@@ -228,8 +228,10 @@ class Query extends DatabaseQuery implements JsonSerializable, QueryInterface
      * been added to the query by the first. If you need to change the list after the first call,
      * pass overwrite boolean true which will reset the select clause removing all previous additions.
      *
+     *
+     *
      * @param \Cake\ORM\Table|\Cake\ORM\Association $table The table to use to get an array of columns
-     * @param string[] $excludedFields The un-aliased column names you do not want selected from $table
+     * @param array $excludedFields The un-aliased column names you do not want selected from $table
      * @param bool $overwrite Whether to reset/remove previous selected fields
      * @return Query
      * @throws \InvalidArgumentException If Association|Table is not passed in first argument
@@ -654,7 +656,7 @@ class Query extends DatabaseQuery implements JsonSerializable, QueryInterface
         $result = $this->getEagerLoader()
             ->setMatching($assoc, $builder, [
                 'joinType' => QueryInterface::JOIN_TYPE_LEFT,
-                'fields' => false,
+                'fields' => false
             ])
             ->getMatching();
         $this->_addAssociationsToTypeMap($this->getRepository(), $this->getTypeMap(), $result);
@@ -703,7 +705,7 @@ class Query extends DatabaseQuery implements JsonSerializable, QueryInterface
         $result = $this->getEagerLoader()
             ->setMatching($assoc, $builder, [
                 'joinType' => QueryInterface::JOIN_TYPE_INNER,
-                'fields' => false,
+                'fields' => false
             ])
             ->getMatching();
         $this->_addAssociationsToTypeMap($this->getRepository(), $this->getTypeMap(), $result);
@@ -768,7 +770,7 @@ class Query extends DatabaseQuery implements JsonSerializable, QueryInterface
             ->setMatching($assoc, $builder, [
                 'joinType' => QueryInterface::JOIN_TYPE_LEFT,
                 'fields' => false,
-                'negateMatch' => true,
+                'negateMatch' => true
             ])
             ->getMatching();
         $this->_addAssociationsToTypeMap($this->getRepository(), $this->getTypeMap(), $result);
@@ -874,19 +876,6 @@ class Query extends DatabaseQuery implements JsonSerializable, QueryInterface
         $clone->decorateResults(null, true);
 
         return $clone;
-    }
-
-    /**
-     * Clears the internal result cache and the internal count value from the current
-     * query object.
-     *
-     * @return $this
-     */
-    public function clearResult()
-    {
-        $this->_dirty();
-
-        return $this;
     }
 
     /**
@@ -1116,24 +1105,21 @@ class Query extends DatabaseQuery implements JsonSerializable, QueryInterface
             $repository->dispatchEvent('Model.beforeFind', [
                 $this,
                 new ArrayObject($this->_options),
-                !$this->isEagerLoaded(),
+                !$this->isEagerLoaded()
             ]);
         }
     }
 
     /**
-     * Converts the Node into a SQL string fragment.
-     *
-     * @param \Cake\Database\ValueBinder|null $generator Placeholder generator object
-     * @return string
+     * {@inheritDoc}
      */
-    public function sql(ValueBinder $generator = null)
+    public function sql(ValueBinder $binder = null)
     {
         $this->triggerBeforeFind();
 
         $this->_transformQuery();
 
-        return parent::sql($generator);
+        return parent::sql($binder);
     }
 
     /**
@@ -1355,7 +1341,7 @@ class Query extends DatabaseQuery implements JsonSerializable, QueryInterface
             'contain' => $eagerLoader ? $eagerLoader->getContain() : [],
             'matching' => $eagerLoader ? $eagerLoader->getMatching() : [],
             'extraOptions' => $this->_options,
-            'repository' => $this->_repository,
+            'repository' => $this->_repository
         ];
     }
 
@@ -1405,7 +1391,7 @@ class Query extends DatabaseQuery implements JsonSerializable, QueryInterface
      * By default calling select() will disable auto-fields. You can re-enable
      * auto-fields with enableAutoFields().
      *
-     * @return bool|null The current value. Returns null if neither enabled or disabled yet.
+     * @return bool The current value.
      */
     public function isAutoFieldsEnabled()
     {
@@ -1420,7 +1406,7 @@ class Query extends DatabaseQuery implements JsonSerializable, QueryInterface
      *
      * @deprecated 3.4.0 Use enableAutoFields()/isAutoFieldsEnabled() instead.
      * @param bool|null $value The value to set or null to read the current value.
-     * @return bool|null|$this Either the current value or the query object.
+     * @return bool|$this Either the current value or the query object.
      */
     public function autoFields($value = null)
     {

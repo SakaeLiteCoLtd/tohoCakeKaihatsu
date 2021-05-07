@@ -26,6 +26,7 @@ use Cake\View\Exception\MissingHelperException;
  */
 class HelperRegistry extends ObjectRegistry implements EventDispatcherInterface
 {
+
     use EventDispatcherTrait;
 
     /**
@@ -117,7 +118,7 @@ class HelperRegistry extends ObjectRegistry implements EventDispatcherInterface
      * and Cake\Core\ObjectRegistry::unload()
      *
      * @param string $class The classname that is missing.
-     * @param string|null $plugin The plugin the helper is missing in.
+     * @param string $plugin The plugin the helper is missing in.
      * @return void
      * @throws \Cake\View\Exception\MissingHelperException
      */
@@ -125,7 +126,7 @@ class HelperRegistry extends ObjectRegistry implements EventDispatcherInterface
     {
         throw new MissingHelperException([
             'class' => $class . 'Helper',
-            'plugin' => $plugin,
+            'plugin' => $plugin
         ]);
     }
 

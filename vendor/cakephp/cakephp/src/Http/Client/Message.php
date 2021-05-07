@@ -23,6 +23,7 @@ namespace Cake\Http\Client;
  */
 class Message
 {
+
     /**
      * HTTP 200 code
      *

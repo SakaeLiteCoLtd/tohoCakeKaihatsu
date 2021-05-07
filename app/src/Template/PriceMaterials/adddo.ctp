@@ -1,3 +1,4 @@
+<?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
  use App\myClass\menulists\htmlpriceMaterialmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用

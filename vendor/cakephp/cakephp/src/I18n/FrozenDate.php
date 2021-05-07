@@ -75,7 +75,7 @@ class FrozenDate extends ChronosDate implements JsonSerializable
      * The format to use when formatting a time using `Date::timeAgoInWords()`
      * and the difference is less than `Date::$wordEnd`
      *
-     * @var string[]
+     * @var array
      * @see \Cake\I18n\Date::timeAgoInWords()
      */
     public static $wordAccuracy = [

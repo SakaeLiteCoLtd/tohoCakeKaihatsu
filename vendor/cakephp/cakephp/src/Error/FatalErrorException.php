@@ -19,6 +19,7 @@ use Cake\Core\Exception\Exception;
  */
 class FatalErrorException extends Exception
 {
+
     /**
      * Constructor
      *

@@ -23,6 +23,7 @@ use Cake\Event\Event;
  */
 class ErrorController extends Controller
 {
+
     /**
      * Initialization hook method.
      *

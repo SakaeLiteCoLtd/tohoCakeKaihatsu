@@ -21,6 +21,7 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class DatatypesFixture extends TestFixture
 {
+
     /**
      * @var array
      */
@@ -30,7 +31,7 @@ class DatatypesFixture extends TestFixture
         'floaty' => ['type' => 'float', 'null' => true],
         'small' => ['type' => 'smallinteger', 'null' => true],
         'tiny' => ['type' => 'tinyinteger', 'null' => true],
-        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
+        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]]
     ];
 
     /**

@@ -22,6 +22,7 @@ use PHPUnit\Framework\Constraint\Constraint;
  */
 abstract class ContentsBase extends Constraint
 {
+
     /**
      * @var string
      */
@@ -35,7 +36,7 @@ abstract class ContentsBase extends Constraint
     /**
      * Constructor
      *
-     * @param array $contents Contents
+     * @param int $contents Contents
      * @param string $output Output type
      */
     public function __construct($contents, $output)

@@ -20,6 +20,7 @@ namespace Cake\TestSuite\Constraint\Response;
  */
 class StatusCode extends StatusCodeBase
 {
+
     /**
      * Assertion message
      *
@@ -27,7 +28,7 @@ class StatusCode extends StatusCodeBase
      */
     public function toString()
     {
-        return sprintf('matches response status code `%d`', $this->response->getStatusCode());
+        return sprintf('matches response status code %d', $this->response->getStatusCode());
     }
 
     /**
@@ -38,6 +39,6 @@ class StatusCode extends StatusCodeBase
      */
     public function failureDescription($other)
     {
-        return '`' . $other . '` ' . $this->toString();
+        return $other . ' ' . $this->toString();
     }
 }

@@ -24,6 +24,7 @@ use Cake\Filesystem\File;
  */
 trait StringCompareTrait
 {
+
     /**
      * The base path for output comparisons
      *

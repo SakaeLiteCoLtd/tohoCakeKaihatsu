@@ -7,8 +7,8 @@
     <a href="LICENSE" target="_blank">
         <img alt="Software License" src="https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square">
     </a>
-    <a href="https://travis-ci.com/cakephp/cakephp" target="_blank">
-        <img alt="Build Status" src="https://img.shields.io/travis/com/cakephp/cakephp/master.svg?style=flat-square">
+    <a href="https://travis-ci.org/cakephp/cakephp" target="_blank">
+        <img alt="Build Status" src="https://img.shields.io/travis/cakephp/cakephp/master.svg?style=flat-square">
     </a>
     <a href="https://codecov.io/github/cakephp/cakephp" target="_blank">
         <img alt="Coverage Status" src="https://img.shields.io/codecov/c/github/cakephp/cakephp.svg?style=flat-square">
@@ -76,7 +76,7 @@ tests for CakePHP by doing the following:
 ## Contributing
 
 * [CONTRIBUTING.md](.github/CONTRIBUTING.md) - Quick pointers for contributing to the CakePHP project.
-* [CookBook "Contributing" Section](https://book.cakephp.org/3/en/contributing.html) - Details about contributing to the project.
+* [CookBook "Contributing" Section](https://book.cakephp.org/3.0/en/contributing.html) - Details about contributing to the project.
 
 # Security
 

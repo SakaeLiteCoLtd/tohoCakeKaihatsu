@@ -21,6 +21,7 @@ use Cake\Utility\Hash;
  */
 class PersistenceFailedException extends Exception
 {
+
     /**
      * The entity on which the persistence operation failed
      *

@@ -20,6 +20,7 @@ namespace Cake\TestSuite\Constraint\Console;
  */
 class ContentsRegExp extends ContentsBase
 {
+
     /**
      * Checks if contents contain expected
      *
@@ -47,6 +48,6 @@ class ContentsRegExp extends ContentsBase
      */
     public function failureDescription($other)
     {
-        return '`' . $other . '` ' . $this->toString();
+        return $other . ' ' . $this->toString();
     }
 }

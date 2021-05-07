@@ -30,7 +30,7 @@ use Cake\Core\Exception\Exception;
  * ```
  * <?php
  * return [
- *     'debug' => false,
+ *     'debug' => 0,
  *     'Security' => [
  *         'salt' => 'its-secret'
  *     ],
@@ -40,10 +40,11 @@ use Cake\Core\Exception\Exception;
  * ];
  * ```
  *
- * @see \Cake\Core\Configure::load() for how to load custom configuration files.
+ * @see Cake\Core\Configure::load() for how to load custom configuration files.
  */
 class PhpConfig implements ConfigEngineInterface
 {
+
     use FileConfigTrait;
 
     /**

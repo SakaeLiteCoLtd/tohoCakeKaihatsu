@@ -24,6 +24,7 @@ use Cake\ORM\Table;
  */
 interface LocatorInterface
 {
+
     /**
      * Stores a list of options to be used when instantiating an object
      * with a matching alias.

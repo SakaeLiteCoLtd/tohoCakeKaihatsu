@@ -25,6 +25,7 @@ use finfo;
  */
 class FormData implements Countable
 {
+
     /**
      * Boundary marker.
      *
@@ -230,7 +231,7 @@ class FormData implements Countable
             return 'application/x-www-form-urlencoded';
         }
 
-        return 'multipart/form-data; boundary=' . $this->boundary();
+        return 'multipart/form-data; boundary="' . $this->boundary() . '"';
     }
 
     /**
@@ -249,7 +250,7 @@ class FormData implements Countable
                 $out .= (string)$part;
                 $out .= "\r\n";
             }
-            $out .= "--$boundary--\r\n";
+            $out .= "--$boundary--\r\n\r\n";
 
             return $out;
         }

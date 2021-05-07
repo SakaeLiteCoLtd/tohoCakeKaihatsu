@@ -28,6 +28,7 @@ use RuntimeException;
  */
 class DateTimeWidget implements WidgetInterface
 {
+
     /**
      * Select box widget.
      *
@@ -38,7 +39,7 @@ class DateTimeWidget implements WidgetInterface
     /**
      * List of inputs that can be rendered
      *
-     * @var string[]
+     * @var array
      */
     protected $_selects = [
         'year',
@@ -258,7 +259,7 @@ class DateTimeWidget implements WidgetInterface
 
                 $date = new DateTime();
             } else {
-                /** @var \DateTime $value */
+                /* @var \DateTime $value */
                 $date = clone $value;
             }
         } catch (Exception $e) {
@@ -322,7 +323,7 @@ class DateTimeWidget implements WidgetInterface
             'end' => date('Y', strtotime('+5 years')),
             'order' => 'desc',
             'templateVars' => [],
-            'options' => [],
+            'options' => []
         ];
 
         if (!empty($options['val'])) {
@@ -580,7 +581,7 @@ class DateTimeWidget implements WidgetInterface
         $options += [
             'leadingZeroKey' => true,
             'leadingZeroValue' => true,
-            'interval' => 1,
+            'interval' => 1
         ];
 
         $numbers = [];

@@ -25,6 +25,7 @@ use Cake\View\Form\ContextInterface;
  */
 class BasicWidget implements WidgetInterface
 {
+
     /**
      * StringTemplate instance.
      *
@@ -64,7 +65,7 @@ class BasicWidget implements WidgetInterface
             'val' => null,
             'type' => 'text',
             'escape' => true,
-            'templateVars' => [],
+            'templateVars' => []
         ];
         $data['value'] = $data['val'];
         unset($data['val']);

@@ -1,3 +1,4 @@
+<?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
 /**
  * @var \App\View\AppView $this

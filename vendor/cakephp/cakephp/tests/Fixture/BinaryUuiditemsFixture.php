@@ -21,6 +21,7 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class BinaryUuiditemsFixture extends TestFixture
 {
+
     /**
      * fields property
      *
@@ -30,7 +31,7 @@ class BinaryUuiditemsFixture extends TestFixture
         'id' => ['type' => 'binaryuuid'],
         'name' => ['type' => 'string', 'null' => false],
         'published' => ['type' => 'boolean', 'null' => false],
-        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
+        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]]
     ];
 
     /**

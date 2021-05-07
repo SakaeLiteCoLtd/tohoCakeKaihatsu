@@ -23,6 +23,7 @@ use Cake\Database\ValueBinder;
  */
 class BetweenExpression implements ExpressionInterface, FieldInterface
 {
+
     use ExpressionTypeCasterTrait;
     use FieldTrait;
 
@@ -78,7 +79,7 @@ class BetweenExpression implements ExpressionInterface, FieldInterface
     {
         $parts = [
             'from' => $this->_from,
-            'to' => $this->_to,
+            'to' => $this->_to
         ];
 
         $field = $this->_field;
@@ -99,12 +100,13 @@ class BetweenExpression implements ExpressionInterface, FieldInterface
 
     /**
      * {@inheritDoc}
+     *
      */
-    public function traverse(callable $visitor)
+    public function traverse(callable $callable)
     {
         foreach ([$this->_field, $this->_from, $this->_to] as $part) {
             if ($part instanceof ExpressionInterface) {
-                $visitor($part);
+                $callable($part);
             }
         }
     }

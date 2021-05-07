@@ -39,6 +39,7 @@ use Throwable;
  */
 class Router
 {
+
     /**
      * Have routes been loaded
      *
@@ -58,7 +59,7 @@ class Router
      * Contains the base string that will be applied to all generated URLs
      * For example `https://example.com`
      *
-     * @var string|null
+     * @var string
      */
     protected static $_fullBaseUrl;
 
@@ -129,7 +130,7 @@ class Router
         'Month' => Router::MONTH,
         'Day' => Router::DAY,
         'ID' => Router::ID,
-        'UUID' => Router::UUID,
+        'UUID' => Router::UUID
     ];
 
     /**
@@ -160,7 +161,7 @@ class Router
     /**
      * Default extensions defined with Router::extensions()
      *
-     * @var string[]
+     * @var array
      */
     protected static $_defaultExtensions = [];
 
@@ -419,7 +420,7 @@ class Router
             $requestData[0] += [
                 'controller' => false,
                 'action' => false,
-                'plugin' => null,
+                'plugin' => null
             ];
             $request = new ServerRequest([
                 'params' => $requestData[0],
@@ -646,10 +647,10 @@ class Router
      * - `_name` - Name of route. If you have setup named routes you can use this key
      *   to specify it.
      *
-     * @param string|array|\Psr\Http\Message\UriInterface|null $url An array specifying any of the following:
+     * @param string|array|null $url An array specifying any of the following:
      *   'controller', 'action', 'plugin' additionally, you can provide routed
      *   elements or query string parameters. If string it can be name any valid url
-     *   string or it can be an UriInterface instance.
+     *   string.
      * @param bool $full If true, the full base URL will be prepended to the result.
      *   Default is false.
      * @return string Full translated URL with base path.
@@ -705,8 +706,7 @@ class Router
 
             if (!isset($url['_name'])) {
                 // Copy the current action if the controller is the current one.
-                if (
-                    empty($url['action']) &&
+                if (empty($url['action']) &&
                     (empty($url['controller']) || $params['controller'] === $url['controller'])
                 ) {
                     $url['action'] = $params['action'];
@@ -721,7 +721,7 @@ class Router
                     'plugin' => $params['plugin'],
                     'controller' => $params['controller'],
                     'action' => 'index',
-                    '_ext' => null,
+                    '_ext' => null
                 ];
             }
 
@@ -734,8 +734,6 @@ class Router
 
             $output = static::$_collection->match($url, $context);
         } else {
-            $url = (string)$url;
-
             $plainString = (
                 strpos($url, 'javascript:') === 0 ||
                 strpos($url, 'mailto:') === 0 ||
@@ -771,6 +769,7 @@ class Router
      * ### Usage
      *
      * @see Router::url()
+     *
      * @param string|array|null $url An array specifying any of the following:
      *   'controller', 'action', 'plugin' additionally, you can provide routed
      *   elements or query string parameters. If string it can be name any valid url
@@ -853,9 +852,7 @@ class Router
             $params['bare'],
             $params['requested'],
             $params['return'],
-            $params['isAjax'],
             $params['_Token'],
-            $params['_csrfToken'],
             $params['_matchedRoute'],
             $params['_name']
         );
@@ -944,10 +941,10 @@ class Router
      * A string or an array of valid extensions can be passed to this method.
      * If called without any parameters it will return current list of set extensions.
      *
-     * @param string[]|string|null $extensions List of extensions to be added.
+     * @param array|string|null $extensions List of extensions to be added.
      * @param bool $merge Whether to merge with or override existing extensions.
      *   Defaults to `true`.
-     * @return string[] Array of extensions Router is configured to parse.
+     * @return array Array of extensions Router is configured to parse.
      */
     public static function extensions($extensions = null, $merge = true)
     {
@@ -1013,7 +1010,7 @@ class Router
                         $arr = [$arr];
                     } else {
                         $arr = [
-                            $match[1] => $arr,
+                            $match[1] => $arr
                         ];
                     }
                 }

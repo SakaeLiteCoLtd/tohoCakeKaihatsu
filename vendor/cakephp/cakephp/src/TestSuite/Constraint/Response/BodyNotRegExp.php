@@ -20,6 +20,7 @@ namespace Cake\TestSuite\Constraint\Response;
  */
 class BodyNotRegExp extends BodyRegExp
 {
+
     /**
      * Checks assertion
      *

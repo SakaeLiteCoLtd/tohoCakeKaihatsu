@@ -20,6 +20,7 @@ use Cake\Http\Response as Base;
  */
 class Response extends Base
 {
+
     /**
      * Stub the send() method so headers and output are not sent.
      *
@@ -30,7 +31,7 @@ class Response extends Base
         if ($this->hasHeader('Location') && $this->_status === 200) {
             $this->statusCode(302);
         }
-        $this->_setContentType($this->getType());
+        $this->_setContentType();
 
         return $this;
     }

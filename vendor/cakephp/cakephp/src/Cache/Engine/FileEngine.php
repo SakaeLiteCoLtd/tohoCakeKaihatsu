@@ -33,6 +33,7 @@ use SplFileObject;
  */
 class FileEngine extends CacheEngine
 {
+
     /**
      * Instance of SplFileObject class
      *
@@ -67,7 +68,7 @@ class FileEngine extends CacheEngine
         'path' => null,
         'prefix' => 'cake_',
         'probability' => 100,
-        'serialize' => true,
+        'serialize' => true
     ];
 
     /**
@@ -283,7 +284,7 @@ class FileEngine extends CacheEngine
             }
 
             $path = $path->getRealPath() . DIRECTORY_SEPARATOR;
-            if (!in_array($path, $cleared, true)) {
+            if (!in_array($path, $cleared)) {
                 $this->_clearDirectory($path, $now, $threshold);
                 $cleared[] = $path;
             }
@@ -394,8 +395,7 @@ class FileEngine extends CacheEngine
         if (!$createKey && !$path->isFile()) {
             return false;
         }
-        if (
-            empty($this->_File) ||
+        if (empty($this->_File) ||
             $this->_File->getBasename() !== $key ||
             $this->_File->valid() === false
         ) {

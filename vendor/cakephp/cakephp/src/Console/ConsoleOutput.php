@@ -45,6 +45,7 @@ use InvalidArgumentException;
  */
 class ConsoleOutput
 {
+
     /**
      * Raw output constant - no modification of output text.
      *
@@ -81,9 +82,8 @@ class ConsoleOutput
     protected $_output;
 
     /**
-     * The current output type.
+     * The current output type. Manipulated with ConsoleOutput::outputAs();
      *
-     * @see setOutputAs() For manipulation.
      * @var int
      */
     protected $_outputAs = self::COLOR;
@@ -101,7 +101,7 @@ class ConsoleOutput
         'blue' => 34,
         'magenta' => 35,
         'cyan' => 36,
-        'white' => 37,
+        'white' => 37
     ];
 
     /**
@@ -117,7 +117,7 @@ class ConsoleOutput
         'blue' => 44,
         'magenta' => 45,
         'cyan' => 46,
-        'white' => 47,
+        'white' => 47
     ];
 
     /**
@@ -149,7 +149,7 @@ class ConsoleOutput
         'success' => ['text' => 'green'],
         'comment' => ['text' => 'blue'],
         'question' => ['text' => 'magenta'],
-        'notice' => ['text' => 'cyan'],
+        'notice' => ['text' => 'cyan']
     ];
 
     /**
@@ -164,8 +164,7 @@ class ConsoleOutput
     {
         $this->_output = fopen($stream, 'wb');
 
-        if (
-            (DIRECTORY_SEPARATOR === '\\' && !(bool)env('ANSICON') && env('ConEmuANSI') !== 'ON') ||
+        if ((DIRECTORY_SEPARATOR === '\\' && !(bool)env('ANSICON') && env('ConEmuANSI') !== 'ON') ||
             (function_exists('posix_isatty') && !posix_isatty($this->_output))
         ) {
             $this->_outputAs = self::PLAIN;
@@ -176,7 +175,7 @@ class ConsoleOutput
      * Outputs a single or multiple messages to stdout or stderr. If no parameters
      * are passed, outputs just a newline.
      *
-     * @param string|string[] $message A string or an array of strings to output
+     * @param string|array $message A string or an array of strings to output
      * @param int $newlines Number of newlines to append
      * @return int|bool The number of bytes returned from writing to output.
      */
@@ -221,7 +220,6 @@ class ConsoleOutput
      */
     protected function _replaceTags($matches)
     {
-        /** @var array $style */
         $style = $this->styles($matches['tag']);
         if (empty($style)) {
             return '<' . $matches['tag'] . '>' . $matches['text'] . '</' . $matches['tag'] . '>';
@@ -241,7 +239,7 @@ class ConsoleOutput
             }
         }
 
-        return "\033[" . implode(';', $styleInfo) . 'm' . $matches['text'] . "\033[0m";
+        return "\033[" . implode($styleInfo, ';') . 'm' . $matches['text'] . "\033[0m";
     }
 
     /**
@@ -283,9 +281,9 @@ class ConsoleOutput
      * ```
      *
      * @param string|null $style The style to get or create.
-     * @param array|false|null $definition The array definition of the style to change or create a style
+     * @param array|bool|null $definition The array definition of the style to change or create a style
      *   or false to remove a style.
-     * @return array|true|null If you are getting styles, the style or null will be returned. If you are creating/modifying
+     * @return mixed If you are getting styles, the style or null will be returned. If you are creating/modifying
      *   styles true will be returned.
      */
     public function styles($style = null, $definition = null)

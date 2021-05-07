@@ -17,10 +17,10 @@ namespace Cake\Http\Client;
 // with the deprecated class in this namespace.
 use Cake\Http\Cookie\CookieCollection as CookiesCollection;
 use Cake\Http\Cookie\CookieInterface;
-use Laminas\Diactoros\MessageTrait;
-use Laminas\Diactoros\Stream;
 use Psr\Http\Message\ResponseInterface;
 use RuntimeException;
+use Zend\Diactoros\MessageTrait;
+use Zend\Diactoros\Stream;
 
 /**
  * Implements methods for HTTP responses.
@@ -240,20 +240,10 @@ class Response extends Message implements ResponseInterface
             static::STATUS_CREATED,
             static::STATUS_ACCEPTED,
             static::STATUS_NON_AUTHORITATIVE_INFORMATION,
-            static::STATUS_NO_CONTENT,
+            static::STATUS_NO_CONTENT
         ];
 
         return in_array($this->code, $codes);
-    }
-
-    /**
-     * Check if the response status code was in the 2xx range
-     *
-     * @return bool
-     */
-    public function isSuccess()
-    {
-        return $this->code >= 200 && $this->code <= 299;
     }
 
     /**
@@ -501,7 +491,7 @@ class Response extends Message implements ResponseInterface
             'domain' => $cookie->getDomain(),
             'secure' => $cookie->isSecure(),
             'httponly' => $cookie->isHttpOnly(),
-            'expires' => $cookie->getFormattedExpires(),
+            'expires' => $cookie->getFormattedExpires()
         ];
     }
 
@@ -560,7 +550,7 @@ class Response extends Message implements ResponseInterface
      * For example to get the json data as an object:
      *
      * ```
-     * $body = $response->getJson();
+     * $body = $response->body('json_decode');
      * ```
      *
      * @param callable|null $parser The callback to use to decode
@@ -620,7 +610,7 @@ class Response extends Message implements ResponseInterface
     /**
      * Get the response body as XML decoded data.
      *
-     * @return \SimpleXMLElement|null
+     * @return null|\SimpleXMLElement
      */
     public function getXml()
     {
@@ -630,7 +620,7 @@ class Response extends Message implements ResponseInterface
     /**
      * Get the response body as XML decoded data.
      *
-     * @return \SimpleXMLElement|null
+     * @return null|\SimpleXMLElement
      */
     protected function _getXml()
     {

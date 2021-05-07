@@ -19,8 +19,6 @@ use Cake\Core\Exception\Exception;
  */
 class MissingBehaviorException extends Exception
 {
-    /**
-     * @inheritDoc
-     */
+
     protected $_messageTemplate = 'Behavior class %s could not be found.';
 }

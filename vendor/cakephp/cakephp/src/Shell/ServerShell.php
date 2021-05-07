@@ -23,6 +23,7 @@ use Cake\Core\Configure;
  */
 class ServerShell extends Shell
 {
+
     /**
      * Default ServerHost
      *
@@ -73,7 +74,7 @@ class ServerShell extends Shell
      * or otherwise modify the pre-command flow.
      *
      * @return void
-     * @link https://book.cakephp.org/3/en/console-and-shells.html#hook-methods
+     * @link https://book.cakephp.org/3.0/en/console-and-shells.html#hook-methods
      */
     public function startup()
     {
@@ -163,16 +164,16 @@ class ServerShell extends Shell
             '<warning>[WARN] Don\'t use this in a production environment</warning>',
         ])->addOption('host', [
             'short' => 'H',
-            'help' => 'ServerHost',
+            'help' => 'ServerHost'
         ])->addOption('port', [
             'short' => 'p',
-            'help' => 'ListenPort',
+            'help' => 'ListenPort'
         ])->addOption('ini_path', [
             'short' => 'I',
-            'help' => 'php.ini path',
+            'help' => 'php.ini path'
         ])->addOption('document_root', [
             'short' => 'd',
-            'help' => 'DocumentRoot',
+            'help' => 'DocumentRoot'
         ]);
 
         return $parser;

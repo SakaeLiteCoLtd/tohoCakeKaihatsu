@@ -1,3 +1,11 @@
+<?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策
+/*
+<html>
+  <iframe src="http://localhost:5050/startmenus/menu" width="800" height="1000">
+  </iframe>
+</html>
+*/
+?>
 
 <div class="users form">
   <?= $this->Flash->render() ?>

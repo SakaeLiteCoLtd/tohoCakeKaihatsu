@@ -26,6 +26,7 @@ use Locale;
  */
 class LocaleSelectorFilter extends DispatcherFilter
 {
+
     /**
      * List of valid locales for the request
      *
@@ -57,7 +58,7 @@ class LocaleSelectorFilter extends DispatcherFilter
      */
     public function beforeDispatch(Event $event)
     {
-        /** @var \Cake\Http\ServerRequest $request */
+        /* @var \Cake\Http\ServerRequest $request */
         $request = $event->getData('request');
         $locale = Locale::acceptFromHttp($request->getHeaderLine('Accept-Language'));
 

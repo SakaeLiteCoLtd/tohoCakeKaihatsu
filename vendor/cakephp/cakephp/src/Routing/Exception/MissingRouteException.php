@@ -20,6 +20,7 @@ use Cake\Core\Exception\Exception;
  */
 class MissingRouteException extends Exception
 {
+
     /**
      * {@inheritDoc}
      */

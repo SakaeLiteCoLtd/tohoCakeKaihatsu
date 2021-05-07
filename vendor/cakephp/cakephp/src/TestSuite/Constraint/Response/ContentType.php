@@ -20,6 +20,7 @@ namespace Cake\TestSuite\Constraint\Response;
  */
 class ContentType extends ResponseBase
 {
+
     /**
      * Checks assertion
      *
@@ -43,6 +44,6 @@ class ContentType extends ResponseBase
      */
     public function toString()
     {
-        return 'is set as the Content-Type (`' . $this->response->getType() . '`)';
+        return 'was set as the Content-Type';
     }
 }

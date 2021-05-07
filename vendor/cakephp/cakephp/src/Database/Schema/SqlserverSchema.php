@@ -19,9 +19,7 @@ namespace Cake\Database\Schema;
  */
 class SqlserverSchema extends BaseSchema
 {
-    /**
-     * @var string
-     */
+
     const DEFAULT_SCHEMA_NAME = 'dbo';
 
     /**
@@ -83,9 +81,9 @@ class SqlserverSchema extends BaseSchema
     protected function _convertColumn($col, $length = null, $precision = null, $scale = null)
     {
         $col = strtolower($col);
-        $length = $length !== null ? (int)$length : $length;
-        $precision = $precision !== null ? (int)$precision : $precision;
-        $scale = $scale !== null ? (int)$scale : $scale;
+        $length = (int)$length;
+        $precision = (int)$precision;
+        $scale = (int)$scale;
 
         if (in_array($col, ['date', 'time'])) {
             return ['type' => $col, 'length' => null];
@@ -109,8 +107,7 @@ class SqlserverSchema extends BaseSchema
         if ($col === 'bit') {
             return ['type' => TableSchema::TYPE_BOOLEAN, 'length' => null];
         }
-        if (
-            strpos($col, 'numeric') !== false ||
+        if (strpos($col, 'numeric') !== false ||
             strpos($col, 'money') !== false ||
             strpos($col, 'decimal') !== false
         ) {
@@ -142,11 +139,6 @@ class SqlserverSchema extends BaseSchema
         }
 
         if ($col === 'image' || strpos($col, 'binary') !== false) {
-            // -1 is the value for MAX which we treat as a 'long' binary
-            if ($length == -1) {
-                $length = TableSchema::LENGTH_LONG;
-            }
-
             return ['type' => TableSchema::TYPE_BINARY, 'length' => $length];
         }
 
@@ -261,14 +253,14 @@ class SqlserverSchema extends BaseSchema
         if ($type === TableSchema::CONSTRAINT_PRIMARY || $type === TableSchema::CONSTRAINT_UNIQUE) {
             $schema->addConstraint($name, [
                 'type' => $type,
-                'columns' => $columns,
+                'columns' => $columns
             ]);
 
             return;
         }
         $schema->addIndex($name, [
             'type' => $type,
-            'columns' => $columns,
+            'columns' => $columns
         ]);
     }
 
@@ -317,7 +309,7 @@ class SqlserverSchema extends BaseSchema
     {
         $parent = parent::_foreignOnClause($on);
 
-        return $parent === 'RESTRICT' ? parent::_foreignOnClause(TableSchema::ACTION_NO_ACTION) : $parent;
+        return $parent === 'RESTRICT' ? parent::_foreignOnClause(TableSchema::ACTION_SET_NULL) : $parent;
     }
 
     /**
@@ -379,10 +371,8 @@ class SqlserverSchema extends BaseSchema
         }
 
         if ($data['type'] === TableSchema::TYPE_BINARY) {
-            if (
-                !isset($data['length'])
-                || in_array($data['length'], [TableSchema::LENGTH_MEDIUM, TableSchema::LENGTH_LONG], true)
-            ) {
+            if (!isset($data['length'])
+                || in_array($data['length'], [TableSchema::LENGTH_MEDIUM, TableSchema::LENGTH_LONG], true)) {
                 $data['length'] = 'MAX';
             }
 
@@ -395,8 +385,7 @@ class SqlserverSchema extends BaseSchema
             }
         }
 
-        if (
-            $data['type'] === TableSchema::TYPE_STRING ||
+        if ($data['type'] === TableSchema::TYPE_STRING ||
             ($data['type'] === TableSchema::TYPE_TEXT && $data['length'] === TableSchema::LENGTH_TINY)
         ) {
             $type = ' NVARCHAR';
@@ -421,8 +410,7 @@ class SqlserverSchema extends BaseSchema
             $out .= '(' . (int)$data['precision'] . ')';
         }
 
-        if (
-            $data['type'] === TableSchema::TYPE_DECIMAL &&
+        if ($data['type'] === TableSchema::TYPE_DECIMAL &&
             (isset($data['length']) || isset($data['precision']))
         ) {
             $out .= '(' . (int)$data['length'] . ',' . (int)$data['precision'] . ')';
@@ -432,8 +420,7 @@ class SqlserverSchema extends BaseSchema
             $out .= ' NOT NULL';
         }
 
-        if (
-            isset($data['default']) &&
+        if (isset($data['default']) &&
             in_array($data['type'], [TableSchema::TYPE_TIMESTAMP, TableSchema::TYPE_DATETIME]) &&
             strtolower($data['default']) === 'current_timestamp'
         ) {
@@ -574,7 +561,7 @@ class SqlserverSchema extends BaseSchema
     {
         $name = $this->_driver->quoteIdentifier($schema->name());
         $queries = [
-            sprintf('DELETE FROM %s', $name),
+            sprintf('DELETE FROM %s', $name)
         ];
 
         // Restart identity sequences

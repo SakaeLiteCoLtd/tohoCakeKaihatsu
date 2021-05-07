@@ -20,6 +20,7 @@ namespace Cake\TestSuite\Constraint\Response;
  */
 class BodyEmpty extends ResponseBase
 {
+
     /**
      * Checks assertion
      *

@@ -28,6 +28,7 @@ use RuntimeException;
  */
 class SubjectFilterDecorator extends AbstractDecorator
 {
+
     /**
      * {@inheritDoc}
      */

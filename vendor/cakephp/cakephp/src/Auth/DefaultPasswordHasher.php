@@ -19,6 +19,7 @@ namespace Cake\Auth;
  */
 class DefaultPasswordHasher extends AbstractPasswordHasher
 {
+
     /**
      * Default config for this object.
      *
@@ -33,15 +34,15 @@ class DefaultPasswordHasher extends AbstractPasswordHasher
      */
     protected $_defaultConfig = [
         'hashType' => PASSWORD_DEFAULT,
-        'hashOptions' => [],
+        'hashOptions' => []
     ];
 
     /**
      * Generates password hash.
      *
      * @param string $password Plain text password to hash.
-     * @return string|false Password hash or false on failure
-     * @link https://book.cakephp.org/3/en/controllers/components/authentication.html#hashing-passwords
+     * @return bool|string Password hash or false on failure
+     * @link https://book.cakephp.org/3.0/en/controllers/components/authentication.html#hashing-passwords
      */
     public function hash($password)
     {

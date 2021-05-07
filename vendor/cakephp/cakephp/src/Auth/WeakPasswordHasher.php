@@ -25,13 +25,14 @@ use Cake\Utility\Security;
  */
 class WeakPasswordHasher extends AbstractPasswordHasher
 {
+
     /**
      * Default config for this object.
      *
      * @var array
      */
     protected $_defaultConfig = [
-        'hashType' => null,
+        'hashType' => null
     ];
 
     /**

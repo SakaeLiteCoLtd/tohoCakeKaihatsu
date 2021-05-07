@@ -10,6 +10,9 @@ class AppController extends Controller
   {
       parent::initialize();
 
+      $response =  $this->getResponse()->withDisabledCache();
+      $this->setResponse($response);
+      
       $this->loadComponent('RequestHandler');
       $this->loadComponent('Flash');
       $this->loadComponent('Auth', [

@@ -25,6 +25,7 @@ use Cake\Event\EventDispatcherInterface;
  */
 trait ViewVarsTrait
 {
+
     /**
      * The name of default View class.
      *
@@ -34,13 +35,10 @@ trait ViewVarsTrait
     public $viewClass;
 
     /**
-     * Variables for the view.
-     *
-     * Deprecated: This property will be removed in 4.x.
-     * Inside controller context use `$this->set()` instead, also see `$this->viewBuilder()->getVar()`.
-     * In view context it will be a protected property `View::$viewVars`.
+     * Variables for the view
      *
      * @var array
+     * @deprecated 3.7.0 Use `$this->set()` instead, also see `$this->viewBuilder()->getVar()`.
      */
     public $viewVars = [];
 

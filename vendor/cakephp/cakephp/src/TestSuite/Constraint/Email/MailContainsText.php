@@ -23,9 +23,6 @@ use Cake\Mailer\Email;
  */
 class MailContainsText extends MailContains
 {
-    /**
-     * @inheritDoc
-     */
     protected $type = Email::MESSAGE_TEXT;
 
     /**

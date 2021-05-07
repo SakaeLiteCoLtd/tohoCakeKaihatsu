@@ -21,11 +21,12 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class CounterCacheCommentsFixture extends TestFixture
 {
+
     public $fields = [
         'id' => ['type' => 'integer'],
         'title' => ['type' => 'string', 'length' => 255],
         'user_id' => ['type' => 'integer', 'null' => true],
-        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
+        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]]
     ];
 
     public $records = [

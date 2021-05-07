@@ -44,7 +44,7 @@ class PluginCollection implements Iterator, Countable
     /**
      * Names of plugins
      *
-     * @var string[]
+     * @var array
      */
     protected $names = [];
 

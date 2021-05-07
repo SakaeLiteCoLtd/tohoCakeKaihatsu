@@ -27,6 +27,7 @@ use Cake\Database\ValueBinder;
  */
 class IdentifierExpression implements ExpressionInterface
 {
+
     /**
      * Holds the identifier string
      *
@@ -77,9 +78,13 @@ class IdentifierExpression implements ExpressionInterface
     }
 
     /**
-     * @inheritDoc
+     * This method is a no-op, this is a leaf type of expression,
+     * hence there is nothing to traverse
+     *
+     * @param callable $callable The callable to traverse with.
+     * @return void
      */
-    public function traverse(callable $visitor)
+    public function traverse(callable $callable)
     {
     }
 }

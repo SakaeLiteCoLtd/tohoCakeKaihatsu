@@ -14,7 +14,6 @@
  */
 namespace Cake\Network;
 
-use Cake\Core\Exception\Exception as CakeException;
 use Cake\Core\InstanceConfigTrait;
 use Cake\Network\Exception\SocketException;
 use Cake\Validation\Validation;
@@ -47,7 +46,7 @@ class Socket
         'host' => 'localhost',
         'protocol' => 'tcp',
         'port' => 80,
-        'timeout' => 30,
+        'timeout' => 30
     ];
 
     /**
@@ -162,14 +161,8 @@ class Socket
         }
 
         set_error_handler([$this, '_connectionErrorHandler']);
-        $remoteSocketTarget = $scheme . $this->_config['host'];
-        $port = (int)$this->_config['port'];
-        if ($port > 0) {
-            $remoteSocketTarget .= ':' . $port;
-        }
-
-        $this->connection = $this->_getStreamSocketClient(
-            $remoteSocketTarget,
+        $this->connection = stream_socket_client(
+            $scheme . $this->_config['host'] . ':' . $this->_config['port'],
             $errNum,
             $errStr,
             $this->_config['timeout'],
@@ -194,29 +187,6 @@ class Socket
         }
 
         return $this->connected;
-    }
-
-    /**
-     * Create a stream socket client. Mock utility.
-     *
-     * @param string $remoteSocketTarget remote socket
-     * @param int $errNum error number
-     * @param string $errStr error string
-     * @param int $timeout timeout
-     * @param int $connectAs flags
-     * @param resource $context context
-     * @return bool|resource
-     */
-    protected function _getStreamSocketClient($remoteSocketTarget, &$errNum, &$errStr, $timeout, $connectAs, $context)
-    {
-        return stream_socket_client(
-            $remoteSocketTarget,
-            $errNum,
-            $errStr,
-            $timeout,
-            $connectAs,
-            $context
-        );
     }
 
     /**
@@ -272,7 +242,7 @@ class Socket
     /**
      * Get the connection context.
      *
-     * @return array|null Null when there is no connection, an array when there is.
+     * @return null|array Null when there is no connection, an array when there is.
      */
     public function context()
     {
@@ -497,9 +467,6 @@ class Socket
         }
 
         try {
-            if ($this->connection === null) {
-                throw new CakeException('You must call connect() first.');
-            }
             $enableCryptoResult = stream_socket_enable_crypto($this->connection, $enable, $method);
         } catch (Exception $e) {
             $this->setLastError(null, $e->getMessage());

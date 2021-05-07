@@ -20,13 +20,13 @@ $this->assign('templateName', 'missing_cell_view.ctp');
 $this->assign('title', 'Missing Cell View');
 
 $this->start('subheading');
-printf('The view for <em>%sCell</em> was not be found.', h($name));
+printf('The view for <em>%sCell</em> was not be found.', h(Inflector::camelize($name)));
 $this->end();
 
 $this->start('file');
 ?>
 <p>
-    Confirm you have created the file: "<?= h($file) ?>"
+    Confirm you have created the file: "<?= h($file . $this->_ext) ?>"
     in one of the following paths:
 </p>
 <ul>
@@ -36,7 +36,7 @@ $this->start('file');
         if (strpos($path, CORE_PATH) !== false) {
             continue;
         }
-        echo sprintf('<li>%sCell/%s/%s</li>', h($path), h($name), h($file));
+        echo sprintf('<li>%sCell/%s/%s</li>', h($path), h($name), h($file . $this->_ext));
     endforeach;
 ?>
 </ul>

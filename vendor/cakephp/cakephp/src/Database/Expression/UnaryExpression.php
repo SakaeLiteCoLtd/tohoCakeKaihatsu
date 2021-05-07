@@ -22,17 +22,16 @@ use Cake\Database\ValueBinder;
  */
 class UnaryExpression implements ExpressionInterface
 {
+
     /**
      * Indicates that the operation is in pre-order
      *
-     * @var int
      */
     const PREFIX = 0;
 
     /**
      * Indicates that the operation is in post-order
      *
-     * @var int
      */
     const POSTFIX = 1;
 
@@ -93,12 +92,13 @@ class UnaryExpression implements ExpressionInterface
 
     /**
      * {@inheritDoc}
+     *
      */
-    public function traverse(callable $visitor)
+    public function traverse(callable $callable)
     {
         if ($this->_value instanceof ExpressionInterface) {
-            $visitor($this->_value);
-            $this->_value->traverse($visitor);
+            $callable($this->_value);
+            $this->_value->traverse($callable);
         }
     }
 

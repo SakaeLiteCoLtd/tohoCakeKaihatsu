@@ -1,5 +1,4 @@
-<?php
-declare(strict_types=1);
+<?php declare(strict_types = 1);
 
 namespace Cake\PHPStan;
 
@@ -10,14 +9,10 @@ use PHPStan\Type\Type;
 
 class TableFindByPropertyMethodReflection implements MethodReflection
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $name;
 
-    /**
-     * @var \PHPStan\Reflection\ClassReflection
-     */
+    /** @var \PHPStan\Reflection\ClassReflection */
     private $declaringClass;
 
     public function __construct(string $name, ClassReflection $declaringClass)
@@ -71,6 +66,6 @@ class TableFindByPropertyMethodReflection implements MethodReflection
 
     public function getReturnType(): Type
     {
-        return new ObjectType('Cake\ORM\Query');
+        return new ObjectType('\Cake\ORM\Query');
     }
 }

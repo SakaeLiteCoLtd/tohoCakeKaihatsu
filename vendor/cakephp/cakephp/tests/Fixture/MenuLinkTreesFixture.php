@@ -23,6 +23,7 @@ use Cake\TestSuite\Fixture\TestFixture;
  */
 class MenuLinkTreesFixture extends TestFixture
 {
+
     /**
      * fields property
      *
@@ -36,7 +37,7 @@ class MenuLinkTreesFixture extends TestFixture
         'parent_id' => 'integer',
         'url' => ['type' => 'string', 'null' => false],
         'title' => ['type' => 'string', 'null' => false],
-        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]],
+        '_constraints' => ['primary' => ['type' => 'primary', 'columns' => ['id']]]
     ];
 
     /**

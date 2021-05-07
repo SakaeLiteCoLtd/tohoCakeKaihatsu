@@ -21,10 +21,11 @@ use Cake\Datasource\EntityInterface;
  */
 class IsUnique
 {
+
     /**
      * The list of fields to check
      *
-     * @var string[]
+     * @var array
      */
     protected $_fields;
 
@@ -44,7 +45,7 @@ class IsUnique
      *   multi-column unique rules. By default this is `true` to emulate how SQL UNIQUE
      *   keys work.
      *
-     * @param string[] $fields The list of fields to check uniqueness for
+     * @param array $fields The list of fields to check uniqueness for
      * @param array $options The additional options for this rule.
      */
     public function __construct(array $fields, array $options = [])

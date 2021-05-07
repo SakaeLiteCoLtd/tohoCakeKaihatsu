@@ -21,8 +21,6 @@ use Cake\Core\Exception\Exception;
  */
 class MissingCellException extends Exception
 {
-    /**
-     * @inheritDoc
-     */
+
     protected $_messageTemplate = 'Cell class %s is missing.';
 }

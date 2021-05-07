@@ -24,6 +24,7 @@ use Cake\Cache\CacheEngine;
  */
 class XcacheEngine extends CacheEngine
 {
+
     /**
      * The default config used unless overridden by runtime configuration
      *
@@ -45,7 +46,7 @@ class XcacheEngine extends CacheEngine
         'prefix' => null,
         'probability' => 100,
         'PHP_AUTH_USER' => 'user',
-        'PHP_AUTH_PW' => 'password',
+        'PHP_AUTH_PW' => 'password'
     ];
 
     /**
@@ -124,7 +125,7 @@ class XcacheEngine extends CacheEngine
      *
      * @param string $key Identifier for the data
      * @param int $offset How much to increment
-     * @return int|false New incremented value, false otherwise
+     * @return bool|int New incremented value, false otherwise
      */
     public function increment($key, $offset = 1)
     {
@@ -139,7 +140,7 @@ class XcacheEngine extends CacheEngine
      *
      * @param string $key Identifier for the data
      * @param int $offset How much to subtract
-     * @return int|false New decremented value, false otherwise
+     * @return bool|int New decremented value, false otherwise
      */
     public function decrement($key, $offset = 1)
     {
@@ -186,7 +187,7 @@ class XcacheEngine extends CacheEngine
      * If the group initial value was not found, then it initializes
      * the group accordingly.
      *
-     * @return string[]
+     * @return array
      */
     public function groups()
     {

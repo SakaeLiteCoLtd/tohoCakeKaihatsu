@@ -25,6 +25,7 @@ use SimpleXMLElement;
  */
 class ConsoleInputOption
 {
+
     /**
      * Name of the option
      *
@@ -56,7 +57,7 @@ class ConsoleInputOption
     /**
      * Default value for the option
      *
-     * @var string|bool
+     * @var mixed
      */
     protected $_default;
 
@@ -70,7 +71,7 @@ class ConsoleInputOption
     /**
      * An array of choices for the option.
      *
-     * @var string[]
+     * @var array
      */
     protected $_choices;
 
@@ -81,8 +82,8 @@ class ConsoleInputOption
      * @param string $short The short alias for this option
      * @param string $help The help text for this option
      * @param bool $boolean Whether this option is a boolean option. Boolean options don't consume extra tokens
-     * @param string|bool $default The default value for this option.
-     * @param string[] $choices Valid choices for this option.
+     * @param string $default The default value for this option.
+     * @param array $choices Valid choices for this option.
      * @param bool $multiple Whether this option can accept multiple value definition.
      * @throws \Cake\Console\Exception\ConsoleException
      */
@@ -183,7 +184,7 @@ class ConsoleInputOption
     /**
      * Get the default value for this option
      *
-     * @return string|bool
+     * @return mixed
      */
     public function defaultValue()
     {
@@ -213,8 +214,8 @@ class ConsoleInputOption
     /**
      * Check that a value is a valid choice for this option.
      *
-     * @param string|bool $value The choice to validate.
-     * @return true
+     * @param string $value The choice to validate.
+     * @return bool
      * @throws \Cake\Console\Exception\ConsoleException
      */
     public function validChoice($value)
@@ -222,7 +223,7 @@ class ConsoleInputOption
         if (empty($this->_choices)) {
             return true;
         }
-        if (!in_array($value, $this->_choices, true)) {
+        if (!in_array($value, $this->_choices)) {
             throw new ConsoleException(
                 sprintf(
                     '"%s" is not a valid value for --%s. Please use one of "%s"',

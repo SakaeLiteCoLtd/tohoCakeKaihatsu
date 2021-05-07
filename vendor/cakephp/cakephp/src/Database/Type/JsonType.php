@@ -72,7 +72,7 @@ class JsonType extends Type implements TypeInterface, BatchCastingInterface
      *
      * @param mixed $value The value to convert.
      * @param \Cake\Database\Driver $driver The driver instance to convert with.
-     * @return string|array|null
+     * @return string|null|array
      */
     public function toPHP($value, Driver $driver)
     {
@@ -110,7 +110,7 @@ class JsonType extends Type implements TypeInterface, BatchCastingInterface
     }
 
     /**
-     * Marshals request data into a JSON compatible structure.
+     * Marshalls request data into a JSON compatible structure.
      *
      * @param mixed $value The value to convert.
      * @return mixed Converted value.

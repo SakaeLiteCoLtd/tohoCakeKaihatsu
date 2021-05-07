@@ -21,6 +21,7 @@ use Cake\View\Form\ContextInterface;
  */
 interface WidgetInterface
 {
+
     /**
      * Converts the $data into one or many HTML elements.
      *
@@ -35,7 +36,7 @@ interface WidgetInterface
      * this widget. Fields are in the form of Model[field][suffix]
      *
      * @param array $data The data to render.
-     * @return string[] Array of fields to secure.
+     * @return array Array of fields to secure.
      */
     public function secureFields(array $data);
 }
