@@ -7,17 +7,12 @@
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
-
- $i = 1;
 ?>
-<?php
-     echo $htmllogin;
-?>
-<br><br>
+<br>
 <?php
      echo $htmlkensahyoukadou;
 ?>
-
 <?php
 $this->layout = false;
+echo $this->Html->css('kensahyou');
 ?>

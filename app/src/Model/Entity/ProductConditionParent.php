@@ -8,6 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $product_id
+ * @property int $machine_num
  * @property int $version
  * @property \Cake\I18n\FrozenTime $start_datetime
  * @property \Cake\I18n\FrozenTime $finish_datetime
@@ -35,6 +36,7 @@ class ProductConditionParent extends Entity
      */
     protected $_accessible = [
         'product_id' => true,
+        'machine_num' => true,
         'version' => true,
         'start_datetime' => true,
         'finish_datetime' => true,

@@ -21,6 +21,7 @@
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('product_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('machine_num') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('version') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('start_datetime') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('finish_datetime') ?></th>
@@ -38,6 +39,7 @@
             <tr>
                 <td><?= $this->Number->format($productConditionParent->id) ?></td>
                 <td><?= $productConditionParent->has('product') ? $this->Html->link($productConditionParent->product->name, ['controller' => 'Products', 'action' => 'view', $productConditionParent->product->id]) : '' ?></td>
+                <td><?= $this->Number->format($productConditionParent->machine_num) ?></td>
                 <td><?= $this->Number->format($productConditionParent->version) ?></td>
                 <td><?= h($productConditionParent->start_datetime) ?></td>
                 <td><?= h($productConditionParent->finish_datetime) ?></td>

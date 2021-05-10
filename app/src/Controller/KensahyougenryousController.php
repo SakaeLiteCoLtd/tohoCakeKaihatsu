@@ -6,9 +6,17 @@ use Cake\Datasource\ConnectionManager;//トランザクション
 use Cake\Core\Exception\Exception;//トランザクション
 use Cake\Core\Configure;//トランザクション
 use Cake\ORM\TableRegistry;//独立したテーブルを扱う
+use Cake\Event\Event;
 
 class KensahyougenryousController extends AppController
 {
+
+  	public function beforeFilter(Event $event){
+  		parent::beforeFilter($event);
+
+  		// 認証なしでアクセスできるアクションの指定
+  		$this->Auth->allow(["addformpre","addform","addcomfirm"]);
+  	}
 
       public function initialize()
     {
@@ -17,59 +25,89 @@ class KensahyougenryousController extends AppController
      $this->Users = TableRegistry::get('Users');
      $this->Menus = TableRegistry::get('Menus');
      $this->Groups = TableRegistry::get('Groups');
+     $this->Products = TableRegistry::get('Products');
     }
 
-    public function top()
+    public function addformpre()
     {
-      return $this->redirect(
-       ['controller' => 'Startmenus', 'action' => 'menu']
-      );
-    }
-
-    public function logout()
-    {
-      return $this->redirect($this->Auth->logout());
-    }
-
-    public function index()
-    {
-      $companies = $this->Companies->find()->where(['delete_flag' => 0]);
-      $companies = $this->paginate($companies);
-      $this->set(compact('companies'));
-
-      $session = $this->request->getSession();
-      $datasession = $session->read();
-/*
-      $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
-      ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "会社"])->toArray();
-
-      if(count($Groups) < 1){
-        return $this->redirect(
-         ['controller' => 'Startmenus', 'action' => 'menu']
-        );
-      }
-*/
-    }
-
-    public function view($id = null)
-    {
-        $company = $this->Companies->get($id, [
-            'contain' => []
-        ]);
-
-        $this->set('company', $company);
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
     }
 
     public function addform()
     {
-      $company = $this->Companies->newEntity();
-      $this->set('company', $company);
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->getData();
+
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+
+      $product_code = $data["product_code"];
+      $this->set('product_code', $product_code);
+
+      if(isset($data["genryoutuika"])){//原料追加ボタン
+
+
+
+      }elseif(isset($data["seikeikituika"])){//成形機追加ボタン
+
+        $tuikaseikeiki = $data["tuikaseikeiki"] + 1;
+        $this->set('tuikaseikeiki', $tuikaseikeiki);
+
+        for($j=1; $j<=$tuikaseikeiki; $j++){
+
+          if(isset($data['max'.$j])){
+            ${"max".$j} = $data['max'.$j];
+          }else{
+            ${"max".$j} = 1;
+          }
+
+          for($i=1; $i<=${"max".$j}; $i++){
+
+            if(isset($data["product_code".$j.$i])){
+              ${"product_code".$j.$i} = $data["product_code".$j.$i];
+              $this->set('product_code'.$j.$i,${"product_code".$j.$i});
+            }else{
+              ${"product_code".$j.$i} = "";
+              $this->set('product_code'.$j.$i,${"product_code".$j.$i});
+            }
+
+          }
+
+        }
+
+      }elseif(isset($data["kakuninn"])){//確認ボタン
+
+        return $this->redirect(['action' => 'addcomfirm',
+        's' => ['data' => "aaa"]]);
+
+      }else{//最初にこの画面に来た時
+
+        $i = $j = 1;
+        $tuikaseikeiki = 1;
+        $this->set('tuikaseikeiki', $tuikaseikeiki);
+        ${"product_code".$j.$i} = "";
+        $this->set('product_code'.$j.$i,${"product_code".$j.$i});
+
+      }
+
     }
 
     public function addcomfirm()
     {
-      $company = $this->Companies->newEntity();
-      $this->set('company', $company);
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $Data=$this->request->query('s');
+      $this->set('Data',$Data);
+
+      echo "<pre>";
+      print_r($Data);
+      echo "</pre>";
+
     }
 
     public function adddo()

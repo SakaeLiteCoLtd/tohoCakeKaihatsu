@@ -11,6 +11,8 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\ProductsTable|\Cake\ORM\Association\BelongsTo $Products
  * @property \App\Model\Table\ProductConditonChildrenTable|\Cake\ORM\Association\HasMany $ProductConditonChildren
+ * @property |\Cake\ORM\Association\HasMany $ShotWorks
+ * @property |\Cake\ORM\Association\HasMany $ShotdataBases
  *
  * @method \App\Model\Entity\ProductConditionParent get($primaryKey, $options = [])
  * @method \App\Model\Entity\ProductConditionParent newEntity($data = null, array $options = [])
@@ -45,6 +47,12 @@ class ProductConditionParentsTable extends Table
         $this->hasMany('ProductConditonChildren', [
             'foreignKey' => 'product_condition_parent_id'
         ]);
+        $this->hasMany('ShotWorks', [
+            'foreignKey' => 'product_condition_parent_id'
+        ]);
+        $this->hasMany('ShotdataBases', [
+            'foreignKey' => 'product_condition_parent_id'
+        ]);
     }
 
     /**
@@ -58,6 +66,11 @@ class ProductConditionParentsTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
+
+        $validator
+            ->integer('machine_num')
+            ->requirePresence('machine_num', 'create')
+            ->notEmpty('machine_num');
 
         $validator
             ->integer('version')

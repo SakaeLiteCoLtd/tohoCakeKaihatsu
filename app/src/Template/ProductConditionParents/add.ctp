@@ -20,6 +20,7 @@
         <legend><?= __('Add Product Condition Parent') ?></legend>
         <?php
             echo $this->Form->control('product_id', ['options' => $products]);
+            echo $this->Form->control('machine_num');
             echo $this->Form->control('version');
             echo $this->Form->control('start_datetime');
             echo $this->Form->control('finish_datetime');

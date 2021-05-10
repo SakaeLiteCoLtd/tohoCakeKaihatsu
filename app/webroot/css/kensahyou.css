@@ -1,0 +1,17 @@
+table {
+  margin-left: auto;
+  margin-right: auto;
+  word-break: break-all;
+  text-align: center;
+  padding: 0.5625rem 0.625rem;
+  border-collapse:collapse;		/*セル同士の間に隙間を空けない*/
+}
+
+td {
+  border: 1px solid black;
+  height: 40px;
+}
+
+input[type="text"] {
+  width: 80%;
+}

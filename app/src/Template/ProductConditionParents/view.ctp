@@ -29,6 +29,10 @@
             <td><?= $this->Number->format($productConditionParent->id) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('Machine Num') ?></th>
+            <td><?= $this->Number->format($productConditionParent->machine_num) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Version') ?></th>
             <td><?= $this->Number->format($productConditionParent->version) ?></td>
         </tr>
