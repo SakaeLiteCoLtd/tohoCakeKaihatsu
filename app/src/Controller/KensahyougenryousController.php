@@ -26,6 +26,7 @@ class KensahyougenryousController extends AppController
      $this->Menus = TableRegistry::get('Menus');
      $this->Groups = TableRegistry::get('Groups');
      $this->Products = TableRegistry::get('Products');
+     $this->Customers = TableRegistry::get('Customers');
     }
 
     public function addformpre()
@@ -47,8 +48,8 @@ class KensahyougenryousController extends AppController
 */
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
-/*
-      $Products= $this->Products->find()->contain(["Menus"])->where(['product_code' => $product_code])->toArray();
+
+      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
 
       if(isset($Products[0])){
 
@@ -61,7 +62,7 @@ class KensahyougenryousController extends AppController
         's' => ['mess' => "製品「".$product_code."」は存在しません。"]]);
 
       }
-*/
+
       if(isset($data["genryoutuika"])){//原料追加ボタン
 
         if(!isset($data["tuikaseikeiki"])){//成形機の追加前
