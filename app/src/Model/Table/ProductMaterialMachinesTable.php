@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * ProductMaterialMachines Model
  *
- * @property \App\Model\Table\ProductMaterialParentsTable|\Cake\ORM\Association\BelongsTo $ProductMaterialParents
+ * @property |\Cake\ORM\Association\BelongsTo $ProductConditionParents
  * @property \App\Model\Table\ProductMachineMaterialsTable|\Cake\ORM\Association\HasMany $ProductMachineMaterials
  *
  * @method \App\Model\Entity\ProductMaterialMachine get($primaryKey, $options = [])
@@ -38,8 +38,8 @@ class ProductMaterialMachinesTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('ProductMaterialParents', [
-            'foreignKey' => 'product_material_parent_id',
+        $this->belongsTo('ProductConditionParents', [
+            'foreignKey' => 'product_condition_parent_id',
             'joinType' => 'INNER'
         ]);
         $this->hasMany('ProductMachineMaterials', [
@@ -105,7 +105,7 @@ class ProductMaterialMachinesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['product_material_parent_id'], 'ProductMaterialParents'));
+        $rules->add($rules->existsIn(['product_condition_parent_id'], 'ProductConditionParents'));
 
         return $rules;
     }

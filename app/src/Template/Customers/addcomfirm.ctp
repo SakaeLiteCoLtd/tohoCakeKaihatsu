@@ -17,8 +17,6 @@
 <?= $this->Form->create($customer, ['url' => ['action' => 'adddo']]) ?>
 
 <?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$this->request->getData('name'), 'label'=>false)) ?>
-<?= $this->Form->control('office', array('type'=>'hidden', 'value'=>$this->request->getData('office'), 'label'=>false)) ?>
-<?= $this->Form->control('department', array('type'=>'hidden', 'value'=>$this->request->getData('department'), 'label'=>false)) ?>
 <?= $this->Form->control('tel', array('type'=>'hidden', 'value'=>$this->request->getData('tel'), 'label'=>false)) ?>
 <?= $this->Form->control('fax', array('type'=>'hidden', 'value'=>$this->request->getData('fax'), 'label'=>false)) ?>
 <?= $this->Form->control('address', array('type'=>'hidden', 'value'=>$this->request->getData('address'), 'label'=>false)) ?>
@@ -46,23 +44,13 @@
       <table>
       <tr>
         <td width="280"><strong>顧客名</strong></td>
-        <td width="280"><strong>支店名</strong></td>
+        <td width="280"><strong>電話番号</strong></td>
       </tr>
       <tr>
         <td><?= h($this->request->getData('name')) ?></td>
-        <td><?= h($this->request->getData('office')) ?></td>
+        <td><?= h($this->request->getData('tel')) ?></td>
       </tr>
     </table>
-    <table>
-    <tr>
-      <td width="280"><strong>部署名</strong></td>
-      <td width="280"><strong>電話番号</strong></td>
-    </tr>
-    <tr>
-      <td><?= h($this->request->getData('department')) ?></td>
-      <td><?= h($this->request->getData('tel')) ?></td>
-    </tr>
-  </table>
   <table>
   <tr>
     <td width="180"><strong>ファックス</strong></td>

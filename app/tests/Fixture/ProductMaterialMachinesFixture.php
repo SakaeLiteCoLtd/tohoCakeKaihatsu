@@ -18,7 +18,7 @@ class ProductMaterialMachinesFixture extends TestFixture
     // @codingStandardsIgnoreStart
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
-        'product_material_parent_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'product_condition_parent_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'cylinder_numer' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'cylinder_name' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_general_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'delete_flag' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
@@ -46,13 +46,13 @@ class ProductMaterialMachinesFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'product_material_parent_id' => 1,
+                'product_condition_parent_id' => 1,
                 'cylinder_numer' => 1,
                 'cylinder_name' => 'Lorem ipsum dolor sit amet',
                 'delete_flag' => 1,
-                'created_at' => '2021-05-01 17:34:52',
+                'created_at' => '2021-05-11 14:32:42',
                 'created_staff' => 1,
-                'updated_at' => '2021-05-01 17:34:52',
+                'updated_at' => '2021-05-11 14:32:42',
                 'updated_staff' => 1
             ],
         ];

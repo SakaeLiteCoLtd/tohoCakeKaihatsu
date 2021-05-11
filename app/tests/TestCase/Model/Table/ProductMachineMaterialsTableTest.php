@@ -24,9 +24,9 @@ class ProductMachineMaterialsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.product_machine_materials',
-        'app.product_material_machines',
-        'app.product_material_lot_numbers'
+        'app.ProductMachineMaterials',
+        'app.ProductMaterialMachines',
+        'app.ProductMaterialLotNumbers'
     ];
 
     /**

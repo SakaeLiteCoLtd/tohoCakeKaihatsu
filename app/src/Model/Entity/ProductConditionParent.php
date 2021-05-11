@@ -8,7 +8,6 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $product_id
- * @property int $machine_num
  * @property int $version
  * @property \Cake\I18n\FrozenTime $start_datetime
  * @property \Cake\I18n\FrozenTime $finish_datetime
@@ -21,6 +20,8 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Product $product
  * @property \App\Model\Entity\ProductConditonChild[] $product_conditon_children
+ * @property \App\Model\Entity\ShotWork[] $shot_works
+ * @property \App\Model\Entity\ShotdataBase[] $shotdata_bases
  */
 class ProductConditionParent extends Entity
 {
@@ -36,7 +37,6 @@ class ProductConditionParent extends Entity
      */
     protected $_accessible = [
         'product_id' => true,
-        'machine_num' => true,
         'version' => true,
         'start_datetime' => true,
         'finish_datetime' => true,
@@ -47,6 +47,8 @@ class ProductConditionParent extends Entity
         'updated_at' => true,
         'updated_staff' => true,
         'product' => true,
-        'product_conditon_children' => true
+        'product_conditon_children' => true,
+        'shot_works' => true,
+        'shotdata_bases' => true
     ];
 }

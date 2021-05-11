@@ -40,22 +40,12 @@
       <table>
       <tr>
         <td width="280"><strong>顧客名</strong></td>
-        <td width="280"><strong>支店名</strong></td>
-      </tr>
-      <tr>
-        <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'autofocus'=>true)) ?></td>
-        <td><?= $this->Form->control('office', array('type'=>'text', 'label'=>false)) ?></td>
-      </tr>
-    </table>
-      <table>
-      <tr>
-        <td width="280"><strong>部署名</strong></td>
         <td width="280"><strong>電話番号</strong></td>
       </tr>
       <tr>
-        <td><?= $this->Form->control('department', array('type'=>'text', 'label'=>false)) ?></td>
+        <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'autofocus'=>true)) ?></td>
         <td><?= $this->Form->control('tel', array('type'=>'text', 'label'=>false)) ?></td>
-      </tr>
+    </tr>
     </table>
     <table>
     <tr>

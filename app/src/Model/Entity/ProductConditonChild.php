@@ -7,7 +7,7 @@ use Cake\ORM\Entity;
  * ProductConditonChild Entity
  *
  * @property int $id
- * @property int $product_condition_parent_id
+ * @property int $product_material_machine_id
  * @property int $cylinder_number
  * @property string $cylinder_name
  * @property float $temp_1
@@ -43,7 +43,7 @@ class ProductConditonChild extends Entity
      * @var array
      */
     protected $_accessible = [
-        'product_condition_parent_id' => true,
+        'product_material_machine_id' => true,
         'cylinder_number' => true,
         'cylinder_name' => true,
         'temp_1' => true,

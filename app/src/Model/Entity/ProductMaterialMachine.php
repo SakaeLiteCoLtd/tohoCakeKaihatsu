@@ -7,7 +7,7 @@ use Cake\ORM\Entity;
  * ProductMaterialMachine Entity
  *
  * @property int $id
- * @property int $product_material_parent_id
+ * @property int $product_condition_parent_id
  * @property int $cylinder_numer
  * @property string $cylinder_name
  * @property int $delete_flag
@@ -32,7 +32,7 @@ class ProductMaterialMachine extends Entity
      * @var array
      */
     protected $_accessible = [
-        'product_material_parent_id' => true,
+        'product_condition_parent_id' => true,
         'cylinder_numer' => true,
         'cylinder_name' => true,
         'delete_flag' => true,

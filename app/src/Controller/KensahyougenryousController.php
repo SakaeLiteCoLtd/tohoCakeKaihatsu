@@ -40,17 +40,65 @@ class KensahyougenryousController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-
+/*
       echo "<pre>";
       print_r($data);
       echo "</pre>";
-
+*/
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
+/*
+      $Products= $this->Products->find()->contain(["Menus"])->where(['product_code' => $product_code])->toArray();
 
+      if(isset($Products[0])){
+
+        $name = $Products[0]["name"];
+        $this->set('name', $name);
+
+      }else{
+
+        return $this->redirect(['action' => 'addformpre',
+        's' => ['mess' => "製品「".$product_code."」は存在しません。"]]);
+
+      }
+*/
       if(isset($data["genryoutuika"])){//原料追加ボタン
 
+        if(!isset($data["tuikaseikeiki"])){//成形機の追加前
 
+          $tuikaseikeiki = 1;
+
+        }else{//成形機の追加後
+
+          $tuikaseikeiki = $data["tuikaseikeiki"];
+
+        }
+        $this->set('tuikaseikeiki', $tuikaseikeiki);
+
+        ${"tuikagenryou".$tuikaseikeiki} = $data["tuikagenryou".$tuikaseikeiki] + 1;
+
+        for($j=1; $j<=$tuikaseikeiki; $j++){
+
+          if($j < $tuikaseikeiki){
+
+            ${"tuikagenryou".$j} = $data["tuikagenryou".$j];
+          }
+
+          $this->set('tuikagenryou'.$j, ${"tuikagenryou".$j});
+
+          for($i=1; $i<=${"tuikagenryou".$j}; $i++){
+
+            if(isset($data["product_code".$j.$i])){
+              ${"product_code".$j.$i} = $data["product_code".$j.$i];
+              $this->set('product_code'.$j.$i,${"product_code".$j.$i});
+            }else{
+              ${"product_code".$j.$i} = "";
+              $this->set('product_code'.$j.$i,${"product_code".$j.$i});
+            }
+
+          }
+
+        }
 
       }elseif(isset($data["seikeikituika"])){//成形機追加ボタン
 
@@ -59,13 +107,15 @@ class KensahyougenryousController extends AppController
 
         for($j=1; $j<=$tuikaseikeiki; $j++){
 
-          if(isset($data['max'.$j])){
-            ${"max".$j} = $data['max'.$j];
+          if(isset($data['tuikagenryou'.$j])){
+            ${"tuikagenryou".$j} = $data['tuikagenryou'.$j];
           }else{
-            ${"max".$j} = 1;
+            ${"tuikagenryou".$j} = 1;
           }
 
-          for($i=1; $i<=${"max".$j}; $i++){
+          $this->set('tuikagenryou'.$j, ${"tuikagenryou".$j});
+
+          for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
             if(isset($data["product_code".$j.$i])){
               ${"product_code".$j.$i} = $data["product_code".$j.$i];
@@ -87,6 +137,8 @@ class KensahyougenryousController extends AppController
       }else{//最初にこの画面に来た時
 
         $i = $j = 1;
+        $tuikagenryou = 1;
+        $this->set('tuikagenryou'.$i, $tuikagenryou);
         $tuikaseikeiki = 1;
         $this->set('tuikaseikeiki', $tuikaseikeiki);
         ${"product_code".$j.$i} = "";

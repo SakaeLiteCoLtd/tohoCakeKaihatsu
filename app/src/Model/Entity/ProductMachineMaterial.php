@@ -9,8 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $product_material_machine_id
  * @property int $material_number
- * @property string $material_grade
- * @property string $material_maker
+ * @property int $material_id
  * @property float $mixing_ratio
  * @property float $dry_temp
  * @property float $dry_hour
@@ -39,8 +38,7 @@ class ProductMachineMaterial extends Entity
     protected $_accessible = [
         'product_material_machine_id' => true,
         'material_number' => true,
-        'material_grade' => true,
-        'material_maker' => true,
+        'material_id' => true,
         'mixing_ratio' => true,
         'dry_temp' => true,
         'dry_hour' => true,

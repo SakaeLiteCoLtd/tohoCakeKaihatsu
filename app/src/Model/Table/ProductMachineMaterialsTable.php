@@ -10,6 +10,7 @@ use Cake\Validation\Validator;
  * ProductMachineMaterials Model
  *
  * @property \App\Model\Table\ProductMaterialMachinesTable|\Cake\ORM\Association\BelongsTo $ProductMaterialMachines
+ * @property |\Cake\ORM\Association\BelongsTo $Materials
  * @property \App\Model\Table\ProductMaterialLotNumbersTable|\Cake\ORM\Association\HasMany $ProductMaterialLotNumbers
  *
  * @method \App\Model\Entity\ProductMachineMaterial get($primaryKey, $options = [])
@@ -42,6 +43,10 @@ class ProductMachineMaterialsTable extends Table
             'foreignKey' => 'product_material_machine_id',
             'joinType' => 'INNER'
         ]);
+        $this->belongsTo('Materials', [
+            'foreignKey' => 'material_id',
+            'joinType' => 'INNER'
+        ]);
         $this->hasMany('ProductMaterialLotNumbers', [
             'foreignKey' => 'product_machine_material_id'
         ]);
@@ -63,18 +68,6 @@ class ProductMachineMaterialsTable extends Table
             ->integer('material_number')
             ->requirePresence('material_number', 'create')
             ->notEmpty('material_number');
-
-        $validator
-            ->scalar('material_grade')
-            ->maxLength('material_grade', 255)
-            ->requirePresence('material_grade', 'create')
-            ->notEmpty('material_grade');
-
-        $validator
-            ->scalar('material_maker')
-            ->maxLength('material_maker', 255)
-            ->requirePresence('material_maker', 'create')
-            ->notEmpty('material_maker');
 
         $validator
             ->numeric('mixing_ratio')
@@ -132,6 +125,7 @@ class ProductMachineMaterialsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['product_material_machine_id'], 'ProductMaterialMachines'));
+        $rules->add($rules->existsIn(['material_id'], 'Materials'));
 
         return $rules;
     }

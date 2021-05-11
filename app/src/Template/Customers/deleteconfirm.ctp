@@ -36,23 +36,13 @@
         <table>
         <tr>
           <td width="280"><strong>顧客名</strong></td>
-          <td width="280"><strong>支店名</strong></td>
+          <td width="280"><strong>電話番号</strong></td>
         </tr>
         <tr>
           <td><?= h($customer['name']) ?></td>
-          <td><?= h($customer['office']) ?></td>
+          <td><?= h($customer['tel']) ?></td>
         </tr>
       </table>
-      <table>
-      <tr>
-        <td width="280"><strong>部署名</strong></td>
-        <td width="280"><strong>電話番号</strong></td>
-      </tr>
-      <tr>
-        <td><?= h($customer['department']) ?></td>
-        <td><?= h($customer['tel']) ?></td>
-      </tr>
-    </table>
     <table>
     <tr>
       <td width="180"><strong>ファックス</strong></td>

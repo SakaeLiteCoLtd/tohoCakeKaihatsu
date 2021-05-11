@@ -85,8 +85,8 @@ class CustomersController extends AppController
       $arrtourokucustomer = [
         'factory_id' => $data["factory_id"],
         'name' => $data["name"],
-        'office' => $data["office"],
-        'department' => $data["department"],
+    //    'office' => $data["office"],
+    //    'department' => $data["department"],
         'tel' => $data["tel"],
         'fax' => $data["fax"],
         'address' => $data["address"],
@@ -198,8 +198,8 @@ class CustomersController extends AppController
       $arrupdatecustomer = [
         'factory_id' => $data["factory_id"],
         'name' => $data["name"],
-        'office' => $data["office"],
-        'department' => $data["department"],
+  //      'office' => $data["office"],
+  //      'department' => $data["department"],
         'tel' => $data["tel"],
         'fax' => $data["fax"],
         'address' => $data["address"],

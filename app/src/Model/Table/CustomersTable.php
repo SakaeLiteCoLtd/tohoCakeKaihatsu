@@ -66,16 +66,6 @@ class CustomersTable extends Table
             ->notEmpty('name');
 
         $validator
-            ->scalar('office')
-            ->maxLength('office', 255)
-            ->allowEmpty('office');
-
-        $validator
-            ->scalar('department')
-            ->maxLength('department', 255)
-            ->allowEmpty('department');
-
-        $validator
             ->scalar('address')
             ->maxLength('address', 255)
             ->requirePresence('address', 'create')

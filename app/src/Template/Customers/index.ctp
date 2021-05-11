@@ -29,8 +29,6 @@ echo $this->Html->css('index');
               <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
               <th scope="col"><?= $this->Paginator->sort('factory_id', ['label'=>"工場・営業所名"]) ?></th>
               <th scope="col"><?= $this->Paginator->sort('name', ['label'=>"顧客名"]) ?></th>
-              <th scope="col"><?= $this->Paginator->sort('factory', ['label'=>"支店名"]) ?></th>
-              <th scope="col"><?= $this->Paginator->sort('department', ['label'=>"部署名"]) ?></th>
               <th scope="col"><?= $this->Paginator->sort('address', ['label'=>"住所"]) ?></th>
               <th scope="col"><?= $this->Paginator->sort('tel', ['label'=>"電話番号"]) ?></th>
               <th scope="col"><?= $this->Paginator->sort('fax', ['label'=>"ファックス"]) ?></th>
@@ -43,8 +41,6 @@ echo $this->Html->css('index');
               <td><?= h($i) ?></td>
               <td><?= $customer->has('factory') ? $this->Html->link($customer->factory->name, ['controller' => 'Factories', 'action' => 'view', $customer->factory->id]) : '' ?></td>
                 <td><?= h($customer->name) ?></td>
-                <td><?= h($customer->office) ?></td>
-                <td><?= h($customer->department) ?></td>
                 <td><?= h($customer->address) ?></td>
                 <td><?= h($customer->tel) ?></td>
                 <td><?= h($customer->fax) ?></td>

@@ -26,7 +26,9 @@ class ProductConditionParentsTableTest extends TestCase
     public $fixtures = [
         'app.ProductConditionParents',
         'app.Products',
-        'app.ProductConditonChildren'
+        'app.ProductConditonChildren',
+        'app.ShotWorks',
+        'app.ShotdataBases'
     ];
 
     /**

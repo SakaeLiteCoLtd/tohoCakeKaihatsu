@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * ProductConditonChildren Model
  *
- * @property \App\Model\Table\ProductConditionParentsTable|\Cake\ORM\Association\BelongsTo $ProductConditionParents
+ * @property |\Cake\ORM\Association\BelongsTo $ProductMaterialMachines
  *
  * @method \App\Model\Entity\ProductConditonChild get($primaryKey, $options = [])
  * @method \App\Model\Entity\ProductConditonChild newEntity($data = null, array $options = [])
@@ -37,8 +37,8 @@ class ProductConditonChildrenTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('ProductConditionParents', [
-            'foreignKey' => 'product_condition_parent_id',
+        $this->belongsTo('ProductMaterialMachines', [
+            'foreignKey' => 'product_material_machine_id',
             'joinType' => 'INNER'
         ]);
     }
@@ -163,7 +163,7 @@ class ProductConditonChildrenTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['product_condition_parent_id'], 'ProductConditionParents'));
+        $rules->add($rules->existsIn(['product_material_machine_id'], 'ProductMaterialMachines'));
 
         return $rules;
     }
