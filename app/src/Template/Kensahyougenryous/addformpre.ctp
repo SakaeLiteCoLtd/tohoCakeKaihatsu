@@ -26,6 +26,10 @@ echo $this->Html->css('kensahyou');
 
 <?= $this->Form->create($product, ['url' => ['action' => 'addform']]) ?>
 
+<br>
+ <div align="center"><font color="red" size="2"><?= __($mess) ?></font></div>
+<br>
+
 <table>
   <tbody style="background-color: #FFFFCC">
     <tr>

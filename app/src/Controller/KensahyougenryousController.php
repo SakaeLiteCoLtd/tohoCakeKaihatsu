@@ -15,30 +15,45 @@ class KensahyougenryousController extends AppController
   		parent::beforeFilter($event);
 
   		// 認証なしでアクセスできるアクションの指定
-  		$this->Auth->allow(["addformpre","addform","addcomfirm"]);
+  		$this->Auth->allow(["addformpre","addform","addcomfirm","adddo"]);
   	}
 
       public function initialize()
     {
      parent::initialize();
-     $this->Companies = TableRegistry::get('Companies');
-     $this->Users = TableRegistry::get('Users');
-     $this->Menus = TableRegistry::get('Menus');
-     $this->Groups = TableRegistry::get('Groups');
      $this->Products = TableRegistry::get('Products');
      $this->Customers = TableRegistry::get('Customers');
+     $this->Materials = TableRegistry::get('Materials');
+     $this->ProductConditionParents = TableRegistry::get('ProductConditionParents');
     }
 
     public function addformpre()
     {
       $product = $this->Products->newEntity();
       $this->set('product', $product);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
     }
 
     public function addform()
     {
+      session_start();
+      header('Expires:-1');
+      header('Cache-Control:');
+      header('Pragma:');
+
       $product = $this->Products->newEntity();
       $this->set('product', $product);
+
+      $today = date('Y年n月j日');
+      $this->set('today', $today);
 
       $data = $this->request->getData();
 /*
@@ -55,13 +70,26 @@ class KensahyougenryousController extends AppController
 
         $name = $Products[0]["name"];
         $this->set('name', $name);
+        $customer= $Products[0]["customer"]["name"];
+        $this->set('customer', $customer);
 
       }else{
 
         return $this->redirect(['action' => 'addformpre',
-        's' => ['mess' => "製品「".$product_code."」は存在しません。"]]);
+        's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
 
       }
+
+
+      $Materials = $this->Materials->find()
+      ->where(['delete_flag' => 0])->order(["grade"=>"ASC"])->toArray();
+
+      $arrMaterials = array();
+      foreach ($Materials as $value) {
+        $array = array($value->id => $value->grade." : ".$value->maker." : ".$value->material_code);
+        $arrMaterials = $arrMaterials + $array;//array_mergeだとキーが0,1,2,…とふりなおされてしまう
+      }
+      $this->set('arrMaterials', $arrMaterials);
 
       if(isset($data["genryoutuika"])){//原料追加ボタン
 
@@ -83,18 +111,59 @@ class KensahyougenryousController extends AppController
           if($j < $tuikaseikeiki){
 
             ${"tuikagenryou".$j} = $data["tuikagenryou".$j];
+
           }
 
           $this->set('tuikagenryou'.$j, ${"tuikagenryou".$j});
 
+          if(isset($data['cylinder_name'.$j])){
+            ${"cylinder_name".$j} = $data['cylinder_name'.$j];
+            $this->set('cylinder_name'.$j,${"cylinder_name".$j});
+          }else{
+            ${"cylinder_name".$j} = "";
+            $this->set('cylinder_name'.$j,${"cylinder_name".$j});
+          }
+
           for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
-            if(isset($data["product_code".$j.$i])){
-              ${"product_code".$j.$i} = $data["product_code".$j.$i];
-              $this->set('product_code'.$j.$i,${"product_code".$j.$i});
+            if(isset($data["material_id".$j.$i])){
+              ${"material_id".$j.$i} = $data["material_id".$j.$i];
+              $this->set('material_id'.$j.$i,${"material_id".$j.$i});
             }else{
-              ${"product_code".$j.$i} = "";
-              $this->set('product_code'.$j.$i,${"product_code".$j.$i});
+              ${"material_id".$j.$i} = "";
+              $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+            }
+
+            if(isset($data["mixing_ratio".$j.$i])){
+              ${"mixing_ratio".$j.$i} = $data["mixing_ratio".$j.$i];
+              $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
+            }else{
+              ${"mixing_ratio".$j.$i} = "";
+              $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
+            }
+
+            if(isset($data["dry_temp".$j.$i])){
+              ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
+              $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+            }else{
+              ${"dry_temp".$j.$i} = "";
+              $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+            }
+
+            if(isset($data["dry_hour".$j.$i])){
+              ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
+              $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
+            }else{
+              ${"dry_hour".$j.$i} = "";
+              $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
+            }
+
+            if(isset($data["recycled_mixing_ratio".$j.$i])){
+              ${"recycled_mixing_ratio".$j.$i} = $data["recycled_mixing_ratio".$j.$i];
+              $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
+            }else{
+              ${"recycled_mixing_ratio".$j.$i} = "";
+              $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
             }
 
           }
@@ -116,14 +185,54 @@ class KensahyougenryousController extends AppController
 
           $this->set('tuikagenryou'.$j, ${"tuikagenryou".$j});
 
+          if(isset($data['cylinder_name'.$j])){
+            ${"cylinder_name".$j} = $data['cylinder_name'.$j];
+            $this->set('cylinder_name'.$j,${"cylinder_name".$j});
+          }else{
+            ${"cylinder_name".$j} = "";
+            $this->set('cylinder_name'.$j,${"cylinder_name".$j});
+          }
+
           for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
-            if(isset($data["product_code".$j.$i])){
-              ${"product_code".$j.$i} = $data["product_code".$j.$i];
-              $this->set('product_code'.$j.$i,${"product_code".$j.$i});
+            if(isset($data["material_id".$j.$i])){
+              ${"material_id".$j.$i} = $data["material_id".$j.$i];
+              $this->set('material_id'.$j.$i,${"material_id".$j.$i});
             }else{
-              ${"product_code".$j.$i} = "";
-              $this->set('product_code'.$j.$i,${"product_code".$j.$i});
+              ${"material_id".$j.$i} = "";
+              $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+            }
+
+            if(isset($data["mixing_ratio".$j.$i])){
+              ${"mixing_ratio".$j.$i} = $data["mixing_ratio".$j.$i];
+              $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
+            }else{
+              ${"mixing_ratio".$j.$i} = "";
+              $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
+            }
+
+            if(isset($data["dry_temp".$j.$i])){
+              ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
+              $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+            }else{
+              ${"dry_temp".$j.$i} = "";
+              $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+            }
+
+            if(isset($data["dry_hour".$j.$i])){
+              ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
+              $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
+            }else{
+              ${"dry_hour".$j.$i} = "";
+              $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
+            }
+
+            if(isset($data["recycled_mixing_ratio".$j.$i])){
+              ${"recycled_mixing_ratio".$j.$i} = $data["recycled_mixing_ratio".$j.$i];
+              $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
+            }else{
+              ${"recycled_mixing_ratio".$j.$i} = "";
+              $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
             }
 
           }
@@ -132,8 +241,14 @@ class KensahyougenryousController extends AppController
 
       }elseif(isset($data["kakuninn"])){//確認ボタン
 
-        return $this->redirect(['action' => 'addcomfirm',
-        's' => ['data' => "aaa"]]);
+        if(!isset($_SESSION)){//sessionsyuuseituika
+        session_start();
+        }
+
+        $_SESSION['kensahyougenryoudata'] = array();
+        $_SESSION['kensahyougenryoudata'] = $data;
+
+        return $this->redirect(['action' => 'addcomfirm']);
 
       }else{//最初にこの画面に来た時
 
@@ -142,8 +257,18 @@ class KensahyougenryousController extends AppController
         $this->set('tuikagenryou'.$i, $tuikagenryou);
         $tuikaseikeiki = 1;
         $this->set('tuikaseikeiki', $tuikaseikeiki);
-        ${"product_code".$j.$i} = "";
-        $this->set('product_code'.$j.$i,${"product_code".$j.$i});
+        ${"cylinder_name".$j} = "";
+        $this->set('cylinder_name'.$j,${"cylinder_name".$j});
+        ${"material_id".$j.$i} = "";
+        $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+        ${"mixing_ratio".$j.$i} = "";
+        $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
+        ${"dry_temp".$j.$i} = "";
+        $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+        ${"dry_hour".$j.$i} = "";
+        $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
+        ${"recycled_mixing_ratio".$j.$i} = "";
+        $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
 
       }
 
@@ -154,208 +279,263 @@ class KensahyougenryousController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $Data=$this->request->query('s');
-      $this->set('Data',$Data);
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
 
+      $arrayKensahyougenryoudatas = $_SESSION['kensahyougenryoudata'];
+      $_SESSION['kensahyougenryoudata'] = array();
+
+      $data = $arrayKensahyougenryoudatas;
+/*
       echo "<pre>";
-      print_r($Data);
+      print_r($data);
       echo "</pre>";
+*/
+      $today = date('Y年n月j日');
+      $this->set('today', $today);
+
+      $product_code = $data["product_code"];
+      $this->set('product_code', $product_code);
+
+      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
+      $name = $Products[0]["name"];
+      $this->set('name', $name);
+      $customer= $Products[0]["customer"]["name"];
+      $this->set('customer', $customer);
+
+      $tuikaseikeiki = $data["tuikaseikeiki"];
+      $this->set('tuikaseikeiki', $tuikaseikeiki);
+
+      for($j=1; $j<=$tuikaseikeiki; $j++){
+
+        ${"tuikagenryou".$j} = $data["tuikagenryou".$j];
+        $this->set('tuikagenryou'.$j, ${"tuikagenryou".$j});
+
+        if(isset($data['cylinder_name'.$j])){
+          ${"cylinder_name".$j} = $data['cylinder_name'.$j];
+          $this->set('cylinder_name'.$j,${"cylinder_name".$j});
+        }else{
+          ${"cylinder_name".$j} = "";
+          $this->set('cylinder_name'.$j,${"cylinder_name".$j});
+        }
+
+        for($i=1; $i<=${"tuikagenryou".$j}; $i++){
+
+          if(isset($data["material_id".$j.$i])){
+            $Materials = $this->Materials->find()
+            ->where(['id' => $data["material_id".$j.$i]])->toArray();
+
+            ${"material_hyouji".$j.$i} = $Materials[0]["grade"].":".$Materials[0]["maker"].":".$Materials[0]["material_code"];
+            $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
+            ${"material_id".$j.$i} = $data["material_id".$j.$i];
+            $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+
+          }else{
+            ${"material_hyouji".$j.$i} = "";
+            $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
+            ${"material_id".$j.$i} = "";
+            $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+          }
+
+          if(isset($data["mixing_ratio".$j.$i])){
+            ${"mixing_ratio".$j.$i} = $data["mixing_ratio".$j.$i];
+            $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
+          }else{
+            ${"mixing_ratio".$j.$i} = "";
+            $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
+          }
+
+          if(isset($data["dry_temp".$j.$i])){
+            ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
+            $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+          }else{
+            ${"dry_temp".$j.$i} = "";
+            $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+          }
+
+          if(isset($data["dry_hour".$j.$i])){
+            ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
+            $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
+          }else{
+            ${"dry_hour".$j.$i} = "";
+            $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
+          }
+
+          if(isset($data["recycled_mixing_ratio".$j.$i])){
+            ${"recycled_mixing_ratio".$j.$i} = $data["recycled_mixing_ratio".$j.$i];
+            $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
+          }else{
+            ${"recycled_mixing_ratio".$j.$i} = "";
+            $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
+          }
+
+        }
+
+      }
 
     }
 
     public function adddo()
     {
-      $company = $this->Companies->newEntity();
-      $this->set('company', $company);
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
 
-      $session = $this->request->getSession();
-      $datasession = $session->read();
+      $today = date('Y年n月j日');
+      $this->set('today', $today);
 
       $data = $this->request->getData();
-
-      $staff_id = $datasession['Auth']['User']['staff_id'];
-
-      $arrtourokucompany = array();
-      $arrtourokucompany = [
-        'name' => $data["name"],
-        'address' => $data["address"],
-        'tel' => $data["tel"],
-        'fax' => $data["fax"],
-        'president' => $data["president"],
-        'delete_flag' => 0,
-        'created_at' => date("Y-m-d H:i:s"),
-        'created_staff' => $staff_id
-      ];
 /*
       echo "<pre>";
-      print_r($arrtourokucompany);
+      print_r($data);
       echo "</pre>";
 */
-      //新しいデータを登録
-      $Companies = $this->Companies->patchEntity($this->Companies->newEntity(), $arrtourokucompany);
-      $connection = ConnectionManager::get('default');//トランザクション1
-      // トランザクション開始2
-      $connection->begin();//トランザクション3
-      try {//トランザクション4
-        if ($this->Companies->save($Companies)) {
+      $product_code = $data["product_code"];
+      $this->set('product_code', $product_code);
 
-          $connection->commit();// コミット5
-          $mes = "以下のように登録されました。";
-          $this->set('mes',$mes);
+      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
+      $product_id = $Products[0]["id"];
+      $name = $Products[0]["name"];
+      $this->set('name', $name);
+      $customer= $Products[0]["customer"]["name"];
+      $this->set('customer', $customer);
 
-        } else {
+      $tuikaseikeiki = $data["tuikaseikeiki"];
+      $this->set('tuikaseikeiki', $tuikaseikeiki);
 
-          $this->Flash->error(__('The data could not be saved. Please, try again.'));
-          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
-          $mes = "※登録されませんでした";
-          $this->set('mes',$mes);
+      for($j=1; $j<=$tuikaseikeiki; $j++){
+
+        ${"tuikagenryou".$j} = $data["tuikagenryou".$j];
+        $this->set('tuikagenryou'.$j, ${"tuikagenryou".$j});
+
+        if(isset($data['cylinder_name'.$j])){
+          ${"cylinder_name".$j} = $data['cylinder_name'.$j];
+          $this->set('cylinder_name'.$j,${"cylinder_name".$j});
+        }else{
+          ${"cylinder_name".$j} = "";
+          $this->set('cylinder_name'.$j,${"cylinder_name".$j});
+        }
+
+        for($i=1; $i<=${"tuikagenryou".$j}; $i++){
+
+          if(isset($data["material_id".$j.$i])){
+            $Materials = $this->Materials->find()
+            ->where(['id' => $data["material_id".$j.$i]])->toArray();
+
+            ${"material_hyouji".$j.$i} = $Materials[0]["grade"].":".$Materials[0]["maker"].":".$Materials[0]["material_code"];
+            $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
+            ${"material_id".$j.$i} = $data["material_id".$j.$i];
+            $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+
+          }else{
+            ${"material_hyouji".$j.$i} = "";
+            $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
+            ${"material_id".$j.$i} = "";
+            $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+          }
+
+          if(isset($data["mixing_ratio".$j.$i])){
+            ${"mixing_ratio".$j.$i} = $data["mixing_ratio".$j.$i];
+            $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
+          }else{
+            ${"mixing_ratio".$j.$i} = "";
+            $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
+          }
+
+          if(isset($data["dry_temp".$j.$i])){
+            ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
+            $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+          }else{
+            ${"dry_temp".$j.$i} = "";
+            $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+          }
+
+          if(isset($data["dry_hour".$j.$i])){
+            ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
+            $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
+          }else{
+            ${"dry_hour".$j.$i} = "";
+            $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
+          }
+
+          if(isset($data["recycled_mixing_ratio".$j.$i])){
+            ${"recycled_mixing_ratio".$j.$i} = $data["recycled_mixing_ratio".$j.$i];
+            $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
+          }else{
+            ${"recycled_mixing_ratio".$j.$i} = "";
+            $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
+          }
 
         }
 
-      } catch (Exception $e) {//トランザクション7
-      //ロールバック8
-        $connection->rollback();//トランザクション9
-      }//トランザクション10
+      }
 
-    }
+      $tourokuProductConditionParent = array();
+      $tourokuProductMaterialMachine = array();
+      $tourokuProductMachineMaterial = array();
 
-    public function editform($id = null)
-    {
-        $company = $this->Companies->get($id, [
-            'contain' => []
-        ]);
-        $this->set(compact('company'));
-        $this->set('id', $id);
-    }
+      $ProductConditionParents = $this->ProductConditionParents->find()
+      ->where(['product_id' => $product_id])->order(["version"=>"DESC"])->toArray();
 
-    public function editconfirm()
-    {
-      $company = $this->Companies->newEntity();
-      $this->set('company', $company);
-    }
+      if(isset($ProductConditionParents[0])){
+        $version = $ProductConditionParents[0]["version"] + 1;
+      }else{
+        $version = 1;
+      }
 
-    public function editdo()
-    {
-      $company = $this->Companies->newEntity();
-      $this->set('company', $company);
-
-      $session = $this->request->getSession();
-      $datasession = $session->read();
-
-      $data = $this->request->getData();
-
-      $staff_id = $datasession['Auth']['User']['staff_id'];
-
-      $arrupdatecompany = array();
-      $arrupdatecompany = [
-        'name' => $data["name"],
-        'address' => $data["address"],
-        'tel' => $data["tel"],
-        'fax' => $data["fax"],
-        'president' => $data["president"],
-        'delete_flag' => 0,
+      $tourokuProductConditionParent = [
+        "product_id" => $product_id,
+        "version" => $version,
+        "start_datetime" => date("Y-m-d H:i:s"),
+        "is_active" => 0,
+        "delete_flag" => 0,
         'created_at' => date("Y-m-d H:i:s"),
-        'created_staff' => $staff_id
+        "created_staff" => "9999"
       ];
-/*
+
+      for($j=1; $j<=$tuikaseikeiki; $j++){
+
+        $tourokuProductMaterialMachine[] = [
+          "product_condition_parent_id" => 9999,
+          "cylinder_numer" => $j,
+          "cylinder_name" => $data['cylinder_name'.$j],
+          "delete_flag" => 0,
+          'created_at' => date("Y-m-d H:i:s"),
+          "created_staff" => "9999"
+        ];
+
+        ${"tuikagenryou".$j} = $data["tuikagenryou".$j];
+
+        for($i=1; $i<=${"tuikagenryou".$j}; $i++){
+
+          $tourokuProductMachineMaterial[] = [
+            "product_material_machine_id" => 9999,
+            "material_number" => $i,
+            "material_id" => $data["material_id".$j.$i],
+            "mixing_ratio" => $data["mixing_ratio".$j.$i],
+            "dry_temp" => $data["dry_temp".$j.$i],
+            "dry_hour" => $data["dry_hour".$j.$i],
+            "recycled_mixing_ratio" => $data["recycled_mixing_ratio".$j.$i],
+            "delete_flag" => 0,
+            'created_at' => date("Y-m-d H:i:s"),
+            "created_staff" => "9999"
+          ];
+
+        }
+
+      }
+
       echo "<pre>";
-      print_r($arrupdatecompany);
+      print_r($tourokuProductConditionParent);
       echo "</pre>";
-*/
-      $Companies = $this->Companies->patchEntity($this->Companies->newEntity(), $arrupdatecompany);
-      $connection = ConnectionManager::get('default');//トランザクション1
-       // トランザクション開始2
-       $connection->begin();//トランザクション3
-       try {//トランザクション4
-         if ($this->Companies->save($Companies)) {
-
-         $this->Companies->updateAll(
-           [ 'delete_flag' => 1,
-             'updated_at' => date('Y-m-d H:i:s'),
-             'updated_staff' => $staff_id],
-           ['id'  => $data['id']]);
-
-         $mes = "※下記のように更新されました";
-         $this->set('mes',$mes);
-         $connection->commit();// コミット5
-
-       } else {
-
-         $mes = "※更新されませんでした";
-         $this->set('mes',$mes);
-         $this->Flash->error(__('The data could not be saved. Please, try again.'));
-         throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
-
-       }
-
-     } catch (Exception $e) {//トランザクション7
-     //ロールバック8
-       $connection->rollback();//トランザクション9
-     }//トランザクション10
-
-    }
-
-    public function deleteconfirm($id = null)
-    {
-        $company = $this->Companies->get($id, [
-            'contain' => []
-        ]);
-        $this->set(compact('company'));
-    }
-
-    public function deletedo()
-    {
-      $session = $this->request->getSession();
-      $datasession = $session->read();
-
-      $data = $this->request->getData();
-
-      $company = $this->Companies->get($data["id"], [
-          'contain' => []
-      ]);
-      $this->set(compact('company'));
-
-      $staff_id = $datasession['Auth']['User']['staff_id'];
-
-      $arrdeletecompany = array();
-      $arrdeletecompany = [
-        'id' => $data["id"]
-      ];
-/*
       echo "<pre>";
-      print_r($arrdeletecompany);
+      print_r($tourokuProductMaterialMachine);
       echo "</pre>";
-*/
-      $Companies = $this->Companies->patchEntity($this->Companies->newEntity(), $arrdeletecompany);
-      $connection = ConnectionManager::get('default');//トランザクション1
-       // トランザクション開始2
-       $connection->begin();//トランザクション3
-       try {//トランザクション4
-         if ($this->Companies->updateAll(
-           [ 'delete_flag' => 1,
-             'updated_at' => date('Y-m-d H:i:s'),
-             'updated_staff' => $staff_id],
-           ['id'  => $arrdeletecompany['id']]
-         )){
+      echo "<pre>";
+      print_r($tourokuProductMachineMaterial);
+      echo "</pre>";
 
-         $mes = "※以下のデータが削除されました。";
-         $this->set('mes',$mes);
-         $connection->commit();// コミット5
-
-       } else {
-
-         $mes = "※削除されませんでした";
-         $this->set('mes',$mes);
-         $this->Flash->error(__('The data could not be saved. Please, try again.'));
-         throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
-
-       }
-
-     } catch (Exception $e) {//トランザクション7
-     //ロールバック8
-       $connection->rollback();//トランザクション9
-     }//トランザクション10
 
     }
+
 
 }

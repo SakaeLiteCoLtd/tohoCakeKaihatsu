@@ -79,8 +79,7 @@ class ProductConditionParentsTable extends Table
 
         $validator
             ->dateTime('finish_datetime')
-            ->requirePresence('finish_datetime', 'create')
-            ->notEmpty('finish_datetime');
+            ->allowEmpty('finish_datetime');
 
         $validator
             ->integer('is_active')

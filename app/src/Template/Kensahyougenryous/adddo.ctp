@@ -24,10 +24,7 @@ echo $this->Html->css('kensahyou');
 
 <br><br>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'adddo']]) ?>
-
-<?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
-<?= $this->Form->control('tuikaseikeiki', array('type'=>'hidden', 'value'=>$tuikaseikeiki, 'label'=>false)) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'addformpre']]) ?>
 
 <table width="1000">
     <tr>
@@ -52,15 +49,13 @@ echo $this->Html->css('kensahyou');
 
 <br>
 <table>
-  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('以下の内容で登録します。よろしければ「決定」ボタンを押してください。') ?></strong></td></tr>
+  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('以下のように登録されました。') ?></strong></td></tr>
 </table>
-<br>
 
 <?php for($j=1; $j<=$tuikaseikeiki; $j++): ?>
 <br>
 
 <?= $this->Form->control('tuikagenryou'.$j, array('type'=>'hidden', 'value'=>${"tuikagenryou".$j}, 'label'=>false)) ?>
-<?= $this->Form->control('cylinder_name'.$j, array('type'=>'hidden', 'value'=>${"cylinder_name".$j}, 'label'=>false)) ?>
 
 <table>
 <tr>
@@ -100,19 +95,8 @@ echo $this->Html->css('kensahyou');
         echo "</td>\n";
         echo "</tr>\n";
 
-
       }
-
-?>
-
-      <?php for($i=1; $i<=${"tuikagenryou".$j}; $i++): ?>
-        <?= $this->Form->control('material_id'.$j.$i, array('type'=>'hidden', 'value'=>${"material_id".$j.$i}, 'label'=>false)) ?>
-        <?= $this->Form->control('mixing_ratio'.$j.$i, array('type'=>'hidden', 'value'=>${"mixing_ratio".$j.$i}, 'label'=>false)) ?>
-        <?= $this->Form->control('dry_temp'.$j.$i, array('type'=>'hidden', 'value'=>${"dry_temp".$j.$i}, 'label'=>false)) ?>
-        <?= $this->Form->control('dry_hour'.$j.$i, array('type'=>'hidden', 'value'=>${"dry_hour".$j.$i}, 'label'=>false)) ?>
-        <?= $this->Form->control('recycled_mixing_ratio'.$j.$i, array('type'=>'hidden', 'value'=>${"recycled_mixing_ratio".$j.$i}, 'label'=>false)) ?>
-      <?php endfor;?>
-
+ ?>
 </table>
 
 <?php endfor;?>
@@ -121,9 +105,7 @@ echo $this->Html->css('kensahyou');
 <table>
   <tbody class='sample non-sample'>
     <tr>
-      <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
-      <td style="border-style: none;"><?= __("　") ?></td>
-      <td style="border-style: none;"><div><?= $this->Form->submit('決定', array('name' => 'kettei')); ?></div></td>
+      <td style="border-style: none;"><div><?= $this->Form->submit('続けて登録', array('name' => 'kettei')); ?></div></td>
     </tr>
   </tbody>
 </table>
