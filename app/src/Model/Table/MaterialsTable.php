@@ -9,11 +9,12 @@ use Cake\Validation\Validator;
 /**
  * Materials Model
  *
- * @property |\Cake\ORM\Association\BelongsTo $Factories
+ * @property \App\Model\Table\FactoriesTable|\Cake\ORM\Association\BelongsTo $Factories
  * @property |\Cake\ORM\Association\BelongsTo $Types
  * @property \App\Model\Table\PriceMaterialsTable|\Cake\ORM\Association\HasMany $PriceMaterials
- * @property |\Cake\ORM\Association\HasMany $ProductMaterialParents
- * @property |\Cake\ORM\Association\HasMany $不使用productMaterials
+ * @property |\Cake\ORM\Association\HasMany $ProductMachineMaterials
+ * @property |\Cake\ORM\Association\HasMany $不使用productMaterialParents
+ * @property \App\Model\Table\不使用productMaterialsTable|\Cake\ORM\Association\HasMany $不使用productMaterials
  *
  * @method \App\Model\Entity\Material get($primaryKey, $options = [])
  * @method \App\Model\Entity\Material newEntity($data = null, array $options = [])
@@ -46,13 +47,15 @@ class MaterialsTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('MaterialTypes', [
-            'foreignKey' => 'type_id',
-            'joinType' => 'INNER'
+            'foreignKey' => 'type_id'
         ]);
         $this->hasMany('PriceMaterials', [
             'foreignKey' => 'material_id'
         ]);
-        $this->hasMany('ProductMaterialParents', [
+        $this->hasMany('ProductMachineMaterials', [
+            'foreignKey' => 'material_id'
+        ]);
+        $this->hasMany('不使用productMaterialParents', [
             'foreignKey' => 'material_id'
         ]);
         $this->hasMany('不使用productMaterials', [
@@ -79,6 +82,12 @@ class MaterialsTable extends Table
             ->notEmpty('material_code');
 
         $validator
+            ->scalar('name')
+            ->maxLength('name', 255)
+            ->requirePresence('name', 'create')
+            ->notEmpty('name');
+
+        $validator
             ->scalar('grade')
             ->maxLength('grade', 255)
             ->requirePresence('grade', 'create')
@@ -93,8 +102,7 @@ class MaterialsTable extends Table
         $validator
             ->scalar('maker')
             ->maxLength('maker', 255)
-            ->requirePresence('maker', 'create')
-            ->notEmpty('maker');
+            ->allowEmpty('maker');
 
         $validator
             ->integer('is_active')

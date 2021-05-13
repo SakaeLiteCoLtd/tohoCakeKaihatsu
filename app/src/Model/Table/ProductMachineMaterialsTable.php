@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
  * ProductMachineMaterials Model
  *
  * @property \App\Model\Table\ProductMaterialMachinesTable|\Cake\ORM\Association\BelongsTo $ProductMaterialMachines
- * @property |\Cake\ORM\Association\BelongsTo $Materials
+ * @property \App\Model\Table\MaterialsTable|\Cake\ORM\Association\BelongsTo $Materials
  * @property \App\Model\Table\ProductMaterialLotNumbersTable|\Cake\ORM\Association\HasMany $ProductMaterialLotNumbers
  *
  * @method \App\Model\Entity\ProductMachineMaterial get($primaryKey, $options = [])
@@ -70,7 +70,8 @@ class ProductMachineMaterialsTable extends Table
             ->notEmpty('material_number');
 
         $validator
-            ->numeric('mixing_ratio')
+            ->scalar('mixing_ratio')
+            ->maxLength('mixing_ratio', 255)
             ->requirePresence('mixing_ratio', 'create')
             ->notEmpty('mixing_ratio');
 
@@ -85,7 +86,8 @@ class ProductMachineMaterialsTable extends Table
             ->notEmpty('dry_hour');
 
         $validator
-            ->numeric('recycled_mixing_ratio')
+            ->scalar('recycled_mixing_ratio')
+            ->maxLength('recycled_mixing_ratio', 255)
             ->requirePresence('recycled_mixing_ratio', 'create')
             ->notEmpty('recycled_mixing_ratio');
 

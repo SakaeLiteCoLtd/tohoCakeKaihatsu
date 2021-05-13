@@ -9,10 +9,11 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $factory_id
  * @property string $material_code
+ * @property string $name
  * @property string $grade
  * @property string $color
- * @property string $maker
- * @property int $type_id
+ * @property string|null $maker
+ * @property int|null $type_id
  * @property int $is_active
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at
@@ -20,9 +21,11 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $updated_at
  * @property int|null $updated_staff
  *
+ * @property \App\Model\Entity\Factory $factory
  * @property \App\Model\Entity\MaterialType $material_type
  * @property \App\Model\Entity\PriceMaterial[] $price_materials
- * @property \App\Model\Entity\ProductMaterial[] $product_materials
+ * @property \App\Model\Entity\ProductMaterialParent[] $product_material_parents
+ * @property \App\Model\Entity\不使用productMaterial[] $不使用product_materials
  */
 class Material extends Entity
 {
@@ -39,6 +42,7 @@ class Material extends Entity
     protected $_accessible = [
         'factory_id' => true,
         'material_code' => true,
+        'name' => true,
         'grade' => true,
         'color' => true,
         'maker' => true,
@@ -49,8 +53,10 @@ class Material extends Entity
         'created_staff' => true,
         'updated_at' => true,
         'updated_staff' => true,
+        'factory' => true,
         'material_type' => true,
         'price_materials' => true,
-        'product_materials' => true
+        'product_material_parents' => true,
+        '不使用product_materials' => true
     ];
 }

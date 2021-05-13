@@ -8,7 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $factory_id
- * @property int $product_condition_parent_id
+ * @property int|null $product_condition_parent_id
  * @property \Cake\I18n\FrozenTime $datetime
  * @property int $valid_data_num
  * @property float $stop_time

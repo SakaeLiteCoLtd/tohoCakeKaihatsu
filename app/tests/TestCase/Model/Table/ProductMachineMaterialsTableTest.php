@@ -26,6 +26,7 @@ class ProductMachineMaterialsTableTest extends TestCase
     public $fixtures = [
         'app.ProductMachineMaterials',
         'app.ProductMaterialMachines',
+        'app.Materials',
         'app.ProductMaterialLotNumbers'
     ];
 

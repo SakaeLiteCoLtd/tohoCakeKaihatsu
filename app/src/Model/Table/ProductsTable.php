@@ -9,13 +9,13 @@ use Cake\Validation\Validator;
 /**
  * Products Model
  *
- * @property |\Cake\ORM\Association\BelongsTo $Factories
+ * @property \App\Model\Table\FactoriesTable|\Cake\ORM\Association\BelongsTo $Factories
  * @property \App\Model\Table\CustomersTable|\Cake\ORM\Association\BelongsTo $Customers
- * @property |\Cake\ORM\Association\HasMany $InspectionStandardSizeParents
+ * @property \App\Model\Table\InspectionStandardSizeParentsTable|\Cake\ORM\Association\HasMany $InspectionStandardSizeParents
  * @property \App\Model\Table\PriceProductsTable|\Cake\ORM\Association\HasMany $PriceProducts
- * @property |\Cake\ORM\Association\HasMany $ProductConditionParents
- * @property |\Cake\ORM\Association\HasMany $ProductMaterialParents
- * @property |\Cake\ORM\Association\HasMany $不使用productMaterials
+ * @property \App\Model\Table\ProductConditionParentsTable|\Cake\ORM\Association\HasMany $ProductConditionParents
+ * @property \App\Model\Table\不使用productMaterialParentsTable|\Cake\ORM\Association\HasMany $不使用productMaterialParents
+ * @property \App\Model\Table\不使用productMaterialsTable|\Cake\ORM\Association\HasMany $不使用productMaterials
  *
  * @method \App\Model\Entity\Product get($primaryKey, $options = [])
  * @method \App\Model\Entity\Product newEntity($data = null, array $options = [])
@@ -60,7 +60,7 @@ class ProductsTable extends Table
         $this->hasMany('ProductConditionParents', [
             'foreignKey' => 'product_id'
         ]);
-        $this->hasMany('ProductMaterialParents', [
+        $this->hasMany('不使用productMaterialParents', [
             'foreignKey' => 'product_id'
         ]);
         $this->hasMany('不使用productMaterials', [
@@ -89,8 +89,7 @@ class ProductsTable extends Table
         $validator
             ->scalar('customer_product_code')
             ->maxLength('customer_product_code', 255)
-            ->requirePresence('customer_product_code', 'create')
-            ->notEmpty('customer_product_code');
+            ->allowEmpty('customer_product_code');
 
         $validator
             ->scalar('name')

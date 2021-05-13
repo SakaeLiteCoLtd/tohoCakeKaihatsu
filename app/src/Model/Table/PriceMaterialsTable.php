@@ -68,8 +68,7 @@ class PriceMaterialsTable extends Table
         $validator
             ->scalar('lot_remarks')
             ->maxLength('lot_remarks', 255)
-            ->requirePresence('lot_remarks', 'create')
-            ->notEmpty('lot_remarks');
+            ->allowEmpty('lot_remarks');
 
         $validator
             ->date('start_deal')

@@ -10,10 +10,10 @@ use Cake\ORM\Entity;
  * @property int $product_material_machine_id
  * @property int $material_number
  * @property int $material_id
- * @property float $mixing_ratio
+ * @property string $mixing_ratio
  * @property float $dry_temp
  * @property float $dry_hour
- * @property float $recycled_mixing_ratio
+ * @property string $recycled_mixing_ratio
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at
  * @property int $created_staff
@@ -21,6 +21,7 @@ use Cake\ORM\Entity;
  * @property int|null $updated_staff
  *
  * @property \App\Model\Entity\ProductMaterialMachine $product_material_machine
+ * @property \App\Model\Entity\Material $material
  * @property \App\Model\Entity\ProductMaterialLotNumber[] $product_material_lot_numbers
  */
 class ProductMachineMaterial extends Entity
@@ -49,6 +50,7 @@ class ProductMachineMaterial extends Entity
         'updated_at' => true,
         'updated_staff' => true,
         'product_material_machine' => true,
+        'material' => true,
         'product_material_lot_numbers' => true
     ];
 }

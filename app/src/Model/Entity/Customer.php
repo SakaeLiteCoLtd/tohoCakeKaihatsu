@@ -9,8 +9,8 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $factory_id
  * @property string $name
- * @property string $address
- * @property string $tel
+ * @property string|null $address
+ * @property string|null $tel
  * @property string|null $fax
  * @property int $is_active
  * @property int $delete_flag

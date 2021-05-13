@@ -19,7 +19,7 @@ class ShotdataBasesFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'factory_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'product_condition_parent_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'product_condition_parent_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'datetime' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'valid_data_num' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'stop_time' => ['type' => 'float', 'length' => null, 'precision' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => ''],
@@ -57,7 +57,7 @@ class ShotdataBasesFixture extends TestFixture
                 'id' => 1,
                 'factory_id' => 1,
                 'product_condition_parent_id' => 1,
-                'datetime' => '2021-05-04 21:04:10',
+                'datetime' => '2021-05-13 09:27:50',
                 'valid_data_num' => 1,
                 'stop_time' => 1,
                 'extrusion_switch_conf' => 1,
@@ -69,8 +69,8 @@ class ShotdataBasesFixture extends TestFixture
                 'value_std' => 1,
                 'status_sencer' => 1,
                 'delete_flag' => 1,
-                'created_at' => '2021-05-04 21:04:10',
-                'updated_at' => '2021-05-04 21:04:10',
+                'created_at' => '2021-05-13 09:27:50',
+                'updated_at' => '2021-05-13 09:27:50',
                 'updated_staff' => 1
             ],
         ];

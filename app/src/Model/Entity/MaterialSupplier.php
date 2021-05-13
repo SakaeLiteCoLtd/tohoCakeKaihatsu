@@ -11,8 +11,8 @@ use Cake\ORM\Entity;
  * @property string $name
  * @property string|null $office
  * @property string|null $department
- * @property string $address
- * @property string $tel
+ * @property string|null $address
+ * @property string|null $tel
  * @property string|null $fax
  * @property int $is_active
  * @property int $delete_flag
@@ -21,6 +21,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $updated_at
  * @property int|null $updated_staff
  *
+ * @property \App\Model\Entity\Factory $factory
  * @property \App\Model\Entity\PriceMaterial[] $price_materials
  */
 class MaterialSupplier extends Entity
@@ -49,6 +50,7 @@ class MaterialSupplier extends Entity
         'created_staff' => true,
         'updated_at' => true,
         'updated_staff' => true,
+        'factory' => true,
         'price_materials' => true
     ];
 }

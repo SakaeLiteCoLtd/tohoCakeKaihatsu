@@ -25,9 +25,11 @@ class MaterialsTableTest extends TestCase
      */
     public $fixtures = [
         'app.Materials',
+        'app.Factories',
         'app.MaterialTypes',
         'app.PriceMaterials',
-        'app.ProductMaterials'
+        'app.ProductMaterialParents',
+        'app.不使用productMaterials'
     ];
 
     /**

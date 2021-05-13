@@ -25,6 +25,7 @@ class MaterialSuppliersTableTest extends TestCase
      */
     public $fixtures = [
         'app.MaterialSuppliers',
+        'app.Factories',
         'app.PriceMaterials'
     ];
 
@@ -68,6 +69,16 @@ class MaterialSuppliersTableTest extends TestCase
      * @return void
      */
     public function testValidationDefault()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test buildRules method
+     *
+     * @return void
+     */
+    public function testBuildRules()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

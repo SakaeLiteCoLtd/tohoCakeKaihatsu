@@ -10,7 +10,7 @@ use Cake\ORM\Entity;
  * @property int $material_id
  * @property int $material_supplier_id
  * @property float $price
- * @property string $lot_remarks
+ * @property string|null $lot_remarks
  * @property \Cake\I18n\FrozenDate $start_deal
  * @property \Cake\I18n\FrozenDate|null $finish_deal
  * @property int $is_active

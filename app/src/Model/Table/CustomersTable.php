@@ -68,14 +68,12 @@ class CustomersTable extends Table
         $validator
             ->scalar('address')
             ->maxLength('address', 255)
-            ->requirePresence('address', 'create')
-            ->notEmpty('address');
+            ->allowEmpty('address');
 
         $validator
             ->scalar('tel')
             ->maxLength('tel', 255)
-            ->requirePresence('tel', 'create')
-            ->notEmpty('tel');
+            ->allowEmpty('tel');
 
         $validator
             ->scalar('fax')

@@ -43,8 +43,7 @@ class ShotWorksTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('ProductConditionParents', [
-            'foreignKey' => 'product_condition_parent_id',
-            'joinType' => 'INNER'
+            'foreignKey' => 'product_condition_parent_id'
         ]);
     }
 

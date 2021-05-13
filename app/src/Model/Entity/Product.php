@@ -9,7 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $factory_id
  * @property string $product_code
- * @property string $customer_product_code
+ * @property string|null $customer_product_code
  * @property string $name
  * @property int $customer_id
  * @property int $is_active
@@ -19,9 +19,13 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $updated_at
  * @property int|null $updated_staff
  *
+ * @property \App\Model\Entity\Factory $factory
  * @property \App\Model\Entity\Customer $customer
+ * @property \App\Model\Entity\InspectionStandardSizeParent[] $inspection_standard_size_parents
  * @property \App\Model\Entity\PriceProduct[] $price_products
- * @property \App\Model\Entity\ProductMaterial[] $product_materials
+ * @property \App\Model\Entity\ProductConditionParent[] $product_condition_parents
+ * @property \App\Model\Entity\不使用productMaterialParent[] $不使用product_material_parents
+ * @property \App\Model\Entity\不使用productMaterial[] $不使用product_materials
  */
 class Product extends Entity
 {
@@ -47,8 +51,12 @@ class Product extends Entity
         'created_staff' => true,
         'updated_at' => true,
         'updated_staff' => true,
+        'factory' => true,
         'customer' => true,
+        'inspection_standard_size_parents' => true,
         'price_products' => true,
-        'product_materials' => true
+        'product_condition_parents' => true,
+        '不使用product_material_parents' => true,
+        '不使用product_materials' => true
     ];
 }

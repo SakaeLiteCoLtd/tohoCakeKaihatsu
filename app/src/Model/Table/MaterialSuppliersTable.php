@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * MaterialSuppliers Model
  *
- * @property |\Cake\ORM\Association\BelongsTo $Factories
+ * @property \App\Model\Table\FactoriesTable|\Cake\ORM\Association\BelongsTo $Factories
  * @property \App\Model\Table\PriceMaterialsTable|\Cake\ORM\Association\HasMany $PriceMaterials
  *
  * @method \App\Model\Entity\MaterialSupplier get($primaryKey, $options = [])
@@ -78,14 +78,12 @@ class MaterialSuppliersTable extends Table
         $validator
             ->scalar('address')
             ->maxLength('address', 255)
-            ->requirePresence('address', 'create')
-            ->notEmpty('address');
+            ->allowEmpty('address');
 
         $validator
             ->scalar('tel')
             ->maxLength('tel', 255)
-            ->requirePresence('tel', 'create')
-            ->notEmpty('tel');
+            ->allowEmpty('tel');
 
         $validator
             ->scalar('fax')

@@ -15,19 +15,23 @@ class KensahyougenryousController extends AppController
   		parent::beforeFilter($event);
 
   		// 認証なしでアクセスできるアクションの指定
-  		$this->Auth->allow(["addformpre","addform","addcomfirm","adddo"]);
+  		$this->Auth->allow(["addlogin","addformpre","addform","addcomfirm","adddo"]);
   	}
 
       public function initialize()
     {
      parent::initialize();
+     $this->Users = TableRegistry::get('Users');
+     $this->Staffs = TableRegistry::get('Staffs');
      $this->Products = TableRegistry::get('Products');
      $this->Customers = TableRegistry::get('Customers');
      $this->Materials = TableRegistry::get('Materials');
      $this->ProductConditionParents = TableRegistry::get('ProductConditionParents');
+     $this->ProductMaterialMachines = TableRegistry::get('ProductMaterialMachines');
+     $this->ProductMachineMaterials = TableRegistry::get('ProductMachineMaterials');
     }
 
-    public function addformpre()
+    public function addlogin()
     {
       $product = $this->Products->newEntity();
       $this->set('product', $product);
@@ -40,6 +44,43 @@ class KensahyougenryousController extends AppController
         $mess = "";
         $this->set('mess',$mess);
       }
+    }
+
+    public function addformpre()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->getData();
+
+      $user_code = $data["user_code"];
+
+      //以下はクラスに設定
+      $Users= $this->Users->find()->contain(["Staffs"])->where(['user_code' => $user_code, 'Users.delete_flag' => 0])->toArray();
+
+      if(isset($Users[0])){
+
+        $staff_id = $Users[0]["staff_id"];
+        $this->set('staff_id', $staff_id);
+        $staff_name= $Users[0]["staff"]["name"];
+        $this->set('staff_name', $staff_name);
+
+      }else{
+
+        return $this->redirect(['action' => 'addlogin',
+        's' => ['mess' => "社員コードが存在しません。もう一度やり直してください。"]]);
+
+      }
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
     }
 
     public function addform()
@@ -61,6 +102,11 @@ class KensahyougenryousController extends AppController
       print_r($data);
       echo "</pre>";
 */
+      $staff_id = $data["staff_id"];
+      $this->set('staff_id', $staff_id);
+      $staff_name = $data["staff_name"];
+      $this->set('staff_name', $staff_name);
+
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
@@ -80,13 +126,12 @@ class KensahyougenryousController extends AppController
 
       }
 
-
       $Materials = $this->Materials->find()
       ->where(['delete_flag' => 0])->order(["grade"=>"ASC"])->toArray();
 
       $arrMaterials = array();
       foreach ($Materials as $value) {
-        $array = array($value->id => $value->grade." : ".$value->maker." : ".$value->material_code);
+        $array = array($value->id => $value->grade." : ".$value->maker." : ".$value->name);
         $arrMaterials = $arrMaterials + $array;//array_mergeだとキーが0,1,2,…とふりなおされてしまう
       }
       $this->set('arrMaterials', $arrMaterials);
@@ -294,6 +339,11 @@ class KensahyougenryousController extends AppController
       $today = date('Y年n月j日');
       $this->set('today', $today);
 
+      $staff_id = $data["staff_id"];
+      $this->set('staff_id', $staff_id);
+      $staff_name = $data["staff_name"];
+      $this->set('staff_name', $staff_name);
+
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
@@ -325,7 +375,7 @@ class KensahyougenryousController extends AppController
             $Materials = $this->Materials->find()
             ->where(['id' => $data["material_id".$j.$i]])->toArray();
 
-            ${"material_hyouji".$j.$i} = $Materials[0]["grade"].":".$Materials[0]["maker"].":".$Materials[0]["material_code"];
+            ${"material_hyouji".$j.$i} = $Materials[0]["grade"].":".$Materials[0]["maker"].":".$Materials[0]["name"];
             $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
             ${"material_id".$j.$i} = $data["material_id".$j.$i];
             $this->set('material_id'.$j.$i,${"material_id".$j.$i});
@@ -389,6 +439,11 @@ class KensahyougenryousController extends AppController
       print_r($data);
       echo "</pre>";
 */
+      $staff_id = $data["staff_id"];
+      $this->set('staff_id', $staff_id);
+      $staff_name = $data["staff_name"];
+      $this->set('staff_name', $staff_name);
+
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
@@ -470,8 +525,6 @@ class KensahyougenryousController extends AppController
       }
 
       $tourokuProductConditionParent = array();
-      $tourokuProductMaterialMachine = array();
-      $tourokuProductMachineMaterial = array();
 
       $ProductConditionParents = $this->ProductConditionParents->find()
       ->where(['product_id' => $product_id])->order(["version"=>"DESC"])->toArray();
@@ -489,51 +542,115 @@ class KensahyougenryousController extends AppController
         "is_active" => 0,
         "delete_flag" => 0,
         'created_at' => date("Y-m-d H:i:s"),
-        "created_staff" => "9999"
+        "created_staff" => $staff_id
       ];
 
-      for($j=1; $j<=$tuikaseikeiki; $j++){
+      //新しいデータを登録
+      $ProductConditionParents = $this->ProductConditionParents
+      ->patchEntity($this->ProductConditionParents->newEntity(), $tourokuProductConditionParent);
+      $connection = ConnectionManager::get('default');//トランザクション1
+      // トランザクション開始2
+      $connection->begin();//トランザクション3
+      try {//トランザクション4
+        if ($this->ProductConditionParents->save($ProductConditionParents)) {
 
-        $tourokuProductMaterialMachine[] = [
-          "product_condition_parent_id" => 9999,
-          "cylinder_numer" => $j,
-          "cylinder_name" => $data['cylinder_name'.$j],
-          "delete_flag" => 0,
-          'created_at' => date("Y-m-d H:i:s"),
-          "created_staff" => "9999"
-        ];
+          $ProductConditionParents = $this->ProductConditionParents->find()
+          ->where(['product_id' => $product_id, 'version' => $version])->toArray();
 
-        ${"tuikagenryou".$j} = $data["tuikagenryou".$j];
+          for($j=1; $j<=$tuikaseikeiki; $j++){
 
-        for($i=1; $i<=${"tuikagenryou".$j}; $i++){
+            $tourokuProductMaterialMachine = array();
 
-          $tourokuProductMachineMaterial[] = [
-            "product_material_machine_id" => 9999,
-            "material_number" => $i,
-            "material_id" => $data["material_id".$j.$i],
-            "mixing_ratio" => $data["mixing_ratio".$j.$i],
-            "dry_temp" => $data["dry_temp".$j.$i],
-            "dry_hour" => $data["dry_hour".$j.$i],
-            "recycled_mixing_ratio" => $data["recycled_mixing_ratio".$j.$i],
-            "delete_flag" => 0,
-            'created_at' => date("Y-m-d H:i:s"),
-            "created_staff" => "9999"
-          ];
+            $tourokuProductMaterialMachine = [
+              "product_condition_parent_id" => $ProductConditionParents[0]["id"],
+              "cylinder_numer" => $j,
+              "cylinder_name" => $data['cylinder_name'.$j],
+              "delete_flag" => 0,
+              'created_at' => date("Y-m-d H:i:s"),
+              "created_staff" => $staff_id
+            ];
+
+            $ProductMaterialMachines = $this->ProductMaterialMachines
+            ->patchEntity($this->ProductMaterialMachines->newEntity(), $tourokuProductMaterialMachine);
+            if ($this->ProductMaterialMachines->save($ProductMaterialMachines)) {
+
+              $ProductMaterialMachines = $this->ProductMaterialMachines->find()
+              ->where(['product_condition_parent_id' => $ProductConditionParents[0]["id"], 'cylinder_numer' => $j])->toArray();
+
+              $tourokuProductMachineMaterial = array();
+              ${"tuikagenryou".$j} = $data["tuikagenryou".$j];
+
+              for($i=1; $i<=${"tuikagenryou".$j}; $i++){
+
+                $tourokuProductMachineMaterial[] = [
+                  "product_material_machine_id" => $ProductMaterialMachines[0]["id"],
+                  "material_number" => $i,
+                  "material_id" => $data["material_id".$j.$i],
+                  "mixing_ratio" => $data["mixing_ratio".$j.$i],
+                  "dry_temp" => $data["dry_temp".$j.$i],
+                  "dry_hour" => $data["dry_hour".$j.$i],
+                  "recycled_mixing_ratio" => $data["recycled_mixing_ratio".$j.$i],
+                  "delete_flag" => 0,
+                  'created_at' => date("Y-m-d H:i:s"),
+                  "created_staff" => $staff_id
+                ];
+
+              }
+
+              $ProductMachineMaterials = $this->ProductMachineMaterials
+              ->patchEntities($this->ProductMachineMaterials->newEntity(), $tourokuProductMachineMaterial);
+              if ($this->ProductMachineMaterials->saveMany($ProductMachineMaterials)) {
+
+                if($j >= $tuikaseikeiki){
+
+                  $connection->commit();// コミット5
+                  $mes = "以下のように登録されました。";
+                  $this->set('mes',$mes);
+
+                }
+
+              } else {
+
+                $mes = "※登録されませんでした";
+                $this->set('mes',$mes);
+                $this->Flash->error(__('The data could not be saved. Please, try again.'));
+                throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+              }
+
+            } else {
+
+              $mes = "※登録されませんでした";
+              $this->set('mes',$mes);
+              $this->Flash->error(__('The data could not be saved. Please, try again.'));
+              throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+            }
+
+          }
+
+        } else {
+
+          $mes = "※登録されませんでした";
+          $this->set('mes',$mes);
+          $this->Flash->error(__('The data could not be saved. Please, try again.'));
+          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
 
         }
 
-      }
+      } catch (Exception $e) {//トランザクション7
+      //ロールバック8
+        $connection->rollback();//トランザクション9
+      }//トランザクション10
 
-      echo "<pre>";
-      print_r($tourokuProductConditionParent);
-      echo "</pre>";
+/*
       echo "<pre>";
       print_r($tourokuProductMaterialMachine);
       echo "</pre>";
       echo "<pre>";
       print_r($tourokuProductMachineMaterial);
       echo "</pre>";
-
+*/
 
     }
 

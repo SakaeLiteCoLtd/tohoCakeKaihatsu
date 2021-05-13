@@ -24,7 +24,7 @@ echo $this->Html->css('kensahyou');
 
 <br><br>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'addformpre']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'addlogin']]) ?>
 
 <table width="1000">
     <tr>
@@ -49,7 +49,7 @@ echo $this->Html->css('kensahyou');
 
 <br>
 <table>
-  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('以下のように登録されました。') ?></strong></td></tr>
+  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
 </table>
 
 <?php for($j=1; $j<=$tuikaseikeiki; $j++): ?>
