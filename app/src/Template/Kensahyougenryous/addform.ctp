@@ -1,13 +1,10 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
  use App\myClass\menulists\htmlkensahyoukadoumenu;//myClassフォルダに配置したクラスを使用
- use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
  $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
- $htmlloginmenu = new htmlloginmenu();
- $htmllogin = $htmlloginmenu->Loginmenu();
- ?>
+?>
  <br>
 <?php
       echo $htmlkensahyoukadou;
@@ -81,8 +78,8 @@ echo $this->Html->css('kensahyou');
   <td width="100">成形機</td>
   <td width="350">グレードNo.：メーカー：材料名</td>
   <td width="130">配合比</td>
-  <td width="130">乾燥温度</td>
-  <td width="130">乾燥時間</td>
+  <td width="150">乾燥温度</td>
+  <td width="150">乾燥時間</td>
   <td width="180">再生配合比</td>
 </tr>
 
@@ -93,7 +90,7 @@ echo $this->Html->css('kensahyou');
 
         if($i==1){
           echo "<td rowspan=${"tuikagenryou".$j}>\n";
-          echo "<input type='text'  name=cylinder_name".$j." value=${"cylinder_name".$j}>\n";
+          echo "<input type='text' required name=cylinder_name".$j." value=${"cylinder_name".$j}>\n";
           echo "</td>\n";
         }
 
@@ -108,16 +105,16 @@ echo $this->Html->css('kensahyou');
         echo "</select></div></td>\n";
 
         echo "<td>\n";
-        echo "<input type='text'  name=mixing_ratio".$j.$i." value=${"mixing_ratio".$j.$i} >\n";
+        echo "<input type='text' required name=mixing_ratio".$j.$i." value=${"mixing_ratio".$j.$i} >\n";
         echo "</td>\n";
         echo "<td>\n";
-        echo "<input type='text'  name=dry_temp".$j.$i." value=${"dry_temp".$j.$i} >\n";
+        echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=dry_temp".$j.$i." value=${"dry_temp".$j.$i} > ℃ \n";
         echo "</td>\n";
         echo "<td>\n";
-        echo "<input type='text'  name=dry_hour".$j.$i." value=${"dry_hour".$j.$i} >\n";
+        echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=dry_hour".$j.$i." value=${"dry_hour".$j.$i} > h以上\n";
         echo "</td>\n";
         echo "<td>\n";
-        echo "<input type='text'  name=recycled_mixing_ratio".$j.$i." value=${"recycled_mixing_ratio".$j.$i} >\n";
+        echo "<input type='text' required name=recycled_mixing_ratio".$j.$i." value=${"recycled_mixing_ratio".$j.$i} >\n";
         echo "</td>\n";
         echo "</tr>\n";
 

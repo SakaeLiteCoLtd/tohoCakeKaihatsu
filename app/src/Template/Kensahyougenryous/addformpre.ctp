@@ -1,12 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
  use App\myClass\menulists\htmlkensahyoukadoumenu;//myClassフォルダに配置したクラスを使用
- use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
  $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
- $htmlloginmenu = new htmlloginmenu();
- $htmllogin = $htmlloginmenu->Loginmenu();
 ?>
 <br>
 <?php
@@ -30,7 +27,8 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$staff_name, 'label'=>false)) ?>
 
 <br>
- <div align="center"><font color="red" size="2"><?= __($mess) ?></font></div>
+<div align="center"><font color="red" size="3"><?= __($mess) ?></font></div>
+<div align="center"><font size="3"><?= __("製品の管理No.を入力してください。") ?></font></div>
 <br>
 
 <table>
@@ -39,7 +37,7 @@ echo $this->Html->css('kensahyou');
       <td width="280"><strong>管理No</strong></td>
     </tr>
     <tr>
-      <td style="border: 1px solid black"><?= $this->Form->control('product_code', array('type'=>'text', 'label'=>false, 'autofocus'=>true)) ?></td>
+      <td style="border: 1px solid black"><?= $this->Form->control('product_code', array('type'=>'text', 'label'=>false, 'autofocus'=>true, 'required'=>true)) ?></td>
     </tr>
   </tbody>
 </table>

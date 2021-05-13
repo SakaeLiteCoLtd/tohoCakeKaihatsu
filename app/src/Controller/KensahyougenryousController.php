@@ -8,6 +8,9 @@ use Cake\Core\Configure;//トランザクション
 use Cake\ORM\TableRegistry;//独立したテーブルを扱う
 use Cake\Event\Event;
 
+use App\myClass\classprograms\htmlLogin;//myClassフォルダに配置したクラスを使用
+$htmlinputstaffctp = new htmlLogin();
+
 class KensahyougenryousController extends AppController
 {
 
@@ -54,7 +57,7 @@ class KensahyougenryousController extends AppController
       $data = $this->request->getData();
 
       $user_code = $data["user_code"];
-
+/*
       //以下はクラスに設定
       $Users= $this->Users->find()->contain(["Staffs"])->where(['user_code' => $user_code, 'Users.delete_flag' => 0])->toArray();
 
@@ -70,6 +73,21 @@ class KensahyougenryousController extends AppController
         return $this->redirect(['action' => 'addlogin',
         's' => ['mess' => "社員コードが存在しません。もう一度やり直してください。"]]);
 
+      }
+*/
+      $htmlinputstaff = new htmlLogin();//クラスを使用
+      $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
+
+      if($arraylogindate[0] === "no_staff"){
+
+        return $this->redirect(['action' => 'addlogin',
+        's' => ['mess' => "社員コードが存在しません。もう一度やり直してください。"]]);
+
+      }else{
+        $staff_id = $arraylogindate[0];
+        $staff_name = $arraylogindate[1];
+        $this->set('staff_id', $staff_id);
+        $this->set('staff_name', $staff_name);
       }
 
       $Data=$this->request->query('s');

@@ -1,12 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
  use App\myClass\menulists\htmlkensahyoukadoumenu;//myClassフォルダに配置したクラスを使用
- use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
  $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
- $htmlloginmenu = new htmlloginmenu();
- $htmllogin = $htmlloginmenu->Loginmenu();
 ?>
 <br>
 <?php
@@ -92,10 +89,10 @@ echo $this->Html->css('kensahyou');
         echo ${"mixing_ratio".$j.$i};
         echo "</td>\n";
         echo "<td>\n";
-        echo ${"dry_temp".$j.$i};
+        echo ${"dry_temp".$j.$i}." ℃";
         echo "</td>\n";
         echo "<td>\n";
-        echo ${"dry_hour".$j.$i};
+        echo ${"dry_hour".$j.$i}." h以上";
         echo "</td>\n";
         echo "<td>\n";
         echo ${"recycled_mixing_ratio".$j.$i};
