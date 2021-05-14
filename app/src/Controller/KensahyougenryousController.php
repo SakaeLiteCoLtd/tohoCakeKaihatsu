@@ -10,6 +10,8 @@ use Cake\Event\Event;
 
 use App\myClass\classprograms\htmlLogin;//myClassフォルダに配置したクラスを使用
 $htmlinputstaffctp = new htmlLogin();
+use App\myClass\classprograms\htmlproductcheck;//myClassフォルダに配置したクラスを使用
+$htmlproductcheck = new htmlproductcheck();
 
 class KensahyougenryousController extends AppController
 {
@@ -56,25 +58,24 @@ class KensahyougenryousController extends AppController
 
       $data = $this->request->getData();
 
-      $user_code = $data["user_code"];
-/*
-      //以下はクラスに設定
-      $Users= $this->Users->find()->contain(["Staffs"])->where(['user_code' => $user_code, 'Users.delete_flag' => 0])->toArray();
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
 
-      if(isset($Users[0])){
-
-        $staff_id = $Users[0]["staff_id"];
-        $this->set('staff_id', $staff_id);
-        $staff_name= $Users[0]["staff"]["name"];
-        $this->set('staff_name', $staff_name);
+        $session = $this->request->getSession();
+        $_SESSION = $session->read();
+        $user_code = $_SESSION["user_code"];
+        $_SESSION['user_code'] = array();
 
       }else{
-
-        return $this->redirect(['action' => 'addlogin',
-        's' => ['mess' => "社員コードが存在しません。もう一度やり直してください。"]]);
-
+        $mess = "";
+        $this->set('mess',$mess);
+        $user_code = $data["user_code"];
       }
-*/
+
+      $this->set('user_code', $user_code);
+
       $htmlinputstaff = new htmlLogin();//クラスを使用
       $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
 
@@ -84,30 +85,18 @@ class KensahyougenryousController extends AppController
         's' => ['mess' => "社員コードが存在しません。もう一度やり直してください。"]]);
 
       }else{
+
         $staff_id = $arraylogindate[0];
         $staff_name = $arraylogindate[1];
         $this->set('staff_id', $staff_id);
         $this->set('staff_name', $staff_name);
-      }
 
-      $Data=$this->request->query('s');
-      if(isset($Data["mess"])){
-        $mess = $Data["mess"];
-        $this->set('mess',$mess);
-      }else{
-        $mess = "";
-        $this->set('mess',$mess);
       }
 
     }
 
     public function addform()
     {
-      session_start();
-      header('Expires:-1');
-      header('Cache-Control:');
-      header('Pragma:');
-
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
@@ -124,24 +113,31 @@ class KensahyougenryousController extends AppController
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
       $this->set('staff_name', $staff_name);
+      $user_code = $data["user_code"];
 
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
-      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
+      $htmlproductcheck = new htmlproductcheck();//クラスを使用
+      $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
 
-      if(isset($Products[0])){
+      if($arrayproductdate[0] === "no_product"){
 
-        $name = $Products[0]["name"];
-        $this->set('name', $name);
-        $customer= $Products[0]["customer"]["name"];
-        $this->set('customer', $customer);
+        if(!isset($_SESSION)){
+        session_start();
+        }
 
-      }else{
+        $_SESSION['user_code'] = array();
+        $_SESSION['user_code'] = $user_code;
 
         return $this->redirect(['action' => 'addformpre',
         's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
 
+      }else{
+        $name = $arrayproductdate[0];
+        $customer = $arrayproductdate[1];
+        $this->set('name', $name);
+        $this->set('customer', $customer);
       }
 
       $Materials = $this->Materials->find()
