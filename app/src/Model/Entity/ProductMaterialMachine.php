@@ -33,7 +33,7 @@ class ProductMaterialMachine extends Entity
      */
     protected $_accessible = [
         'product_condition_parent_id' => true,
-        'cylinder_numer' => true,
+        'cylinder_number' => true,
         'cylinder_name' => true,
         'delete_flag' => true,
         'created_at' => true,

@@ -60,9 +60,9 @@ class ProductMaterialMachinesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->integer('cylinder_numer')
-            ->requirePresence('cylinder_numer', 'create')
-            ->notEmpty('cylinder_numer');
+            ->integer('cylinder_number')
+            ->requirePresence('cylinder_number', 'create')
+            ->notEmpty('cylinder_number');
 
         $validator
             ->scalar('cylinder_name')

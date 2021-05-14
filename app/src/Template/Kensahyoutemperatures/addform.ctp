@@ -21,16 +21,16 @@ echo $this->Html->css('kensahyou');
 
 <br><br>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'addform']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'addcomfirm']]) ?>
 
 <?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>
 <?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$staff_name, 'label'=>false)) ?>
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
-<?= $this->Form->control('tuikaseikeiki', array('type'=>'hidden', 'value'=>$tuikaseikeiki, 'label'=>false)) ?>
+<?= $this->Form->control('countseikeiki', array('type'=>'hidden', 'value'=>$countseikeiki, 'label'=>false)) ?>
 
 <table width="1000">
     <tr>
-      <td width="500" colspan="2" nowrap="nowrap" style="height: 60px"><strong>検査成績書</strong><br>（兼　成形条件表・梱包仕様書・作業手順書）</td>
+      <td width="500" colspan="2" nowrap="nowrap" style="height: 50px"><strong>検査成績書</strong><br>（兼　成形条件表・梱包仕様書・作業手順書）</td>
       <td width="100" nowrap="nowrap" style="height: 30px">製品名</td>
       <td width="400" nowrap="nowrap" style="height: 30px"><?= h($name) ?></td>
     </tr>
@@ -51,71 +51,166 @@ echo $this->Html->css('kensahyou');
 
 <br>
 
-<table align="right">
-  <tbody class='sample non-sample'>
-    <tr>
-      <td style="border:none">　　</td>
-      <td style="border:none"><?= $this->Form->submit(('成形機内原料追加'), array('name' => 'genryoutuika')) ?></td>
-      <td style="border:none">　　</td>
-      <td style="border:none"><?= $this->Form->submit(('成形機追加'), array('name' => 'seikeikituika')) ?></td>
-      <td style="border:none">　　</td>
-      <td style="border:none"><?= $this->Form->submit(('登録確認へ'), array('name' => 'kakuninn')) ?></td>
-      <td style="border:none">　　　　　　　　　</td>
-      <td style="border:none">　　　　　　　　　</td>
-    </tr>
-  </tbody>
-</table>
-
-<br><br>
-
-<?php for($j=1; $j<=$tuikaseikeiki; $j++): ?>
+<?php for($j=1; $j<=$countseikeiki; $j++): ?>
 <br>
 
-<?= $this->Form->control('tuikagenryou'.$j, array('type'=>'hidden', 'value'=>${"tuikagenryou".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('product_material_machine_id'.$j, array('type'=>'hidden', 'value'=>${"product_material_machine_id".$j}, 'label'=>false)) ?>
 
 <table>
 <tr>
-  <td width="100">成形機</td>
-  <td width="350">グレードNo.：メーカー：材料名</td>
-  <td width="130">配合比</td>
-  <td width="150">乾燥温度</td>
-  <td width="150">乾燥時間</td>
-  <td width="180">再生配合比</td>
+  <td style='width:80'>成形機</td>
+  <td width="100">温度条件</td>
+  <td style='width:70'>C １</td>
+  <td style='width:70'>C ２</td>
+  <td style='width:70'>C ３</td>
+  <td style='width:70'>C ４</td>
+  <td style='width:70'>A D</td>
+  <td style='width:70'>D １</td>
+  <td style='width:70'>D ２</td>
+  <td style='width:100'>押出回転<br>（rpm）</td>
+  <td style='width:100'>負荷（A）</td>
+  <td style='width:100'>引取速度<br>（m/min）</td>
+  <td style='width:100'>ｽｸﾘｰﾝﾒｯｼｭ</td>
+  <td style='width:100'>ｽｸﾘｭｳ</td>
 </tr>
 
 <?php
-   for($i=1; $i<=${"tuikagenryou".$j}; $i++){
+   for($i=1; $i<=3; $i++){
 
         echo "<tr>\n";
 
         if($i==1){
-          echo "<td rowspan=${"tuikagenryou".$j}>\n";
-          echo "<input type='text' required name=cylinder_name".$j." value=${"cylinder_name".$j}>\n";
+          echo "<td rowspan=3>\n";
+          echo "<input type='text' style='width:60px' required name=cylinder_name".$j." value=${"cylinder_name".$j}>\n";
           echo "</td>\n";
         }
 
-        echo "<td><div align='center'><select name=material_id".$j.$i." value=${"material_id".$j.$i}>\n";
-        foreach ($arrMaterials as $key => $value){
-          if($key == ${"material_id".$j.$i}){
-            echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
+        if($i==1){
+          echo "<td style='width:50px'>\n";
+          echo "基 準 値\n";
+          echo "</td>\n";
+        }elseif($i==2){
+          echo "<td style='width:50px'>\n";
+          echo "記    録\n";
+          echo "</td>\n";
+        }elseif($i==3){
+          echo "<td style='width:50px'>\n";
+          echo "許容範囲\n";
+          echo "</td>\n";
+        }
+
+        if($i == 1){
+          echo "<td>\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_1".$j.">\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_2".$j.">\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_3".$j.">\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_4".$j.">\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_5".$j.">\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_6".$j.">\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_7".$j.">\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "<input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=extrude_roatation".$j.">\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "<input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=extrusion_load".$j.">\n";
+          echo "</td>\n";
+        }elseif($i == 2){
+          echo "<td>\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "</td>\n";
+        }else{
+          echo "<td>\n";
+          echo "± 10\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "± 10\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "± 10\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "± 10\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "± 10\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "± 10\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "± 10\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "± 5.0\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "± 5.0\n";
+          echo "</td>\n";
+        }
+
+        if($j==1){
+          if($i < 3){
+            if($i==1){
+              echo "<td>\n";
+              echo "<input type='text' style='width:70px' required name=pickup_speed>\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo "<input type='text' style='width:70px' required name=screw_mesh>\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo "<input type='text' style='width:70px' required name=screw_number>\n";
+              echo "</td>\n";
+            }else{
+              echo "<td>\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo " - \n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo " - \n";
+              echo "</td>\n";
+            }
           }else{
-            echo "<option value=$key>$value</option>";
+            echo "<td>\n";
+            echo "± 1.0\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo " - \n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo " - \n";
+            echo "</td>\n";
           }
         }
-        echo "</select></div></td>\n";
 
-        echo "<td>\n";
-        echo "<input type='text' required name=mixing_ratio".$j.$i." value=${"mixing_ratio".$j.$i} >\n";
-        echo "</td>\n";
-        echo "<td>\n";
-        echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=dry_temp".$j.$i." value=${"dry_temp".$j.$i} > ℃ \n";
-        echo "</td>\n";
-        echo "<td>\n";
-        echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=dry_hour".$j.$i." value=${"dry_hour".$j.$i} > h以上\n";
-        echo "</td>\n";
-        echo "<td>\n";
-        echo "<input type='text' required name=recycled_mixing_ratio".$j.$i." value=${"recycled_mixing_ratio".$j.$i} >\n";
-        echo "</td>\n";
         echo "</tr>\n";
 
       }
@@ -124,4 +219,12 @@ echo $this->Html->css('kensahyou');
 
 <?php endfor;?>
 
-<br><br><br>
+<br><br>
+<table align="center">
+  <tbody class='sample non-sample'>
+    <tr>
+      <td style="border:none"><?= $this->Form->submit(('登録確認へ'), array('name' => 'kakuninn')) ?></td>
+    </tr>
+  </tbody>
+</table>
+<br>
