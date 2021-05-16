@@ -1,0 +1,329 @@
+<?php
+namespace App\Controller;
+
+use App\Controller\AppController;
+use Cake\Datasource\ConnectionManager;//トランザクション
+use Cake\Core\Exception\Exception;//トランザクション
+use Cake\Core\Configure;//トランザクション
+use Cake\ORM\TableRegistry;//独立したテーブルを扱う
+use Cake\Event\Event;
+
+use App\myClass\classprograms\htmlLogin;//myClassフォルダに配置したクラスを使用
+$htmlinputstaffctp = new htmlLogin();
+use App\myClass\classprograms\htmlproductcheck;//myClassフォルダに配置したクラスを使用
+$htmlproductcheck = new htmlproductcheck();
+
+class KensahyoukikakusController extends AppController
+{
+
+  	public function beforeFilter(Event $event){
+  		parent::beforeFilter($event);
+
+  		// 認証なしでアクセスできるアクションの指定
+  		$this->Auth->allow(["addlogin","addformpre","addform","addcomfirm","adddo"]);
+  	}
+
+      public function initialize()
+    {
+     parent::initialize();
+     $this->Users = TableRegistry::get('Users');
+     $this->Staffs = TableRegistry::get('Staffs');
+     $this->Products = TableRegistry::get('Products');
+     $this->Customers = TableRegistry::get('Customers');
+     $this->InspectionStandardSizeChildren = TableRegistry::get('InspectionStandardSizeChildren');
+     $this->InspectionStandardSizeParents = TableRegistry::get('InspectionStandardSizeParents');
+    }
+
+    public function addlogin()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+    }
+
+    public function addformpre()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->getData();
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+
+        $session = $this->request->getSession();
+        $_SESSION = $session->read();
+        $user_code = $_SESSION["user_code"];
+        $_SESSION['user_code'] = array();
+
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+        $user_code = $data["user_code"];
+      }
+
+      $this->set('user_code', $user_code);
+
+      $htmlinputstaff = new htmlLogin();//クラスを使用
+      $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
+
+      if($arraylogindate[0] === "no_staff"){
+
+        return $this->redirect(['action' => 'addlogin',
+        's' => ['mess' => "社員コードが存在しません。もう一度やり直してください。"]]);
+
+      }else{
+
+        $staff_id = $arraylogindate[0];
+        $staff_name = $arraylogindate[1];
+        $this->set('staff_id', $staff_id);
+        $this->set('staff_name', $staff_name);
+
+      }
+
+    }
+
+    public function addform()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $today = date('Y年n月j日');
+      $this->set('today', $today);
+
+      $data = $this->request->getData();
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $staff_id = $data["staff_id"];
+      $this->set('staff_id', $staff_id);
+      $staff_name = $data["staff_name"];
+      $this->set('staff_name', $staff_name);
+      $user_code = $data["user_code"];
+
+      $product_code = $data["product_code"];
+      $this->set('product_code', $product_code);
+
+      $htmlproductcheck = new htmlproductcheck();//クラスを使用
+      $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
+
+      if($arrayproductdate[0] === "no_product"){
+
+        if(!isset($_SESSION)){
+        session_start();
+        }
+
+        $_SESSION['user_code'] = array();
+        $_SESSION['user_code'] = $user_code;
+
+        return $this->redirect(['action' => 'addformpre',
+        's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
+
+      }else{
+        $name = $arrayproductdate[0];
+        $customer = $arrayproductdate[1];
+        $this->set('name', $name);
+        $this->set('customer', $customer);
+      }
+
+      $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+      ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
+      ->order(["version"=>"DESC"])->toArray();
+
+      if(isset($InspectionStandardSizeParents[0])){
+
+        $inspection_standard_size_parent_id = $InspectionStandardSizeParents[0]['id'];
+        $this->set('inspection_standard_size_parent_id', $inspection_standard_size_parent_id);
+
+      }else{
+
+        return $this->redirect(['action' => 'addformpre',
+        's' => ['mess' => "管理No.「".$product_code."」の製品は検査表親テーブルの登録がされていません。"]]);
+
+      }
+
+    }
+
+    public function addcomfirm()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $today = date('Y年n月j日');
+      $this->set('today', $today);
+
+      $data = $this->request->getData();
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $staff_id = $data["staff_id"];
+      $this->set('staff_id', $staff_id);
+      $staff_name = $data["staff_name"];
+      $this->set('staff_name', $staff_name);
+
+      $product_code = $data["product_code"];
+      $this->set('product_code', $product_code);
+      $inspection_standard_size_parent_id = $data["inspection_standard_size_parent_id"];
+      $this->set('inspection_standard_size_parent_id', $inspection_standard_size_parent_id);
+
+      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
+      $name = $Products[0]["name"];
+      $this->set('name', $name);
+      $customer= $Products[0]["customer"]["name"];
+      $this->set('customer', $customer);
+
+      $formcheck = 0;
+      $formcheckmess = 0;
+
+      for($i=1; $i<=9; $i++){
+
+        if(strlen($data['size_name'.$i]) > 0){
+          ${"size_name".$i} = $data['size_name'.$i];
+
+          if(strlen($data['upper_limit'.$i]) > 0 && strlen($data['lower_limit'.$i]) > 0
+           && strlen($data['size'.$i]) > 0 && strlen($data['measuring_instrument'.$i]) > 0){
+
+            $formcheck = 0;
+
+            ${"size_name".$i} = $data['size_name'.$i];
+            $this->set('size_name'.$i,${"size_name".$i});
+            ${"upper_limit".$i} = $data['upper_limit'.$i];
+            $this->set('upper_limit'.$i,${"upper_limit".$i});
+            ${"lower_limit".$i} = $data['lower_limit'.$i];
+            $this->set('lower_limit'.$i,${"lower_limit".$i});
+            ${"size".$i} = $data['size'.$i];
+            $this->set('size'.$i,${"size".$i});
+            ${"measuring_instrument".$i} = $data['measuring_instrument'.$i];
+            $this->set('measuring_instrument'.$i,${"measuring_instrument".$i});
+
+          }else{
+
+
+            $formcheck = 1;
+            $formcheckmess = $i."番目に入力漏れがあります。";
+            $this->set('formcheckmess', $formcheckmess);
+
+          }
+
+        }else{
+
+          ${"size_name".$i} = "";
+          $this->set('size_name'.$i,${"size_name".$i});
+          ${"upper_limit".$i} = "";
+          $this->set('upper_limit'.$i,${"upper_limit".$i});
+          ${"lower_limit".$i} = "";
+          $this->set('lower_limit'.$i,${"lower_limit".$i});
+          ${"size".$i} = "";
+          $this->set('size'.$i,${"size".$i});
+          ${"measuring_instrument".$i} = "";
+          $this->set('measuring_instrument'.$i,${"measuring_instrument".$i});
+
+        }
+
+      }
+      $this->set('formcheck', $formcheck);
+
+    }
+
+    public function adddo()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $today = date('Y年n月j日');
+      $this->set('today', $today);
+
+      $data = $this->request->getData();
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $staff_id = $data["staff_id"];
+      $this->set('staff_id', $staff_id);
+      $staff_name = $data["staff_name"];
+      $this->set('staff_name', $staff_name);
+
+      $product_code = $data["product_code"];
+      $this->set('product_code', $product_code);
+
+      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
+      $product_id = $Products[0]["id"];
+      $name = $Products[0]["name"];
+      $this->set('name', $name);
+      $customer= $Products[0]["customer"]["name"];
+      $this->set('customer', $customer);
+
+
+      $tourokuInspectionStandardSizeChildren = array();
+
+      for($i=1; $i<=9; $i++){
+
+        if(strlen($data['size_name'.$i]) > 0){
+
+          $tourokuInspectionStandardSizeChildren[] = [
+            "inspection_standard_size_parent_id" => $data['inspection_standard_size_parent_id'],
+            "size_name" => $data['size_name'.$i],
+            "size_number" => $i,
+            "size" => $data['size'.$i],
+            "upper_limit" => $data['upper_limit'.$i],
+            "lower_limit" => $data['lower_limit'.$i],
+            "measuring_instrument" => $data['measuring_instrument'.$i],
+            "delete_flag" => 0,
+            'created_at' => date("Y-m-d H:i:s"),
+            "created_staff" => $staff_id
+          ];
+
+        }
+
+      }
+/*
+      echo "<pre>";
+      print_r($tourokuInspectionStandardSizeChildren);
+      echo "</pre>";
+*/
+      //新しいデータを登録
+      $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren
+      ->patchEntities($this->InspectionStandardSizeChildren->newEntity(), $tourokuInspectionStandardSizeChildren);
+      $connection = ConnectionManager::get('default');//トランザクション1
+      // トランザクション開始2
+      $connection->begin();//トランザクション3
+      try {//トランザクション4
+        if ($this->InspectionStandardSizeChildren->saveMany($InspectionStandardSizeChildren)) {
+
+          $connection->commit();// コミット5
+          $mes = "以下のように登録されました。";
+          $this->set('mes',$mes);
+
+        } else {
+
+          $this->Flash->error(__('The data could not be saved. Please, try again.'));
+          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+          $mes = "※登録されませんでした";
+          $this->set('mes',$mes);
+
+        }
+
+      } catch (Exception $e) {//トランザクション7
+      //ロールバック8
+        $connection->rollback();//トランザクション9
+      }//トランザクション10
+
+    }
+
+
+}
