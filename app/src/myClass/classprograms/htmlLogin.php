@@ -9,7 +9,7 @@ class htmlLogin extends AppController
      public function initialize()
     {
         parent::initialize();
-        $this->Users = TableRegistry::get('users');
+        $this->Users = TableRegistry::get('Users');
     }
 
      public function inputstaffctp()

@@ -17,6 +17,15 @@ $inputstaffctp = $htmlinputstaffctp->inputstaffctp();
 <?php
      echo $htmlkensahyoumenu;
 ?>
+<br>
+<hr size="5" style="margin: 0rem">
+<br>
+<table>
+  <tr>
+    <td style='border: none'><?php echo $this->Html->image('/img/menus/genryoumenu.gif',array('width'=>'145','height'=>'50'));?></td>
+  </tr>
+</table>
+<br>
 
 <?php
 $this->layout = false;

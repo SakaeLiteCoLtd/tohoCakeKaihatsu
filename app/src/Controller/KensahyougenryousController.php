@@ -21,6 +21,12 @@ class KensahyougenryousController extends AppController
 
   		// 認証なしでアクセスできるアクションの指定
   		$this->Auth->allow(["addlogin","addformpre","addform","addcomfirm","adddo"]);
+/*
+      session_start();
+      header('Expires:-1');
+      header('Cache-Control:');
+      header('Pragma:');
+*/
   	}
 
       public function initialize()
@@ -104,6 +110,7 @@ class KensahyougenryousController extends AppController
       $this->set('today', $today);
 
       $data = $this->request->getData();
+
 /*
       echo "<pre>";
       print_r($data);
@@ -124,7 +131,7 @@ class KensahyougenryousController extends AppController
       if($arrayproductdate[0] === "no_product"){
 
         if(!isset($_SESSION)){
-        session_start();
+          session_start();
         }
 
         $_SESSION['user_code'] = array();
@@ -139,6 +146,8 @@ class KensahyougenryousController extends AppController
         $this->set('name', $name);
         $this->set('customer', $customer);
       }
+
+      $this->set('user_code', $user_code);
 
       $Materials = $this->Materials->find()
       ->where(['delete_flag' => 0])->order(["grade"=>"ASC"])->toArray();
@@ -300,8 +309,8 @@ class KensahyougenryousController extends AppController
 
       }elseif(isset($data["kakuninn"])){//確認ボタン
 
-        if(!isset($_SESSION)){//sessionsyuuseituika
-        session_start();
+        if(!isset($_SESSION)){
+          session_start();
         }
 
         $_SESSION['kensahyougenryoudata'] = array();
@@ -330,7 +339,11 @@ class KensahyougenryousController extends AppController
         $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
 
       }
-
+/*
+      echo "<pre>";
+      print_r("aaa");
+      echo "</pre>";
+  */
     }
 
     public function addcomfirm()

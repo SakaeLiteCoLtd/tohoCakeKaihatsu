@@ -1,4 +1,6 @@
-<?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
+<?php
+header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策
+ ?>
 <?php
  use App\myClass\menulists\htmlkensahyoukadoumenu;//myClassフォルダに配置したクラスを使用
  $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
@@ -13,6 +15,15 @@
 <?php
      echo $htmlkensahyoumenu;
 ?>
+<br>
+<hr size="5" style="margin: 0rem">
+<br>
+<table>
+  <tr>
+    <td style='border: none'><?php echo $this->Html->image('/img/menus/genryoumenu.gif',array('width'=>'145','height'=>'50'));?></td>
+  </tr>
+</table>
+<br>
 
 <?php
 $this->layout = false;
@@ -98,7 +109,6 @@ echo $this->Html->css('kensahyou');
         echo ${"recycled_mixing_ratio".$j.$i};
         echo "</td>\n";
         echo "</tr>\n";
-
 
       }
 
