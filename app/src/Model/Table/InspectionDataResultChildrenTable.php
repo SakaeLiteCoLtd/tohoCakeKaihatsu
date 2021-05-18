@@ -100,8 +100,8 @@ class InspectionDataResultChildrenTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['inspection_data_result_parent_id'], 'InspectionDataResultParents'));
-        $rules->add($rules->existsIn(['inspection_standard_size_child_id'], 'InspectionStandardSizeChildren'));
+  //      $rules->add($rules->existsIn(['inspection_data_result_parent_id'], 'InspectionDataResultParents'));
+  //      $rules->add($rules->existsIn(['inspection_standard_size_child_id'], 'InspectionStandardSizeChildren'));
 
         return $rules;
     }

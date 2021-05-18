@@ -45,8 +45,12 @@ class htmlkensahyoukadoumenu extends AppController
            "<img src='/img/menus/imtaioumenu.gif' width=145 height=50>\n".
            "</a></td><td style='border: none'>　</td>\n".
            "<td style='border: none'>\n".
-           "<a href='/menus/preform'>\n".
+           "<a href='/Kensahyoukikakus/kensakupre'>\n".
            "<img src='/img/menus/kikakukensaku.gif' width=145 height=50>\n".
+           "</a></td><td style='border: none'>　</td>\n".
+           "<td style='border: none'>\n".
+           "<a href='/Kensahyousokuteidatas/addlogin'>\n".
+           "<img src='/img/menus/sokuteidatatouroku.gif' width=145 height=50>\n".
            "</a></td>\n".
            "</table>\n";
 

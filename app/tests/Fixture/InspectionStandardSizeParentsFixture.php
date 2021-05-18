@@ -52,9 +52,9 @@ class InspectionStandardSizeParentsFixture extends TestFixture
                 'version' => 1,
                 'is_active' => 1,
                 'delete_flag' => 1,
-                'created_at' => '2021-05-01 17:32:52',
+                'created_at' => '2021-05-16 03:09:54',
                 'created_staff' => 1,
-                'updated_at' => '2021-05-01 17:32:52',
+                'updated_at' => '2021-05-16 03:09:54',
                 'updated_staff' => 1
             ],
         ];

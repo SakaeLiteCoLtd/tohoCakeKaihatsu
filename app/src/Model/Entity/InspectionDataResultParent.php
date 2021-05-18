@@ -9,7 +9,6 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $inspection_standard_size_parent_id
  * @property int $product_conditon_parent_id
- * @property int $product_material_parent_id
  * @property \Cake\I18n\FrozenTime $datetime
  * @property int $staff_id
  * @property int $delete_flag
@@ -20,7 +19,6 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\InspectionStandardSizeParent $inspection_standard_size_parent
  * @property \App\Model\Entity\ProductConditonParent $product_conditon_parent
- * @property \App\Model\Entity\ProductMaterialParent $product_material_parent
  * @property \App\Model\Entity\Staff $staff
  * @property \App\Model\Entity\InspectionDataResultChild[] $inspection_data_result_children
  */
@@ -39,7 +37,6 @@ class InspectionDataResultParent extends Entity
     protected $_accessible = [
         'inspection_standard_size_parent_id' => true,
         'product_conditon_parent_id' => true,
-        'product_material_parent_id' => true,
         'datetime' => true,
         'staff_id' => true,
         'delete_flag' => true,
@@ -49,7 +46,6 @@ class InspectionDataResultParent extends Entity
         'updated_staff' => true,
         'inspection_standard_size_parent' => true,
         'product_conditon_parent' => true,
-        'product_material_parent' => true,
         'staff' => true,
         'inspection_data_result_children' => true
     ];

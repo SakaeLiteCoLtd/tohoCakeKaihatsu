@@ -24,12 +24,11 @@ class InspectionDataResultParentsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.inspection_data_result_parents',
-        'app.inspection_standard_size_parents',
-        'app.product_conditon_parents',
-        'app.product_material_parents',
-        'app.staffs',
-        'app.inspection_data_result_children'
+        'app.InspectionDataResultParents',
+        'app.InspectionStandardSizeParents',
+        'app.ProductConditonParents',
+        'app.Staffs',
+        'app.InspectionDataResultChildren'
     ];
 
     /**
