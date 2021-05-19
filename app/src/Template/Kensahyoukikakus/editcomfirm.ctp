@@ -28,8 +28,8 @@ $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
 
-<br><br>
-
+ <br>
+ 
 <?= $this->Form->create($product, ['url' => ['action' => 'editdo']]) ?>
 
 <?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>

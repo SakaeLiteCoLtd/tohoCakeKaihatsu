@@ -20,12 +20,13 @@ class KensahyougenryousController extends AppController
   		parent::beforeFilter($event);
 
   		// 認証なしでアクセスできるアクションの指定
-  		$this->Auth->allow(["addlogin","addformpre","addform","addcomfirm","adddo"]);
+  		$this->Auth->allow(["menu","addlogin","addformpre","addform","addcomfirm","adddo"]);
 /*
       session_start();
       header('Expires:-1');
       header('Cache-Control:');
       header('Pragma:');
+      $session = $this->request->session();
 */
   	}
 
@@ -40,6 +41,39 @@ class KensahyougenryousController extends AppController
      $this->ProductConditionParents = TableRegistry::get('ProductConditionParents');
      $this->ProductMaterialMachines = TableRegistry::get('ProductMaterialMachines');
      $this->ProductMachineMaterials = TableRegistry::get('ProductMachineMaterials');
+    }
+
+    public function menu()
+    {
+
+      $tourokuProductMaterialMachine = [
+        "product_condition_parent_id" =>32,
+        "cylinder_numer" => 1,
+        "cylinder_name" => "aaa",
+        "delete_flag" => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        "created_staff" => 1
+      ];
+      echo "<pre>";
+      print_r($tourokuProductMaterialMachine);
+      echo "</pre>";
+
+      $ProductMaterialMachines = $this->ProductMaterialMachines
+      ->patchEntity($this->ProductMaterialMachines->newEntity(), $tourokuProductMaterialMachine);
+      if ($this->ProductMaterialMachines->save($ProductMaterialMachines)) {
+
+        echo "<pre>";
+        print_r("if");
+        echo "</pre>";
+
+      } else {
+
+        echo "<pre>";
+        print_r("else");
+        echo "</pre>";
+
+      }
+
     }
 
     public function addlogin()
@@ -133,7 +167,6 @@ class KensahyougenryousController extends AppController
         if(!isset($_SESSION)){
           session_start();
         }
-
         $_SESSION['user_code'] = array();
         $_SESSION['user_code'] = $user_code;
 
@@ -554,12 +587,14 @@ class KensahyougenryousController extends AppController
       $tourokuProductConditionParent = array();
 
       $ProductConditionParents = $this->ProductConditionParents->find()
-      ->where(['product_id' => $product_id])->order(["version"=>"DESC"])->toArray();
+      ->where(['product_id' => $product_id, 'delete_flag' => 0])->order(["version"=>"DESC"])->toArray();
 
       if(isset($ProductConditionParents[0])){
         $version = $ProductConditionParents[0]["version"] + 1;
+        $motoid = $ProductConditionParents[0]["id"];
       }else{
         $version = 1;
+        $motoid = 0;
       }
 
       $tourokuProductConditionParent = [
@@ -581,6 +616,17 @@ class KensahyougenryousController extends AppController
       try {//トランザクション4
         if ($this->ProductConditionParents->save($ProductConditionParents)) {
 
+          //元のデータを削除
+          if($motoid > 0){
+
+            $this->ProductConditionParents->updateAll(
+              [ 'delete_flag' => 1,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_staff' => $staff_id],
+              ['id'  => $motoid]);
+
+          }
+
           $ProductConditionParents = $this->ProductConditionParents->find()
           ->where(['product_id' => $product_id, 'version' => $version])->toArray();
 
@@ -596,10 +642,17 @@ class KensahyougenryousController extends AppController
               'created_at' => date("Y-m-d H:i:s"),
               "created_staff" => $staff_id
             ];
+            echo "<pre>";
+            print_r($tourokuProductMaterialMachine);
+            echo "</pre>";
 
             $ProductMaterialMachines = $this->ProductMaterialMachines
             ->patchEntity($this->ProductMaterialMachines->newEntity(), $tourokuProductMaterialMachine);
             if ($this->ProductMaterialMachines->save($ProductMaterialMachines)) {
+
+              echo "<pre>";
+              print_r("if ProductMaterialMachines");
+              echo "</pre>";
 
               $ProductMaterialMachines = $this->ProductMaterialMachines->find()
               ->where(['product_condition_parent_id' => $ProductConditionParents[0]["id"], 'cylinder_numer' => $j])->toArray();
@@ -628,7 +681,15 @@ class KensahyougenryousController extends AppController
               ->patchEntities($this->ProductMachineMaterials->newEntity(), $tourokuProductMachineMaterial);
               if ($this->ProductMachineMaterials->saveMany($ProductMachineMaterials)) {
 
+                echo "<pre>";
+                print_r($tourokuProductMaterialMachine);
+                echo "</pre>";
+
                 if($j >= $tuikaseikeiki){
+
+                  echo "<pre>";
+                  print_r("1");
+                  echo "</pre>";
 
                   $connection->commit();// コミット5
                   $mes = "以下のように登録されました。";
@@ -638,6 +699,10 @@ class KensahyougenryousController extends AppController
 
               } else {
 
+                echo "<pre>";
+                print_r("2");
+                echo "</pre>";
+
                 $mes = "※登録されませんでした";
                 $this->set('mes',$mes);
                 $this->Flash->error(__('The data could not be saved. Please, try again.'));
@@ -646,6 +711,10 @@ class KensahyougenryousController extends AppController
               }
 
             } else {
+
+              echo "<pre>";
+              print_r("3");
+              echo "</pre>";
 
               $mes = "※登録されませんでした";
               $this->set('mes',$mes);

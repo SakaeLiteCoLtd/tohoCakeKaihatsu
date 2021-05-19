@@ -125,7 +125,6 @@ class KensahyoukikakusController extends AppController
         if(!isset($_SESSION)){
         session_start();
         }
-
         $_SESSION['user_code'] = array();
         $_SESSION['user_code'] = $user_code;
 
@@ -150,10 +149,31 @@ class KensahyoukikakusController extends AppController
 
       }else{
 
+        if(!isset($_SESSION)){
+        session_start();
+        }
+        $_SESSION['user_code'] = array();
+        $_SESSION['user_code'] = $user_code;
+
         return $this->redirect(['action' => 'addformpre',
         's' => ['mess' => "管理No.「".$product_code."」の製品は検査表親テーブルの登録がされていません。"]]);
 
       }
+
+      $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren->find()
+       ->where(['delete_flag' => 0])->toArray();
+
+       if(isset($InspectionStandardSizeChildren[0])){
+
+         if(!isset($_SESSION)){
+         session_start();
+         }
+         $_SESSION['user_code'] = array();
+         $_SESSION['user_code'] = $user_code;
+
+         return $this->redirect(['action' => 'addformpre',
+         's' => ['mess' => "管理No.「".$product_code."」の製品は登録済みです。内容を確認する場合は規格検索から確認してください。"]]);
+       }
 
     }
 
@@ -268,7 +288,6 @@ class KensahyoukikakusController extends AppController
       $this->set('name', $name);
       $customer= $Products[0]["customer"]["name"];
       $this->set('customer', $customer);
-
 
       $tourokuInspectionStandardSizeChildren = array();
 
@@ -714,7 +733,7 @@ class KensahyoukikakusController extends AppController
 
                 $this->Flash->error(__('The data could not be saved. Please, try again.'));
                 throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
-                $mes = "※登録されませんでした";
+                $mes = "※更新されませんでした";
                 $this->set('mes',$mes);
 
               }

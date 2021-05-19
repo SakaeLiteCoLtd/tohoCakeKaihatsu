@@ -128,7 +128,6 @@ class KensahyousokuteidatasController extends AppController
         if(!isset($_SESSION)){
         session_start();
         }
-
         $_SESSION['user_code'] = array();
         $_SESSION['user_code'] = $user_code;
 
@@ -153,6 +152,12 @@ class KensahyousokuteidatasController extends AppController
 
       }else{
 
+        if(!isset($_SESSION)){
+        session_start();
+        }
+        $_SESSION['user_code'] = array();
+        $_SESSION['user_code'] = $user_code;
+
         return $this->redirect(['action' => 'addformpre',
         's' => ['mess' => "管理No.「".$product_code."」の製品は検査表親テーブルの登録がされていません。"]]);
 
@@ -170,6 +175,12 @@ class KensahyousokuteidatasController extends AppController
         $this->set('product_conditon_parent_id', $product_conditon_parent_id);
 
       }else{
+
+        if(!isset($_SESSION)){
+        session_start();
+        }
+        $_SESSION['user_code'] = array();
+        $_SESSION['user_code'] = $user_code;
 
         return $this->redirect(['action' => 'addformpre',
         's' => ['mess' => "管理No.「".$product_code."」の製品は検査表親テーブルの登録がされていません。"]]);
@@ -220,6 +231,12 @@ class KensahyousokuteidatasController extends AppController
         $this->set('InspectionStandardSizeChildren', $InspectionStandardSizeChildren);
 
       }else{
+
+        if(!isset($_SESSION)){
+        session_start();
+        }
+        $_SESSION['user_code'] = array();
+        $_SESSION['user_code'] = $user_code;
 
         return $this->redirect(['action' => 'addformpre',
         's' => ['mess' => "管理No.「".$product_code."」の製品は規格登録がされていません。"]]);

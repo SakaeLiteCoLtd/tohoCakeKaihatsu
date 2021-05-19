@@ -60,12 +60,14 @@ class ProductsTable extends Table
         $this->hasMany('ProductConditionParents', [
             'foreignKey' => 'product_id'
         ]);
+        /*
         $this->hasMany('不使用productMaterialParents', [
             'foreignKey' => 'product_id'
         ]);
         $this->hasMany('不使用productMaterials', [
             'foreignKey' => 'product_id'
         ]);
+        */
     }
 
     /**

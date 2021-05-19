@@ -20,7 +20,8 @@ class KensahyoutemperaturesController extends AppController
   		parent::beforeFilter($event);
 
   		// 認証なしでアクセスできるアクションの指定
-  		$this->Auth->allow(["addlogin","addformpre","addform","addcomfirm","adddo"]);
+  		$this->Auth->allow(["menu","addlogin","addformpre","addform","addcomfirm","adddo"
+      ,"kensakupre", "kensakuhyouji", "editlogin", "editform", "editcomfirm", "editdo"]);
   	}
 
       public function initialize()
@@ -35,6 +36,10 @@ class KensahyoutemperaturesController extends AppController
      $this->ProductMaterialMachines = TableRegistry::get('ProductMaterialMachines');
      $this->ProductMachineMaterials = TableRegistry::get('ProductMachineMaterials');
      $this->ProductConditonChildren = TableRegistry::get('ProductConditonChildren');
+    }
+
+    public function menu()
+    {
     }
 
     public function addlogin()
@@ -127,7 +132,6 @@ class KensahyoutemperaturesController extends AppController
         if(!isset($_SESSION)){
         session_start();
         }
-
         $_SESSION['user_code'] = array();
         $_SESSION['user_code'] = $user_code;
 
@@ -148,16 +152,12 @@ class KensahyoutemperaturesController extends AppController
 
       $ProductMaterialMachines= $this->ProductMaterialMachines->find()
       ->contain(['ProductConditionParents' => ["Products"]])
-      ->where(['product_code' => $product_code,
+      ->where(['Products.product_code' => $product_code,
       'ProductConditionParents.delete_flag' => 0,
       'ProductMaterialMachines.delete_flag' => 0,
       'ProductConditionParents.version' => $version])
       ->order(["cylinder_number"=>"ASC"])->toArray();
-/*
-      echo "<pre>";
-      print_r($ProductMaterialMachines);
-      echo "</pre>";
-*/
+
       $countseikeiki = count($ProductMaterialMachines);
       $this->set('countseikeiki', $countseikeiki);
 
@@ -345,5 +345,470 @@ class KensahyoutemperaturesController extends AppController
 
     }
 
+    public function kensakupre()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->getData();
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
+    }
+
+    public function kensakuhyouji()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $today = date('Y年n月j日');
+      $this->set('today', $today);
+
+      $data = $this->request->getData();
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $product_code = $data["product_code"];
+      $this->set('product_code', $product_code);
+
+      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
+      $name = $Products[0]["name"];
+      $this->set('name', $name);
+      $customer= $Products[0]["customer"]["name"];
+      $this->set('customer', $customer);
+
+      $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
+      ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
+      ->order(["version"=>"DESC"])->toArray();
+
+      if($ProductConditionParents[0]){
+
+        $version = $ProductConditionParents[0]["version"];
+
+        $ProductMaterialMachines= $this->ProductMaterialMachines->find()
+        ->contain(['ProductConditionParents' => ["Products"]])
+        ->where(['Products.product_code' => $product_code,
+        'ProductConditionParents.delete_flag' => 0,
+        'ProductMaterialMachines.delete_flag' => 0,
+        'ProductConditionParents.version' => $version])
+        ->order(["cylinder_number"=>"ASC"])->toArray();
+
+        $countseikeiki = count($ProductMaterialMachines);
+        $this->set('countseikeiki', $countseikeiki);
+
+        for($k=0; $k<$countseikeiki; $k++){
+
+          $j = $k + 1;
+          ${"product_material_machine_id".$j} = $ProductMaterialMachines[$k]["id"];
+          $this->set('product_material_machine_id'.$j, ${"product_material_machine_id".$j});
+          ${"cylinder_name".$j} = $ProductMaterialMachines[$k]["cylinder_name"];
+          $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
+
+          $ProductConditonChildren = $this->ProductConditonChildren->find()
+          ->where(['product_material_machine_id' => ${"product_material_machine_id".$j}, 'cylinder_name' => ${"cylinder_name".$j}, 'delete_flag' => 0])
+          ->toArray();
+
+          ${"extrude_roatation".$j} = $ProductConditonChildren[0]["extrude_roatation"];
+          $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
+          ${"extrusion_load".$j} = $ProductConditonChildren[0]["extrusion_load"];
+          $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
+
+          for($n=1; $n<8; $n++){
+            ${"temp_".$n.$j} = $ProductConditonChildren[0]["temp_".$n];
+            $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
+          }
+
+          $pickup_speed = $ProductConditonChildren[0]["pickup_speed"];
+          $this->set('pickup_speed', $pickup_speed);
+          $screw_mesh = $ProductConditonChildren[0]["screw_mesh"];
+          $this->set('screw_mesh', $screw_mesh);
+          $screw_number = $ProductConditonChildren[0]["screw_number"];
+          $this->set('screw_number', $screw_number);
+
+        }
+
+      }else{
+
+        return $this->redirect(['action' => 'kensakupre',
+        's' => ['mess' => "管理No.「".$product_code."」の製品は成形温度登録がされていません。"]]);
+
+      }
+
+    }
+
+    public function editlogin()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->getData();
+
+      $product_code = $data["product_code"];
+      $this->set('product_code', $product_code);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+    }
+
+    public function editform()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $today = date('Y年n月j日');
+      $this->set('today', $today);
+
+      $data = $this->request->getData();
+      $user_code = $data["user_code"];
+
+      $htmlinputstaff = new htmlLogin();//クラスを使用
+      $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
+
+      if($arraylogindate[0] === "no_staff"){
+
+        return $this->redirect(['action' => 'addlogin',
+        's' => ['mess' => "社員コードが存在しません。もう一度やり直してください。"]]);
+
+      }else{
+
+        $staff_id = $arraylogindate[0];
+        $staff_name = $arraylogindate[1];
+        $this->set('staff_id', $staff_id);
+        $this->set('staff_name', $staff_name);
+
+      }
+
+      $product_code = $data["product_code"];
+      $this->set('product_code', $product_code);
+
+      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
+      $name = $Products[0]["name"];
+      $this->set('name', $name);
+      $customer= $Products[0]["customer"]["name"];
+      $this->set('customer', $customer);
+
+      $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
+      ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
+      ->order(["version"=>"DESC"])->toArray();
+
+      if($ProductConditionParents[0]){
+
+        $version = $ProductConditionParents[0]["version"];
+
+        $ProductMaterialMachines= $this->ProductMaterialMachines->find()
+        ->contain(['ProductConditionParents' => ["Products"]])
+        ->where(['Products.product_code' => $product_code,
+        'ProductConditionParents.delete_flag' => 0,
+        'ProductMaterialMachines.delete_flag' => 0,
+        'ProductConditionParents.version' => $version])
+        ->order(["cylinder_number"=>"ASC"])->toArray();
+
+        $countseikeiki = count($ProductMaterialMachines);
+        $this->set('countseikeiki', $countseikeiki);
+
+        for($k=0; $k<$countseikeiki; $k++){
+
+          $j = $k + 1;
+          ${"product_material_machine_id".$j} = $ProductMaterialMachines[$k]["id"];
+          $this->set('product_material_machine_id'.$j, ${"product_material_machine_id".$j});
+          ${"cylinder_name".$j} = $ProductMaterialMachines[$k]["cylinder_name"];
+          $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
+
+          $ProductConditonChildren = $this->ProductConditonChildren->find()
+          ->where(['product_material_machine_id' => ${"product_material_machine_id".$j}, 'cylinder_name' => ${"cylinder_name".$j}, 'delete_flag' => 0])
+          ->toArray();
+
+          ${"idmoto".$j} = $ProductConditonChildren[0]["id"];
+          $this->set('idmoto'.$j, ${"idmoto".$j});
+
+          ${"extrude_roatation".$j} = $ProductConditonChildren[0]["extrude_roatation"];
+          $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
+          ${"extrusion_load".$j} = $ProductConditonChildren[0]["extrusion_load"];
+          $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
+
+          for($n=1; $n<8; $n++){
+            ${"temp_".$n.$j} = $ProductConditonChildren[0]["temp_".$n];
+            $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
+          }
+
+          $pickup_speed = $ProductConditonChildren[0]["pickup_speed"];
+          $this->set('pickup_speed', $pickup_speed);
+          $screw_mesh = $ProductConditonChildren[0]["screw_mesh"];
+          $this->set('screw_mesh', $screw_mesh);
+          $screw_number = $ProductConditonChildren[0]["screw_number"];
+          $this->set('screw_number', $screw_number);
+
+        }
+
+      }else{
+
+        return $this->redirect(['action' => 'kensakupre',
+        's' => ['mess' => "管理No.「".$product_code."」の製品は成形温度登録がされていません。"]]);
+
+      }
+
+    }
+
+    public function editcomfirm()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $today = date('Y年n月j日');
+      $this->set('today', $today);
+
+      $data = $this->request->getData();
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $staff_id = $data["staff_id"];
+      $this->set('staff_id', $staff_id);
+      $staff_name = $data["staff_name"];
+      $this->set('staff_name', $staff_name);
+
+      $product_code = $data["product_code"];
+      $this->set('product_code', $product_code);
+
+      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
+      $name = $Products[0]["name"];
+      $this->set('name', $name);
+      $customer= $Products[0]["customer"]["name"];
+      $this->set('customer', $customer);
+
+      $countseikeiki = $data["countseikeiki"];
+      $this->set('countseikeiki', $countseikeiki);
+      $pickup_speed = $data["pickup_speed"];
+      $this->set('pickup_speed', $pickup_speed);
+      $screw_mesh = $data["screw_mesh"];
+      $this->set('screw_mesh', $screw_mesh);
+      $screw_number = $data["screw_number"];
+      $this->set('screw_number', $screw_number);
+
+      for($k=0; $k<$countseikeiki; $k++){
+
+        $j = $k + 1;
+        ${"product_material_machine_id".$j} = $data['product_material_machine_id'.$j];
+        $this->set('product_material_machine_id'.$j, ${"product_material_machine_id".$j});
+        ${"cylinder_name".$j} = $data['cylinder_name'.$j];
+        $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
+
+        for($i=1; $i<=7; $i++){
+          ${"temp_".$i.$j} = $data['temp_'.$i.$j];
+          $this->set('temp_'.$i.$j, ${"temp_".$i.$j});
+        }
+
+        ${"extrude_roatation".$j} = $data['extrude_roatation'.$j];
+        $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
+        ${"extrusion_load".$j} = $data['extrusion_load'.$j];
+        $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
+
+      }
+
+      if($data["check"] < 1){
+        $mes = "以下のように更新します。よろしければ決定ボタンを押してください。";
+      }else{
+        $mes = "以下のデータを削除します。よろしければ決定ボタンを押してください。";
+      }
+      $this->set('mes', $mes);
+
+    }
+
+    public function editdo()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $today = date('Y年n月j日');
+      $this->set('today', $today);
+
+      $data = $this->request->getData();
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $staff_id = $data["staff_id"];
+      $this->set('staff_id', $staff_id);
+      $staff_name = $data["staff_name"];
+      $this->set('staff_name', $staff_name);
+
+      $product_code = $data["product_code"];
+      $this->set('product_code', $product_code);
+
+      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
+      $product_id = $Products[0]["id"];
+      $name = $Products[0]["name"];
+      $this->set('name', $name);
+      $customer= $Products[0]["customer"]["name"];
+      $this->set('customer', $customer);
+
+      $countseikeiki = $data["countseikeiki"];
+      $this->set('countseikeiki', $countseikeiki);
+      $pickup_speed = $data["pickup_speed"];
+      $this->set('pickup_speed', $pickup_speed);
+      $screw_mesh = $data["screw_mesh"];
+      $this->set('screw_mesh', $screw_mesh);
+      $screw_number = $data["screw_number"];
+      $this->set('screw_number', $screw_number);
+
+      $tourokuProductConditonChildren = array();
+
+      for($k=0; $k<$countseikeiki; $k++){
+
+        $j = $k + 1;
+        ${"product_material_machine_id".$j} = $data['product_material_machine_id'.$j];
+        $this->set('product_material_machine_id'.$j, ${"product_material_machine_id".$j});
+        ${"cylinder_name".$j} = $data['cylinder_name'.$j];
+        $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
+
+        for($i=1; $i<=7; $i++){
+          ${"temp_".$i.$j} = $data['temp_'.$i.$j];
+          $this->set('temp_'.$i.$j, ${"temp_".$i.$j});
+        }
+
+        ${"extrude_roatation".$j} = $data['extrude_roatation'.$j];
+        $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
+        ${"extrusion_load".$j} = $data['extrusion_load'.$j];
+        $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
+
+        $updateProductConditonChildren[] = [
+          "product_material_machine_id" => $data['product_material_machine_id'.$j],
+          "cylinder_number" => $j,
+          "cylinder_name" => $data['cylinder_name'.$j],
+          "temp_1" => $data['temp_1'.$j],
+          "temp_2" => $data['temp_2'.$j],
+          "temp_3" => $data['temp_3'.$j],
+          "temp_4" => $data['temp_4'.$j],
+          "temp_5" => $data['temp_5'.$j],
+          "temp_6" => $data['temp_6'.$j],
+          "temp_7" => $data['temp_7'.$j],
+          "extrude_roatation" => $data['extrude_roatation'.$j],
+          "extrusion_load" => $data['extrusion_load'.$j],
+          "pickup_speed" => $data['pickup_speed'],
+          "screw_mesh" => $data['screw_mesh'],
+          "screw_number" => $data['screw_number'],
+          "delete_flag" => 0,
+          'created_at' => date("Y-m-d H:i:s"),
+          "created_staff" => $staff_id
+        ];
+
+      }
+
+      echo "<pre>";
+      print_r($updateProductConditonChildren);
+      echo "</pre>";
+
+          if($data["check"] < 1){//削除ではない場合
+
+            echo "<pre>";
+            print_r("0");
+            echo "</pre>";
+
+            //新しいデータを登録
+            $ProductConditonChildren = $this->ProductConditonChildren->patchEntities($this->ProductConditonChildren->newEntity(), $updateProductConditonChildren);
+            $connection = ConnectionManager::get('default');//トランザクション1
+            // トランザクション開始2
+            $connection->begin();//トランザクション3
+            try {//トランザクション4
+
+              echo "<pre>";
+              print_r("ss");
+              echo "</pre>";
+
+              if ($this->ProductConditonChildren->saveMany($ProductConditonChildren)) {
+
+                echo "<pre>";
+                print_r("if");
+                echo "</pre>";
+
+                for($i=1; $i<=$countseikeiki; $i++){
+
+                  echo "<pre>";
+                  print_r($i." ".$data['idmoto'.$i]);
+                  echo "</pre>";
+
+                  $this->ProductConditonChildren->updateAll(
+                    [ 'delete_flag' => 1,
+                      'updated_at' => date('Y-m-d H:i:s'),
+                      'updated_staff' => $staff_id],
+                    ['id'  => $data['idmoto'.$i]]);
+
+                }
+
+                $connection->commit();// コミット5
+                $mes = "以下のように更新されました。";
+                $this->set('mes',$mes);
+
+              } else {
+
+                $this->Flash->error(__('The data could not be saved. Please, try again.'));
+                throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+                $mes = "※更新されませんでした";
+                $this->set('mes',$mes);
+
+              }
+
+            } catch (Exception $e) {//トランザクション7
+            //ロールバック8
+              $connection->rollback();//トランザクション9
+            }//トランザクション10
+
+          }else{//削除の場合
+
+            for($i=1; $i<=$countseikeiki; $i++){
+
+                $ProductConditonChildren = $this->ProductConditonChildren
+                ->patchEntity($this->ProductConditonChildren->newEntity(), $data);
+                $connection = ConnectionManager::get('default');//トランザクション1
+                // トランザクション開始2
+                $connection->begin();//トランザクション3
+                try {//トランザクション4
+                  if ($this->ProductConditonChildren->updateAll(
+                    [ 'delete_flag' => 1,
+                      'updated_at' => date('Y-m-d H:i:s'),
+                      'updated_staff' => $staff_id],
+                    ['id'  => $data['idmoto'.$i]])
+                  ) {
+
+                    $connection->commit();// コミット5
+                    $mes = "削除されました。";
+                    $this->set('mes',$mes);
+
+                  } else {
+
+                    $this->Flash->error(__('The data could not be saved. Please, try again.'));
+                    throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+                    $mes = "※削除されませんでした";
+                    $this->set('mes',$mes);
+
+                  }
+
+                } catch (Exception $e) {//トランザクション7
+                //ロールバック8
+                  $connection->rollback();//トランザクション9
+                }//トランザクション10
+
+          }
+
+        }
+
+    }
 
 }

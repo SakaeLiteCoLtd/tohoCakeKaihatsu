@@ -33,8 +33,6 @@ $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
 
-<br><br>
-
 <?= $this->Form->create($product, ['url' => ['action' => 'editform']]) ?>
 
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>

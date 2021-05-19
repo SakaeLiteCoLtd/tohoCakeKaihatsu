@@ -33,7 +33,6 @@ echo $this->Html->css('kensahyou');
 </table>
 <br>
 
-
 <?= $this->Form->create($product, ['url' => ['action' => 'addformpre']]) ?>
 
 <br>

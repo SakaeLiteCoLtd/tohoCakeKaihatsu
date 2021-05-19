@@ -44,15 +44,18 @@ class ProductConditionParentsTable extends Table
             'foreignKey' => 'product_id',
             'joinType' => 'INNER'
         ]);
+
         $this->hasMany('ProductConditonChildren', [
             'foreignKey' => 'product_condition_parent_id'
         ]);
+
         $this->hasMany('ShotWorks', [
             'foreignKey' => 'product_condition_parent_id'
         ]);
         $this->hasMany('ShotdataBases', [
             'foreignKey' => 'product_condition_parent_id'
         ]);
+
     }
 
     /**

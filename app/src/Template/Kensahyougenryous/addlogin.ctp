@@ -26,13 +26,17 @@ $inputstaffctp = $htmlinputstaffctp->inputstaffctp();
   </tr>
 </table>
 <br>
+<table>
+  <tr>
+    <td style='border: none'><?php echo $this->Html->image('/img/menus/subtouroku.gif',array('width'=>'145','height'=>'50'));?></td>
+  </tr>
+</table>
+<br>
 
 <?php
 $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
-
-<br><br>
 
 <?= $this->Form->create($product, ['url' => ['action' => 'addformpre']]) ?>
 

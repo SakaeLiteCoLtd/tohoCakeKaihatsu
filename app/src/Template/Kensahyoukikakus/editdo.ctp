@@ -13,15 +13,24 @@
  <?php
       echo $htmlkensahyoumenu;
  ?>
+ <br>
+ <hr size="5" style="margin: 0rem">
+ <br>
+ <table>
+   <tr>
+     <td style='border: none'><?php echo $this->Html->image('/img/menus/kikakukensaku.gif',array('width'=>'145','height'=>'50'));?></td>
+   </tr>
+ </table>
+ <br>
 
 <?php
 $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
 
-<?= $this->Form->create($product, ['url' => ['controller'=>'KensahyoukadousController', 'action' => 'kensahyoumenu']]) ?>
+ <br>
 
-<br><br>
+<?= $this->Form->create($product, ['url' => ['controller'=>'Kensahyoukadous', 'action' => 'kensahyoumenu']]) ?>
 
 <table width="1000">
     <tr>

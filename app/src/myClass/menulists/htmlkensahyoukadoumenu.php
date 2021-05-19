@@ -29,11 +29,11 @@ class htmlkensahyoukadoumenu extends AppController
        $html =
            "<table>\n".
            "<td style='border: none'>\n".
-           "<a href='/Kensahyougenryous/addlogin'>\n".
+           "<a href='/Kensahyougenryous/menu'>\n".
            "<img src='/img/menus/genryoumenu.gif' width=145 height=50>\n".
            "</a></td><td style='border: none'>　</td>\n".
            "<td style='border: none'>\n".
-           "<a href='/Kensahyoutemperatures/addlogin'>\n".
+           "<a href='/Kensahyoutemperatures/menu'>\n".
            "<img src='/img/menus/seikeiondomenu.gif' width=145 height=50>\n".
            "</a></td><td style='border: none'>　</td>\n".
            "<td style='border: none'>\n".
@@ -41,12 +41,12 @@ class htmlkensahyoukadoumenu extends AppController
            "<img src='/img/menus/kikakutouroku.gif' width=145 height=50>\n".
            "</a></td><td style='border: none'>　</td>\n".
            "<td style='border: none'>\n".
-           "<a href='/menus/preform'>\n".
-           "<img src='/img/menus/imtaioumenu.gif' width=145 height=50>\n".
-           "</a></td><td style='border: none'>　</td>\n".
-           "<td style='border: none'>\n".
            "<a href='/Kensahyoukikakus/kensakupre'>\n".
            "<img src='/img/menus/kikakukensaku.gif' width=145 height=50>\n".
+           "</a></td><td style='border: none'>　</td>\n".
+           "<td style='border: none'>\n".
+           "<a href='/menus/preform'>\n".
+           "<img src='/img/menus/imtaioumenu.gif' width=145 height=50>\n".
            "</a></td><td style='border: none'>　</td>\n".
            "<td style='border: none'>\n".
            "<a href='/Kensahyousokuteidatas/addlogin'>\n".

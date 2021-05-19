@@ -42,6 +42,7 @@ class ProductMaterialMachinesTable extends Table
             'foreignKey' => 'product_condition_parent_id',
             'joinType' => 'INNER'
         ]);
+
         $this->hasMany('ProductMachineMaterials', [
             'foreignKey' => 'product_material_machine_id'
         ]);
@@ -105,7 +106,7 @@ class ProductMaterialMachinesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['product_condition_parent_id'], 'ProductConditionParents'));
+  //      $rules->add($rules->existsIn(['product_condition_parent_id'], 'ProductConditionParents'));
 
         return $rules;
     }
