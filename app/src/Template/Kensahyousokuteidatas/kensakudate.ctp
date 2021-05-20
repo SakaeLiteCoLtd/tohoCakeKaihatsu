@@ -68,16 +68,26 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
        'maxYear' => date('Y'), 'monthNames' => false, 'value' => $dateYMD, 'label'=>false)) ?></td>
    </tr>
 </table>
+<br>
+<table>
+  <tbody class='sample non-sample'>
+    <tr>
+      <td style="border:none"><?= $this->Form->submit(('絞り込み'), array('name' => 'saerch')) ?></td>
+    </tr>
+  </tbody>
+</table>
+
 <br><br>
 
 <?php if ($checksaerch < 1): ?>
 
-  <div align="center"><strong><font color="blue"><?php echo "＊最新の上位３つの測定データです。";?></font></strong></div>
+  <div align="center"><strong><font color="blue"><?php echo $mes;?></font></strong></div>
 <br>
   <table>
     <tbody class='sample non-sample'>
       <tr>
         <td style='width:130'>測定日</td>
+        <td style='width:130'>管理No.</td>
       </tr>
 
         <?php for($i=0; $i<=2; $i++): ?>
@@ -91,6 +101,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
 
           <tr>
             <td><?= h($date) ? $this->Html->link($date, ['action' => 'kensakuhyouji', 's' => $date."_".$product_code]) : '' ?></td>
+            <td><?= h($product_code);?></td>
           </tr>
         <?php endfor;?>
 
@@ -101,5 +112,33 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
 
 <?php else : ?>
 
+  <div align="center"><strong><font color="blue"><?php echo $mes;?></font></strong></div>
+  <br>
+    <table>
+      <tbody class='sample non-sample'>
+        <tr>
+          <td style='width:130'>測定日</td>
+          <td style='width:130'>管理No.</td>
+        </tr>
+
+          <?php for($i=0; $i<count($arrDates); $i++): ?>
+            <?php
+            if(isset($arrDates[$i])){
+              $date = $arrDates[$i];
+            }else{
+              $date = "";
+            }
+            ?>
+
+            <tr>
+              <td><?= h($date) ? $this->Html->link($date, ['action' => 'kensakuhyouji', 's' => $date."_".$product_code]) : '' ?></td>
+              <td><?= h($product_code);?></td>
+            </tr>
+          <?php endfor;?>
+
+      </tbody>
+    </table>
+
+    <br><br>
 
 <?php endif; ?>

@@ -821,29 +821,66 @@ class KensahyousokuteidatasController extends AppController
         $this->set('customer', $customer);
       }
 
-      $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
-      ->contain(['InspectionDataResultParents' => ['InspectionStandardSizeParents' => ["Products"]]])
-      ->where(['product_code' => $product_code, 'InspectionDataResultChildren.delete_flag' => 0])
-      ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
-/*
-      echo "<pre>";
-      print_r($InspectionDataResultChildren);
-      echo "</pre>";
-*/
-      for($k=0; $k<count($InspectionDataResultChildren); $k++){
+      if(isset($data['saerch'])){
 
-        $arrDates[] = $InspectionDataResultChildren[$k]['inspection_data_result_parent']['datetime']->format('Y-m-d');
+        $startY = $data['start']['year'];
+    		$startM = $data['start']['month'];
+    		$startD = $data['start']['day'];
+        $startYMD = $startY."-".$startM."-".$startD." 00:00";
+
+        $endY = $data['end']['year'];
+    		$endM = $data['end']['month'];
+    		$endD = $data['end']['day'];
+        $endYMD = $endY."-".$endM."-".$endD." 23:59";
+
+        $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
+        ->contain(['InspectionDataResultParents' => ['InspectionStandardSizeParents' => ["Products"]]])
+        ->where(['product_code' => $product_code, 'InspectionDataResultChildren.delete_flag' => 0,
+        'datetime >=' => $startYMD, 'datetime <=' => $endYMD])
+        ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
+
+        for($k=0; $k<count($InspectionDataResultChildren); $k++){
+
+          $arrDates[] = $InspectionDataResultChildren[$k]['inspection_data_result_parent']['datetime']->format('Y-m-d');
+
+        }
+
+        $arrDates = array_unique($arrDates);
+        $arrDates = array_values($arrDates);
+
+        $this->set('arrDates', $arrDates);
+
+        $mes = "検索期間： ".$startY."-".$startM."-".$startD .' ～ '.$endY."-".$endM."-".$endD;
+        $this->set('mes', $mes);
+
+        $checksaerch = 1;
+        $this->set('checksaerch', $checksaerch);
+
+      }else{
+
+        $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
+        ->contain(['InspectionDataResultParents' => ['InspectionStandardSizeParents' => ["Products"]]])
+        ->where(['product_code' => $product_code, 'InspectionDataResultChildren.delete_flag' => 0])
+        ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
+
+        for($k=0; $k<count($InspectionDataResultChildren); $k++){
+
+          $arrDates[] = $InspectionDataResultChildren[$k]['inspection_data_result_parent']['datetime']->format('Y-m-d');
+
+        }
+
+        $arrDates = array_unique($arrDates);
+        $arrDates = array_values($arrDates);
+
+        $this->set('arrDates', $arrDates);
+
+        $mes = '＊最新の上位３つの測定データです。';
+        $this->set('mes', $mes);
+
+        $checksaerch = 0;
+        $this->set('checksaerch', $checksaerch);
 
       }
-
-      $arrDates = array_unique($arrDates);
-      $arrDates = array_values($arrDates);
-
-      $this->set('arrDates', $arrDates);
-
-      $checksaerch = 0;
-      $this->set('checksaerch', $checksaerch);
-
 
     }
 
