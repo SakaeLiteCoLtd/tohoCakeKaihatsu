@@ -710,39 +710,21 @@ class KensahyoutemperaturesController extends AppController
         ];
 
       }
-
+/*
       echo "<pre>";
       print_r($updateProductConditonChildren);
       echo "</pre>";
-
+*/
           if($data["check"] < 1){//削除ではない場合
 
-            echo "<pre>";
-            print_r("0");
-            echo "</pre>";
-
-            //新しいデータを登録
             $ProductConditonChildren = $this->ProductConditonChildren->patchEntities($this->ProductConditonChildren->newEntity(), $updateProductConditonChildren);
             $connection = ConnectionManager::get('default');//トランザクション1
             // トランザクション開始2
             $connection->begin();//トランザクション3
             try {//トランザクション4
-
-              echo "<pre>";
-              print_r("ss");
-              echo "</pre>";
-
               if ($this->ProductConditonChildren->saveMany($ProductConditonChildren)) {
 
-                echo "<pre>";
-                print_r("if");
-                echo "</pre>";
-
                 for($i=1; $i<=$countseikeiki; $i++){
-
-                  echo "<pre>";
-                  print_r($i." ".$data['idmoto'.$i]);
-                  echo "</pre>";
 
                   $this->ProductConditonChildren->updateAll(
                     [ 'delete_flag' => 1,
@@ -787,16 +769,16 @@ class KensahyoutemperaturesController extends AppController
                     ['id'  => $data['idmoto'.$i]])
                   ) {
 
-                    $connection->commit();// コミット5
                     $mes = "削除されました。";
                     $this->set('mes',$mes);
+                    $connection->commit();// コミット5
 
                   } else {
 
-                    $this->Flash->error(__('The data could not be saved. Please, try again.'));
-                    throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
                     $mes = "※削除されませんでした";
                     $this->set('mes',$mes);
+                    $this->Flash->error(__('The data could not be saved. Please, try again.'));
+                    throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
 
                   }
 
