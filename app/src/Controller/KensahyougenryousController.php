@@ -12,6 +12,8 @@ use App\myClass\classprograms\htmlLogin;//myClassフォルダに配置したク�
 $htmlinputstaffctp = new htmlLogin();
 use App\myClass\classprograms\htmlproductcheck;//myClassフォルダに配置したクラスを使用
 $htmlproductcheck = new htmlproductcheck();
+use App\myClass\menulists\htmlkensahyoukadoumenu;//myClassフォルダに配置したクラスを使用
+$htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
 
 class KensahyougenryousController extends AppController
 {
@@ -112,11 +114,7 @@ class KensahyougenryousController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
-
       $data = $this->request->getData();
-
 /*
       echo "<pre>";
       print_r($data);
@@ -145,12 +143,11 @@ class KensahyougenryousController extends AppController
         return $this->redirect(['action' => 'addformpre',
         's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
 
-      }else{
-        $name = $arrayproductdate[0];
-        $customer = $arrayproductdate[1];
-        $this->set('name', $name);
-        $this->set('customer', $customer);
       }
+
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $this->set('user_code', $user_code);
 
@@ -321,7 +318,9 @@ class KensahyougenryousController extends AppController
         $_SESSION['kensahyougenryoudata'] = array();
         $_SESSION['kensahyougenryoudata'] = $data;
 
-        return $this->redirect(['action' => 'addcomfirm']);
+  //      return $this->redirect(['action' => 'addcomfirm', 's' => 'addcomfirm']);
+        return $this->redirect(['action' => 'addcomfirm',
+        's' => ['data' => 'addcomfirm']]);
 
       }else{//最初にこの画面に来た時
 
@@ -346,9 +345,9 @@ class KensahyougenryousController extends AppController
       }
 /*
       echo "<pre>";
-      print_r("aaa");
+      print_r("pre");
       echo "</pre>";
-  */
+*/
     }
 
     public function addcomfirm()
@@ -368,8 +367,6 @@ class KensahyougenryousController extends AppController
       print_r($data);
       echo "</pre>";
 */
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
 
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
@@ -379,11 +376,9 @@ class KensahyougenryousController extends AppController
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
-      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
-      $name = $Products[0]["name"];
-      $this->set('name', $name);
-      $customer= $Products[0]["customer"]["name"];
-      $this->set('customer', $customer);
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $tuikaseikeiki = $data["tuikaseikeiki"];
       $this->set('tuikaseikeiki', $tuikaseikeiki);
@@ -462,9 +457,6 @@ class KensahyougenryousController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
-
       $data = $this->request->getData();
 /*
       echo "<pre>";
@@ -479,12 +471,9 @@ class KensahyougenryousController extends AppController
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
-      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
-      $product_id = $Products[0]["id"];
-      $name = $Products[0]["name"];
-      $this->set('name', $name);
-      $customer= $Products[0]["customer"]["name"];
-      $this->set('customer', $customer);
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $tuikaseikeiki = $data["tuikaseikeiki"];
       $this->set('tuikaseikeiki', $tuikaseikeiki);
@@ -713,9 +702,6 @@ class KensahyougenryousController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
-
       $data = $this->request->getData();
 /*
       echo "<pre>";
@@ -725,11 +711,9 @@ class KensahyougenryousController extends AppController
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
-      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
-      $name = $Products[0]["name"];
-      $this->set('name', $name);
-      $customer= $Products[0]["customer"]["name"];
-      $this->set('customer', $customer);
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
       ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
@@ -819,9 +803,6 @@ class KensahyougenryousController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
-
       $data = $this->request->getData();
       $user_code = $data["user_code"];
       /*
@@ -863,12 +844,11 @@ class KensahyougenryousController extends AppController
         return $this->redirect(['action' => 'addformpre',
         's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
 
-      }else{
-        $name = $arrayproductdate[0];
-        $customer = $arrayproductdate[1];
-        $this->set('name', $name);
-        $this->set('customer', $customer);
       }
+
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $this->set('user_code', $user_code);
 
@@ -1133,8 +1113,6 @@ class KensahyougenryousController extends AppController
       print_r($data);
       echo "</pre>";
 */
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
 
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
@@ -1144,11 +1122,9 @@ class KensahyougenryousController extends AppController
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
-      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
-      $name = $Products[0]["name"];
-      $this->set('name', $name);
-      $customer= $Products[0]["customer"]["name"];
-      $this->set('customer', $customer);
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $tuikaseikeiki = $data["tuikaseikeiki"];
       $this->set('tuikaseikeiki', $tuikaseikeiki);
@@ -1236,9 +1212,6 @@ class KensahyougenryousController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
-
       $data = $this->request->getData();
 /*
       echo "<pre>";
@@ -1253,12 +1226,9 @@ class KensahyougenryousController extends AppController
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
-      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
-      $product_id = $Products[0]["id"];
-      $name = $Products[0]["name"];
-      $this->set('name', $name);
-      $customer= $Products[0]["customer"]["name"];
-      $this->set('customer', $customer);
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $tuikaseikeiki = $data["tuikaseikeiki"];
       $this->set('tuikaseikeiki', $tuikaseikeiki);

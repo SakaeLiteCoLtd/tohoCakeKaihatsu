@@ -12,6 +12,8 @@ use App\myClass\classprograms\htmlLogin;//myClassフォルダに配置したク�
 $htmlinputstaffctp = new htmlLogin();
 use App\myClass\classprograms\htmlproductcheck;//myClassフォルダに配置したクラスを使用
 $htmlproductcheck = new htmlproductcheck();
+use App\myClass\menulists\htmlkensahyoukadoumenu;//myClassフォルダに配置したクラスを使用
+$htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
 
 class KensahyoukikakusController extends AppController
 {
@@ -99,9 +101,6 @@ class KensahyoukikakusController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
-
       $data = $this->request->getData();
 /*
       echo "<pre>";
@@ -131,12 +130,11 @@ class KensahyoukikakusController extends AppController
         return $this->redirect(['action' => 'addformpre',
         's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
 
-      }else{
-        $name = $arrayproductdate[0];
-        $customer = $arrayproductdate[1];
-        $this->set('name', $name);
-        $this->set('customer', $customer);
       }
+
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
       ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
@@ -159,7 +157,7 @@ class KensahyoukikakusController extends AppController
         's' => ['mess' => "管理No.「".$product_code."」の製品は検査表親テーブルの登録がされていません。"]]);
 
       }
-
+/*
       $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren->find()
        ->where(['delete_flag' => 0])->toArray();
 
@@ -174,16 +172,13 @@ class KensahyoukikakusController extends AppController
          return $this->redirect(['action' => 'addformpre',
          's' => ['mess' => "管理No.「".$product_code."」の製品は登録済みです。内容を確認する場合は規格検索から確認してください。"]]);
        }
-
+*/
     }
 
     public function addcomfirm()
     {
       $product = $this->Products->newEntity();
       $this->set('product', $product);
-
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
 
       $data = $this->request->getData();
 /*
@@ -201,11 +196,9 @@ class KensahyoukikakusController extends AppController
       $inspection_standard_size_parent_id = $data["inspection_standard_size_parent_id"];
       $this->set('inspection_standard_size_parent_id', $inspection_standard_size_parent_id);
 
-      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
-      $name = $Products[0]["name"];
-      $this->set('name', $name);
-      $customer= $Products[0]["customer"]["name"];
-      $this->set('customer', $customer);
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $formcheck = 0;
       $formcheckmess = 0;
@@ -265,9 +258,6 @@ class KensahyoukikakusController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
-
       $data = $this->request->getData();
 /*
       echo "<pre>";
@@ -282,12 +272,12 @@ class KensahyoukikakusController extends AppController
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
-      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
-      $product_id = $Products[0]["id"];
-      $name = $Products[0]["name"];
-      $this->set('name', $name);
-      $customer= $Products[0]["customer"]["name"];
-      $this->set('customer', $customer);
+  //    $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
+  //    $product_id = $Products[0]["id"];
+
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $tourokuInspectionStandardSizeChildren = array();
 
@@ -368,9 +358,6 @@ class KensahyoukikakusController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
-
       $data = $this->request->getData();
 /*
       echo "<pre>";
@@ -398,11 +385,9 @@ class KensahyoukikakusController extends AppController
 
       $this->set('inspection_standard_size_parent_id', $inspection_standard_size_parent_id);
 
-      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
-      $name = $Products[0]["name"];
-      $this->set('name', $name);
-      $customer= $Products[0]["customer"]["name"];
-      $this->set('customer', $customer);
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $InspectionStandardSizeChildren= $this->InspectionStandardSizeChildren->find()
       ->contain(['InspectionStandardSizeParents' => ["Products"]])
@@ -483,9 +468,6 @@ class KensahyoukikakusController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
-
       $data = $this->request->getData();
       $user_code = $data["user_code"];
 
@@ -511,11 +493,9 @@ class KensahyoukikakusController extends AppController
       $inspection_standard_size_parent_id = $data["inspection_standard_size_parent_id"];
       $this->set('inspection_standard_size_parent_id', $inspection_standard_size_parent_id);
 
-      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
-      $name = $Products[0]["name"];
-      $this->set('name', $name);
-      $customer= $Products[0]["customer"]["name"];
-      $this->set('customer', $customer);
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $InspectionStandardSizeChildren= $this->InspectionStandardSizeChildren->find()
       ->contain(['InspectionStandardSizeParents' => ["Products"]])
@@ -571,9 +551,6 @@ class KensahyoukikakusController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
-
       $data = $this->request->getData();
 /*
       echo "<pre>";
@@ -590,11 +567,9 @@ class KensahyoukikakusController extends AppController
       $inspection_standard_size_parent_id = $data["inspection_standard_size_parent_id"];
       $this->set('inspection_standard_size_parent_id', $inspection_standard_size_parent_id);
 
-      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
-      $name = $Products[0]["name"];
-      $this->set('name', $name);
-      $customer= $Products[0]["customer"]["name"];
-      $this->set('customer', $customer);
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $formcheck = 0;
       $formcheckmess = 0;
@@ -661,9 +636,6 @@ class KensahyoukikakusController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
-
       $data = $this->request->getData();
 /*
       echo "<pre>";
@@ -678,12 +650,12 @@ class KensahyoukikakusController extends AppController
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
-      $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
-      $product_id = $Products[0]["id"];
-      $name = $Products[0]["name"];
-      $this->set('name', $name);
-      $customer= $Products[0]["customer"]["name"];
-      $this->set('customer', $customer);
+  //    $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
+  //    $product_id = $Products[0]["id"];
+
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       if($data["check"] < 1){//削除ではない場合
 

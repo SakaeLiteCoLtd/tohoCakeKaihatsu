@@ -12,6 +12,8 @@ use App\myClass\classprograms\htmlLogin;//myClassフォルダに配置したク�
 $htmlinputstaffctp = new htmlLogin();
 use App\myClass\classprograms\htmlproductcheck;//myClassフォルダに配置したクラスを使用
 $htmlproductcheck = new htmlproductcheck();
+use App\myClass\menulists\htmlkensahyoukadoumenu;//myClassフォルダに配置したクラスを使用
+$htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
 
 class KensahyousokuteidatasController extends AppController
 {
@@ -106,9 +108,6 @@ class KensahyousokuteidatasController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
-
       $data = $this->request->getData();
 /*
       echo "<pre>";
@@ -139,12 +138,11 @@ class KensahyousokuteidatasController extends AppController
         return $this->redirect(['action' => 'addformpre',
         's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
 
-      }else{
-        $name = $arrayproductdate[0];
-        $customer = $arrayproductdate[1];
-        $this->set('name', $name);
-        $this->set('customer', $customer);
       }
+
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
       ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
@@ -281,7 +279,7 @@ class KensahyousokuteidatasController extends AppController
           if(isset($data['datetime'.$j])){
             ${"datetime".$j} = $data['datetime'.$j];
           }else{
-            ${"datetime".$j} = "";
+            ${"datetime".$j} = date('H:i');
           }
           $this->set('datetime'.$j,${"datetime".$j});
 
@@ -345,6 +343,8 @@ class KensahyousokuteidatasController extends AppController
         $j = 1;
         ${"lot_number".$j} = "";
         $this->set('lot_number'.$j,${"lot_number".$j});
+        ${"datetime".$j} = date('H:i');
+        $this->set('datetime'.$j,${"datetime".$j});
         ${"staff_id".$j} = "";
         $this->set('staff_id'.$j,${"staff_id".$j});
         ${"gaikan".$j} = "";
@@ -362,9 +362,6 @@ class KensahyousokuteidatasController extends AppController
     {
       $product = $this->Products->newEntity();
       $this->set('product', $product);
-
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
 
       $session = $this->request->getSession();
       $_SESSION = $session->read();
@@ -391,10 +388,9 @@ class KensahyousokuteidatasController extends AppController
       $htmlproductcheck = new htmlproductcheck();//クラスを使用
       $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
 
-      $name = $arrayproductdate[0];
-      $customer = $arrayproductdate[1];
-      $this->set('name', $name);
-      $this->set('customer', $customer);
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
       ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
@@ -531,9 +527,6 @@ class KensahyousokuteidatasController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
-
       $data = $this->request->getData();
 /*
       echo "<pre>";
@@ -553,10 +546,9 @@ class KensahyousokuteidatasController extends AppController
       $htmlproductcheck = new htmlproductcheck();//クラスを使用
       $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
 
-      $name = $arrayproductdate[0];
-      $customer = $arrayproductdate[1];
-      $this->set('name', $name);
-      $this->set('customer', $customer);
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
       ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
@@ -794,9 +786,6 @@ class KensahyousokuteidatasController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
-
       $data = $this->request->getData();
 /*
       echo "<pre>";
@@ -839,6 +828,8 @@ class KensahyousokuteidatasController extends AppController
         'datetime >=' => $startYMD, 'datetime <=' => $endYMD])
         ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
 
+        $arrDates = array();
+
         for($k=0; $k<count($InspectionDataResultChildren); $k++){
 
           $arrDates[] = $InspectionDataResultChildren[$k]['inspection_data_result_parent']['datetime']->format('Y-m-d');
@@ -862,6 +853,8 @@ class KensahyousokuteidatasController extends AppController
         ->contain(['InspectionDataResultParents' => ['InspectionStandardSizeParents' => ["Products"]]])
         ->where(['product_code' => $product_code, 'InspectionDataResultChildren.delete_flag' => 0])
         ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
+
+        $arrDates = array();
 
         for($k=0; $k<count($InspectionDataResultChildren); $k++){
 
@@ -889,9 +882,6 @@ class KensahyousokuteidatasController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $today = date('Y年n月j日');
-      $this->set('today', $today);
-
       $data = $this->request->query('s');
 
       $arrdata = explode("_",$data);
@@ -909,10 +899,9 @@ class KensahyousokuteidatasController extends AppController
       $htmlproductcheck = new htmlproductcheck();//クラスを使用
       $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
 
-      $name = $arrayproductdate[0];
-      $customer = $arrayproductdate[1];
-      $this->set('name', $name);
-      $this->set('customer', $customer);
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren->find()
       ->contain(['InspectionStandardSizeParents' => ["Products"]])

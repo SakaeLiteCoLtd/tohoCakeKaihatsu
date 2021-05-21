@@ -20,17 +20,14 @@ class htmlproductcheck extends AppController
      if(isset($Products[0])){
 
        $name = $Products[0]["name"];
-       $customer= $Products[0]["customer"]["name"];
 
      }else{
 
        $name = "no_product";
-       $customer= "no_product";
 
      }
 
      $arrayproductdate[] = $name;
-     $arrayproductdate[] = $customer;
 
      return $arrayproductdate;
 
