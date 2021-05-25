@@ -366,17 +366,12 @@ class KensahyousokuteidatasController extends AppController
           print_r($tourokuInspectionDataResultParents);
           echo "</pre>";
 
-          $InspectionDataResultParents = $this->InspectionDataResultParents
-          ->patchEntity($this->InspectionDataResultParents->newEntity(), $tourokuInspectionDataResultParents);
+          $InspectionDataResultParents = $this->InspectionDataResultParents->patchEntity($this->InspectionDataResultParents->newEntity(), $tourokuInspectionDataResultParents);
           $connection = ConnectionManager::get('default');//トランザクション1
           // トランザクション開始2
           $connection->begin();//トランザクション3
           try {//トランザクション4
             if ($this->InspectionDataResultParents->save($InspectionDataResultParents)) {
-
-              echo "<pre>";
-              print_r("if");
-              echo "</pre>";
 
               $InspectionDataResultParentsId = $this->InspectionDataResultParents->find()
               ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'], 'datetime' => date("Y-m-d ").$data['datetime'.$j].":00"])
@@ -668,7 +663,11 @@ class KensahyousokuteidatasController extends AppController
         $this->set('lot_number'.$j,${"lot_number".$j});
 
         if(isset($data['datetime'.$j])){
-          ${"datetime".$j} = $data['datetime'.$j]['hour'].":".$data['datetime'.$j]['minute'];
+          if(isset($data['datetime'.$j]['hour'])){
+            ${"datetime".$j} = $data['datetime'.$j]['hour'].":".$data['datetime'.$j]['minute'];
+          }else{
+            ${"datetime".$j} = $data['datetime'.$j];
+          }
         }else{
           ${"datetime".$j} = "";
         }

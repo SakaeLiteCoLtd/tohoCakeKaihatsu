@@ -131,7 +131,7 @@ class InspectionDataResultParentsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['inspection_standard_size_parent_id'], 'InspectionStandardSizeParents'));
-        $rules->add($rules->existsIn(['product_conditon_parent_id'], 'ProductConditonParents'));
+  //      $rules->add($rules->existsIn(['product_conditon_parent_id'], 'ProductConditonParents'));
         $rules->add($rules->existsIn(['staff_id'], 'Staffs'));
 
         return $rules;
