@@ -37,7 +37,7 @@ $mes = "";
 </table>
 <br>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'adddo']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'addform']]) ?>
 
 <?= $this->Form->control('user_code', array('type'=>'hidden', 'value'=>$user_code, 'label'=>false)) ?>
 <?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>
@@ -59,7 +59,7 @@ $mes = "";
 <table>
 
   <tr>
-    <td width="90" rowspan='7'>ロットNo.</td>
+    <td width="50" rowspan='7'>No.</td>
   </tr>
   <tr>
     <td width="100" rowspan='6'>時間</td>
@@ -126,14 +126,13 @@ $mes = "";
 
 <table>
 
-  <td style='width:90; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
+  <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <td style='width:100; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
-  <td style='width:130; border-top-style:none'><?= h(${"staff_hyouji".$j}) ?></td>
+  <td style='width:130; border-top-style:none'><font size='1.8'><?= h("社員コード：") ?></font><br><?= h(${"user_code".$j}) ?></td>
 
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
   <?= $this->Form->control('datetime'.$j, array('type'=>'hidden', 'value'=>${"datetime".$j}, 'label'=>false)) ?>
-  <?= $this->Form->control('staff_id'.$j, array('type'=>'hidden', 'value'=>${"staff_id".$j}, 'label'=>false)) ?>
-  <?= $this->Form->control('staff_hyouji'.$j, array('type'=>'hidden', 'value'=>${"staff_hyouji".$j}, 'label'=>false)) ?>
+  <?= $this->Form->control('user_code'.$j, array('type'=>'hidden', 'value'=>${"user_code".$j}, 'label'=>false)) ?>
 
   <?php for($i=1; $i<=9; $i++): ?>
     <?php
@@ -146,16 +145,30 @@ $mes = "";
       echo '<td style="width:90; border-top-style:none"><font color="red">';
       echo ${"result_size".$j.$i};
       echo '</td>';
-      $mes = $mes.$k."行目 ".$i."番目に規格から外れたデータがあります。入力間違いがないか確認し、正しければそのまま登録してください。".'<br>';
+      $mes = $mes.$i."番目に規格から外れたデータがあります。入力間違いがないか確認し、正しければそのまま登録してください。".'<br>';
     }
     ?>
     <?= $this->Form->control('result_size'.$j.$i, array('type'=>'hidden', 'value'=>${"result_size".$j.$i}, 'label'=>false)) ?>
 
   <?php endfor;?>
 
-  <td style='width:100; border-top-style:none'><?= h(${"gaikan".$j}) ?></td>
+  <?php
+  if(${"gaikan".$j} == 1){
+    ${"gaikanhyouji".$j} = "不";
+  }else{
+    ${"gaikanhyouji".$j} = "良";
+  }
+
+  if(${"gouhi".$j} == 1){
+    ${"gouhihyouji".$j} = "否";
+  }else{
+    ${"gouhihyouji".$j} = "合";
+  }
+  ?>
+
+  <td style='width:100; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
   <td style='width:100; border-top-style:none'><?= h(${"weight".$j}) ?></td>
-  <td style='width:100; border-top-style:none'><?= h(${"gouhi".$j}) ?></td>
+  <td style='width:100; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
 
   <?= $this->Form->control('gaikan'.$j, array('type'=>'hidden', 'value'=>${"gaikan".$j}, 'label'=>false)) ?>
   <?= $this->Form->control('weight'.$j, array('type'=>'hidden', 'value'=>${"weight".$j}, 'label'=>false)) ?>
@@ -179,7 +192,7 @@ $mes = "";
     <tr>
       <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
       <td style="border: none;"><?= __("　") ?></td>
-      <td style="border:none"><?= $this->Form->submit(('登録確定'), array('name' => 'kakuninn')) ?></td>
+      <td style="border:none"><?= $this->Form->submit(('登録確定'), array('name' => 'tuika')) ?></td>
     </tr>
   </tbody>
 </table>

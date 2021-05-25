@@ -124,6 +124,9 @@ class KensahyousokuteidatasController extends AppController
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
+      $mess = "";
+      $this->set('mess', $mess);
+
       $htmlproductcheck = new htmlproductcheck();//クラスを使用
       $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
 
@@ -229,6 +232,8 @@ class KensahyousokuteidatasController extends AppController
           ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
           $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
 
+          $arrNum[] = $num;
+
         }
 
         $this->set('InspectionStandardSizeChildren', $InspectionStandardSizeChildren);
@@ -245,7 +250,7 @@ class KensahyousokuteidatasController extends AppController
         's' => ['mess' => "管理No.「".$product_code."」の製品は規格登録がされていません。"]]);
 
       }
-
+/*
       $Staffs = $this->Staffs->find()
       ->where(['delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
 
@@ -255,14 +260,14 @@ class KensahyousokuteidatasController extends AppController
         $arrStaffs = $arrStaffs + $array;//array_mergeだとキーが0,1,2,…とふりなおされてしまう
       }
       $this->set('arrStaffs', $arrStaffs);
-
-      $arrGaikan = ["良" => "良", "不" => "不"];
+*/
+      $arrGaikan = ["0" => "良", "1" => "不"];
       $this->set('arrGaikan', $arrGaikan);
 
-      $arrGouhi = ["合" => "合", "非" => "非"];
+      $arrGouhi = ["0" => "合", "1" => "否"];
       $this->set('arrGouhi', $arrGouhi);
 
-      if(isset($data["tuika"])){//行追加
+      if(isset($data["tuika"])){//行追加//この時点でデータの登録をする
 
         $gyou = $data["gyou"] + 1;
         $this->set('gyou', $gyou);
@@ -283,12 +288,12 @@ class KensahyousokuteidatasController extends AppController
           }
           $this->set('datetime'.$j,${"datetime".$j});
 
-          if(isset($data['staff_id'.$j])){
-            ${"staff_id".$j} = $data['staff_id'.$j];
+          if(isset($data['user_code'.$j])){
+            ${"user_code".$j} = $data['user_code'.$j];
           }else{
-            ${"staff_id".$j} = "";
+            ${"user_code".$j} = "";
           }
-          $this->set('staff_id'.$j,${"staff_id".$j});
+          $this->set('user_code'.$j,${"user_code".$j});
 
           if(isset($data['gaikan'.$j])){
             ${"gaikan".$j} = $data['gaikan'.$j];
@@ -324,16 +329,213 @@ class KensahyousokuteidatasController extends AppController
 
         }
 
-      }elseif(isset($data["kakuninn"])){
+        echo "<pre>";
+        print_r($data);
+        echo "</pre>";
 
-        if(!isset($_SESSION)){//sessionsyuuseituika
-        session_start();
+        $j = $data["gyou"];
+        ${"user_code".$j} = $data['user_code'.$j];
+        $Users = $this->Users->find()->contain(["Staffs"])->where(['user_code' => ${"user_code".$j}, 'Users.delete_flag' => 0])->toArray();
+
+        $InspectionDataResultParents = $this->InspectionDataResultParents->find()
+        ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'],
+         'product_conditon_parent_id' => $data['product_conditon_parent_id'],
+         'datetime' => date("Y-m-d ").$data['datetime'.$j].":00"])
+        ->order(["id"=>"DESC"])->toArray();
+
+        if(!isset($InspectionDataResultParents[0])){//再読み込みで同じデータが登録されないようにチェック
+          echo "<pre>";
+          print_r("touroku");
+          echo "</pre>";
+
+          $tourokuInspectionDataResultParents = [
+            "inspection_standard_size_parent_id" => $data['inspection_standard_size_parent_id'],
+            "product_conditon_parent_id" => $data['product_conditon_parent_id'],
+            'lot_number' => $data['lot_number'.$j],
+            'datetime' => date("Y-m-d ").$data['datetime'.$j].":00",
+            'staff_id' => $Users[0]["staff_id"],
+            'appearance' => $data['gaikan'.$j],
+            'result_weight' => $data['weight'.$j],
+            'judge' => $data['gouhi'.$j],
+            "delete_flag" => 0,
+            'created_at' => date("Y-m-d H:i:s"),
+            "created_staff" => $staff_id
+          ];
+
+          echo "<pre>";
+          print_r($tourokuInspectionDataResultParents);
+          echo "</pre>";
+
+          $InspectionDataResultParents = $this->InspectionDataResultParents
+          ->patchEntity($this->InspectionDataResultParents->newEntity(), $tourokuInspectionDataResultParents);
+          $connection = ConnectionManager::get('default');//トランザクション1
+          // トランザクション開始2
+          $connection->begin();//トランザクション3
+          try {//トランザクション4
+            if ($this->InspectionDataResultParents->save($InspectionDataResultParents)) {
+
+              echo "<pre>";
+              print_r("if");
+              echo "</pre>";
+
+              $InspectionDataResultParentsId = $this->InspectionDataResultParents->find()
+              ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'], 'datetime' => date("Y-m-d ").$data['datetime'.$j].":00"])
+              ->order(["id"=>"DESC"])->toArray();
+
+              $tourokuInspectionDataResultChildren = array();
+
+              for($i=1; $i<=9; $i++){
+
+                if(strlen($data['result_size'.$j.$i]) > 0){
+
+                  $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren->find()
+                  ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'], "size_number" => $i])
+                  ->order(["id"=>"DESC"])->toArray();
+
+                  $tourokuInspectionDataResultChildren[] = [
+                    "inspection_data_result_parent_id" => $InspectionDataResultParentsId[0]["id"],
+                    "inspection_standard_size_child_id" => $InspectionStandardSizeChildren[0]["id"],
+                    'result_size' => $data['result_size'.$j.$i],
+                    "delete_flag" => 0,
+                    'created_at' => date("Y-m-d H:i:s"),
+                    "created_staff" => $staff_id
+                  ];
+
+                }
+
+                if($i == 9){//各jに対して一括登録
+
+                  echo "<pre>";
+                  print_r($tourokuInspectionDataResultChildren);
+                  echo "</pre>";
+
+                  $InspectionDataResultChildren = $this->InspectionDataResultChildren
+                  ->patchEntities($this->InspectionDataResultChildren->newEntity(), $tourokuInspectionDataResultChildren);
+                  if ($this->InspectionDataResultChildren->saveMany($InspectionDataResultChildren)) {
+
+                    $connection->commit();// コミット5
+
+                  }
+
+                }
+
+              }
+
+            } else {
+
+              $mes = "※登録されませんでした";
+              $this->set('mes',$mes);
+              $this->Flash->error(__('The data could not be saved. Please, try again.'));
+              throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+            }
+
+          } catch (Exception $e) {//トランザクション7
+          //ロールバック8
+            $connection->rollback();//トランザクション9
+          }//トランザクション10
+
         }
 
-        $_SESSION['kensahyouresultdata'] = array();
-        $_SESSION['kensahyouresultdata'] = $data;
+      }elseif(isset($data["kakuninn"])){
 
-        return $this->redirect(['action' => 'addcomfirm']);
+        $checknull = 0;
+        $j = $data["gyou"];
+
+        ${"user_code".$j} = $data['user_code'.$j];
+        $Users = $this->Users->find()->contain(["Staffs"])->where(['user_code' => ${"user_code".$j}, 'Users.delete_flag' => 0])->toArray();
+        if(!isset($Users[0])){
+          $checknull = $checknull + 1;
+          $mess = $mess."※入力された社員コードは登録されていません。".'<br>';
+        }else{
+          $checknull = 0;
+        }
+        for($k=0; $k<count($arrNum); $k++){
+
+          $i = $arrNum[$k];
+
+          if(strlen($data['result_size'.$j.$i]) > 0){//ちゃんと入力されている場合
+            $checknull = $checknull;
+          }else{//入力漏れがある場合
+            $checknull = $checknull + 1;
+            $mess = $mess."※測定データに入力漏れがあります。".'<br>';
+          }
+        }
+        $this->set('mess', $mess);
+
+        if($checknull > 0){//入力漏れがある場合
+
+          $gyou = $data["gyou"];
+          $this->set('gyou', $gyou);
+
+          for($j=1; $j<=$gyou; $j++){
+
+            if(isset($data['lot_number'.$j])){
+              ${"lot_number".$j} = $data['lot_number'.$j];
+            }else{
+              ${"lot_number".$j} = "";
+            }
+            $this->set('lot_number'.$j,${"lot_number".$j});
+
+            if(isset($data['datetime'.$j])){
+              ${"datetime".$j} = $data['datetime'.$j];
+            }else{
+              ${"datetime".$j} = date('H:i');
+            }
+            $this->set('datetime'.$j,${"datetime".$j});
+
+            if(isset($data['user_code'.$j])){
+              ${"user_code".$j} = $data['user_code'.$j];
+            }else{
+              ${"user_code".$j} = "";
+            }
+            $this->set('user_code'.$j,${"user_code".$j});
+
+            if(isset($data['gaikan'.$j])){
+              ${"gaikan".$j} = $data['gaikan'.$j];
+            }else{
+              ${"gaikan".$j} = "";
+            }
+            $this->set('gaikan'.$j,${"gaikan".$j});
+
+            if(isset($data['weight'.$j])){
+              ${"weight".$j} = $data['weight'.$j];
+            }else{
+              ${"weight".$j} = "";
+            }
+            $this->set('weight'.$j,${"weight".$j});
+
+            if(isset($data['gouhi'.$j])){
+              ${"gouhi".$j} = $data['gouhi'.$j];
+            }else{
+              ${"gouhi".$j} = "";
+            }
+            $this->set('gouhi'.$j,${"gouhi".$j});
+
+            for($i=1; $i<=9; $i++){
+
+              if(isset($data['result_size'.$j.$i])){
+                ${"result_size".$j.$i} = $data['result_size'.$j.$i];
+              }else{
+                ${"result_size".$j.$i} = "";
+              }
+              $this->set('result_size'.$j.$i,${"result_size".$j.$i});
+
+            }
+
+          }
+
+        }else{//ちゃんと入力されている場合
+
+          if(!isset($_SESSION)){//sessionsyuuseituika
+          session_start();
+          }
+
+          $_SESSION['kensahyouresultdata'] = array();
+          $_SESSION['kensahyouresultdata'] = $data;
+
+          return $this->redirect(['action' => 'addcomfirm']);
+        }
 
       }else{
 
@@ -345,8 +547,8 @@ class KensahyousokuteidatasController extends AppController
         $this->set('lot_number'.$j,${"lot_number".$j});
         ${"datetime".$j} = date('H:i');
         $this->set('datetime'.$j,${"datetime".$j});
-        ${"staff_id".$j} = "";
-        $this->set('staff_id'.$j,${"staff_id".$j});
+        ${"user_code".$j} = "";
+        $this->set('user_code'.$j,${"user_code".$j});
         ${"gaikan".$j} = "";
         $this->set('gaikan'.$j,${"gaikan".$j});
         ${"weight".$j} = "";
@@ -472,19 +674,12 @@ class KensahyousokuteidatasController extends AppController
         }
         $this->set('datetime'.$j,${"datetime".$j});
 
-        if(isset($data['staff_id'.$j])){
-          ${"staff_id".$j} = $data['staff_id'.$j];
-
-          $Staffs = $this->Staffs->find()
-          ->where(['id' => ${"staff_id".$j}])->toArray();
-
-          ${"staff_hyouji".$j} = $Staffs[0]['name'];
+        if(isset($data['user_code'.$j])){
+          ${"user_code".$j} = $data['user_code'.$j];
         }else{
-          ${"staff_id".$j} = "";
-          ${"staff_hyouji".$j} = "";
+          ${"user_code".$j} = "";
         }
-        $this->set('staff_id'.$j,${"staff_id".$j});
-        $this->set('staff_hyouji'.$j,${"staff_hyouji".$j});
+        $this->set('user_code'.$j,${"user_code".$j});
 
         if(isset($data['gaikan'.$j])){
           ${"gaikan".$j} = $data['gaikan'.$j];
