@@ -52,6 +52,7 @@ echo $this->Html->css('kensahyou');
 <br>
 
 <?= $this->Form->control('product_material_machine_id'.$j, array('type'=>'hidden', 'value'=>${"product_material_machine_id".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('cylinder_name'.$j, array('type'=>'hidden', 'value'=>${"cylinder_name".$j}, 'label'=>false)) ?>
 
 <table>
 <tr>
@@ -64,11 +65,10 @@ echo $this->Html->css('kensahyou');
   <td style='width:70'>A D</td>
   <td style='width:70'>D １</td>
   <td style='width:70'>D ２</td>
-  <td style='width:100'>押出回転<br>（rpm）</td>
-  <td style='width:100'>負荷（A）</td>
-  <td style='width:100'>引取速度<br>（m/min）</td>
+  <td style='width:200' colspan="2">押出回転(rpm)/負荷(A)</td>
   <td style='width:100'>ｽｸﾘｰﾝﾒｯｼｭ</td>
   <td style='width:100'>ｽｸﾘｭｳ</td>
+  <td style='width:100'>引取速度<br>（m/min）</td>
 </tr>
 
 <?php
@@ -78,7 +78,7 @@ echo $this->Html->css('kensahyou');
 
         if($i==1){
           echo "<td rowspan=3>\n";
-          echo "<input type='text' style='width:60px' required name=cylinder_name".$j." value=${"cylinder_name".$j}>\n";
+          echo "${"cylinder_name".$j}\n";
           echo "</td>\n";
         }
 
@@ -118,12 +118,22 @@ echo $this->Html->css('kensahyou');
           echo "<td>\n";
           echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_7".$j.">\n";
           echo "</td>\n";
-          echo "<td>\n";
-          echo "<input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=extrude_roatation".$j.">\n";
+          echo "<td style='border-right-style:none'>\n";
+          echo "<input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=extrude_roatation".$j.">(rpm)\n";
           echo "</td>\n";
-          echo "<td>\n";
-          echo "<input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=extrusion_load".$j.">\n";
+          echo "<td style='border-left-style:none'>\n";
+          echo "/ <input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=extrusion_load".$j.">(A)\n";
           echo "</td>\n";
+          echo "<td><div align='center'><select name=screw_mesh_1".$j.">\n";
+          foreach ($arrScrewMesh as $key => $value){
+            echo "<option value=$key>$value</option>";
+          }
+          echo "</select></div></td>\n";
+          echo "<td><div align='center'><select name=screw_number_1".$j.">\n";
+          foreach ($arrScrewNumber as $key => $value){
+            echo "<option value=$key>$value</option>";
+          }
+          echo "</select></div></td>\n";
         }elseif($i == 2){
           echo "<td>\n";
           echo "</td>\n";
@@ -139,10 +149,20 @@ echo $this->Html->css('kensahyou');
           echo "</td>\n";
           echo "<td>\n";
           echo "</td>\n";
-          echo "<td>\n";
+          echo "<td style='border-right-style:none'>\n";
           echo "</td>\n";
-          echo "<td>\n";
+          echo "<td style='border-left-style:none'>\n";
           echo "</td>\n";
+          echo "<td><div align='center'><select name=screw_mesh_2".$j.">\n";
+          foreach ($arrScrewMesh as $key => $value){
+            echo "<option value=$key>$value</option>";
+          }
+          echo "</select></div></td>\n";
+          echo "<td><div align='center'><select name=screw_number_2".$j.">\n";
+          foreach ($arrScrewNumber as $key => $value){
+            echo "<option value=$key>$value</option>";
+          }
+          echo "</select></div></td>\n";
         }else{
           echo "<td>\n";
           echo "± 10\n";
@@ -165,12 +185,19 @@ echo $this->Html->css('kensahyou');
           echo "<td>\n";
           echo "± 10\n";
           echo "</td>\n";
-          echo "<td>\n";
+          echo "<td colspan=2>\n";
           echo "± 5.0\n";
           echo "</td>\n";
-          echo "<td>\n";
-          echo "± 5.0\n";
-          echo "</td>\n";
+          echo "<td><div align='center'><select name=screw_mesh_3".$j.">\n";
+          foreach ($arrScrewMesh as $key => $value){
+            echo "<option value=$key>$value</option>";
+          }
+          echo "</select></div></td>\n";
+          echo "<td><div align='center'><select name=screw_number_3".$j.">\n";
+          foreach ($arrScrewNumber as $key => $value){
+            echo "<option value=$key>$value</option>";
+          }
+          echo "</select></div></td>\n";
         }
 
         if($j==1){
@@ -179,31 +206,13 @@ echo $this->Html->css('kensahyou');
               echo "<td>\n";
               echo "<input type='text' style='width:70px' required name=pickup_speed>\n";
               echo "</td>\n";
-              echo "<td>\n";
-              echo "<input type='text' style='width:70px' required name=screw_mesh>\n";
-              echo "</td>\n";
-              echo "<td>\n";
-              echo "<input type='text' style='width:70px' required name=screw_number>\n";
-              echo "</td>\n";
             }else{
               echo "<td>\n";
-              echo "</td>\n";
-              echo "<td>\n";
-              echo " - \n";
-              echo "</td>\n";
-              echo "<td>\n";
-              echo " - \n";
               echo "</td>\n";
             }
           }else{
             echo "<td>\n";
             echo "± 1.0\n";
-            echo "</td>\n";
-            echo "<td>\n";
-            echo " - \n";
-            echo "</td>\n";
-            echo "<td>\n";
-            echo " - \n";
             echo "</td>\n";
           }
         }

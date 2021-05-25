@@ -61,11 +61,10 @@ echo $this->Html->css('kensahyou');
   <td style='width:70'>A D</td>
   <td style='width:70'>D １</td>
   <td style='width:70'>D ２</td>
-  <td style='width:100'>押出回転<br>（rpm）</td>
-  <td style='width:100'>負荷（A）</td>
-  <td style='width:100'>引取速度<br>（m/min）</td>
+  <td style='width:200' colspan="2">押出回転(rpm)/負荷(A)</td>
   <td style='width:100'>ｽｸﾘｰﾝﾒｯｼｭ</td>
   <td style='width:100'>ｽｸﾘｭｳ</td>
+  <td style='width:100'>引取速度<br>（m/min）</td>
 </tr>
 
 <?php
@@ -115,11 +114,17 @@ echo $this->Html->css('kensahyou');
           echo "<td>\n";
           echo "${"temp_7".$j}\n";
           echo "</td>\n";
-          echo "<td>\n";
-          echo "${"extrude_roatation".$j}\n";
+          echo "<td style='border-right-style:none; text-align:right'>\n";
+          echo "${"extrude_roatation".$j}(rpm)\n";
+          echo "</td>\n";
+          echo "<td style='border-left-style:none; text-align:left'>\n";
+          echo "/ ${"extrusion_load".$j}(A)\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "${"extrusion_load".$j}\n";
+          echo "${"screw_mesh_1".$j}\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "${"screw_number_1".$j}\n";
           echo "</td>\n";
         }elseif($i == 2){
           echo "<td>\n";
@@ -136,9 +141,15 @@ echo $this->Html->css('kensahyou');
           echo "</td>\n";
           echo "<td>\n";
           echo "</td>\n";
-          echo "<td>\n";
+          echo "<td style='border-right-style:none'>\n";
+          echo "</td>\n";
+          echo "<td style='border-left-style:none'>\n";
           echo "</td>\n";
           echo "<td>\n";
+          echo "${"screw_mesh_2".$j}\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "${"screw_number_2".$j}\n";
           echo "</td>\n";
         }else{
           echo "<td>\n";
@@ -162,11 +173,14 @@ echo $this->Html->css('kensahyou');
           echo "<td>\n";
           echo "± 10\n";
           echo "</td>\n";
-          echo "<td>\n";
+          echo "<td colspan=2>\n";
           echo "± 5.0\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "± 5.0\n";
+          echo "${"screw_mesh_3".$j}\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "${"screw_number_3".$j}\n";
           echo "</td>\n";
         }
 
@@ -176,31 +190,13 @@ echo $this->Html->css('kensahyou');
               echo "<td>\n";
               echo "$pickup_speed\n";
               echo "</td>\n";
-              echo "<td>\n";
-              echo "$screw_mesh\n";
-              echo "</td>\n";
-              echo "<td>\n";
-              echo "$screw_number\n";
-              echo "</td>\n";
             }else{
               echo "<td>\n";
-              echo "</td>\n";
-              echo "<td>\n";
-              echo " - \n";
-              echo "</td>\n";
-              echo "<td>\n";
-              echo " - \n";
               echo "</td>\n";
             }
           }else{
             echo "<td>\n";
             echo "± 1.0\n";
-            echo "</td>\n";
-            echo "<td>\n";
-            echo " - \n";
-            echo "</td>\n";
-            echo "<td>\n";
-            echo " - \n";
             echo "</td>\n";
           }
         }

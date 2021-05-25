@@ -62,7 +62,7 @@ echo $this->Html->css('kensahyou');
 <table>
 <tr>
   <td width="100">成形機</td>
-  <td width="350">グレードNo.：メーカー：材料名</td>
+  <td width="400">メーカー：材料名：グレードNo.：色</td>
   <td width="130">配合比</td>
   <td width="130">乾燥温度</td>
   <td width="130">乾燥時間</td>

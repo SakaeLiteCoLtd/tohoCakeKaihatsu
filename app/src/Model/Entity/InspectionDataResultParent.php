@@ -9,8 +9,12 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $inspection_standard_size_parent_id
  * @property int $product_conditon_parent_id
+ * @property string $lot_number
  * @property \Cake\I18n\FrozenTime $datetime
  * @property int $staff_id
+ * @property int $appearance
+ * @property float $result_weight
+ * @property int $judge
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at
  * @property int $created_staff
@@ -37,8 +41,12 @@ class InspectionDataResultParent extends Entity
     protected $_accessible = [
         'inspection_standard_size_parent_id' => true,
         'product_conditon_parent_id' => true,
+        'lot_number' => true,
         'datetime' => true,
         'staff_id' => true,
+        'appearance' => true,
+        'result_weight' => true,
+        'judge' => true,
         'delete_flag' => true,
         'created_at' => true,
         'created_staff' => true,

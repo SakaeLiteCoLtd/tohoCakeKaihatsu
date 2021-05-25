@@ -803,11 +803,6 @@ class KensahyousokuteidatasController extends AppController
         return $this->redirect(['action' => 'kensakupre',
         's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
 
-      }else{
-        $name = $arrayproductdate[0];
-        $customer = $arrayproductdate[1];
-        $this->set('name', $name);
-        $this->set('customer', $customer);
       }
 
       if(isset($data['saerch'])){

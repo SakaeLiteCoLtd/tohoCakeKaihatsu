@@ -70,9 +70,30 @@ class InspectionDataResultParentsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
+            ->scalar('lot_number')
+            ->maxLength('lot_number', 255)
+            ->requirePresence('lot_number', 'create')
+            ->notEmpty('lot_number');
+
+        $validator
             ->dateTime('datetime')
             ->requirePresence('datetime', 'create')
             ->notEmpty('datetime');
+
+        $validator
+            ->integer('appearance')
+            ->requirePresence('appearance', 'create')
+            ->notEmpty('appearance');
+
+        $validator
+            ->numeric('result_weight')
+            ->requirePresence('result_weight', 'create')
+            ->notEmpty('result_weight');
+
+        $validator
+            ->integer('judge')
+            ->requirePresence('judge', 'create')
+            ->notEmpty('judge');
 
         $validator
             ->integer('delete_flag')
@@ -110,7 +131,7 @@ class InspectionDataResultParentsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['inspection_standard_size_parent_id'], 'InspectionStandardSizeParents'));
-    //    $rules->add($rules->existsIn(['product_conditon_parent_id'], 'ProductConditonParents'));
+        $rules->add($rules->existsIn(['product_conditon_parent_id'], 'ProductConditonParents'));
         $rules->add($rules->existsIn(['staff_id'], 'Staffs'));
 
         return $rules;

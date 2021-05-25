@@ -9,7 +9,7 @@ use Cake\Validation\Validator;
 /**
  * ProductConditonChildren Model
  *
- * @property |\Cake\ORM\Association\BelongsTo $ProductMaterialMachines
+ * @property \App\Model\Table\ProductMaterialMachinesTable|\Cake\ORM\Association\BelongsTo $ProductMaterialMachines
  *
  * @method \App\Model\Entity\ProductConditonChild get($primaryKey, $options = [])
  * @method \App\Model\Entity\ProductConditonChild newEntity($data = null, array $options = [])
@@ -72,9 +72,25 @@ class ProductConditonChildrenTable extends Table
             ->notEmpty('temp_1');
 
         $validator
+            ->numeric('temp_1_upper_limit')
+            ->allowEmpty('temp_1_upper_limit');
+
+        $validator
+            ->numeric('temp_1_lower_limit')
+            ->allowEmpty('temp_1_lower_limit');
+
+        $validator
             ->numeric('temp_2')
             ->requirePresence('temp_2', 'create')
             ->notEmpty('temp_2');
+
+        $validator
+            ->numeric('temp_2_upper_limit')
+            ->allowEmpty('temp_2_upper_limit');
+
+        $validator
+            ->numeric('temp_2_lower_limit')
+            ->allowEmpty('temp_2_lower_limit');
 
         $validator
             ->numeric('temp_3')
@@ -82,9 +98,25 @@ class ProductConditonChildrenTable extends Table
             ->notEmpty('temp_3');
 
         $validator
+            ->numeric('temp_3_upper_limit')
+            ->allowEmpty('temp_3_upper_limit');
+
+        $validator
+            ->numeric('temp_3_lower_limit')
+            ->allowEmpty('temp_3_lower_limit');
+
+        $validator
             ->numeric('temp_4')
             ->requirePresence('temp_4', 'create')
             ->notEmpty('temp_4');
+
+        $validator
+            ->numeric('temp_4_upper_limit')
+            ->allowEmpty('temp_4_upper_limit');
+
+        $validator
+            ->numeric('temp_4_lower_limit')
+            ->allowEmpty('temp_4_lower_limit');
 
         $validator
             ->numeric('temp_5')
@@ -92,14 +124,38 @@ class ProductConditonChildrenTable extends Table
             ->notEmpty('temp_5');
 
         $validator
+            ->numeric('temp_5_upper_limit')
+            ->allowEmpty('temp_5_upper_limit');
+
+        $validator
+            ->numeric('temp_5_lower_limit')
+            ->allowEmpty('temp_5_lower_limit');
+
+        $validator
             ->numeric('temp_6')
             ->requirePresence('temp_6', 'create')
             ->notEmpty('temp_6');
 
         $validator
+            ->numeric('temp_6_upper_limit')
+            ->allowEmpty('temp_6_upper_limit');
+
+        $validator
+            ->numeric('temp_6_lower_limit')
+            ->allowEmpty('temp_6_lower_limit');
+
+        $validator
             ->numeric('temp_7')
             ->requirePresence('temp_7', 'create')
             ->notEmpty('temp_7');
+
+        $validator
+            ->numeric('temp_7_upper_limit')
+            ->allowEmpty('temp_7_upper_limit');
+
+        $validator
+            ->numeric('temp_7_lower_limit')
+            ->allowEmpty('temp_7_lower_limit');
 
         $validator
             ->numeric('extrude_roatation')
@@ -112,21 +168,57 @@ class ProductConditonChildrenTable extends Table
             ->notEmpty('extrusion_load');
 
         $validator
+            ->numeric('extrusion_upper_limit')
+            ->allowEmpty('extrusion_upper_limit');
+
+        $validator
+            ->numeric('extrusion_lower_limit')
+            ->allowEmpty('extrusion_lower_limit');
+
+        $validator
             ->numeric('pickup_speed')
             ->requirePresence('pickup_speed', 'create')
             ->notEmpty('pickup_speed');
 
         $validator
-            ->scalar('screw_mesh')
-            ->maxLength('screw_mesh', 255)
-            ->requirePresence('screw_mesh', 'create')
-            ->notEmpty('screw_mesh');
+            ->numeric('pickup_speed_upper_limit')
+            ->allowEmpty('pickup_speed_upper_limit');
 
         $validator
-            ->scalar('screw_number')
-            ->maxLength('screw_number', 255)
-            ->requirePresence('screw_number', 'create')
-            ->notEmpty('screw_number');
+            ->numeric('pickup_speed_lower_limit')
+            ->allowEmpty('pickup_speed_lower_limit');
+
+        $validator
+            ->scalar('screw_mesh_1')
+            ->maxLength('screw_mesh_1', 255)
+            ->requirePresence('screw_mesh_1', 'create')
+            ->notEmpty('screw_mesh_1');
+
+        $validator
+            ->scalar('screw_number_1')
+            ->maxLength('screw_number_1', 255)
+            ->requirePresence('screw_number_1', 'create')
+            ->notEmpty('screw_number_1');
+
+        $validator
+            ->scalar('screw_mesh_2')
+            ->maxLength('screw_mesh_2', 255)
+            ->allowEmpty('screw_mesh_2');
+
+        $validator
+            ->scalar('screw_number_2')
+            ->maxLength('screw_number_2', 255)
+            ->allowEmpty('screw_number_2');
+
+        $validator
+            ->scalar('screw_mesh_3')
+            ->maxLength('screw_mesh_3', 255)
+            ->allowEmpty('screw_mesh_3');
+
+        $validator
+            ->scalar('screw_number_3')
+            ->maxLength('screw_number_3', 255)
+            ->allowEmpty('screw_number_3');
 
         $validator
             ->integer('delete_flag')

@@ -53,6 +53,7 @@ echo $this->Html->css('kensahyou');
 <br>
 
 <?= $this->Form->control('product_material_machine_id'.$j, array('type'=>'hidden', 'value'=>${"product_material_machine_id".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('cylinder_name'.$j, array('type'=>'hidden', 'value'=>${"cylinder_name".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('idmoto'.$j, array('type'=>'hidden', 'value'=>${"idmoto".$j}, 'label'=>false)) ?>
 
 <table>
@@ -80,7 +81,7 @@ echo $this->Html->css('kensahyou');
 
         if($i==1){
           echo "<td rowspan=3>\n";
-          echo "<input type='text' style='width:60px' required name=cylinder_name".$j." value=${"cylinder_name".$j}>\n";
+          echo "${"cylinder_name".$j}\n";
           echo "</td>\n";
         }
 

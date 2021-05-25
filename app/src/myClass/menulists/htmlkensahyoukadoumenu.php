@@ -88,7 +88,7 @@ class htmlkensahyoukadoumenu extends AppController
           "<td width='500' colspan='2' nowrap='nowrap' style='height: 60px'><strong>\n".
           "検査成績書</strong><br>（兼　成形条件表・梱包仕様書・作業手順書）\n".
           "</td>\n".
-          "<td width='100' nowrap='nowrap' style='height: 30px'>製品名</td>\n".
+          "<td width='100' nowrap='nowrap' style='height: 30px'><strong>製品名</td>\n".
           "<td width='400' nowrap='nowrap' style='height: 30px'>$name</td>\n".
           "</tr>\n".
           "<tr>\n".
@@ -96,7 +96,7 @@ class htmlkensahyoukadoumenu extends AppController
           "管理No\n".
           "</td>\n".
           "<td width='300' style='height: 30px'>$product_code</td>\n".
-          "<td width='200' rowspan='2' style='height: 30px'>顧客名</td>\n".
+          "<td width='200' rowspan='2' style='height: 30px'><strong>顧客名</td>\n".
           "<td width='300' rowspan='2' style='height: 30px'>$customer</td>\n".
           "</tr>\n".
           "<tr>\n".
