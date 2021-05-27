@@ -46,8 +46,6 @@ echo $this->Html->css('kensahyou');
 </table>
 
 <?= $this->Form->control('pickup_speed', array('type'=>'hidden', 'value'=>$pickup_speed, 'label'=>false)) ?>
-<?= $this->Form->control('screw_mesh', array('type'=>'hidden', 'value'=>$screw_mesh, 'label'=>false)) ?>
-<?= $this->Form->control('screw_number', array('type'=>'hidden', 'value'=>$screw_number, 'label'=>false)) ?>
 <?= $this->Form->control('check', array('type'=>'hidden', 'value'=>$this->request->getData('check'), 'label'=>false)) ?>
 
 <?php for($j=1; $j<=$countseikeiki; $j++): ?>
@@ -64,6 +62,13 @@ echo $this->Html->css('kensahyou');
 <?php for($n=1; $n<=7; $n++): ?>
 
   <?= $this->Form->control('temp_'.$n.$j, array('type'=>'hidden', 'value'=>${"temp_".$n.$j}, 'label'=>false)) ?>
+
+<?php endfor;?>
+
+<?php for($n=1; $n<=3; $n++): ?>
+
+  <?= $this->Form->control('screw_mesh_'.$n.$j, array('type'=>'hidden', 'value'=>${"screw_mesh_".$n.$j}, 'label'=>false)) ?>
+  <?= $this->Form->control('screw_number_'.$n.$j, array('type'=>'hidden', 'value'=>${"screw_number_".$n.$j}, 'label'=>false)) ?>
 
 <?php endfor;?>
 
@@ -188,36 +193,63 @@ echo $this->Html->css('kensahyou');
         }
 
         if($j==1){
-          if($i < 3){
             if($i==1){
               echo "<td>\n";
               echo "$pickup_speed\n";
               echo "</td>\n";
               echo "<td>\n";
-              echo "$screw_mesh\n";
+              echo "${"screw_mesh_1".$j}\n";
               echo "</td>\n";
               echo "<td>\n";
-              echo "$screw_number\n";
+              echo "${"screw_number_1".$j}\n";
+              echo "</td>\n";
+            }elseif($i==2){
+              echo "<td>\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo "${"screw_mesh_2".$j}\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo "${"screw_number_2".$j}\n";
               echo "</td>\n";
             }else{
               echo "<td>\n";
+              echo "± 1.0\n";
               echo "</td>\n";
               echo "<td>\n";
-              echo " - \n";
+              echo "${"screw_mesh_3".$j}\n";
               echo "</td>\n";
               echo "<td>\n";
-              echo " - \n";
+              echo "${"screw_number_3".$j}\n";
               echo "</td>\n";
             }
+        }else{
+          if($i==1){
+            echo "<td style='border-bottom-style:none;'>\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"screw_mesh_1".$j}\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"screw_number_1".$j}\n";
+            echo "</td>\n";
+          }elseif($i==2){
+            echo "<td style='border-bottom-style:none; border-top-style:none;'>\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"screw_mesh_2".$j}\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"screw_number_2".$j}\n";
+            echo "</td>\n";
           }else{
-            echo "<td>\n";
-            echo "± 1.0\n";
+            echo "<td style='border-top-style:none;'>\n";
             echo "</td>\n";
             echo "<td>\n";
-            echo " - \n";
+            echo "${"screw_mesh_3".$j}\n";
             echo "</td>\n";
             echo "<td>\n";
-            echo " - \n";
+            echo "${"screw_number_3".$j}\n";
             echo "</td>\n";
           }
         }

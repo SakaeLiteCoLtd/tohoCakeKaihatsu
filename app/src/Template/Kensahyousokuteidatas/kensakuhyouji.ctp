@@ -47,11 +47,16 @@ echo $this->Html->css('kensahyou');
  ?>
 
 <br>
+<?= $this->Form->create($product, ['url' => ['action' => 'editlogin']]) ?>
+<?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
+<?= $this->Form->control('datetimesta', array('type'=>'hidden', 'value'=>$datetimesta, 'label'=>false)) ?>
+<?= $this->Form->control('datetimefin', array('type'=>'hidden', 'value'=>$datetimefin, 'label'=>false)) ?>
+<?= $this->Form->control('datekensaku', array('type'=>'hidden', 'value'=>$datekensaku, 'label'=>false)) ?>
 
 <table>
 
   <tr>
-    <td width="100" rowspan='7'>ロットNo.</td>
+    <td width="50" rowspan='7'>No.</td>
   </tr>
   <tr>
     <td width="140" rowspan='6'>時間</td>
@@ -110,27 +115,47 @@ echo $this->Html->css('kensahyou');
 
 </table>
 
-<?php for($k=1; $k<=$gyou; $k++): ?>
-
-  <?php
-     $j = $gyou + 1 - $k;
-  ?>
+<?php for($j=1; $j<=$gyou; $j++): ?>
 
 <table>
 
-  <td style='width:100; border-top-style:none; font-size: 11pt'><?= h("lot_number") ?></td>
+  <td style='width:50; border-top-style:none; font-size: 11pt'><?= h(${"lot_number".$j}) ?></td>
   <td style='width:140; border-top-style:none; font-size: 11pt'><?= h(${"datetime".$j}) ?></td></td>
-  <td style='width:130; border-top-style:none'><?= h("staff_hyouji") ?></td>
+  <td style='width:130; border-top-style:none'><?= h(${"staff_hyouji".$j}) ?></td>
 
   <?php for($i=1; $i<=9; $i++): ?>
     <td style='width:90; border-top-style:none'><?= h(${"result_size".$j.$i}) ?></td>
   <?php endfor;?>
 
-  <td style='width:80; border-top-style:none'><?= h("gaikan") ?></td>
-  <td style='width:80; border-top-style:none'><?= h("weight") ?></td>
-  <td style='width:80; border-top-style:none'><?= h("gouhi") ?></td>
+  <?php
+  if(${"appearance".$j} == 1){
+    ${"gaikanhyouji".$j} = "不";
+  }else{
+    ${"gaikanhyouji".$j} = "良";
+  }
+
+  if(${"judge".$j} == 1){
+    ${"gouhihyouji".$j} = "否";
+  }else{
+    ${"gouhihyouji".$j} = "合";
+  }
+  ?>
+
+  <td style='width:80; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
+  <td style='width:80; border-top-style:none'><?= h(${"result_weight".$j}) ?></td>
+  <td style='width:80; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
 
 </table>
 
 <?php endfor;?>
 <br><br>
+<table align="center">
+  <tbody class='sample non-sample'>
+    <tr>
+      <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+      <td style="border: none;"><?= __("　") ?></td>
+      <td style="border:none"><?= $this->Form->submit(('編集・削除'), array('name' => 'kakuninn')) ?></td>
+    </tr>
+  </tbody>
+</table>
+<br>

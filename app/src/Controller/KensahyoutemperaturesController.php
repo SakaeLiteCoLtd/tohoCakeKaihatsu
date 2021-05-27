@@ -437,22 +437,40 @@ class KensahyoutemperaturesController extends AppController
           ->where(['product_material_machine_id' => ${"product_material_machine_id".$j}, 'cylinder_name' => ${"cylinder_name".$j}, 'delete_flag' => 0])
           ->toArray();
 
-          ${"extrude_roatation".$j} = $ProductConditonChildren[0]["extrude_roatation"];
-          $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
-          ${"extrusion_load".$j} = $ProductConditonChildren[0]["extrusion_load"];
-          $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
+          if(isset($ProductConditonChildren[0])){
 
-          for($n=1; $n<8; $n++){
-            ${"temp_".$n.$j} = $ProductConditonChildren[0]["temp_".$n];
-            $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
+            ${"extrude_roatation".$j} = $ProductConditonChildren[0]["extrude_roatation"];
+            $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
+            ${"extrusion_load".$j} = $ProductConditonChildren[0]["extrusion_load"];
+            $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
+
+            for($n=1; $n<8; $n++){
+              ${"temp_".$n.$j} = $ProductConditonChildren[0]["temp_".$n];
+              $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
+            }
+
+            $pickup_speed = $ProductConditonChildren[0]["pickup_speed"];
+            $this->set('pickup_speed', $pickup_speed);
+
+            ${"screw_mesh_1".$j} = $ProductConditonChildren[0]['screw_mesh_1'];
+            $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
+            ${"screw_number_1".$j} = $ProductConditonChildren[0]['screw_number_1'];
+            $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
+            ${"screw_mesh_2".$j} = $ProductConditonChildren[0]['screw_mesh_2'];
+            $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
+            ${"screw_number_2".$j} = $ProductConditonChildren[0]['screw_number_2'];
+            $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
+            ${"screw_mesh_3".$j} = $ProductConditonChildren[0]['screw_mesh_3'];
+            $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
+            ${"screw_number_3".$j} = $ProductConditonChildren[0]['screw_number_3'];
+            $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
+
+          }else{
+
+            return $this->redirect(['action' => 'kensakupre',
+            's' => ['mess' => "管理No.「".$product_code."」の製品は成形温度登録がされていません。"]]);
+
           }
-
-          $pickup_speed = $ProductConditonChildren[0]["pickup_speed"];
-          $this->set('pickup_speed', $pickup_speed);
-          $screw_mesh = $ProductConditonChildren[0]["screw_mesh"];
-          $this->set('screw_mesh', $screw_mesh);
-          $screw_number = $ProductConditonChildren[0]["screw_number"];
-          $this->set('screw_number', $screw_number);
 
         }
 
@@ -563,10 +581,19 @@ class KensahyoutemperaturesController extends AppController
 
           $pickup_speed = $ProductConditonChildren[0]["pickup_speed"];
           $this->set('pickup_speed', $pickup_speed);
-          $screw_mesh = $ProductConditonChildren[0]["screw_mesh"];
-          $this->set('screw_mesh', $screw_mesh);
-          $screw_number = $ProductConditonChildren[0]["screw_number"];
-          $this->set('screw_number', $screw_number);
+
+          ${"screw_mesh_1".$j} = $ProductConditonChildren[0]['screw_mesh_1'];
+          $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
+          ${"screw_number_1".$j} = $ProductConditonChildren[0]['screw_number_1'];
+          $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
+          ${"screw_mesh_2".$j} = $ProductConditonChildren[0]['screw_mesh_2'];
+          $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
+          ${"screw_number_2".$j} = $ProductConditonChildren[0]['screw_number_2'];
+          $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
+          ${"screw_mesh_3".$j} = $ProductConditonChildren[0]['screw_mesh_3'];
+          $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
+          ${"screw_number_3".$j} = $ProductConditonChildren[0]['screw_number_3'];
+          $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
 
         }
 
@@ -576,6 +603,22 @@ class KensahyoutemperaturesController extends AppController
         's' => ['mess' => "管理No.「".$product_code."」の製品は成形温度登録がされていません。"]]);
 
       }
+
+      $arrScrewMesh = [
+        '-' => '',
+        '#40' => '#40',
+        '#100' => '#100',
+        '#200' => '#200'
+              ];
+      $this->set('arrScrewMesh',$arrScrewMesh);
+
+      $arrScrewNumber = [
+        '-' => '',
+        '１枚' => '１枚',
+        '２枚' => '２枚',
+        '３枚' => '３枚'
+              ];
+      $this->set('arrScrewNumber',$arrScrewNumber);
 
     }
 
@@ -606,10 +649,6 @@ class KensahyoutemperaturesController extends AppController
       $this->set('countseikeiki', $countseikeiki);
       $pickup_speed = $data["pickup_speed"];
       $this->set('pickup_speed', $pickup_speed);
-      $screw_mesh = $data["screw_mesh"];
-      $this->set('screw_mesh', $screw_mesh);
-      $screw_number = $data["screw_number"];
-      $this->set('screw_number', $screw_number);
 
       for($k=0; $k<$countseikeiki; $k++){
 
@@ -628,6 +667,19 @@ class KensahyoutemperaturesController extends AppController
         $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
         ${"extrusion_load".$j} = $data['extrusion_load'.$j];
         $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
+
+        ${"screw_mesh_1".$j} = $data["screw_mesh_1".$j];
+        $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
+        ${"screw_number_1".$j} = $data["screw_number_1".$j];
+        $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
+        ${"screw_mesh_2".$j} = $data["screw_mesh_2".$j];
+        $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
+        ${"screw_number_2".$j} = $data["screw_number_2".$j];
+        $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
+        ${"screw_mesh_3".$j} = $data["screw_mesh_3".$j];
+        $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
+        ${"screw_number_3".$j} = $data["screw_number_3".$j];
+        $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
 
       }
 
@@ -667,10 +719,6 @@ class KensahyoutemperaturesController extends AppController
       $this->set('countseikeiki', $countseikeiki);
       $pickup_speed = $data["pickup_speed"];
       $this->set('pickup_speed', $pickup_speed);
-      $screw_mesh = $data["screw_mesh"];
-      $this->set('screw_mesh', $screw_mesh);
-      $screw_number = $data["screw_number"];
-      $this->set('screw_number', $screw_number);
 
       $tourokuProductConditonChildren = array();
 
@@ -692,6 +740,19 @@ class KensahyoutemperaturesController extends AppController
         ${"extrusion_load".$j} = $data['extrusion_load'.$j];
         $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
 
+        ${"screw_mesh_1".$j} = $data["screw_mesh_1".$j];
+        $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
+        ${"screw_number_1".$j} = $data["screw_number_1".$j];
+        $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
+        ${"screw_mesh_2".$j} = $data["screw_mesh_2".$j];
+        $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
+        ${"screw_number_2".$j} = $data["screw_number_2".$j];
+        $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
+        ${"screw_mesh_3".$j} = $data["screw_mesh_3".$j];
+        $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
+        ${"screw_number_3".$j} = $data["screw_number_3".$j];
+        $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
+
         $updateProductConditonChildren[] = [
           "product_material_machine_id" => $data['product_material_machine_id'.$j],
           "cylinder_number" => $j,
@@ -706,8 +767,12 @@ class KensahyoutemperaturesController extends AppController
           "extrude_roatation" => $data['extrude_roatation'.$j],
           "extrusion_load" => $data['extrusion_load'.$j],
           "pickup_speed" => $data['pickup_speed'],
-          "screw_mesh" => $data['screw_mesh'],
-          "screw_number" => $data['screw_number'],
+          "screw_mesh_1" => $data['screw_mesh_1'.$j],
+          "screw_number_1" => $data['screw_number_1'.$j],
+          "screw_mesh_2" => $data['screw_mesh_2'.$j],
+          "screw_number_2" => $data['screw_number_2'.$j],
+          "screw_mesh_3" => $data['screw_mesh_3'.$j],
+          "screw_number_3" => $data['screw_number_3'.$j],
           "delete_flag" => 0,
           'created_at' => date("Y-m-d H:i:s"),
           "created_staff" => $staff_id

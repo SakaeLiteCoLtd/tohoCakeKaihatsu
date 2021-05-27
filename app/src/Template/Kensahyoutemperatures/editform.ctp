@@ -177,38 +177,135 @@ echo $this->Html->css('kensahyou');
         }
 
         if($j==1){
-          if($i < 3){
             if($i==1){
               echo "<td>\n";
-              echo "<input type='text' value=$pickup_speed style='width:70px' required name=pickup_speed>\n";
+              echo "<input type='text' style='width:70px' required name=pickup_speed value=$pickup_speed>\n";
               echo "</td>\n";
+              echo "<td><div align='center'><select name=screw_mesh_1".$j.">\n";
+              foreach ($arrScrewMesh as $key => $value){
+                if($key == ${"screw_mesh_1".$j}){
+                  echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
+                }else{
+                  echo "<option value=$key>$value</option>";
+                }
+              }
+              echo "</select></div></td>\n";
+              echo "<td><div align='center'><select name=screw_number_1".$j.">\n";
+              foreach ($arrScrewNumber as $key => $value){
+                if($key == ${"screw_number_1".$j}){
+                  echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
+                }else{
+                  echo "<option value=$key>$value</option>";
+                }
+              }
+              echo "</select></div></td>\n";
+            }elseif($i==2){
               echo "<td>\n";
-              echo "<input type='text' value=$screw_mesh style='width:70px' required name=screw_mesh>\n";
               echo "</td>\n";
-              echo "<td>\n";
-              echo "<input type='text' value=$screw_number style='width:70px' required name=screw_number>\n";
-              echo "</td>\n";
+              echo "<td><div align='center'><select name=screw_mesh_2".$j.">\n";
+              foreach ($arrScrewMesh as $key => $value){
+                if($key == ${"screw_mesh_2".$j}){
+                  echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
+                }else{
+                  echo "<option value=$key>$value</option>";
+                }
+              }
+              echo "</select></div></td>\n";
+              echo "<td><div align='center'><select name=screw_number_2".$j.">\n";
+              foreach ($arrScrewNumber as $key => $value){
+                if($key == ${"screw_number_2".$j}){
+                  echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
+                }else{
+                  echo "<option value=$key>$value</option>";
+                }
+              }
+              echo "</select></div></td>\n";
             }else{
               echo "<td>\n";
+              echo "± 1.0\n";
               echo "</td>\n";
-              echo "<td>\n";
-              echo " - \n";
-              echo "</td>\n";
-              echo "<td>\n";
-              echo " - \n";
-              echo "</td>\n";
+              echo "<td><div align='center'><select name=screw_mesh_3".$j.">\n";
+              foreach ($arrScrewMesh as $key => $value){
+                if($key == ${"screw_mesh_3".$j}){
+                  echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
+                }else{
+                  echo "<option value=$key>$value</option>";
+                }
+              }
+              echo "</select></div></td>\n";
+              echo "<td><div align='center'><select name=screw_number_3".$j.">\n";
+              foreach ($arrScrewNumber as $key => $value){
+                if($key == ${"screw_number_3".$j}){
+                  echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
+                }else{
+                  echo "<option value=$key>$value</option>";
+                }
+              }
+              echo "</select></div></td>\n";
             }
-          }else{
-            echo "<td>\n";
-            echo "± 1.0\n";
-            echo "</td>\n";
-            echo "<td>\n";
-            echo " - \n";
-            echo "</td>\n";
-            echo "<td>\n";
-            echo " - \n";
-            echo "</td>\n";
+        }elseif($i==1){
+          echo "<td style='border-bottom-style:none;'>\n";
+          echo "</td>\n";
+          echo "<td><div align='center'><select name=screw_mesh_1".$j.">\n";
+          foreach ($arrScrewMesh as $key => $value){
+            if($key == ${"screw_mesh_1".$j}){
+              echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
+            }else{
+              echo "<option value=$key>$value</option>";
+            }
           }
+          echo "</select></div></td>\n";
+          echo "<td><div align='center'><select name=screw_number_1".$j.">\n";
+          foreach ($arrScrewNumber as $key => $value){
+            if($key == ${"screw_number_1".$j}){
+              echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
+            }else{
+              echo "<option value=$key>$value</option>";
+            }
+          }
+          echo "</select></div></td>\n";
+        }elseif($i==2){
+          echo "<td style='border-bottom-style:none; border-top-style:none;'>\n";
+          echo "</td>\n";
+          echo "<td><div align='center'><select name=screw_mesh_2".$j.">\n";
+          foreach ($arrScrewMesh as $key => $value){
+            if($key == ${"screw_mesh_2".$j}){
+              echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
+            }else{
+              echo "<option value=$key>$value</option>";
+            }
+          }
+          echo "</select></div></td>\n";
+          echo "<td><div align='center'><select name=screw_number_2".$j.">\n";
+          foreach ($arrScrewNumber as $key => $value){
+            if($key == ${"screw_number_2".$j}){
+              echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
+            }else{
+              echo "<option value=$key>$value</option>";
+            }
+          }
+          echo "</select></div></td>\n";
+        }else{
+          echo "<td style='border-top-style:none;'>\n";
+          echo "</td>\n";
+          echo "<td><div align='center'><select name=screw_mesh_3".$j.">\n";
+          foreach ($arrScrewMesh as $key => $value){
+            if($key == ${"screw_mesh_3".$j}){
+              echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
+            }else{
+              echo "<option value=$key>$value</option>";
+            }
+          }
+          echo "</select></div></td>\n";
+          echo "<td><div align='center'><select name=screw_number_3".$j.">\n";
+          foreach ($arrScrewNumber as $key => $value){
+            if($key == ${"screw_number_3".$j}){
+              echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
+            }else{
+              echo "<option value=$key>$value</option>";
+            }
+          }
+          echo "</select></div></td>\n";
         }
 
         echo "</tr>\n";

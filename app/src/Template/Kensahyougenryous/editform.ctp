@@ -48,7 +48,9 @@ echo $this->Html->css('kensahyou');
 <br>
 <table>
   <tbody>
-    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('データを編集してください。（データを削除する場合は「データ削除」ボタンを押してください）') ?></strong></td></tr>
+    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('・データを編集してください。（データを全て削除する場合は「データ削除」ボタンを押してください）') ?></strong></td></tr>
+    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('・成形機ごとデータを削除する場合は「成形機削除」にチェックを入れてください。　　　　　　　　　 ') ?></strong></td></tr>
+    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('・原料データを削除する場合は「原料削除」にチェックを入れてください。　　　　　　　　　　　　　 ') ?></strong></td></tr>
   </tbody>
 </table>
 <br>
@@ -57,13 +59,13 @@ echo $this->Html->css('kensahyou');
   <tbody class='sample non-sample'>
     <tr>
       <td style="border:none">　　</td>
+      <td style="border:none"><?= $this->Form->submit(('データ削除'), array('name' => 'sakujo')) ?></td>
+      <td style="border:none">　　</td>
       <td style="border:none"><?= $this->Form->submit(('成形機内原料追加'), array('name' => 'genryoutuika')) ?></td>
       <td style="border:none">　　</td>
       <td style="border:none"><?= $this->Form->submit(('成形機追加'), array('name' => 'seikeikituika')) ?></td>
       <td style="border:none">　　</td>
-      <td style="border:none"><?= $this->Form->submit(('登録確認へ'), array('name' => 'kakuninn')) ?></td>
-      <td style="border:none">　　</td>
-      <td style="border:none"><?= $this->Form->submit(('データ削除'), array('name' => 'sakujo')) ?></td>
+      <td style="border:none"><?= $this->Form->submit(('確認画面へ'), array('name' => 'kakuninn')) ?></td>
       <td style="border:none">　　　　　　　　　</td>
       <td style="border:none">　　　　　　　　　</td>
     </tr>
@@ -79,12 +81,14 @@ echo $this->Html->css('kensahyou');
 
 <table>
 <tr>
+  <td width="50"><font size='2'>成形機<br>削除</td>
   <td width="100">成形機</td>
-  <td width="350">グレードNo.：メーカー：材料名</td>
+  <td width="350">メーカー：材料名：グレードNo.：色</td>
   <td width="130">配合比</td>
   <td width="150">乾燥温度</td>
   <td width="150">乾燥時間</td>
   <td width="180">再生配合比</td>
+  <td width="50"><font size='2'>原料<br>削除</td>
 </tr>
 
 <?php
@@ -93,6 +97,9 @@ echo $this->Html->css('kensahyou');
         echo "<tr>\n";
 
         if($i==1){
+          echo "<td rowspan=${"tuikagenryou".$j}>\n";
+          echo "<input type='checkbox' name=delete_seikeiki".$j.">\n";
+          echo "</td>\n";
           echo "<td rowspan=${"tuikagenryou".$j}>\n";
           echo "<input type='text' required name=cylinder_name".$j." value=${"cylinder_name".$j}>\n";
           echo "</td>\n";
@@ -119,6 +126,9 @@ echo $this->Html->css('kensahyou');
         echo "</td>\n";
         echo "<td>\n";
         echo "<input type='text' required name=recycled_mixing_ratio".$j.$i." value=${"recycled_mixing_ratio".$j.$i} >\n";
+        echo "</td>\n";
+        echo "<td>\n";
+        echo "<input type='checkbox' name=delete_genryou".$j.$i.">\n";
         echo "</td>\n";
         echo "</tr>\n";
 

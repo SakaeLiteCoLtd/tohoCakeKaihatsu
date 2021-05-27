@@ -1158,11 +1158,11 @@ class KensahyougenryousController extends AppController
       $this->set('user_code', $user_code);
 
       $Materials = $this->Materials->find()
-      ->where(['delete_flag' => 0])->order(["grade"=>"ASC"])->toArray();
+      ->where(['delete_flag' => 0])->order(["maker"=>"ASC"])->toArray();
 
       $arrMaterials = array();
       foreach ($Materials as $value) {
-        $array = array($value->id => $value->grade." : ".$value->maker." : ".$value->name);
+        $array = array($value->id => $value->maker." : ".$value->name." : ".$value->grade." : ".$value->color);
         $arrMaterials = $arrMaterials + $array;//array_mergeだとキーが0,1,2,…とふりなおされてしまう
       }
       $this->set('arrMaterials', $arrMaterials);
@@ -1410,7 +1410,7 @@ class KensahyougenryousController extends AppController
       $_SESSION = $session->read();
 
       $arrayKensahyougenryoudatas = $_SESSION['updatekensahyougenryoudata'];
-      $_SESSION['updatekensahyougenryoudata'] = array();
+//      $_SESSION['updatekensahyougenryoudata'] = array();
 
       $data = $arrayKensahyougenryoudatas;
 /*
@@ -1418,7 +1418,6 @@ class KensahyougenryousController extends AppController
       print_r($data);
       echo "</pre>";
 */
-
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
@@ -1432,69 +1431,98 @@ class KensahyougenryousController extends AppController
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $tuikaseikeiki = $data["tuikaseikeiki"];
-      $this->set('tuikaseikeiki', $tuikaseikeiki);
+
+      $n = 0;//成形機の数
 
       for($j=1; $j<=$tuikaseikeiki; $j++){
 
-        ${"tuikagenryou".$j} = $data["tuikagenryou".$j];
-        $this->set('tuikagenryou'.$j, ${"tuikagenryou".$j});
+        $m = 0;//原料の数
 
-        if(isset($data['cylinder_name'.$j])){
-          ${"cylinder_name".$j} = $data['cylinder_name'.$j];
-          $this->set('cylinder_name'.$j,${"cylinder_name".$j});
-        }else{
-          ${"cylinder_name".$j} = "";
-          $this->set('cylinder_name'.$j,${"cylinder_name".$j});
-        }
+        if(!isset($data["delete_seikeiki".$j])){
+          $n = $n + 1;
 
-        for($i=1; $i<=${"tuikagenryou".$j}; $i++){
+          $this->set('tuikaseikeiki', $n);//成形機の数をセット
+/*
+          echo "<pre>";
+          print_r("seikeiki".$j);
+          echo "</pre>";
+*/
+          ${"tuikagenryou".$j} = $data["tuikagenryou".$j];
 
-          if(isset($data["material_id".$j.$i])){
-            $Materials = $this->Materials->find()
-            ->where(['id' => $data["material_id".$j.$i]])->toArray();
-
-            ${"material_hyouji".$j.$i} = $Materials[0]["grade"].":".$Materials[0]["maker"].":".$Materials[0]["name"];
-            $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
-            ${"material_id".$j.$i} = $data["material_id".$j.$i];
-            $this->set('material_id'.$j.$i,${"material_id".$j.$i});
-
+          if(isset($data['cylinder_name'.$j])){
+            ${"cylinder_name".$j} = $data['cylinder_name'.$j];
+            $this->set('cylinder_name'.$n,${"cylinder_name".$j});
           }else{
-            ${"material_hyouji".$j.$i} = "";
-            $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
-            ${"material_id".$j.$i} = "";
-            $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+            ${"cylinder_name".$j} = "";
+            $this->set('cylinder_name'.$n,${"cylinder_name".$j});
           }
 
-          if(isset($data["mixing_ratio".$j.$i])){
-            ${"mixing_ratio".$j.$i} = $data["mixing_ratio".$j.$i];
-            $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
-          }else{
-            ${"mixing_ratio".$j.$i} = "";
-            $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
+
+          for($i=1; $i<=${"tuikagenryou".$j}; $i++){
+
+            if(!isset($data["delete_genryou".$j.$i])){
+              $m = $m + 1;
+
+              $this->set('tuikagenryou'.$n, $m);//原料の数をセット
+/*
+              echo "<pre>";
+              print_r("genryou".$j.$i);
+              echo "</pre>";
+*/
+              if(isset($data["material_id".$j.$i])){
+                $Materials = $this->Materials->find()
+                ->where(['id' => $data["material_id".$j.$i]])->toArray();
+
+                ${"material_hyouji".$j.$i} = $Materials[0]["maker"].":".$Materials[0]["name"].":".$Materials[0]["grade"].":".$Materials[0]["color"];
+                $this->set('material_hyouji'.$n.$m,${"material_hyouji".$j.$i});
+                ${"material_id".$j.$i} = $data["material_id".$j.$i];
+                $this->set('material_id'.$n.$m,${"material_id".$j.$i});
+
+              }else{
+                ${"material_hyouji".$j.$i} = "";
+                $this->set('material_hyouji'.$n.$i,${"material_hyouji".$j.$i});
+                ${"material_id".$j.$i} = "";
+                $this->set('material_id'.$n.$m,${"material_id".$j.$i});
+              }
+
+              if(isset($data["mixing_ratio".$j.$i])){
+                ${"mixing_ratio".$j.$i} = $data["mixing_ratio".$j.$i];
+                $this->set('mixing_ratio'.$n.$m,${"mixing_ratio".$j.$i});
+              }else{
+                ${"mixing_ratio".$j.$i} = "";
+                $this->set('mixing_ratio'.$n.$m,${"mixing_ratio".$j.$i});
+              }
+
+              if(isset($data["dry_temp".$j.$i])){
+                ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
+                $this->set('dry_temp'.$n.$m,${"dry_temp".$j.$i});
+              }else{
+                ${"dry_temp".$j.$i} = "";
+                $this->set('dry_temp'.$n.$m,${"dry_temp".$j.$i});
+              }
+
+              if(isset($data["dry_hour".$j.$i])){
+                ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
+                $this->set('dry_hour'.$n.$m,${"dry_hour".$j.$i});
+              }else{
+                ${"dry_hour".$j.$i} = "";
+                $this->set('dry_hour'.$n.$m,${"dry_hour".$j.$i});
+              }
+
+              if(isset($data["recycled_mixing_ratio".$j.$i])){
+                ${"recycled_mixing_ratio".$j.$i} = $data["recycled_mixing_ratio".$j.$i];
+                $this->set('recycled_mixing_ratio'.$n.$m,${"recycled_mixing_ratio".$j.$i});
+              }else{
+                ${"recycled_mixing_ratio".$j.$i} = "";
+                $this->set('recycled_mixing_ratio'.$n.$m,${"recycled_mixing_ratio".$j.$i});
+              }
+
+            }
+
           }
 
-          if(isset($data["dry_temp".$j.$i])){
-            ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
-            $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-          }else{
-            ${"dry_temp".$j.$i} = "";
-            $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-          }
-
-          if(isset($data["dry_hour".$j.$i])){
-            ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
-            $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
-          }else{
-            ${"dry_hour".$j.$i} = "";
-            $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
-          }
-
-          if(isset($data["recycled_mixing_ratio".$j.$i])){
-            ${"recycled_mixing_ratio".$j.$i} = $data["recycled_mixing_ratio".$j.$i];
-            $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
-          }else{
-            ${"recycled_mixing_ratio".$j.$i} = "";
-            $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
+          if($m < 1){//成形機削除をせずに成形機内の原料を全て削除していた場合
+            $n = $n - 1;
           }
 
         }
@@ -1557,7 +1585,7 @@ class KensahyougenryousController extends AppController
             $Materials = $this->Materials->find()
             ->where(['id' => $data["material_id".$j.$i]])->toArray();
 
-            ${"material_hyouji".$j.$i} = $Materials[0]["grade"].":".$Materials[0]["maker"].":".$Materials[0]["material_code"];
+            ${"material_hyouji".$j.$i} = $Materials[0]["maker"].":".$Materials[0]["name"].":".$Materials[0]["grade"].":".$Materials[0]["color"];
             $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
             ${"material_id".$j.$i} = $data["material_id".$j.$i];
             $this->set('material_id'.$j.$i,${"material_id".$j.$i});
