@@ -67,7 +67,7 @@ echo $this->Html->css('kensahyou');
   <td style='width:70'>D ２</td>
   <td style='width:200' colspan="2">押出回転(rpm)/負荷(A)</td>
   <td style='width:100'>引取速度<br>（m/min）</td>
-  <td style='width:100'>ｽｸﾘｰﾝﾒｯｼｭ</td>
+  <td style='width:160' colspan="2">ｽｸﾘｰﾝﾒｯｼｭ : 枚数</td>
   <td style='width:100'>ｽｸﾘｭｳ</td>
 </tr>
 
@@ -185,6 +185,11 @@ echo $this->Html->css('kensahyou');
                 echo "<option value=$key>$value</option>";
               }
               echo "</select></div></td>\n";
+              echo "<td><div align='center'><select name=screw_1".$j.">\n";
+              foreach ($arrScrew as $key => $value){
+                echo "<option value=$key>$value</option>";
+              }
+              echo "</select></div></td>\n";
             }elseif($i==2){
               echo "<td>\n";
               echo "</td>\n";
@@ -195,6 +200,11 @@ echo $this->Html->css('kensahyou');
               echo "</select></div></td>\n";
               echo "<td><div align='center'><select name=screw_number_2".$j.">\n";
               foreach ($arrScrewNumber as $key => $value){
+                echo "<option value=$key>$value</option>";
+              }
+              echo "</select></div></td>\n";
+              echo "<td><div align='center'><select name=screw_2".$j.">\n";
+              foreach ($arrScrew as $key => $value){
                 echo "<option value=$key>$value</option>";
               }
               echo "</select></div></td>\n";
@@ -212,6 +222,11 @@ echo $this->Html->css('kensahyou');
                 echo "<option value=$key>$value</option>";
               }
               echo "</select></div></td>\n";
+              echo "<td><div align='center'><select name=screw_3".$j.">\n";
+              foreach ($arrScrew as $key => $value){
+                echo "<option value=$key>$value</option>";
+              }
+              echo "</select></div></td>\n";
             }
         }elseif($i==1){
           echo "<td style='border-bottom-style:none;'>\n";
@@ -223,6 +238,11 @@ echo $this->Html->css('kensahyou');
           echo "</select></div></td>\n";
           echo "<td><div align='center'><select name=screw_number_1".$j.">\n";
           foreach ($arrScrewNumber as $key => $value){
+            echo "<option value=$key>$value</option>";
+          }
+          echo "</select></div></td>\n";
+          echo "<td><div align='center'><select name=screw_1".$j.">\n";
+          foreach ($arrScrew as $key => $value){
             echo "<option value=$key>$value</option>";
           }
           echo "</select></div></td>\n";
@@ -239,6 +259,11 @@ echo $this->Html->css('kensahyou');
             echo "<option value=$key>$value</option>";
           }
           echo "</select></div></td>\n";
+          echo "<td><div align='center'><select name=screw_2".$j.">\n";
+          foreach ($arrScrew as $key => $value){
+            echo "<option value=$key>$value</option>";
+          }
+          echo "</select></div></td>\n";
         }else{
           echo "<td style='border-top-style:none;'>\n";
           echo "</td>\n";
@@ -249,6 +274,11 @@ echo $this->Html->css('kensahyou');
           echo "</select></div></td>\n";
           echo "<td><div align='center'><select name=screw_number_3".$j.">\n";
           foreach ($arrScrewNumber as $key => $value){
+            echo "<option value=$key>$value</option>";
+          }
+          echo "</select></div></td>\n";
+          echo "<td><div align='center'><select name=screw_3".$j.">\n";
+          foreach ($arrScrew as $key => $value){
             echo "<option value=$key>$value</option>";
           }
           echo "</select></div></td>\n";

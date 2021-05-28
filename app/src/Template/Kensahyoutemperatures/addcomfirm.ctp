@@ -63,10 +63,13 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('extrusion_load'.$j, array('type'=>'hidden', 'value'=>${"extrusion_load".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('screw_mesh_1'.$j, array('type'=>'hidden', 'value'=>${"screw_mesh_1".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('screw_number_1'.$j, array('type'=>'hidden', 'value'=>${"screw_number_1".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('screw_1'.$j, array('type'=>'hidden', 'value'=>${"screw_1".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('screw_mesh_2'.$j, array('type'=>'hidden', 'value'=>${"screw_mesh_2".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('screw_number_2'.$j, array('type'=>'hidden', 'value'=>${"screw_number_2".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('screw_2'.$j, array('type'=>'hidden', 'value'=>${"screw_2".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('screw_mesh_3'.$j, array('type'=>'hidden', 'value'=>${"screw_mesh_3".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('screw_number_3'.$j, array('type'=>'hidden', 'value'=>${"screw_number_3".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('screw_3'.$j, array('type'=>'hidden', 'value'=>${"screw_3".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('product_material_machine_id'.$j, array('type'=>'hidden', 'value'=>${"product_material_machine_id".$j}, 'label'=>false)) ?>
 
 <?php for($n=1; $n<=7; $n++): ?>
@@ -88,7 +91,7 @@ echo $this->Html->css('kensahyou');
   <td style='width:70'>D ２</td>
   <td style='width:200' colspan="2">押出回転(rpm)/負荷(A)</td>
   <td style='width:100'>引取速度<br>（m/min）</td>
-  <td style='width:100'>ｽｸﾘｰﾝﾒｯｼｭ</td>
+  <td style='width:160' colspan="2">ｽｸﾘｰﾝﾒｯｼｭ : 枚数</td>
   <td style='width:100'>ｽｸﾘｭｳ</td>
 </tr>
 
@@ -202,6 +205,9 @@ echo $this->Html->css('kensahyou');
               echo "<td>\n";
               echo "${"screw_number_1".$j}\n";
               echo "</td>\n";
+              echo "<td>\n";
+              echo "${"screw_1".$j}\n";
+              echo "</td>\n";
             }elseif($i==2){
               echo "<td>\n";
               echo "</td>\n";
@@ -210,6 +216,9 @@ echo $this->Html->css('kensahyou');
               echo "</td>\n";
               echo "<td>\n";
               echo "${"screw_number_2".$j}\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo "${"screw_2".$j}\n";
               echo "</td>\n";
             }else{
               echo "<td>\n";
@@ -220,6 +229,9 @@ echo $this->Html->css('kensahyou');
               echo "</td>\n";
               echo "<td>\n";
               echo "${"screw_number_3".$j}\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo "${"screw_3".$j}\n";
               echo "</td>\n";
             }
         }else{
@@ -232,6 +244,9 @@ echo $this->Html->css('kensahyou');
             echo "<td>\n";
             echo "${"screw_number_1".$j}\n";
             echo "</td>\n";
+            echo "<td>\n";
+            echo "${"screw_1".$j}\n";
+            echo "</td>\n";
           }elseif($i==2){
             echo "<td style='border-bottom-style:none; border-top-style:none;'>\n";
             echo "</td>\n";
@@ -241,6 +256,9 @@ echo $this->Html->css('kensahyou');
             echo "<td>\n";
             echo "${"screw_number_2".$j}\n";
             echo "</td>\n";
+            echo "<td>\n";
+            echo "${"screw_2".$j}\n";
+            echo "</td>\n";
           }else{
             echo "<td style='border-top-style:none;'>\n";
             echo "</td>\n";
@@ -249,6 +267,9 @@ echo $this->Html->css('kensahyou');
             echo "</td>\n";
             echo "<td>\n";
             echo "${"screw_number_3".$j}\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"screw_3".$j}\n";
             echo "</td>\n";
           }
         }
