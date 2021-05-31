@@ -16,7 +16,7 @@ class htmlkensahyoukadoumenu extends AppController
      public function kensahyoukadoumenus()
   	{
         $html =
-            "<table>\n".
+            "<table style='position: fixed;top: 30px; left:39%;'>\n".
             "<td style='border: none'>\n".
             "<a href='/Kensahyoukadous/kensahyoumenu'>\n".
             "<img src='/img/menus/kensahyoumenu.gif' width=145 height=50>\n".
@@ -34,7 +34,7 @@ class htmlkensahyoukadoumenu extends AppController
     public function kensahyoumenus()
    {
        $html =
-           "<table>\n".
+           "<table style='position: fixed;top: 100px; left:20%;'>\n".
            "<td style='border: none'>\n".
            "<a href='/Kensahyougenryous/menu'>\n".
            "<img src='/img/menus/genryoumenu.gif' width=145 height=50>\n".

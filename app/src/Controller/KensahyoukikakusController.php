@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -35,6 +36,14 @@ class KensahyoukikakusController extends AppController
      $this->Customers = TableRegistry::get('Customers');
      $this->InspectionStandardSizeChildren = TableRegistry::get('InspectionStandardSizeChildren');
      $this->InspectionStandardSizeParents = TableRegistry::get('InspectionStandardSizeParents');
+
+     if(!isset($_SESSION)){//フォーム再送信の確認対策//戻りたい画面でわざとwarningを出しておけば戻れる
+       session_start();
+     }
+     header('Expires:');
+     header('Cache-Control:');
+     header('Pragma:');
+
     }
 
     public function addlogin()
@@ -173,12 +182,24 @@ class KensahyoukikakusController extends AppController
          's' => ['mess' => "管理No.「".$product_code."」の製品は登録済みです。内容を確認する場合は規格検索から確認してください。"]]);
        }
 */
+
+echo "<pre>";//フォームの再読み込みの防止
+print_r("  ");
+echo "</pre>";
+
     }
 
     public function addcomfirm()
     {
       $product = $this->Products->newEntity();
       $this->set('product', $product);
+
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      header('Expires:');
+      header('Cache-Control:');
+      header('Pragma:');
 
       $data = $this->request->getData();
 /*

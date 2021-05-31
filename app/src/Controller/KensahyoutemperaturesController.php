@@ -38,6 +38,14 @@ class KensahyoutemperaturesController extends AppController
      $this->ProductMaterialMachines = TableRegistry::get('ProductMaterialMachines');
      $this->ProductMachineMaterials = TableRegistry::get('ProductMachineMaterials');
      $this->ProductConditonChildren = TableRegistry::get('ProductConditonChildren');
+
+     if(!isset($_SESSION)){//フォーム再送信の確認対策
+       session_start();
+     }
+     header('Expires:');
+     header('Cache-Control:');
+     header('Pragma:');
+
     }
 
     public function menu()

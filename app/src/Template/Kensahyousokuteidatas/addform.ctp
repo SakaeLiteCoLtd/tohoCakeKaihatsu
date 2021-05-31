@@ -18,7 +18,7 @@
 $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
-
+<br><br><br>
 <br>
 <hr size="5" style="margin: 0rem">
 <br>

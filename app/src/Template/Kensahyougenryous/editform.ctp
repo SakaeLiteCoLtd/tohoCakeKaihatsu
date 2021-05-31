@@ -83,12 +83,12 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td width="50"><font size='2'>成形機<br>削除</td>
   <td width="100">成形機</td>
+  <td width="50"><font size='2'>原料<br>削除</td>
   <td width="350">メーカー：材料名：グレードNo.：色</td>
   <td width="130">配合比</td>
   <td width="150">乾燥温度</td>
   <td width="150">乾燥時間</td>
   <td width="180">再生配合比</td>
-  <td width="50"><font size='2'>原料<br>削除</td>
 </tr>
 
 <?php
@@ -104,6 +104,10 @@ echo $this->Html->css('kensahyou');
           echo "<input type='text' required name=cylinder_name".$j." value=${"cylinder_name".$j}>\n";
           echo "</td>\n";
         }
+
+        echo "<td>\n";
+        echo "<input type='checkbox' name=delete_genryou".$j.$i.">\n";
+        echo "</td>\n";
 
         echo "<td><div align='center'><select name=material_id".$j.$i." value=${"material_id".$j.$i}>\n";
         foreach ($arrMaterials as $key => $value){
@@ -127,9 +131,6 @@ echo $this->Html->css('kensahyou');
         echo "<td>\n";
         echo "<input type='text' required name=recycled_mixing_ratio".$j.$i." value=${"recycled_mixing_ratio".$j.$i} >\n";
         echo "</td>\n";
-        echo "<td>\n";
-        echo "<input type='checkbox' name=delete_genryou".$j.$i.">\n";
-        echo "</td>\n";
         echo "</tr>\n";
 
       }
@@ -138,4 +139,8 @@ echo $this->Html->css('kensahyou');
 
 <?php endfor;?>
 
-<br><br><br>
+<br>
+<table>
+  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
+</table>
+<br><br>

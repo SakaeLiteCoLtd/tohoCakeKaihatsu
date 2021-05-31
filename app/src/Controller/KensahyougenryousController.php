@@ -25,11 +25,15 @@ class KensahyougenryousController extends AppController
       $this->Auth->allow(["menu","addlogin","addformpre","addform","addcomfirm","adddo"
       ,"kensakupre", "kensakuhyouji", "editlogin", "editform", "editcomfirm", "editdo"]);
 /*
-      session_start();
+      session_start();//全部NG
       header('Expires:-1');
       header('Cache-Control:');
       header('Pragma:');
       $session = $this->request->session();
+      $session->read();
+
+      $session = $this->request->getSession();
+      $session->destroy();
 */
   	}
 
@@ -44,6 +48,14 @@ class KensahyougenryousController extends AppController
      $this->ProductConditionParents = TableRegistry::get('ProductConditionParents');
      $this->ProductMaterialMachines = TableRegistry::get('ProductMaterialMachines');
      $this->ProductMachineMaterials = TableRegistry::get('ProductMachineMaterials');
+
+     if(!isset($_SESSION)){//フォーム再送信の確認対策
+       session_start();
+     }
+     header('Expires:');
+     header('Cache-Control:');
+     header('Pragma:');
+
     }
 
     public function menu()
@@ -894,7 +906,7 @@ class KensahyougenryousController extends AppController
           }
 
           $ProductConditionParents = $this->ProductConditionParents->find()
-          ->where(['product_id' => $product_id, 'version' => $version])->toArray();
+          ->where(['product_id' => $product_id, 'version' => $version, 'delete_flag' => 0])->toArray();
 
           for($j=1; $j<=$tuikaseikeiki; $j++){
 
@@ -1035,7 +1047,7 @@ class KensahyougenryousController extends AppController
 
         $ProductMaterialMachines = $this->ProductMaterialMachines->find()
         ->contain(['ProductConditionParents' => ["Products"]])
-        ->where(['version' => $version, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
+        ->where(['version' => $version, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0, 'ProductMaterialMachines.delete_flag' => 0])
         ->order(["cylinder_number"=>"DESC"])->toArray();
 
         $tuikaseikeiki = count($ProductMaterialMachines);
@@ -1107,6 +1119,9 @@ class KensahyougenryousController extends AppController
     {
       $product = $this->Products->newEntity();
       $this->set('product', $product);
+
+      $mes = "";
+      $this->set('mes', $mes);
 
       $data = $this->request->getData();
       $user_code = $data["user_code"];
@@ -1317,14 +1332,111 @@ class KensahyougenryousController extends AppController
 
       }elseif(isset($data["kakuninn"])){//確認ボタン
 
-        if(!isset($_SESSION)){
-          session_start();
+        //成形機削除と原料削除が同時に押されていたらアラート
+        $double_delete_check = 0;
+
+        for($j=1; $j<=$data["tuikaseikeiki"]; $j++){
+
+          if(isset($data["delete_seikeiki".$j])){
+
+            for($i=1; $i<=$data["tuikagenryou".$j]; $i++){
+
+              if(isset($data["delete_genryou".$j.$i])){
+
+                $double_delete_check = 1;
+
+              }
+
+            }
+
+          }
+
         }
 
-        $_SESSION['updatekensahyougenryoudata'] = array();
-        $_SESSION['updatekensahyougenryoudata'] = $data + array("delete_flag" => 0);
+        if($double_delete_check == 0){
 
-        return $this->redirect(['action' => 'editcomfirm']);
+          if(!isset($_SESSION)){
+            session_start();
+          }
+
+          $_SESSION['updatekensahyougenryoudata'] = array();
+          $_SESSION['updatekensahyougenryoudata'] = $data + array("delete_flag" => 0);
+
+          return $this->redirect(['action' => 'editcomfirm']);
+
+        }else{
+
+          $mes = "同じ成形機内で「成形機削除」と「原料削除」が選択されました。もう一度やり直してください。";
+          $this->set('mes', $mes);
+
+          $tuikaseikeiki = $data["tuikaseikeiki"];
+          $this->set('tuikaseikeiki', $tuikaseikeiki);
+
+          for($j=1; $j<=$tuikaseikeiki; $j++){
+
+            if(isset($data['tuikagenryou'.$j])){
+              ${"tuikagenryou".$j} = $data['tuikagenryou'.$j];
+            }else{
+              ${"tuikagenryou".$j} = 1;
+            }
+
+            $this->set('tuikagenryou'.$j, ${"tuikagenryou".$j});
+
+            if(isset($data['cylinder_name'.$j])){
+              ${"cylinder_name".$j} = $data['cylinder_name'.$j];
+              $this->set('cylinder_name'.$j,${"cylinder_name".$j});
+            }else{
+              ${"cylinder_name".$j} = "";
+              $this->set('cylinder_name'.$j,${"cylinder_name".$j});
+            }
+
+            for($i=1; $i<=${"tuikagenryou".$j}; $i++){
+
+              if(isset($data["material_id".$j.$i])){
+                ${"material_id".$j.$i} = $data["material_id".$j.$i];
+                $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+              }else{
+                ${"material_id".$j.$i} = "";
+                $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+              }
+
+              if(isset($data["mixing_ratio".$j.$i])){
+                ${"mixing_ratio".$j.$i} = $data["mixing_ratio".$j.$i];
+                $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
+              }else{
+                ${"mixing_ratio".$j.$i} = "";
+                $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
+              }
+
+              if(isset($data["dry_temp".$j.$i])){
+                ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
+                $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+              }else{
+                ${"dry_temp".$j.$i} = "";
+                $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+              }
+
+              if(isset($data["dry_hour".$j.$i])){
+                ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
+                $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
+              }else{
+                ${"dry_hour".$j.$i} = "";
+                $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
+              }
+
+              if(isset($data["recycled_mixing_ratio".$j.$i])){
+                ${"recycled_mixing_ratio".$j.$i} = $data["recycled_mixing_ratio".$j.$i];
+                $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
+              }else{
+                ${"recycled_mixing_ratio".$j.$i} = "";
+                $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
+              }
+
+            }
+
+          }
+
+        }
 
       }elseif(isset($data["sakujo"])){//削除ボタン
 
@@ -1347,12 +1459,12 @@ class KensahyougenryousController extends AppController
 
         $ProductMachineMaterials = $this->ProductMachineMaterials->find()
         ->contain(['ProductMaterialMachines' => ['ProductConditionParents' => ["Products"]]])
-        ->where(['version' => $version, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
+        ->where(['version' => $version, 'product_code' => $product_code, 'ProductMachineMaterials.delete_flag' => 0, 'ProductConditionParents.delete_flag' => 0])
         ->toArray();
 
         $ProductMaterialMachines = $this->ProductMaterialMachines->find()
         ->contain(['ProductConditionParents' => ["Products"]])
-        ->where(['version' => $version, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
+        ->where(['version' => $version, 'product_code' => $product_code, 'ProductMaterialMachines.delete_flag' => 0, 'ProductConditionParents.delete_flag' => 0])
         ->order(["cylinder_number"=>"DESC"])->toArray();
 
         $tuikaseikeiki = count($ProductMaterialMachines);
@@ -1523,6 +1635,7 @@ class KensahyougenryousController extends AppController
 
           if($m < 1){//成形機削除をせずに成形機内の原料を全て削除していた場合
             $n = $n - 1;
+            $this->set('tuikaseikeiki', $n);//成形機の数をセット
           }
 
         }
@@ -1641,12 +1754,14 @@ class KensahyougenryousController extends AppController
 
       $ProductMachineMaterials = $this->ProductMachineMaterials->find()
       ->contain(['ProductMaterialMachines' => ['ProductConditionParents' => ["Products"]]])
-      ->where(['product_condition_parent_id' => $product_condition_parent_id, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
+      ->where(['product_condition_parent_id' => $product_condition_parent_id, 'product_code' => $product_code,
+       'ProductMachineMaterials.delete_flag' => 0, 'ProductConditionParents.delete_flag' => 0])
       ->toArray();
 
       $ProductMaterialMachines = $this->ProductMaterialMachines->find()
       ->contain(['ProductConditionParents' => ["Products"]])
-      ->where(['product_condition_parent_id' => $product_condition_parent_id, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
+      ->where(['product_condition_parent_id' => $product_condition_parent_id, 'product_code' => $product_code,
+       'ProductMaterialMachines.delete_flag' => 0, 'ProductConditionParents.delete_flag' => 0])
       ->order(["cylinder_number"=>"DESC"])->toArray();
 
       if($data["delete_flag"] < 1){//削除ではない場合

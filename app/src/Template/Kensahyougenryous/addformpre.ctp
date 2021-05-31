@@ -1,4 +1,6 @@
-<?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
+<?php
+header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策
+ ?>
 <?php
  use App\myClass\menulists\htmlkensahyoukadoumenu;//myClassフォルダに配置したクラスを使用
  $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();

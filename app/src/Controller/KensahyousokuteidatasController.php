@@ -38,6 +38,14 @@ class KensahyousokuteidatasController extends AppController
      $this->ProductConditionParents = TableRegistry::get('ProductConditionParents');
      $this->InspectionDataResultParents = TableRegistry::get('InspectionDataResultParents');
      $this->InspectionDataResultChildren = TableRegistry::get('InspectionDataResultChildren');
+
+     if(!isset($_SESSION)){//フォーム再送信の確認対策
+       session_start();
+     }
+     header('Expires:');
+     header('Cache-Control:');
+     header('Pragma:');
+
     }
 
     public function menu()
@@ -549,6 +557,10 @@ class KensahyousokuteidatasController extends AppController
         $this->set('gouhi'.$j,${"gouhi".$j});
 
       }
+      
+      echo "<pre>";//フォームの再読み込みの防止
+      print_r("  ");
+      echo "</pre>";
 
     }
 
@@ -1204,13 +1216,6 @@ class KensahyousokuteidatasController extends AppController
     {
       $product = $this->Products->newEntity();
       $this->set('product', $product);
-
-  //    $session = $this->request->getSession();
-  //    $session->destroy();
-  //    $_SESSION = $session->read();
-  //    echo "<pre>";
-  //    print_r($_SESSION);
-  //    echo "</pre>";
 
       $data = $this->request->getData();
 
