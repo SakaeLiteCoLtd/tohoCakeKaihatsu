@@ -17,6 +17,7 @@
 <form method="post" action="/staffs/index">
 
 <?= $this->Form->create($staff, ['url' => ['action' => 'index']]) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <?= $this->Form->create($staff) ?>
@@ -37,7 +38,7 @@
             <td width="280"><strong>性別</strong></td>
         	</tr>
           <tr>
-            <td><?= h($staff['name']) ?></td>
+            <td><?= h($name) ?></td>
             <td><?= h($sexhyouji) ?></td>
         	</tr>
         </table>
@@ -47,8 +48,8 @@
             <td width="280"><strong>部署</strong></td>
         	</tr>
           <tr>
-            <td><?= h($staff->factory->name) ?></td>
-            <td><?= h($staff->department->name) ?></td>
+            <td><?= h($factory_name) ?></td>
+            <td><?= h($department_name) ?></td>
         	</tr>
         </table>
         <table>
@@ -57,8 +58,8 @@
             <td width="280"><strong>役職</strong></td>
         	</tr>
           <tr>
-            <td><?= h($staff->occupation->name) ?></td>
-            <td><?= h($staff->position->name) ?></td>
+            <td><?= h($occupation_name) ?></td>
+            <td><?= h($position_name) ?></td>
         	</tr>
         </table>
         <table>
@@ -67,8 +68,8 @@
             <td width="280"><strong>メール</strong></td>
         	</tr>
           <tr>
-            <td><?= h($staff['tel']) ?></td>
-            <td><?= h($staff['mail']) ?></td>
+            <td><?= h($tel) ?></td>
+            <td><?= h($mail) ?></td>
         	</tr>
         </table>
         <table>
@@ -76,19 +77,25 @@
             <td width="560"><strong>住所</strong></td>
         	</tr>
           <tr>
-            <td><?= h($staff['address']) ?></td>
+            <td><?= h($address) ?></td>
         	</tr>
         </table>
         <table>
           <tr>
-            <td width="180"><strong>生年月日</strong></td>
-            <td width="180"><strong>入社日</strong></td>
-            <td width="180"><strong>退社日</strong></td>
+            <td width="280"><strong>生年月日</strong></td>
+            <td width="280"><strong>入社日</strong></td>
         	</tr>
           <tr>
-            <td><?= h($staff['birth']) ?></td>
-            <td><?= h($staff['date_start']) ?></td>
-            <td><?= h($staff['date_finish']) ?></td>
+            <td><?= h($birth) ?></td>
+            <td><?= h($date_start) ?></td>
+        	</tr>
+        </table>
+        <table>
+          <tr>
+            <td width="280"><strong>退社日</strong></td>
+        	</tr>
+          <tr>
+            <td><?= h($date_finish) ?></td>
         	</tr>
         </table>
 

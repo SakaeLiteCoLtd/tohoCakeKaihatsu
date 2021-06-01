@@ -17,6 +17,9 @@
    height: 100%;
    padding: 0rem 0.0rem 0.0rem;
    margin: 0.0rem 0.0rem 0.0rem;
+   margin-left: auto;
+   margin-right: 20px;
+
  }
 
 div {
@@ -461,7 +464,7 @@ ul {
   /*padding-left:0.9375rem;*/
   padding-right:0.9375rem;
   width:100%;
-  float:left
+/*  float:left*/
 }
 
 /**

@@ -18,6 +18,7 @@
 
 <?= $this->Form->control('position', array('type'=>'hidden', 'value'=>$this->request->getData('position'), 'label'=>false)) ?>
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <fieldset>

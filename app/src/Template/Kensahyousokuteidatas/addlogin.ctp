@@ -9,35 +9,24 @@ use App\myClass\classprograms\htmlLogin;//myClassフォルダに配置したク�
 $htmlinputstaffctp = new htmlLogin();
 $inputstaffctp = $htmlinputstaffctp->inputstaffctp();
 ?>
-<br>
-<?php
-     echo $htmlkensahyoukadou;
-?>
-<br>
-<?php
-     echo $htmlkensahyoumenu;
-?>
 
 <?php
 $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
 
-<br>
-<hr size="5" style="margin: 0rem">
-<br>
-<table>
-  <tr>
-    <td style='border: none'><?php echo $this->Html->image('/img/menus/sokuteidatatouroku.gif',array('width'=>'145','height'=>'50'));?></td>
-  </tr>
+<table class='sample hesdermenu'>
+  <tbody>
+    <td style='border: none;'>
+      <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/menu' /><font size='4' color=black>測定データ登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/addlogin' /><font size='4' color=black>新規登録</font></a>
+    </td>
+  </tbody>
 </table>
-<br>
-<table>
-  <tr>
-    <td style='border: none'><?php echo $this->Html->image('/img/menus/subtouroku.gif',array('width'=>'145','height'=>'50'));?></td>
-  </tr>
-</table>
-<br>
+
+<br><br><br>
 
 <?= $this->Form->create($product, ['url' => ['action' => 'addformpre']]) ?>
 

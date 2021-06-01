@@ -16,10 +16,11 @@
 
 <form method="post" action="/occupations/index">
 
-<?= $this->Form->create($department, ['url' => ['action' => 'index']]) ?>
+<?= $this->Form->create($occupation, ['url' => ['action' => 'index']]) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
-    <?= $this->Form->create($department) ?>
+    <?= $this->Form->create($occupation) ?>
     <fieldset>
 
       <legend><strong style="font-size: 15pt; color:red"><?= __('職種情報削除') ?></strong></legend>

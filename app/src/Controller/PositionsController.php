@@ -26,6 +26,49 @@ class PositionsController extends AppController
         $this->set(compact('positions'));
     }
 
+    public function detail($id = null)
+    {
+      $position = $this->Positions->newEntity();
+      $this->set('position', $position);
+
+      $data = $this->request->getData();
+      if(isset($data["edit"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['positiondata'] = array();
+        $_SESSION['positiondata'] = $id;
+
+        return $this->redirect(['action' => 'editform']);
+
+      }elseif(isset($data["delete"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['positiondata'] = array();
+        $_SESSION['positiondata'] = $id;
+
+        return $this->redirect(['action' => 'deleteconfirm']);
+
+      }
+      $this->set('id', $id);
+
+      $Positions = $this->Positions->find()->contain(["Factories"])
+      ->where(['Positions.id' => $id])->toArray();
+
+      $position = $Positions[0]["position"];
+      $this->set('position', $position);
+      $factory_name = $Positions[0]["factory"]['name'];
+      $this->set('factory_name', $factory_name);
+
+    }
+
     public function view($id = null)
     {
         $position = $this->Positions->get($id, [
@@ -124,6 +167,11 @@ class PositionsController extends AppController
 
     public function editform($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['positiondata'];
+
         $position = $this->Positions->get($id, [
             'contain' => []
         ]);
@@ -218,6 +266,11 @@ class PositionsController extends AppController
 
     public function deleteconfirm($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['positiondata'];
+
         $position = $this->Positions->get($id, [
           'contain' => ['Factories']
         ]);

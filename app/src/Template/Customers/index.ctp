@@ -29,9 +29,6 @@ echo $this->Html->css('index');
               <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
               <th scope="col"><?= $this->Paginator->sort('factory_id', ['label'=>"工場・営業所名"]) ?></th>
               <th scope="col"><?= $this->Paginator->sort('name', ['label'=>"顧客名"]) ?></th>
-              <th scope="col"><?= $this->Paginator->sort('address', ['label'=>"住所"]) ?></th>
-              <th scope="col"><?= $this->Paginator->sort('tel', ['label'=>"電話番号"]) ?></th>
-              <th scope="col"><?= $this->Paginator->sort('fax', ['label'=>"ファックス"]) ?></th>
                 <th scope="col" class="actions"><?= __('') ?></th>
             </tr>
         </thead>
@@ -39,14 +36,10 @@ echo $this->Html->css('index');
             <?php foreach ($customers as $customer): ?>
             <tr>
               <td><?= h($i) ?></td>
-              <td><?= $customer->has('factory') ? $this->Html->link($customer->factory->name, ['controller' => 'Factories', 'action' => 'view', $customer->factory->id]) : '' ?></td>
-                <td><?= h($customer->name) ?></td>
-                <td><?= h($customer->address) ?></td>
-                <td><?= h($customer->tel) ?></td>
-                <td><?= h($customer->fax) ?></td>
+              <td><?= h($customer->factory->name) ?></td>
+              <td><?= h($customer->name) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('編集'), ['action' => 'editform', $customer->id]) ?>
-                    <?= $this->Html->link(__('削除'), ['action' => 'deleteconfirm', $customer->id]) ?>
+                  <?= $this->Html->link(__('詳細'), ['action' => 'detail', $customer->id]) ?>
                 </td>
             </tr>
 

@@ -8,16 +8,31 @@
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 ?>
-<br>
+
 <?php
-     echo $htmlkensahyoukadou;
-?>
-<br>
-<?php
-     echo $htmlkensahyoumenu;
+//メニューのレイアウト変更210601
 ?>
 
 <?php
 $this->layout = false;
 echo $this->Html->css('kensahyou');
+?>
+
+<table class='sample hesdermenu'>
+  <tbody>
+    <td style='border: none;align: left'>
+      <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
+    </a></td>
+  </tbody>
+</table>
+
+<?php
+  //   echo $htmlkensahyoukadou;
+?>
+
+<br><br><br>
+
+<?php
+     echo $htmlkensahyoumenu;
 ?>

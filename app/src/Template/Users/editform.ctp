@@ -26,6 +26,8 @@ $htmllogin = $htmlloginmenu->Loginmenu();
 
 <?= $this->Form->create($user, ['url' => ['action' => 'editconfirm']]) ?>
 
+<br><br><br>
+
 <nav class="large-3 medium-4 columns" style="width:70%">
     <?= $this->Form->create($user) ?>
     <fieldset>
@@ -39,8 +41,8 @@ $htmllogin = $htmlloginmenu->Loginmenu();
         <br>
         <table>
           <tr>
-            <td width="280"><strong>ユーザー名</strong></td>
-            <td width="280"><strong>スタッフ</strong></td>
+            <td width="280"><strong>社員コード</strong></td>
+            <td width="280"><strong>氏名</strong></td>
         	</tr>
           <tr>
             <td><?= $this->Form->control('user_code', array('type'=>'text', 'label'=>false)) ?></td>
@@ -49,19 +51,11 @@ $htmllogin = $htmlloginmenu->Loginmenu();
         </table>
         <table>
           <tr>
-            <td width="280"><strong>スーパーユーザー</strong></td>
             <td width="280"><strong>グループ</strong></td>
-        	</tr>
-          <tr>
-            <td><?= $this->Form->control('super_user', ['options' => $super_useroptions, 'label'=>false]) ?></td>
-            <td><?= $this->Form->control('group_name', ['options' => $Groupnames, 'label'=>false, "empty"=>"選択してください"]) ?></td>
-        	</tr>
-        </table>
-        <table>
-          <tr>
             <td width="280"><strong>パスワード</strong></td>
         	</tr>
           <tr>
+            <td><?= $this->Form->control('group_name', ['options' => $Groupnames, 'label'=>false, "empty"=>"選択してください"]) ?></td>
             <td><?= $this->Form->control('password', array('type'=>'password', 'label'=>false, 'size'=>20,  'value'=>"")) ?></td>
         	</tr>
         </table>

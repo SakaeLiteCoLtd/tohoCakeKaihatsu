@@ -5,37 +5,23 @@
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
 ?>
- <br>
-<?php
-      echo $htmlkensahyoukadou;
- ?>
- <br>
- <?php
-      echo $htmlkensahyoumenu;
- ?>
- <br>
- <hr size="5" style="margin: 0rem">
- <br>
- <table>
-   <tr>
-     <td style='border: none'><?php echo $this->Html->image('/img/menus/seikeiondomenu.gif',array('width'=>'145','height'=>'50'));?></td>
-   </tr>
- </table>
- <br>
-
-<table>
-  <tbody>
-    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('温度条件を編集してください。') ?></strong></td></tr>
-  </tbody>
-</table>
-
 <?php
 $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
 
-<br>
+<table class='sample hesdermenu'>
+  <tbody>
+    <td style='border: none;align: left'>
+      <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoutemperatures/menu' /><font size='4' color=black>成形温度登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoutemperatures/kensakupre' /><font size='4' color=black>登録データ呼出</font></a>
+    </a></td>
+  </tbody>
+</table>
 
+<br><br><br>
 <?= $this->Form->create($product, ['url' => ['action' => 'editcomfirm']]) ?>
 
 <?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>
@@ -47,7 +33,9 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
-<br>
+ <table style='margin-top:550px'>
+  <tr></tr>
+ </table>
 
 <?php for($j=1; $j<=$countseikeiki; $j++): ?>
 <br>

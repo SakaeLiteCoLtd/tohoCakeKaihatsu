@@ -16,7 +16,7 @@ class htmlkensahyoukadoumenu extends AppController
      public function kensahyoukadoumenus()
   	{
         $html =
-            "<table style='position: fixed;top: 30px; left:39%;'>\n".
+            "<table>\n".
             "<td style='border: none'>\n".
             "<a href='/Kensahyoukadous/kensahyoumenu'>\n".
             "<img src='/img/menus/kensahyoumenu.gif' width=145 height=50>\n".
@@ -34,7 +34,7 @@ class htmlkensahyoukadoumenu extends AppController
     public function kensahyoumenus()
    {
        $html =
-           "<table style='position: fixed;top: 100px; left:20%;'>\n".
+           "<table>\n".
            "<td style='border: none'>\n".
            "<a href='/Kensahyougenryous/menu'>\n".
            "<img src='/img/menus/genryoumenu.gif' width=145 height=50>\n".
@@ -51,10 +51,10 @@ class htmlkensahyoukadoumenu extends AppController
            "<a href='/Kensahyoukikakus/kensakupre'>\n".
            "<img src='/img/menus/kikakukensaku.gif' width=145 height=50>\n".
            "</a></td><td style='border: none'>　</td>\n".
-           "<td style='border: none'>\n".
-           "<a href='/menus/preform'>\n".
-           "<img src='/img/menus/imtaioumenu.gif' width=145 height=50>\n".
-           "</a></td><td style='border: none'>　</td>\n".
+  //         "<td style='border: none'>\n".
+  //         "<a href='/menus/preform'>\n".
+  //         "<img src='/img/menus/imtaioumenu.gif' width=145 height=50>\n".
+  //         "</a></td><td style='border: none'>　</td>\n".
            "<td style='border: none'>\n".
            "<a href='/Kensahyousokuteidatas/menu'>\n".
            "<img src='/img/menus/sokuteidatatouroku.gif' width=145 height=50>\n".
@@ -83,7 +83,7 @@ class htmlkensahyoukadoumenu extends AppController
     }
 
       $html =
-          "<table width='1000'>\n".
+          "<table bgcolor='white' width='1000' style='position: fixed;top: 85px; left:20%; z-index:9999;'>\n".
           "<tr>\n".
           "<td width='500' colspan='2' nowrap='nowrap' style='height: 60px'><strong>\n".
           "検査成績書</strong><br>（兼　成形条件表・梱包仕様書・作業手順書）\n".
@@ -106,7 +106,7 @@ class htmlkensahyoukadoumenu extends AppController
           "<td width='300' style='height: 30px'>$product_code</td>\n".
           "</tr>\n".
           "<tr>\n".
-          "<td width='1000' colspan='4' nowrap='nowrap' style='height: 400px'>\n".
+          "<td width='1000' colspan='4' nowrap='nowrap' style='height: 400px;'>\n".
           "画像\n".
           "</td>\n".
           "</tr>\n".

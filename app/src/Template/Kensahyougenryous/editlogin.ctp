@@ -9,30 +9,24 @@ use App\myClass\classprograms\htmlLogin;//myClassフォルダに配置したク�
 $htmlinputstaffctp = new htmlLogin();
 $inputstaffctp = $htmlinputstaffctp->inputstaffctp();
 ?>
-<br>
-<?php
-     echo $htmlkensahyoukadou;
-?>
-<br>
-<?php
-     echo $htmlkensahyoumenu;
-?>
-
-<br>
-<hr size="5" style="margin: 0rem">
-<br>
-<table>
-  <tr>
-    <td style='border: none'><?php echo $this->Html->image('/img/menus/genryoumenu.gif',array('width'=>'145','height'=>'50'));?></td>
-  </tr>
-</table>
-<br>
-
 <?php
 $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
-<br>
+
+<table class='sample hesdermenu'>
+  <tbody>
+    <td style='border: none;align: left'>
+      <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
+    <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
+    <font size='4'>　>>　</font><a href='/Kensahyougenryous/menu' /><font size='4' color=black>原料登録</font></a>
+    <font size='4'>　>>　</font><a href='/Kensahyougenryous/kensakupre' /><font size='4' color=black>登録データ呼出</font></a>
+    </a></td>
+  </tbody>
+</table>
+
+<br><br><br>
+
 <table>
   <tbody>
     <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('入力ミスの修正の場合はこのまま進んでください。新たな情報に更新する場合は新規登録から登録してください。') ?></strong></td></tr>

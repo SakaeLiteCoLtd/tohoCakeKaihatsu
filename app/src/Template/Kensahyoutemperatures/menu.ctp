@@ -5,23 +5,23 @@
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
 ?>
-<br>
 <?php
-     echo $htmlkensahyoukadou;
+$this->layout = false;
+echo $this->Html->css('kensahyou');
 ?>
-<br>
-<?php
-     echo $htmlkensahyoumenu;
-?>
-<br>
-<hr size="5" style="margin: 0rem">
-<br>
-<table>
-  <tr>
-    <td style='border: none'><?php echo $this->Html->image('/img/menus/seikeiondomenu.gif',array('width'=>'145','height'=>'50'));?></td>
-  </tr>
+
+<table class='sample hesdermenu'>
+  <tbody>
+    <td style='border: none;align: left'>
+      <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
+    <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
+    <font size='4'>　>>　</font><a href='/Kensahyoutemperatures/menu' /><font size='4' color=black>成形温度登録</font></a>
+    </a></td>
+  </tbody>
 </table>
-<br>
+
+<br><br><br>
+
 <table>
   <tr>
     <td style='border: none'><?php echo $this->Html->image('/img/menus/subtouroku.gif',array('width'=>'145','height'=>'50','url'=>array('action'=>'addlogin')));?></td>
@@ -29,8 +29,3 @@
     <td style='border: none'><?php echo $this->Html->image('/img/menus/subyobidashi.gif',array('width'=>'145','height'=>'50','url'=>array('action'=>'kensakupre')));?></td>
   </tr>
 </table>
-
-<?php
-$this->layout = false;
-echo $this->Html->css('kensahyou');
-?>

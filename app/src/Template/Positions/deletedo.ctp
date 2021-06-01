@@ -17,6 +17,7 @@
 <form method="post" action="/positions/index">
 
 <?= $this->Form->create($position, ['url' => ['action' => 'index']]) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <?= $this->Form->create($position) ?>

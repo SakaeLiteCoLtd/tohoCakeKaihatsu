@@ -36,11 +36,10 @@ echo $this->Html->css('index');
             <?php foreach ($positions as $position): ?>
             <tr>
               <td><?= h($i) ?></td>
-                <td><?= $position->has('factory') ? $this->Html->link($position->factory->name, ['controller' => 'Factories', 'action' => 'view', $position->factory->id]) : '' ?></td>
+                <td><?= h($position->factory->name) ?></td>
                 <td><?= h($position->position) ?></td>
                 <td class="actions">
-                  <?= $this->Html->link(__('編集'), ['action' => 'editform', $position->id]) ?>
-                  <?= $this->Html->link(__('削除'), ['action' => 'deleteconfirm', $position->id]) ?>
+                  <?= $this->Html->link(__('詳細'), ['action' => 'detail', $position->id]) ?>
                 </td>
             </tr>
             <?php

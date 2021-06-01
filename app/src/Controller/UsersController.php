@@ -54,6 +54,51 @@ class UsersController extends AppController
         $this->set(compact('users'));
     }
 
+    public function detail($id = null)
+    {
+      $user = $this->Users->newEntity();
+      $this->set('user', $user);
+
+      $data = $this->request->getData();
+      if(isset($data["edit"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['userdata'] = array();
+        $_SESSION['userdata'] = $id;
+
+        return $this->redirect(['action' => 'editform']);
+
+      }elseif(isset($data["delete"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['userdata'] = array();
+        $_SESSION['userdata'] = $id;
+
+        return $this->redirect(['action' => 'deleteconfirm']);
+
+      }
+      $this->set('id', $id);
+
+      $Users = $this->Users->find()->contain(["Staffs"])
+      ->where(['Users.id' => $id])->toArray();
+
+      $user_code = $Users[0]["user_code"];
+      $this->set('user_code', $user_code);
+      $group_name = $Users[0]["group_name"];
+      $this->set('group_name', $group_name);
+      $staffhyouji = $Users[0]["staff"]['name'];
+      $this->set('staffhyouji', $staffhyouji);
+
+    }
+
     public function view($id = null)
     {
         $user = $this->Users->get($id, [
@@ -88,13 +133,6 @@ class UsersController extends AppController
 
       $data = $this->request->getData();
 
-      if($data['super_user'] == 0){
-        $super_userhyouji = "いいえ";
-      }else{
-        $super_userhyouji = "はい";
-      }
-      $this->set('super_userhyouji', $super_userhyouji);
-
       $Staffs = $this->Staffs->find()
       ->where(['id' => $data['staff_id']])->toArray();
       $staffhyouji = $Staffs[0]["name"];
@@ -111,13 +149,6 @@ class UsersController extends AppController
 
       $data = $this->request->getData();
 
-      if($data['super_user'] == 0){
-        $super_userhyouji = "いいえ";
-      }else{
-        $super_userhyouji = "はい";
-      }
-      $this->set('super_userhyouji', $super_userhyouji);
-
       $Staffs = $this->Staffs->find()
       ->where(['id' => $data['staff_id']])->toArray();
       $staffhyouji = $Staffs[0]["name"];
@@ -130,7 +161,7 @@ class UsersController extends AppController
         'user_code' => $data["user_code"],
         'password' => $data["password"],
         'staff_id' => $data["staff_id"],
-        'super_user' => $data["super_user"],
+        'super_user' => 0,
         'group_name' => $data["group_name"],
         'delete_flag' => 0,
         'created_at' => date("Y-m-d H:i:s"),
@@ -195,6 +226,11 @@ class UsersController extends AppController
 
     public function editform($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['userdata'];
+
       $user = $this->Users->get($id, [
           'contain' => []
       ]);
@@ -221,13 +257,6 @@ class UsersController extends AppController
 
       $data = $this->request->getData();
 
-      if($data['super_user'] == 0){
-        $super_userhyouji = "いいえ";
-      }else{
-        $super_userhyouji = "はい";
-      }
-      $this->set('super_userhyouji', $super_userhyouji);
-
       $Staffs = $this->Staffs->find()
       ->where(['id' => $data['staff_id']])->toArray();
       $staffhyouji = $Staffs[0]["name"];
@@ -244,13 +273,6 @@ class UsersController extends AppController
 
       $data = $this->request->getData();
 
-      if($data['super_user'] == 0){
-        $super_userhyouji = "いいえ";
-      }else{
-        $super_userhyouji = "はい";
-      }
-      $this->set('super_userhyouji', $super_userhyouji);
-
       $Staffs = $this->Staffs->find()
       ->where(['id' => $data['staff_id']])->toArray();
       $staffhyouji = $Staffs[0]["name"];
@@ -266,7 +288,7 @@ class UsersController extends AppController
         'user_code' => $data["user_code"],
         'password' => $password,
         'staff_id' => $data["staff_id"],
-        'super_user' => $data["super_user"],
+        'super_user' => 0,
         'group_name' => $data["group_name"],
         'delete_flag' => 0,
         'created_at' => date("Y-m-d H:i:s"),
@@ -312,18 +334,22 @@ class UsersController extends AppController
 
     public function deleteconfirm($id = null)
     {
-        $user = $this->Users->get($id, [
-          'contain' => ['Staffs']
-        ]);
-        $this->set(compact('user'));
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
 
-        if($user['super_user'] == 0){
-          $super_userhyouji = "いいえ";
-        }else{
-          $super_userhyouji = "はい";
-        }
-        $this->set('super_userhyouji', $super_userhyouji);
+      $id = $_SESSION['userdata'];
 
+      $user = $this->Users->get($id, [
+        'contain' => ['Staffs']
+      ]);
+      $this->set(compact('user'));
+
+      if($user['super_user'] == 0){
+        $super_userhyouji = "いいえ";
+      }else{
+        $super_userhyouji = "はい";
+      }
+      $this->set('super_userhyouji', $super_userhyouji);
     }
 
     public function deletedo()

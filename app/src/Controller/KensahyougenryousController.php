@@ -56,6 +56,10 @@ class KensahyougenryousController extends AppController
      header('Cache-Control:');
      header('Pragma:');
 
+     echo "<pre>";
+     print_r("　");
+     echo "</pre>";
+
     }
 
     public function menu()
@@ -295,6 +299,8 @@ class KensahyougenryousController extends AppController
         }
 
       }elseif(isset($data["seikeikituika"])){//成形機追加ボタン
+
+        $tuikaseikeiki = $data["tuikaseikeiki"];
 
         if(!isset($data["material_id".$tuikaseikeiki.$data["tuikagenryou".$tuikaseikeiki]])){//原料が選択されていない場合
           $tuikaseikeiki = $data["tuikaseikeiki"];

@@ -17,6 +17,7 @@ $htmllogin = $htmlloginmenu->Loginmenu();
 <form method="post" action="/users/index">
 
 <?= $this->Form->create($user, ['url' => ['action' => 'index']]) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <?= $this->Form->create($user) ?>
@@ -33,8 +34,8 @@ $htmllogin = $htmlloginmenu->Loginmenu();
 
         <table>
           <tr>
-            <td width="280"><strong>ユーザー名</strong></td>
-            <td width="280"><strong>スタッフ</strong></td>
+            <td width="280"><strong>社員コード</strong></td>
+            <td width="280"><strong>氏名</strong></td>
         	</tr>
           <tr>
             <td><?= h($user['user_code']) ?></td>

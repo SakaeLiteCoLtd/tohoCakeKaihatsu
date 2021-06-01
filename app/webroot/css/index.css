@@ -20,7 +20,7 @@ nav {
   height: 100%;
   padding: 0rem 0.0rem 0.0rem;
   margin: 0.0rem 0.0rem 0.0rem;
-  background-color: #afeeee;;
+  background-color: #afeeee;
 }
 
 div {
@@ -42,7 +42,7 @@ html {
 body {
     margin: 0;
     height: 100%;
-        min-height: 100%;
+    min-height: 100%;
 }
 
 /**
@@ -448,6 +448,8 @@ optgroup {
 table {
   /*  border-collapse: collapse;*/
     border-spacing: 0;
+    margin-left: auto;
+    margin-right: 20px;
 }
 
 tbody {
@@ -464,6 +466,11 @@ ul {
   padding: 0;
 }
 
+div {
+  margin-left: auto;
+  margin-right: 20px;
+}
+
 div.side-menu {
     padding-bottom: 10000px;
     margin-bottom: -10000px;
@@ -474,7 +481,7 @@ div.side-menu {
 /*  padding-left:0.9375rem;*/
   padding-right:0.9375rem;
   width:100%;
-  float:left
+/*  float:left*/
 }
 
 .disabled a,

@@ -9,7 +9,7 @@ class htmlmaterialmenu extends AppController
      public function Materialsmenus()
   	{
         $html =
-                  "<nav class='large-3 medium-4 columns' id='actions-sidebar' style='width:20%'>\n".
+        "<nav class='large-3 medium-4 columns' id='actions-sidebar' style='width:20%; position: fixed;top: 0px; left:0%'>\n".
                       "<ul class='side-nav' style='background-color:#afeeee'>\n".
                       "<br>\n".
                           "<font size='5'>　原料メニュー</font>\n".

@@ -31,6 +31,7 @@
 <?= $this->Form->control('birth', array('type'=>'hidden', 'value'=>$birth, 'label'=>false)) ?>
 <?= $this->Form->control('date_start', array('type'=>'hidden', 'value'=>$date_start, 'label'=>false)) ?>
 <?= $this->Form->control('date_finish', array('type'=>'hidden', 'value'=>$date_finish, 'label'=>false)) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <?= $this->Form->create($Staffs) ?>

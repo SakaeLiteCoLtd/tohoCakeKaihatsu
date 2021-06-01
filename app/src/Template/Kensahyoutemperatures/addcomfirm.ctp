@@ -5,35 +5,23 @@
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
 ?>
- <br>
-<?php
-      echo $htmlkensahyoukadou;
- ?>
- <br>
- <?php
-      echo $htmlkensahyoumenu;
- ?>
-
 <?php
 $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
 
-<br>
-<hr size="5" style="margin: 0rem">
-<br>
-<table>
-  <tr>
-    <td style='border: none'><?php echo $this->Html->image('/img/menus/seikeiondomenu.gif',array('width'=>'145','height'=>'50'));?></td>
-  </tr>
+<table class='sample hesdermenu'>
+  <tbody>
+    <td style='border: none;align: left'>
+      <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoutemperatures/menu' /><font size='4' color=black>成形温度登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoutemperatures/addlogin' /><font size='4' color=black>新規登録</font></a>
+    </a></td>
+  </tbody>
 </table>
-<br>
-<table>
-  <tr>
-    <td style='border: none'><?php echo $this->Html->image('/img/menus/subtouroku.gif',array('width'=>'145','height'=>'50'));?></td>
-  </tr>
-</table>
-<br>
+
+<br><br><br>
 
 <?= $this->Form->create($product, ['url' => ['action' => 'adddo']]) ?>
 
@@ -46,10 +34,10 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
-<br>
-<table>
-  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('以下の内容で登録します。よろしければ「登録確定」ボタンを押してください。') ?></strong></td></tr>
-</table>
+ <br>
+ <table style='margin-top:530px'>
+   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('以下の内容で登録します。よろしければ「登録確定」ボタンを押してください。') ?></strong></td></tr>
+ </table>
 
 <?= $this->Form->control('pickup_speed', array('type'=>'hidden', 'value'=>$pickup_speed, 'label'=>false)) ?>
 

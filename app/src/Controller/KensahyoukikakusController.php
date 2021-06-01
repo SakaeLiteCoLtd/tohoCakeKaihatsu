@@ -44,6 +44,10 @@ class KensahyoukikakusController extends AppController
      header('Cache-Control:');
      header('Pragma:');
 
+     echo "<pre>";//フォームの再読み込みの防止
+     print_r("  ");
+     echo "</pre>";
+
     }
 
     public function addlogin()
@@ -182,11 +186,6 @@ class KensahyoukikakusController extends AppController
          's' => ['mess' => "管理No.「".$product_code."」の製品は登録済みです。内容を確認する場合は規格検索から確認してください。"]]);
        }
 */
-
-echo "<pre>";//フォームの再読み込みの防止
-print_r("  ");
-echo "</pre>";
-
     }
 
     public function addcomfirm()

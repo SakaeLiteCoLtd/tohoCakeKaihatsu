@@ -15,6 +15,7 @@
 ?>
 
 <?= $this->Form->create($occupation, ['url' => ['action' => 'index']]) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <?= $this->Form->create($occupation) ?>

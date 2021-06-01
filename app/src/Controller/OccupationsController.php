@@ -26,6 +26,49 @@ class OccupationsController extends AppController
         $this->set(compact('occupations'));
     }
 
+    public function detail($id = null)
+    {
+      $occupation = $this->Occupations->newEntity();
+      $this->set('occupation', $occupation);
+
+      $data = $this->request->getData();
+      if(isset($data["edit"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['occupationdata'] = array();
+        $_SESSION['occupationdata'] = $id;
+
+        return $this->redirect(['action' => 'editform']);
+
+      }elseif(isset($data["delete"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['occupationdata'] = array();
+        $_SESSION['occupationdata'] = $id;
+
+        return $this->redirect(['action' => 'deleteconfirm']);
+
+      }
+      $this->set('id', $id);
+
+      $Occupations = $this->Occupations->find()->contain(["Factories"])
+      ->where(['Occupations.id' => $id])->toArray();
+
+      $occupation = $Occupations[0]["occupation"];
+      $this->set('occupation', $occupation);
+      $factory_name = $Occupations[0]["factory"]['name'];
+      $this->set('factory_name', $factory_name);
+
+    }
+
     public function view($id = null)
     {
         $occupation = $this->Occupations->get($id, [
@@ -124,19 +167,24 @@ class OccupationsController extends AppController
 
     public function editform($id = null)
     {
-        $occupation = $this->Occupations->get($id, [
-            'contain' => []
-        ]);
-        $this->set(compact('occupation'));
-        $this->set('id', $id);
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
 
-        $Factories = $this->Factories->find()
-        ->where(['delete_flag' => 0])->toArray();
-        $arrFactories = array();
-        foreach ($Factories as $value) {
-          $arrFactories[] = array($value->id=>$value->name);
-        }
-        $this->set('arrFactories', $arrFactories);
+      $id = $_SESSION['occupationdata'];
+
+      $occupation = $this->Occupations->get($id, [
+          'contain' => []
+      ]);
+      $this->set(compact('occupation'));
+      $this->set('id', $id);
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
 
     }
 
@@ -218,10 +266,15 @@ class OccupationsController extends AppController
 
     public function deleteconfirm($id = null)
     {
-        $occupation = $this->Occupations->get($id, [
-          'contain' => ['Factories']
-        ]);
-        $this->set(compact('occupation'));
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['occupationdata'];
+      
+      $occupation = $this->Occupations->get($id, [
+        'contain' => ['Factories']
+      ]);
+      $this->set(compact('occupation'));
     }
 
     public function deletedo()

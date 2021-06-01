@@ -23,6 +23,7 @@
 <form method="post" action="/staffs/editconfirm">
 
 <?= $this->Form->create($Staffs, ['url' => ['action' => 'editconfirm']]) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <?= $this->Form->create($Staffs) ?>

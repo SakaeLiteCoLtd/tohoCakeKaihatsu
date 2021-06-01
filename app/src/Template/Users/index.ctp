@@ -26,35 +26,20 @@ echo $this->Html->css('index');
     <table cellpadding="0" cellspacing="0">
         <thead>
           <tr>
-              <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
-              <th scope="col"><?= $this->Paginator->sort('user_code', ['label'=>"ユーザー名"]) ?></th>
-              <th scope="col"><?= $this->Paginator->sort('staff', ['label'=>"スタッフ"]) ?></th>
-              <th scope="col"><?= $this->Paginator->sort('super_user', ['label'=>"スーパーユーザー"]) ?></th>
-              <th scope="col"><?= $this->Paginator->sort('group_name', ['label'=>"グループ"]) ?></th>
-                <th scope="col" class="actions"><?= __('') ?></th>
+              <th scope="col" style='width:100'><?= $this->Paginator->sort('No.') ?></th>
+              <th scope="col"><?= $this->Paginator->sort('user_code', ['label'=>"社員コード"]) ?></th>
+              <th scope="col"><?= $this->Paginator->sort('staff', ['label'=>"氏名"]) ?></th>
+                <th scope="col" class="actions" style='width:100'><?= __('') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($users as $user): ?>
             <tr>
               <td><?= h($i) ?></td>
-                <td><?= h($user->user_code) ?></td>
-                <td><?= $user->has('staff') ? $this->Html->link($user->staff->name, ['controller' => 'Staffs', 'action' => 'view', $user->staff->id]) : '' ?></td>
-
-                <?php
-                if($this->Number->format($user->super_user) == 1){
-                  $super_user = "はい";
-                }else{
-                  $super_user = "いいえ";
-                }
-                $i = $i + 1;
-                ?>
-
-                <td><?= h($super_user) ?></td>
-                <td><?= h($user->group_name) ?></td>
+              <td><?= h($user->user_code) ?></td>
+              <td><?= h($user->staff->name) ?></td>
                 <td class="actions">
-                  <?= $this->Html->link(__('編集'), ['action' => 'editform', $user->id]) ?>
-                  <?= $this->Html->link(__('削除'), ['action' => 'deleteconfirm', $user->id]) ?>
+                  <?= $this->Html->link(__('詳細'), ['action' => 'detail', $user->id]) ?>
                 </td>
             </tr>
 

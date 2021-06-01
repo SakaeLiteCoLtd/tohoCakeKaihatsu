@@ -26,6 +26,49 @@ class DepartmentsController extends AppController
         $this->set(compact('departments'));
     }
 
+    public function detail($id = null)
+    {
+      $department = $this->Departments->newEntity();
+      $this->set('department', $department);
+
+      $data = $this->request->getData();
+      if(isset($data["edit"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['departmentdata'] = array();
+        $_SESSION['departmentdata'] = $id;
+
+        return $this->redirect(['action' => 'editform']);
+
+      }elseif(isset($data["delete"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['departmentdata'] = array();
+        $_SESSION['departmentdata'] = $id;
+
+        return $this->redirect(['action' => 'deleteconfirm']);
+
+      }
+      $this->set('id', $id);
+
+      $Departments = $this->Departments->find()->contain(["Factories"])
+      ->where(['Departments.id' => $id])->toArray();
+
+      $department = $Departments[0]["department"];
+      $this->set('department', $department);
+      $factory_name = $Departments[0]["factory"]['name'];
+      $this->set('factory_name', $factory_name);
+
+    }
+
     public function view($id = null)
     {
         $department = $this->Departments->get($id, [
@@ -124,19 +167,24 @@ class DepartmentsController extends AppController
 
     public function editform($id = null)
     {
-        $department = $this->Departments->get($id, [
-            'contain' => []
-        ]);
-        $this->set(compact('department'));
-        $this->set('id', $id);
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
 
-        $Factories = $this->Factories->find()
-        ->where(['delete_flag' => 0])->toArray();
-        $arrFactories = array();
-        foreach ($Factories as $value) {
-          $arrFactories[] = array($value->id=>$value->name);
-        }
-        $this->set('arrFactories', $arrFactories);
+      $id = $_SESSION['departmentdata'];
+
+      $department = $this->Departments->get($id, [
+          'contain' => []
+      ]);
+      $this->set(compact('department'));
+      $this->set('id', $id);
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
 
     }
 
@@ -218,10 +266,15 @@ class DepartmentsController extends AppController
 
     public function deleteconfirm($id = null)
     {
-        $department = $this->Departments->get($id, [
-          'contain' => ['Factories']
-        ]);
-        $this->set(compact('department'));
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['departmentdata'];
+
+      $department = $this->Departments->get($id, [
+        'contain' => ['Factories']
+      ]);
+      $this->set(compact('department'));
     }
 
     public function deletedo()

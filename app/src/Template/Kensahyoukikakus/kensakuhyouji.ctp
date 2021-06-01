@@ -5,30 +5,22 @@
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
 ?>
- <br>
-<?php
-      echo $htmlkensahyoukadou;
- ?>
- <br>
- <?php
-      echo $htmlkensahyoumenu;
- ?>
-
- <br>
- <hr size="5" style="margin: 0rem">
- <br>
- <table>
-   <tr>
-     <td style='border: none'><?php echo $this->Html->image('/img/menus/kikakukensaku.gif',array('width'=>'145','height'=>'50'));?></td>
-   </tr>
- </table>
- <br>
-
 <?php
 $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
 
+<table class='sample hesdermenu'>
+  <tbody>
+    <td style='border: none;'>
+      <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoukikakus/kensakupre' /><font size='4' color=black>規格呼出</font></a>
+    </td>
+  </tbody>
+</table>
+
+<br><br><br>
 
 <?= $this->Form->create($product, ['url' => ['action' => 'editlogin']]) ?>
 
@@ -41,7 +33,7 @@ echo $this->Html->css('kensahyou');
 
 <br>
 
-<table>
+<table style='margin-top:500px'>
 
 <tr>
   <td style='width:100'>測定箇所</td>

@@ -28,6 +28,100 @@ class StaffsController extends AppController
 
         $this->set(compact('staffs'));
     }
+
+    public function detail($id = null)
+    {
+      $staff = $this->Staffs->newEntity();
+      $this->set('staff', $staff);
+
+      $data = $this->request->getData();
+      if(isset($data["edit"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['staffdata'] = array();
+        $_SESSION['staffdata'] = $id;
+
+        return $this->redirect(['action' => 'editform']);
+
+      }elseif(isset($data["delete"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['staffdata'] = array();
+        $_SESSION['staffdata'] = $id;
+
+        return $this->redirect(['action' => 'deleteconfirm']);
+
+      }
+      $this->set('id', $id);
+
+      $Staffs = $this->Staffs->find()->contain(["Factories", "Departments", "Occupations", "Positions"])
+      ->where(['Staffs.id' => $id])->toArray();
+
+      $name = $Staffs[0]["name"];
+      $this->set('name', $name);
+      $tel = $Staffs[0]["tel"];
+      $this->set('tel', $tel);
+      $mail = $Staffs[0]["mail"];
+      $this->set('mail', $mail);
+      $address = $Staffs[0]["address"];
+      $this->set('address', $address);
+      $birth = $Staffs[0]["birth"];
+      $this->set('birth', $birth);
+      $date_start = $Staffs[0]["date_start"];
+      $this->set('date_start', $date_start);
+      $date_finish = $Staffs[0]["date_finish"];
+      $this->set('date_finish', $date_finish);
+
+      if($Staffs[0]['sex'] == 0){
+        $sexhyouji = "男";
+      }else{
+        $sexhyouji = "女";
+      }
+      $this->set('sexhyouji', $sexhyouji);
+
+      if($Staffs[0]["factory"]['id'] >= 0){
+        $factory_name = $Staffs[0]["factory"]['name'];
+        $this->set('factory_name', $factory_name);
+      }else{
+        $factory_name = "";
+        $this->set('factory_name', $factory_name);
+      }
+
+      if($Staffs[0]["department"]['id'] >= 0){
+        $department_name = $Staffs[0]["department"]['department'];
+        $this->set('department_name', $department_name);
+      }else{
+        $factory_name = "";
+        $this->set('department_name', $department_name);
+      }
+
+      if($Staffs[0]["occupation"]['id'] >= 0){
+        $occupation_name = $Staffs[0]["occupation"]['occupation'];
+        $this->set('occupation_name', $occupation_name);
+      }else{
+        $occupation_name = "";
+        $this->set('occupation_name', $occupation_name);
+      }
+
+      if($Staffs[0]["position"]['id'] >= 0){
+        $position_name = $Staffs[0]["position"]['position'];
+        $this->set('position_name', $position_name);
+      }else{
+        $occupation_name = "";
+        $this->set('position_name', $position_name);
+      }
+
+    }
+/*
+
 /*
     public function top()
     {
@@ -75,10 +169,32 @@ class StaffsController extends AppController
       $this->set('Staffs', $Staffs);
 
       $Factories = $this->Staffs->Factories->find('list', ['limit' => 200]);
-      $departments = $this->Staffs->Departments->find('list', ['limit' => 200]);
-      $occupations = $this->Staffs->Occupations->find('list', ['limit' => 200]);
-      $positions = $this->Staffs->Positions->find('list', ['limit' => 200]);
-      $this->set(compact('staff', 'Factories', 'departments', 'occupations', 'positions'));
+      $this->set(compact('Factories'));
+
+      $Departments = $this->Departments->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $departments = array();
+      foreach ($Departments as $value) {
+        $departments[] = array($value->id=>$value->department);
+      }
+      $this->set('departments', $departments);
+
+      $Occupations = $this->Occupations->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $occupations = array();
+      foreach ($Occupations as $value) {
+        $occupations[] = array($value->id=>$value->occupation);
+      }
+      $this->set('occupations', $occupations);
+
+      $Positions = $this->Positions->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $positions = array();
+      foreach ($Positions as $value) {
+        $positions[] = array($value->id=>$value->position);
+      }
+      $this->set('positions', $positions);
+
     }
 
     public function addcomfirm()
@@ -264,19 +380,45 @@ class StaffsController extends AppController
 
     }
 
-    public function editform($id = null)
+    public function editform()
     {
-        $Staffs = $this->Staffs->get($id, [
-            'contain' => []
-        ]);
-        $this->set(compact('Staffs'));
-        $this->set('id', $id);
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
 
-        $Factories = $this->Staffs->Factories->find('list', ['limit' => 200]);
-        $departments = $this->Staffs->Departments->find('list', ['limit' => 200]);
-        $occupations = $this->Staffs->Occupations->find('list', ['limit' => 200]);
-        $positions = $this->Staffs->Positions->find('list', ['limit' => 200]);
-        $this->set(compact('staff', 'Factories', 'departments', 'occupations', 'positions'));
+      $id = $_SESSION['staffdata'];
+
+      $Staffs = $this->Staffs->get($id, [
+          'contain' => []
+      ]);
+      $this->set(compact('Staffs'));
+      $this->set('id', $id);
+
+      $Factories = $this->Staffs->Factories->find('list', ['limit' => 200]);
+      $this->set(compact('Factories'));
+
+      $Departments = $this->Departments->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $departments = array();
+      foreach ($Departments as $value) {
+        $departments[] = array($value->id=>$value->department);
+      }
+      $this->set('departments', $departments);
+
+      $Occupations = $this->Occupations->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $occupations = array();
+      foreach ($Occupations as $value) {
+        $occupations[] = array($value->id=>$value->occupation);
+      }
+      $this->set('occupations', $occupations);
+
+      $Positions = $this->Positions->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $positions = array();
+      foreach ($Positions as $value) {
+        $positions[] = array($value->id=>$value->position);
+      }
+      $this->set('positions', $positions);
     }
 
     public function editconfirm()
@@ -494,40 +636,141 @@ class StaffsController extends AppController
 
     }
 
-    public function deleteconfirm($id = null)
+    public function deleteconfirm()
     {
-        $staff = $this->Staffs->get($id, [
-          'contain' => ['Factories', 'Departments', 'Occupations', 'Positions']
-        ]);
-        $this->set(compact('staff'));
+      $staff = $this->Staffs->newEntity();
+      $this->set('staff', $staff);
 
-        if($staff['sex'] == 0){
-          $sexhyouji = "男";
-        }else{
-          $sexhyouji = "女";
-        }
-        $this->set('sexhyouji', $sexhyouji);
-
-    }
-
-    public function deletedo()
-    {
       $session = $this->request->getSession();
-      $datasession = $session->read();
+      $_SESSION = $session->read();
 
-      $data = $this->request->getData();
+      $id = $_SESSION['staffdata'];
+      $this->set('id', $id);
 
-      $staff = $this->Staffs->get($data["id"], [
-        'contain' => ['Factories', 'Departments', 'Occupations', 'Positions']
-      ]);
-      $this->set(compact('staff'));
+      $Staffs = $this->Staffs->find()->contain(["Factories", "Departments", "Occupations", "Positions"])
+      ->where(['Staffs.id' => $id])->toArray();
 
-      if($staff['sex'] == 0){
+      $name = $Staffs[0]["name"];
+      $this->set('name', $name);
+      $tel = $Staffs[0]["tel"];
+      $this->set('tel', $tel);
+      $mail = $Staffs[0]["mail"];
+      $this->set('mail', $mail);
+      $address = $Staffs[0]["address"];
+      $this->set('address', $address);
+      $birth = $Staffs[0]["birth"];
+      $this->set('birth', $birth);
+      $date_start = $Staffs[0]["date_start"];
+      $this->set('date_start', $date_start);
+      $date_finish = $Staffs[0]["date_finish"];
+      $this->set('date_finish', $date_finish);
+
+      if($Staffs[0]['sex'] == 0){
         $sexhyouji = "男";
       }else{
         $sexhyouji = "女";
       }
       $this->set('sexhyouji', $sexhyouji);
+
+      if($Staffs[0]["factory"]['id'] >= 0){
+        $factory_name = $Staffs[0]["factory"]['name'];
+        $this->set('factory_name', $factory_name);
+      }else{
+        $factory_name = "";
+        $this->set('factory_name', $factory_name);
+      }
+
+      if($Staffs[0]["department"]['id'] >= 0){
+        $department_name = $Staffs[0]["department"]['department'];
+        $this->set('department_name', $department_name);
+      }else{
+        $factory_name = "";
+        $this->set('department_name', $department_name);
+      }
+
+      if($Staffs[0]["occupation"]['id'] >= 0){
+        $occupation_name = $Staffs[0]["occupation"]['occupation'];
+        $this->set('occupation_name', $occupation_name);
+      }else{
+        $occupation_name = "";
+        $this->set('occupation_name', $occupation_name);
+      }
+
+      if($Staffs[0]["position"]['id'] >= 0){
+        $position_name = $Staffs[0]["position"]['position'];
+        $this->set('position_name', $position_name);
+      }else{
+        $occupation_name = "";
+        $this->set('position_name', $position_name);
+      }
+    }
+
+    public function deletedo()
+    {
+      $staff = $this->Staffs->newEntity();
+      $this->set('staff', $staff);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $data = $this->request->getData();
+
+      $Staffs = $this->Staffs->find()->contain(["Factories", "Departments", "Occupations", "Positions"])
+      ->where(['Staffs.id' => $data["id"]])->toArray();
+
+      $name = $Staffs[0]["name"];
+      $this->set('name', $name);
+      $tel = $Staffs[0]["tel"];
+      $this->set('tel', $tel);
+      $mail = $Staffs[0]["mail"];
+      $this->set('mail', $mail);
+      $address = $Staffs[0]["address"];
+      $this->set('address', $address);
+      $birth = $Staffs[0]["birth"];
+      $this->set('birth', $birth);
+      $date_start = $Staffs[0]["date_start"];
+      $this->set('date_start', $date_start);
+      $date_finish = $Staffs[0]["date_finish"];
+      $this->set('date_finish', $date_finish);
+
+      if($Staffs[0]['sex'] == 0){
+        $sexhyouji = "男";
+      }else{
+        $sexhyouji = "女";
+      }
+      $this->set('sexhyouji', $sexhyouji);
+
+      if($Staffs[0]["factory"]['id'] >= 0){
+        $factory_name = $Staffs[0]["factory"]['name'];
+        $this->set('factory_name', $factory_name);
+      }else{
+        $factory_name = "";
+        $this->set('factory_name', $factory_name);
+      }
+
+      if($Staffs[0]["department"]['id'] >= 0){
+        $department_name = $Staffs[0]["department"]['department'];
+        $this->set('department_name', $department_name);
+      }else{
+        $factory_name = "";
+        $this->set('department_name', $department_name);
+      }
+
+      if($Staffs[0]["occupation"]['id'] >= 0){
+        $occupation_name = $Staffs[0]["occupation"]['occupation'];
+        $this->set('occupation_name', $occupation_name);
+      }else{
+        $occupation_name = "";
+        $this->set('occupation_name', $occupation_name);
+      }
+
+      if($Staffs[0]["position"]['id'] >= 0){
+        $position_name = $Staffs[0]["position"]['position'];
+        $this->set('position_name', $position_name);
+      }else{
+        $occupation_name = "";
+        $this->set('position_name', $position_name);
+      }
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 

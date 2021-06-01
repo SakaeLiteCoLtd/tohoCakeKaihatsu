@@ -7,33 +7,29 @@ header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
 ?>
-<br>
-<?php
-     echo $htmlkensahyoukadou;
-?>
-<br>
-<?php
-     echo $htmlkensahyoumenu;
-?>
-<br>
-<hr size="5" style="margin: 0rem">
-<br>
-<table>
-  <tr>
-    <td style='border: none'><?php echo $this->Html->image('/img/menus/genryoumenu.gif',array('width'=>'145','height'=>'50'));?></td>
-  </tr>
-</table>
-<br>
-<table>
-  <tr>
-    <td style='border: none'><?php echo $this->Html->image('/img/menus/subtouroku.gif',array('width'=>'145','height'=>'50'));?></td>
-  </tr>
-</table>
-<br>
-
 <?php
 $this->layout = false;
 echo $this->Html->css('kensahyou');
+?>
+
+<table class='sample hesdermenu'>
+  <tbody>
+    <td style='border: none;align: left'>
+      <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
+    <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
+    <font size='4'>　>>　</font><a href='/Kensahyougenryous/menu' /><font size='4' color=black>原料登録</font></a>
+    <font size='4'>　>>　</font><a href='/Kensahyougenryous/addlogin' /><font size='4' color=black>新規登録</font></a>
+    </a></td>
+  </tbody>
+</table>
+
+<?php
+  //   echo $htmlkensahyoukadou;
+?>
+
+<br><br><br>
+<?php
+  //   echo $htmlkensahyoumenu;
 ?>
 
 <?= $this->Form->create($product, ['url' => ['action' => 'adddo']]) ?>
@@ -47,11 +43,9 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
-<br>
-<table>
+<table style='margin-top:550px'>
   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('以下の内容で登録します。よろしければ「決定」ボタンを押してください。') ?></strong></td></tr>
 </table>
-<br>
 
 <?php for($j=1; $j<=$tuikaseikeiki; $j++): ?>
 <br>

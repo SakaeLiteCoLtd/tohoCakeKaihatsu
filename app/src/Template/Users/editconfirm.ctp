@@ -8,12 +8,6 @@ $htmlloginmenu = new htmlloginmenu();
 $htmllogin = $htmlloginmenu->Loginmenu();
 
  $i = 1;
-
- $super_useroptions = [
-  '0' => 'いいえ',
-  '1' => 'はい'
-        ];
-
 ?>
 <?php
      echo $htmllogin;
@@ -32,6 +26,7 @@ $htmllogin = $htmlloginmenu->Loginmenu();
 <?= $this->Form->control('super_user', array('type'=>'hidden', 'value'=>$this->request->getData('super_user'), 'label'=>false)) ?>
 <?= $this->Form->control('group_name', array('type'=>'hidden', 'value'=>$this->request->getData('group_name'), 'label'=>false)) ?>
 <?= $this->Form->control('password', array('type'=>'hidden', 'value'=>$this->request->getData('password'), 'label'=>false)) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <?= $this->Form->create($user) ?>
@@ -46,8 +41,8 @@ $htmllogin = $htmlloginmenu->Loginmenu();
         <br>
         <table>
           <tr>
-            <td width="280"><strong>ユーザー名</strong></td>
-            <td width="280"><strong>スタッフ</strong></td>
+            <td width="280"><strong>社員コード</strong></td>
+            <td width="280"><strong>氏名</strong></td>
         	</tr>
           <tr>
             <td><?= h($this->request->getData('user_code')) ?></td>
@@ -56,19 +51,11 @@ $htmllogin = $htmlloginmenu->Loginmenu();
         </table>
         <table>
           <tr>
-            <td width="280"><strong>スーパーユーザー</strong></td>
             <td width="280"><strong>グループ</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($super_userhyouji) ?></td>
-            <td><?= h($this->request->getData('group_name')) ?></td>
-        	</tr>
-        </table>
-        <table>
-          <tr>
             <td width="280"><strong>パスワード</strong></td>
         	</tr>
           <tr>
+            <td><?= h($this->request->getData('group_name')) ?></td>
             <td><?= __("****") ?></td>
         	</tr>
         </table>

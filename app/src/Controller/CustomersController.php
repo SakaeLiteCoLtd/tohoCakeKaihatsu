@@ -27,6 +27,55 @@ class CustomersController extends AppController
         $this->set(compact('customers'));
     }
 
+    public function detail($id = null)
+    {
+      $customer = $this->Customers->newEntity();
+      $this->set('customer', $customer);
+
+      $data = $this->request->getData();
+      if(isset($data["edit"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['customerdata'] = array();
+        $_SESSION['customerdata'] = $id;
+
+        return $this->redirect(['action' => 'editform']);
+
+      }elseif(isset($data["delete"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['customerdata'] = array();
+        $_SESSION['customerdata'] = $id;
+
+        return $this->redirect(['action' => 'deleteconfirm']);
+
+      }
+      $this->set('id', $id);
+
+      $Customers = $this->Customers->find()->contain(["Factories"])
+      ->where(['Customers.id' => $id])->toArray();
+
+      $name = $Customers[0]["name"];
+      $this->set('name', $name);
+      $factory_name = $Customers[0]["factory"]['name'];
+      $this->set('factory_name', $factory_name);
+      $address = $Customers[0]["address"];
+      $this->set('address', $address);
+      $tel = $Customers[0]["tel"];
+      $this->set('tel', $tel);
+      $fax = $Customers[0]["fax"];
+      $this->set('fax', $fax);
+
+    }
+
     public function view($id = null)
     {
         $customer = $this->Customers->get($id, [
@@ -147,6 +196,11 @@ class CustomersController extends AppController
 
     public function editform($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['customerdata'];
+
       $customer = $this->Customers->get($id, [
         'contain' => []
       ]);
@@ -248,6 +302,11 @@ class CustomersController extends AppController
 
     public function deleteconfirm($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['customerdata'];
+
         $customer = $this->Customers->get($id, [
             'contain' => []
         ]);

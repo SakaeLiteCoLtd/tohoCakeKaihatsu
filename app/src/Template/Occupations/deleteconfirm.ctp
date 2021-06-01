@@ -17,6 +17,7 @@
 <form method="post" action="/occupations/deletedo">
 
 <?= $this->Form->create($occupation, ['url' => ['action' => 'deletedo']]) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <?= $this->Form->create($occupation) ?>
