@@ -26,6 +26,63 @@ class MaterialSuppliersController extends AppController
         $this->set(compact('materialSuppliers'));
     }
 
+    public function detail($id = null)
+    {
+      $materialSuppliers = $this->MaterialSuppliers->newEntity();
+      $this->set('materialSuppliers', $materialSuppliers);
+
+      $data = $this->request->getData();
+      if(isset($data["edit"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['materialSupplierdata'] = array();
+        $_SESSION['materialSupplierdata'] = $id;
+
+        return $this->redirect(['action' => 'editform']);
+
+      }elseif(isset($data["delete"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['materialSupplierdata'] = array();
+        $_SESSION['materialSupplierdata'] = $id;
+
+        return $this->redirect(['action' => 'deleteconfirm']);
+
+      }
+      $this->set('id', $id);
+
+      $MaterialSuppliers = $this->MaterialSuppliers->find()->contain(["Factories"])
+      ->where(['MaterialSuppliers.id' => $id])->toArray();
+/*
+      echo "<pre>";
+      print_r($Products);
+      echo "</pre>";
+*/
+      $factory_name = $MaterialSuppliers[0]["factory"]['name'];
+      $this->set('factory_name', $factory_name);
+      $name = $MaterialSuppliers[0]["name"];
+      $this->set('name', $name);
+      $office = $MaterialSuppliers[0]["office"];
+      $this->set('office', $office);
+      $tel = $MaterialSuppliers[0]["tel"];
+      $this->set('tel', $tel);
+      $fax = $MaterialSuppliers[0]["fax"];
+      $this->set('fax', $fax);
+      $department = $MaterialSuppliers[0]["department"];
+      $this->set('department', $department);
+      $address = $MaterialSuppliers[0]["address"];
+      $this->set('address', $address);
+
+    }
+
     public function view($id = null)
     {
         $materialSupplier = $this->MaterialSuppliers->get($id, [
@@ -162,6 +219,11 @@ class MaterialSuppliersController extends AppController
 
     public function editform($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['materialSupplierdata'];
+
       $materialSupplier = $this->MaterialSuppliers->get($id, [
         'contain' => []
       ]);
@@ -261,16 +323,72 @@ class MaterialSuppliersController extends AppController
 
     }
 
-    public function delete($id = null)
+    public function deleteconfirm($id = null)
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $materialSupplier = $this->MaterialSuppliers->get($id);
-        if ($this->MaterialSuppliers->delete($materialSupplier)) {
-            $this->Flash->success(__('The material supplier has been deleted.'));
-        } else {
-            $this->Flash->error(__('The material supplier could not be deleted. Please, try again.'));
-        }
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
 
-        return $this->redirect(['action' => 'index']);
+      $id = $_SESSION['materialSupplierdata'];
+
+      $materialSupplier = $this->MaterialSuppliers->get($id, [
+        'contain' => ["Factories"]
+      ]);
+      $this->set(compact('materialSupplier'));
     }
+
+    public function deletedo()
+    {
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $data = $this->request->getData();
+
+      $materialSupplier = $this->MaterialSuppliers->get($data["id"], [
+        'contain' => ["Factories"]
+      ]);
+      $this->set(compact('materialSupplier'));
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $arrdeleteMaterialSupplier = array();
+      $arrdeleteMaterialSupplier = [
+        'id' => $data["id"]
+      ];
+/*
+      echo "<pre>";
+      print_r($arrdeleteproduct);
+      echo "</pre>";
+*/
+      $MaterialSuppliers = $this->MaterialSuppliers->patchEntity($this->MaterialSuppliers->newEntity(), $arrdeleteMaterialSupplier);
+      $connection = ConnectionManager::get('default');//トランザクション1
+       // トランザクション開始2
+       $connection->begin();//トランザクション3
+       try {//トランザクション4
+         if ($this->MaterialSuppliers->updateAll(
+           [ 'delete_flag' => 1,
+             'updated_at' => date('Y-m-d H:i:s'),
+             'updated_staff' => $staff_id],
+           ['id'  => $arrdeleteMaterialSupplier['id']]
+         )){
+
+         $mes = "※以下のデータが削除されました。";
+         $this->set('mes',$mes);
+         $connection->commit();// コミット5
+
+       } else {
+
+         $mes = "※削除されませんでした";
+         $this->set('mes',$mes);
+         $this->Flash->error(__('The data could not be saved. Please, try again.'));
+         throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+       }
+
+     } catch (Exception $e) {//トランザクション7
+     //ロールバック8
+       $connection->rollback();//トランザクション9
+     }//トランザクション10
+
+    }
+
 }

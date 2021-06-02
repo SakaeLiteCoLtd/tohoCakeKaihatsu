@@ -23,9 +23,48 @@ class GroupsController extends AppController
         $this->paginate = [
             'contain' => ['Menus']
         ];
-        $groups = $this->paginate($this->Groups->find()->where(['Groups.delete_flag' => 0]));
+        $groups = $this->paginate($this->Groups->find()->select(['name_group','delete_flag' => 0])->group(['name_group']));
 
         $this->set(compact('groups'));
+    }
+
+    public function detail($name_group = null)
+    {
+      $groups = $this->Groups->newEntity();
+      $this->set('groups', $groups);
+
+      $data = $this->request->getData();
+      if(isset($data["delete"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['groupdata'] = array();
+        $_SESSION['groupdata'] = $id;
+
+        return $this->redirect(['action' => 'deleteconfirm']);
+
+      }
+
+      $this->set('name_group', $name_group);
+
+      $Groups = $this->Groups->find()->contain(["Menus"])
+      ->where(['name_group' => $name_group, 'Groups.delete_flag' => 0])->toArray();
+      $this->set('id', $Groups[0]["id"]);
+
+      for($k=0; $k<count($Groups); $k++){
+
+        $arrGroups[] = $Groups[$k]['menu']['name_menu'];
+
+      }
+      $this->set('arrGroups', $arrGroups);
+/*
+      echo "<pre>";
+      print_r($arrGroups);
+      echo "</pre>";
+*/
     }
 
     public function view($id = null)
@@ -55,7 +94,11 @@ class GroupsController extends AppController
 
       $arrmenu = array();
       for($k=0; $k<count($Menus); $k++){
-        $arrmenu[] = $Menus[$k]['name_menu'];
+
+        if($Menus[$k]['name_menu'] !== "メニュー" && $Menus[$k]['name_menu'] !== "会社" && $Menus[$k]['name_menu'] !== "工場・営業所"){
+          $arrmenu[] = $Menus[$k]['name_menu'];
+        }
+
       }
       $this->set('arrmenu', $arrmenu);
 
@@ -229,6 +272,11 @@ class GroupsController extends AppController
 
     public function deleteconfirm($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['groupdata'];
+
         $group = $this->Groups->get($id, [
           'contain' => ['Menus']
         ]);

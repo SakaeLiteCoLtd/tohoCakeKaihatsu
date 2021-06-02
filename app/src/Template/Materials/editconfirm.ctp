@@ -27,6 +27,7 @@
 <?= $this->Form->control('maker', array('type'=>'hidden', 'value'=>$this->request->getData('maker'), 'label'=>false)) ?>
 <?= $this->Form->control('type_id', array('type'=>'hidden', 'value'=>$this->request->getData('type_id'), 'label'=>false)) ?>
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <fieldset>

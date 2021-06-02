@@ -28,9 +28,6 @@ echo $this->Html->css('index');
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('name', ['label'=>"会社名"]) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('address', ['label'=>"所在地"]) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('tel', ['label'=>"電話番号"]) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('fax', ['label'=>"FAX"]) ?></th>
                 <th scope="col"><?= $this->Paginator->sort('president', ['label'=>"代表者"]) ?></th>
                 <th scope="col" class="actions"><?= __('') ?></th>
             </tr>
@@ -40,13 +37,9 @@ echo $this->Html->css('index');
             <tr>
                 <td><?= h($i) ?></td>
                 <td><?= h($company->name) ?></td>
-                <td><?= h($company->address) ?></td>
-                <td><?= h($company->tel) ?></td>
-                <td><?= h($company->fax) ?></td>
                 <td><?= h($company->president) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('編集'), ['action' => 'editform', $company->id]) ?>
-                    <?= $this->Html->link(__('削除'), ['action' => 'deleteconfirm', $company->id]) ?>
+                  <?= $this->Html->link(__('詳細'), ['action' => 'detail', $company->id]) ?>
                 </td>
             </tr>
 

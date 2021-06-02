@@ -26,6 +26,10 @@ class htmlproductmenu extends AppController
                           "<br><br>\n".
                           "<font size='4'>　・</font><a href='/products/ichiran' /><font size='4' color=black>製品一覧</font></a>\n".
                           "<br><br>\n".
+                          "<font size='4'>　・</font><a href='/materialSuppliers/addform' /><font size='4' color=black>原料仕入先新規登録</font></a>\n".
+                          "<br><br>\n".
+                          "<font size='4'>　・</font><a href='/materialSuppliers/index' /><font size='4' color=black>原料仕入先一覧</font></a>\n".
+                          "<br><br>\n".
                           "<font size='4'>　・</font><a href='/products/index' /><font size='4' color=black>製品・原料関係メニュートップ</font></a>\n".
                           "<br><br>\n".
                           "<font size='4'>　・</font><a href='/Startmenus/menu' /><font size='4' color=black>総合メニューへ戻る</font></a>\n".

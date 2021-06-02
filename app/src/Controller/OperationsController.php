@@ -2,113 +2,317 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Datasource\ConnectionManager;//トランザクション
+use Cake\Core\Exception\Exception;//トランザクション
+use Cake\Core\Configure;//トランザクション
+use Cake\ORM\TableRegistry;//独立したテーブルを扱う
 
-/**
- * Operations Controller
- *
- * @property \App\Model\Table\OperationsTable $Operations
- *
- * @method \App\Model\Entity\Operation[]|\Cake\Datasource\ResultSetInterface paginate($object = null, array $settings = [])
- */
 class OperationsController extends AppController
 {
 
-    /**
-     * Index method
-     *
-     * @return \Cake\Http\Response|void
-     */
+      public function initialize()
+    {
+     parent::initialize();
+     $this->Factories = TableRegistry::get('Factories');
+    }
+
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Companies', 'Offices']
+            'contain' => ['Factories']
         ];
-        $operations = $this->paginate($this->Operations);
+        $operations = $this->paginate($this->Operations->find()->where(['Operations.delete_flag' => 0]));
 
         $this->set(compact('operations'));
     }
 
-    /**
-     * View method
-     *
-     * @param string|null $id Operation id.
-     * @return \Cake\Http\Response|void
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function view($id = null)
+    public function detail($id = null)
     {
-        $operation = $this->Operations->get($id, [
-            'contain' => ['Companies', 'Offices']
-        ]);
+      $operation = $this->Operations->newEntity();
+      $this->set('operation', $operation);
 
-        $this->set('operation', $operation);
-    }
+      $data = $this->request->getData();
+      if(isset($data["edit"])){
 
-    /**
-     * Add method
-     *
-     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
-        $operation = $this->Operations->newEntity();
-        if ($this->request->is('post')) {
-            $operation = $this->Operations->patchEntity($operation, $this->request->getData());
-            if ($this->Operations->save($operation)) {
-                $this->Flash->success(__('The operation has been saved.'));
+        $id = $data["id"];
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The operation could not be saved. Please, try again.'));
+        if(!isset($_SESSION)){
+          session_start();
         }
-        $companies = $this->Operations->Companies->find('list', ['limit' => 200]);
-        $offices = $this->Operations->Offices->find('list', ['limit' => 200]);
-        $this->set(compact('operation', 'companies', 'offices'));
-    }
+        $_SESSION['operationdata'] = array();
+        $_SESSION['operationdata'] = $id;
 
-    /**
-     * Edit method
-     *
-     * @param string|null $id Operation id.
-     * @return \Cake\Http\Response|null Redirects on successful edit, renders view otherwise.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function edit($id = null)
-    {
-        $operation = $this->Operations->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $operation = $this->Operations->patchEntity($operation, $this->request->getData());
-            if ($this->Operations->save($operation)) {
-                $this->Flash->success(__('The operation has been saved.'));
+        return $this->redirect(['action' => 'editform']);
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The operation could not be saved. Please, try again.'));
+      }elseif(isset($data["delete"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
         }
-        $companies = $this->Operations->Companies->find('list', ['limit' => 200]);
-        $offices = $this->Operations->Offices->find('list', ['limit' => 200]);
-        $this->set(compact('operation', 'companies', 'offices'));
+        $_SESSION['operationdata'] = array();
+        $_SESSION['operationdata'] = $id;
+
+        return $this->redirect(['action' => 'deleteconfirm']);
+
+      }
+      $this->set('id', $id);
+
+      $Operations = $this->Operations->find()->contain(["Factories"])
+      ->where(['Operations.id' => $id])->toArray();
+
+      $factory_name = $Operations[0]["factory"]['name'];
+      $this->set('factory_name', $factory_name);
+
     }
 
-    /**
-     * Delete method
-     *
-     * @param string|null $id Operation id.
-     * @return \Cake\Http\Response|null Redirects to index.
-     * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
-     */
-    public function delete($id = null)
+    public function addform()
     {
-        $this->request->allowMethod(['post', 'delete']);
-        $operation = $this->Operations->get($id);
-        if ($this->Operations->delete($operation)) {
-            $this->Flash->success(__('The operation has been deleted.'));
+      $operation = $this->Operations->newEntity();
+      $this->set('operation', $operation);
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
+    }
+
+    public function addcomfirm()
+    {
+      $operation = $this->Operations->newEntity();
+      $this->set('operation', $operation);
+
+      $data = $this->request->getData();
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+    }
+
+    public function adddo()
+    {
+      $operation = $this->Operations->newEntity();
+      $this->set('operation', $operation);
+
+      $data = $this->request->getData();
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $arrtourokuoperation = array();
+      $arrtourokuoperation = [
+        'factory_id' => $data["factory_id"],
+        'delete_flag' => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        'created_staff' => $staff_id
+      ];
+
+      //新しいデータを登録
+      $Operations = $this->Operations->patchEntity($this->Operations->newEntity(), $arrtourokuoperation);
+      $connection = ConnectionManager::get('default');//トランザクション1
+      // トランザクション開始2
+      $connection->begin();//トランザクション3
+      try {//トランザクション4
+        if ($this->Operations->save($Operations)) {
+
+          $connection->commit();// コミット5
+          $mes = "以下のように登録されました。";
+          $this->set('mes',$mes);
+
         } else {
-            $this->Flash->error(__('The operation could not be deleted. Please, try again.'));
+
+          $this->Flash->error(__('The data could not be saved. Please, try again.'));
+          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+          $mes = "※登録されませんでした";
+          $this->set('mes',$mes);
+
         }
 
-        return $this->redirect(['action' => 'index']);
+      } catch (Exception $e) {//トランザクション7
+      //ロールバック8
+        $connection->rollback();//トランザクション9
+      }//トランザクション10
+
     }
+
+    public function editform($id = null)
+    {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['operationdata'];
+
+      $operation = $this->Operations->get($id, [
+          'contain' => []
+      ]);
+      $this->set(compact('operation'));
+      $this->set('id', $id);
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
+    }
+
+    public function editconfirm()
+    {
+      $operation = $this->Operations->newEntity();
+      $this->set('operation', $operation);
+
+      $data = $this->request->getData();
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+    }
+
+    public function editdo()
+    {
+      $operation = $this->Operations->newEntity();
+      $this->set('operation', $operation);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $data = $this->request->getData();
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $arrupdateoperation = array();
+      $arrupdateoperation = [
+        'factory_id' => $data["factory_id"],
+        'delete_flag' => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        'created_staff' => $staff_id
+      ];
+/*
+      echo "<pre>";
+      print_r($arrupdatedepartment);
+      echo "</pre>";
+*/
+      $Operations = $this->Operations->patchEntity($this->Operations->newEntity(), $arrupdateoperation);
+      $connection = ConnectionManager::get('default');//トランザクション1
+       // トランザクション開始2
+       $connection->begin();//トランザクション3
+       try {//トランザクション4
+         if ($this->Operations->save($Operations)) {
+
+         $this->Operations->updateAll(
+           [ 'delete_flag' => 1,
+             'updated_at' => date('Y-m-d H:i:s'),
+             'updated_staff' => $staff_id],
+           ['id'  => $data['id']]);
+
+         $mes = "※下記のように更新されました";
+         $this->set('mes',$mes);
+         $connection->commit();// コミット5
+
+       } else {
+
+         $mes = "※更新されませんでした";
+         $this->set('mes',$mes);
+         $this->Flash->error(__('The data could not be saved. Please, try again.'));
+         throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+       }
+
+     } catch (Exception $e) {//トランザクション7
+     //ロールバック8
+       $connection->rollback();//トランザクション9
+     }//トランザクション10
+
+    }
+
+    public function deleteconfirm($id = null)
+    {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['operationdata'];
+
+      $operation = $this->Operations->get($id, [
+        'contain' => ['Factories']
+      ]);
+      $this->set(compact('operation'));
+    }
+
+    public function deletedo()
+    {
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $data = $this->request->getData();
+
+      $operation = $this->Operations->get($data["id"], [
+        'contain' => ['Factories']
+      ]);
+      $this->set(compact('operation'));
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $arrdeleteOperation = array();
+      $arrdeleteOperation = [
+        'id' => $data["id"]
+      ];
+/*
+      echo "<pre>";
+      print_r($arrdeletecompany);
+      echo "</pre>";
+*/
+      $Operations = $this->Operations->patchEntity($this->Operations->newEntity(), $arrdeleteOperation);
+      $connection = ConnectionManager::get('default');//トランザクション1
+       // トランザクション開始2
+       $connection->begin();//トランザクション3
+       try {//トランザクション4
+         if ($this->Operations->updateAll(
+           [ 'delete_flag' => 1,
+             'updated_at' => date('Y-m-d H:i:s'),
+             'updated_staff' => $staff_id],
+           ['id'  => $arrdeleteOperation['id']]
+         )){
+
+         $mes = "※以下のデータが削除されました。";
+         $this->set('mes',$mes);
+         $connection->commit();// コミット5
+
+       } else {
+
+         $mes = "※削除されませんでした";
+         $this->set('mes',$mes);
+         $this->Flash->error(__('The data could not be saved. Please, try again.'));
+         throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+       }
+
+     } catch (Exception $e) {//トランザクション7
+     //ロールバック8
+       $connection->rollback();//トランザクション9
+     }//トランザクション10
+
+    }
+
 }

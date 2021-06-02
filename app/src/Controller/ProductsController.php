@@ -23,9 +23,62 @@ class ProductsController extends AppController
         $this->paginate = [
             'contain' => ['Customers']
         ];
-        $products = $this->paginate($this->Products);
+        $products = $this->paginate($this->Products->find()->where(['Products.delete_flag' => 0]));
 
         $this->set(compact('products'));
+    }
+
+    public function detail($id = null)
+    {
+      $products = $this->Products->newEntity();
+      $this->set('products', $products);
+
+      $data = $this->request->getData();
+      if(isset($data["edit"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['productdata'] = array();
+        $_SESSION['productdata'] = $id;
+
+        return $this->redirect(['action' => 'editform']);
+
+      }elseif(isset($data["delete"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['productdata'] = array();
+        $_SESSION['productdata'] = $id;
+
+        return $this->redirect(['action' => 'deleteconfirm']);
+
+      }
+      $this->set('id', $id);
+
+      $Products = $this->Products->find()->contain(["Factories", "Customers"])
+      ->where(['Products.id' => $id])->toArray();
+/*
+      echo "<pre>";
+      print_r($Products);
+      echo "</pre>";
+*/
+      $factory_name = $Products[0]["factory"]['name'];
+      $this->set('factory_name', $factory_name);
+      $customer_name = $Products[0]["customer"]['name'];
+      $this->set('customer_name', $customer_name);
+      $product_code = $Products[0]["product_code"];
+      $this->set('product_code', $product_code);
+      $customer_product_code = $Products[0]["customer_product_code"];
+      $this->set('customer_product_code', $customer_product_code);
+      $name = $Products[0]["name"];
+      $this->set('name', $name);
+
     }
 
     public function index()
@@ -175,6 +228,11 @@ class ProductsController extends AppController
 
     public function editform($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['productdata'];
+
       $product = $this->Products->get($id, [
         'contain' => ['Customers']
       ]);
@@ -283,6 +341,11 @@ class ProductsController extends AppController
 
     public function deleteconfirm($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['productdata'];
+
         $product = $this->Products->get($id, [
           'contain' => ['Customers', 'PriceProducts', 'ProductMaterials']
         ]);

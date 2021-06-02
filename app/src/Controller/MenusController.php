@@ -17,6 +17,47 @@ class MenusController extends AppController
         $this->set(compact('menus'));
     }
 
+    public function detail($id = null)
+    {
+      $menu = $this->Menus->newEntity();
+      $this->set('menu', $menu);
+
+      $data = $this->request->getData();
+      if(isset($data["edit"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['menudata'] = array();
+        $_SESSION['menudata'] = $id;
+
+        return $this->redirect(['action' => 'editform']);
+
+      }elseif(isset($data["delete"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['menudata'] = array();
+        $_SESSION['menudata'] = $id;
+
+        return $this->redirect(['action' => 'deleteconfirm']);
+
+      }
+      $this->set('id', $id);
+
+      $Menus = $this->Menus->find()
+      ->where(['Menus.id' => $id])->toArray();
+
+      $name_menu = $Menus[0]["name_menu"];
+      $this->set('name_menu', $name_menu);
+
+    }
+
     public function view($id = null)
     {
         $menu = $this->Menus->get($id, [
@@ -88,6 +129,11 @@ class MenusController extends AppController
 
     public function editform($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['menudata'];
+
         $menu = $this->Menus->get($id, [
             'contain' => []
         ]);
@@ -160,6 +206,11 @@ class MenusController extends AppController
 
     public function deleteconfirm($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['menudata'];
+
         $menu = $this->Menus->get($id, [
           'contain' => []
         ]);

@@ -17,6 +17,7 @@
 <?= $this->Form->create($Groups, ['url' => ['action' => 'addcomfirm']]) ?>
 
 <?= $this->Form->control('name_group', array('type'=>'hidden', 'value'=>$this->request->getData('name_group'), 'label'=>false)) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
 

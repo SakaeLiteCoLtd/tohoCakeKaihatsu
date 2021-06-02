@@ -37,8 +37,7 @@ echo $this->Html->css('index');
               <td><?= h($i) ?></td>
                 <td><?= h($menu->name_menu) ?></td>
                 <td class="actions">
-                  <?= $this->Html->link(__('編集'), ['action' => 'editform', $menu->id]) ?>
-                  <?= $this->Html->link(__('削除'), ['action' => 'deleteconfirm', $menu->id]) ?>
+                  <?= $this->Html->link(__('詳細'), ['action' => 'detail', $menu->id]) ?>
                 </td>
             </tr>
             <?php

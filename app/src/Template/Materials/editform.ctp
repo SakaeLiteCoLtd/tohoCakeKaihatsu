@@ -19,6 +19,7 @@
 <form method="post" action="/materials/editconfirm">
 
 <?= $this->Form->create($material, ['url' => ['action' => 'editconfirm']]) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
 

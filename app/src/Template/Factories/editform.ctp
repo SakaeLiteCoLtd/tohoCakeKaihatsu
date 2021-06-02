@@ -16,10 +16,11 @@
 
 <form method="post" action="/Factories/editconfirm">
 
-<?= $this->Form->create($office, ['url' => ['action' => 'editconfirm']]) ?>
+<?= $this->Form->create($factory, ['url' => ['action' => 'editconfirm']]) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
-    <?= $this->Form->create($office) ?>
+    <?= $this->Form->create($factory) ?>
     <fieldset>
         <legend><strong style="font-size: 15pt; color:red"><?= __('工場・営業所情報編集') ?></strong></legend>
         <br>

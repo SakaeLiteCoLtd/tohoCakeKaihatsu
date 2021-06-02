@@ -17,6 +17,7 @@
 <form method="post" action="/groups/index">
 
 <?= $this->Form->create($group, ['url' => ['action' => 'index']]) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <?= $this->Form->create($group) ?>

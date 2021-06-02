@@ -18,8 +18,7 @@ class OperationsFixture extends TestFixture
     // @codingStandardsIgnoreStart
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
-        'company_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'office_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'factory_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'delete_flag' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'created_at' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'created_staff' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
@@ -45,12 +44,11 @@ class OperationsFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'company_id' => 1,
-                'office_id' => 1,
+                'factory_id' => 1,
                 'delete_flag' => 1,
-                'created_at' => '2021-05-13 09:23:51',
+                'created_at' => '2021-06-02 13:44:27',
                 'created_staff' => 1,
-                'updated_at' => '2021-05-13 09:23:51',
+                'updated_at' => '2021-06-02 13:44:27',
                 'updated_staff' => 1
             ],
         ];

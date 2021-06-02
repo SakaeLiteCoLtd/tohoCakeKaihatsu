@@ -17,6 +17,7 @@
 <form method="post" action="/products/index">
 
 <?= $this->Form->create($product, ['url' => ['action' => 'index']]) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <?= $this->Form->create($product) ?>
@@ -34,7 +35,7 @@
         <table>
           <tr>
             <td width="280"><strong>社内品番</strong></td>
-            <td width="280"><strong>品番（顧客）</strong></td>
+            <td width="280"><strong>顧客品番</strong></td>
         	</tr>
           <tr>
             <td><?= h($product['product_code']) ?></td>

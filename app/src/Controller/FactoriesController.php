@@ -28,6 +28,55 @@ class FactoriesController extends AppController
         $this->set(compact('Factories'));
     }
 
+    public function detail($id = null)
+    {
+      $factory = $this->Factories->newEntity();
+      $this->set('factory', $factory);
+
+      $data = $this->request->getData();
+      if(isset($data["edit"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['factorydata'] = array();
+        $_SESSION['factorydata'] = $id;
+
+        return $this->redirect(['action' => 'editform']);
+
+      }elseif(isset($data["delete"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['factorydata'] = array();
+        $_SESSION['factorydata'] = $id;
+
+        return $this->redirect(['action' => 'deleteconfirm']);
+
+      }
+      $this->set('id', $id);
+
+      $Factories = $this->Factories->find()->contain(["Companies", "Staffs"])
+      ->where(['Factories.id' => $id])->toArray();
+/*
+      echo "<pre>";
+      print_r($Products);
+      echo "</pre>";
+*/
+      $Company_name = $Factories[0]["company"]['name'];
+      $this->set('Company_name', $Company_name);
+      $staff_name = $Factories[0]["staff"]['name'];
+      $this->set('staff_name', $staff_name);
+      $name = $Factories[0]["name"];
+      $this->set('name', $name);
+
+    }
+
     public function view($id = null)
     {
         $factory = $this->Factories->get($id, [
@@ -144,6 +193,11 @@ class FactoriesController extends AppController
 
     public function editform($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['factorydata'];
+
         $factory = $this->Factories->get($id, [
             'contain' => []
         ]);
@@ -157,6 +211,15 @@ class FactoriesController extends AppController
   				$arrCompanies[] = array($value->id=>$value->name);
   			}
         $this->set('arrCompanies', $arrCompanies);
+
+        $Staffs = $this->Staffs->find()
+        ->where(['delete_flag' => 0])->toArray();
+        $arrStaffs = array();
+  			foreach ($Staffs as $value) {
+  				$arrStaffs[] = array($value->id=>$value->name);
+  			}
+        $this->set('arrStaffs', $arrStaffs);
+
     }
 
     public function editconfirm()
@@ -172,12 +235,9 @@ class FactoriesController extends AppController
       $this->set('Company_name', $Company_name);
 
       $Staffs = $this->Staffs->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrStaffs = array();
-      foreach ($Staffs as $value) {
-        $arrStaffs[] = array($value->id=>$value->name);
-      }
-      $this->set('arrStaffs', $arrStaffs);
+      ->where(['id' => $data['staff_id']])->toArray();
+      $staff_name = $Staffs[0]['name'];
+      $this->set('staff_name', $staff_name);
     }
 
     public function editdo()
@@ -196,12 +256,9 @@ class FactoriesController extends AppController
       $this->set('Company_name', $Company_name);
 
       $Staffs = $this->Staffs->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrStaffs = array();
-      foreach ($Staffs as $value) {
-        $arrStaffs[] = array($value->id=>$value->name);
-      }
-      $this->set('arrStaffs', $arrStaffs);
+      ->where(['id' => $data['staff_id']])->toArray();
+      $staff_name = $Staffs[0]['name'];
+      $this->set('staff_name', $staff_name);
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
@@ -209,6 +266,7 @@ class FactoriesController extends AppController
       $arrupdateFactories = [
         'name' => $data["name"],
         'company_id' => $data["company_id"],
+        'staff_id' => $data["staff_id"],
         'delete_flag' => 0,
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
@@ -253,6 +311,11 @@ class FactoriesController extends AppController
 
     public function deleteconfirm($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['factorydata'];
+
         $factory = $this->Factories->get($id, [
           'contain' => ['Companies', 'Staffs']
         ]);

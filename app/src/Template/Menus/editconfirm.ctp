@@ -20,6 +20,7 @@
 
 <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$this->request->getData('id'), 'label'=>false)) ?>
 <?= $this->Form->control('name_menu', array('type'=>'hidden', 'value'=>$this->request->getData('name_menu'), 'label'=>false)) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <?= $this->Form->create($menu) ?>

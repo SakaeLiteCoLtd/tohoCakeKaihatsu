@@ -26,25 +26,24 @@ echo $this->Html->css('index');
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('product_code') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('customer_product_code') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('custmoer_id') ?></th>
+              <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('product_code', ['label'=>"社内品番"]) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('customer_product_code', ['label'=>"顧客品番"]) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>"品名"]) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('custmoer_id', ['label'=>"顧客"]) ?></th>
                 <th scope="col" class="actions"><?= __('') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($products as $product): ?>
             <tr>
-                <td><?= $this->Number->format($product->id) ?></td>
+              <td><?= h($i) ?></td>
                 <td><?= h($product->product_code) ?></td>
                 <td><?= h($product->customer_product_code) ?></td>
                 <td><?= h($product->name) ?></td>
                 <td><?= h($product->customer->name) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('編集'), ['action' => 'editform', $product->id]) ?>
-                    <?= $this->Html->link(__('削除'), ['action' => 'deleteconfirm', $product->id]) ?>
+                  <?= $this->Html->link(__('詳細'), ['action' => 'detail', $product->id]) ?>
                 </td>
             </tr>
 

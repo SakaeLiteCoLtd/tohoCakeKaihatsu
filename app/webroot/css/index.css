@@ -852,7 +852,7 @@ table thead {
 
 table tr {
     border-bottom: 1px solid #ebebec;
-     height:60;
+  /*   height:60;*/
 }
 
 table thead tr {

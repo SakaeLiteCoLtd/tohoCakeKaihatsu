@@ -23,9 +23,64 @@ class MaterialsController extends AppController
         $this->paginate = [
             'contain' => ['MaterialTypes', 'Factories']
         ];
-        $materials = $this->paginate($this->Materials);
+        $materials = $this->paginate($this->Materials->find()->where(['Materials.delete_flag' => 0]));
 
         $this->set(compact('materials'));
+    }
+
+    public function detail($id = null)
+    {
+      $materials = $this->Materials->newEntity();
+      $this->set('materials', $materials);
+
+      $data = $this->request->getData();
+      if(isset($data["edit"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['materialdata'] = array();
+        $_SESSION['materialdata'] = $id;
+
+        return $this->redirect(['action' => 'editform']);
+
+      }elseif(isset($data["delete"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['materialdata'] = array();
+        $_SESSION['materialdata'] = $id;
+
+        return $this->redirect(['action' => 'deleteconfirm']);
+
+      }
+      $this->set('id', $id);
+
+      $Materials = $this->Materials->find()->contain(["Factories", "MaterialTypes"])
+      ->where(['Materials.id' => $id])->toArray();
+/*
+      echo "<pre>";
+      print_r($Materials);
+      echo "</pre>";
+*/
+      $factory_name = $Materials[0]["factory"]['name'];
+      $this->set('factory_name', $factory_name);
+      $type_name = $Materials[0]["material_type"]['type'];
+      $this->set('type_name', $type_name);
+      $material_code = $Materials[0]["material_code"];
+      $this->set('material_code', $material_code);
+      $grade = $Materials[0]["grade"];
+      $this->set('grade', $grade);
+      $color = $Materials[0]["color"];
+      $this->set('color', $color);
+      $maker = $Materials[0]["maker"];
+      $this->set('maker', $maker);
+
     }
 
     public function view($id = null)
@@ -166,6 +221,11 @@ class MaterialsController extends AppController
 
     public function editform($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['materialdata'];
+
       $material = $this->Materials->get($id, [
         'contain' => ['MaterialTypes']
       ]);
@@ -305,6 +365,11 @@ class MaterialsController extends AppController
 
     public function deleteconfirm($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['materialdata'];
+
         $material = $this->Materials->get($id, [
           'contain' => ['MaterialTypes']
         ]);

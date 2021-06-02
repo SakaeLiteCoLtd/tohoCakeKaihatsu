@@ -1,22 +1,25 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlmaterialSuppliermenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlproductmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlmaterialSuppliermenu = new htmlmaterialSuppliermenu();
- $htmlmaterialSupplier = $htmlmaterialSuppliermenu->materialSuppliersmenus();
+ $htmlproductmenu = new htmlproductmenu();
+ $htmlproduct = $htmlproductmenu->productmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
+
+ $i = 1;
 ?>
 <?php
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlmaterialSupplier;
+     echo $htmlproduct;
 ?>
 
 <form method="post" action="/materialSuppliers/editconfirm">
 
 <?= $this->Form->create($materialSupplier, ['url' => ['action' => 'editconfirm']]) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
 
@@ -42,7 +45,7 @@
         <table>
           <tr>
             <td width="280"><strong>原料仕入先名</strong></td>
-            <td width="280"><strong>工場・営業所名</strong></td>
+            <td width="280"><strong>支店名</strong></td>
         	</tr>
           <tr>
             <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'autofocus'=>true, 'required'=>true)) ?></td>

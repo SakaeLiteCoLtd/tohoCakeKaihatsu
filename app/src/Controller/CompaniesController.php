@@ -51,6 +51,55 @@ class CompaniesController extends AppController
 */
     }
 
+    public function detail($id = null)
+    {
+      $companies = $this->Companies->newEntity();
+      $this->set('companies', $companies);
+
+      $data = $this->request->getData();
+      if(isset($data["edit"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['companydata'] = array();
+        $_SESSION['companydata'] = $id;
+
+        return $this->redirect(['action' => 'editform']);
+
+      }elseif(isset($data["delete"])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['companydata'] = array();
+        $_SESSION['companydata'] = $id;
+
+        return $this->redirect(['action' => 'deleteconfirm']);
+
+      }
+      $this->set('id', $id);
+
+      $Companies = $this->Companies->find()
+      ->where(['id' => $id])->toArray();
+
+      $name = $Companies[0]["name"];
+      $this->set('name', $name);
+      $address = $Companies[0]["address"];
+      $this->set('address', $address);
+      $tel = $Companies[0]["tel"];
+      $this->set('tel', $tel);
+      $fax = $Companies[0]["fax"];
+      $this->set('fax', $fax);
+      $president = $Companies[0]["president"];
+      $this->set('president', $president);
+
+    }
+
     public function view($id = null)
     {
         $company = $this->Companies->get($id, [
@@ -130,6 +179,11 @@ class CompaniesController extends AppController
 
     public function editform($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['companydata'];
+
         $company = $this->Companies->get($id, [
             'contain' => []
         ]);
@@ -206,6 +260,11 @@ class CompaniesController extends AppController
 
     public function deleteconfirm($id = null)
     {
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $id = $_SESSION['companydata'];
+
         $company = $this->Companies->get($id, [
             'contain' => []
         ]);

@@ -17,6 +17,7 @@
 <form method="post" action="/groups/deletedo">
 
 <?= $this->Form->create($group, ['url' => ['action' => 'deletedo']]) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <?= $this->Form->create($group) ?>
@@ -45,7 +46,8 @@
         <table align="center">
           <tbody class='sample non-sample'>
             <tr align="center"><td style="border:none"><strong style="font-size: 13pt; color:red">
-              <?= __('※上のグループが削除されます。削除後は該当ユーザーのグループを登録しなおしてください。') ?>
+              <?= __('※上のグループが削除されます。削除後は該当ユーザーのグループを登録しなおしてください。　') ?><br>
+              <?= __('（登録しなおされない場合は、該当ユーザーのグループは削除されたグループのままになります）') ?>
             </strong></td></tr>
           </tbody>
         </table>

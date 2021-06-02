@@ -25,7 +25,6 @@ class OperationsTableTest extends TestCase
      */
     public $fixtures = [
         'app.Operations',
-        'app.Companies',
         'app.Offices'
     ];
 

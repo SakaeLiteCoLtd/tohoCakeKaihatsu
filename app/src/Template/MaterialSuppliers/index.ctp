@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlmaterialSuppliermenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlproductmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlmaterialSuppliermenu = new htmlmaterialSuppliermenu();
- $htmlmaterialSupplier = $htmlmaterialSuppliermenu->materialSuppliersmenus();
+ $htmlproductmenu = new htmlproductmenu();
+ $htmlproduct = $htmlproductmenu->productmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -13,7 +13,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlmaterialSupplier;
+     echo $htmlproduct;
 ?>
 
 <?php
@@ -27,13 +27,8 @@ echo $this->Html->css('index');
         <thead>
             <tr>
               <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
-              <th scope="col"><?= $this->Paginator->sort('factory_id', ['label'=>"工場・営業所名"]) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('office') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('department') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('address') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('tel') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('fax') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>"会社名"]) ?></th>
+                <th scope="col"><?= $this->Paginator->sort('office', ['label'=>"支店名"]) ?></th>
                 <th scope="col" class="actions"><?= __('') ?></th>
             </tr>
         </thead>
@@ -41,17 +36,10 @@ echo $this->Html->css('index');
             <?php foreach ($materialSuppliers as $materialSupplier): ?>
             <tr>
               <td><?= h($i) ?></td>
-              <td><?= $materialSupplier->has('factory') ? $this->Html->link($materialSupplier->factory->name,
-               ['controller' => 'Factories', 'action' => 'view', $materialSupplier->factory->id]) : '' ?></td>
                 <td><?= h($materialSupplier->name) ?></td>
                 <td><?= h($materialSupplier->office) ?></td>
-                <td><?= h($materialSupplier->department) ?></td>
-                <td><?= h($materialSupplier->address) ?></td>
-                <td><?= h($materialSupplier->tel) ?></td>
-                <td><?= h($materialSupplier->fax) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('編集'), ['action' => 'editform', $materialSupplier->id]) ?>
-                    <?= $this->Html->link(__('削除'), ['action' => 'deleteconfirm', $materialSupplier->id]) ?>
+                  <?= $this->Html->link(__('詳細'), ['action' => 'detail', $materialSupplier->id]) ?>
                 </td>
             </tr>
 

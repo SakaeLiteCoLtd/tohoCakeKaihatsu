@@ -1,50 +1,48 @@
+<?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
-/**
- * @var \App\View\AppView $this
- * @var \App\Model\Entity\Operation[]|\Cake\Collection\CollectionInterface $operations
- */
+ use App\myClass\menulists\htmloperationmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
+ $htmloperationmenu = new htmloperationmenu();
+ $htmloperationmenu = $htmloperationmenu->Operationmenus();
+ $htmlloginmenu = new htmlloginmenu();
+ $htmllogin = $htmlloginmenu->Loginmenu();
+
+ $i = 1;
 ?>
-<nav class="large-3 medium-4 columns" id="actions-sidebar">
-    <ul class="side-nav">
-        <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Operation'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Companies'), ['controller' => 'Companies', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Company'), ['controller' => 'Companies', 'action' => 'add']) ?></li>
-    </ul>
-</nav>
-<div class="operations index large-9 medium-8 columns content">
-    <h3><?= __('Operations') ?></h3>
+<?php
+     echo $htmllogin;
+?>
+<?php
+     echo $htmloperationmenu;
+?>
+
+<?php
+$this->layout = false;
+echo $this->Html->css('index');
+?>
+
+<div class="occupations index large-9 medium-8 columns content" style="width:70%">
+  <h2><font color=red><?= __('運用代表一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th scope="col"><?= $this->Paginator->sort('id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('company_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('office_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('delete_flag') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created_at') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('created_staff') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('updated_at') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('updated_staff') ?></th>
-                <th scope="col" class="actions"><?= __('Actions') ?></th>
+              <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('office_id', ['label'=>"工場・営業所名"]) ?></th>
+                <th scope="col" class="actions"><?= __('') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($operations as $operation): ?>
             <tr>
-                <td><?= $this->Number->format($operation->id) ?></td>
-                <td><?= $operation->has('company') ? $this->Html->link($operation->company->name, ['controller' => 'Companies', 'action' => 'view', $operation->company->id]) : '' ?></td>
-                <td><?= $this->Number->format($operation->office_id) ?></td>
-                <td><?= $this->Number->format($operation->delete_flag) ?></td>
-                <td><?= h($operation->created_at) ?></td>
-                <td><?= $this->Number->format($operation->created_staff) ?></td>
-                <td><?= h($operation->updated_at) ?></td>
-                <td><?= $this->Number->format($operation->updated_staff) ?></td>
+              <td><?= h($i) ?></td>
+              <td><?= h($operation->factory->name) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $operation->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $operation->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $operation->id], ['confirm' => __('Are you sure you want to delete # {0}?', $operation->id)]) ?>
+                  <?= $this->Html->link(__('詳細'), ['action' => 'detail', $operation->id]) ?>
                 </td>
             </tr>
+            <?php
+            $i = $i + 1;
+            ?>
             <?php endforeach; ?>
         </tbody>
     </table>

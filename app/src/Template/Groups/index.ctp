@@ -29,7 +29,6 @@ echo $this->Html->css('index');
           <tr>
             <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
             <th scope="col"><?= $this->Paginator->sort('name_group', ['label'=>"グループ名"]) ?></th>
-            <th scope="col"><?= $this->Paginator->sort('menu_id', ['label'=>"取り扱い可能メニュー"]) ?></th>
             <th scope="col" class="actions"><?= __('') ?></th>
           </tr>
         </thead>
@@ -38,9 +37,8 @@ echo $this->Html->css('index');
             <tr>
               <td><?= h($i) ?></td>
                 <td><?= h($group->name_group) ?></td>
-                <td><?= $group->has('menu') ? $this->Html->link($group->menu->name_menu, ['controller' => 'Menus', 'action' => 'view', $group->menu->id]) : '' ?></td>
                 <td class="actions">
-                  <?= $this->Html->link(__('削除'), ['action' => 'deleteconfirm', $group->id]) ?>
+                  <?= $this->Html->link(__('詳細'), ['action' => 'detail', $group->name_group]) ?>
                 </td>
             </tr>
             <?php

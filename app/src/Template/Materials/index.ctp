@@ -32,7 +32,6 @@ echo $this->Html->css('index');
               <th scope="col"><?= $this->Paginator->sort('grade', ['label'=>"グレード"]) ?></th>
               <th scope="col"><?= $this->Paginator->sort('color', ['label'=>"色"]) ?></th>
               <th scope="col"><?= $this->Paginator->sort('maker', ['label'=>"メーカー"]) ?></th>
-              <th scope="col"><?= $this->Paginator->sort('type_id', ['label'=>"原料種"]) ?></th>
                 <th scope="col" class="actions"><?= __('') ?></th>
             </tr>
         </thead>
@@ -46,12 +45,8 @@ echo $this->Html->css('index');
                 <td><?= h($material->grade) ?></td>
                 <td><?= h($material->color) ?></td>
                 <td><?= h($material->maker) ?></td>
-                <td><?= $material->has('material_type') ? $this->Html->link($material->material_type->type,
-                 ['controller' => 'MaterialTypes', 'action' => 'view', $material->material_type->id]) : '' ?></td>
-
                 <td class="actions">
-                    <?= $this->Html->link(__('編集'), ['action' => 'editform', $material->id]) ?>
-                    <?= $this->Html->link(__('削除'), ['action' => 'deleteconfirm', $material->id]) ?>
+                  <?= $this->Html->link(__('詳細'), ['action' => 'detail', $material->id]) ?>
                 </td>
             </tr>
 

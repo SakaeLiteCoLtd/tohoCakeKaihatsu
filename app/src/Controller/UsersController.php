@@ -294,11 +294,37 @@ class UsersController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
+
       echo "<pre>";
       print_r($arrupdateuser);
       echo "</pre>";
-*/
+
+      $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
+      ->where(['Groups.name_group' => $data["group_name"], 'Groups.delete_flag' => 0])->order(["menu_id"=>"ASC"])->toArray();
+
+      $arrMenuids = array();
+      for($k=0; $k<count($Groups); $k++){
+
+        $StaffAbilities = $this->StaffAbilities->find()
+        ->where(['staff_id' => $staff_id, 'menu_id' => $Groups[$k]['menu_id'], 'delete_flag' => 0])->toArray();
+
+        if(count($StaffAbilities) < 1){
+          $arrMenuids[] = array(
+            'staff_id' => $staff_id,
+            'menu_id' => $Groups[$k]['menu_id'],
+            'delete_flag' => 0,
+            'created_at' => date("Y-m-d H:i:s"),
+            'created_staff' => $staff_id
+          );
+        }
+
+      }
+
+      echo "<pre>";
+      print_r($arrMenuids);
+      echo "</pre>";
+
+/*
       $Users = $this->Users->patchEntity($this->Users->newEntity(), $arrupdateuser);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -329,7 +355,7 @@ class UsersController extends AppController
      //ロールバック8
        $connection->rollback();//トランザクション9
      }//トランザクション10
-
+*/
     }
 
     public function deleteconfirm($id = null)

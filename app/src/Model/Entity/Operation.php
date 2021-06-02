@@ -7,15 +7,13 @@ use Cake\ORM\Entity;
  * Operation Entity
  *
  * @property int $id
- * @property int $company_id
- * @property int $office_id
+ * @property int $factory_id
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at
  * @property int $created_staff
  * @property \Cake\I18n\FrozenTime|null $updated_at
  * @property int|null $updated_staff
  *
- * @property \App\Model\Entity\Company $company
  * @property \App\Model\Entity\Office $office
  */
 class Operation extends Entity
@@ -31,14 +29,12 @@ class Operation extends Entity
      * @var array
      */
     protected $_accessible = [
-        'company_id' => true,
-        'office_id' => true,
+        'factory_id' => true,
         'delete_flag' => true,
         'created_at' => true,
         'created_staff' => true,
         'updated_at' => true,
         'updated_staff' => true,
-        'company' => true,
         'office' => true
     ];
 }

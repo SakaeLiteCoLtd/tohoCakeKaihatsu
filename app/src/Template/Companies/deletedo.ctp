@@ -17,6 +17,7 @@
 <form method="post" action="/companies/index">
 
 <?= $this->Form->create($company, ['url' => ['action' => 'index']]) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <?= $this->Form->create($company) ?>

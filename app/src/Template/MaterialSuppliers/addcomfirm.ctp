@@ -1,17 +1,19 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlmaterialSuppliermenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlproductmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlmaterialSuppliermenu = new htmlmaterialSuppliermenu();
- $htmlmaterialSupplier = $htmlmaterialSuppliermenu->materialSuppliersmenus();
+ $htmlproductmenu = new htmlproductmenu();
+ $htmlproduct = $htmlproductmenu->productmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
+
+ $i = 1;
 ?>
 <?php
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlmaterialSupplier;
+     echo $htmlproduct;
 ?>
 
 <?= $this->Form->create($materialSupplier, ['url' => ['action' => 'adddo']]) ?>
@@ -23,6 +25,7 @@
 <?= $this->Form->control('fax', array('type'=>'hidden', 'value'=>$this->request->getData('fax'), 'label'=>false)) ?>
 <?= $this->Form->control('address', array('type'=>'hidden', 'value'=>$this->request->getData('address'), 'label'=>false)) ?>
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns" style="width:70%">
     <?= $this->Form->create($materialSupplier) ?>
@@ -47,7 +50,7 @@
         <table>
           <tr>
             <td width="280"><strong>原料仕入先名</strong></td>
-            <td width="280"><strong>工場・営業所名</strong></td>
+            <td width="280"><strong>支店名</strong></td>
         	</tr>
           <tr>
             <td><?= h($this->request->getData('name')) ?></td>

@@ -9,8 +9,7 @@ use Cake\Validation\Validator;
 /**
  * Operations Model
  *
- * @property \App\Model\Table\CompaniesTable|\Cake\ORM\Association\BelongsTo $Companies
- * @property \App\Model\Table\OfficesTable|\Cake\ORM\Association\BelongsTo $Offices
+ * @property |\Cake\ORM\Association\BelongsTo $Factories
  *
  * @method \App\Model\Entity\Operation get($primaryKey, $options = [])
  * @method \App\Model\Entity\Operation newEntity($data = null, array $options = [])
@@ -38,12 +37,8 @@ class OperationsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Companies', [
-            'foreignKey' => 'company_id',
-            'joinType' => 'INNER'
-        ]);
-        $this->belongsTo('Offices', [
-            'foreignKey' => 'office_id',
+        $this->belongsTo('Factories', [
+            'foreignKey' => 'factory_id',
             'joinType' => 'INNER'
         ]);
     }
@@ -95,8 +90,7 @@ class OperationsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['company_id'], 'Companies'));
-        $rules->add($rules->existsIn(['office_id'], 'Offices'));
+        $rules->add($rules->existsIn(['factory_id'], 'Factories'));
 
         return $rules;
     }
