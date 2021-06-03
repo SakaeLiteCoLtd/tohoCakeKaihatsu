@@ -14,6 +14,32 @@ class OccupationsController extends AppController
     {
      parent::initialize();
      $this->Factories = TableRegistry::get('Factories');
+     $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
+     $this->Groups = TableRegistry::get('Groups');
+
+     $session = $this->request->getSession();
+     $datasession = $session->read();
+
+     if(!isset($datasession['Auth']['User'])){//そもそもログインしていない場合
+
+       return $this->redirect($this->Auth->logout());
+
+     }
+
+     if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
+
+       $Groups = $this->Groups->find()->contain(["Menus"])
+       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "職種", 'Groups.delete_flag' => 0])
+       ->toArray();
+
+       if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
+
+         return $this->redirect($this->Auth->logout());
+
+       }
+
+     }
+
     }
 
     public function index()
@@ -270,7 +296,7 @@ class OccupationsController extends AppController
       $_SESSION = $session->read();
 
       $id = $_SESSION['occupationdata'];
-      
+
       $occupation = $this->Occupations->get($id, [
         'contain' => ['Factories']
       ]);

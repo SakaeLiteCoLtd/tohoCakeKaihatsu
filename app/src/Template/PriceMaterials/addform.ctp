@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlpriceMaterialmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlpriceProductmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlpriceMaterialmenu = new htmlpriceMaterialmenu();
- $htmlpriceMaterial = $htmlpriceMaterialmenu->priceMaterialsmenus();
+ $htmlpriceProductmenu = new htmlpriceProductmenu();
+ $htmlpriceProduct = $htmlpriceProductmenu->priceProductsmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 ?>
@@ -11,10 +11,11 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlpriceMaterial;
+     echo $htmlpriceProduct;
 ?>
 
 <?= $this->Form->create($priceMaterial, ['url' => ['action' => 'addcomfirm']]) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns">
 
@@ -48,7 +49,7 @@
         <td width="270"><strong>取引終了日</strong></td>
       </tr>
       <tr>
-        <td><?= $this->Form->input("start_deal", array('type' => 'date', 'monthNames' => false, 'label'=>false)); ?></td>
+        <td><?= $this->Form->input("start_deal", array('type' => 'date', 'minYear' => date('Y') - 70, 'monthNames' => false, 'label'=>false)); ?></td>
         <td><?= $this->Form->input("finish_deal", array('type' => 'date', 'monthNames' => false, 'label'=>false, 'empty' => true)); ?></td>
       </tr>
     </table>

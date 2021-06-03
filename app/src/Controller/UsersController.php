@@ -15,35 +15,36 @@ class UsersController extends AppController
     public function initialize()
   {
    parent::initialize();
-   $this->Groups = TableRegistry::get('Groups');
    $this->Staffs = TableRegistry::get('Staffs');
-   $this->Menus = TableRegistry::get('Menus');
    $this->StaffAbilities = TableRegistry::get('StaffAbilities');
+   $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
+   $this->Groups = TableRegistry::get('Groups');
+
+   $session = $this->request->getSession();
+   $datasession = $session->read();
+
+   if(!isset($datasession['Auth']['User'])){//そもそもログインしていない場合
+
+     return $this->redirect($this->Auth->logout());
+
+   }
+
+   if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
+
+     $Groups = $this->Groups->find()->contain(["Menus"])
+     ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "ユーザー", 'Groups.delete_flag' => 0])
+     ->toArray();
+
+     if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
+
+       return $this->redirect($this->Auth->logout());
+
+     }
+
+   }
+
   }
-/*
-  public function login()
-  {
-    $Users = $this->Users->newEntity();
-    $this->set('Users',$Users);
 
-    if ($this->request->is('post')) {
-      $user = $this->Auth->identify();
-
-      if ($user) {
-        $this->Auth->setUser($user);
-        return $this->redirect($this->Auth->redirectUrl());
-      //  return $this->redirect(['action' => 'menu']);
-      }
-      $this->Flash->error(__('ユーザ名もしくはパスワードが間違っています'));
-    }
-
-  }
-
-  public function logout()
-  {
-    return $this->redirect($this->Auth->logout());
-  }
-*/
     public function index()
     {
         $this->paginate = [

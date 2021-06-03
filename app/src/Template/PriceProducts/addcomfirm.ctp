@@ -21,6 +21,7 @@
 <?= $this->Form->control('price', array('type'=>'hidden', 'value'=>$this->request->getData('price'), 'label'=>false)) ?>
 <?= $this->Form->control('start_deal', array('type'=>'hidden', 'value'=>$start_deal, 'label'=>false)) ?>
 <?= $this->Form->control('finish_deal', array('type'=>'hidden', 'value'=>$finish_deal, 'label'=>false)) ?>
+<br><br><br>
 
 <nav class="large-3 medium-4 columns">
     <fieldset>

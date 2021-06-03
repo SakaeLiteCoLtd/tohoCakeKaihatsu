@@ -16,8 +16,6 @@ class StartmenusController extends AppController
      $this->Menus = TableRegistry::get('Menus');
      $this->Groups = TableRegistry::get('Groups');
      $this->LoginStaffs = TableRegistry::get('LoginStaffs');
-
-     //loginをチェックしてlogoutしていたらログイン画面へ移動する
     }
 
     public function login()
@@ -65,7 +63,8 @@ class StartmenusController extends AppController
       if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合
 
         $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
-        ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Groups.delete_flag' => 0])->order(["menu_id"=>"ASC"])->toArray();
+        ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Groups.delete_flag' => 0])
+        ->order(["menu_id"=>"ASC"])->toArray();
 
       }else{//スーパーユーザーの場合（全メニュー表示）
 
@@ -146,6 +145,11 @@ class StartmenusController extends AppController
 
           $arrMenus[] = $Groups[$k]['menu']['name_menu'];
           $arrController[] = "operations";
+
+        }elseif($Groups[$k]['menu']['name_menu'] == "単価関係"){
+
+          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
+          $arrController[] = "priceProducts";
 
         }
 
