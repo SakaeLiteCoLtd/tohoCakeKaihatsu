@@ -22,7 +22,7 @@
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns" style="width:70%">
+<nav class="large-3 medium-4 columns">
     <?= $this->Form->create($operation) ?>
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('運用代表情報編集') ?></strong></legend>

@@ -2,18 +2,55 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Event\Event;//ログインに使用
+use Cake\ORM\TableRegistry;//独立したテーブルを扱う
+use Cake\Datasource\ConnectionManager;//トランザクション
+use Cake\Core\Exception\Exception;//トランザクション
+use Cake\Core\Configure;//トランザクション
 
 class StaffAbilitiesController extends AppController
 {
 
+      public function initialize()
+    {
+     parent::initialize();
+     $this->Staffs = TableRegistry::get('Staffs');
+    }
+
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Staffs', 'Menus']
+            'contain' => ['Staffs']
         ];
-        $staffAbilities = $this->paginate($this->StaffAbilities->find()->where(['StaffAbilities.delete_flag' => 0]));
-
+        $staffAbilities = $this->paginate($this->StaffAbilities->find()->contain(["Staffs"])
+        ->select(['StaffAbilities.staff_id','Staffs.name','delete_flag' => 0])->group(['staff_id']));
         $this->set(compact('staffAbilities'));
+    }
+
+    public function detail($staff_id = null)
+    {
+      $staffAbility = $this->StaffAbilities->newEntity();
+      $this->set('staffAbility', $staffAbility);
+
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $staff_id])->toArray();
+      $staff_name = $Staffs[0]["name"];
+      $this->set('staff_name', $staff_name);
+
+      $StaffAbilities = $this->StaffAbilities->find()->contain(["Menus"])
+      ->where(['staff_id' => $staff_id, 'StaffAbilities.delete_flag' => 0])->toArray();
+
+      for($k=0; $k<count($StaffAbilities); $k++){
+
+        $arrStaffAbilities[] = $StaffAbilities[$k]['menu']['name_menu'];
+
+      }
+      $this->set('arrStaffAbilities', $arrStaffAbilities);
+/*
+      echo "<pre>";
+      print_r($arrGroups);
+      echo "</pre>";
+*/
     }
 
     public function view($id = null)

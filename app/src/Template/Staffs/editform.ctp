@@ -25,7 +25,7 @@
 <?= $this->Form->create($Staffs, ['url' => ['action' => 'editconfirm']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns" style="width:70%">
+<nav class="large-3 medium-4 columns">
     <?= $this->Form->create($Staffs) ?>
     <fieldset>
         <legend><strong style="font-size: 15pt; color:red"><?= __('スタッフ情報編集') ?></strong></legend>

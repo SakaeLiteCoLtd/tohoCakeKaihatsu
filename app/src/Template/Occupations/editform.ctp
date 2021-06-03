@@ -19,7 +19,7 @@
 <?= $this->Form->create($occupation, ['url' => ['action' => 'editconfirm']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns" style="width:70%">
+<nav class="large-3 medium-4 columns">
     <?= $this->Form->create($occupation) ?>
     <fieldset>
         <legend><strong style="font-size: 15pt; color:red"><?= __('職種情報編集') ?></strong></legend>

@@ -19,7 +19,7 @@
 <?= $this->Form->create($operation, ['url' => ['action' => 'deletedo']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns" style="width:70%">
+<nav class="large-3 medium-4 columns">
     <?= $this->Form->create($operation) ?>
     <fieldset>
 

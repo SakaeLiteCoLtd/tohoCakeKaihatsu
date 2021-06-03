@@ -21,7 +21,7 @@
 <?= $this->Form->create($materialType, ['url' => ['action' => 'index']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns" style="width:70%">
+<nav class="large-3 medium-4 columns">
     <?= $this->Form->create($materialType) ?>
     <fieldset>
 

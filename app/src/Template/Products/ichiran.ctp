@@ -20,18 +20,17 @@
 $this->layout = false;
 echo $this->Html->css('index');
 ?>
-
-<div class="products index large-9 medium-8 columns content" style="width:70%">
+<br>
+<div class="products index large-9 medium-8 columns content">
   <h2><font color=red><?= __('製品一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-              <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('product_code', ['label'=>"社内品番"]) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('customer_product_code', ['label'=>"顧客品番"]) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('name', ['label'=>"品名"]) ?></th>
-                <th scope="col"><?= $this->Paginator->sort('custmoer_id', ['label'=>"顧客"]) ?></th>
-                <th scope="col" class="actions"><?= __('') ?></th>
+              <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
+                <th scope="col" style='width:200'><?= $this->Paginator->sort('product_code', ['label'=>"社内品番"]) ?></th>
+                <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"品名"]) ?></th>
+                <th scope="col" style='width:200'><?= $this->Paginator->sort('custmoer_id', ['label'=>"顧客"]) ?></th>
+                <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -39,7 +38,6 @@ echo $this->Html->css('index');
             <tr>
               <td><?= h($i) ?></td>
                 <td><?= h($product->product_code) ?></td>
-                <td><?= h($product->customer_product_code) ?></td>
                 <td><?= h($product->name) ?></td>
                 <td><?= h($product->customer->name) ?></td>
                 <td class="actions">

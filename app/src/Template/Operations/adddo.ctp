@@ -17,7 +17,7 @@
 <?= $this->Form->create($operation, ['url' => ['action' => 'index']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns" style="width:70%">
+<nav class="large-3 medium-4 columns">
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('運用代表新規登録') ?></strong></legend>
       <br>

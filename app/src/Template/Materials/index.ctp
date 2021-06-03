@@ -20,27 +20,24 @@
 $this->layout = false;
 echo $this->Html->css('index');
 ?>
-
-<div class="materials index large-9 medium-8 columns content" style="width:70%">
+<br>
+<div class="materials index large-9 medium-8 columns content">
   <h2><font color=red><?= __('原料一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-              <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
-              <th scope="col"><?= $this->Paginator->sort('factory_id', ['label'=>"工場・営業所名"]) ?></th>
-              <th scope="col"><?= $this->Paginator->sort('material_code', ['label'=>"原料コード"]) ?></th>
-              <th scope="col"><?= $this->Paginator->sort('grade', ['label'=>"グレード"]) ?></th>
-              <th scope="col"><?= $this->Paginator->sort('color', ['label'=>"色"]) ?></th>
-              <th scope="col"><?= $this->Paginator->sort('maker', ['label'=>"メーカー"]) ?></th>
-                <th scope="col" class="actions"><?= __('') ?></th>
+              <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
+              <th scope="col" style='width:150'><?= $this->Paginator->sort('material_code', ['label'=>"原料コード"]) ?></th>
+              <th scope="col" style='width:150'><?= $this->Paginator->sort('grade', ['label'=>"グレード"]) ?></th>
+              <th scope="col" style='width:150'><?= $this->Paginator->sort('color', ['label'=>"色"]) ?></th>
+              <th scope="col" style='width:150'><?= $this->Paginator->sort('maker', ['label'=>"メーカー"]) ?></th>
+                <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>
         </thead>
         <tbody>
             <?php foreach ($materials as $material): ?>
             <tr>
               <td><?= h($i) ?></td>
-              <td><?= $material->has('factory') ? $this->Html->link($material->factory->name,
-               ['controller' => 'Factories', 'action' => 'view', $material->factory->id]) : '' ?></td>
                 <td><?= h($material->material_code) ?></td>
                 <td><?= h($material->grade) ?></td>
                 <td><?= h($material->color) ?></td>

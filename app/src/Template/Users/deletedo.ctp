@@ -19,7 +19,7 @@ $htmllogin = $htmlloginmenu->Loginmenu();
 <?= $this->Form->create($user, ['url' => ['action' => 'index']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns" style="width:70%">
+<nav class="large-3 medium-4 columns">
     <?= $this->Form->create($user) ?>
     <fieldset>
 
@@ -44,19 +44,11 @@ $htmllogin = $htmlloginmenu->Loginmenu();
         </table>
         <table>
           <tr>
-            <td width="280"><strong>スーパーユーザー</strong></td>
             <td width="280"><strong>グループ</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($super_userhyouji) ?></td>
-            <td><?= h($user['group_name']) ?></td>
-        	</tr>
-        </table>
-        <table>
-          <tr>
             <td width="280"><strong>パスワード</strong></td>
         	</tr>
           <tr>
+            <td><?= h($user['group_name']) ?></td>
             <td><?= __("****") ?></td>
         	</tr>
         </table>

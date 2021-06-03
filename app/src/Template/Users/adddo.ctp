@@ -18,7 +18,7 @@ $htmllogin = $htmlloginmenu->Loginmenu();
 
 <br><br><br>
 
-<nav class="large-3 medium-4 columns" style="width:70%">
+<nav class="large-3 medium-4 columns">
   <?= $this->Form->create($Users, ['url' => ['action' => 'index']]) ?>
 
     <fieldset>

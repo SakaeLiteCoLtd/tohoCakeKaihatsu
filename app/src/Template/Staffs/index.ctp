@@ -21,14 +21,14 @@ $this->layout = false;
 echo $this->Html->css('index');
 ?>
 <br>
-<div class="staffs index large-9 medium-8 columns content" style="width:70%;">
+<div class="staffs index large-9 medium-8 columns content">
   <h2><font color=red><?= __('スタッフ一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
           <tr>
-            <th scope="col" style='width:100'><?= $this->Paginator->sort('No.') ?></th>
-            <th scope="col"><?= $this->Paginator->sort('office', ['label'=>"工場・営業所"]) ?></th>
-            <th scope="col"><?= $this->Paginator->sort('name', ['label'=>"氏名"]) ?></th>
+            <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
+            <th scope="col" style='width:200'><?= $this->Paginator->sort('office', ['label'=>"工場・営業所"]) ?></th>
+            <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"氏名"]) ?></th>
             <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
           </tr>
         </thead>
@@ -42,6 +42,9 @@ echo $this->Html->css('index');
                   <?= $this->Html->link(__('詳細'), ['action' => 'detail', $staff->id]) ?>
                 </td>
             </tr>
+            <?php
+            $i = $i + 1;
+            ?>
             <?php endforeach; ?>
         </tbody>
       </table>

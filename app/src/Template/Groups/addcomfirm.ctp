@@ -19,7 +19,7 @@
 <?= $this->Form->control('name_group', array('type'=>'hidden', 'value'=>$this->request->getData('name_group'), 'label'=>false)) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns" style="width:70%">
+<nav class="large-3 medium-4 columns">
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('グループ新規登録') ?></strong></legend>
       <br>

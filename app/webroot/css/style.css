@@ -399,9 +399,11 @@ fieldset {
 }
 
 fieldset legend {
-    border-bottom: 2px solid #1798A5;
+/*    border-bottom: 2px solid #1798A5;*/
     width: 100%;
     line-height: 2rem;
+    text-align: center;
+
 }
 
 .form button[type="submit"] {

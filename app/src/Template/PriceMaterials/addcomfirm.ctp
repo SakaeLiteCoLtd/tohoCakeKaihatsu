@@ -23,7 +23,7 @@
 <?= $this->Form->control('finish_deal', array('type'=>'hidden', 'value'=>$finish_deal, 'label'=>false)) ?>
 <?= $this->Form->control('lot_remarks', array('type'=>'hidden', 'value'=>$this->request->getData('lot_remarks'), 'label'=>false)) ?>
 
-<nav class="large-3 medium-4 columns" style="width:70%">
+<nav class="large-3 medium-4 columns">
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('原料単価新規登録') ?></strong></legend>
       <br>

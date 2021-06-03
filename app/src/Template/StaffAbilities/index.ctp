@@ -19,27 +19,24 @@
 $this->layout = false;
 echo $this->Html->css('index');
 ?>
-
-<div class="staffAbilities index large-9 medium-8 columns content" style="width:70%">
+<br>
+<div class="staffAbilities index large-9 medium-8 columns content">
   <h2><font color=red><?= __('スタッフ権限一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
           <tr bgcolor="#f0e68c">
-              <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
-              <th scope="col"><?= $this->Paginator->sort('staff_id', ['label'=>"スタッフ"]) ?></th>
-              <th scope="col"><?= $this->Paginator->sort('menu_id', ['label'=>"取り扱い可能メニュー"]) ?></th>
-                <th scope="col" class="actions"><?= __('') ?></th>
+            <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
+              <th scope="col" style='width:200'><?= $this->Paginator->sort('staff_id', ['label'=>"スタッフ"]) ?></th>
+                <th scope="col" style='width:250' class="actions"><?= __('') ?></th>
             </tr>
         </thead>
         <tbody bgcolor="#FFFFCC">
             <?php foreach ($staffAbilities as $staffAbility): ?>
             <tr>
               <td><?= h($i) ?></td>
-                <td><?= $staffAbility->has('staff') ? $this->Html->link($staffAbility->staff->name, ['controller' => 'Staffs', 'action' => 'view', $staffAbility->staff->id]) : '' ?></td>
-                <td><?= $staffAbility->has('menu') ? $this->Html->link($staffAbility->menu->name_menu, ['controller' => 'Staffs', 'action' => 'view', $staffAbility->menu->id]) : '' ?></td>
+              <td><?= h($staffAbility->staff->name) ?></td>
                 <td class="actions">
-                  <?= $this->Html->link(__('編集'), ['action' => 'editform', $staffAbility->id]) ?>
-                  <?= $this->Html->link(__('削除'), ['action' => 'deleteconfirm', $staffAbility->id]) ?>
+                  <?= $this->Html->link(__('取り扱い可能メニュー表示'), ['action' => 'detail', $staffAbility->staff_id]) ?>
                 </td>
             </tr>
             <?php

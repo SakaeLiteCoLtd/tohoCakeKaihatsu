@@ -21,7 +21,7 @@ $this->layout = false;
 echo $this->Html->css('index');
 ?>
 
-<div class="priceMaterials index large-9 medium-8 columns content" style="width:70%">
+<div class="priceMaterials index large-9 medium-8 columns content">
   <h2><font color=red><?= __('原料単価一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>

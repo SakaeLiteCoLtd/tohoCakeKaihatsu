@@ -18,7 +18,7 @@ $htmllogin = $htmlloginmenu->Loginmenu();
 
 <br><br><br>
 
-<nav class="large-3 medium-4 columns" style="width:70%">
+<nav class="large-3 medium-4 columns">
   <?= $this->Form->create($Users, ['url' => ['action' => 'adddo']]) ?>
   <?= $this->Form->control('user_code', array('type'=>'hidden', 'value'=>$this->request->getData('user_code'), 'label'=>false)) ?>
   <?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$this->request->getData('staff_id'), 'label'=>false)) ?>

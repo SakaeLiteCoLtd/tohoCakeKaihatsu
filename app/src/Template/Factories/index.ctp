@@ -20,24 +20,24 @@
 $this->layout = false;
 echo $this->Html->css('index');
 ?>
-
-<div class="factories index large-9 medium-8 columns content" style="width:70%">
+<br>
+<div class="factories index large-9 medium-8 columns content">
   <h2><font color=red><?= __('工場・営業所一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
           <tr>
-              <th scope="col"><?= $this->Paginator->sort('No.') ?></th>
-              <th scope="col"><?= $this->Paginator->sort('name', ['label'=>"工場・営業所名"]) ?></th>
-              <th scope="col"><?= $this->Paginator->sort('company_id', ['label'=>"会社名"]) ?></th>
-                <th scope="col" class="actions"><?= __('') ?></th>
-            </tr>
+            <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
+            <th scope="col" style='width:200'><?= $this->Paginator->sort('company_id', ['label'=>"会社名"]) ?></th>
+              <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"工場・営業所名"]) ?></th>
+              <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
+          </tr>
         </thead>
         <tbody>
             <?php foreach ($Factories as $factory): ?>
             <tr>
               <td><?= h($i) ?></td>
-              <td><?= h($factory->name) ?></td>
               <td><?= h($factory->company->name) ?></td>
+              <td><?= h($factory->name) ?></td>
                 <td class="actions">
                   <?= $this->Html->link(__('詳細'), ['action' => 'detail', $factory->id]) ?>
                 </td>

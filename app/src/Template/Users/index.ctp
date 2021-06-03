@@ -20,15 +20,15 @@
 $this->layout = false;
 echo $this->Html->css('index');
 ?>
-
-<div class="users index large-9 medium-8 columns content" style="width:70%">
+<br>
+<div class="users index large-9 medium-8 columns content">
   <h2><font><?= __('ユーザー一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
           <tr>
-              <th scope="col" style='width:100'><?= $this->Paginator->sort('No.') ?></th>
-              <th scope="col"><?= $this->Paginator->sort('user_code', ['label'=>"社員コード"]) ?></th>
-              <th scope="col"><?= $this->Paginator->sort('staff', ['label'=>"氏名"]) ?></th>
+            <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
+              <th scope="col" style='width:200'><?= $this->Paginator->sort('user_code', ['label'=>"社員コード"]) ?></th>
+              <th scope="col" style='width:200'><?= $this->Paginator->sort('staff', ['label'=>"氏名"]) ?></th>
                 <th scope="col" class="actions" style='width:100'><?= __('') ?></th>
             </tr>
         </thead>
@@ -42,7 +42,9 @@ echo $this->Html->css('index');
                   <?= $this->Html->link(__('詳細'), ['action' => 'detail', $user->id]) ?>
                 </td>
             </tr>
-
+            <?php
+            $i = $i + 1;
+            ?>
             <?php endforeach; ?>
         </tbody>
     </table>
