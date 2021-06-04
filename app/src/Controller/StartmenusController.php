@@ -151,6 +151,11 @@ class StartmenusController extends AppController
           $arrMenus[] = $Groups[$k]['menu']['name_menu'];
           $arrController[] = "priceProducts";
 
+        }elseif($Groups[$k]['menu']['name_menu'] == "検査表画像"){
+
+          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
+          $arrController[] = "Images";
+
         }
 
       }
