@@ -11,7 +11,8 @@ class htmlkensahyoukadoumenu extends AppController
  {
      parent::initialize();
      $this->Products = TableRegistry::get('Products');
- }
+     $this->InspectionStandardSizeParents = TableRegistry::get('InspectionStandardSizeParents');
+}
 
      public function kensahyoukadoumenus()
   	{
@@ -82,6 +83,12 @@ class htmlkensahyoukadoumenu extends AppController
 
     }
 
+    $inspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+    ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
+    ->order(["version"=>"DESC"])->toArray();
+
+    $image_file_name_dir = "/img/".$inspectionStandardSizeParents[0]["image_file_name_dir"];
+
       $html =
           "<table bgcolor='white' width='1000' style='position: fixed;top: 85px; left:20%; z-index:9999;'>\n".
           "<tr>\n".
@@ -107,8 +114,7 @@ class htmlkensahyoukadoumenu extends AppController
           "</tr>\n".
           "<tr>\n".
           "<td width='1000' colspan='4' nowrap='nowrap' style='height: 400px;'>\n".
-          "画像\n".
-          "</td>\n".
+          "<img src=$image_file_name_dir width=800></td>\n".
           "</tr>\n".
           "</table>\n";
 

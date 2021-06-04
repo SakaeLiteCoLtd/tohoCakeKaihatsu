@@ -11,14 +11,46 @@
      echo $htmllogin;
 ?>
 <?php
-  //   echo $htmlimgmenu;
+     echo $htmlimgmenu;
 ?>
-<br><br><br>
- <br>
- <table style="margin-bottom:0px" width="1350" border="0" align="center" cellpadding="0" cellspacing="0" bordercolor="#CCCCCC">
-   <tr style="background-color: #E6FFFF">
-     <td style="padding: 0.1rem 0.1rem; text-align: center"><?php echo $this->Html->image($gif1);?></td>
+<?php
+/*
+echo $this->Html->image($gif,['width'=>'400', 'height'=>'250']
+*/
+?>
+
+ <br><br><br>
+ <?= $this->Form->create($inspectionStandardSizeParents, ['url' => ['action' => 'adddo']]) ?>
+ <fieldset>
+     <legend><strong style="font-size: 15pt; color:red"><?= __('検査表画像新規登録') ?></strong></legend>
+ </fieldset>
+ <table class='sample non-sample'>
+   <tr>
+     <td width="200"><strong>社内品番</strong></td>
+   </tr>
+   <tr>
+     <td><?= h($product_code) ?></td>
    </tr>
  </table>
 
- <br>
+ <table class='sample non-sample'>
+   <tbody class='sample non-sample'>
+     <tr>
+       <td style="border:none"><?php echo $this->Html->image($gif,['width'=>'800']);?></td>
+     </tr>
+   </tbody>
+ </table>
+
+  <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
+  <?= $this->Form->control('gif', array('type'=>'hidden', 'value'=>$gif, 'label'=>false)) ?>
+  <table>
+    <tbody class='sample non-sample'>
+      <tr>
+        <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+        <td style="border-style: none;"><?= __("　") ?></td>
+        <td style="border-style: none;"><div><?= $this->Form->submit('決定', array('name' => 'kettei')); ?></div></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <?= $this->Form->end() ?>

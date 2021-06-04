@@ -11,7 +11,7 @@
      echo $htmllogin;
 ?>
 <?php
-  //   echo $htmlimgmenu;
+     echo $htmlimgmenu;
 ?>
 <br><br><br>
 
@@ -21,12 +21,8 @@
     </fieldset>
 
     <br>
-    <div align="center"><font color="red" size="4"><?= __($product_code." の検査表に使用する画像ファイルを選択してください。") ?></font></div>
-    <div align="center"><strong style="font-size: 13pt; color:red"><?= __("※画像ファイルの拡張子は「.gif」にしてください。") ?></strong></div>
-    <br>
-
-    <br>
-    <div align="center"><font color="red" size="3"><?= __($mess) ?></font></div>
+    <div align="center"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></div>
+    <div align="center"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></div>
     <br>
 
   <?= $this->Form->create($inspectionStandardSizeParents,['action'=>'addcomfirm', 'type'=>'file']) ?>
@@ -46,6 +42,12 @@
           </tr>
         </tbody>
       </table>
+
+      <br>
+      <div align="center"><font color="red" size="4"><?= __($product_code." の検査表に使用する画像ファイルを選択してください。") ?></font></div>
+      <div align="center"><strong style="font-size: 13pt; color:red"><?= __("※画像ファイルの拡張子は「.gif」にしてください。") ?></strong></div>
+      <br>
+
       <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
       <?= $this->Form->end() ?>
 </nav>

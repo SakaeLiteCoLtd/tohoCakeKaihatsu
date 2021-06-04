@@ -49,8 +49,12 @@ class ImagesController extends AppController
 
     public function index()
     {
-      $inspectionStandardSizeParents = $this->InspectionStandardSizeParents->newEntity();
-      $this->set('inspectionStandardSizeParents', $inspectionStandardSizeParents);
+      $this->paginate = [
+          'contain' => ['Products']
+      ];
+      $inspectionStandardSizeParents = $this
+      ->paginate($this->InspectionStandardSizeParents->find()->where(['InspectionStandardSizeParents.delete_flag' => 0]));
+      $this->set(compact('inspectionStandardSizeParents'));
     }
 
     public function detail($id = null)
@@ -75,10 +79,12 @@ class ImagesController extends AppController
       $this->set('id', $id);
 
       $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
-      ->where(['id' => $id])->toArray();
+      ->where(['InspectionStandardSizeParents.id' => $id])->toArray();
 
       $product_code = $InspectionStandardSizeParents[0]["product"]["product_code"];
       $this->set('product_code', $product_code);
+      $image_file_name_dir = $InspectionStandardSizeParents[0]["image_file_name_dir"];
+      $this->set('image_file_name_dir', $image_file_name_dir);
 
     }
 
@@ -110,7 +116,7 @@ class ImagesController extends AppController
         $session = $this->request->getSession();
         $_SESSION = $session->read();
         $product_code = $_SESSION["img_product_code"];
-        $_SESSION['img_product_code'] = array();
+  //      $_SESSION['img_product_code'] = array();
         $this->set('product_code', $product_code);
 
       }else{
@@ -131,6 +137,17 @@ class ImagesController extends AppController
         return $this->redirect(['action' => 'addpre',
         's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
 
+      }
+
+      $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+      ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
+      ->order(["version"=>"DESC"])->toArray();
+      if(isset($InspectionStandardSizeParents[0])){
+        $mes = $product_code." の検査表画像は既に登録されています。データを更新する場合はこのまま進んでください。";
+        $this->set('mes',$mes);
+      }else{
+        $mes = "";
+        $this->set('mes',$mes);
       }
 
     }
@@ -185,15 +202,15 @@ class ImagesController extends AppController
 			print_r($_FILES['upfile']["name"]);
 			echo "</pre>";
 */
-			$gif1 = "kensahyouimg/".$_FILES['upfile']["name"];//ローカル
-			$this->set('gif1',$gif1);
+			$gif = "kensahyouimg/".$_FILES['upfile']["name"];//ローカル
+			$this->set('gif',$gif);
 
     }
 
     public function adddo()
     {
-      $Groups = $this->Groups->newEntity();
-      $this->set('Groups', $Groups);
+      $inspectionStandardSizeParents = $this->InspectionStandardSizeParents->newEntity();
+      $this->set('inspectionStandardSizeParents', $inspectionStandardSizeParents);
 
       $session = $this->request->getSession();
       $datasession = $session->read();
@@ -202,32 +219,50 @@ class ImagesController extends AppController
 
       $data = $this->request->getData();
 
-      $arrtourokugroup = array();
-      for ($k=0; $k<=$data["num_menu"]; $k++){
+      $this->set('product_code', $data['product_code']);
+      $this->set('gif', $data['gif']);
 
-        $Menus = $this->Menus->find()
-        ->where(['name_menu' => $data['menu_name'.$k]])->toArray();
+      $Products = $this->Products->find()
+      ->where(['product_code' => $data['product_code']])->toArray();
+      $product_id = $Products[0]['id'];
 
-          $arrtourokugroup[] = [
-            'name_group' => $data["name_group"],
-            'menu_id' => $Menus[0]['id'],
-            'delete_flag' => 0,
-            'created_at' => date("Y-m-d H:i:s"),
-            'created_staff' => $staff_id
-          ];
-      }
+      $InspectionStandardSizeParentversion = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+      ->where(['product_code' => $data['product_code'], 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
+      ->order(["version"=>"DESC"])->toArray();
+
+      $version = $InspectionStandardSizeParentversion[0]["version"] + 1;
+
+      $arrtourokuinspectionStandardSizeParent = array();
+      $arrtourokuinspectionStandardSizeParent = [
+        'product_id' => $product_id,
+        'image_file_name_dir' => $data["gif"],
+        'version' => $version,
+        'is_active' => 0,
+        'delete_flag' => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        'created_staff' => $staff_id
+      ];
 /*
       echo "<pre>";
-      print_r($arrtourokugroup);
+      print_r($arrtourokuinspectionStandardSizeParent);
       echo "</pre>";
 */
       //新しいデータを登録
-      $Groups = $this->Groups->patchEntities($this->Groups->newEntity(), $arrtourokugroup);
+      $InspectionStandardSizeParents = $this->InspectionStandardSizeParents
+      ->patchEntity($this->InspectionStandardSizeParents->newEntity(), $arrtourokuinspectionStandardSizeParent);
       $connection = ConnectionManager::get('default');//トランザクション1
       // トランザクション開始2
       $connection->begin();//トランザクション3
       try {//トランザクション4
-        if ($this->Groups->saveMany($Groups)) {
+
+        $this->InspectionStandardSizeParents->updateAll(
+          [ 'is_active' => 1,
+            'delete_flag' => 1,
+            'updated_at' => date('Y-m-d H:i:s'),
+            'updated_staff' => $staff_id],
+          ['product_id'  => $product_id]);
+
+        if ($this->InspectionStandardSizeParents->save($InspectionStandardSizeParents)) {
 
           $connection->commit();// コミット5
           $mes = "以下のように登録されました。";
@@ -254,12 +289,19 @@ class ImagesController extends AppController
       $session = $this->request->getSession();
       $_SESSION = $session->read();
 
-      $id = $_SESSION['groupdata'];
+      $id = $_SESSION['inspectionStandardSizeParentdata'];
+      $this->set('id', $id);
 
-        $group = $this->Groups->get($id, [
-          'contain' => ['Menus']
-        ]);
-        $this->set(compact('group'));
+      $inspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+      ->where(['InspectionStandardSizeParents.id' => $id])
+      ->toArray();
+      $this->set(compact('inspectionStandardSizeParents'));
+
+      $product_code = $inspectionStandardSizeParents[0]["product"]["product_code"];
+      $this->set('product_code', $product_code);
+      $image_file_name_dir = $inspectionStandardSizeParents[0]["image_file_name_dir"];
+      $this->set('image_file_name_dir', $image_file_name_dir);
+
     }
 
     public function deletedo()
@@ -269,37 +311,44 @@ class ImagesController extends AppController
 
       $data = $this->request->getData();
 
-      $group = $this->Groups->get($data["id"], [
-        'contain' => ['Menus']
-      ]);
-      $this->set(compact('group'));
+      $id = $data['id'];
+
+      $inspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+      ->where(['InspectionStandardSizeParents.id' => $id])
+      ->toArray();
+      $this->set(compact('inspectionStandardSizeParents'));
+
+      $product_code = $inspectionStandardSizeParents[0]["product"]["product_code"];
+      $this->set('product_code', $product_code);
+      $image_file_name_dir = $inspectionStandardSizeParents[0]["image_file_name_dir"];
+      $this->set('image_file_name_dir', $image_file_name_dir);
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
-      $arrdeletegroups = array();
-      $arrdeletegroups = [
+      $arrdeleteinspectionStandardSizeParents = array();
+      $arrdeleteinspectionStandardSizeParents = [
         'id' => $data["id"]
       ];
 /*
       echo "<pre>";
-      print_r($arrdeletecompany);
+      print_r($arrdeleteinspectionStandardSizeParents);
       echo "</pre>";
 */
-      $Groups = $this->Groups->patchEntity($this->Groups->newEntity(), $arrdeletegroups);
+      $InspectionStandardSizeParents = $this->InspectionStandardSizeParents
+      ->patchEntity($this->InspectionStandardSizeParents->newEntity(), $arrdeleteinspectionStandardSizeParents);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
        $connection->begin();//トランザクション3
        try {//トランザクション4
-         if ($this->Groups->updateAll(
-           [ 'delete_flag' => 1,
+         if ($this->InspectionStandardSizeParents->updateAll(
+           [ 'is_active' => 1,
+             'delete_flag' => 1,
              'updated_at' => date('Y-m-d H:i:s'),
              'updated_staff' => $staff_id],
-           ['name_group'  => $group['name_group']]
+           ['id'  => $data["id"]]
          )){
 
-           //スタッフ権限もこのタイミングで削除
-
-         $mes = "※以下のデータが削除されました。";
+         $mes = "※削除されました。";
          $this->set('mes',$mes);
          $connection->commit();// コミット5
 
