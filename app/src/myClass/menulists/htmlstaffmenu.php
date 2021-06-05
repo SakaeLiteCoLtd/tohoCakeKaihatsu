@@ -19,7 +19,7 @@ class htmlstaffmenu extends AppController
                           "<br><br>\n".
                           "<font size='4'>　・</font><a href='/staffs/index' /><font size='4' color=black>スタッフメニュートップ</font></a>\n".
                           "<br><br>\n".
-                          "<font size='4'>　・</font><a href='/users/addform' /><font size='4' color=black>ユーザー新規登録</font></a>\n".
+                          "<font size='4'>　・</font><a href='/users/addpre' /><font size='4' color=black>ユーザー新規登録</font></a>\n".
                           "<br><br>\n".
                           "<font size='4'>　・</font><a href='/users/index' /><font size='4' color=black>ユーザーメニュートップ</font></a>\n".
                           "<br><br>\n".

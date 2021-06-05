@@ -20,6 +20,7 @@ $htmllogin = $htmlloginmenu->Loginmenu();
 
 <nav class="large-3 medium-4 columns">
   <?= $this->Form->create($user, ['url' => ['action' => 'addcomfirm']]) ?>
+  <?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$this->request->getData('staff_id'), 'label'=>false)) ?>
     <fieldset>
         <legend><strong style="font-size: 15pt; color:red"><?= __('ユーザー新規登録') ?></strong></legend>
         <br>
@@ -37,7 +38,7 @@ $htmllogin = $htmlloginmenu->Loginmenu();
         	</tr>
           <tr>
             <td><?= $this->Form->control('user_code', array('type'=>'text', 'label'=>false)) ?></td>
-            <td><?= $this->Form->control('staff_id', ['options' => $staffs, 'label'=>false, "empty"=>"選択してください"]) ?></td>
+            <td><?= h($staffhyouji) ?></td>
         	</tr>
         </table>
         <table>

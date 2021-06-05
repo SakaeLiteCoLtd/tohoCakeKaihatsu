@@ -19,6 +19,7 @@ class UsersController extends AppController
    $this->StaffAbilities = TableRegistry::get('StaffAbilities');
    $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
    $this->Groups = TableRegistry::get('Groups');
+   $this->Users = TableRegistry::get('Users');
 
    $session = $this->request->getSession();
    $datasession = $session->read();
@@ -109,11 +110,44 @@ class UsersController extends AppController
         $this->set('user', $user);
     }
 
+    public function addpre()
+    {
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
+      $user = $this->Users->newEntity();
+      $staffs = $this->Users->Staffs->find('list', ['limit' => 200]);
+      $this->set(compact('user', 'staffs'));
+    }
+
     public function addform()
     {
       $user = $this->Users->newEntity();
       $staffs = $this->Users->Staffs->find('list', ['limit' => 200]);
       $this->set(compact('user', 'staffs'));
+
+      $data = $this->request->getData();
+
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $data['staff_id']])->toArray();
+      $staffhyouji = $Staffs[0]["name"];
+      $this->set('staffhyouji', $staffhyouji);
+
+      $Users = $this->Users->find()
+      ->where(['staff_id' => $data['staff_id'], 'delete_flag' => 0])->toArray();
+
+      if(isset($Users[0])){
+
+        return $this->redirect(['action' => 'addpre',
+        's' => ['mess' => "※".$staffhyouji."は既にユーザー登録済みです。"]]);
+
+      }
 
       $Groups = $this->Groups->find()
       ->where(['delete_flag' => 0])->toArray();
