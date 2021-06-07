@@ -29,7 +29,7 @@ echo $this->Html->css('kensahyou');
  ?>
 
 <br>
- <table align="center" style='margin-top:500px'>
+<table class="top">
   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
 </table>
 <br>

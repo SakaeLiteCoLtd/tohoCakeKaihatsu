@@ -41,7 +41,7 @@ echo $this->Html->css('kensahyou');
 <?php if ($formcheck < 1): ?>
 
 <br>
-<table style='margin-top:500px'>
+<table class="top">
   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
 </table>
 
@@ -112,7 +112,7 @@ echo $this->Html->css('kensahyou');
 <?php else : ?>
 
   <br><br>
-  <table style='margin-top:500px'>
+  <table class="top">
     <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($formcheckmess) ?></strong></td></tr>
   </table>
   <br><br>

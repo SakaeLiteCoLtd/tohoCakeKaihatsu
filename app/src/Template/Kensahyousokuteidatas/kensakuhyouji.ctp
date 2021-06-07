@@ -34,7 +34,7 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('datetimefin', array('type'=>'hidden', 'value'=>$datetimefin, 'label'=>false)) ?>
 <?= $this->Form->control('datekensaku', array('type'=>'hidden', 'value'=>$datekensaku, 'label'=>false)) ?>
 
-<table style='margin-top:550px'>
+<table class="top_big">
 
   <tr>
     <td width="50" rowspan='7'>No.</td>

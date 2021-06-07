@@ -27,7 +27,7 @@ echo $this->Html->css('index');
         <thead>
             <tr>
               <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
-              <th scope="col" style='width:200'><?= $this->Paginator->sort('factory_id', ['label'=>"工場・営業所名"]) ?></th>
+              <th scope="col" style='width:200'><?= $this->Paginator->sort('factory_id', ['label'=>"自社工場名"]) ?></th>
               <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"顧客名"]) ?></th>
                 <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>

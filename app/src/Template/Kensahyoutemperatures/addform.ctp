@@ -42,7 +42,7 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('product_material_machine_id'.$j, array('type'=>'hidden', 'value'=>${"product_material_machine_id".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('cylinder_name'.$j, array('type'=>'hidden', 'value'=>${"cylinder_name".$j}, 'label'=>false)) ?>
 
-<table style='margin-top:530px'>
+<table class="top">
 <tr>
   <td style='width:80'>成形機</td>
   <td width="100">温度条件</td>

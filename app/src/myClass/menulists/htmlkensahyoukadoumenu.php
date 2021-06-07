@@ -92,28 +92,28 @@ class htmlkensahyoukadoumenu extends AppController
       $html =
           "<table bgcolor='white' width='1000' style='position: fixed;top: 85px; left:20%; z-index:9999;'>\n".
           "<tr>\n".
-          "<td width='500' colspan='2' nowrap='nowrap' style='height: 60px'><strong>\n".
+          "<td width='500' colspan='2' nowrap='nowrap' style='height: 40px'><strong>\n".
           "検査成績書</strong><br>（兼　成形条件表・梱包仕様書・作業手順書）\n".
           "</td>\n".
-          "<td width='100' nowrap='nowrap' style='height: 30px'><strong>製品名</td>\n".
-          "<td width='400' nowrap='nowrap' style='height: 30px'>$name</td>\n".
+          "<td width='100' nowrap='nowrap' style='height: 20px'><strong>製品名</td>\n".
+          "<td width='400' nowrap='nowrap' style='height: 20px'>$name</td>\n".
           "</tr>\n".
           "<tr>\n".
-          "<td width='200' nowrap='nowrap' style='height: 30px'><strong>\n".
+          "<td width='200' nowrap='nowrap' style='height: 20px'><strong>\n".
           "管理No\n".
           "</td>\n".
           "<td width='300' style='height: 30px'>$product_code</td>\n".
-          "<td width='200' rowspan='2' style='height: 30px'><strong>顧客名</td>\n".
-          "<td width='300' rowspan='2' style='height: 30px'>$customer</td>\n".
+          "<td width='200' rowspan='2' style='height: 20px'><strong>顧客名</td>\n".
+          "<td width='300' rowspan='2' style='height: 20px'>$customer</td>\n".
           "</tr>\n".
           "<tr>\n".
-          "<td width='200' nowrap='nowrap' style='height: 30px'><strong>\n".
+          "<td width='200' nowrap='nowrap' style='height: 20px'><strong>\n".
           "改訂日\n".
           "</td>\n".
-          "<td width='300' style='height: 30px'>$product_code</td>\n".
+          "<td width='300' style='height: 20px'>$product_code</td>\n".
           "</tr>\n".
           "<tr>\n".
-          "<td width='1000' colspan='4' nowrap='nowrap' style='height: 400px;'>\n".
+          "<td width='1000' colspan='4' nowrap='nowrap' style='height: 350px;'>\n".
           "<img src=$image_file_name_dir width=800></td>\n".
           "</tr>\n".
           "</table>\n";

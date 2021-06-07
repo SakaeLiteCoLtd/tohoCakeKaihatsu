@@ -43,11 +43,11 @@ class KensahyoukikakusController extends AppController
      header('Expires:');
      header('Cache-Control:');
      header('Pragma:');
-
+/*
      echo "<pre>";//フォームの再読み込みの防止
      print_r("  ");
      echo "</pre>";
-
+*/
     }
 
     public function addlogin()

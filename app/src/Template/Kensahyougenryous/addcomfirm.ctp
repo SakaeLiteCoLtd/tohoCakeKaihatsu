@@ -43,7 +43,7 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
-<table style='margin-top:550px'>
+ <table class="top">
   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('以下の内容で登録します。よろしければ「決定」ボタンを押してください。') ?></strong></td></tr>
 </table>
 

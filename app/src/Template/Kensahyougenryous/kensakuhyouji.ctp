@@ -32,7 +32,7 @@ echo $this->Html->css('kensahyou');
 <?php for($j=1; $j<=$tuikaseikeiki; $j++): ?>
 <br>
 
-<table style='margin-top:620px'>
+<table class="top_big">
 <tr>
   <td width="100">成形機</td>
   <td width="350">グレードNo.：メーカー：材料名</td>

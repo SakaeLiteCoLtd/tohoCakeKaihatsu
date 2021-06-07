@@ -12,10 +12,10 @@
   <?= $this->Form->create() ?>
   <fieldset>
     <br>
-    <legend align="center"><?= __('ユーザ名とパスワードを入力してください') ?></legend>
+    <legend align="center"><?= __('社員コードとパスワードを入力してください') ?></legend>
     <table align="center">
       <tr height="45">
-        <td width="100"><strong>ユーザ名</strong></td>
+        <td width="100"><strong>社員コード</strong></td>
         <td width="200"><?= $this->Form->control('user_code', array('type'=>'text', 'label'=>false, 'autofocus'=>true, 'size'=>14)) ?></td>
       </tr>
       <tr height="45">

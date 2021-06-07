@@ -33,7 +33,7 @@ echo $this->Html->css('kensahyou');
 
 <br>
 
-<table style='margin-top:500px'>
+<table class="top">
 
 <tr>
   <td style='width:100'>測定箇所</td>

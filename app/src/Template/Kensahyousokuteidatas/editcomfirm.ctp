@@ -41,7 +41,7 @@ $mes = "";
  ?>
 
  <br>
- <table style='margin-top:550px'>
+ <table class="top">
    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></td></tr>
  </table>
  <br>

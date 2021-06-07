@@ -33,7 +33,7 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
- <table style='margin-top:550px'>
+ <table class="top_big">
   <tr></tr>
  </table>
 

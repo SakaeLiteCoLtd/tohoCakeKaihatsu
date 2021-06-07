@@ -40,7 +40,7 @@ $mes = "";
  ?>
 
 <br><br>
-<table style='margin-top:500px'>
+<table class="top">
   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('以下の内容で登録します。よろしければ「登録確定」ボタンを押してください。') ?></strong></td></tr>
 </table>
 <br>

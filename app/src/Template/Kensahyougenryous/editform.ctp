@@ -37,7 +37,7 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
-<table style='margin-top:620px'>
+ <table class="top_big">
   <tbody>
     <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('・データを編集してください。（データを全て削除する場合は「データ削除」ボタンを押してください）') ?></strong></td></tr>
     <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('・成形機ごとデータを削除する場合は「成形機削除」にチェックを入れてください。　　　　　　　　　 ') ?></strong></td></tr>
