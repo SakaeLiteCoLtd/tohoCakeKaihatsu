@@ -90,8 +90,11 @@ class KensahyoukikakusController extends AppController
 
       $this->set('user_code', $user_code);
 
+      $userlogincheck = $user_code."_".$data["password"];
+
       $htmlinputstaff = new htmlLogin();//クラスを使用
-      $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
+  //    $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
+      $arraylogindate = $htmlinputstaff->inputstaffprogram($userlogincheck);//クラスを使用210608更新
 
       if($arraylogindate[0] === "no_staff"){
 
@@ -336,7 +339,7 @@ class KensahyoukikakusController extends AppController
         if ($this->InspectionStandardSizeChildren->saveMany($InspectionStandardSizeChildren)) {
 
           $connection->commit();// コミット5
-          $mes = "以下のように登録されました。";
+          $mes = "登録されました。";
           $this->set('mes',$mes);
 
         } else {
@@ -491,8 +494,11 @@ class KensahyoukikakusController extends AppController
       $data = $this->request->getData();
       $user_code = $data["user_code"];
 
+      $userlogincheck = $user_code."_".$data["password"];
+
       $htmlinputstaff = new htmlLogin();//クラスを使用
-      $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
+  //    $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
+      $arraylogindate = $htmlinputstaff->inputstaffprogram($userlogincheck);//クラスを使用210608更新
 
       if($arraylogindate[0] === "no_staff"){
 
@@ -643,9 +649,9 @@ class KensahyoukikakusController extends AppController
       $this->set('formcheck', $formcheck);
 
       if($data["check"] < 1){
-        $mes = "以下のように更新します。よろしければ決定ボタンを押してください。";
+        $mes = "上記のように更新します。よろしければ決定ボタンを押してください。";
       }else{
-        $mes = "以下のデータを削除します。よろしければ決定ボタンを押してください。";
+        $mes = "上記のデータを削除します。よろしければ決定ボタンを押してください。";
       }
       $this->set('mes', $mes);
 
@@ -718,7 +724,7 @@ class KensahyoukikakusController extends AppController
                   ['id'  => $data['id'.$i]]);
 
                 $connection->commit();// コミット5
-                $mes = "以下のように更新されました。";
+                $mes = "更新されました。";
                 $this->set('mes',$mes);
 
               } else {

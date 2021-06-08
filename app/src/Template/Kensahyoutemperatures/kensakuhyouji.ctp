@@ -37,7 +37,7 @@ echo $this->Html->css('kensahyou');
 <?php for($j=1; $j<=$countseikeiki; $j++): ?>
 
 <table>
-<tr>
+  <tr class="parents">
   <td style='width:80'>成形機</td>
   <td width="100">温度条件</td>
   <td style='width:70'>C １</td>
@@ -47,17 +47,17 @@ echo $this->Html->css('kensahyou');
   <td style='width:70'>A D</td>
   <td style='width:70'>D １</td>
   <td style='width:70'>D ２</td>
-  <td style='width:100'>押出回転<br>（rpm）</td>
-  <td style='width:100'>負荷（A）</td>
+  <td style='width:111'>押出回転<br>（rpm）</td>
+  <td style='width:111'>負荷（A）</td>
   <td style='width:100'>引取速度<br>（m/min）</td>
-  <td style='width:160' colspan="2">ｽｸﾘｰﾝﾒｯｼｭ : 枚数</td>
-  <td style='width:100'>ｽｸﾘｭｳ</td>
+  <td style='width:200' colspan="2">ｽｸﾘｰﾝﾒｯｼｭ : 枚数</td>
+  <td style='width:200'>ｽｸﾘｭｳ</td>
 </tr>
 
 <?php
    for($i=1; $i<=3; $i++){
 
-        echo "<tr>\n";
+     echo "<tr class='children'>\n";
 
         if($i==1){
           echo "<td rowspan=3>\n";

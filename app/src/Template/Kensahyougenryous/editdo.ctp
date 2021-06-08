@@ -22,6 +22,7 @@ echo $this->Html->css('kensahyou');
 </table>
 
 <?= $this->Form->create($product, ['url' => ['controller'=>'Kensahyoukadous', 'action' => 'kensahyoumenu']]) ?>
+<br> <br> <br>
 
 <?php
       echo $htmlkensahyouheader;
@@ -35,19 +36,19 @@ echo $this->Html->css('kensahyou');
 <br>
 
 <table>
-<tr>
-  <td width="100">成形機</td>
-  <td width="350">メーカー：材料名：グレードNo.：色</td>
-  <td width="130">配合比</td>
-  <td width="130">乾燥温度</td>
-  <td width="130">乾燥時間</td>
-  <td width="180">再生配合比</td>
+  <tr class="parents">
+    <td width="150">成形機</td>
+    <td width="490">メーカー：材料名：グレードNo.：色</td>
+    <td width="190">配合比</td>
+    <td width="190">乾燥温度</td>
+    <td width="190">乾燥時間</td>
+    <td width="200">再生配合比</td>
 </tr>
 
 <?php
    for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
-        echo "<tr>\n";
+     echo "<tr class='children'>\n";
 
         if($i==1){
           echo "<td rowspan=${"tuikagenryou".$j}>\n";

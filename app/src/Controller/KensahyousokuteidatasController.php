@@ -81,19 +81,22 @@ class KensahyousokuteidatasController extends AppController
 
         $session = $this->request->getSession();
         $_SESSION = $session->read();
-        $user_code = $_SESSION["user_code"];
-        $_SESSION['user_code'] = array();
+    //    $user_code = $_SESSION["user_code"];
+    //    $_SESSION['user_code'] = array();
 
       }else{
         $mess = "";
         $this->set('mess',$mess);
-        $user_code = $data["user_code"];
+    //    $user_code = $data["user_code"];
       }
-
+/*
       $this->set('user_code', $user_code);
 
+      $userlogincheck = $user_code."_".$data["password"];
+
       $htmlinputstaff = new htmlLogin();//クラスを使用
-      $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
+  //    $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
+      $arraylogindate = $htmlinputstaff->inputstaffprogram($userlogincheck);//クラスを使用210608更新
 
       if($arraylogindate[0] === "no_staff"){
 
@@ -108,7 +111,7 @@ class KensahyousokuteidatasController extends AppController
         $this->set('staff_name', $staff_name);
 
       }
-
+*/
     }
 
     public function addform()
@@ -122,13 +125,14 @@ class KensahyousokuteidatasController extends AppController
       print_r($data);
       echo "</pre>";
 */
+/*
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
       $this->set('staff_name', $staff_name);
       $user_code = $data["user_code"];
       $this->set('user_code', $user_code);
-
+*/
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
@@ -139,13 +143,13 @@ class KensahyousokuteidatasController extends AppController
       $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
 
       if($arrayproductdate[0] === "no_product"){
-
+/*
         if(!isset($_SESSION)){
         session_start();
         }
         $_SESSION['user_code'] = array();
         $_SESSION['user_code'] = $user_code;
-
+*/
         return $this->redirect(['action' => 'addformpre',
         's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
 
@@ -165,13 +169,13 @@ class KensahyousokuteidatasController extends AppController
         $this->set('inspection_standard_size_parent_id', $inspection_standard_size_parent_id);
 
       }else{
-
+/*
         if(!isset($_SESSION)){
         session_start();
         }
         $_SESSION['user_code'] = array();
         $_SESSION['user_code'] = $user_code;
-
+*/
         return $this->redirect(['action' => 'addformpre',
         's' => ['mess' => "管理No.「".$product_code."」の製品は検査表親テーブルの登録がされていません。"]]);
 
@@ -189,13 +193,13 @@ class KensahyousokuteidatasController extends AppController
         $this->set('product_conditon_parent_id', $product_conditon_parent_id);
 
       }else{
-
+/*
         if(!isset($_SESSION)){
         session_start();
         }
         $_SESSION['user_code'] = array();
         $_SESSION['user_code'] = $user_code;
-
+*/
         return $this->redirect(['action' => 'addformpre',
         's' => ['mess' => "管理No.「".$product_code."」の製品は検査表親テーブルの登録がされていません。"]]);
 
@@ -247,13 +251,13 @@ class KensahyousokuteidatasController extends AppController
         $this->set('InspectionStandardSizeChildren', $InspectionStandardSizeChildren);
 
       }else{
-
+/*
         if(!isset($_SESSION)){
         session_start();
         }
         $_SESSION['user_code'] = array();
         $_SESSION['user_code'] = $user_code;
-
+*/
         return $this->redirect(['action' => 'addformpre',
         's' => ['mess' => "管理No.「".$product_code."」の製品は規格登録がされていません。"]]);
 
@@ -364,13 +368,13 @@ class KensahyousokuteidatasController extends AppController
             'judge' => $data['gouhi'.$j],
             "delete_flag" => 0,
             'created_at' => date("Y-m-d H:i:s"),
-            "created_staff" => $staff_id
+            "created_staff" => $Users[0]["staff_id"]//ログインは不要
           ];
-
+/*
           echo "<pre>";
           print_r($tourokuInspectionDataResultParents);
           echo "</pre>";
-
+*/
           $InspectionDataResultParents = $this->InspectionDataResultParents->patchEntity($this->InspectionDataResultParents->newEntity(), $tourokuInspectionDataResultParents);
           $connection = ConnectionManager::get('default');//トランザクション1
           // トランザクション開始2
@@ -398,17 +402,17 @@ class KensahyousokuteidatasController extends AppController
                     'result_size' => $data['result_size'.$j.$i],
                     "delete_flag" => 0,
                     'created_at' => date("Y-m-d H:i:s"),
-                    "created_staff" => $staff_id
+                    "created_staff" => $Users[0]["staff_id"]//ログインは不要
                   ];
 
                 }
 
                 if($i == 9){//各jに対して一括登録
-
+/*
                   echo "<pre>";
                   print_r($tourokuInspectionDataResultChildren);
                   echo "</pre>";
-
+*/
                   $InspectionDataResultChildren = $this->InspectionDataResultChildren
                   ->patchEntities($this->InspectionDataResultChildren->newEntity(), $tourokuInspectionDataResultChildren);
                   if ($this->InspectionDataResultChildren->saveMany($InspectionDataResultChildren)) {
@@ -557,7 +561,7 @@ class KensahyousokuteidatasController extends AppController
         $this->set('gouhi'.$j,${"gouhi".$j});
 
       }
-      
+
       echo "<pre>";//フォームの再読み込みの防止
       print_r("  ");
       echo "</pre>";
@@ -576,14 +580,14 @@ class KensahyousokuteidatasController extends AppController
   //    $_SESSION['kensahyouresultdata'] = array();
 
       $data = $arraykensahyouresultdata;
-
+/*
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
       $this->set('staff_name', $staff_name);
       $user_code = $data["user_code"];
       $this->set('user_code', $user_code);
-
+*/
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
@@ -1172,7 +1176,7 @@ class KensahyousokuteidatasController extends AppController
 
         ${"lot_number".$n} = $InspectionDataResultParents[$j]['lot_number'];
         $this->set('lot_number'.$n,${"lot_number".$n});
-        ${"datetime".$n} = $InspectionDataResultParents[$j]['datetime']->format('y-n-j G:i');
+        ${"datetime".$n} = $InspectionDataResultParents[$j]['datetime']->format('Y-n-j G:i');
         $this->set('datetime'.$n,${"datetime".$n});
 
         $Staffs = $this->Staffs->find()
@@ -1267,8 +1271,11 @@ class KensahyousokuteidatasController extends AppController
       $arrGouhi = ["0" => "合", "1" => "否"];
       $this->set('arrGouhi', $arrGouhi);
 
+      $userlogincheck = $user_code."_".$data["password"];
+
       $htmlinputstaff = new htmlLogin();//クラスを使用
-      $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
+  //    $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
+      $arraylogindate = $htmlinputstaff->inputstaffprogram($userlogincheck);//クラスを使用210608更新
 
       if($arraylogindate[0] === "no_staff"){
 
@@ -1553,7 +1560,7 @@ class KensahyousokuteidatasController extends AppController
       }
 
       if($data["check"] < 1 && $m > 0){
-        $mess = "以下のように更新します。よろしければ決定ボタンを押してください。";
+        $mess = "上記のように更新します。よろしければ決定ボタンを押してください。";
         $this->set('delete_flag', 0);
       }else{
         $mess = "データを削除します。よろしければ決定ボタンを押してください。";

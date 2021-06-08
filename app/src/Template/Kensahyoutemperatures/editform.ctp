@@ -33,19 +33,14 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
- <table class="top_big">
-  <tr></tr>
- </table>
-
 <?php for($j=1; $j<=$countseikeiki; $j++): ?>
-<br>
 
 <?= $this->Form->control('product_material_machine_id'.$j, array('type'=>'hidden', 'value'=>${"product_material_machine_id".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('cylinder_name'.$j, array('type'=>'hidden', 'value'=>${"cylinder_name".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('idmoto'.$j, array('type'=>'hidden', 'value'=>${"idmoto".$j}, 'label'=>false)) ?>
 
 <table>
-<tr>
+  <tr class="parents">
   <td style='width:80'>成形機</td>
   <td width="100">温度条件</td>
   <td style='width:70'>C １</td>
@@ -57,15 +52,15 @@ echo $this->Html->css('kensahyou');
   <td style='width:70'>D ２</td>
   <td style='width:100'>押出回転<br>（rpm）</td>
   <td style='width:100'>負荷（A）</td>
-  <td style='width:100'>引取速度<br>（m/min）</td>
-  <td style='width:160' colspan="2">ｽｸﾘｰﾝﾒｯｼｭ : 枚数</td>
-  <td style='width:100'>ｽｸﾘｭｳ</td>
+  <td style='width:122'>引取速度<br>（m/min）</td>
+  <td style='width:200' colspan="2">ｽｸﾘｰﾝﾒｯｼｭ : 枚数</td>
+  <td style='width:200'>ｽｸﾘｭｳ</td>
 </tr>
 
 <?php
    for($i=1; $i<=3; $i++){
 
-        echo "<tr>\n";
+     echo "<tr class='children'>\n";
 
         if($i==1){
           echo "<td rowspan=3>\n";

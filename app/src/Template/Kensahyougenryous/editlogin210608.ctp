@@ -18,34 +18,35 @@ echo $this->Html->css('kensahyou');
   <tbody>
     <td style='border: none;align: left'>
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyoutemperatures/menu' /><font size='4' color=black>成形温度登録</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyoutemperatures/kensakupre' /><font size='4' color=black>登録データ呼出</font></a>
+    <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
+    <font size='4'>　>>　</font><a href='/Kensahyougenryous/menu' /><font size='4' color=black>原料登録</font></a>
+    <font size='4'>　>>　</font><a href='/Kensahyougenryous/kensakupre' /><font size='4' color=black>登録データ呼出</font></a>
     </a></td>
   </tbody>
 </table>
 
 <br><br><br>
+
+<table>
+  <tbody>
+    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('入力ミスの修正の場合はこのまま進んでください。新たな情報に更新する場合は新規登録から登録してください。') ?></strong></td></tr>
+  </tbody>
+</table>
+<br>
+
 <?= $this->Form->create($product, ['url' => ['action' => 'editform']]) ?>
 
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 
 <br>
  <div align="center"><font color="red" size="3"><?= __($mess) ?></font></div>
- <div align="center"><font size="3"><?= __("データ登録者の社員コードとパスワードを入力してください。") ?></font></div>
+ <div align="center"><font size="3"><?= __("データ登録者の社員コードを入力してください。") ?></font></div>
 <br>
-<table align="center">
-  <tbody class="login">
-    <tr height="45">
-      <td width="150"><strong>社員コード</strong></td>
-      <td class="login" width="200"><?= $this->Form->control('user_code', array('type'=>'text', 'label'=>false, 'autofocus'=>true)) ?></td>
-    </tr>
-    <tr height="45">
-      <td align="center"><strong>パスワード</strong></td>
-      <td class="login" align="center"><?= $this->Form->control('password', array('type'=>'password', 'label'=>false)) ?></td>
-    </tr>
-  </tbody>
-</table>
+
+
+<?php
+     echo $inputstaffctp;
+?>
 
 <br>
 

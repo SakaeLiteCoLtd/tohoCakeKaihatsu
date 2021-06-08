@@ -34,16 +34,10 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
- <br>
- <table class="top">
-   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('以下の内容で登録します。よろしければ「登録確定」ボタンを押してください。') ?></strong></td></tr>
- </table>
 
 <?= $this->Form->control('pickup_speed', array('type'=>'hidden', 'value'=>$pickup_speed, 'label'=>false)) ?>
 
 <?php for($j=1; $j<=$countseikeiki; $j++): ?>
-
-<br>
 
 <?= $this->Form->control('product_material_machine_id'.$j, array('type'=>'hidden', 'value'=>${"product_material_machine_id".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('cylinder_name'.$j, array('type'=>'hidden', 'value'=>${"cylinder_name".$j}, 'label'=>false)) ?>
@@ -67,7 +61,7 @@ echo $this->Html->css('kensahyou');
 <?php endfor;?>
 
 <table>
-<tr>
+  <tr class="parents">
   <td style='width:80'>成形機</td>
   <td width="100">温度条件</td>
   <td style='width:70'>C １</td>
@@ -78,15 +72,15 @@ echo $this->Html->css('kensahyou');
   <td style='width:70'>D １</td>
   <td style='width:70'>D ２</td>
   <td style='width:200' colspan="2">押出回転(rpm)/負荷(A)</td>
-  <td style='width:100'>引取速度<br>（m/min）</td>
-  <td style='width:160' colspan="2">ｽｸﾘｰﾝﾒｯｼｭ : 枚数</td>
-  <td style='width:100'>ｽｸﾘｭｳ</td>
+  <td style='width:126'>引取速度<br>（m/min）</td>
+  <td style='width:200' colspan="2">ｽｸﾘｰﾝﾒｯｼｭ : 枚数</td>
+  <td style='width:200'>ｽｸﾘｭｳ</td>
 </tr>
 
 <?php
    for($i=1; $i<=3; $i++){
 
-        echo "<tr>\n";
+     echo "<tr class='children'>\n";
 
         if($i==1){
           echo "<td rowspan=3>\n";
@@ -269,6 +263,11 @@ echo $this->Html->css('kensahyou');
 </table>
 
 <?php endfor;?>
+
+<br>
+<table class="top">
+  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('上記の内容で登録します。よろしければ「登録確定」ボタンを押してください。') ?></strong></td></tr>
+</table>
 
 <br><br>
 <table align="center">

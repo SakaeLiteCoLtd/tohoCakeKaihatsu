@@ -32,11 +32,12 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$staff_name, 'label'=>false)) ?>
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('tuikaseikeiki', array('type'=>'hidden', 'value'=>$tuikaseikeiki, 'label'=>false)) ?>
+<br> <br> <br>
 
 <?php
       echo $htmlkensahyouheader;
  ?>
-
+<br>
  <table class="top_big">
   <tbody>
     <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('・データを編集してください。（データを全て削除する場合は「データ削除」ボタンを押してください）') ?></strong></td></tr>
@@ -71,21 +72,21 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('tuikagenryou'.$j, array('type'=>'hidden', 'value'=>${"tuikagenryou".$j}, 'label'=>false)) ?>
 
 <table>
-<tr>
+  <tr class="parents">
   <td width="50"><font size='2'>成形機<br>削除</td>
-  <td width="100">成形機</td>
+  <td width="150">成形機</td>
   <td width="50"><font size='2'>原料<br>削除</td>
-  <td width="350">メーカー：材料名：グレードNo.：色</td>
-  <td width="130">配合比</td>
-  <td width="150">乾燥温度</td>
-  <td width="150">乾燥時間</td>
-  <td width="180">再生配合比</td>
+  <td width="450">メーカー：材料名：グレードNo.：色</td>
+  <td width="150">配合比</td>
+  <td width="170">乾燥温度</td>
+  <td width="170">乾燥時間</td>
+  <td width="200">再生配合比</td>
 </tr>
 
 <?php
    for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
-        echo "<tr>\n";
+     echo "<tr class='children'>\n";
 
         if($i==1){
           echo "<td rowspan=${"tuikagenryou".$j}>\n";

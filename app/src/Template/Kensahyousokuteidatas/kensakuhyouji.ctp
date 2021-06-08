@@ -27,20 +27,19 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
-<br>
 <?= $this->Form->create($product, ['url' => ['action' => 'editlogin']]) ?>
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('datetimesta', array('type'=>'hidden', 'value'=>$datetimesta, 'label'=>false)) ?>
 <?= $this->Form->control('datetimefin', array('type'=>'hidden', 'value'=>$datetimefin, 'label'=>false)) ?>
 <?= $this->Form->control('datekensaku', array('type'=>'hidden', 'value'=>$datekensaku, 'label'=>false)) ?>
 
-<table class="top_big">
+  <table class="white">
 
   <tr>
     <td width="50" rowspan='7'>No.</td>
   </tr>
   <tr>
-    <td width="140" rowspan='6'>時間</td>
+    <td width="160" rowspan='6'>時間</td>
   </tr>
 
 <tr>
@@ -98,10 +97,10 @@ echo $this->Html->css('kensahyou');
 
 <?php for($j=1; $j<=$gyou; $j++): ?>
 
-<table>
+  <table class="white">
 
   <td style='width:50; border-top-style:none; font-size: 11pt'><?= h(${"lot_number".$j}) ?></td>
-  <td style='width:140; border-top-style:none; font-size: 11pt'><?= h(${"datetime".$j}) ?></td></td>
+  <td style='width:160; border-top-style:none; font-size: 11pt'><?= h(${"datetime".$j}) ?></td></td>
   <td style='width:130; border-top-style:none'><?= h(${"staff_hyouji".$j}) ?></td>
 
   <?php for($i=1; $i<=9; $i++): ?>

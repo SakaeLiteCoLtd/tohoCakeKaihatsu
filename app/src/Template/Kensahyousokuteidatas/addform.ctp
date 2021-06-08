@@ -25,9 +25,6 @@ echo $this->Html->css('kensahyou');
 
 <?= $this->Form->create($product, ['url' => ['action' => 'addform']]) ?>
 
-<?= $this->Form->control('user_code', array('type'=>'hidden', 'value'=>$user_code, 'label'=>false)) ?>
-<?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>
-<?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$staff_name, 'label'=>false)) ?>
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('inspection_standard_size_parent_id', array('type'=>'hidden', 'value'=>$inspection_standard_size_parent_id, 'label'=>false)) ?>
 <?= $this->Form->control('product_conditon_parent_id', array('type'=>'hidden', 'value'=>$product_conditon_parent_id, 'label'=>false)) ?>
@@ -36,11 +33,7 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
- <table class="top">
-  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></td></tr>
-</table>
-
-<table>
+<table class="white">
 
   <tr>
     <td width="50" rowspan='7'>No.</td>
@@ -115,7 +108,7 @@ echo $this->Html->css('kensahyou');
 
   <?php if ($j == $gyou): ?>
 
-<table>
+    <table class="form">
 
   <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
@@ -134,7 +127,7 @@ echo $this->Html->css('kensahyou');
 
 <?php else : ?>
 
-  <table>
+  <table class="white">
 
     <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
     <td style='width:100; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
@@ -191,6 +184,11 @@ echo $this->Html->css('kensahyou');
 <?php endfor;?>
 
 <?= $this->Form->control('gyou', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
+
+
+ <table class="top">
+  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></td></tr>
+</table>
 
 <br>
 <table align="center">

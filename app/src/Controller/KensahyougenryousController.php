@@ -55,11 +55,11 @@ class KensahyougenryousController extends AppController
      header('Expires:');
      header('Cache-Control:');
      header('Pragma:');
-
+/*
      echo "<pre>";
      print_r("　");
      echo "</pre>";
-
+*/
     }
 
     public function menu()
@@ -106,13 +106,16 @@ class KensahyougenryousController extends AppController
 
       $this->set('user_code', $user_code);
 
+      $userlogincheck = $user_code."_".$data["password"];
+
       $htmlinputstaff = new htmlLogin();//クラスを使用
-      $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
+  //    $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
+      $arraylogindate = $htmlinputstaff->inputstaffprogram($userlogincheck);//クラスを使用210608更新
 
       if($arraylogindate[0] === "no_staff"){
 
         return $this->redirect(['action' => 'addlogin',
-        's' => ['mess' => "社員コードが存在しません。もう一度やり直してください。"]]);
+        's' => ['mess' => "社員コードまたはパスワードが間違っています。もう一度やり直してください。"]]);
 
       }else{
 
@@ -141,6 +144,7 @@ class KensahyougenryousController extends AppController
       $staff_name = $data["staff_name"];
       $this->set('staff_name', $staff_name);
       $user_code = $data["user_code"];
+      $this->set('user_code', $user_code);
 
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
@@ -1131,11 +1135,7 @@ class KensahyougenryousController extends AppController
 
       $data = $this->request->getData();
       $user_code = $data["user_code"];
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+/*//210608更新
       $htmlinputstaff = new htmlLogin();//クラスを使用
       $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
 
@@ -1152,7 +1152,7 @@ class KensahyougenryousController extends AppController
         $this->set('staff_name', $staff_name);
 
       }
-
+*/
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
@@ -1189,6 +1189,11 @@ class KensahyougenryousController extends AppController
       $this->set('arrMaterials', $arrMaterials);
 
       if(isset($data["genryoutuika"])){//原料追加ボタン
+
+        $staff_id = $data["staff_id"];
+        $staff_name = $data["staff_name"];
+        $this->set('staff_id', $staff_id);
+        $this->set('staff_name', $staff_name);
 
         if(!isset($data["tuikaseikeiki"])){//成形機の追加前
 
@@ -1269,6 +1274,11 @@ class KensahyougenryousController extends AppController
 
       }elseif(isset($data["seikeikituika"])){//成形機追加ボタン
 
+        $staff_id = $data["staff_id"];
+        $staff_name = $data["staff_name"];
+        $this->set('staff_id', $staff_id);
+        $this->set('staff_name', $staff_name);
+
         $tuikaseikeiki = $data["tuikaseikeiki"] + 1;
         $this->set('tuikaseikeiki', $tuikaseikeiki);
 
@@ -1337,6 +1347,11 @@ class KensahyougenryousController extends AppController
         }
 
       }elseif(isset($data["kakuninn"])){//確認ボタン
+
+        $staff_id = $data["staff_id"];
+        $staff_name = $data["staff_name"];
+        $this->set('staff_id', $staff_id);
+        $this->set('staff_name', $staff_name);
 
         //成形機削除と原料削除が同時に押されていたらアラート
         $double_delete_check = 0;
@@ -1446,6 +1461,11 @@ class KensahyougenryousController extends AppController
 
       }elseif(isset($data["sakujo"])){//削除ボタン
 
+        $staff_id = $data["staff_id"];
+        $staff_name = $data["staff_name"];
+        $this->set('staff_id', $staff_id);
+        $this->set('staff_name', $staff_name);
+
         if(!isset($_SESSION)){
           session_start();
         }
@@ -1456,6 +1476,26 @@ class KensahyougenryousController extends AppController
         return $this->redirect(['action' => 'editcomfirm']);
 
       }else{//最初にこの画面に来た時
+
+        $userlogincheck = $user_code."_".$data["password"];
+
+        $htmlinputstaff = new htmlLogin();//クラスを使用
+    //    $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
+        $arraylogindate = $htmlinputstaff->inputstaffprogram($userlogincheck);//クラスを使用210608更新
+
+        if($arraylogindate[0] === "no_staff"){
+
+          return $this->redirect(['action' => 'addlogin',
+          's' => ['mess' => "社員コードまたはパスワードが間違っています。もう一度やり直してください。"]]);
+
+        }else{
+
+          $staff_id = $arraylogindate[0];
+          $staff_name = $arraylogindate[1];
+          $this->set('staff_id', $staff_id);
+          $this->set('staff_name', $staff_name);
+
+        }
 
         $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
         ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])

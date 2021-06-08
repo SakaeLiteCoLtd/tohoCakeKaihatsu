@@ -39,13 +39,7 @@ $mes = "";
       echo $htmlkensahyouheader;
  ?>
 
-<br><br>
-<table class="top">
-  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('以下の内容で登録します。よろしければ「登録確定」ボタンを押してください。') ?></strong></td></tr>
-</table>
-<br>
-
-<table>
+<table class="white">
 
   <tr>
     <td width="50" rowspan='7'>No.</td>
@@ -113,7 +107,7 @@ $mes = "";
      $j = $gyou + 1 - $k;
   ?>
 
-<table>
+  <table class="form">
 
   <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <td style='width:100; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
@@ -168,6 +162,13 @@ $mes = "";
 <?php endfor;?>
 
 <?= $this->Form->control('gyou', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
+
+<br><br>
+<table class="top">
+  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('上記の内容で登録します。よろしければ「登録確定」ボタンを押してください。') ?></strong></td></tr>
+</table>
+<br>
+
 
 <br>
 <table>

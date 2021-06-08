@@ -90,7 +90,8 @@ class htmlkensahyoukadoumenu extends AppController
     $image_file_name_dir = "/img/".$inspectionStandardSizeParents[0]["image_file_name_dir"];
 
       $html =
-          "<table bgcolor='white' width='1000' style='position: fixed;top: 85px; left:20%; z-index:9999;'>\n".
+  //    "<table bgcolor='white' width='1000' style='position: fixed;top: 85px; left:20%; z-index:9999;'>\n".//固定
+      "<table bgcolor='white' width='1436'>\n".
           "<tr>\n".
           "<td width='500' colspan='2' nowrap='nowrap' style='height: 40px'><strong>\n".
           "検査成績書</strong><br>（兼　成形条件表・梱包仕様書・作業手順書）\n".

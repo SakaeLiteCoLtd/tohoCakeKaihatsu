@@ -73,20 +73,20 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('tuikagenryou'.$j, array('type'=>'hidden', 'value'=>${"tuikagenryou".$j}, 'label'=>false)) ?>
 
 <table>
-<tr>
-  <td width="100">成形機</td>
-  <td width="150">メーカー</td>
-  <td width="250">材料名：グレードNo.：色</td>
-  <td width="130">配合比</td>
-  <td width="150">乾燥温度</td>
-  <td width="150">乾燥時間</td>
-  <td width="180">再生配合比</td>
+<tr class="parents">
+  <td width="150">成形機</td>
+  <td width="190">メーカー</td>
+  <td width="300">材料名：グレードNo.：色</td>
+  <td width="190">配合比</td>
+  <td width="190">乾燥温度</td>
+  <td width="190">乾燥時間</td>
+  <td width="200">再生配合比</td>
 </tr>
 
 <?php
    for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
-        echo "<tr>\n";
+        echo "<tr class='children'>\n";
 
         if($i==1){
           echo "<td rowspan=${"tuikagenryou".$j}>\n";

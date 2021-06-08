@@ -24,10 +24,6 @@ echo $this->Html->css('kensahyou');
 <br><br><br>
 <?= $this->Form->create($product, ['url' => ['action' => 'addform']]) ?>
 
-<?= $this->Form->control('user_code', array('type'=>'hidden', 'value'=>$user_code, 'label'=>false)) ?>
-<?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>
-<?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$staff_name, 'label'=>false)) ?>
-
 <br>
 <div align="center"><font color="red" size="3"><?= __($mess) ?></font></div>
 <div align="center"><font size="3"><?= __("製品の管理No.を入力してください。") ?></font></div>

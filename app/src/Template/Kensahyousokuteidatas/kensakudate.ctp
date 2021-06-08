@@ -64,7 +64,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
 
   <div align="center"><strong><font color="blue"><?php echo $mes;?></font></strong></div>
 <br>
-  <table>
+<table class="white">
     <tbody class='sample non-sample'>
       <tr>
         <td style='width:130'>測定日</td>
@@ -95,7 +95,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
 
   <div align="center"><strong><font color="blue"><?php echo $mes;?></font></strong></div>
   <br>
-    <table>
+  <table class="white">
       <tbody class='sample non-sample'>
         <tr>
           <td style='width:130'>測定日</td>

@@ -31,51 +31,49 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
-<br>
+<table class="white">
 
-<table class="top">
-
-<tr>
+  <tr>
   <td style='width:100'>測定箇所</td>
 
   <?php for($i=1; $i<=9; $i++): ?>
-    <td style='width:110'><?= h(${"size_name".$i}) ?></td>
+    <td style='width:145'><?= h(${"size_name".$i}) ?></td>
     <?= $this->Form->control('size_name'.$i, array('type'=>'hidden', 'value'=>${"size_name".$i}, 'label'=>false)) ?>
   <?php endfor;?>
 
 </tr>
 <tr>
-  <td style='width:100'>上限</td>
+  <td>上限</td>
 
   <?php for($i=1; $i<=9; $i++): ?>
-    <td style='width:110'><?= h(${"upper_limit".$i}) ?></td>
+    <td><?= h(${"upper_limit".$i}) ?></td>
     <?= $this->Form->control('upper_limit'.$i, array('type'=>'hidden', 'value'=>${"upper_limit".$i}, 'label'=>false)) ?>
   <?php endfor;?>
 
 </tr>
 <tr>
-  <td style='width:100'>下限</td>
+  <td>下限</td>
 
     <?php for($i=1; $i<=9; $i++): ?>
-      <td style='width:110'><?= h(${"lower_limit".$i}) ?></td>
+      <td><?= h(${"lower_limit".$i}) ?></td>
       <?= $this->Form->control('lower_limit'.$i, array('type'=>'hidden', 'value'=>${"lower_limit".$i}, 'label'=>false)) ?>
     <?php endfor;?>
 
 </tr>
 <tr>
-  <td style='width:100'>規格</td>
+  <td>規格</td>
 
     <?php for($i=1; $i<=9; $i++): ?>
-      <td style='width:110'><?= h(${"size".$i}) ?></td>
+      <td><?= h(${"size".$i}) ?></td>
       <?= $this->Form->control('size'.$i, array('type'=>'hidden', 'value'=>${"size".$i}, 'label'=>false)) ?>
     <?php endfor;?>
 
 </tr>
 <tr>
-  <td style='width:100'>検査機</td>
+  <td>検査機</td>
 
     <?php for($i=1; $i<=9; $i++): ?>
-      <td style='width:110'><?= h(${"measuring_instrument".$i}) ?></td>
+      <td><?= h(${"measuring_instrument".$i}) ?></td>
       <?= $this->Form->control('measuring_instrument'.$i, array('type'=>'hidden', 'value'=>${"measuring_instrument".$i}, 'label'=>false)) ?>
     <?php endfor;?>
 

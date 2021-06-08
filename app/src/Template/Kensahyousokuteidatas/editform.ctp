@@ -26,7 +26,6 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
-<br>
 <?= $this->Form->create($product, ['url' => ['action' => 'editcomfirm']]) ?>
 <?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>
 <?= $this->Form->control('user_code', array('type'=>'hidden', 'value'=>$user_code, 'label'=>false)) ?>
@@ -35,13 +34,13 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('datetimesta', array('type'=>'hidden', 'value'=>$datetimesta, 'label'=>false)) ?>
 <?= $this->Form->control('datetimefin', array('type'=>'hidden', 'value'=>$datetimefin, 'label'=>false)) ?>
 
-<table class="top">
+<table class="white">
 
   <tr>
     <td width="50" rowspan='7'>No.</td>
   </tr>
   <tr>
-    <td width="140" rowspan='6'>時間</td>
+    <td width="110" rowspan='6'>時間</td>
   </tr>
 
 <tr>
@@ -104,10 +103,10 @@ echo $this->Html->css('kensahyou');
   <?= $this->Form->control('gyoumax', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
   <?= $this->Form->control('datekensaku', array('type'=>'hidden', 'value'=>$datekensaku, 'label'=>false)) ?>
 
-<table>
+  <table class="white">
 
   <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
-  <td style='width:140; border-top-style:none'><?= $this->Form->control('datetime'.$j, array('type'=>'time', 'value'=>${"datetime".$j}, 'label'=>false)) ?></td>
+  <td style='width:110; border-top-style:none'><?= $this->Form->control('datetime'.$j, array('type'=>'time', 'value'=>${"datetime".$j}, 'label'=>false)) ?></td>
   <td style='width:130; border-top-style:none'>
     <font size='1.8'><?= h("社員コード：") ?>
     </font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'value'=>${"user_code".$j}, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'required' => 'true')) ?>

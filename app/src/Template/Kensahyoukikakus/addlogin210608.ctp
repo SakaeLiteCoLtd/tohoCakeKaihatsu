@@ -9,21 +9,22 @@ use App\myClass\classprograms\htmlLogin;//myClassフォルダに配置したク�
 $htmlinputstaffctp = new htmlLogin();
 $inputstaffctp = $htmlinputstaffctp->inputstaffctp();
 ?>
-<br>
-<?php
-     echo $htmlkensahyoukadou;
-?>
-<br>
-<?php
-     echo $htmlkensahyoumenu;
-?>
-
 <?php
 $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
 
-<br><br>
+<table class='sample hesdermenu'>
+  <tbody>
+    <td style='border: none;'>
+      <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoukikakus/addlogin' /><font size='4' color=black>規格登録</font></a>
+    </td>
+  </tbody>
+</table>
+
+<br><br><br>
 
 <?= $this->Form->create($product, ['url' => ['action' => 'addformpre']]) ?>
 
@@ -36,17 +37,6 @@ echo $this->Html->css('kensahyou');
 <?php
      echo $inputstaffctp;
 ?>
-
-<table>
-  <tbody style="background-color: #FFFFCC">
-    <tr>
-      <td width="280"><strong>社員コード</strong></td>
-    </tr>
-    <tr>
-      <td style="border: 1px solid black"><?= $this->Form->control('user_code', array('type'=>'text', 'label'=>false, 'autofocus'=>true, 'required'=>true)) ?></td>
-    </tr>
-  </tbody>
-</table>
 
 <br>
 

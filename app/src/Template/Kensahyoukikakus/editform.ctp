@@ -37,47 +37,45 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
-<br>
-
-<table class="top">
+<table class="white">
 
 <tr>
   <td style='width:100'>測定箇所</td>
 
   <?php for($i=1; $i<=9; $i++): ?>
-    <td style='width:110'><?= $this->Form->control('size_name'.$i, array('type'=>'text', 'value'=>${"size_name".$i}, 'label'=>false)) ?></td>
+    <td style='width:145'><?= $this->Form->control('size_name'.$i, array('type'=>'text', 'value'=>${"size_name".$i}, 'label'=>false)) ?></td>
   <?php endfor;?>
 
 </tr>
 <tr>
-  <td style='width:100'>上限</td>
+  <td>上限</td>
 
   <?php for($i=1; $i<=9; $i++): ?>
-    <td style='width:110'><?= $this->Form->control('upper_limit'.$i, array('type'=>'text', 'value'=>${"upper_limit".$i}, 'label'=>false)) ?></td>
+    <td><?= $this->Form->control('upper_limit'.$i, array('type'=>'text', 'value'=>${"upper_limit".$i}, 'label'=>false)) ?></td>
   <?php endfor;?>
 
 </tr>
 <tr>
-  <td style='width:100'>下限</td>
+  <td>下限</td>
 
     <?php for($i=1; $i<=9; $i++): ?>
-      <td style='width:110'><?= $this->Form->control('lower_limit'.$i, array('type'=>'text', 'value'=>${"lower_limit".$i}, 'label'=>false)) ?></td>
+      <td><?= $this->Form->control('lower_limit'.$i, array('type'=>'text', 'value'=>${"lower_limit".$i}, 'label'=>false)) ?></td>
     <?php endfor;?>
 
 </tr>
 <tr>
-  <td style='width:100'>規格</td>
+  <td>規格</td>
 
     <?php for($i=1; $i<=9; $i++): ?>
-      <td style='width:110'><?= $this->Form->control('size'.$i, array('type'=>'text', 'value'=>${"size".$i}, 'label'=>false)) ?></td>
+      <td><?= $this->Form->control('size'.$i, array('type'=>'text', 'value'=>${"size".$i}, 'label'=>false)) ?></td>
     <?php endfor;?>
 
 </tr>
 <tr>
-  <td style='width:100'>検査機</td>
+  <td>検査機</td>
 
     <?php for($i=1; $i<=9; $i++): ?>
-      <td style='width:110'><?= $this->Form->control('measuring_instrument'.$i, array('type'=>'text', 'value'=>${"measuring_instrument".$i}, 'label'=>false)) ?></td>
+      <td><?= $this->Form->control('measuring_instrument'.$i, array('type'=>'text', 'value'=>${"measuring_instrument".$i}, 'label'=>false)) ?></td>
     <?php endfor;?>
 
 </tr>

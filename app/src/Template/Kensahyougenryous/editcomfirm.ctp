@@ -28,11 +28,12 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('tuikaseikeiki', array('type'=>'hidden', 'value'=>$tuikaseikeiki, 'label'=>false)) ?>
 <?= $this->Form->control('delete_flag', array('type'=>'hidden', 'value'=>$delete_flag, 'label'=>false)) ?>
+<br> <br> <br>
 
 <?php
       echo $htmlkensahyouheader;
  ?>
-
+<br>
  <table class="top_big">
   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
 </table>
@@ -44,19 +45,19 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('cylinder_name'.$j, array('type'=>'hidden', 'value'=>${"cylinder_name".$j}, 'label'=>false)) ?>
 
 <table>
-<tr>
-  <td width="100">成形機</td>
-  <td width="350">メーカー：材料名：グレードNo.：色</td>
-  <td width="130">配合比</td>
-  <td width="130">乾燥温度</td>
-  <td width="130">乾燥時間</td>
-  <td width="180">再生配合比</td>
+  <tr class="parents">
+    <td width="150">成形機</td>
+    <td width="490">メーカー：材料名：グレードNo.：色</td>
+    <td width="190">配合比</td>
+    <td width="190">乾燥温度</td>
+    <td width="190">乾燥時間</td>
+    <td width="200">再生配合比</td>
 </tr>
 
 <?php
    for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
-        echo "<tr>\n";
+     echo "<tr class='children'>\n";
 
         if($i==1){
           echo "<td rowspan=${"tuikagenryou".$j}>\n";

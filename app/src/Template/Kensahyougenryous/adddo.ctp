@@ -30,7 +30,12 @@ echo $this->Html->css('kensahyou');
   //   echo $htmlkensahyoumenu;
 ?>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'addlogin']]) ?>
+<?= $this->Form->create($product, ['url' => ['controller' => 'Kensahyoutemperatures', 'action' => 'addform']]) ?>
+
+<?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$this->request->getData('staff_id'), 'label'=>false)) ?>
+<?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$this->request->getData('staff_name'), 'label'=>false)) ?>
+<?= $this->Form->control('user_code', array('type'=>'hidden', 'value'=>$this->request->getData('user_code'), 'label'=>false)) ?>
+<?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$this->request->getData('product_code'), 'label'=>false)) ?>
 
 <?php
       echo $htmlkensahyouheader;
@@ -45,19 +50,19 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('tuikagenryou'.$j, array('type'=>'hidden', 'value'=>${"tuikagenryou".$j}, 'label'=>false)) ?>
 
 <table>
-<tr>
-  <td width="100">成形機</td>
-  <td width="350">グレードNo.：メーカー：材料名</td>
-  <td width="130">配合比</td>
-  <td width="130">乾燥温度</td>
-  <td width="130">乾燥時間</td>
-  <td width="180">再生配合比</td>
+  <tr class="parents">
+    <td width="150">成形機</td>
+    <td width="490">メーカー：材料名：グレードNo.：色</td>
+    <td width="190">配合比</td>
+    <td width="190">乾燥温度</td>
+    <td width="190">乾燥時間</td>
+    <td width="200">再生配合比</td>
 </tr>
 
 <?php
    for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
-        echo "<tr>\n";
+     echo "<tr class='children'>\n";
 
         if($i==1){
           echo "<td rowspan=${"tuikagenryou".$j}>\n";
@@ -92,7 +97,7 @@ echo $this->Html->css('kensahyou');
 <table>
   <tbody class='sample non-sample'>
     <tr>
-      <td style="border-style: none;"><div><?= $this->Form->submit('続けて登録', array('name' => 'kettei')); ?></div></td>
+      <td style="border-style: none;"><div><?= $this->Form->submit('続けて成形温度登録へ', array('name' => 'kettei')); ?></div></td>
     </tr>
   </tbody>
 </table>

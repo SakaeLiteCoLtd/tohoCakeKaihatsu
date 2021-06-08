@@ -9,6 +9,7 @@ use App\myClass\classprograms\htmlLogin;//myClassフォルダに配置したク�
 $htmlinputstaffctp = new htmlLogin();
 $inputstaffctp = $htmlinputstaffctp->inputstaffctp();
 ?>
+
 <?php
 $this->layout = false;
 echo $this->Html->css('kensahyou');
@@ -16,36 +17,28 @@ echo $this->Html->css('kensahyou');
 
 <table class='sample hesdermenu'>
   <tbody>
-    <td style='border: none;align: left'>
+    <td style='border: none;'>
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyoutemperatures/menu' /><font size='4' color=black>成形温度登録</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyoutemperatures/kensakupre' /><font size='4' color=black>登録データ呼出</font></a>
-    </a></td>
+      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/menu' /><font size='4' color=black>測定データ登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/addlogin' /><font size='4' color=black>新規登録</font></a>
+    </td>
   </tbody>
 </table>
 
 <br><br><br>
-<?= $this->Form->create($product, ['url' => ['action' => 'editform']]) ?>
 
-<?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'addformpre']]) ?>
 
 <br>
  <div align="center"><font color="red" size="3"><?= __($mess) ?></font></div>
- <div align="center"><font size="3"><?= __("データ登録者の社員コードとパスワードを入力してください。") ?></font></div>
+ <div align="center"><font size="3"><?= __("データ登録者の社員コードを入力してください。") ?></font></div>
 <br>
-<table align="center">
-  <tbody class="login">
-    <tr height="45">
-      <td width="150"><strong>社員コード</strong></td>
-      <td class="login" width="200"><?= $this->Form->control('user_code', array('type'=>'text', 'label'=>false, 'autofocus'=>true)) ?></td>
-    </tr>
-    <tr height="45">
-      <td align="center"><strong>パスワード</strong></td>
-      <td class="login" align="center"><?= $this->Form->control('password', array('type'=>'password', 'label'=>false)) ?></td>
-    </tr>
-  </tbody>
-</table>
+
+
+<?php
+     echo $inputstaffctp;
+?>
 
 <br>
 

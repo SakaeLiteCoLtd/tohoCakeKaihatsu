@@ -40,13 +40,8 @@ $mes = "";
       echo $htmlkensahyouheader;
  ?>
 
- <br>
- <table class="top">
-   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></td></tr>
- </table>
- <br>
 
-<table>
+ <table class="white">
 
   <tr>
     <td width="50" rowspan='7'>No.</td>
@@ -118,7 +113,7 @@ $mes = "";
      }
   ?>
 
-<table>
+  <table class="white">
 
   <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
@@ -175,8 +170,6 @@ $mes = "";
 
 <?= $this->Form->control('gyou', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
 
-<br>
-
 <?php if ($delete_flag < 1): ?>
 
 <table>
@@ -189,6 +182,9 @@ $mes = "";
 
 <?php endif; ?>
 
+<table class="top">
+  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></td></tr>
+</table>
 <br>
 
 <table align="center">

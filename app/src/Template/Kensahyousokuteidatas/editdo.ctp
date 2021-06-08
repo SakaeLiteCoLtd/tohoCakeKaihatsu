@@ -29,12 +29,7 @@ echo $this->Html->css('kensahyou');
  ?>
 
 
- <table class="top">
-   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
- </table>
- <br>
-
-<table>
+ <table class="white">
 
   <tr>
     <td width="50" rowspan='7'>No.</td>
@@ -106,7 +101,7 @@ echo $this->Html->css('kensahyou');
      }
   ?>
 
-<table>
+  <table class="white">
 
   <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
@@ -161,6 +156,11 @@ echo $this->Html->css('kensahyou');
 <?php endfor;?>
 
 <?= $this->Form->control('gyou', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
+
+ <table class="top">
+   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
+ </table>
+ <br>
 
 <br><br>
 <table align="center">

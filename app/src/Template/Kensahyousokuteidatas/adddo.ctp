@@ -34,7 +34,7 @@ echo $this->Html->css('kensahyou');
 </table>
 <br>
 
-<table>
+<table class="white">
 
   <tr>
     <td width="90" rowspan='7'>ロットNo.</td>
@@ -102,7 +102,7 @@ echo $this->Html->css('kensahyou');
      $j = $gyou + 1 - $k;
   ?>
 
-<table>
+  <table class="white">
 
   <td style='width:90; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <td style='width:100; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>

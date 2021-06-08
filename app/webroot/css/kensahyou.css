@@ -8,11 +8,53 @@ table {
 }
 
 table.top {
-  margin-top:530px;
+/*  margin-top:530px;*/
 }
 
 table.top_big {
-  margin-top:600px;
+/*  margin-top:600px;*/
+}
+
+tbody.login {
+    background-color: #FFFFCC;
+}
+
+body {
+    background-color: #E6FFFF;
+    /*
+      background-color: #E6FFFF; #FFEEFF
+    */
+}
+
+tr.parents {
+  background-color: #f0e68c;
+/*
+  background-color: #f0e68c; #ffdab9
+*/
+}
+
+tr.children {
+    background-color: #FFFFCC;
+    /*
+    background-color: #FFFFCC; #ffe4e1
+    */
+}
+
+table.white {
+    background-color: white;
+}
+
+table.form {
+  background-color: #FFFFCC;
+}
+
+input[type="password"] {
+  width: 80%;
+}
+
+td.login {
+  border: 1px solid black;
+  height: 40px;
 }
 
 .hesdermenu{
