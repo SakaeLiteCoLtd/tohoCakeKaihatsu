@@ -14,6 +14,8 @@ use App\myClass\classprograms\htmlproductcheck;//myClassフォルダに配置し
 $htmlproductcheck = new htmlproductcheck();
 use App\myClass\menulists\htmlkensahyoukadoumenu;//myClassフォルダに配置したクラスを使用
 $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+use App\myClass\classprograms\htmlkensahyouprogram;//myClassフォルダに配置したクラスを使用
+$htmlkensahyougenryouheader = new htmlkensahyouprogram();
 
 class KensahyoutemperaturesController extends AppController
 {
@@ -207,6 +209,31 @@ class KensahyoutemperaturesController extends AppController
               ];
       $this->set('arrScrew',$arrScrew);
 
+
+      $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
+      ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
+      ->order(["version"=>"DESC"])->toArray();
+
+      $version = $ProductConditionParents[0]["version"];
+
+      $ProductMachineMaterials = $this->ProductMachineMaterials->find()
+      ->contain(['ProductMaterialMachines' => ['ProductConditionParents' => ["Products"]]])
+      ->where(['version' => $version, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
+      ->toArray();
+
+      if($ProductMachineMaterials[0]){
+
+        $htmlkensahyougenryouheader = new htmlkensahyouprogram();
+        $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheader($product_code);
+      	$this->set('htmlgenryouheader',$htmlgenryouheader);
+
+      }else{
+
+        return $this->redirect(['action' => 'addformpre',
+        's' => ['mess' => "管理No.「".$product_code."」の製品は原料登録がされていません。"]]);
+
+      }
+
     }
 
     public function addcomfirm()
@@ -231,6 +258,10 @@ class KensahyoutemperaturesController extends AppController
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
+
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();
+      $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheader($product_code);
+      $this->set('htmlgenryouheader',$htmlgenryouheader);
 
       $countseikeiki = $data["countseikeiki"];
       $this->set('countseikeiki', $countseikeiki);
@@ -300,6 +331,10 @@ class KensahyoutemperaturesController extends AppController
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
+
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();
+      $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheader($product_code);
+      $this->set('htmlgenryouheader',$htmlgenryouheader);
 
       $countseikeiki = $data["countseikeiki"];
       $this->set('countseikeiki', $countseikeiki);
@@ -535,6 +570,10 @@ class KensahyoutemperaturesController extends AppController
 
       }
 
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();
+      $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheader($product_code);
+      $this->set('htmlgenryouheader',$htmlgenryouheader);
+
     }
 
     public function editlogin()
@@ -694,6 +733,10 @@ class KensahyoutemperaturesController extends AppController
               ];
       $this->set('arrScrew',$arrScrew);
 
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();
+      $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheader($product_code);
+      $this->set('htmlgenryouheader',$htmlgenryouheader);
+
     }
 
     public function editcomfirm()
@@ -770,6 +813,10 @@ class KensahyoutemperaturesController extends AppController
       }
       $this->set('mes', $mes);
 
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();
+      $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheader($product_code);
+      $this->set('htmlgenryouheader',$htmlgenryouheader);
+
     }
 
     public function editdo()
@@ -794,6 +841,10 @@ class KensahyoutemperaturesController extends AppController
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
+
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();
+      $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheader($product_code);
+      $this->set('htmlgenryouheader',$htmlgenryouheader);
 
       $countseikeiki = $data["countseikeiki"];
       $this->set('countseikeiki', $countseikeiki);

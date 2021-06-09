@@ -4,6 +4,8 @@
  $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
+ use App\myClass\classprograms\htmlkensahyouprogram;//myClassフォルダに配置したクラスを使用
+ $htmlkensahyougenryouheader = new htmlkensahyouprogram();
 ?>
 <?php
 $this->layout = false;
@@ -32,6 +34,9 @@ echo $this->Html->css('kensahyou');
 <?php
       echo $htmlkensahyouheader;
  ?>
+ <?php
+       echo $htmlgenryouheader;
+  ?>
 
 <?= $this->Form->control('pickup_speed', array('type'=>'hidden', 'value'=>$pickup_speed, 'label'=>false)) ?>
 <?= $this->Form->control('check', array('type'=>'hidden', 'value'=>$this->request->getData('check'), 'label'=>false)) ?>

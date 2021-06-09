@@ -4,6 +4,8 @@
  $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
+ use App\myClass\classprograms\htmlkensahyouprogram;//myClassフォルダに配置したクラスを使用
+ $htmlkensahyougenryouheader = new htmlkensahyouprogram();
 ?>
 <?php
 $this->layout = false;
@@ -30,9 +32,9 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
- <table class="top_big">
- <tr></tr>
-</table>
+ <?php
+       echo $htmlgenryouheader;
+  ?>
 
 <?php for($j=1; $j<=$countseikeiki; $j++): ?>
 

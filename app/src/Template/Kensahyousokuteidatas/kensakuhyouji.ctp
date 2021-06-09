@@ -55,6 +55,13 @@ echo $this->Html->css('kensahyou');
 
 </tr>
 <tr>
+  <td style='width:130'>規格</td>
+
+    <?php for($i=1; $i<=9; $i++): ?>
+      <td style='width:90'><?= h(${"size".$i}) ?></td>
+    <?php endfor;?>
+</tr>
+<tr>
   <td style='width:130'>上限</td>
 
   <?php for($i=1; $i<=9; $i++): ?>
@@ -69,16 +76,8 @@ echo $this->Html->css('kensahyou');
       <td style='width:90'><?= h(${"lower_limit".$i}) ?></td>
     <?php endfor;?>
 
-</tr>
-<tr>
-  <td style='width:130'>規格</td>
-
-    <?php for($i=1; $i<=9; $i++): ?>
-      <td style='width:90'><?= h(${"size".$i}) ?></td>
-    <?php endfor;?>
-
-    <td width="80">良 ・ 不</td>
-    <td width="80">g / 本</td>
+        <td width="100">良 ・ 不</td>
+        <td width="100">g / 本</td>
 
 </tr>
 <tr>

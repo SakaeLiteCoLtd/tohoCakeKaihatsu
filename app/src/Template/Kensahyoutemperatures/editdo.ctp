@@ -4,6 +4,8 @@
  $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
+ use App\myClass\classprograms\htmlkensahyouprogram;//myClassフォルダに配置したクラスを使用
+ $htmlkensahyougenryouheader = new htmlkensahyouprogram();
 ?>
 <?php
 $this->layout = false;
@@ -27,6 +29,9 @@ echo $this->Html->css('kensahyou');
 <?php
       echo $htmlkensahyouheader;
  ?>
+ <?php
+       echo $htmlgenryouheader;
+  ?>
 
 <?php for($j=1; $j<=$countseikeiki; $j++): ?>
 
@@ -238,11 +243,12 @@ echo $this->Html->css('kensahyou');
 
 <?php endfor;?>
 
+<br>
  <table class="top_big">
   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
 </table>
 
-<br><br>
+<br>
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>

@@ -226,7 +226,7 @@ class KensahyoukikakusController extends AppController
       $formcheck = 0;
       $formcheckmess = 0;
 
-      for($i=1; $i<=9; $i++){
+      for($i=1; $i<=10; $i++){
 
         if(strlen($data['size_name'.$i]) > 0){
           ${"size_name".$i} = $data['size_name'.$i];
@@ -304,7 +304,7 @@ class KensahyoukikakusController extends AppController
 
       $tourokuInspectionStandardSizeChildren = array();
 
-      for($i=1; $i<=9; $i++){
+      for($i=1; $i<=10; $i++){
 
         if(strlen($data['size_name'.$i]) > 0){
 
@@ -422,7 +422,7 @@ class KensahyoukikakusController extends AppController
 
       if(isset($InspectionStandardSizeChildren[0])){
 
-        for($i=1; $i<=9; $i++){
+        for($i=1; $i<=10; $i++){
 
           ${"size_name".$i} = "";
           $this->set('size_name'.$i,${"size_name".$i});
@@ -531,7 +531,7 @@ class KensahyoukikakusController extends AppController
       'InspectionStandardSizeChildren.delete_flag' => 0])
       ->order(["InspectionStandardSizeParents.version"=>"DESC"])->toArray();
 
-        for($i=1; $i<=9; $i++){
+        for($i=1; $i<=10; $i++){
 
           ${"id".$i} = "";
           $this->set('id'.$i,${"id".$i});
@@ -600,7 +600,7 @@ class KensahyoukikakusController extends AppController
       $formcheck = 0;
       $formcheckmess = 0;
 
-      for($i=1; $i<=9; $i++){
+      for($i=1; $i<=10; $i++){
 
         if(strlen($data['size_name'.$i]) > 0){
           ${"size_name".$i} = $data['size_name'.$i];
@@ -685,7 +685,7 @@ class KensahyoukikakusController extends AppController
 
       if($data["check"] < 1){//削除ではない場合
 
-        for($i=1; $i<=9; $i++){
+        for($i=1; $i<=10; $i++){
 
           $updateInspectionStandardSizeChildren = array();
 
@@ -748,7 +748,7 @@ class KensahyoukikakusController extends AppController
 
       }else{//削除の場合
 
-        for($i=1; $i<=9; $i++){
+        for($i=1; $i<=10; $i++){
 
           if(strlen($data['size_name'.$i]) > 0){
 

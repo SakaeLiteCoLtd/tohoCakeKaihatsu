@@ -4,6 +4,8 @@
  $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
+ use App\myClass\classprograms\htmlkensahyouprogram;//myClassフォルダに配置したクラスを使用
+ $htmlkensahyougenryouheader = new htmlkensahyouprogram();
 ?>
 <?php
 $this->layout = false;
@@ -28,9 +30,6 @@ $mes = "";
 
 <?= $this->Form->create($product, ['url' => ['action' => 'addform']]) ?>
 
-<?= $this->Form->control('user_code', array('type'=>'hidden', 'value'=>$user_code, 'label'=>false)) ?>
-<?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>
-<?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$staff_name, 'label'=>false)) ?>
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('inspection_standard_size_parent_id', array('type'=>'hidden', 'value'=>$inspection_standard_size_parent_id, 'label'=>false)) ?>
 <?= $this->Form->control('product_conditon_parent_id', array('type'=>'hidden', 'value'=>$product_conditon_parent_id, 'label'=>false)) ?>
@@ -61,6 +60,13 @@ $mes = "";
 
 </tr>
 <tr>
+  <td style='width:130'>規格</td>
+
+    <?php for($i=1; $i<=9; $i++): ?>
+      <td style='width:90'><?= h(${"size".$i}) ?></td>
+    <?php endfor;?>
+</tr>
+<tr>
   <td style='width:130'>上限</td>
 
   <?php for($i=1; $i<=9; $i++): ?>
@@ -75,16 +81,8 @@ $mes = "";
       <td style='width:90'><?= h(${"lower_limit".$i}) ?></td>
     <?php endfor;?>
 
-</tr>
-<tr>
-  <td style='width:130'>規格</td>
-
-    <?php for($i=1; $i<=9; $i++): ?>
-      <td style='width:90'><?= h(${"size".$i}) ?></td>
-    <?php endfor;?>
-
-    <td width="100">良 ・ 不</td>
-    <td width="100">g / 本</td>
+        <td width="100">良 ・ 不</td>
+        <td width="100">g / 本</td>
 
 </tr>
 <tr>
@@ -129,6 +127,8 @@ $mes = "";
       echo ${"result_size".$j.$i};
       echo '</td>';
       $mes = $mes.$i."番目に規格から外れたデータがあります。入力間違いがないか確認し、正しければそのまま登録してください。".'<br>';
+
+      ${"gouhi".$j} = 1;
     }
     ?>
     <?= $this->Form->control('result_size'.$j.$i, array('type'=>'hidden', 'value'=>${"result_size".$j.$i}, 'label'=>false)) ?>
@@ -186,4 +186,9 @@ $mes = "";
     </tr>
   </tbody>
 </table>
-<br><br><br>
+<br>
+<legend><strong style="font-size: 13pt"><?= __('　　　　　　　成形条件') ?></strong></legend>
+<?php
+      echo $htmlgenryouheader;
+ ?>
+<br><br>

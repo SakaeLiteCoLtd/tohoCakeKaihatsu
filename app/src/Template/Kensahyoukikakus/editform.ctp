@@ -29,7 +29,7 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('inspection_standard_size_parent_id', array('type'=>'hidden', 'value'=>$inspection_standard_size_parent_id, 'label'=>false)) ?>
 
-<?php for($i=1; $i<=9; $i++): ?>
+<?php for($i=1; $i<=10; $i++): ?>
   <?= $this->Form->control('id'.$i, array('type'=>'hidden', 'value'=>${"id".$i}, 'label'=>false)) ?>
 <?php endfor;?>
 
@@ -40,17 +40,25 @@ echo $this->Html->css('kensahyou');
 <table class="white">
 
 <tr>
-  <td style='width:100'>測定箇所</td>
+  <td style='width:102'>測定箇所</td>
 
-  <?php for($i=1; $i<=9; $i++): ?>
-    <td style='width:145'><?= $this->Form->control('size_name'.$i, array('type'=>'text', 'value'=>${"size_name".$i}, 'label'=>false)) ?></td>
+  <?php for($i=1; $i<=10; $i++): ?>
+    <td style='width:130'><?= $this->Form->control('size_name'.$i, array('type'=>'text', 'value'=>${"size_name".$i}, 'label'=>false)) ?></td>
   <?php endfor;?>
+
+</tr>
+<tr>
+  <td>規格</td>
+
+    <?php for($i=1; $i<=10; $i++): ?>
+      <td><?= $this->Form->control('size'.$i, array('type'=>'text', 'value'=>${"size".$i}, 'label'=>false)) ?></td>
+    <?php endfor;?>
 
 </tr>
 <tr>
   <td>上限</td>
 
-  <?php for($i=1; $i<=9; $i++): ?>
+  <?php for($i=1; $i<=10; $i++): ?>
     <td><?= $this->Form->control('upper_limit'.$i, array('type'=>'text', 'value'=>${"upper_limit".$i}, 'label'=>false)) ?></td>
   <?php endfor;?>
 
@@ -58,23 +66,15 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>下限</td>
 
-    <?php for($i=1; $i<=9; $i++): ?>
+    <?php for($i=1; $i<=10; $i++): ?>
       <td><?= $this->Form->control('lower_limit'.$i, array('type'=>'text', 'value'=>${"lower_limit".$i}, 'label'=>false)) ?></td>
-    <?php endfor;?>
-
-</tr>
-<tr>
-  <td>規格</td>
-
-    <?php for($i=1; $i<=9; $i++): ?>
-      <td><?= $this->Form->control('size'.$i, array('type'=>'text', 'value'=>${"size".$i}, 'label'=>false)) ?></td>
     <?php endfor;?>
 
 </tr>
 <tr>
   <td>検査機</td>
 
-    <?php for($i=1; $i<=9; $i++): ?>
+    <?php for($i=1; $i<=10; $i++): ?>
       <td><?= $this->Form->control('measuring_instrument'.$i, array('type'=>'text', 'value'=>${"measuring_instrument".$i}, 'label'=>false)) ?></td>
     <?php endfor;?>
 

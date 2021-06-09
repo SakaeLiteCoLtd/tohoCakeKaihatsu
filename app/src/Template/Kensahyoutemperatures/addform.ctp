@@ -4,6 +4,8 @@
  $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
+ use App\myClass\classprograms\htmlkensahyouprogram;//myClassフォルダに配置したクラスを使用
+ $htmlkensahyougenryouheader = new htmlkensahyouprogram();
 ?>
 <?php
 $this->layout = false;
@@ -34,6 +36,10 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
+ <?php
+       echo $htmlgenryouheader;
+  ?>
+
 <?php for($j=1; $j<=$countseikeiki; $j++): ?>
 
 <?= $this->Form->control('product_material_machine_id'.$j, array('type'=>'hidden', 'value'=>${"product_material_machine_id".$j}, 'label'=>false)) ?>
@@ -41,7 +47,7 @@ echo $this->Html->css('kensahyou');
 
 <table>
 <tr class="parents">
-  <td style='width:80'>成形機</td>
+  <td style='width:82'>成形機</td>
   <td width="100">温度条件</td>
   <td style='width:70'>C １</td>
   <td style='width:70'>C ２</td>

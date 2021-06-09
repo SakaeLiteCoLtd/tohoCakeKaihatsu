@@ -14,6 +14,8 @@ use App\myClass\classprograms\htmlproductcheck;//myClassフォルダに配置し
 $htmlproductcheck = new htmlproductcheck();
 use App\myClass\menulists\htmlkensahyoukadoumenu;//myClassフォルダに配置したクラスを使用
 $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+use App\myClass\classprograms\htmlkensahyouprogram;//myClassフォルダに配置したクラスを使用
+$htmlkensahyougenryouheader = new htmlkensahyouprogram();
 
 class KensahyousokuteidatasController extends AppController
 {
@@ -215,7 +217,7 @@ class KensahyousokuteidatasController extends AppController
 
       if(isset($InspectionStandardSizeChildren[0])){
 
-        for($i=1; $i<=9; $i++){
+        for($i=1; $i<=10; $i++){
 
           ${"size_name".$i} = "";
           $this->set('size_name'.$i,${"size_name".$i});
@@ -328,7 +330,7 @@ class KensahyousokuteidatasController extends AppController
           }
           $this->set('gouhi'.$j,${"gouhi".$j});
 
-          for($i=1; $i<=9; $i++){
+          for($i=1; $i<=10; $i++){
 
             if(isset($data['result_size'.$j.$i])){
               ${"result_size".$j.$i} = $data['result_size'.$j.$i];
@@ -388,7 +390,7 @@ class KensahyousokuteidatasController extends AppController
 
               $tourokuInspectionDataResultChildren = array();
 
-              for($i=1; $i<=9; $i++){
+              for($i=1; $i<=10; $i++){
 
                 if(strlen($data['result_size'.$j.$i]) > 0){
 
@@ -516,7 +518,7 @@ class KensahyousokuteidatasController extends AppController
             }
             $this->set('gouhi'.$j,${"gouhi".$j});
 
-            for($i=1; $i<=9; $i++){
+            for($i=1; $i<=10; $i++){
 
               if(isset($data['result_size'.$j.$i])){
                 ${"result_size".$j.$i} = $data['result_size'.$j.$i];
@@ -562,10 +564,14 @@ class KensahyousokuteidatasController extends AppController
 
       }
 
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();
+      $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheader($product_code);
+      $this->set('htmlgenryouheader',$htmlgenryouheader);
+/*
       echo "<pre>";//フォームの再読み込みの防止
       print_r("  ");
       echo "</pre>";
-
+*/
     }
 
     public function addcomfirm()
@@ -598,6 +604,10 @@ class KensahyousokuteidatasController extends AppController
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();
+      $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheader($product_code);
+      $this->set('htmlgenryouheader',$htmlgenryouheader);
+
       $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
       ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
@@ -624,7 +634,7 @@ class KensahyousokuteidatasController extends AppController
 
       if(isset($InspectionStandardSizeChildren[0])){
 
-        for($i=1; $i<=9; $i++){
+        for($i=1; $i<=10; $i++){
 
           ${"size_name".$i} = "";
           $this->set('size_name'.$i,${"size_name".$i});
@@ -710,7 +720,7 @@ class KensahyousokuteidatasController extends AppController
         }
         $this->set('gouhi'.$j,${"gouhi".$j});
 
-        for($i=1; $i<=9; $i++){
+        for($i=1; $i<=10; $i++){
 
           if(isset($data['result_size'.$j.$i])){
             ${"result_size".$j.$i} = $data['result_size'.$j.$i];
@@ -775,7 +785,7 @@ class KensahyousokuteidatasController extends AppController
 
       if(isset($InspectionStandardSizeChildren[0])){
 
-        for($i=1; $i<=9; $i++){
+        for($i=1; $i<=10; $i++){
 
           ${"size_name".$i} = "";
           $this->set('size_name'.$i,${"size_name".$i});
@@ -857,7 +867,7 @@ class KensahyousokuteidatasController extends AppController
         }
         $this->set('gouhi'.$j,${"gouhi".$j});
 
-        for($i=1; $i<=9; $i++){
+        for($i=1; $i<=10; $i++){
 
           if(isset($data['result_size'.$j.$i])){
             ${"result_size".$j.$i} = $data['result_size'.$j.$i];
@@ -899,7 +909,7 @@ class KensahyousokuteidatasController extends AppController
 
               $tourokuInspectionDataResultChildren = array();
 
-              for($i=1; $i<=9; $i++){
+              for($i=1; $i<=10; $i++){
 
                 if(strlen($data['result_size'.$j.$i]) > 0){
 
@@ -1107,7 +1117,7 @@ class KensahyousokuteidatasController extends AppController
 
       if(isset($InspectionStandardSizeChildren[0])){
 
-        for($i=1; $i<=9; $i++){
+        for($i=1; $i<=10; $i++){
 
           ${"size_name".$i} = "";
           $this->set('size_name'.$i,${"size_name".$i});
@@ -1196,7 +1206,7 @@ class KensahyousokuteidatasController extends AppController
         print_r($InspectionDataResultParents[$j]);
         echo "</pre>";
 */
-        for($i=1; $i<=9; $i++){
+        for($i=1; $i<=10; $i++){
 
           ${"result_size".$n.$i} = "";
           $this->set('result_size'.$n.$i,${"result_size".$n.$i});
@@ -1315,7 +1325,7 @@ class KensahyousokuteidatasController extends AppController
 
       if(isset($InspectionStandardSizeChildren[0])){
 
-        for($i=1; $i<=9; $i++){
+        for($i=1; $i<=10; $i++){
 
           ${"size_name".$i} = "";
           $this->set('size_name'.$i,${"size_name".$i});
@@ -1402,7 +1412,7 @@ class KensahyousokuteidatasController extends AppController
         print_r(${"result_weight".$n});
         echo "</pre>";
 */
-        for($i=1; $i<=9; $i++){
+        for($i=1; $i<=10; $i++){
 
           ${"result_size".$n.$i} = "";
           $this->set('result_size'.$n.$i,${"result_size".$n.$i});
@@ -1467,7 +1477,7 @@ class KensahyousokuteidatasController extends AppController
 
       if(isset($InspectionStandardSizeChildren[0])){
 
-        for($i=1; $i<=9; $i++){
+        for($i=1; $i<=10; $i++){
 
           ${"size_name".$i} = "";
           $this->set('size_name'.$i,${"size_name".$i});
@@ -1544,7 +1554,7 @@ class KensahyousokuteidatasController extends AppController
           ${"judge".$n} = $data['judge'.$n];
           $this->set('judge'.$m,${"judge".$n});
 
-          for($i=1; $i<=9; $i++){
+          for($i=1; $i<=10; $i++){
 
             if(strlen($data['result_size'.$n.$i]) > 0){
               ${"result_size".$n.$i} = $data['result_size'.$n.$i];
@@ -1617,7 +1627,7 @@ class KensahyousokuteidatasController extends AppController
 
       if(isset($InspectionStandardSizeChildren[0])){
 
-        for($i=1; $i<=9; $i++){
+        for($i=1; $i<=10; $i++){
 
           ${"size_name".$i} = "";
           $this->set('size_name'.$i,${"size_name".$i});
@@ -1671,7 +1681,7 @@ class KensahyousokuteidatasController extends AppController
         ${"judge".$n} = $data['judge'.$n];
         $this->set('judge'.$n,${"judge".$n});
 
-        for($i=1; $i<=9; $i++){
+        for($i=1; $i<=10; $i++){
 
           if(strlen($data['result_size'.$n.$i]) > 0){
             ${"result_size".$n.$i} = $data['result_size'.$n.$i];
@@ -1762,7 +1772,7 @@ class KensahyousokuteidatasController extends AppController
 
                 $tourokuInspectionDataResultChildren = array();
 
-                for($i=1; $i<=9; $i++){
+                for($i=1; $i<=10; $i++){
 
                   if(strlen($data['result_size'.$j.$i]) > 0){
 

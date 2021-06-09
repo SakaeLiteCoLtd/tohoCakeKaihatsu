@@ -31,17 +31,25 @@ echo $this->Html->css('kensahyou');
 <table class="white">
 
   <tr>
-  <td style='width:100'>測定箇所</td>
+  <td style='width:102'>測定箇所</td>
 
-  <?php for($i=1; $i<=9; $i++): ?>
-    <td style='width:145'><?= h($this->request->getData('size_name'.$i)) ?></td>
+  <?php for($i=1; $i<=10; $i++): ?>
+    <td style='width:130'><?= h($this->request->getData('size_name'.$i)) ?></td>
   <?php endfor;?>
+
+</tr>
+<tr>
+  <td>規格</td>
+
+    <?php for($i=1; $i<=10; $i++): ?>
+      <td><?= h($this->request->getData('size'.$i)) ?></td>
+    <?php endfor;?>
 
 </tr>
 <tr>
   <td>上限</td>
 
-  <?php for($i=1; $i<=9; $i++): ?>
+  <?php for($i=1; $i<=10; $i++): ?>
     <td><?= h($this->request->getData('upper_limit'.$i)) ?></td>
   <?php endfor;?>
 
@@ -49,23 +57,15 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>下限</td>
 
-    <?php for($i=1; $i<=9; $i++): ?>
+    <?php for($i=1; $i<=10; $i++): ?>
       <td><?= h($this->request->getData('lower_limit'.$i)) ?></td>
-    <?php endfor;?>
-
-</tr>
-<tr>
-  <td>規格</td>
-
-    <?php for($i=1; $i<=9; $i++): ?>
-      <td><?= h($this->request->getData('size'.$i)) ?></td>
     <?php endfor;?>
 
 </tr>
 <tr>
   <td>検査機</td>
 
-    <?php for($i=1; $i<=9; $i++): ?>
+    <?php for($i=1; $i<=10; $i++): ?>
       <td><?= h($this->request->getData('measuring_instrument'.$i)) ?></td>
     <?php endfor;?>
 
