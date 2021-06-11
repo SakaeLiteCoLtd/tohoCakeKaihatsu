@@ -18,6 +18,7 @@ class InspectionDataResultParentsFixture extends TestFixture
     // @codingStandardsIgnoreStart
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
+        'inspection_data_conditon_parent_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'inspection_standard_size_parent_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'product_conditon_parent_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'lot_number' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '最初=「S」、以降連番（1，2，3，…）', 'precision' => null, 'fixed' => null],
@@ -51,18 +52,19 @@ class InspectionDataResultParentsFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
+                'inspection_data_conditon_parent_id' => 1,
                 'inspection_standard_size_parent_id' => 1,
                 'product_conditon_parent_id' => 1,
                 'lot_number' => 'Lorem ipsum dolor sit amet',
-                'datetime' => '2021-05-22 20:45:18',
+                'datetime' => '2021-06-11 21:36:06',
                 'staff_id' => 1,
                 'appearance' => 1,
                 'result_weight' => 1,
                 'judge' => 1,
                 'delete_flag' => 1,
-                'created_at' => '2021-05-22 20:45:18',
+                'created_at' => '2021-06-11 21:36:06',
                 'created_staff' => 1,
-                'updated_at' => '2021-05-22 20:45:18',
+                'updated_at' => '2021-06-11 21:36:06',
                 'updated_staff' => 1
             ],
         ];

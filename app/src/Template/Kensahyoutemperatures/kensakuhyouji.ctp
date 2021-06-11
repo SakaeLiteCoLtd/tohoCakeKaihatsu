@@ -49,8 +49,7 @@ echo $this->Html->css('kensahyou');
   <td style='width:70'>A D</td>
   <td style='width:70'>D １</td>
   <td style='width:70'>D ２</td>
-  <td style='width:111'>押出回転<br>（rpm）</td>
-  <td style='width:111'>負荷（A）</td>
+  <td style='width:226' colspan="2">押出回転(rpm)/負荷(A)</td>
   <td style='width:100'>引取速度<br>（m/min）</td>
   <td style='width:200' colspan="2">ｽｸﾘｰﾝﾒｯｼｭ : 枚数</td>
   <td style='width:200'>ｽｸﾘｭｳ</td>
@@ -103,11 +102,11 @@ echo $this->Html->css('kensahyou');
           echo "<td>\n";
           echo "${"temp_7".$j}\n";
           echo "</td>\n";
-          echo "<td>\n";
-          echo "${"extrude_roatation".$j}\n";
+          echo "<td style='border-right-style:none; text-align:right'>\n";
+          echo "${"extrude_roatation".$j}(rpm)\n";
           echo "</td>\n";
-          echo "<td>\n";
-          echo "${"extrusion_load".$j}\n";
+          echo "<td style='border-left-style:none; text-align:left'>\n";
+          echo "/ ${"extrusion_load".$j}(A)\n";
           echo "</td>\n";
         }elseif($i == 2){
           echo "<td>\n";
@@ -124,9 +123,7 @@ echo $this->Html->css('kensahyou');
           echo "</td>\n";
           echo "<td>\n";
           echo "</td>\n";
-          echo "<td>\n";
-          echo "</td>\n";
-          echo "<td>\n";
+          echo "<td colspan=2>\n";
           echo "</td>\n";
         }else{
           echo "<td>\n";
@@ -150,10 +147,7 @@ echo $this->Html->css('kensahyou');
           echo "<td>\n";
           echo "± 10\n";
           echo "</td>\n";
-          echo "<td>\n";
-          echo "± 5.0\n";
-          echo "</td>\n";
-          echo "<td>\n";
+          echo "<td colspan=2>\n";
           echo "± 5.0\n";
           echo "</td>\n";
         }

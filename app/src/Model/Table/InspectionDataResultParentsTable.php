@@ -9,6 +9,7 @@ use Cake\Validation\Validator;
 /**
  * InspectionDataResultParents Model
  *
+ * @property |\Cake\ORM\Association\BelongsTo $InspectionDataConditonParents
  * @property \App\Model\Table\InspectionStandardSizeParentsTable|\Cake\ORM\Association\BelongsTo $InspectionStandardSizeParents
  * @property \App\Model\Table\ProductConditonParentsTable|\Cake\ORM\Association\BelongsTo $ProductConditonParents
  * @property \App\Model\Table\StaffsTable|\Cake\ORM\Association\BelongsTo $Staffs
@@ -40,6 +41,10 @@ class InspectionDataResultParentsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->belongsTo('InspectionDataConditonParents', [
+            'foreignKey' => 'inspection_data_conditon_parent_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('InspectionStandardSizeParents', [
             'foreignKey' => 'inspection_standard_size_parent_id',
             'joinType' => 'INNER'
@@ -130,8 +135,9 @@ class InspectionDataResultParentsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->existsIn(['inspection_data_conditon_parent_id'], 'InspectionDataConditonParents'));
         $rules->add($rules->existsIn(['inspection_standard_size_parent_id'], 'InspectionStandardSizeParents'));
-  //      $rules->add($rules->existsIn(['product_conditon_parent_id'], 'ProductConditonParents'));
+        $rules->add($rules->existsIn(['product_conditon_parent_id'], 'ProductConditonParents'));
         $rules->add($rules->existsIn(['staff_id'], 'Staffs'));
 
         return $rules;

@@ -7,6 +7,7 @@ use Cake\ORM\Entity;
  * InspectionDataResultParent Entity
  *
  * @property int $id
+ * @property int $inspection_data_conditon_parent_id
  * @property int $inspection_standard_size_parent_id
  * @property int $product_conditon_parent_id
  * @property string $lot_number
@@ -21,6 +22,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $updated_at
  * @property int|null $updated_staff
  *
+ * @property \App\Model\Entity\InspectionDataConditon $inspection_data_conditon
  * @property \App\Model\Entity\InspectionStandardSizeParent $inspection_standard_size_parent
  * @property \App\Model\Entity\ProductConditonParent $product_conditon_parent
  * @property \App\Model\Entity\Staff $staff
@@ -39,6 +41,7 @@ class InspectionDataResultParent extends Entity
      * @var array
      */
     protected $_accessible = [
+        'inspection_data_conditon_parent_id' => true,
         'inspection_standard_size_parent_id' => true,
         'product_conditon_parent_id' => true,
         'lot_number' => true,
@@ -52,6 +55,7 @@ class InspectionDataResultParent extends Entity
         'created_staff' => true,
         'updated_at' => true,
         'updated_staff' => true,
+        'inspection_data_conditon' => true,
         'inspection_standard_size_parent' => true,
         'product_conditon_parent' => true,
         'staff' => true,
