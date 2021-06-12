@@ -25,7 +25,7 @@ class InspectionDataResultParentsTableTest extends TestCase
      */
     public $fixtures = [
         'app.InspectionDataResultParents',
-        'app.InspectionDataConditons',
+        'app.InspectionDataConditonParents',
         'app.InspectionStandardSizeParents',
         'app.ProductConditonParents',
         'app.Staffs',

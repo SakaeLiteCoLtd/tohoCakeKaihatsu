@@ -56,15 +56,15 @@ class InspectionDataResultParentsFixture extends TestFixture
                 'inspection_standard_size_parent_id' => 1,
                 'product_conditon_parent_id' => 1,
                 'lot_number' => 'Lorem ipsum dolor sit amet',
-                'datetime' => '2021-06-11 21:36:06',
+                'datetime' => '2021-06-12 10:52:23',
                 'staff_id' => 1,
                 'appearance' => 1,
                 'result_weight' => 1,
                 'judge' => 1,
                 'delete_flag' => 1,
-                'created_at' => '2021-06-11 21:36:06',
+                'created_at' => '2021-06-12 10:52:23',
                 'created_staff' => 1,
-                'updated_at' => '2021-06-11 21:36:06',
+                'updated_at' => '2021-06-12 10:52:23',
                 'updated_staff' => 1
             ],
         ];

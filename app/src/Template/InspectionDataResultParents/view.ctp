@@ -11,10 +11,10 @@
         <li><?= $this->Form->postLink(__('Delete Inspection Data Result Parent'), ['action' => 'delete', $inspectionDataResultParent->id], ['confirm' => __('Are you sure you want to delete # {0}?', $inspectionDataResultParent->id)]) ?> </li>
         <li><?= $this->Html->link(__('List Inspection Data Result Parents'), ['action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Inspection Data Result Parent'), ['action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('List Inspection Data Conditon Parents'), ['controller' => 'InspectionDataConditonParents', 'action' => 'index']) ?> </li>
+        <li><?= $this->Html->link(__('New Inspection Data Conditon Parent'), ['controller' => 'InspectionDataConditonParents', 'action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Inspection Standard Size Parents'), ['controller' => 'InspectionStandardSizeParents', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Inspection Standard Size Parent'), ['controller' => 'InspectionStandardSizeParents', 'action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Product Material Parents'), ['controller' => 'ProductMaterialParents', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Product Material Parent'), ['controller' => 'ProductMaterialParents', 'action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Staffs'), ['controller' => 'Staffs', 'action' => 'index']) ?> </li>
         <li><?= $this->Html->link(__('New Staff'), ['controller' => 'Staffs', 'action' => 'add']) ?> </li>
         <li><?= $this->Html->link(__('List Inspection Data Result Children'), ['controller' => 'InspectionDataResultChildren', 'action' => 'index']) ?> </li>
@@ -25,12 +25,16 @@
     <h3><?= h($inspectionDataResultParent->id) ?></h3>
     <table class="vertical-table">
         <tr>
+            <th scope="row"><?= __('Inspection Data Conditon Parent') ?></th>
+            <td><?= $inspectionDataResultParent->has('inspection_data_conditon_parent') ? $this->Html->link($inspectionDataResultParent->inspection_data_conditon_parent->id, ['controller' => 'InspectionDataConditonParents', 'action' => 'view', $inspectionDataResultParent->inspection_data_conditon_parent->id]) : '' ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Inspection Standard Size Parent') ?></th>
             <td><?= $inspectionDataResultParent->has('inspection_standard_size_parent') ? $this->Html->link($inspectionDataResultParent->inspection_standard_size_parent->id, ['controller' => 'InspectionStandardSizeParents', 'action' => 'view', $inspectionDataResultParent->inspection_standard_size_parent->id]) : '' ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('Product Material Parent') ?></th>
-            <td><?= $inspectionDataResultParent->has('product_material_parent') ? $this->Html->link($inspectionDataResultParent->product_material_parent->id, ['controller' => 'ProductMaterialParents', 'action' => 'view', $inspectionDataResultParent->product_material_parent->id]) : '' ?></td>
+            <th scope="row"><?= __('Lot Number') ?></th>
+            <td><?= h($inspectionDataResultParent->lot_number) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Staff') ?></th>
@@ -43,6 +47,18 @@
         <tr>
             <th scope="row"><?= __('Product Conditon Parent Id') ?></th>
             <td><?= $this->Number->format($inspectionDataResultParent->product_conditon_parent_id) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Appearance') ?></th>
+            <td><?= $this->Number->format($inspectionDataResultParent->appearance) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Result Weight') ?></th>
+            <td><?= $this->Number->format($inspectionDataResultParent->result_weight) ?></td>
+        </tr>
+        <tr>
+            <th scope="row"><?= __('Judge') ?></th>
+            <td><?= $this->Number->format($inspectionDataResultParent->judge) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Delete Flag') ?></th>

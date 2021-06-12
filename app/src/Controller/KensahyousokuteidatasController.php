@@ -42,7 +42,7 @@ class KensahyousokuteidatasController extends AppController
      $this->ProductMaterialMachines = TableRegistry::get('ProductMaterialMachines');
      $this->ProductMachineMaterials = TableRegistry::get('ProductMachineMaterials');
      $this->ProductConditonChildren = TableRegistry::get('ProductConditonChildren');
-     $this->InspectionDataResultParents = TableRegistry::get('InspectionDataResultParents');
+     $this->InspectionDataResultsParents = TableRegistry::get('InspectionDataResultsParents');
      $this->InspectionDataResultChildren = TableRegistry::get('InspectionDataResultChildren');
      $this->InspectionDataConditonChildren = TableRegistry::get('InspectionDataConditonChildren');
      $this->InspectionDataConditonParents = TableRegistry::get('InspectionDataConditonParents');
@@ -972,16 +972,17 @@ class KensahyousokuteidatasController extends AppController
         ${"user_code".$j} = $data['user_code'.$j];
         $Users = $this->Users->find()->contain(["Staffs"])->where(['user_code' => ${"user_code".$j}, 'Users.delete_flag' => 0])->toArray();
 
-        $InspectionDataResultParents = $this->InspectionDataResultParents->find()
+        $InspectionDataResultsParents = $this->InspectionDataResultsParents->find()
         ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'],
          'product_conditon_parent_id' => $data['product_conditon_parent_id'],
          'datetime' => date("Y-m-d ").$data['datetime'.$j].":00"])
         ->order(["id"=>"DESC"])->toArray();
 
-        if(!isset($InspectionDataResultParents[0])){//再読み込みで同じデータが登録されないようにチェック
+        if(!isset($InspectionDataResultsParents[0])){//再読み込みで同じデータが登録されないようにチェック
 
-          $tourokuInspectionDataResultParents = [
-            "inspection_data_conditon_parent_id" => $data['inspection_data_conditon_parent_id'],
+          $tourokuInspectionDataResultsParents = array();
+          $tourokuInspectionDataResultsParents = [
+            'inspection_data_conditon_parent_id' => (int)$data['inspection_data_conditon_parent_id'],
             "inspection_standard_size_parent_id" => $data['inspection_standard_size_parent_id'],
             "product_conditon_parent_id" => $data['product_conditon_parent_id'],
             'lot_number' => $data['lot_number'.$j],
@@ -994,19 +995,21 @@ class KensahyousokuteidatasController extends AppController
             'created_at' => date("Y-m-d H:i:s"),
             "created_staff" => $Users[0]["staff_id"]//ログインは不要
           ];
-
+/*
           echo "<pre>";
-          print_r($tourokuInspectionDataResultParents);
+          print_r($tourokuInspectionDataResultsParents);
           echo "</pre>";
-
-          $InspectionDataResultParents = $this->InspectionDataResultParents->patchEntity($this->InspectionDataResultParents->newEntity(), $tourokuInspectionDataResultParents);
+*/
+          $InspectionDataResultsParents = $this->InspectionDataResultsParents
+          ->patchEntity($this->InspectionDataResultsParents->newEntity(), $tourokuInspectionDataResultsParents);
           $connection = ConnectionManager::get('default');//トランザクション1
           // トランザクション開始2
           $connection->begin();//トランザクション3
           try {//トランザクション4
-            if ($this->InspectionDataResultParents->save($InspectionDataResultParents)) {
 
-              $InspectionDataResultParentsId = $this->InspectionDataResultParents->find()
+            if($this->InspectionDataResultsParents->save($InspectionDataResultsParents)){
+
+              $InspectionDataResultsParentsId = $this->InspectionDataResultsParents->find()
               ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'], 'datetime' => date("Y-m-d ").$data['datetime'.$j].":00"])
               ->order(["id"=>"DESC"])->toArray();
 
@@ -1021,7 +1024,7 @@ class KensahyousokuteidatasController extends AppController
                   ->order(["id"=>"DESC"])->toArray();
 
                   $tourokuInspectionDataResultChildren[] = [
-                    "inspection_data_result_parent_id" => $InspectionDataResultParentsId[0]["id"],
+                    "inspection_data_result_parent_id" => $InspectionDataResultsParentsId[0]["id"],
                     "inspection_standard_size_child_id" => $InspectionStandardSizeChildren[0]["id"],
                     'result_size' => $data['result_size'.$j.$i],
                     "delete_flag" => 0,
@@ -1041,6 +1044,8 @@ class KensahyousokuteidatasController extends AppController
                   ->patchEntities($this->InspectionDataResultChildren->newEntity(), $tourokuInspectionDataResultChildren);
                   if ($this->InspectionDataResultChildren->saveMany($InspectionDataResultChildren)) {
 
+                    $mes = "";
+                    $this->set('mes',$mes);
                     $connection->commit();// コミット5
 
                   }
@@ -1051,7 +1056,7 @@ class KensahyousokuteidatasController extends AppController
 
             } else {
 
-              $mes = "※登録されませんでした";
+              $mes = "※登録されませんでした。管理者に報告してください。";
               $this->set('mes',$mes);
               $this->Flash->error(__('The data could not be saved. Please, try again.'));
               throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
@@ -1786,12 +1791,12 @@ class KensahyousokuteidatasController extends AppController
 
       }
 
-      $tourokuInspectionDataResultParents = array();
+      $tourokuInspectionDataResultsParents = array();
       for($j=1; $j<=$gyou; $j++){
 
         if(strlen($data['lot_number'.$j]) > 0){
 
-          $tourokuInspectionDataResultParents = [
+          $tourokuInspectionDataResultsParents = [
             "inspection_standard_size_parent_id" => $data['inspection_standard_size_parent_id'],
             "product_conditon_parent_id" => $data['product_conditon_parent_id'],
             'datetime' => date("Y-m-d ").$data['datetime'.$j].":00",
@@ -1801,15 +1806,15 @@ class KensahyousokuteidatasController extends AppController
             "created_staff" => $staff_id
           ];
 
-          $InspectionDataResultParents = $this->InspectionDataResultParents
-          ->patchEntity($this->InspectionDataResultParents->newEntity(), $tourokuInspectionDataResultParents);
+          $InspectionDataResultsParents = $this->InspectionDataResultsParents
+          ->patchEntity($this->InspectionDataResultsParents->newEntity(), $tourokuInspectionDataResultsParents);
           $connection = ConnectionManager::get('default');//トランザクション1
           // トランザクション開始2
           $connection->begin();//トランザクション3
           try {//トランザクション4
-            if ($this->InspectionDataResultParents->save($InspectionDataResultParents)) {
+            if ($this->InspectionDataResultsParents->save($InspectionDataResultsParents)) {
 
-              $InspectionDataResultParentsId = $this->InspectionDataResultParents->find()
+              $InspectionDataResultsParentsId = $this->InspectionDataResultsParents->find()
               ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'], 'datetime' => date("Y-m-d ").$data['datetime'.$j].":00"])
               ->order(["id"=>"DESC"])->toArray();
 
@@ -1824,7 +1829,7 @@ class KensahyousokuteidatasController extends AppController
                   ->order(["id"=>"DESC"])->toArray();
 
                   $tourokuInspectionDataResultChildren[] = [
-                    "inspection_data_result_parent_id" => $InspectionDataResultParentsId[0]["id"],
+                    "inspection_data_result_parent_id" => $InspectionDataResultsParentsId[0]["id"],
                     "inspection_standard_size_child_id" => $InspectionStandardSizeChildren[0]["id"],
                     'result_size' => $data['result_size'.$j.$i],
                     "delete_flag" => 0,
@@ -1929,10 +1934,10 @@ class KensahyousokuteidatasController extends AppController
         $endYMD = $endY."-".$endM."-".$endD." 23:59";
 
         $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
-        ->contain(['InspectionDataResultParents' => ['InspectionStandardSizeParents' => ["Products"]]])
+        ->contain(['InspectionDataResultsParents' => ['InspectionStandardSizeParents' => ["Products"]]])
         ->where(['product_code' => $product_code, 'InspectionDataResultChildren.delete_flag' => 0,
         'datetime >=' => $startYMD, 'datetime <=' => $endYMD])
-        ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
+        ->order(["InspectionDataResultsParents.datetime"=>"DESC"])->toArray();
 
         $arrDates = array();
 
@@ -1956,9 +1961,9 @@ class KensahyousokuteidatasController extends AppController
       }else{
 
         $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
-        ->contain(['InspectionDataResultParents' => ['InspectionStandardSizeParents' => ["Products"]]])
+        ->contain(['InspectionDataResultsParents' => ['InspectionStandardSizeParents' => ["Products"]]])
         ->where(['product_code' => $product_code, 'InspectionDataResultChildren.delete_flag' => 0])
-        ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
+        ->order(["InspectionDataResultsParents.datetime"=>"DESC"])->toArray();
 
         $arrDates = array();
 
@@ -2058,58 +2063,58 @@ class KensahyousokuteidatasController extends AppController
 
       }
 
-      $InspectionDataResultParents = $this->InspectionDataResultParents->find()
+      $InspectionDataResultsParents = $this->InspectionDataResultsParents->find()
       ->contain(['InspectionStandardSizeParents' => ["Products"]])
       ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.delete_flag' => 0,
       'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin])
-      ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
+      ->order(["InspectionDataResultsParents.datetime"=>"ASC"])->toArray();
 /*
       echo "<pre>";
-      print_r($InspectionDataResultParents);
+      print_r($InspectionDataResultsParents);
       echo "</pre>";
 */
-      $gyou = count($InspectionDataResultParents);
+      $gyou = count($InspectionDataResultsParents);
       $this->set('gyou', $gyou);
 
       $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
-      ->contain(['InspectionStandardSizeChildren', 'InspectionDataResultParents' => ['InspectionStandardSizeParents' => ["Products"]]])
+      ->contain(['InspectionStandardSizeChildren', 'InspectionDataResultsParents' => ['InspectionStandardSizeParents' => ["Products"]]])
       ->where(['product_code' => $product_code, 'InspectionDataResultChildren.delete_flag' => 0,
       'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin])
-      ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
+      ->order(["InspectionDataResultsParents.datetime"=>"ASC"])->toArray();
 /*
       echo "<pre>";
       print_r($InspectionDataResultChildren);
       echo "</pre>";
 */
-      for($j=0; $j<count($InspectionDataResultParents); $j++){
+      for($j=0; $j<count($InspectionDataResultsParents); $j++){
 
         $n = $j + 1;
 
         $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
         ->contain(['InspectionStandardSizeChildren'])
-        ->where(['inspection_data_result_parent_id' => $InspectionDataResultParents[$j]["id"]])
+        ->where(['inspection_data_result_parent_id' => $InspectionDataResultsParents[$j]["id"]])
         ->toArray();
 
-        ${"lot_number".$n} = $InspectionDataResultParents[$j]['lot_number'];
+        ${"lot_number".$n} = $InspectionDataResultsParents[$j]['lot_number'];
         $this->set('lot_number'.$n,${"lot_number".$n});
-        ${"datetime".$n} = $InspectionDataResultParents[$j]['datetime']->format('Y-n-j G:i');
+        ${"datetime".$n} = $InspectionDataResultsParents[$j]['datetime']->format('Y-n-j G:i');
         $this->set('datetime'.$n,${"datetime".$n});
 
         $Staffs = $this->Staffs->find()
-        ->where(['id' => $InspectionDataResultParents[$j]['staff_id']])->order(["id"=>"ASC"])->toArray();
+        ->where(['id' => $InspectionDataResultsParents[$j]['staff_id']])->order(["id"=>"ASC"])->toArray();
         ${"staff_hyouji".$n} = $Staffs[0]['name'];
         $this->set('staff_hyouji'.$n,${"staff_hyouji".$n});
 
-        ${"appearance".$n} = $InspectionDataResultParents[$j]['appearance'];
+        ${"appearance".$n} = $InspectionDataResultsParents[$j]['appearance'];
         $this->set('appearance'.$n,${"appearance".$n});
-        ${"result_weight".$n} = $InspectionDataResultParents[$j]['result_weight'];
+        ${"result_weight".$n} = $InspectionDataResultsParents[$j]['result_weight'];
         $this->set('result_weight'.$n,${"result_weight".$n});
-        ${"judge".$n} = $InspectionDataResultParents[$j]['judge'];
+        ${"judge".$n} = $InspectionDataResultsParents[$j]['judge'];
         $this->set('judge'.$n,${"judge".$n});
 
 /*
         echo "<pre>";
-        print_r($InspectionDataResultParents[$j]);
+        print_r($InspectionDataResultsParents[$j]);
         echo "</pre>";
 */
         for($i=1; $i<=10; $i++){
@@ -2266,52 +2271,52 @@ class KensahyousokuteidatasController extends AppController
 
       }
 
-      $InspectionDataResultParents = $this->InspectionDataResultParents->find()
+      $InspectionDataResultsParents = $this->InspectionDataResultsParents->find()
       ->contain(['InspectionStandardSizeParents' => ["Products"]])
       ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.delete_flag' => 0,
       'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin])
-      ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
+      ->order(["InspectionDataResultsParents.datetime"=>"ASC"])->toArray();
 /*
       echo "<pre>";
-      print_r($InspectionDataResultParents);
+      print_r($InspectionDataResultsParents);
       echo "</pre>";
 */
-      $gyou = count($InspectionDataResultParents);
+      $gyou = count($InspectionDataResultsParents);
       $this->set('gyou', $gyou);
 
       $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
-      ->contain(['InspectionStandardSizeChildren', 'InspectionDataResultParents' => ['InspectionStandardSizeParents' => ["Products"]]])
+      ->contain(['InspectionStandardSizeChildren', 'InspectionDataResultsParents' => ['InspectionStandardSizeParents' => ["Products"]]])
       ->where(['product_code' => $product_code, 'InspectionDataResultChildren.delete_flag' => 0,
       'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin])
-      ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
+      ->order(["InspectionDataResultsParents.datetime"=>"ASC"])->toArray();
 /*
       echo "<pre>";
       print_r($InspectionDataResultChildren);
       echo "</pre>";
 */
-      for($j=0; $j<count($InspectionDataResultParents); $j++){
+      for($j=0; $j<count($InspectionDataResultsParents); $j++){
 
         $n = $j + 1;
 
         $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
         ->contain(['InspectionStandardSizeChildren'])
-        ->where(['inspection_data_result_parent_id' => $InspectionDataResultParents[$j]["id"]])
+        ->where(['inspection_data_result_parent_id' => $InspectionDataResultsParents[$j]["id"]])
         ->toArray();
 
-        ${"lot_number".$n} = $InspectionDataResultParents[$j]['lot_number'];
+        ${"lot_number".$n} = $InspectionDataResultsParents[$j]['lot_number'];
         $this->set('lot_number'.$n,${"lot_number".$n});
-        ${"datetime".$n} = $InspectionDataResultParents[$j]['datetime']->format('y-n-j G:i');
+        ${"datetime".$n} = $InspectionDataResultsParents[$j]['datetime']->format('y-n-j G:i');
         $this->set('datetime'.$n,${"datetime".$n});
 
-        $Users = $this->Users->find()->where(['staff_id' => $InspectionDataResultParents[$j]['staff_id']])->toArray();
+        $Users = $this->Users->find()->where(['staff_id' => $InspectionDataResultsParents[$j]['staff_id']])->toArray();
         ${"user_code".$n} = $Users[0]['user_code'];
         $this->set('user_code'.$n,${"user_code".$n});
 
-        ${"appearance".$n} = $InspectionDataResultParents[$j]['appearance'];
+        ${"appearance".$n} = $InspectionDataResultsParents[$j]['appearance'];
         $this->set('appearance'.$n,${"appearance".$n});
-        ${"result_weight".$n} = $InspectionDataResultParents[$j]['result_weight'];
+        ${"result_weight".$n} = $InspectionDataResultsParents[$j]['result_weight'];
         $this->set('result_weight'.$n,${"result_weight".$n});
-        ${"judge".$n} = $InspectionDataResultParents[$j]['judge'];
+        ${"judge".$n} = $InspectionDataResultsParents[$j]['judge'];
         $this->set('judge'.$n,${"judge".$n});
 /*
         echo "<pre>";
@@ -2621,7 +2626,7 @@ class KensahyousokuteidatasController extends AppController
           ${"user_code".$j} = $data['user_code'.$j];
           $Users = $this->Users->find()->contain(["Staffs"])->where(['user_code' => ${"user_code".$j}, 'Users.delete_flag' => 0])->toArray();
 
-          $updateInspectionDataResultParents = [
+          $updateInspectionDataResultsParents = [
             "inspection_standard_size_parent_id" => $inspection_standard_size_parent_id,
             "product_conditon_parent_id" => $product_conditon_parent_id,
             'lot_number' => $data['lot_number'.$j],
@@ -2636,42 +2641,42 @@ class KensahyousokuteidatasController extends AppController
           ];
 /*
           echo "<pre>";
-          print_r($updateInspectionDataResultParents);
+          print_r($updateInspectionDataResultsParents);
           echo "</pre>";
 */
-    //      $InspectionDataResultParents = $this->InspectionDataResultParents->patchEntity($this->InspectionDataResultParents->newEntity(), $tourokuInspectionDataResultParents);
+    //      $InspectionDataResultsParents = $this->InspectionDataResultsParents->patchEntity($this->InspectionDataResultsParents->newEntity(), $tourokuInspectionDataResultsParents);
           $connection = ConnectionManager::get('default');//トランザクション1
           // トランザクション開始2
           $connection->begin();//トランザクション3
           try {//トランザクション4
 
             if($j == 1){
-              $this->InspectionDataResultParents->updateAll(
+              $this->InspectionDataResultsParents->updateAll(
                 [ 'delete_flag' => 1,
                   'updated_at' => date('Y-m-d H:i:s'),
                   'updated_staff' => $staff_id],
                 ['datetime >=' => $datetimesta, 'datetime <=' => $datetimefin]);
 
-                $InspectionDataResultParentsDATA = $this->InspectionDataResultParents->find()
+                $InspectionDataResultsParentsDATA = $this->InspectionDataResultsParents->find()
                 ->where(['datetime >=' => $datetimesta, 'datetime <=' => $datetimefin])
                 ->order(["id"=>"DESC"])->toArray();
 
-                for($i=0; $i<count($InspectionDataResultParentsDATA); $i++){
+                for($i=0; $i<count($InspectionDataResultsParentsDATA); $i++){
 
                   $this->InspectionDataResultChildren->updateAll(
                     [ 'delete_flag' => 1,
                       'updated_at' => date('Y-m-d H:i:s'),
                       'updated_staff' => $staff_id],
-                    ['inspection_data_result_parent_id' => $InspectionDataResultParentsDATA[$i]['id']]);
+                    ['inspection_data_result_parent_id' => $InspectionDataResultsParentsDATA[$i]['id']]);
 
                 }
 
               }
 
-              $InspectionDataResultParents = $this->InspectionDataResultParents->patchEntity($this->InspectionDataResultParents->newEntity(), $updateInspectionDataResultParents);
-              if ($this->InspectionDataResultParents->save($InspectionDataResultParents)) {
+              $InspectionDataResultsParents = $this->InspectionDataResultsParents->patchEntity($this->InspectionDataResultsParents->newEntity(), $updateInspectionDataResultsParents);
+              if ($this->InspectionDataResultsParents->save($InspectionDataResultsParents)) {
 
-                $InspectionDataResultParentsId = $this->InspectionDataResultParents->find()
+                $InspectionDataResultsParentsId = $this->InspectionDataResultsParents->find()
                 ->where(['delete_flag' => 0, 'inspection_standard_size_parent_id' => $inspection_standard_size_parent_id,
                  'datetime' => $data['datekensaku']." ".$data['datetime'.$j].":00"])
                 ->order(["id"=>"DESC"])->toArray();
@@ -2687,7 +2692,7 @@ class KensahyousokuteidatasController extends AppController
                     ->order(["id"=>"DESC"])->toArray();
 
                     $tourokuInspectionDataResultChildren[] = [
-                      "inspection_data_result_parent_id" => $InspectionDataResultParentsId[0]["id"],
+                      "inspection_data_result_parent_id" => $InspectionDataResultsParentsId[0]["id"],
                       "inspection_standard_size_child_id" => $InspectionStandardSizeChildren[0]["id"],
                       'result_size' => $data['result_size'.$j.$i],
                       "delete_flag" => 0,
@@ -2740,7 +2745,7 @@ class KensahyousokuteidatasController extends AppController
         $connection->begin();//トランザクション3
         try {//トランザクション4
 
-          if ($this->InspectionDataResultParents->updateAll(
+          if ($this->InspectionDataResultsParents->updateAll(
             [ 'delete_flag' => 1,
               'updated_at' => date('Y-m-d H:i:s'),
               'updated_staff' => $staff_id],

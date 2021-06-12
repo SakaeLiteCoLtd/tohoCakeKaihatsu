@@ -21,7 +21,7 @@ class InspectionDataResultParentsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['InspectionStandardSizeParents', 'ProductConditonParents', 'ProductMaterialParents', 'Staffs']
+            'contain' => ['InspectionDataConditonParents', 'InspectionStandardSizeParents', 'ProductConditonParents', 'Staffs']
         ];
         $inspectionDataResultParents = $this->paginate($this->InspectionDataResultParents);
 
@@ -38,7 +38,7 @@ class InspectionDataResultParentsController extends AppController
     public function view($id = null)
     {
         $inspectionDataResultParent = $this->InspectionDataResultParents->get($id, [
-            'contain' => ['InspectionStandardSizeParents', 'ProductConditonParents', 'ProductMaterialParents', 'Staffs', 'InspectionDataResultChildren']
+            'contain' => ['InspectionDataConditonParents', 'InspectionStandardSizeParents', 'ProductConditonParents', 'Staffs', 'InspectionDataResultChildren']
         ]);
 
         $this->set('inspectionDataResultParent', $inspectionDataResultParent);
@@ -61,11 +61,11 @@ class InspectionDataResultParentsController extends AppController
             }
             $this->Flash->error(__('The inspection data result parent could not be saved. Please, try again.'));
         }
+        $inspectionDataConditonParents = $this->InspectionDataResultParents->InspectionDataConditonParents->find('list', ['limit' => 200]);
         $inspectionStandardSizeParents = $this->InspectionDataResultParents->InspectionStandardSizeParents->find('list', ['limit' => 200]);
         $productConditonParents = $this->InspectionDataResultParents->ProductConditonParents->find('list', ['limit' => 200]);
-        $productMaterialParents = $this->InspectionDataResultParents->ProductMaterialParents->find('list', ['limit' => 200]);
         $staffs = $this->InspectionDataResultParents->Staffs->find('list', ['limit' => 200]);
-        $this->set(compact('inspectionDataResultParent', 'inspectionStandardSizeParents', 'productConditonParents', 'productMaterialParents', 'staffs'));
+        $this->set(compact('inspectionDataResultParent', 'inspectionDataConditonParents', 'inspectionStandardSizeParents', 'productConditonParents', 'staffs'));
     }
 
     /**
@@ -89,11 +89,11 @@ class InspectionDataResultParentsController extends AppController
             }
             $this->Flash->error(__('The inspection data result parent could not be saved. Please, try again.'));
         }
+        $inspectionDataConditonParents = $this->InspectionDataResultParents->InspectionDataConditonParents->find('list', ['limit' => 200]);
         $inspectionStandardSizeParents = $this->InspectionDataResultParents->InspectionStandardSizeParents->find('list', ['limit' => 200]);
         $productConditonParents = $this->InspectionDataResultParents->ProductConditonParents->find('list', ['limit' => 200]);
-        $productMaterialParents = $this->InspectionDataResultParents->ProductMaterialParents->find('list', ['limit' => 200]);
         $staffs = $this->InspectionDataResultParents->Staffs->find('list', ['limit' => 200]);
-        $this->set(compact('inspectionDataResultParent', 'inspectionStandardSizeParents', 'productConditonParents', 'productMaterialParents', 'staffs'));
+        $this->set(compact('inspectionDataResultParent', 'inspectionDataConditonParents', 'inspectionStandardSizeParents', 'productConditonParents', 'staffs'));
     }
 
     /**

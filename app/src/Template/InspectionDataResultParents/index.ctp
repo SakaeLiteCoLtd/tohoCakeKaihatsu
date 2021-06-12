@@ -8,10 +8,10 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('New Inspection Data Result Parent'), ['action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('List Inspection Data Conditon Parents'), ['controller' => 'InspectionDataConditonParents', 'action' => 'index']) ?></li>
+        <li><?= $this->Html->link(__('New Inspection Data Conditon Parent'), ['controller' => 'InspectionDataConditonParents', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Inspection Standard Size Parents'), ['controller' => 'InspectionStandardSizeParents', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Inspection Standard Size Parent'), ['controller' => 'InspectionStandardSizeParents', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Product Material Parents'), ['controller' => 'ProductMaterialParents', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Product Material Parent'), ['controller' => 'ProductMaterialParents', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Staffs'), ['controller' => 'Staffs', 'action' => 'index']) ?></li>
         <li><?= $this->Html->link(__('New Staff'), ['controller' => 'Staffs', 'action' => 'add']) ?></li>
         <li><?= $this->Html->link(__('List Inspection Data Result Children'), ['controller' => 'InspectionDataResultChildren', 'action' => 'index']) ?></li>
@@ -24,11 +24,15 @@
         <thead>
             <tr>
                 <th scope="col"><?= $this->Paginator->sort('id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('inspection_data_conditon_parent_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('inspection_standard_size_parent_id') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('product_conditon_parent_id') ?></th>
-                <th scope="col"><?= $this->Paginator->sort('product_material_parent_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('lot_number') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('datetime') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('staff_id') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('appearance') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('result_weight') ?></th>
+                <th scope="col"><?= $this->Paginator->sort('judge') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('delete_flag') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created_at') ?></th>
                 <th scope="col"><?= $this->Paginator->sort('created_staff') ?></th>
@@ -41,11 +45,15 @@
             <?php foreach ($inspectionDataResultParents as $inspectionDataResultParent): ?>
             <tr>
                 <td><?= $this->Number->format($inspectionDataResultParent->id) ?></td>
+                <td><?= $inspectionDataResultParent->has('inspection_data_conditon_parent') ? $this->Html->link($inspectionDataResultParent->inspection_data_conditon_parent->id, ['controller' => 'InspectionDataConditonParents', 'action' => 'view', $inspectionDataResultParent->inspection_data_conditon_parent->id]) : '' ?></td>
                 <td><?= $inspectionDataResultParent->has('inspection_standard_size_parent') ? $this->Html->link($inspectionDataResultParent->inspection_standard_size_parent->id, ['controller' => 'InspectionStandardSizeParents', 'action' => 'view', $inspectionDataResultParent->inspection_standard_size_parent->id]) : '' ?></td>
                 <td><?= $this->Number->format($inspectionDataResultParent->product_conditon_parent_id) ?></td>
-                <td><?= $inspectionDataResultParent->has('product_material_parent') ? $this->Html->link($inspectionDataResultParent->product_material_parent->id, ['controller' => 'ProductMaterialParents', 'action' => 'view', $inspectionDataResultParent->product_material_parent->id]) : '' ?></td>
+                <td><?= h($inspectionDataResultParent->lot_number) ?></td>
                 <td><?= h($inspectionDataResultParent->datetime) ?></td>
                 <td><?= $inspectionDataResultParent->has('staff') ? $this->Html->link($inspectionDataResultParent->staff->name, ['controller' => 'Staffs', 'action' => 'view', $inspectionDataResultParent->staff->id]) : '' ?></td>
+                <td><?= $this->Number->format($inspectionDataResultParent->appearance) ?></td>
+                <td><?= $this->Number->format($inspectionDataResultParent->result_weight) ?></td>
+                <td><?= $this->Number->format($inspectionDataResultParent->judge) ?></td>
                 <td><?= $this->Number->format($inspectionDataResultParent->delete_flag) ?></td>
                 <td><?= h($inspectionDataResultParent->created_at) ?></td>
                 <td><?= $this->Number->format($inspectionDataResultParent->created_staff) ?></td>
