@@ -28,6 +28,7 @@ class InspectionDataResultParentsTableTest extends TestCase
         'app.InspectionDataConditonParents',
         'app.InspectionStandardSizeParents',
         'app.ProductConditonParents',
+        'app.Products',
         'app.Staffs',
         'app.InspectionDataResultChildren'
     ];

@@ -42,7 +42,7 @@ $mes = "";
 <table class="white">
 
   <tr>
-    <td width="50" rowspan='7'>No.</td>
+    <td width="58" rowspan='7'>No.</td>
   </tr>
   <tr>
     <td width="100" rowspan='6'>時間</td>
@@ -51,8 +51,8 @@ $mes = "";
 <tr>
   <td style='width:130'>測定箇所</td>
 
-  <?php for($i=1; $i<=9; $i++): ?>
-    <td style='width:90'><?= h(${"size_name".$i}) ?></td>
+  <?php for($i=1; $i<=10; $i++): ?>
+    <td style='width:80'><?= h(${"size_name".$i}) ?></td>
   <?php endfor;?>
 
   <td width="75" rowspan='5'>長さ</td>
@@ -64,14 +64,14 @@ $mes = "";
 <tr>
   <td>規格</td>
 
-    <?php for($i=1; $i<=9; $i++): ?>
+    <?php for($i=1; $i<=10; $i++): ?>
       <td><?= h(${"size".$i}) ?></td>
     <?php endfor;?>
 </tr>
 <tr>
   <td>上限</td>
 
-  <?php for($i=1; $i<=9; $i++): ?>
+  <?php for($i=1; $i<=10; $i++): ?>
     <td><?= h(${"upper_limit".$i}) ?></td>
   <?php endfor;?>
 
@@ -79,7 +79,7 @@ $mes = "";
 <tr>
   <td>下限</td>
 
-    <?php for($i=1; $i<=9; $i++): ?>
+    <?php for($i=1; $i<=10; $i++): ?>
       <td><?= h(${"lower_limit".$i}) ?></td>
     <?php endfor;?>
 
@@ -90,8 +90,8 @@ $mes = "";
 <tr>
   <td>検査機</td>
 
-    <?php for($i=1; $i<=9; $i++): ?>
-      <td style='width:90'><?= h(${"measuring_instrument".$i}) ?></td>
+    <?php for($i=1; $i<=10; $i++): ?>
+      <td><?= h(${"measuring_instrument".$i}) ?></td>
     <?php endfor;?>
 
     <td width="75">目視</td>
@@ -107,9 +107,17 @@ $mes = "";
      $j = $gyou + 1 - $k;
   ?>
 
-  <table class="form">
+  <?php if ($k < 2): ?>
 
-  <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
+    <table class="form">
+
+  <?php else : ?>
+
+    <table class="white">
+
+  <?php endif; ?>
+
+  <td style='width:58; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <td style='width:100; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
   <td style='width:130; border-top-style:none'><font size='1.8'><?= h("社員コード：") ?></font><br><?= h(${"user_code".$j}) ?></td>
 
@@ -117,18 +125,20 @@ $mes = "";
   <?= $this->Form->control('datetime'.$j, array('type'=>'hidden', 'value'=>${"datetime".$j}, 'label'=>false)) ?>
   <?= $this->Form->control('user_code'.$j, array('type'=>'hidden', 'value'=>${"user_code".$j}, 'label'=>false)) ?>
 
-  <?php for($i=1; $i<=9; $i++): ?>
+  <?php for($i=1; $i<=10; $i++): ?>
     <?php
     if(${"result_size".$j.$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
     && ${"result_size".$j.$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
-      echo '<td style="width:90; border-top-style:none">';
+      echo '<td style="width:80; border-top-style:none">';
       echo ${"result_size".$j.$i} ;
       echo '</td>';
     } else {
-      echo '<td style="width:90; border-top-style:none"><font color="red">';
+      echo '<td style="width:80; border-top-style:none"><font color="red">';
       echo ${"result_size".$j.$i};
       echo '</td>';
-      $mes = $mes.$i."番目に規格から外れたデータがあります。入力間違いがないか確認し、正しければそのまま登録してください。".'<br>';
+      if($k < 2){
+        $mes = $mes.$i."番目に規格から外れたデータがあります。入力間違いがないか確認し、正しければそのまま登録してください。".'<br>';
+      }
 
       ${"gouhi".$j} = 1;
     }
@@ -151,12 +161,12 @@ $mes = "";
   }
   ?>
 
-  <td style='width:75; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+  <td style='width:75; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
   <td style='width:75; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
   <td style='width:75; border-top-style:none'><?= h(${"weight".$j}) ?></td>
   <td style='width:72; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
 
-  <?= $this->Form->control('gouhi'.$j, array('type'=>'hidden', 'value'=>${"gouhi".$j}, 'label'=>false)) ?>
+  <?= $this->Form->control('product_id'.$j, array('type'=>'hidden', 'value'=>${"product_id".$j}, 'label'=>false)) ?>
   <?= $this->Form->control('gaikan'.$j, array('type'=>'hidden', 'value'=>${"gaikan".$j}, 'label'=>false)) ?>
   <?= $this->Form->control('weight'.$j, array('type'=>'hidden', 'value'=>${"weight".$j}, 'label'=>false)) ?>
   <?= $this->Form->control('gouhi'.$j, array('type'=>'hidden', 'value'=>${"gouhi".$j}, 'label'=>false)) ?>
@@ -202,7 +212,7 @@ $mes = "";
 
     <?php for($n=1; $n<=7; $n++): ?>
 
-      <?= $this->Form->control('inspection_temp_'.$n.$j, array('type'=>'hidden', 'value'=>${"temp_".$n.$j}, 'label'=>false)) ?>
+      <?= $this->Form->control('inspection_temp_'.$n.$j, array('type'=>'hidden', 'value'=>${"inspection_temp_".$n.$j}, 'label'=>false)) ?>
 
     <?php endfor;?>
 

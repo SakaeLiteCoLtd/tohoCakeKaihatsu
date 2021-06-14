@@ -22,6 +22,7 @@ class ProductsFixture extends TestFixture
         'product_code' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'customer_product_code' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'name' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'length' => ['type' => 'float', 'length' => null, 'precision' => null, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => ''],
         'customer_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'is_active' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '0=維持、1=停止', 'precision' => null, 'autoIncrement' => null],
         'delete_flag' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
@@ -53,12 +54,13 @@ class ProductsFixture extends TestFixture
                 'product_code' => 'Lorem ipsum dolor sit amet',
                 'customer_product_code' => 'Lorem ipsum dolor sit amet',
                 'name' => 'Lorem ipsum dolor sit amet',
+                'length' => 1,
                 'customer_id' => 1,
                 'is_active' => 1,
                 'delete_flag' => 1,
-                'created_at' => '2021-05-13 09:07:18',
+                'created_at' => '2021-06-14 14:43:50',
                 'created_staff' => 1,
-                'updated_at' => '2021-05-13 09:07:18',
+                'updated_at' => '2021-06-14 14:43:50',
                 'updated_staff' => 1
             ],
         ];

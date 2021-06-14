@@ -11,9 +11,11 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\FactoriesTable|\Cake\ORM\Association\BelongsTo $Factories
  * @property \App\Model\Table\CustomersTable|\Cake\ORM\Association\BelongsTo $Customers
+ * @property \App\Model\Table\InspectionDataResultsParentsTable|\Cake\ORM\Association\HasMany $InspectionDataResultsParents
  * @property \App\Model\Table\InspectionStandardSizeParentsTable|\Cake\ORM\Association\HasMany $InspectionStandardSizeParents
  * @property \App\Model\Table\PriceProductsTable|\Cake\ORM\Association\HasMany $PriceProducts
  * @property \App\Model\Table\ProductConditionParentsTable|\Cake\ORM\Association\HasMany $ProductConditionParents
+ * @property \App\Model\Table\不使用productLengthsTable|\Cake\ORM\Association\HasMany $不使用productLengths
  * @property \App\Model\Table\不使用productMaterialParentsTable|\Cake\ORM\Association\HasMany $不使用productMaterialParents
  * @property \App\Model\Table\不使用productMaterialsTable|\Cake\ORM\Association\HasMany $不使用productMaterials
  *
@@ -51,6 +53,9 @@ class ProductsTable extends Table
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'
         ]);
+        $this->hasMany('InspectionDataResultsParents', [
+            'foreignKey' => 'product_id'
+        ]);
         $this->hasMany('InspectionStandardSizeParents', [
             'foreignKey' => 'product_id'
         ]);
@@ -60,14 +65,6 @@ class ProductsTable extends Table
         $this->hasMany('ProductConditionParents', [
             'foreignKey' => 'product_id'
         ]);
-        /*
-        $this->hasMany('不使用productMaterialParents', [
-            'foreignKey' => 'product_id'
-        ]);
-        $this->hasMany('不使用productMaterials', [
-            'foreignKey' => 'product_id'
-        ]);
-        */
     }
 
     /**
@@ -98,6 +95,11 @@ class ProductsTable extends Table
             ->maxLength('name', 255)
             ->requirePresence('name', 'create')
             ->notEmpty('name');
+
+        $validator
+            ->numeric('length')
+            ->requirePresence('length', 'create')
+            ->notEmpty('length');
 
         $validator
             ->integer('is_active')

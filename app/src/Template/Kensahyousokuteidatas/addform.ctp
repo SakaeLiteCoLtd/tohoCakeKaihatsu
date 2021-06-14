@@ -122,7 +122,7 @@ echo $this->Html->css('kensahyou');
     <td style='width:80; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
   <?php endfor;?>
 
-  <td style='width:72; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ['options' => $arrGaikan, 'label'=>false]) ?></td>
+  <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false]) ?></td>
   <td style='width:80; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ['options' => $arrGaikan, 'label'=>false]) ?></td>
   <td style='width:80; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'required' => 'true')) ?></td>
   <td style='width:72; border-top-style:none'><?= $this->Form->control('gouhi'.$j, ['options' => $arrGouhi, 'label'=>false]) ?></td>
@@ -172,11 +172,12 @@ echo $this->Html->css('kensahyou');
     }
     ?>
 
-    <td style='width:72; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
+    <td style='width:72; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
     <td style='width:80; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
     <td style='width:80; border-top-style:none'><?= h(${"weight".$j}) ?></td>
     <td style='width:72; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
 
+    <?= $this->Form->control('product_id'.$j, array('type'=>'hidden', 'value'=>${"product_id".$j}, 'label'=>false)) ?>
     <?= $this->Form->control('gaikan'.$j, array('type'=>'hidden', 'value'=>${"gaikan".$j}, 'label'=>false)) ?>
     <?= $this->Form->control('weight'.$j, array('type'=>'hidden', 'value'=>${"weight".$j}, 'label'=>false)) ?>
     <?= $this->Form->control('gouhi'.$j, array('type'=>'hidden', 'value'=>${"gouhi".$j}, 'label'=>false)) ?>
@@ -221,7 +222,7 @@ echo $this->Html->css('kensahyou');
 
    <?php for($n=1; $n<=7; $n++): ?>
 
-     <?= $this->Form->control('inspection_temp_'.$n.$j, array('type'=>'hidden', 'value'=>${"temp_".$n.$j}, 'label'=>false)) ?>
+     <?= $this->Form->control('inspection_temp_'.$n.$j, array('type'=>'hidden', 'value'=>${"inspection_temp_".$n.$j}, 'label'=>false)) ?>
 
    <?php endfor;?>
 

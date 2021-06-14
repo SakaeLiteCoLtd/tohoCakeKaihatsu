@@ -47,7 +47,7 @@ echo $this->Html->css('kensahyou');
 
   <?php for($n=1; $n<=7; $n++): ?>
 
-    <?= $this->Form->control('inspection_temp_'.$n.$j, array('type'=>'hidden', 'value'=>${"temp_".$n.$j}, 'label'=>false)) ?>
+    <?= $this->Form->control('inspection_temp_'.$n.$j, array('type'=>'hidden', 'value'=>${"inspection_temp_".$n.$j}, 'label'=>false)) ?>
 
   <?php endfor;?>
 

@@ -10,6 +10,9 @@
 <?php
 $this->layout = false;
 echo $this->Html->css('kensahyou');
+
+$mes = "";
+
 ?>
 
 <table class='sample hesdermenu'>
@@ -47,7 +50,7 @@ echo $this->Html->css('kensahyou');
 
   <?php for($n=1; $n<=7; $n++): ?>
 
-    <?= $this->Form->control('inspection_temp_'.$n.$j, array('type'=>'hidden', 'value'=>${"temp_".$n.$j}, 'label'=>false)) ?>
+    <?= $this->Form->control('inspection_temp_'.$n.$j, array('type'=>'hidden', 'value'=>${"inspection_temp_".$n.$j}, 'label'=>false)) ?>
 
   <?php endfor;?>
 
@@ -122,33 +125,40 @@ echo $this->Html->css('kensahyou');
           echo "/ ${"extrusion_load".$j}(A)\n";
           echo "</td>\n";
         }elseif($i == 2){
-          echo "<td>\n";
-          echo "${"inspection_temp_1".$j}\n";
-          echo "</td>\n";
-          echo "<td>\n";
-          echo "${"inspection_temp_2".$j}\n";
-          echo "</td>\n";
-          echo "<td>\n";
-          echo "${"inspection_temp_3".$j}\n";
-          echo "</td>\n";
-          echo "<td>\n";
-          echo "${"inspection_temp_4".$j}\n";
-          echo "</td>\n";
-          echo "<td>\n";
-          echo "${"inspection_temp_5".$j}\n";
-          echo "</td>\n";
-          echo "<td>\n";
-          echo "${"inspection_temp_6".$j}\n";
-          echo "</td>\n";
-          echo "<td>\n";
-          echo "${"inspection_temp_7".$j}\n";
-          echo "</td>\n";
-          echo "<td style='border-right-style:none; text-align:right'>\n";
-          echo "${"inspection_extrude_roatation".$j}(rpm)\n";
-          echo "</td>\n";
-          echo "<td style='border-left-style:none; text-align:left'>\n";
-          echo "/ ${"inspection_extrusion_load".$j}(A)\n";
-          echo "</td>\n";
+
+          for($n=1; $n<8; $n++){
+
+            if(${"inspection_temp_".$n.$j} <= (int)${"temp_".$n.$j} + (int)${"temp_".$n."_upper_limit".$j}
+            && ${"inspection_temp_".$n.$j} >= (int)${"temp_".$n.$j} + (int)${"temp_".$n."_lower_limit".$j}){
+              echo '<td>';
+              echo ${"inspection_temp_".$n.$j} ;
+              echo '</td>';
+            } else {
+              echo '<td><font color="red">';
+              echo ${"inspection_temp_".$n.$j};
+              echo '</td>';
+              $mes = "規格から外れたデータがあります。入力間違いがないか確認し、正しければそのまま登録してください。".'<br>';
+            }
+
+          }
+
+          if(${"inspection_extrude_roatation".$j}/${"inspection_extrusion_load".$j} <= (int)${"extrude_roatation".$j}/(int)${"extrusion_load".$j} + (int)${"extrusion_upper_limit".$j}
+          && ${"inspection_extrude_roatation".$j}/${"inspection_extrusion_load".$j} >= (int)${"extrude_roatation".$j}/(int)${"extrusion_load".$j} + (int)${"extrusion_lower_limit".$j}){
+            echo "<td style='border-right-style:none; text-align:right'>\n";
+            echo "${"inspection_extrude_roatation".$j}(rpm)\n";
+            echo "</td>\n";
+            echo "<td style='border-left-style:none; text-align:left'>\n";
+            echo "/ ${"inspection_extrusion_load".$j}(A)\n";
+            echo "</td>\n";
+          } else {
+            echo "<td style='border-right-style:none; text-align:right'><font color='red'>\n";
+            echo "${"inspection_extrude_roatation".$j}(rpm)\n";
+            echo "</td>\n";
+            echo "<td style='border-left-style:none; text-align:left'><font color='red'>\n";
+            echo "/ ${"inspection_extrusion_load".$j}(A)\n";
+            echo "</td>\n";
+            $mes = "規格から外れたデータがあります。入力間違いがないか確認し、正しければそのまま登録してください。".'<br>';
+          }
         }else{
           echo "<td>\n";
           echo "± 10\n";
@@ -191,9 +201,19 @@ echo $this->Html->css('kensahyou');
               echo "${"screw_1".$j}\n";
               echo "</td>\n";
             }elseif($i==2){
-              echo "<td>\n";
-              echo "$inspection_pickup_speed\n";
-              echo "</td>\n";
+
+              if($inspection_pickup_speed <= (int)$pickup_speed + (int)$pickup_speed_upper_limit
+              && $inspection_pickup_speed >= (int)$pickup_speed + (int)$pickup_speed_lower_limit){
+                echo '<td>';
+                echo "$inspection_pickup_speed\n";
+                echo '</td>';
+              } else {
+                echo '<td><font color="red">';
+                echo "$inspection_pickup_speed\n";
+                echo '</td>';
+                $mes = "規格から外れたデータがあります。入力間違いがないか確認し、正しければそのまま登録してください。".'<br>';
+              }
+
               echo "<td>\n";
               echo "${"screw_mesh_2".$j}\n";
               echo "</td>\n";
@@ -267,7 +287,8 @@ echo $this->Html->css('kensahyou');
 
 <br><br>
 <table class="top">
-  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('成形条件を上記の内容で登録します。よろしければ「登録確定」ボタンを押してください。') ?></strong></td></tr>
+  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
+  <tr><td style="border:none; color:red"><?= __('成形条件を上記の内容で登録します。よろしければ「登録確定」ボタンを押してください。') ?></td></tr>
 </table>
 <br>
 <table align="center">
