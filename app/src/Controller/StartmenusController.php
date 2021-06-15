@@ -54,10 +54,11 @@ class StartmenusController extends AppController
       $Menus = $this->Menus->find()->where(['delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
 
       $session = $this->request->getSession();
+      session_regenerate_id();//セッションIDの更新（セッションハイジャック対策）
       $datasession = $session->read();
 /*
       echo "<pre>";
-      print_r($datasession['Auth']['User']['super_user']);
+      print_r(session_id());
       echo "</pre>";
 */
       if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合

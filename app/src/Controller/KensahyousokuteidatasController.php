@@ -2035,7 +2035,7 @@ class KensahyousokuteidatasController extends AppController
         $endYMD = $endY."-".$endM."-".$endD." 23:59";
 
         $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
-        ->contain(['InspectionDataResultParents' => ['InspectionStandardSizeParents' => ["Products"]]])
+        ->contain(['InspectionDataResultParents' => ['Products']])//測定データのうち、管理ナンバーが一致するものを検索
         ->where(['product_code' => $product_code, 'InspectionDataResultChildren.delete_flag' => 0,
         'datetime >=' => $startYMD, 'datetime <=' => $endYMD])
         ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
@@ -2062,7 +2062,7 @@ class KensahyousokuteidatasController extends AppController
       }else{
 
         $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
-        ->contain(['InspectionDataResultParents' => ['InspectionStandardSizeParents' => ["Products"]]])
+        ->contain(['InspectionDataResultParents' => ['Products']])//測定データのうち、管理ナンバーが一致するものを検索
         ->where(['product_code' => $product_code, 'InspectionDataResultChildren.delete_flag' => 0])
         ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
 
@@ -2087,6 +2087,10 @@ class KensahyousokuteidatasController extends AppController
 
       }
 
+      echo "<pre>";//フォームの再読み込みの防止
+      print_r("  ");
+      echo "</pre>";
+
     }
 
     public function kensakuhyouji()
@@ -2095,6 +2099,9 @@ class KensahyousokuteidatasController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->query('s');
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
 
       $arrdata = explode("_",$data);
 
@@ -2109,8 +2116,16 @@ class KensahyousokuteidatasController extends AppController
       print_r($datetimefin);
       echo "</pre>";
 */
-      $product_code = $arrdata[1];
+      if(isset($arrdata[2])){
+        $product_code = $arrdata[1]."_".$arrdata[2];
+      }else{
+        $product_code = $arrdata[1];
+      }
       $this->set('product_code', $product_code);
+
+      echo "<pre>";
+      print_r($product_code);
+      echo "</pre>";
 
       $htmlproductcheck = new htmlproductcheck();//クラスを使用
       $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
@@ -2165,7 +2180,7 @@ class KensahyousokuteidatasController extends AppController
       }
 
       $InspectionDataResultParents = $this->InspectionDataResultParents->find()
-      ->contain(['InspectionStandardSizeParents' => ["Products"]])
+      ->contain(['InspectionStandardSizeParents', 'Products'])
       ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.delete_flag' => 0,
       'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin])
       ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
@@ -2178,7 +2193,7 @@ class KensahyousokuteidatasController extends AppController
       $this->set('gyou', $gyou);
 
       $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
-      ->contain(['InspectionStandardSizeChildren', 'InspectionDataResultParents' => ['InspectionStandardSizeParents' => ["Products"]]])
+      ->contain(['InspectionDataResultParents' => ['Products']])//測定データのうち、管理ナンバーが一致するものを検索
       ->where(['product_code' => $product_code, 'InspectionDataResultChildren.delete_flag' => 0,
       'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin])
       ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
@@ -2235,6 +2250,10 @@ class KensahyousokuteidatasController extends AppController
         }
 
       }
+
+      echo "<pre>";//フォームの再読み込みの防止
+      print_r("  ");
+      echo "</pre>";
 
     }
 
@@ -2570,6 +2589,16 @@ class KensahyousokuteidatasController extends AppController
 
             if(strlen($data['result_size'.$n.$i]) > 0){
               ${"result_size".$n.$i} = $data['result_size'.$n.$i];
+
+              $dotini = substr(${"result_size".$n.$i}, 0, 1);
+              $dotend = substr(${"result_size".$n.$i}, -1, 1);
+
+              if($dotini == "."){
+                ${"result_size".$n.$i} = "0".${"result_size".$n.$i};
+              }elseif($dotend == "."){
+                ${"result_size".$n.$i} = ${"result_size".$n.$i}."0";
+              }
+
             }else{
               ${"result_size".$n.$i} = "";
             }

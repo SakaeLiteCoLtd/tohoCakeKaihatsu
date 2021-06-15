@@ -30,10 +30,7 @@ class ProductsTableTest extends TestCase
         'app.InspectionDataResultsParents',
         'app.InspectionStandardSizeParents',
         'app.PriceProducts',
-        'app.ProductConditionParents',
-        'app.不使用productLengths',
-        'app.不使用productMaterialParents',
-        'app.不使用productMaterials'
+        'app.ProductConditionParents'
     ];
 
     /**

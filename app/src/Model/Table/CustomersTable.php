@@ -60,10 +60,36 @@ class CustomersTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
+            ->scalar('customer_code')
+            ->maxLength('customer_code', 255)
+            ->requirePresence('customer_code', 'create')
+            ->notEmpty('customer_code');
+
+        $validator
             ->scalar('name')
             ->maxLength('name', 255)
             ->requirePresence('name', 'create')
             ->notEmpty('name');
+
+        $validator
+            ->scalar('department')
+            ->maxLength('department', 255)
+            ->allowEmpty('department');
+
+        $validator
+            ->scalar('ryakusyou')
+            ->maxLength('ryakusyou', 255)
+            ->allowEmpty('ryakusyou');
+
+        $validator
+            ->scalar('furigana')
+            ->maxLength('furigana', 255)
+            ->allowEmpty('furigana');
+
+        $validator
+            ->scalar('yuubin')
+            ->maxLength('yuubin', 255)
+            ->allowEmpty('yuubin');
 
         $validator
             ->scalar('address')

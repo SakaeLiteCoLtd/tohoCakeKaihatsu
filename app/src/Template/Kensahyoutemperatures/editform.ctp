@@ -55,11 +55,10 @@ echo $this->Html->css('kensahyou');
   <td style='width:70'>A D</td>
   <td style='width:70'>D １</td>
   <td style='width:70'>D ２</td>
-  <td style='width:100'>押出回転<br>（rpm）</td>
-  <td style='width:100'>負荷（A）</td>
-  <td style='width:122'>引取速度<br>（m/min）</td>
+  <td style='width:226' colspan="2">押出回転(rpm)/負荷(A)</td>
+  <td style='width:100'>引取速度<br>（m/min）</td>
   <td style='width:200' colspan="2">ｽｸﾘｰﾝﾒｯｼｭ : 枚数</td>
-  <td style='width:200'>ｽｸﾘｭｳ</td>
+  <td style='width:196'>ｽｸﾘｭｳ</td>
 </tr>
 
 <?php
@@ -109,12 +108,12 @@ echo $this->Html->css('kensahyou');
           echo "<td>\n";
           echo "<input type='text' value=${"temp_7".$j} style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_7".$j.">\n";
           echo "</td>\n";
-          echo "<td>\n";
+          echo "<td style='border-right-style:none; text-align:right'>\n";
           echo "<input type='text' value=${"extrude_roatation".$j} style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=extrude_roatation".$j.">\n";
-          echo "</td>\n";
-          echo "<td>\n";
+          echo "(rpm)/</td>\n";
+          echo "<td style='border-left-style:none; text-align:left'>\n";
           echo "<input type='text' value=${"extrusion_load".$j} style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=extrusion_load".$j.">\n";
-          echo "</td>\n";
+          echo "(A)</td>\n";
         }elseif($i == 2){
           echo "<td>\n";
           echo "</td>\n";
@@ -130,9 +129,7 @@ echo $this->Html->css('kensahyou');
           echo "</td>\n";
           echo "<td>\n";
           echo "</td>\n";
-          echo "<td>\n";
-          echo "</td>\n";
-          echo "<td>\n";
+          echo "<td colspan=2>\n";
           echo "</td>\n";
         }else{
           echo "<td>\n";
@@ -156,10 +153,7 @@ echo $this->Html->css('kensahyou');
           echo "<td>\n";
           echo "± 10\n";
           echo "</td>\n";
-          echo "<td>\n";
-          echo "± 5.0\n";
-          echo "</td>\n";
-          echo "<td>\n";
+          echo "<td colspan=2>\n";
           echo "± 5.0\n";
           echo "</td>\n";
         }

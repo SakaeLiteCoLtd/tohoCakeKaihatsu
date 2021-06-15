@@ -777,7 +777,17 @@ class KensahyoutemperaturesController extends AppController
 
         for($i=1; $i<=7; $i++){
           ${"temp_".$i.$j} = $data['temp_'.$i.$j];
+
+          $dotini = substr(${"temp_".$i.$j}, 0, 1);
+          $dotend = substr(${"temp_".$i.$j}, -1, 1);
+
+          if($dotini == "."){
+            ${"temp_".$i.$j} = "0".${"temp_".$i.$j};
+          }elseif($dotend == "."){
+            ${"temp_".$i.$j} = ${"temp_".$i.$j}."0";
+          }
           $this->set('temp_'.$i.$j, ${"temp_".$i.$j});
+
         }
 
         ${"extrude_roatation".$j} = $data['extrude_roatation'.$j];

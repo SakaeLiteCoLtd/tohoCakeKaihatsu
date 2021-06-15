@@ -9,9 +9,10 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $factory_id
  * @property string $product_code
- * @property string|null $customer_product_code
  * @property string $name
- * @property float $length
+ * @property string $sakuin
+ * @property float|null $length
+ * @property string $tanni
  * @property int $customer_id
  * @property int $is_active
  * @property int $delete_flag
@@ -26,9 +27,6 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\InspectionStandardSizeParent[] $inspection_standard_size_parents
  * @property \App\Model\Entity\PriceProduct[] $price_products
  * @property \App\Model\Entity\ProductConditionParent[] $product_condition_parents
- * @property \App\Model\Entity\不使用productLength[] $不使用product_lengths
- * @property \App\Model\Entity\不使用productMaterialParent[] $不使用product_material_parents
- * @property \App\Model\Entity\不使用productMaterial[] $不使用product_materials
  */
 class Product extends Entity
 {
@@ -45,9 +43,10 @@ class Product extends Entity
     protected $_accessible = [
         'factory_id' => true,
         'product_code' => true,
-        'customer_product_code' => true,
         'name' => true,
+        'sakuin' => true,
         'length' => true,
+        'tanni' => true,
         'customer_id' => true,
         'is_active' => true,
         'delete_flag' => true,
@@ -61,8 +60,5 @@ class Product extends Entity
         'inspection_standard_size_parents' => true,
         'price_products' => true,
         'product_condition_parents' => true
-    //    '不使用product_lengths' => true,
-    //    '不使用product_material_parents' => true,
-    //    '不使用product_materials' => true
     ];
 }

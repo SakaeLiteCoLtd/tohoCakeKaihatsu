@@ -11,13 +11,10 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\FactoriesTable|\Cake\ORM\Association\BelongsTo $Factories
  * @property \App\Model\Table\CustomersTable|\Cake\ORM\Association\BelongsTo $Customers
- * @property \App\Model\Table\InspectionDataResultsParentsTable|\Cake\ORM\Association\HasMany $InspectionDataResultsParents
+ * @property |\Cake\ORM\Association\HasMany $InspectionDataResultParents
  * @property \App\Model\Table\InspectionStandardSizeParentsTable|\Cake\ORM\Association\HasMany $InspectionStandardSizeParents
  * @property \App\Model\Table\PriceProductsTable|\Cake\ORM\Association\HasMany $PriceProducts
  * @property \App\Model\Table\ProductConditionParentsTable|\Cake\ORM\Association\HasMany $ProductConditionParents
- * @property \App\Model\Table\不使用productLengthsTable|\Cake\ORM\Association\HasMany $不使用productLengths
- * @property \App\Model\Table\不使用productMaterialParentsTable|\Cake\ORM\Association\HasMany $不使用productMaterialParents
- * @property \App\Model\Table\不使用productMaterialsTable|\Cake\ORM\Association\HasMany $不使用productMaterials
  *
  * @method \App\Model\Entity\Product get($primaryKey, $options = [])
  * @method \App\Model\Entity\Product newEntity($data = null, array $options = [])
@@ -53,7 +50,7 @@ class ProductsTable extends Table
             'foreignKey' => 'customer_id',
             'joinType' => 'INNER'
         ]);
-        $this->hasMany('InspectionDataResultsParents', [
+        $this->hasMany('InspectionDataResultParents', [
             'foreignKey' => 'product_id'
         ]);
         $this->hasMany('InspectionStandardSizeParents', [
@@ -86,20 +83,26 @@ class ProductsTable extends Table
             ->notEmpty('product_code');
 
         $validator
-            ->scalar('customer_product_code')
-            ->maxLength('customer_product_code', 255)
-            ->allowEmpty('customer_product_code');
-
-        $validator
             ->scalar('name')
             ->maxLength('name', 255)
             ->requirePresence('name', 'create')
             ->notEmpty('name');
 
         $validator
+            ->scalar('sakuin')
+            ->maxLength('sakuin', 255)
+            ->requirePresence('sakuin', 'create')
+            ->notEmpty('sakuin');
+
+        $validator
             ->numeric('length')
-            ->requirePresence('length', 'create')
-            ->notEmpty('length');
+            ->allowEmpty('length');
+
+        $validator
+            ->scalar('tanni')
+            ->maxLength('tanni', 255)
+            ->requirePresence('tanni', 'create')
+            ->notEmpty('tanni');
 
         $validator
             ->integer('is_active')

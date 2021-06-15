@@ -8,7 +8,12 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $factory_id
+ * @property string $customer_code
  * @property string $name
+ * @property string|null $department
+ * @property string|null $ryakusyou
+ * @property string|null $furigana
+ * @property string|null $yuubin
  * @property string|null $address
  * @property string|null $tel
  * @property string|null $fax
@@ -36,7 +41,12 @@ class Customer extends Entity
      */
     protected $_accessible = [
         'factory_id' => true,
+        'customer_code' => true,
         'name' => true,
+        'department' => true,
+        'ryakusyou' => true,
+        'furigana' => true,
+        'yuubin' => true,
         'address' => true,
         'tel' => true,
         'fax' => true,
