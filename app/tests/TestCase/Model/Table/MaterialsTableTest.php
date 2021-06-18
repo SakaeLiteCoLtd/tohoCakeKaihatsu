@@ -28,7 +28,8 @@ class MaterialsTableTest extends TestCase
         'app.Factories',
         'app.MaterialTypes',
         'app.PriceMaterials',
-        'app.ProductMaterialParents',
+        'app.ProductMachineMaterials',
+        'app.不使用productMaterialParents',
         'app.不使用productMaterials'
     ];
 

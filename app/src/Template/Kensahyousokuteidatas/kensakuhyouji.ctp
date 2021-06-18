@@ -97,7 +97,7 @@ echo $this->Html->css('kensahyou');
 
 <?php for($j=1; $j<=$gyou; $j++): ?>
 
-  <table class="white">
+  <table class="form">
 
   <td style='width:40; border-top-style:none; font-size: 11pt'><?= h(${"lot_number".$j}) ?></td>
   <td style='width:150; border-top-style:none; font-size: 11pt'><?= h(${"datetime".$j}) ?></td></td>
@@ -121,7 +121,7 @@ echo $this->Html->css('kensahyou');
   }
   ?>
 
-  <td style='width:75; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
+  <td style='width:75; border-top-style:none'><?= h($Length) ?></td>
   <td style='width:75; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
   <td style='width:75; border-top-style:none'><?= h(${"result_weight".$j}) ?></td>
   <td style='width:59; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>

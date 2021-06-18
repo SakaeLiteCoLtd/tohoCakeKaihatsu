@@ -37,60 +37,61 @@ echo $this->Html->css('kensahyou');
 <table class="white">
 
   <tr>
-    <td width="50" rowspan='7'>No.</td>
+    <td width="42" rowspan='7'>No.</td>
   </tr>
   <tr>
-    <td width="110" rowspan='6'>時間</td>
+    <td width="100" rowspan='6'>時間</td>
   </tr>
 
 <tr>
-  <td style='width:130'>測定箇所</td>
+  <td style='width:120'>測定箇所</td>
 
-  <?php for($i=1; $i<=9; $i++): ?>
-    <td style='width:90'><?= h(${"size_name".$i}) ?></td>
+  <?php for($i=1; $i<=10; $i++): ?>
+    <td style='width:80'><?= h(${"size_name".$i}) ?></td>
   <?php endfor;?>
 
-  <td width="80" rowspan='3'>外観</td>
-  <td width="80" rowspan='3'>重量<br>（目安）</td>
-  <td width="80" rowspan='5'>合否<br>判定</td>
-  <td width="50" rowspan='5'><font size='2'>削<br>除<br>チ<br>ェ<br>ッ<br>ク</td>
+  <td width="70" rowspan='5'>長さ</td>
+  <td width="70" rowspan='3'>外観</td>
+  <td width="70" rowspan='3'>重量<br>（目安）</td>
+  <td width="60" rowspan='5'>合否<br>判定</td>
+  <td width="49" rowspan='5'><font size='2'>削<br>除<br>チ<br>ェ<br>ッ<br>ク</td>
 
 </tr>
 <tr>
-  <td style='width:130'>規格</td>
+  <td>規格</td>
 
-    <?php for($i=1; $i<=9; $i++): ?>
-      <td style='width:90'><?= h(${"size".$i}) ?></td>
+    <?php for($i=1; $i<=10; $i++): ?>
+      <td><?= h(${"size".$i}) ?></td>
     <?php endfor;?>
 </tr>
 <tr>
-  <td style='width:130'>上限</td>
+  <td>上限</td>
 
-  <?php for($i=1; $i<=9; $i++): ?>
-    <td style='width:90'><?= h(${"upper_limit".$i}) ?></td>
+  <?php for($i=1; $i<=10; $i++): ?>
+    <td><?= h(${"upper_limit".$i}) ?></td>
   <?php endfor;?>
 
 </tr>
 <tr>
-  <td style='width:130'>下限</td>
+  <td>下限</td>
 
-    <?php for($i=1; $i<=9; $i++): ?>
-      <td style='width:90'><?= h(${"lower_limit".$i}) ?></td>
+    <?php for($i=1; $i<=10; $i++): ?>
+      <td><?= h(${"lower_limit".$i}) ?></td>
     <?php endfor;?>
 
-        <td width="100">良 ・ 不</td>
-        <td width="100">g / 本</td>
+        <td width="70">良 ・ 不</td>
+        <td width="70">g / 本</td>
 
 </tr>
 <tr>
-  <td style='width:130'>検査機</td>
+  <td>検査機</td>
 
-    <?php for($i=1; $i<=9; $i++): ?>
-      <td style='width:90'><?= h(${"measuring_instrument".$i}) ?></td>
+    <?php for($i=1; $i<=10; $i++): ?>
+      <td><?= h(${"measuring_instrument".$i}) ?></td>
     <?php endfor;?>
 
-    <td width="80">目視</td>
-    <td style='width:80; border-top-style:none; font-size: 11pt'>デジタル秤</td>
+    <td width="70">目視</td>
+    <td style='width:70; border-top-style:none; font-size: 11pt'>デジタル秤</td>
 
 </tr>
 
@@ -102,25 +103,29 @@ echo $this->Html->css('kensahyou');
   <?= $this->Form->control('gyoumax', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
   <?= $this->Form->control('datekensaku', array('type'=>'hidden', 'value'=>$datekensaku, 'label'=>false)) ?>
 
-  <table class="white">
+  <table class="form">
 
-  <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
-  <td style='width:110; border-top-style:none'><?= $this->Form->control('datetime'.$j, array('type'=>'time', 'value'=>${"datetime".$j}, 'label'=>false)) ?></td>
-  <td style='width:130; border-top-style:none'>
+  <td style='width:42; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
+
+  <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
+
+  <td style='width:100; border-top-style:none'><?= $this->Form->control('datetime'.$j, array('type'=>'time', 'value'=>${"datetime".$j}, 'label'=>false)) ?></td>
+  <td style='width:120; border-top-style:none'>
     <font size='1.8'><?= h("社員コード：") ?>
     </font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'value'=>${"user_code".$j}, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'required' => 'true')) ?>
   </td>
 
-  <?php for($i=1; $i<=9; $i++): ?>
-    <td style='width:90; border-top-style:none'>
+  <?php for($i=1; $i<=10; $i++): ?>
+    <td style='width:80; border-top-style:none'>
       <?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'value'=>${"result_size".$j.$i}, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?>
     </td>
   <?php endfor;?>
 
-  <td style='width:80; border-top-style:none'><?= $this->Form->control('appearance'.$j, ['options' => $arrGaikan, 'value'=>${"appearance".$j}, 'label'=>false]) ?></td>
-  <td style='width:80; border-top-style:none'><?= $this->Form->control('result_weight'.$j, array('type'=>'text', 'value'=>${"result_weight".$j}, 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'required' => 'true')) ?></td>
-  <td style='width:80; border-top-style:none'><?= $this->Form->control('judge'.$j, ['options' => $arrGouhi, 'value'=>${"judge".$j}, 'label'=>false]) ?></td>
-  <td style='width:50; border-top-style:none'><?= $this->Form->control('delete_sokutei'.$j, array('type'=>'checkbox', 'label'=>false)) ?></td>
+  <td style='width:70; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false]) ?></td>
+  <td style='width:70; border-top-style:none'><?= $this->Form->control('appearance'.$j, ['options' => $arrGaikan, 'value'=>${"appearance".$j}, 'label'=>false]) ?></td>
+  <td style='width:70; border-top-style:none'><?= $this->Form->control('result_weight'.$j, array('type'=>'text', 'value'=>${"result_weight".$j}, 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'required' => 'true')) ?></td>
+  <td style='width:60; border-top-style:none'><?= $this->Form->control('judge'.$j, ['options' => $arrGouhi, 'value'=>${"judge".$j}, 'label'=>false]) ?></td>
+  <td style='width:49; border-top-style:none'><?= $this->Form->control('delete_sokutei'.$j, array('type'=>'checkbox', 'label'=>false)) ?></td>
 
 </table>
 

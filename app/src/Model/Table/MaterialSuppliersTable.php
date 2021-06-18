@@ -60,20 +60,36 @@ class MaterialSuppliersTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
+            ->scalar('material_supplier_code')
+            ->maxLength('material_supplier_code', 255)
+            ->requirePresence('material_supplier_code', 'create')
+            ->notEmpty('material_supplier_code');
+
+        $validator
             ->scalar('name')
             ->maxLength('name', 255)
             ->requirePresence('name', 'create')
             ->notEmpty('name');
 
         $validator
-            ->scalar('office')
-            ->maxLength('office', 255)
-            ->allowEmpty('office');
-
-        $validator
             ->scalar('department')
             ->maxLength('department', 255)
             ->allowEmpty('department');
+
+        $validator
+            ->scalar('ryakusyou')
+            ->maxLength('ryakusyou', 255)
+            ->allowEmpty('ryakusyou');
+
+        $validator
+            ->scalar('sakuin')
+            ->maxLength('sakuin', 255)
+            ->allowEmpty('sakuin');
+
+        $validator
+            ->scalar('yuubin')
+            ->maxLength('yuubin', 255)
+            ->allowEmpty('yuubin');
 
         $validator
             ->scalar('address')

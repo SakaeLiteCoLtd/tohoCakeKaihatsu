@@ -11,7 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\FactoriesTable|\Cake\ORM\Association\BelongsTo $Factories
  * @property \App\Model\Table\CustomersTable|\Cake\ORM\Association\BelongsTo $Customers
- * @property |\Cake\ORM\Association\HasMany $InspectionDataResultParents
+ * @property \App\Model\Table\InspectionDataResultParentsTable|\Cake\ORM\Association\HasMany $InspectionDataResultParents
  * @property \App\Model\Table\InspectionStandardSizeParentsTable|\Cake\ORM\Association\HasMany $InspectionStandardSizeParents
  * @property \App\Model\Table\PriceProductsTable|\Cake\ORM\Association\HasMany $PriceProducts
  * @property \App\Model\Table\ProductConditionParentsTable|\Cake\ORM\Association\HasMany $ProductConditionParents
@@ -91,8 +91,7 @@ class ProductsTable extends Table
         $validator
             ->scalar('sakuin')
             ->maxLength('sakuin', 255)
-            ->requirePresence('sakuin', 'create')
-            ->notEmpty('sakuin');
+            ->allowEmpty('sakuin');
 
         $validator
             ->numeric('length')
@@ -101,8 +100,7 @@ class ProductsTable extends Table
         $validator
             ->scalar('tanni')
             ->maxLength('tanni', 255)
-            ->requirePresence('tanni', 'create')
-            ->notEmpty('tanni');
+            ->allowEmpty('tanni');
 
         $validator
             ->integer('is_active')

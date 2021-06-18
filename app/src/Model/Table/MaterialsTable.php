@@ -10,11 +10,10 @@ use Cake\Validation\Validator;
  * Materials Model
  *
  * @property \App\Model\Table\FactoriesTable|\Cake\ORM\Association\BelongsTo $Factories
- * @property |\Cake\ORM\Association\BelongsTo $Types
+ * @property |\Cake\ORM\Association\BelongsTo $MaterialSuppliers
+ * @property \App\Model\Table\MaterialTypesTable|\Cake\ORM\Association\BelongsTo $MaterialTypes
  * @property \App\Model\Table\PriceMaterialsTable|\Cake\ORM\Association\HasMany $PriceMaterials
- * @property |\Cake\ORM\Association\HasMany $ProductMachineMaterials
- * @property |\Cake\ORM\Association\HasMany $不使用productMaterialParents
- * @property \App\Model\Table\不使用productMaterialsTable|\Cake\ORM\Association\HasMany $不使用productMaterials
+ * @property \App\Model\Table\ProductMachineMaterialsTable|\Cake\ORM\Association\HasMany $ProductMachineMaterials
  *
  * @method \App\Model\Entity\Material get($primaryKey, $options = [])
  * @method \App\Model\Entity\Material newEntity($data = null, array $options = [])
@@ -46,19 +45,17 @@ class MaterialsTable extends Table
             'foreignKey' => 'factory_id',
             'joinType' => 'INNER'
         ]);
+        $this->belongsTo('MaterialSuppliers', [
+            'foreignKey' => 'material_supplier_id',
+            'joinType' => 'INNER'
+        ]);
         $this->belongsTo('MaterialTypes', [
-            'foreignKey' => 'type_id'
+            'foreignKey' => 'material_type_id'
         ]);
         $this->hasMany('PriceMaterials', [
             'foreignKey' => 'material_id'
         ]);
         $this->hasMany('ProductMachineMaterials', [
-            'foreignKey' => 'material_id'
-        ]);
-        $this->hasMany('不使用productMaterialParents', [
-            'foreignKey' => 'material_id'
-        ]);
-        $this->hasMany('不使用productMaterials', [
             'foreignKey' => 'material_id'
         ]);
     }
@@ -88,21 +85,34 @@ class MaterialsTable extends Table
             ->notEmpty('name');
 
         $validator
+            ->scalar('sakuin')
+            ->maxLength('sakuin', 255)
+            ->allowEmpty('sakuin');
+
+        $validator
             ->scalar('grade')
             ->maxLength('grade', 255)
-            ->requirePresence('grade', 'create')
-            ->notEmpty('grade');
+            ->allowEmpty('grade');
 
         $validator
             ->scalar('color')
             ->maxLength('color', 255)
-            ->requirePresence('color', 'create')
-            ->notEmpty('color');
+            ->allowEmpty('color');
 
         $validator
             ->scalar('maker')
             ->maxLength('maker', 255)
             ->allowEmpty('maker');
+
+        $validator
+            ->scalar('tanni')
+            ->maxLength('tanni', 255)
+            ->allowEmpty('tanni');
+
+        $validator
+            ->scalar('tanni_kosu')
+            ->maxLength('tanni_kosu', 255)
+            ->allowEmpty('tanni_kosu');
 
         $validator
             ->integer('is_active')
@@ -145,7 +155,8 @@ class MaterialsTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['factory_id'], 'Factories'));
-        $rules->add($rules->existsIn(['type_id'], 'MaterialTypes'));
+        $rules->add($rules->existsIn(['material_supplier_id'], 'MaterialSuppliers'));
+        $rules->add($rules->existsIn(['material_type_id'], 'MaterialTypes'));
 
         return $rules;
     }

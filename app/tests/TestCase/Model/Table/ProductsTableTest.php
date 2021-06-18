@@ -27,7 +27,7 @@ class ProductsTableTest extends TestCase
         'app.Products',
         'app.Factories',
         'app.Customers',
-        'app.InspectionDataResultsParents',
+        'app.InspectionDataResultParents',
         'app.InspectionStandardSizeParents',
         'app.PriceProducts',
         'app.ProductConditionParents'

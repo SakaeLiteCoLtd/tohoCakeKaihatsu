@@ -10,9 +10,9 @@ use Cake\ORM\Entity;
  * @property int $factory_id
  * @property string $product_code
  * @property string $name
- * @property string $sakuin
+ * @property string|null $sakuin
  * @property float|null $length
- * @property string $tanni
+ * @property string|null $tanni
  * @property int $customer_id
  * @property int $is_active
  * @property int $delete_flag
@@ -23,7 +23,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Factory $factory
  * @property \App\Model\Entity\Customer $customer
- * @property \App\Model\Entity\InspectionDataResultsParent[] $inspection_data_results_parents
+ * @property \App\Model\Entity\InspectionDataResultParent[] $inspection_data_result_parents
  * @property \App\Model\Entity\InspectionStandardSizeParent[] $inspection_standard_size_parents
  * @property \App\Model\Entity\PriceProduct[] $price_products
  * @property \App\Model\Entity\ProductConditionParent[] $product_condition_parents
@@ -56,7 +56,7 @@ class Product extends Entity
         'updated_staff' => true,
         'factory' => true,
         'customer' => true,
-        'inspection_data_results_parents' => true,
+        'inspection_data_result_parents' => true,
         'inspection_standard_size_parents' => true,
         'price_products' => true,
         'product_condition_parents' => true

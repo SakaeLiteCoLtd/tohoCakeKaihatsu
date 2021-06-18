@@ -10,10 +10,14 @@ use Cake\ORM\Entity;
  * @property int $factory_id
  * @property string $material_code
  * @property string $name
- * @property string $grade
- * @property string $color
+ * @property string|null $sakuin
+ * @property string|null $grade
+ * @property string|null $color
  * @property string|null $maker
- * @property int|null $type_id
+ * @property int $material_supplier_id
+ * @property int|null $material_type_id
+ * @property string|null $tanni
+ * @property string|null $tanni_kosu
  * @property int $is_active
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at
@@ -24,7 +28,8 @@ use Cake\ORM\Entity;
  * @property \App\Model\Entity\Factory $factory
  * @property \App\Model\Entity\MaterialType $material_type
  * @property \App\Model\Entity\PriceMaterial[] $price_materials
- * @property \App\Model\Entity\ProductMaterialParent[] $product_material_parents
+ * @property \App\Model\Entity\ProductMachineMaterial[] $product_machine_materials
+ * @property \App\Model\Entity\不使用productMaterialParent[] $不使用product_material_parents
  * @property \App\Model\Entity\不使用productMaterial[] $不使用product_materials
  */
 class Material extends Entity
@@ -43,10 +48,14 @@ class Material extends Entity
         'factory_id' => true,
         'material_code' => true,
         'name' => true,
+        'sakuin' => true,
         'grade' => true,
         'color' => true,
         'maker' => true,
-        'type_id' => true,
+        'material_supplier_id' => true,
+        'material_type_id' => true,
+        'tanni' => true,
+        'tanni_kosu' => true,
         'is_active' => true,
         'delete_flag' => true,
         'created_at' => true,
@@ -56,7 +65,8 @@ class Material extends Entity
         'factory' => true,
         'material_type' => true,
         'price_materials' => true,
-        'product_material_parents' => true,
+        'product_machine_materials' => true,
+        '不使用product_material_parents' => true,
         '不使用product_materials' => true
     ];
 }

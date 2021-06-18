@@ -179,11 +179,11 @@ $mes = "";
 
 <br><br>
 <table class="top">
-  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('上記の内容で登録します。よろしければ「登録確定」ボタンを押してください。') ?></strong></td></tr>
+  <tr><td style="border:none"><strong style="font-size: 12pt; color:red"><?= __('上記の内容で登録します。よろしければ「登録確定」ボタンを押してください。') ?></strong></td></tr>
 </table>
 <table>
   <tbody class='sample non-sample'>
-    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
+    <tr><td style="border:none"><strong style="font-size: 12pt; color:red"><?= __($mes) ?></strong></td></tr>
   </tbody>
 </table>
 <br>
