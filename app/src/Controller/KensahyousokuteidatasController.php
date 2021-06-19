@@ -53,7 +53,17 @@ class KensahyousokuteidatasController extends AppController
      header('Expires:');
      header('Cache-Control:');
      header('Pragma:');
+/*
+     $Product_name_list = $this->Products->find()
+     ->where(['delete_flag' => 0])->toArray();
 
+     $arrProduct_name_list = array();
+     for($j=0; $j<count($Product_name_list); $j++){
+       array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+     }
+
+    $this->set('arrProduct_name_list', $arrProduct_name_list);
+*/
     }
 
     public function menu()
@@ -1986,7 +1996,11 @@ class KensahyousokuteidatasController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
       $Data=$this->request->query('s');
       if(isset($Data["mess"])){
         $mess = $Data["mess"];
@@ -1996,6 +2010,102 @@ class KensahyousokuteidatasController extends AppController
         $this->set('mess',$mess);
       }
 
+      $Customer_name_list = $this->Customers->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrCustomer_name_list = array();
+      for($j=0; $j<count($Customer_name_list); $j++){
+        array_push($arrCustomer_name_list,$Customer_name_list[$j]["name"]);
+      }
+      $this->set('arrCustomer_name_list', $arrCustomer_name_list);
+
+     if(isset($data["customer"])){//顧客絞り込みをしたとき
+
+       $Product_name_list = $this->Products->find()
+       ->contain(['Customers'])
+       ->where(['Customers.name' => $data["customer_name"], 'Products.delete_flag' => 0])->toArray();
+
+       if(count($Product_name_list) < 1){//顧客名にミスがある場合
+
+         $mess = "入力された顧客名は登録されていません。確認してください。";
+         $this->set('mess',$mess);
+
+         $Product_name_list = $this->Products->find()
+         ->where(['delete_flag' => 0])->toArray();
+
+         $arrProduct_name_list = array();
+         for($j=0; $j<count($Product_name_list); $j++){
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         }
+         $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+       }else{
+
+         $arrProduct_name_list = array();
+         for($j=0; $j<count($Product_name_list); $j++){
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         }
+         $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+       }
+
+     }elseif(isset($data["next"])){//「次へ」ボタンを押したとき
+
+       if(strlen($data["product_name"]) > 0){//product_nameの入力がある
+
+         $Products = $this->Products->find()
+         ->where(['name' => $data["product_name"], 'delete_flag' => 0])->toArray();
+
+         if(isset($Products[0])){
+
+           $product_code = $Products[0]["product_code"];
+
+           return $this->redirect(['action' => 'kensakudate',
+           's' => ['product_code' => $product_code]]);
+
+         }else{
+
+           $mess = "入力された製品名は登録されていません。確認してください。";
+           $this->set('mess',$mess);
+
+           $Product_name_list = $this->Products->find()
+           ->where(['delete_flag' => 0])->toArray();
+
+           $arrProduct_name_list = array();
+           for($j=0; $j<count($Product_name_list); $j++){
+             array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           }
+           $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+         }
+
+       }else{//product_nameの入力がない
+
+         $mess = "製品名が入力されていません。";
+         $this->set('mess',$mess);
+
+         $Product_name_list = $this->Products->find()
+         ->where(['delete_flag' => 0])->toArray();
+
+         $arrProduct_name_list = array();
+         for($j=0; $j<count($Product_name_list); $j++){
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         }
+         $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+       }
+
+     }else{//はじめ
+
+       $Product_name_list = $this->Products->find()
+       ->where(['delete_flag' => 0])->toArray();
+       $arrProduct_name_list = array();
+       for($j=0; $j<count($Product_name_list); $j++){
+         array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+       }
+       $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+     }
+
     }
 
     public function kensakudate()
@@ -2003,13 +2113,16 @@ class KensahyousokuteidatasController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $data = $this->request->getData();
+      $Data = $this->request->query('s');
+      $product_code = $Data["product_code"];
+  //    $data = $this->request->getData();
+
 /*
       echo "<pre>";
       print_r($data);
       echo "</pre>";
 */
-      $product_code = $data["product_code"];
+  //    $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
       $htmlproductcheck = new htmlproductcheck();//クラスを使用

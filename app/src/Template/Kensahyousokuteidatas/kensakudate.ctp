@@ -68,7 +68,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
     <tbody class='sample non-sample'>
       <tr>
         <td style='width:130'>測定日</td>
-        <td style='width:130'>管理No.</td>
+        <td style='width:400'>管理No.</td>
       </tr>
 
         <?php for($i=0; $i<=2; $i++): ?>
