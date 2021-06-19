@@ -68,7 +68,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
     <tbody class='sample non-sample'>
       <tr>
         <td style='width:130'>測定日</td>
-        <td style='width:400'>管理No.</td>
+        <td>製品名</td>
       </tr>
 
         <?php for($i=0; $i<=2; $i++): ?>
@@ -82,7 +82,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
 
           <tr>
             <td><?= h($date) ? $this->Html->link($date, ['action' => 'kensakuhyouji', 's' => $date."_".$product_code]) : '' ?></td>
-            <td><?= h($product_code);?></td>
+            <td><?= h("　".$product_name."　");?></td>
           </tr>
         <?php endfor;?>
 

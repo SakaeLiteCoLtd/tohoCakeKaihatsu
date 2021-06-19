@@ -2115,15 +2115,12 @@ class KensahyousokuteidatasController extends AppController
 
       $Data = $this->request->query('s');
       $product_code = $Data["product_code"];
-  //    $data = $this->request->getData();
-
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
-  //    $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
+
+      $Products = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $product_name = $Products[0]["name"];
+      $this->set('product_name', $product_name);
 
       $htmlproductcheck = new htmlproductcheck();//クラスを使用
       $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
