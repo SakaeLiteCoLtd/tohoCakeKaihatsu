@@ -75,44 +75,167 @@ class KensahyoutemperaturesController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
+      $mess = "";
+      $this->set('mess', $mess);
 
-      $Data=$this->request->query('s');
-      if(isset($Data["mess"])){
-        $mess = $Data["mess"];
-        $this->set('mess',$mess);
-
-        $session = $this->request->getSession();
-        $_SESSION = $session->read();
-        $user_code = $_SESSION["user_code"];
-        $_SESSION['user_code'] = array();
-
-      }else{
-        $mess = "";
-        $this->set('mess',$mess);
-        $user_code = $data["user_code"];
+      $Customer_name_list = $this->Customers->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrCustomer_name_list = array();
+      for($j=0; $j<count($Customer_name_list); $j++){
+        array_push($arrCustomer_name_list,$Customer_name_list[$j]["name"]);
       }
+      $this->set('arrCustomer_name_list', $arrCustomer_name_list);
 
-      $this->set('user_code', $user_code);
+     if(isset($data["customer"])){//顧客絞り込みをしたとき
 
-      $userlogincheck = $user_code."_".$data["password"];
+       $staff_id = $data["staff_id"];
+       $this->set('staff_id', $staff_id);
+       $staff_name = $data["staff_name"];
+       $this->set('staff_name', $staff_name);
+       $user_code = $data["user_code"];
+       $this->set('user_code', $user_code);
 
-      $htmlinputstaff = new htmlLogin();//クラスを使用
-  //    $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
-      $arraylogindate = $htmlinputstaff->inputstaffprogram($userlogincheck);//クラスを使用210608更新
+       $Product_name_list = $this->Products->find()
+       ->contain(['Customers'])
+       ->where(['Customers.name' => $data["customer_name"], 'Products.delete_flag' => 0])->toArray();
 
-      if($arraylogindate[0] === "no_staff"){
+       if(count($Product_name_list) < 1){//顧客名にミスがある場合
 
-        return $this->redirect(['action' => 'addlogin',
-        's' => ['mess' => "社員コードが存在しません。もう一度やり直してください。"]]);
+         $mess = "入力された顧客名は登録されていません。確認してください。";
+         $this->set('mess',$mess);
 
-      }else{
+         $Product_name_list = $this->Products->find()
+         ->where(['delete_flag' => 0])->toArray();
 
-        $staff_id = $arraylogindate[0];
-        $staff_name = $arraylogindate[1];
-        $this->set('staff_id', $staff_id);
-        $this->set('staff_name', $staff_name);
+         $arrProduct_name_list = array();
+         for($j=0; $j<count($Product_name_list); $j++){
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         }
+         $this->set('arrProduct_name_list', $arrProduct_name_list);
 
-      }
+       }else{
+
+         $arrProduct_name_list = array();
+         for($j=0; $j<count($Product_name_list); $j++){
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         }
+         $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+       }
+
+     }elseif(isset($data["next"])){//「次へ」ボタンを押したとき
+
+       $staff_id = $data["staff_id"];
+       $this->set('staff_id', $staff_id);
+       $staff_name = $data["staff_name"];
+       $this->set('staff_name', $staff_name);
+       $user_code = $data["user_code"];
+       $this->set('user_code', $user_code);
+
+       if(strlen($data["product_name"]) > 0){//product_nameの入力がある
+
+         $Products = $this->Products->find()
+         ->where(['name' => $data["product_name"], 'delete_flag' => 0])->toArray();
+
+         if(isset($Products[0])){
+
+           $product_code = $Products[0]["product_code"];
+
+           return $this->redirect(['action' => 'addform',
+           's' => ['product_code' => $product_code, 'user_code' => $user_code]]);
+
+         }else{
+
+           $mess = "入力された製品名は登録されていません。確認してください。";
+           $this->set('mess',$mess);
+
+           $Product_name_list = $this->Products->find()
+           ->where(['delete_flag' => 0])->toArray();
+
+           $arrProduct_name_list = array();
+           for($j=0; $j<count($Product_name_list); $j++){
+             array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           }
+           $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+         }
+
+       }else{//product_nameの入力がない
+
+         $mess = "製品名が入力されていません。";
+         $this->set('mess',$mess);
+
+         $Product_name_list = $this->Products->find()
+         ->where(['delete_flag' => 0])->toArray();
+
+         $arrProduct_name_list = array();
+         for($j=0; $j<count($Product_name_list); $j++){
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         }
+         $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+       }
+
+     }else{//はじめ
+
+       $Product_name_list = $this->Products->find()
+       ->where(['delete_flag' => 0])->toArray();
+       $arrProduct_name_list = array();
+       for($j=0; $j<count($Product_name_list); $j++){
+         array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+       }
+       $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+       $Data=$this->request->query('s');
+       if(isset($Data["mess"])){
+         $mess = $Data["mess"];
+         $this->set('mess',$mess);
+
+         $session = $this->request->getSession();
+         $_SESSION = $session->read();
+         $user_code = $_SESSION["user_code"];
+         $_SESSION['user_code'] = array();
+
+         $Users= $this->Users->find('all')->contain(["Staffs"])->where(['user_code' => $user_code, 'Users.delete_flag' => 0])->toArray();
+         $staff_id = $Users[0]["staff_id"];
+         $this->set('staff_id', $staff_id);
+         $staff_name= $Users[0]["staff"]["name"];
+         $this->set('staff_name', $staff_name);
+
+       }else{
+
+         $mess = "";
+         $this->set('mess',$mess);
+         $user_code = $data["user_code"];
+
+         $userlogincheck = $user_code."_".$data["password"];
+
+         $htmlinputstaff = new htmlLogin();//クラスを使用
+     //    $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
+         $arraylogindate = $htmlinputstaff->inputstaffprogram($userlogincheck);//クラスを使用210608更新
+
+         if($arraylogindate[0] === "no_staff"){
+
+           return $this->redirect(['action' => 'addlogin',
+           's' => ['mess' => "社員コードまたはパスワードが間違っています。もう一度やり直してください。"]]);
+
+         }else{
+
+           $staff_id = $arraylogindate[0];
+           $staff_name = $arraylogindate[1];
+           $this->set('staff_id', $staff_id);
+           $this->set('staff_name', $staff_name);
+
+         }
+
+       }
+
+       $this->set('user_code', $user_code);
+
+     }
+     echo "<pre>";
+     print_r(" ");
+     echo "</pre>";
 
     }
 
@@ -121,18 +244,35 @@ class KensahyoutemperaturesController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $data = $this->request->getData();
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
-      $staff_id = $data["staff_id"];
-      $this->set('staff_id', $staff_id);
-      $staff_name = $data["staff_name"];
-      $this->set('staff_name', $staff_name);
-      $user_code = $data["user_code"];
+      $Data = $this->request->query('s');
 
+      if(isset($Data["product_code"])){
+
+        $product_code = $Data["product_code"];
+        $this->set('product_code', $product_code);
+        $user_code = $Data["user_code"];
+        $this->set('user_code', $user_code);
+
+        $Users= $this->Users->find()->contain(["Staffs"])->where(['user_code' => $user_code, 'Users.delete_flag' => 0])->toArray();
+        $staff_id = $Users[0]["staff_id"];
+        $this->set('staff_id', $staff_id);
+        $staff_name= $Users[0]["staff"]["name"];
+        $this->set('staff_name', $staff_name);
+
+      }else{
+
+        $data = $this->request->getData();
+        $staff_id = $data["staff_id"];
+        $this->set('staff_id', $staff_id);
+        $staff_name = $data["staff_name"];
+        $this->set('staff_name', $staff_name);
+        $user_code = $data["user_code"];
+        $this->set('user_code', $user_code);
+        $product_code = $data["product_code"];
+        $this->set('product_code', $product_code);
+
+      }
+/*
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
@@ -151,15 +291,29 @@ class KensahyoutemperaturesController extends AppController
         's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
 
       }
-
-      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
-      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
-    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
-
+*/
       $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
       ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
-      $version = $ProductConditionParents[0]["version"];
+
+      if(isset($ProductConditionParents[0])){
+
+        $version = $ProductConditionParents[0]["version"];
+
+      }else{
+
+        $Products = $this->Products->find()
+        ->where(['product_code' => $product_code])->toArray();
+
+        $session = $this->request->getSession();
+        $_SESSION = $session->read();
+        $_SESSION['user_code'] = array();
+        $_SESSION["user_code"] = $user_code;
+
+        return $this->redirect(['action' => 'addformpre',
+        's' => ['mess' => "「".$Products[0]["name"]."」は原料登録がされていません。"]]);
+
+      }
 
       $ProductMaterialMachines= $this->ProductMaterialMachines->find()
       ->contain(['ProductConditionParents' => ["Products"]])
@@ -221,7 +375,7 @@ class KensahyoutemperaturesController extends AppController
       ->where(['version' => $version, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
       ->toArray();
 
-      if($ProductMachineMaterials[0]){
+      if(isset($ProductMachineMaterials[0])){
 
         $htmlkensahyougenryouheader = new htmlkensahyouprogram();
         $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheader($product_code);
@@ -229,10 +383,22 @@ class KensahyoutemperaturesController extends AppController
 
       }else{
 
+        $Products = $this->Products->find()
+        ->where(['product_code' => $product_code])->toArray();
+
+        $session = $this->request->getSession();
+        $_SESSION = $session->read();
+        $_SESSION['user_code'] = array();
+        $_SESSION["user_code"] = $user_code;
+
         return $this->redirect(['action' => 'addformpre',
-        's' => ['mess' => "管理No.「".$product_code."」の製品は原料登録がされていません。"]]);
+        's' => ['mess' => "「".$Products[0]["name"]."」は原料登録がされていません。"]]);
 
       }
+
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
     }
 
@@ -459,7 +625,11 @@ class KensahyoutemperaturesController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
       $Data=$this->request->query('s');
       if(isset($Data["mess"])){
         $mess = $Data["mess"];
@@ -469,6 +639,102 @@ class KensahyoutemperaturesController extends AppController
         $this->set('mess',$mess);
       }
 
+      $Customer_name_list = $this->Customers->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrCustomer_name_list = array();
+      for($j=0; $j<count($Customer_name_list); $j++){
+        array_push($arrCustomer_name_list,$Customer_name_list[$j]["name"]);
+      }
+      $this->set('arrCustomer_name_list', $arrCustomer_name_list);
+
+     if(isset($data["customer"])){//顧客絞り込みをしたとき
+
+       $Product_name_list = $this->Products->find()
+       ->contain(['Customers'])
+       ->where(['Customers.name' => $data["customer_name"], 'Products.delete_flag' => 0])->toArray();
+
+       if(count($Product_name_list) < 1){//顧客名にミスがある場合
+
+         $mess = "入力された顧客名は登録されていません。確認してください。";
+         $this->set('mess',$mess);
+
+         $Product_name_list = $this->Products->find()
+         ->where(['delete_flag' => 0])->toArray();
+
+         $arrProduct_name_list = array();
+         for($j=0; $j<count($Product_name_list); $j++){
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         }
+         $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+       }else{
+
+         $arrProduct_name_list = array();
+         for($j=0; $j<count($Product_name_list); $j++){
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         }
+         $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+       }
+
+     }elseif(isset($data["next"])){//「次へ」ボタンを押したとき
+
+       if(strlen($data["product_name"]) > 0){//product_nameの入力がある
+
+         $Products = $this->Products->find()
+         ->where(['name' => $data["product_name"], 'delete_flag' => 0])->toArray();
+
+         if(isset($Products[0])){
+
+           $product_code = $Products[0]["product_code"];
+
+           return $this->redirect(['action' => 'kensakuhyouji',
+           's' => ['product_code' => $product_code]]);
+
+         }else{
+
+           $mess = "入力された製品名は登録されていません。確認してください。";
+           $this->set('mess',$mess);
+
+           $Product_name_list = $this->Products->find()
+           ->where(['delete_flag' => 0])->toArray();
+
+           $arrProduct_name_list = array();
+           for($j=0; $j<count($Product_name_list); $j++){
+             array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           }
+           $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+         }
+
+       }else{//product_nameの入力がない
+
+         $mess = "製品名が入力されていません。";
+         $this->set('mess',$mess);
+
+         $Product_name_list = $this->Products->find()
+         ->where(['delete_flag' => 0])->toArray();
+
+         $arrProduct_name_list = array();
+         for($j=0; $j<count($Product_name_list); $j++){
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         }
+         $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+       }
+
+     }else{//はじめ
+
+       $Product_name_list = $this->Products->find()
+       ->where(['delete_flag' => 0])->toArray();
+       $arrProduct_name_list = array();
+       for($j=0; $j<count($Product_name_list); $j++){
+         array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+       }
+       $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+     }
+
     }
 
     public function kensakuhyouji()
@@ -476,24 +742,15 @@ class KensahyoutemperaturesController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $data = $this->request->getData();
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
-      $product_code = $data["product_code"];
+      $Data = $this->request->query('s');
+      $product_code = $Data["product_code"];
       $this->set('product_code', $product_code);
-
-      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
-      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
-    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
       ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
 
-      if($ProductConditionParents[0]){
+      if(isset($ProductConditionParents[0])){
 
         $version = $ProductConditionParents[0]["version"];
 
@@ -556,8 +813,11 @@ class KensahyoutemperaturesController extends AppController
 
           }else{
 
+            $Products = $this->Products->find()
+            ->where(['product_code' => $product_code])->toArray();
+
             return $this->redirect(['action' => 'kensakupre',
-            's' => ['mess' => "管理No.「".$product_code."」の製品は成形温度登録がされていません。"]]);
+            's' => ['mess' => "「".$Products[0]["name"]."」は成形温度登録がされていません。"]]);
 
           }
 
@@ -565,10 +825,17 @@ class KensahyoutemperaturesController extends AppController
 
       }else{
 
+        $Products = $this->Products->find()
+        ->where(['product_code' => $product_code])->toArray();
+
         return $this->redirect(['action' => 'kensakupre',
-        's' => ['mess' => "管理No.「".$product_code."」の製品は成形温度登録がされていません。"]]);
+        's' => ['mess' => "「".$Products[0]["name"]."」は成形温度登録がされていません。"]]);
 
       }
+
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+      $this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $htmlkensahyougenryouheader = new htmlkensahyouprogram();
       $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheader($product_code);
@@ -613,7 +880,7 @@ class KensahyoutemperaturesController extends AppController
       if($arraylogindate[0] === "no_staff"){
 
         return $this->redirect(['action' => 'addlogin',
-        's' => ['mess' => "社員コードが存在しません。もう一度やり直してください。"]]);
+        's' => ['mess' => "社員コードかパスワードに誤りがあります。もう一度やり直してください。"]]);
 
       }else{
 
