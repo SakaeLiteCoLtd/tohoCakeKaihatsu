@@ -47,7 +47,7 @@ $mes = "";
     <td width="50" rowspan='7'>No.</td>
   </tr>
   <tr>
-    <td width="80" rowspan='6'>時間</td>
+  <td width="80" rowspan='6'><font size='2'><br></font><br><br>日付<br><font size='2'><?= h($datekensaku) ?></font><br><br><br>時間</td>
   </tr>
 
 <tr>

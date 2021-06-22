@@ -117,7 +117,7 @@ class KensahyousokuteidatasController extends AppController
 
        if(count($Product_name_list) < 1){//顧客名にミスがある場合
 
-         $mess = "入力された顧客名は登録されていません。確認してください。";
+         $mess = "入力された顧客の製品は登録されていません。確認してください。";
          $this->set('mess',$mess);
 
          $Product_name_list = $this->Products->find()
@@ -212,7 +212,7 @@ class KensahyousokuteidatasController extends AppController
          $user_code = $_SESSION["user_code"];
          $_SESSION['user_code'] = array();
 
-         $Users= $this->Users->find('all')->contain(["Staffs"])->where(['user_code' => $user_code, 'Users.delete_flag' => 0])->toArray();
+         $Users= $this->Users->find()->contain(["Staffs"])->where(['user_code' => $user_code, 'Users.delete_flag' => 0])->toArray();
          $staff_id = $Users[0]["staff_id"];
          $this->set('staff_id', $staff_id);
          $staff_name= $Users[0]["staff"]["name"];
@@ -295,6 +295,7 @@ class KensahyousokuteidatasController extends AppController
         $this->set('product_code', $product_code);
 
       }
+
 /*
       $htmlproductcheck = new htmlproductcheck();//クラスを使用
       $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
@@ -313,6 +314,7 @@ class KensahyousokuteidatasController extends AppController
       }
 */
 //原料の表示
+
       $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
       ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
@@ -333,7 +335,7 @@ class KensahyousokuteidatasController extends AppController
         ->where(['product_code' => $product_code])->toArray();
 
         return $this->redirect(['action' => 'addformpre',
-        's' => ['mess' => "「".$Products[0]["name"]."」は検査表親テーブルの登録がされていません。"]]);
+        's' => ['mess' => "「".$Products[0]["name"]."」は原料登録がされていません。"]]);
 
       }
 
@@ -413,7 +415,7 @@ class KensahyousokuteidatasController extends AppController
         ->where(['product_code' => $product_code])->toArray();
 
         return $this->redirect(['action' => 'addformpre',
-        's' => ['mess' => "「".$Products[0]["name"]."」は検査表親テーブルの登録がされていません。"]]);
+        's' => ['mess' => "「".$Products[0]["name"]."」は原料登録がされていません。"]]);
 
       }
 
@@ -436,8 +438,11 @@ class KensahyousokuteidatasController extends AppController
         $_SESSION['user_code'] = array();
         $_SESSION['user_code'] = $user_code;
 
+        $Products = $this->Products->find()
+        ->where(['product_code' => $product_code])->toArray();
+
         return $this->redirect(['action' => 'addformpre',
-        's' => ['mess' => "管理No.「".$product_code."」の製品は検査表親テーブルの登録がされていません。"]]);
+        's' => ['mess' => "「".$Products[0]["name"]."」は原料登録がされていません。"]]);
 
       }
 
@@ -508,6 +513,12 @@ class KensahyousokuteidatasController extends AppController
 
           }else{
 
+            if(!isset($_SESSION)){
+              session_start();
+              }
+              $_SESSION['user_code'] = array();
+              $_SESSION['user_code'] = $user_code;
+      
             $Products = $this->Products->find()
             ->where(['product_code' => $product_code])->toArray();
 
@@ -519,6 +530,12 @@ class KensahyousokuteidatasController extends AppController
         }
 
       }else{
+
+        if(!isset($_SESSION)){
+          session_start();
+          }
+          $_SESSION['user_code'] = array();
+          $_SESSION['user_code'] = $user_code;
 
         $Products = $this->Products->find()
         ->where(['product_code' => $product_code])->toArray();
@@ -1000,7 +1017,7 @@ class KensahyousokuteidatasController extends AppController
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
-
+/*
       $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
       ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
@@ -1011,18 +1028,18 @@ class KensahyousokuteidatasController extends AppController
         $this->set('inspection_standard_size_parent_id', $inspection_standard_size_parent_id);
 
       }else{
-/*
+
         if(!isset($_SESSION)){
         session_start();
         }
         $_SESSION['user_code'] = array();
         $_SESSION['user_code'] = $user_code;
-*/
+
         return $this->redirect(['action' => 'addformpre',
         's' => ['mess' => "管理No.「".$product_code."」の製品は検査表親テーブルの登録がされていません。"]]);
 
       }
-
+*/
       $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
       ->where(['product_code' => $product_code,
       'ProductConditionParents.is_active' => 0,
@@ -1043,7 +1060,7 @@ class KensahyousokuteidatasController extends AppController
         $_SESSION['user_code'] = $user_code;
 */
         return $this->redirect(['action' => 'addformpre',
-        's' => ['mess' => "管理No.「".$product_code."」の製品は検査表親テーブルの登録がされていません。"]]);
+        's' => ['mess' => "管理No.「".$product_code."」の製品は原料登録がされていません。"]]);
 
       }
 
@@ -1507,7 +1524,7 @@ class KensahyousokuteidatasController extends AppController
         $_SESSION['user_code'] = $user_code;
 
         return $this->redirect(['action' => 'addformpre',
-        's' => ['mess' => "管理No.「".$product_code."」の製品は検査表親テーブルの登録がされていません。"]]);
+        's' => ['mess' => "管理No.「".$product_code."」の製品は原料登録がされていません。"]]);
 
       }
 
@@ -2207,7 +2224,7 @@ class KensahyousokuteidatasController extends AppController
 
        if(count($Product_name_list) < 1){//顧客名にミスがある場合
 
-         $mess = "入力された顧客名は登録されていません。確認してください。";
+         $mess = "入力された顧客の製品は登録されていません。確認してください。";
          $this->set('mess',$mess);
 
          $Product_name_list = $this->Products->find()

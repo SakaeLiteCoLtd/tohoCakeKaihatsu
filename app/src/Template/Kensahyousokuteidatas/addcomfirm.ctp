@@ -118,7 +118,7 @@ $mes = "";
   <?php endif; ?>
 
   <td style='width:58; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
-  <td style='width:100; border-top-style:none; font-size: 8pt'><?= h(${"datetime".$j}) ?></td></td>
+  <td style='width:100; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
   <td style='width:130; border-top-style:none'><font size='1.8'><?= h("社員コード：") ?></font><br><?= h(${"user_code".$j}) ?></td>
 
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>

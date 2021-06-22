@@ -29,10 +29,10 @@
 
     <table>
       <tr>
-        <td width="280"><strong>社内品番</strong></td>
+        <td width="280"><strong>製品名</strong></td>
       </tr>
       <tr>
-        <td><?= h($product_code) ?></td>
+        <td><?= h($name) ?></td>
       </tr>
     </table>
 

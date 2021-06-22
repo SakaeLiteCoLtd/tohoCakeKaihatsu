@@ -12,6 +12,22 @@ $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
 
+<script>
+
+function showClock1() {
+
+var nowTime = new Date(); //  現在日時を得る
+var nowHour = nowTime.getHours(); // 時を抜き出す
+var nowMin  = nowTime.getMinutes(); // 分を抜き出す
+
+var msg = nowHour + ":" + nowMin;
+document.getElementById("RealtimeClockArea").innerHTML = msg;
+
+}
+setInterval('showClock1()',1000);
+
+</script>
+
 <table class='sample hesdermenu'>
   <tbody>
     <td style='border: none;'>
@@ -115,7 +131,9 @@ echo $this->Html->css('kensahyou');
 
   <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
-  <td style='width:100; border-top-style:none'><?= $this->Form->control('datetime'.$j, array('type'=>'time', 'value'=>${"datetime".$j}, 'label'=>false)) ?></td>
+  <td id="RealtimeClockArea" style='width:100; border-top-style:none'>
+  <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false, 'id'=>"RealtimeClockArea")) ?>
+  </td>
   <td style='width:130; border-top-style:none'><font size='1.8'><?= h("社員コード：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'required' => 'true')) ?></td>
 
   <?php for($i=1; $i<=10; $i++): ?>

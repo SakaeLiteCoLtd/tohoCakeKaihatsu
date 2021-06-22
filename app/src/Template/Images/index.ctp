@@ -28,7 +28,7 @@ echo $this->Html->css('index');
     <thead>
       <tr>
         <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
-        <th scope="col" style='width:200'><?= $this->Paginator->sort('product_id', ['label'=>"社内品番"]) ?></th>
+        <th scope="col" style='width:200'><?= $this->Paginator->sort('product_id', ['label'=>"製品名"]) ?></th>
         <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
       </tr>
     </thead>
@@ -36,7 +36,7 @@ echo $this->Html->css('index');
         <?php foreach ($inspectionStandardSizeParents as $inspectionStandardSizeParent): ?>
         <tr>
           <td><?= h($i) ?></td>
-          <td><?= h($inspectionStandardSizeParent->product->product_code) ?></td>
+          <td><?= h($inspectionStandardSizeParent->product->name) ?></td>
             <td class="actions">
               <?= $this->Html->link(__('詳細'), ['action' => 'detail', $inspectionStandardSizeParent->id]) ?>
             </td>

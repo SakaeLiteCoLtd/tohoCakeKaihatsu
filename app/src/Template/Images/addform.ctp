@@ -44,7 +44,7 @@
       </table>
 
       <br>
-      <div align="center"><font color="red" size="4"><?= __($product_code." の検査表に使用する画像ファイルを選択してください。") ?></font></div>
+      <div align="center"><font size="4"><?= __($product_name." の検査表に使用する画像ファイルを選択してください。") ?></font></div>
       <div align="center"><strong style="font-size: 13pt; color:red"><?= __("※画像ファイルの拡張子は「.gif」にしてください。") ?></strong></div>
       <br>
 

@@ -101,7 +101,7 @@ class KensahyoutemperaturesController extends AppController
 
        if(count($Product_name_list) < 1){//顧客名にミスがある場合
 
-         $mess = "入力された顧客名は登録されていません。確認してください。";
+         $mess = "入力された顧客の製品は登録されていません。確認してください。";
          $this->set('mess',$mess);
 
          $Product_name_list = $this->Products->find()
@@ -655,7 +655,7 @@ class KensahyoutemperaturesController extends AppController
 
        if(count($Product_name_list) < 1){//顧客名にミスがある場合
 
-         $mess = "入力された顧客名は登録されていません。確認してください。";
+         $mess = "入力された顧客の製品は登録されていません。確認してください。";
          $this->set('mess',$mess);
 
          $Product_name_list = $this->Products->find()

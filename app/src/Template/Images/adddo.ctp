@@ -28,10 +28,10 @@
 
   <table class='sample non-sample'>
     <tr>
-      <td width="200"><strong>社内品番</strong></td>
+      <td width="300"><strong>製品名</strong></td>
     </tr>
     <tr>
-      <td><?= h($product_code) ?></td>
+      <td><?= h($product_name) ?></td>
     </tr>
   </table>
 

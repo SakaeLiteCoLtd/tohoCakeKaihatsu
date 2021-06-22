@@ -19,6 +19,7 @@ class ImagesController extends AppController
      parent::initialize();
      $this->InspectionStandardSizeParents = TableRegistry::get('InspectionStandardSizeParents');
      $this->Products = TableRegistry::get('Products');
+     $this->Customers = TableRegistry::get('Customers');
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
 
@@ -81,6 +82,8 @@ class ImagesController extends AppController
       $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
       ->where(['InspectionStandardSizeParents.id' => $id])->toArray();
 
+      $name = $InspectionStandardSizeParents[0]["product"]["name"];
+      $this->set('name', $name);
       $product_code = $InspectionStandardSizeParents[0]["product"]["product_code"];
       $this->set('product_code', $product_code);
       $image_file_name_dir = $InspectionStandardSizeParents[0]["image_file_name_dir"];
@@ -93,14 +96,116 @@ class ImagesController extends AppController
       $inspectionStandardSizeParents = $this->InspectionStandardSizeParents->newEntity();
       $this->set('inspectionStandardSizeParents', $inspectionStandardSizeParents);
 
-      $Data=$this->request->query('s');
-      if(isset($Data["mess"])){
-        $mess = $Data["mess"];
-        $this->set('mess',$mess);
-      }else{
-        $mess = "";
-        $this->set('mess',$mess);
+      $data = $this->request->getData();
+      $mess = "";
+      $this->set('mess', $mess);
+
+      $Customer_name_list = $this->Customers->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrCustomer_name_list = array();
+      for($j=0; $j<count($Customer_name_list); $j++){
+        array_push($arrCustomer_name_list,$Customer_name_list[$j]["name"]);
       }
+      $this->set('arrCustomer_name_list', $arrCustomer_name_list);
+
+     if(isset($data["customer"])){//顧客絞り込みをしたとき
+
+       $Product_name_list = $this->Products->find()
+       ->contain(['Customers'])
+       ->where(['Customers.name' => $data["customer_name"], 'Products.delete_flag' => 0])->toArray();
+
+       if(count($Product_name_list) < 1){//顧客名にミスがある場合
+
+         $mess = "入力された顧客の製品は登録されていません。確認してください。";
+         $this->set('mess',$mess);
+
+         $Product_name_list = $this->Products->find()
+         ->where(['delete_flag' => 0])->toArray();
+
+         $arrProduct_name_list = array();
+         for($j=0; $j<count($Product_name_list); $j++){
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         }
+         $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+       }else{
+
+         $arrProduct_name_list = array();
+         for($j=0; $j<count($Product_name_list); $j++){
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         }
+         $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+       }
+
+     }elseif(isset($data["next"])){//「次へ」ボタンを押したとき
+
+       if(strlen($data["product_name"]) > 0){//product_nameの入力がある
+
+         $Products = $this->Products->find()
+         ->where(['name' => $data["product_name"], 'delete_flag' => 0])->toArray();
+
+         if(isset($Products[0])){
+
+           $product_code = $Products[0]["product_code"];
+
+           return $this->redirect(['action' => 'addform',
+           's' => ['product_code' => $product_code]]);
+
+         }else{
+
+           $mess = "入力された製品名は登録されていません。確認してください。";
+           $this->set('mess',$mess);
+
+           $Product_name_list = $this->Products->find()
+           ->where(['delete_flag' => 0])->toArray();
+
+           $arrProduct_name_list = array();
+           for($j=0; $j<count($Product_name_list); $j++){
+             array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           }
+           $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+         }
+
+       }else{//product_nameの入力がない
+
+         $mess = "製品名が入力されていません。";
+         $this->set('mess',$mess);
+
+         $Product_name_list = $this->Products->find()
+         ->where(['delete_flag' => 0])->toArray();
+
+         $arrProduct_name_list = array();
+         for($j=0; $j<count($Product_name_list); $j++){
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         }
+         $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+       }
+
+     }else{//はじめ
+
+       $Product_name_list = $this->Products->find()
+       ->where(['delete_flag' => 0])->toArray();
+       $arrProduct_name_list = array();
+       for($j=0; $j<count($Product_name_list); $j++){
+         array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+       }
+       $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+       $Data=$this->request->query('s');
+       if(isset($Data["mess"])){
+         $mess = $Data["mess"];
+         $this->set('mess',$mess);
+
+       }else{
+         $mess = "";
+         $this->set('mess',$mess);
+       }
+
+      }
+
     }
 
     public function addform()
@@ -108,6 +213,34 @@ class ImagesController extends AppController
       $inspectionStandardSizeParents = $this->InspectionStandardSizeParents->newEntity();
       $this->set('inspectionStandardSizeParents', $inspectionStandardSizeParents);
 
+      $mess = "";
+      $this->set('mess',$mess);
+
+      $Data = $this->request->query('s');
+
+      if(isset($Data["product_code"])){
+
+        $product_code = $Data["product_code"];
+        $this->set('product_code', $product_code);
+
+      }elseif(isset($Data["mess"])){
+
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+
+        $session = $this->request->getSession();
+        $_SESSION = $session->read();
+        $product_code = $_SESSION["img_product_code"];
+        $_SESSION['img_product_code'] = array();
+        $this->set('product_code', $product_code);
+
+      }
+      $ProductNs = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $product_name = $ProductNs[0]["name"];
+      $this->set('product_name',$product_name);
+
+/*
       $Data=$this->request->query('s');
       if(isset($Data["mess"])){
         $mess = $Data["mess"];
@@ -138,12 +271,12 @@ class ImagesController extends AppController
         's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
 
       }
-
+*/
       $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
       ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
       if(isset($InspectionStandardSizeParents[0])){
-        $mes = $product_code." の検査表画像は既に登録されています。データを更新する場合はこのまま進んでください。";
+        $mes = $product_name." の検査表画像は既に登録されています。データを更新する場合はこのまま進んでください。";
         $this->set('mes',$mes);
       }else{
         $mes = "";
@@ -161,6 +294,10 @@ class ImagesController extends AppController
 
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
+      $ProductNs = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $product_name = $ProductNs[0]["name"];
+      $this->set('product_name',$product_name);
 
       $fileName =$_FILES['upfile']['tmp_name'];
 
@@ -173,7 +310,7 @@ class ImagesController extends AppController
         $_SESSION['img_product_code'] = $product_code;
 
         return $this->redirect(['action' => 'addform',
-        's' => ['mess' => "拡張子が「.gif」でないファイルが選択されました。"]]);
+        's' => ['mess' => "※拡張子が「.gif」でないファイルが選択されました。"]]);
 
       }
 
@@ -197,12 +334,23 @@ class ImagesController extends AppController
         }
 
       }
-/*
-			echo "<pre>";
-			print_r($_FILES['upfile']["name"]);
-			echo "</pre>";
-*/
-			$gif = "kensahyouimg/".$_FILES['upfile']["name"];//ローカル
+
+      $selectfilename = $_FILES['upfile']["name"];
+      $filename = str_replace(' ', '_', $selectfilename);
+
+      if($selectfilename !== $filename){//半角スペースが含まれている場合はNG
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['img_product_code'] = array();
+        $_SESSION['img_product_code'] = $product_code;
+
+        return $this->redirect(['action' => 'addform',
+        's' => ['mess' => "ファイル名に半角スペースが含まれています。ファイル名に半角スペースを使用しないでください。"]]);
+        }
+
+			$gif = "kensahyouimg/".$selectfilename;//ローカル
 			$this->set('gif',$gif);
 
     }
@@ -225,12 +373,18 @@ class ImagesController extends AppController
       $Products = $this->Products->find()
       ->where(['product_code' => $data['product_code']])->toArray();
       $product_id = $Products[0]['id'];
+      $product_name = $Products[0]["name"];
+      $this->set('product_name',$product_name);
 
       $InspectionStandardSizeParentversion = $this->InspectionStandardSizeParents->find()->contain(["Products"])
       ->where(['product_code' => $data['product_code'], 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
 
-      $version = $InspectionStandardSizeParentversion[0]["version"] + 1;
+      if(isset($InspectionStandardSizeParentversion[0])){
+        $version = $InspectionStandardSizeParentversion[0]["version"] + 1;
+      }else{
+        $version = 1;
+      }
 
       $arrtourokuinspectionStandardSizeParent = array();
       $arrtourokuinspectionStandardSizeParent = [

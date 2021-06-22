@@ -87,7 +87,13 @@ class htmlkensahyoukadoumenu extends AppController
     ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
     ->order(["version"=>"DESC"])->toArray();
 
-    $image_file_name_dir = "/img/".$inspectionStandardSizeParents[0]["image_file_name_dir"];
+    if(isset($inspectionStandardSizeParents[0])){
+      $date_kaitei = $inspectionStandardSizeParents[0]["created_at"]->format('Y-n-j');
+      $image_file_name_dir = "/img/".$inspectionStandardSizeParents[0]["image_file_name_dir"];
+      }else{
+        $date_kaitei = "";
+        $image_file_name_dir = "/img/kensahyouimg/noimag.png";
+          }
 
       $html =
   //    "<table bgcolor='white' width='1000' style='position: fixed;top: 85px; left:20%; z-index:9999;'>\n".//固定
@@ -111,7 +117,7 @@ class htmlkensahyoukadoumenu extends AppController
           "<td width='200' nowrap='nowrap' style='height: 20px'><strong>\n".
           "改訂日\n".
           "</td>\n".
-          "<td width='300' style='height: 20px'>$product_code</td>\n".
+          "<td width='300' style='height: 20px'>$date_kaitei</td>\n".
           "</tr>\n".
           "<tr>\n".
           "<td width='1000' colspan='4' nowrap='nowrap' style='height: 350px;'>\n".

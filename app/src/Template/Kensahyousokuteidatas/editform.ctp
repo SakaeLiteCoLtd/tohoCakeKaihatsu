@@ -40,7 +40,7 @@ echo $this->Html->css('kensahyou');
     <td width="42" rowspan='7'>No.</td>
   </tr>
   <tr>
-    <td width="100" rowspan='6'>時間</td>
+    <td width="100" rowspan='6'><font size='2'><br></font><br><br>日付<br><font size='2'><?= h($datekensaku) ?></font><br><br><br>時間</td>
   </tr>
 
 <tr>
