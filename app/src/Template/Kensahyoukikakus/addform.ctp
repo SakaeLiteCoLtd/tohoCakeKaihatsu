@@ -37,7 +37,7 @@ echo $this->Html->css('kensahyou');
  ?>
 
 
-<table class="white">
+<table class="form">
 
 <tr>
   <td style='width:102'>測定箇所</td>

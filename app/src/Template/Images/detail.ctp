@@ -11,7 +11,7 @@
      echo $htmllogin;
 ?>
 <?php
-  //   echo $htmlimgmenu;
+     echo $htmlimgmenu;
 ?>
 
 <?= $this->Form->create($inspectionStandardSizeParents, ['url' => ['action' => 'detail']]) ?>

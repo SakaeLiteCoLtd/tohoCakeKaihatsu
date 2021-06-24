@@ -306,7 +306,7 @@ class KensahyoukikakusController extends AppController
         ->where(['product_code' => $product_code])->toArray();
 
         return $this->redirect(['action' => 'addformpre',
-        's' => ['mess' => "「".$Products[0]["name"]."」は検査表親テーブルの登録がされていません。"]]);
+        's' => ['mess' => "「".$Products[0]["name"]."」は検査表画像登録がされていません。管理者に報告してください。"]]);
 
       }
 

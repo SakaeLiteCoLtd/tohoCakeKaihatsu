@@ -20,12 +20,14 @@ class AppController extends Controller
               'controller' => 'Startmenus',
               'action' => 'login'
           ],
+
           'loginRedirect' => [
             'controller' => 'Startmenus',
             'action' => 'menu'
       //      'controller' => 'Companies',
       //      'action' => 'index'
           ],
+
           'logoutRedirect' => [
               'controller' => 'Startmenus',
               'action' => 'menu',
@@ -42,8 +44,18 @@ class AppController extends Controller
   // 認証を通さないアクションがある場合
   public function beforeFilter(Event $event)
   {
-    $this->Auth->config('authError', "ログインしてください。");
+    $this->Auth->config('authError', "");
+ //   $this->Auth->config('authError', "ログインしてください。");
 //    $this->Auth->allow(['login']);
+
+/*
+    // PC/スマホのview切り替え
+    if ($this->request->isMobile()) {
+        // plugins/Sp/Template内のviewが読み込まれる
+        $this->viewBuilder()->theme('Sp');
+    }
+*/
+
   }
 
 }

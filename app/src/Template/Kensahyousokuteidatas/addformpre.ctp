@@ -73,11 +73,11 @@ $arrProduct_name_list = json_encode($arrProduct_name_list);//javaに配列を受
     </tr>
     <tr>
       <td style="border-right-style:none">
-        <?= $this->Form->control('customer_name', array('type'=>'text', 'label'=>false, 'size'=>30, 'id'=>"customer_name_list")) ?>
+        <?= $this->Form->control('customer_name', array('type'=>'text', 'label'=>false, 'id'=>"customer_name_list")) ?>
       </td>
       <td style="border-left-style:none"><?= $this->Form->submit(('顧客絞込'), array('name' => 'customer')) ?></td>
       <td style="border: 1px solid black">
-        <?= $this->Form->control('product_name', array('type'=>'text', 'label'=>false, 'size'=>40, 'id'=>"product_name_list")) ?>
+        <?= $this->Form->control('product_name', array('type'=>'text', 'label'=>false, 'id'=>"product_name_list")) ?>
       </td>
     </tr>
   </tbody>

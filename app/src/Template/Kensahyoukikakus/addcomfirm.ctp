@@ -37,7 +37,7 @@ echo $this->Html->css('kensahyou');
 
 <?php if ($formcheck < 1): ?>
 
-<table class="white">
+<table class="form">
 
   <tr>
   <td style='width:102'>測定箇所</td>

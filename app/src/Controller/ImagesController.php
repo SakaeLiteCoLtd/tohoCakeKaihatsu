@@ -14,6 +14,13 @@ $htmlproductcheck = new htmlproductcheck();
 class ImagesController extends AppController
 {
 
+  public function beforeFilter(Event $event){
+    parent::beforeFilter($event);
+
+    // 認証なしでアクセスできるアクションの指定
+    $this->Auth->allow(["index", "detail"]);
+  }
+
       public function initialize()
     {
      parent::initialize();
@@ -22,16 +29,16 @@ class ImagesController extends AppController
      $this->Customers = TableRegistry::get('Customers');
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
-
+/*
      $session = $this->request->getSession();
      $datasession = $session->read();
 
      if(!isset($datasession['Auth']['User'])){//そもそもログインしていない場合
 
-       return $this->redirect($this->Auth->logout());
+  //     return $this->redirect($this->Auth->logout());//検査表メニューからくる場合があるからチェックはなし
 
      }
-/*
+*//*
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
        $Groups = $this->Groups->find()->contain(["Menus"])

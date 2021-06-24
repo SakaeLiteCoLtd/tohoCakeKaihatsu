@@ -259,14 +259,7 @@ class KensahyousokuteidatasController extends AppController
     {
       $product = $this->Products->newEntity();
       $this->set('product', $product);
-/*
-      $data = $this->request->getData();
 
-      $product_code = $data["product_code"];
-      $this->set('product_code', $product_code);
-      $staff_id = $data["staff_id"];
-      $this->set('staff_id', $staff_id);
-*/
       $Data = $this->request->query('s');
 
       if(isset($Data["product_code"])){
@@ -295,7 +288,6 @@ class KensahyousokuteidatasController extends AppController
         $this->set('product_code', $product_code);
 
       }
-
 /*
       $htmlproductcheck = new htmlproductcheck();//クラスを使用
       $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
@@ -314,7 +306,6 @@ class KensahyousokuteidatasController extends AppController
       }
 */
 //原料の表示
-
       $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
       ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
@@ -393,6 +384,31 @@ class KensahyousokuteidatasController extends AppController
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
       $this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
+      //規格登録されているかチェック
+      $InspectionStandardSizeChildren= $this->InspectionStandardSizeChildren->find()
+      ->contain(['InspectionStandardSizeParents' => ["Products"]])
+      ->where(['product_code' => $product_code,
+      'InspectionStandardSizeParents.is_active' => 0,
+      'InspectionStandardSizeParents.delete_flag' => 0,
+      'InspectionStandardSizeChildren.delete_flag' => 0])
+      ->order(["InspectionStandardSizeParents.version"=>"DESC"])->toArray();
+
+      if(!isset($InspectionStandardSizeChildren[0])){
+
+        if(!isset($_SESSION)){
+        session_start();
+        }
+        $_SESSION['user_code'] = array();
+        $_SESSION['user_code'] = $user_code;
+
+        $Products = $this->Products->find()
+        ->where(['product_code' => $product_code])->toArray();
+
+        return $this->redirect(['action' => 'addformpre',
+        's' => ['mess' => "「".$Products[0]["name"]."」は規格登録がされていません。"]]);
+
+      }
+
 //温度の表示
       $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
       ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
@@ -415,7 +431,7 @@ class KensahyousokuteidatasController extends AppController
         ->where(['product_code' => $product_code])->toArray();
 
         return $this->redirect(['action' => 'addformpre',
-        's' => ['mess' => "「".$Products[0]["name"]."」は原料登録がされていません。"]]);
+        's' => ['mess' => "「".$Products[0]["name"]."」は原料登録がされていません。2"]]);
 
       }
 
@@ -442,7 +458,7 @@ class KensahyousokuteidatasController extends AppController
         ->where(['product_code' => $product_code])->toArray();
 
         return $this->redirect(['action' => 'addformpre',
-        's' => ['mess' => "「".$Products[0]["name"]."」は原料登録がされていません。"]]);
+        's' => ['mess' => "「".$Products[0]["name"]."」は原料登録がされていません。1"]]);
 
       }
 
@@ -1500,7 +1516,7 @@ class KensahyousokuteidatasController extends AppController
         $_SESSION['user_code'] = $user_code;
 
         return $this->redirect(['action' => 'addformpre',
-        's' => ['mess' => "管理No.「".$product_code."」の製品は検査表親テーブルの登録がされていません。"]]);
+        's' => ['mess' => "管理No.「".$product_code."」の製品は原料登録がされていません。"]]);
 
       }
 

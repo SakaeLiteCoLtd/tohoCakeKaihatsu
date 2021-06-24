@@ -38,6 +38,9 @@ class StartmenusController extends AppController
           $this->LoginStaffs->save($LoginStaffs);
 
           return $this->redirect($this->Auth->redirectUrl());
+
+   //       return $this->redirect(['controller' => 'Images', 'action' => 'addpre']);
+  
         }
         $this->Flash->error(__('ユーザ名もしくはパスワードが間違っています'));
       }

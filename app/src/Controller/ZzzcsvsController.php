@@ -165,8 +165,8 @@ class ZzzcsvsController extends AppController
     public function torikomicustomer()//http://localhost:5050/Zzzcsvs/torikomicustomer
     {
 
-      $fp = fopen("torikomicsvs/customertest1.csv", "r");//csvファイルはwebrootに入れる
-    	$fpcount = fopen("torikomicsvs/customertest1.csv", 'r' );
+      $fp = fopen("torikomicsvs/customertest2.csv", "r");//csvファイルはwebrootに入れる
+    	$fpcount = fopen("torikomicsvs/customertest2.csv", 'r' );
     	for( $count = 0; fgets( $fpcount ); $count++ );
     	$this->set('count',$count);
 
@@ -198,7 +198,11 @@ class ZzzcsvsController extends AppController
         unset($sample['customercode_local']);
         unset($sample['department']);
 */
-    		$arrFp[] = $sample;//配列に追加する
+
+        if(strpos($sample['name'],'□') === false){
+          //'abcd'のなかに'□'が含まれていない場合
+          $arrFp[] = $sample;//配列に追加する
+        }
     	}
     	$this->set('arrFp',$arrFp);//$arrFpをctpで使用できるようセット
 
@@ -206,16 +210,16 @@ class ZzzcsvsController extends AppController
      	print_r($arrFp);
       echo "</pre>";
 
-  //    $Customers = $this->Customers->patchEntities($this->Customers->newEntity(), $arrFp);
-  //    $this->Customers->saveMany($Customers);
+      $Customers = $this->Customers->patchEntities($this->Customers->newEntity(), $arrFp);
+      $this->Customers->saveMany($Customers);
 
     }
 
     public function torikomiproduct()//http://localhost:5050/Zzzcsvs/torikomiproduct
     {
 
-      $fp = fopen("torikomicsvs/product0.csv", "r");//csvファイルはwebrootに入れる
-    	$fpcount = fopen("torikomicsvs/product0.csv", 'r' );
+      $fp = fopen("torikomicsvs/製品データng0623.csv", "r");//csvファイルはwebrootに入れる
+    	$fpcount = fopen("torikomicsvs/製品データng0623.csv", 'r' );
     	for( $count = 0; fgets( $fpcount ); $count++ );
     	$this->set('count',$count);
 
@@ -231,20 +235,23 @@ class ZzzcsvsController extends AppController
     		$keys[array_search('2',$keys)]='sakuin';
     		$keys[array_search('3',$keys)]='tanni';
         $keys[array_search('4',$keys)]='customer_id';
-        $keys[array_search('5',$keys)]='customer';//
+   //     $keys[array_search('5',$keys)]='customer';//
     		$sample = array_combine($keys, $sample);
-/*
+
         $sample = array_merge($sample,array('created_at' => date("Y-m-d H:i:s")));
         $sample = array_merge($sample,array('created_staff' => 1));
         $sample = array_merge($sample,array('factory_id' => 1));
         $sample = array_merge($sample,array('is_active' => 0));
         $sample = array_merge($sample,array('delete_flag' => 0));
-*/
+
     		$arrFp[] = $sample;//配列に追加する
     	}
     	$this->set('arrFp',$arrFp);//$arrFpをctpで使用できるようセット
 
-      $arrFpng = array();//空の配列を作る
+      $count = 0;
+
+      $arrFpok = array();//問題なしのデータ
+      $arrFpng = array();//顧客コードがないデータ
       for($j=0; $j<count($arrFp); $j++){
 
         $Customers = $this->Customers->find()
@@ -253,31 +260,48 @@ class ZzzcsvsController extends AppController
 
         if(isset($Customers[0])){
           $arrFp[$j] = array_merge($arrFp[$j],array('customer_id'=>$Customers[0]['id']));
+          $arrFpok[] = $arrFp[$j];
+   //       $Products = $this->Products->patchEntity($this->Products->newEntity(), $arrFp[$j]);
+   //       $this->Products->save($Products);
+    
+          $count = $count + 1;
         }else{
           $arrFpng[] = $arrFp[$j];
         }
 
       }
 
+      $arrFp = array_values($arrFp);
       echo "<pre>";
-      print_r(count($arrFpng));
+      print_r("ok");
+      echo "</pre>";
+      echo "<pre>";
+      print_r($arrFpok);
+      echo "</pre>";
+      echo "<pre>";
+      print_r("ng");
       echo "</pre>";
       echo "<pre>";
       print_r($arrFpng);
       echo "</pre>";
-
-      for($j=0; $j<1; $j++){
-        $tourokuarr[] = $arrFp[$j];
-      }
-
-      $fp = fopen('torikomicsvs/製品データ（顧客コード紐づけなし）.csv', 'w');
+/*
+      $fp = fopen('torikomicsvs/製品データng2.csv', 'w');
         foreach ($arrFpng as $line) {
     //      $line = mb_convert_encoding($line, 'SJIS-win', 'UTF-8');//UTF-8の文字列をSJIS-winに変更する※文字列に使用、ファイルごとはできない
           fputcsv($fp, $line);
         }
         fclose($fp);
+*/
+/*
+for($j=0; $j<1; $j++){
+  $tourokuarr[] = $arrFp[$j];
+}
+echo "<pre>";
+print_r($tourokuarr);
+echo "</pre>";
+*/
 
-  //    $Products = $this->Products->patchEntities($this->Products->newEntity(), $tourokuarr);
+  //    $Products = $this->Products->patchEntities($this->Products->newEntity(), $arrFpok);
   //    $this->Products->saveMany($Products);
 
     }
