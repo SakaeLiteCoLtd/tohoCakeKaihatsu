@@ -165,8 +165,8 @@ class ZzzcsvsController extends AppController
     public function torikomicustomer()//http://localhost:5050/Zzzcsvs/torikomicustomer
     {
 
-      $fp = fopen("torikomicsvs/customertest2.csv", "r");//csvファイルはwebrootに入れる
-    	$fpcount = fopen("torikomicsvs/customertest2.csv", 'r' );
+      $fp = fopen("torikomicsvs/customertest3.csv", "r");//csvファイルはwebrootに入れる
+    	$fpcount = fopen("torikomicsvs/customertest3.csv", 'r' );
     	for( $count = 0; fgets( $fpcount ); $count++ );
     	$this->set('count',$count);
 
@@ -198,7 +198,6 @@ class ZzzcsvsController extends AppController
         unset($sample['customercode_local']);
         unset($sample['department']);
 */
-
         if(strpos($sample['name'],'□') === false){
           //'abcd'のなかに'□'が含まれていない場合
           $arrFp[] = $sample;//配列に追加する
@@ -218,8 +217,8 @@ class ZzzcsvsController extends AppController
     public function torikomiproduct()//http://localhost:5050/Zzzcsvs/torikomiproduct
     {
 
-      $fp = fopen("torikomicsvs/製品データng0623.csv", "r");//csvファイルはwebrootに入れる
-    	$fpcount = fopen("torikomicsvs/製品データng0623.csv", 'r' );
+      $fp = fopen("torikomicsvs/製品データng3.csv", "r");//csvファイルはwebrootに入れる
+    	$fpcount = fopen("torikomicsvs/製品データng3.csv", 'r' );
     	for( $count = 0; fgets( $fpcount ); $count++ );
     	$this->set('count',$count);
 
@@ -266,43 +265,45 @@ class ZzzcsvsController extends AppController
     
           $count = $count + 1;
         }else{
+
+          unset($arrFp[$j]['created_at']);
+          unset($arrFp[$j]['created_staff']);
+          unset($arrFp[$j]['factory_id']);
+          unset($arrFp[$j]['is_active']);
+          unset($arrFp[$j]['delete_flag']);
+
           $arrFpng[] = $arrFp[$j];
         }
 
       }
 
-      $arrFp = array_values($arrFp);
+  //    $arrFp = array_values($arrFp);
       echo "<pre>";
-      print_r("ok");
+      print_r("ok ".count($arrFpok));
       echo "</pre>";
+      /*
       echo "<pre>";
       print_r($arrFpok);
       echo "</pre>";
+      */
       echo "<pre>";
-      print_r("ng");
+      print_r("ng ".count($arrFpng));
       echo "</pre>";
+      /*
       echo "<pre>";
       print_r($arrFpng);
       echo "</pre>";
-/*
-      $fp = fopen('torikomicsvs/製品データng2.csv', 'w');
+      */
+
+      $fp = fopen('torikomicsvs/製品データng4.csv', 'w');
         foreach ($arrFpng as $line) {
     //      $line = mb_convert_encoding($line, 'SJIS-win', 'UTF-8');//UTF-8の文字列をSJIS-winに変更する※文字列に使用、ファイルごとはできない
           fputcsv($fp, $line);
         }
         fclose($fp);
-*/
-/*
-for($j=0; $j<1; $j++){
-  $tourokuarr[] = $arrFp[$j];
-}
-echo "<pre>";
-print_r($tourokuarr);
-echo "</pre>";
-*/
 
-  //    $Products = $this->Products->patchEntities($this->Products->newEntity(), $arrFpok);
-  //    $this->Products->saveMany($Products);
+        $Products = $this->Products->patchEntities($this->Products->newEntity(), $arrFpok);
+        $this->Products->saveMany($Products);
 
     }
 
