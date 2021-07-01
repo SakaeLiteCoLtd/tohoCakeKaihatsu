@@ -22,13 +22,12 @@ echo $this->Html->css('index');
 ?>
 <br>
 <div class="customers index large-9 medium-8 columns content">
-  <h2><font color=red><?= __('顧客一覧') ?></font></h2>
+  <h2><font color=red><?= __('得意先一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
               <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
-              <th scope="col" style='width:200'><?= $this->Paginator->sort('factory_id', ['label'=>"自社工場名"]) ?></th>
-              <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"顧客名"]) ?></th>
+              <th scope="col"><?= $this->Paginator->sort('name', ['label'=>"得意先名"]) ?></th>
                 <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>
         </thead>
@@ -36,7 +35,6 @@ echo $this->Html->css('index');
             <?php foreach ($customers as $customer): ?>
             <tr>
               <td><?= h($i) ?></td>
-              <td><?= h($customer->factory->name) ?></td>
               <td><?= h($customer->name) ?></td>
                 <td class="actions">
                   <?= $this->Html->link(__('詳細'), ['action' => 'detail', $customer->id]) ?>

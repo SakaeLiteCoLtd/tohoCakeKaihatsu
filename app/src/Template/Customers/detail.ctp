@@ -37,7 +37,7 @@
     </table>
     <table>
     <tr>
-      <td width="280"><strong>顧客名</strong></td>
+      <td width="280"><strong>得意先名</strong></td>
       <td width="280"><strong>電話番号</strong></td>
     </tr>
     <tr>

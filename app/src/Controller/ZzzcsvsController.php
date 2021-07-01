@@ -131,12 +131,10 @@ class ZzzcsvsController extends AppController
     		$keys[array_search('0',$keys)]='material_supplier_code';//名前の変更
     		$keys[array_search('1',$keys)]='name';
     		$keys[array_search('2',$keys)]='department';
-    		$keys[array_search('3',$keys)]='ryakusyou';
-    		$keys[array_search('4',$keys)]='sakuin';
-        $keys[array_search('5',$keys)]='yuubin';
-        $keys[array_search('6',$keys)]='address';
-        $keys[array_search('7',$keys)]='tel';
-        $keys[array_search('8',$keys)]='fax';
+        $keys[array_search('3',$keys)]='yuubin';
+        $keys[array_search('4',$keys)]='address';
+        $keys[array_search('5',$keys)]='tel';
+        $keys[array_search('6',$keys)]='fax';
     		$sample = array_combine($keys, $sample);
 
         $sample = array_merge($sample,array('created_at' => date("Y-m-d H:i:s")));
@@ -149,8 +147,12 @@ class ZzzcsvsController extends AppController
         unset($sample['customercode_local']);
         unset($sample['department']);
 */
-    		$arrFp[] = $sample;//配列に追加する
-    	}
+        if(strpos($sample['name'],'□') === false){
+          //'abcd'のなかに'□'が含まれていない場合
+          $arrFp[] = $sample;//配列に追加する
+        }
+
+      }
     	$this->set('arrFp',$arrFp);//$arrFpをctpで使用できるようセット
 
     	echo "<pre>";

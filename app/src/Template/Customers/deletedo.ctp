@@ -23,7 +23,7 @@
     <?= $this->Form->create($customer) ?>
     <fieldset>
 
-      <legend><strong style="font-size: 15pt; color:red"><?= __('顧客情報削除') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('得意先情報削除') ?></strong></legend>
         <br>
         <table align="center">
           <tbody class='sample non-sample'>
@@ -34,7 +34,7 @@
 
         <table>
         <tr>
-          <td width="280"><strong>顧客名</strong></td>
+          <td width="280"><strong>得意先名</strong></td>
           <td width="280"><strong>電話番号</strong></td>
         </tr>
         <tr>
@@ -58,7 +58,7 @@
     <table align="center">
       <tbody class='sample non-sample'>
         <tr>
-          <td style="border-style: none;"><div align="center"><?= $this->Form->submit('顧客メニュートップへ戻る', array('name' => 'top')); ?></div></td>
+          <td style="border-style: none;"><div align="center"><?= $this->Form->submit('得意先メニュートップへ戻る', array('name' => 'top')); ?></div></td>
         </tr>
       </tbody>
     </table>

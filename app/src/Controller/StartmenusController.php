@@ -135,7 +135,7 @@ class StartmenusController extends AppController
           $arrMenus[] = $Groups[$k]['menu']['name_menu'];
           $arrController[] = "staffAbilities";
 
-        }elseif($Groups[$k]['menu']['name_menu'] == "顧客"){
+        }elseif($Groups[$k]['menu']['name_menu'] == "得意先"){
 
           $arrMenus[] = $Groups[$k]['menu']['name_menu'];
           $arrController[] = "customers";

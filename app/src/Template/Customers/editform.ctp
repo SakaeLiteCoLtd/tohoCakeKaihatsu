@@ -23,7 +23,7 @@
 
     <?= $this->Form->create($customer) ?>
     <fieldset>
-      <legend><strong style="font-size: 15pt; color:red"><?= __('顧客情報編集') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('得意先情報編集') ?></strong></legend>
         <br>
         <table>
           <tbody class='sample non-sample'>
@@ -42,7 +42,7 @@
       </table>
         <table>
         <tr>
-          <td width="280"><strong>顧客名</strong></td>
+          <td width="280"><strong>得意先名</strong></td>
           <td width="280"><strong>電話番号</strong></td>
         </tr>
         <tr>

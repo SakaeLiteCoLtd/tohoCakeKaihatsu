@@ -25,7 +25,7 @@
 
       <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$customer['id'], 'label'=>false)) ?>
 
-      <legend><strong style="font-size: 15pt; color:red"><?= __('顧客情報削除') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('得意先情報削除') ?></strong></legend>
         <br>
         <table align="center">
           <tbody class='sample non-sample'>
@@ -36,7 +36,7 @@
 
         <table>
         <tr>
-          <td width="280"><strong>顧客名</strong></td>
+          <td width="280"><strong>得意先名</strong></td>
           <td width="280"><strong>電話番号</strong></td>
         </tr>
         <tr>

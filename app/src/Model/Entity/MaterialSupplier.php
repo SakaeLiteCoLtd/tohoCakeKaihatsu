@@ -11,8 +11,6 @@ use Cake\ORM\Entity;
  * @property string $material_supplier_code
  * @property string $name
  * @property string|null $department
- * @property string|null $ryakusyou
- * @property string|null $sakuin
  * @property string|null $yuubin
  * @property string|null $address
  * @property string|null $tel
@@ -44,8 +42,6 @@ class MaterialSupplier extends Entity
         'material_supplier_code' => true,
         'name' => true,
         'department' => true,
-        'ryakusyou' => true,
-        'sakuin' => true,
         'yuubin' => true,
         'address' => true,
         'tel' => true,

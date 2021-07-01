@@ -10,6 +10,7 @@ use Cake\Validation\Validator;
  * MaterialSuppliers Model
  *
  * @property \App\Model\Table\FactoriesTable|\Cake\ORM\Association\BelongsTo $Factories
+ * @property |\Cake\ORM\Association\HasMany $Materials
  * @property \App\Model\Table\PriceMaterialsTable|\Cake\ORM\Association\HasMany $PriceMaterials
  *
  * @method \App\Model\Entity\MaterialSupplier get($primaryKey, $options = [])
@@ -41,6 +42,9 @@ class MaterialSuppliersTable extends Table
         $this->belongsTo('Factories', [
             'foreignKey' => 'factory_id',
             'joinType' => 'INNER'
+        ]);
+        $this->hasMany('Materials', [
+            'foreignKey' => 'material_supplier_id'
         ]);
         $this->hasMany('PriceMaterials', [
             'foreignKey' => 'material_supplier_id'
@@ -75,16 +79,6 @@ class MaterialSuppliersTable extends Table
             ->scalar('department')
             ->maxLength('department', 255)
             ->allowEmpty('department');
-
-        $validator
-            ->scalar('ryakusyou')
-            ->maxLength('ryakusyou', 255)
-            ->allowEmpty('ryakusyou');
-
-        $validator
-            ->scalar('sakuin')
-            ->maxLength('sakuin', 255)
-            ->allowEmpty('sakuin');
 
         $validator
             ->scalar('yuubin')
