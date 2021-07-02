@@ -131,14 +131,14 @@ class ProductsController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $Customers = $this->Customers->find()
-      ->where(['delete_flag' => 0])->toArray();
-
-      $arrCustomers = array();
-      foreach ($Customers as $value) {
-        $arrCustomers[] = array($value->id=>$value->name);
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
       }
-      $this->set('arrCustomers', $arrCustomers);
 
       $Factories = $this->Factories->find()
       ->where(['delete_flag' => 0])->toArray();
@@ -147,6 +147,82 @@ class ProductsController extends AppController
         $arrFactories[] = array($value->id=>$value->name);
       }
       $this->set('arrFactories', $arrFactories);
+
+      $Customer_name_list = $this->Customers->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrCustomer_name_list = array();
+      for($j=0; $j<count($Customer_name_list); $j++){
+        array_push($arrCustomer_name_list,$Customer_name_list[$j]["name"]);
+      }
+      $this->set('arrCustomer_name_list', $arrCustomer_name_list);
+
+    }
+
+    public function addformlength()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->getData();
+      /*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $name = $data["name"];
+      $this->set('name', $name);
+
+      $ProductName = $this->Products->find()
+      ->where(['name' => $name])->toArray();
+
+      if(isset($ProductName[0])){
+
+        return $this->redirect(['action' => 'addform',
+        's' => ['mess' => "入力された品名は既に存在します。長さを追加する場合は「長さ追加」メニューから登録してください。"]]);
+
+      }
+
+      $customer_name = $data["customer_name"];
+      $this->set('customer_name', $customer_name);
+
+      $CustomerName = $this->Customers->find()
+      ->where(['name' => $customer_name])->toArray();
+
+      if(!isset($CustomerName[0])){
+
+        return $this->redirect(['action' => 'addform',
+        's' => ['mess' => "入力された得意先名は存在しません。もう一度やり直してください。"]]);
+
+      }
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+      if(isset($data["tuika"])){//追加
+
+        $tuikalength = $data["tuikalength"] + 1;
+        $this->set('tuikalength', $tuikalength);
+
+      }elseif(isset($data["kakuninn"])){//確認
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+
+        $_SESSION['newproduct'] = array();
+        $_SESSION['newproduct'] = $data;
+
+        return $this->redirect(['action' => 'addcomfirm']);
+
+      }else{//最初
+
+        $tuikalength = 1;
+        $this->set('tuikalength', $tuikalength);
+
+      }
+
     }
 
     public function addcomfirm()
@@ -154,7 +230,13 @@ class ProductsController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $data = $this->request->getData();
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $data = $_SESSION['newproduct'];
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
 
       $Customers = $this->Customers->find()
       ->where(['id' => $data['customer_id']])->toArray();

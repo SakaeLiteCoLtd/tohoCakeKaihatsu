@@ -11,7 +11,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlproduct;
+  //   echo $htmlproduct;
 ?>
 
 <?= $this->Form->create($product, ['url' => ['action' => 'adddo']]) ?>
