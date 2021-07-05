@@ -15,8 +15,8 @@ echo $this->Html->css('kensahyou');
 <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <?php
-$arrCustomer_name_list = json_encode($arrCustomer_name_list);//javaに配列を受け渡すために変換
-$arrProduct_name_list = json_encode($arrProduct_name_list);//javaに配列を受け渡すために変換
+$arrCustomer_name_list = json_encode($arrCustomer_name_list);//jsに配列を受け渡すために変換
+$arrProduct_name_list = json_encode($arrProduct_name_list);//jsに配列を受け渡すために変換
 ?>
 
 <script>

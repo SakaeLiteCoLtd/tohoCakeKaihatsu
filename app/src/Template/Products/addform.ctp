@@ -15,7 +15,7 @@
 <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <?php
-$arrCustomer_name_list = json_encode($arrCustomer_name_list);//javaに配列を受け渡すために変換
+$arrCustomer_name_list = json_encode($arrCustomer_name_list);//jsに配列を受け渡すために変換
 ?>
 
 <script>
@@ -30,7 +30,6 @@ $(function() {
 });
 
 </script>
-
 
 <?php
      echo $htmllogin;
@@ -69,12 +68,14 @@ $(function() {
       <tr>
         <td width="320"><strong>得意先</strong></td>
         <td width="320"><strong>品名</strong></td>
+        <td width="50"><strong>単位</strong></td>
       </tr>
       <tr>
         <td>
         <?= $this->Form->control('customer_name', array('type'=>'text', 'label'=>false, 'size'=>30, 'id'=>"customer_name_list")) ?>
         </td>
         <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?></td>
+        <td><?= $this->Form->control('tanni', array('type'=>'text', 'label'=>false, 'size'=>6)) ?></td>
       </tr>
     </table>
 

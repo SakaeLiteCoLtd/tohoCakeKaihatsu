@@ -171,9 +171,11 @@ class ProductsController extends AppController
 */
       $name = $data["name"];
       $this->set('name', $name);
+      $tanni = $data["tanni"];
+      $this->set('tanni', $tanni);
 
       $ProductName = $this->Products->find()
-      ->where(['name' => $name])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $name])->toArray();
 
       if(isset($ProductName[0])){
 
@@ -209,8 +211,11 @@ class ProductsController extends AppController
 
         if(!isset($_SESSION)){
           session_start();
+          header('Expires:-1');
+          header('Cache-Control:');
+          header('Pragma:');
         }
-
+        
         $_SESSION['newproduct'] = array();
         $_SESSION['newproduct'] = $data;
 
@@ -234,14 +239,22 @@ class ProductsController extends AppController
       $_SESSION = $session->read();
 
       $data = $_SESSION['newproduct'];
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
 
-      $Customers = $this->Customers->find()
-      ->where(['id' => $data['customer_id']])->toArray();
-      $customer_name = $Customers[0]['name'];
+      $name = $data["name"];
+      $this->set('name', $name);
+      $tanni = $data["tanni"];
+      $this->set('tanni', $tanni);
+      $customer_name = $data["customer_name"];
       $this->set('customer_name', $customer_name);
+      $tuikalength = $data["tuikalength"];
+      $this->set('tuikalength', $tuikalength);
+      $factory_id = $data["factory_id"];
+      $this->set('factory_id', $factory_id);
+
+      for($j=1; $j<=$tuikalength; $j++){
+        ${"length".$j} = $data["length".$j];
+        $this->set('length'.$j, ${"length".$j});
+      }
 
       $Factories = $this->Factories->find()
       ->where(['id' => $data['factory_id']])->toArray();
@@ -255,11 +268,47 @@ class ProductsController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-
-      $Customers = $this->Customers->find()
-      ->where(['id' => $data['customer_id']])->toArray();
-      $customer_name = $Customers[0]['name'];
+      /*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $name = $data["name"];
+      $this->set('name', $name);
+      $tanni = $data["tanni"];
+      $this->set('tanni', $tanni);
+      $customer_name = $data["customer_name"];
       $this->set('customer_name', $customer_name);
+
+      $CustomerName = $this->Customers->find()
+      ->where(['name' => $customer_name])->toArray();
+      $customer_id = $CustomerName[0]["id"];
+      $customer_code = $CustomerName[0]["customer_code"];
+
+      if($data['factory_id'] == 1){
+        $code_factory = "D";
+      }else{
+        $code_factory = "I";
+      }
+
+      $Productnow = $this->Products->find()
+      ->where(['product_code like' => $customer_code.$code_factory.'%'])
+      ->order(["product_code"=>"DESC"])->toArray();
+
+      if(isset($Productnow[0])){
+        $prodct_renban = substr($Productnow[0]["product_code"], -6, 4) + 1;
+        $prodct_renban = sprintf('%04d', $prodct_renban);//0埋め
+      }else{
+        $prodct_renban = "0001";
+      }
+      
+      $tuikalength = $data["tuikalength"];
+      $this->set('tuikalength', $tuikalength);
+
+      for($j=1; $j<=$tuikalength; $j++){
+        ${"length".$j} = $data["length".$j];
+        $this->set('length'.$j, ${"length".$j});
+      }
 
       $Factories = $this->Factories->find()
       ->where(['id' => $data['factory_id']])->toArray();
@@ -272,29 +321,37 @@ class ProductsController extends AppController
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
       $arrtourokuproduct = array();
-      $arrtourokuproduct = [
-        'factory_id' => $data["factory_id"],
-        'product_code' => $data["product_code"],
-        'customer_product_code' => $data["customer_product_code"],
-        'name' => $data["name"],
-        'customer_id' => $data["customer_id"],
-        'is_active' => 0,
-        'delete_flag' => 0,
-        'created_at' => date("Y-m-d H:i:s"),
-        'created_staff' => $staff_id
-      ];
+      for($j=1; $j<=$tuikalength; $j++){
+
+        ${"length".$j} = $data["length".$j];
+        $color_renban = sprintf('%02d', $j);
+
+        $arrtourokuproduct[] = [
+          'factory_id' => $data["factory_id"],
+          'product_code' => $customer_code.$code_factory.$prodct_renban.$color_renban,
+          'name' => $data["name"],
+          'tanni' => $data["tanni"],
+          'length' => ${"length".$j},
+          'customer_id' => $customer_id,
+          'is_active' => 0,
+          'delete_flag' => 0,
+          'created_at' => date("Y-m-d H:i:s"),
+          'created_staff' => $staff_id
+        ];
+
+      }
 /*
       echo "<pre>";
       print_r($arrtourokuproduct);
       echo "</pre>";
 */
       //新しいデータを登録
-      $Products = $this->Products->patchEntity($this->Products->newEntity(), $arrtourokuproduct);
+      $Products = $this->Products->patchEntities($this->Products->newEntity(), $arrtourokuproduct);
       $connection = ConnectionManager::get('default');//トランザクション1
       // トランザクション開始2
       $connection->begin();//トランザクション3
       try {//トランザクション4
-        if ($this->Products->save($Products)) {
+        if ($this->Products->saveMany($Products)) {
 
           $connection->commit();// コミット5
           $mes = "以下のように登録されました。";
@@ -316,22 +373,261 @@ class ProductsController extends AppController
 
     }
 
-    public function edit($id = null)
+    public function editlengthpreform()
     {
-        $product = $this->Products->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $product = $this->Products->patchEntity($product, $this->request->getData());
-            if ($this->Products->save($product)) {
-                $this->Flash->success(__('The product has been saved.'));
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The product could not be saved. Please, try again.'));
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
+      $Product_name_list = $this->Products->find()
+      ->where(['delete_flag' => 0])->toArray();
+
+      $arrProduct_name_list = array();
+      for($j=0; $j<count($Product_name_list); $j++){
+        array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+      }
+      $this->set('arrProduct_name_list', $arrProduct_name_list);
+    }
+    
+    public function editlengthform()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->getData();
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+      $ProductName = $this->Products->find()
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
+
+      if(!isset($ProductName[0])){
+
+        return $this->redirect(['action' => 'editlengthpreform',
+        's' => ['mess' => "自社工場：".$factory_name."、製品名：「".$data['name']."」の製品は存在しません。"]]);
+
+      }
+
+      $this->set('ProductName', $ProductName);
+
+      $factory_id = $data["factory_id"];
+      $this->set('factory_id', $factory_id);
+      $name = $data["name"];
+      $this->set('name', $name);
+      
+      if(isset($data["tuika"])){//追加
+
+        $tuikalength = $data["tuikalength"] + 1;
+        $this->set('tuikalength', $tuikalength);
+
+      }elseif(isset($data["kakuninn"])){//確認
+
+        if(!isset($_SESSION)){
+          session_start();
+          header('Expires:-1');
+          header('Cache-Control:');
+          header('Pragma:');
         }
-        $customers = $this->Products->Customers->find('list', ['limit' => 200]);
-        $this->set(compact('product', 'customers'));
+        
+        $_SESSION['editlengthproduct'] = array();
+        $_SESSION['editlengthproduct'] = $data;
+
+        return $this->redirect(['action' => 'editlengthcomfirm']);
+
+      }else{//最初
+
+        $tuikalength = 1;
+        $this->set('tuikalength', $tuikalength);
+
+      }
+
+    }
+
+    public function editlengthcomfirm()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
+      $data = $_SESSION['editlengthproduct'];
+      /*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $name = $data["name"];
+      $this->set('name', $name);
+      $tuikalength = $data["tuikalength"];
+      $this->set('tuikalength', $tuikalength);
+      $factory_id = $data["factory_id"];
+      $this->set('factory_id', $factory_id);
+
+      $ProductName = $this->Products->find()
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
+      $this->set('ProductName', $ProductName);
+
+      for($j=1; $j<=$tuikalength; $j++){
+        ${"length".$j} = $data["length".$j];
+        $this->set('length'.$j, ${"length".$j});
+      }
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+    }
+
+    public function editlengthdo()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->getData();
+      /*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $name = $data["name"];
+      $this->set('name', $name);
+      $tuikalength = $data["tuikalength"];
+      $this->set('tuikalength', $tuikalength);
+      $factory_id = $data["factory_id"];
+      $this->set('factory_id', $factory_id);
+
+      $ProductName = $this->Products->find()
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
+      $this->set('ProductName', $ProductName);
+
+      $product_code_moto = substr($ProductName[0]["product_code"], 0, 11);
+
+      $Productnow = $this->Products->find()
+      ->where(['product_code like' => $product_code_moto.'%'])
+      ->order(["product_code"=>"DESC"])->toArray();
+      $product_color_renban = substr($Productnow[0]["product_code"], -2, 2);
+ 
+      $tuikalength = $data["tuikalength"];
+      $this->set('tuikalength', $tuikalength);
+
+      for($j=1; $j<=$tuikalength; $j++){
+        ${"length".$j} = $data["length".$j];
+        $this->set('length'.$j, ${"length".$j});
+      }
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $arrtourokuproduct = array();
+      for($j=1; $j<=$tuikalength; $j++){
+
+        ${"length".$j} = $data["length".$j];
+        $color_renban = sprintf('%02d', $product_color_renban + $j);
+
+        $arrtourokuproduct[] = [
+          'factory_id' => $data["factory_id"],
+          'product_code' => $product_code_moto.$color_renban,
+          'name' => $data["name"],
+          'tanni' => $ProductName[0]["tanni"],
+          'length' => ${"length".$j},
+          'customer_id' => $ProductName[0]["customer_id"],
+          'is_active' => 0,
+          'delete_flag' => 0,
+          'created_at' => date("Y-m-d H:i:s"),
+          'created_staff' => $staff_id
+        ];
+
+      }
+/*
+      echo "<pre>";
+      print_r($arrtourokuproduct);
+      echo "</pre>";
+*/
+      //新しいデータを登録
+      $Products = $this->Products->patchEntities($this->Products->newEntity(), $arrtourokuproduct);
+      $connection = ConnectionManager::get('default');//トランザクション1
+      // トランザクション開始2
+      $connection->begin();//トランザクション3
+      try {//トランザクション4
+        if ($this->Products->saveMany($Products)) {
+
+          $connection->commit();// コミット5
+          $mes = "以下のように登録されました。";
+          $this->set('mes',$mes);
+
+        } else {
+
+          $mes = "※登録されませんでした";
+          $this->set('mes',$mes);
+          $this->Flash->error(__('The data could not be saved. Please, try again.'));
+          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+        }
+
+      } catch (Exception $e) {//トランザクション7
+      //ロールバック8
+         $connection->rollback();//トランザクション9
+      }//トランザクション10
+
+    }
+    
+    public function editpreform()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
+      $Product_name_list = $this->Products->find()
+      ->where(['delete_flag' => 0])->toArray();
+
+      $arrProduct_name_list = array();
+      for($j=0; $j<count($Product_name_list); $j++){
+        array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+      }
+      $this->set('arrProduct_name_list', $arrProduct_name_list);
     }
 
     public function editform($id = null)

@@ -1,5 +1,13 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
+
+if(!isset($_SESSION)){
+  session_start();
+  header('Expires:-1');
+  header('Cache-Control:');
+  header('Pragma:');
+}
+
  use App\myClass\menulists\htmlproductmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
  $htmlproductmenu = new htmlproductmenu();
@@ -14,13 +22,14 @@
      echo $htmllogin;
 ?>
 <?php
-  //   echo $htmlproduct;
+     echo $htmlproduct;
 ?>
 
 <?= $this->Form->create($product, ['url' => ['action' => 'addformlength']]) ?>
 <br><br><br>
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 <?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$this->request->getData('name'), 'label'=>false)) ?>
+<?= $this->Form->control('tanni', array('type'=>'hidden', 'value'=>$this->request->getData('tanni'), 'label'=>false)) ?>
 <?= $this->Form->control('customer_name', array('type'=>'hidden', 'value'=>$this->request->getData('customer_name'), 'label'=>false)) ?>
 <?= $this->Form->control('tuikalength', array('type'=>'hidden', 'value'=>$tuikalength, 'label'=>false)) ?>
 
@@ -46,12 +55,12 @@
         </tr>
       </table>
 
-
       <table>
       <tr>
         <td width="320"><strong>得意先</strong></td>
         <td><strong>品名</strong></td>
         <td width="50"><strong>長さ（mm）</strong></td>
+        <td><strong>単位</strong></td>
       </tr>
       
       <?php for($k=1; $k<=$tuikalength; $k++): ?>
@@ -61,6 +70,7 @@
       <td><?= h($name) ?></td>
       <td><?= $this->Form->control
       ('length'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true')) ?></td>
+      <td><?= h($tanni) ?></td>
       </tr>
 
       <?php endfor;?>
@@ -70,9 +80,8 @@
     <table>
       <tbody class='sample non-sample'>
       <tr>
-      <td style="border:none">　　　　　　　　　</td>
-      <td style="border:none">　　　　　　　　　</td>
-      <td style="border:none">　　　　　　　　　</td>
+      <td style="border:none">　　　　　　　　　　　　</td>
+      <td style="border:none">　　　　　　　　　　　　</td>
       <td style="border:none"><?= $this->Form->submit(('長さ追加'), array('name' => 'tuika')) ?></td>
       <td style="border:none"><?= $this->Form->submit(('登録確認'), array('name' => 'kakuninn')) ?></td>
       </tr>

@@ -29,34 +29,34 @@
         <br>
 
         <table>
-          <tr>
-            <td width="280"><strong>工場・営業所名</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($factory_name) ?></td>
-        	</tr>
-        </table>
-        <table>
         <tr>
-          <td width="280"><strong>社内品番</strong></td>
-          <td width="280"><strong>顧客品番</strong></td>
+          <td width="280"><strong>自社工場</strong></td>
         </tr>
         <tr>
-          <td><?= h($this->request->getData('product_code')) ?></td>
-          <td><?= h($this->request->getData('customer_product_code')) ?></td>
+        <td><?= h($factory_name) ?></td>
         </tr>
       </table>
 
       <table>
       <tr>
-        <td width="280"><strong>品名</strong></td>
-        <td width="280"><strong>顧客</strong></td>
-      </tr>
+        <td width="320"><strong>得意先</strong></td>
+        <td><strong>品名</strong></td>
+        <td><strong>長さ（mm）</strong></td>
+        <td><strong>単位</strong></td>
+     </tr>
+      
+      <?php for($k=1; $k<=$tuikalength; $k++): ?>
+
       <tr>
-        <td><?= h($this->request->getData('name')) ?></td>
-        <td><?= h($customer_name) ?></td>
-      </tr>
-    </table>
+      <td><?= h($customer_name) ?></td>
+      <td><?= h($name) ?></td>
+      <td><?= h(${"length".$k}) ?></td>
+      <?= $this->Form->control('length'.$k, array('type'=>'hidden', 'value'=>${"length".$k}, 'label'=>false)) ?>
+      <td><?= h($tanni) ?></td>
+
+      <?php endfor;?>
+
+     </table>
 
     </fieldset>
 
