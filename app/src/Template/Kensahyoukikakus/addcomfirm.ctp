@@ -86,6 +86,10 @@ echo $this->Html->css('kensahyou');
 </tr>
 
 </table>
+<br>
+  <table class="top">
+    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('上記の内容で登録します。よろしければ「登録確定」ボタンを押してください。') ?></strong></td></tr>
+  </table>
 
 <br><br>
 <table align="center">

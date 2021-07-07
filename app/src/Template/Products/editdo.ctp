@@ -14,14 +14,12 @@
      echo $htmlproduct;
 ?>
 
-<form method="post" action="/products/index">
-
 <?= $this->Form->create($product, ['url' => ['action' => 'index']]) ?>
 <br><br><br>
 
 <nav class="large-3 medium-4 columns">
     <fieldset>
-      <legend><strong style="font-size: 15pt; color:red"><?= __('製品情報編集') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('製品情報編集・削除') ?></strong></legend>
       <br>
         <table>
           <tbody class='sample non-sample'>
@@ -31,34 +29,68 @@
         <br>
 
         <table>
-          <tr>
-            <td width="280"><strong>工場・営業所名</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($factory_name) ?></td>
-        	</tr>
-        </table>
-        <table>
         <tr>
-          <td width="280"><strong>社内品番</strong></td>
-          <td width="280"><strong>顧客品番</strong></td>
+          <td width="280"><strong>自社工場</strong></td>
+          <td width="280"><strong>得意先</strong></td>
         </tr>
         <tr>
-          <td><?= h($this->request->getData('product_code')) ?></td>
-          <td><?= h($this->request->getData('customer_product_code')) ?></td>
+        <td><?= h($this->request->getData('factory_name')) ?></td>
+        <td><?= h($this->request->getData('customer_name')) ?></td>
         </tr>
       </table>
 
       <table>
+          <tr>
+            <td width="280"><strong>品名</strong></td>
+            <td width="280"><strong>単位</strong></td>
+        	</tr>
+          <tr>
+            <td><?= h($this->request->getData('name')) ?></td>
+            <td><?= h($this->request->getData('tanni')) ?></td>
+        	</tr>
+        </table>
+
+     <br>
+
+     <table>
       <tr>
-        <td width="280"><strong>品名</strong></td>
-        <td width="280"><strong>顧客</strong></td>
+      <td width="280"><strong>管理No.</strong></td>
+      <td><strong>長さ（mm）</strong></td>
       </tr>
+      
+      <?php for($i=0; $i<count($arrupdateproduct); $i++): ?>
+
       <tr>
-        <td><?= h($this->request->getData('name')) ?></td>
-        <td><?= h($customer_name) ?></td>
+      <td><?= h($arrupdateproduct[$i]["product_code"]) ?></td>
+      <td><?= h($arrupdateproduct[$i]["length"]) ?></td>
       </tr>
-    </table>
+
+      <?php endfor;?>
+
+     </table>
+
+     <table>
+          <tbody class='sample non-sample'>
+            <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('以下削除') ?></strong></td></tr>
+          </tbody>
+        </table>
+
+        <table>
+      <tr>
+      <td width="280"><strong>管理No.</strong></td>
+      <td><strong>長さ（mm）</strong></td>
+      </tr>
+
+      <?php for($i=0; $i<count($arrdeleteproduct); $i++): ?>
+
+        <tr>
+        <td><?= h($arrdeleteproduct[$i]["product_code"]) ?></td>
+        <td><?= h($arrdeleteproduct[$i]["length"]) ?></td>
+        </tr>
+
+        <?php endfor;?>
+
+     </table>
 
     </fieldset>
 

@@ -38,7 +38,7 @@ $(function() {
      echo $htmlproduct;
 ?>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'editlengthform']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'editform']]) ?>
 <br><br><br>
 
 <nav class="large-3 medium-4 columns">
@@ -49,7 +49,7 @@ $(function() {
         <br>
         <table>
           <tbody class='sample non-sample'>
-          <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt"><?= __('長さ追加するデータを入力してください') ?></strong></td></tr>
+          <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt"><?= __('編集・削除するデータを入力してください') ?></strong></td></tr>
           <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></td></tr>
           </tbody>
         </table>

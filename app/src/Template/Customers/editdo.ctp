@@ -19,7 +19,7 @@
 
 <nav class="large-3 medium-4 columns">
     <fieldset>
-      <legend><strong style="font-size: 15pt; color:red"><?= __('得意先新規登録') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('得意先情報編集・削除') ?></strong></legend>
       <br>
         <table>
           <tbody class='sample non-sample'>
@@ -36,28 +36,47 @@
             <td><?= h($factory_name) ?></td>
         	</tr>
         </table>
-      <table>
-        <tr>
-          <td width="280"><strong>得意先名</strong></td>
-          <td width="280"><strong>電話番号</strong></td>
-        </tr>
-        <tr>
-          <td><?= h($this->request->getData('name')) ?></td>
-          <td><?= h($this->request->getData('tel')) ?></td>
-        </tr>
-      </table>
-    <table>
+
+        <table>
+      <tr>
+        <td width="280"><strong>得意先名</strong></td>
+        <td width="280"><strong>得意先コード</strong></td>
+      </tr>
+      <tr>
+      <td><?= h($this->request->getData('name')) ?></td>
+      <td><?= h($this->request->getData('customer_code')) ?></td>
+    </tr>
+    </table>
+  <table>
     <tr>
-      <td width="180"><strong>ファックス</strong></td>
-      <td width="380"><strong>住所</strong></td>
+      <td width="280"><strong>フリガナ</strong></td>
+      <td width="280"><strong>部署</strong></td>
     </tr>
     <tr>
-      <td><?= h($this->request->getData('fax')) ?></td>
-      <td><?= h($this->request->getData('address')) ?></td>
+    <td><?= h($this->request->getData('furigana')) ?></td>
+    <td><?= h($this->request->getData('department')) ?></td>
     </tr>
   </table>
-
-    </fieldset>
+  <table>
+    <tr>
+      <td width="280"><strong>電話番号</strong></td>
+      <td width="280"><strong>ファックス</strong></td>
+    </tr>
+    <tr>
+    <td><?= h($this->request->getData('tel')) ?></td>
+    <td><?= h($this->request->getData('fax')) ?></td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <td width="150"><strong>郵便番号</strong></td>
+      <td width="410"><strong>住所</strong></td>
+    </tr>
+    <tr>
+    <td><?= h($this->request->getData('yuubin')) ?></td>
+    <td><?= h($this->request->getData('address')) ?></td>
+    </tr>
+  </table>
 
     <table>
       <tr>
@@ -66,6 +85,8 @@
       </tbody>
     </tr>
     </table>
+
+    </fieldset>
 
     <?= $this->Form->end() ?>
   </nav>

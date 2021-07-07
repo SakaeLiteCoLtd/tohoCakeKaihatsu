@@ -184,6 +184,11 @@ class ProductsController extends AppController
 
       }
 
+      if(strpos($name,';') !== false){
+        return $this->redirect(['action' => 'addform',
+        's' => ['mess' => "品名に「;」（セミコロン）は使用できません。"]]);
+      }
+
       $customer_name = $data["customer_name"];
       $this->set('customer_name', $customer_name);
 
@@ -402,6 +407,8 @@ class ProductsController extends AppController
       for($j=0; $j<count($Product_name_list); $j++){
         array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
       }
+      $arrProduct_name_list = array_unique($arrProduct_name_list);
+      $arrProduct_name_list = array_values($arrProduct_name_list);
       $this->set('arrProduct_name_list', $arrProduct_name_list);
     }
     
@@ -627,30 +634,62 @@ class ProductsController extends AppController
       for($j=0; $j<count($Product_name_list); $j++){
         array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
       }
+      $arrProduct_name_list = array_unique($arrProduct_name_list);
+      $arrProduct_name_list = array_values($arrProduct_name_list);
+
       $this->set('arrProduct_name_list', $arrProduct_name_list);
     }
 
-    public function editform($id = null)
+    public function editform()
     {
-      $session = $this->request->getSession();
-      $_SESSION = $session->read();
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
 
-      $id = $_SESSION['productdata'];
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
 
-      $product = $this->Products->get($id, [
-        'contain' => ['Customers']
-      ]);
-      $customers = $this->Products->Customers->find('list', ['limit' => 200]);
-      $this->set(compact('product', 'customers'));
-      $this->set('id', $id);
+        $session = $this->request->getSession();
+        $_SESSION = $session->read();
+  
+        $data = $_SESSION['editproductcheck'];
+  
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+        $data = $this->request->getData();
+      }
 
       $Factories = $this->Factories->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrFactories = array();
-      foreach ($Factories as $value) {
-        $arrFactories[] = array($value->id=>$value->name);
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+      $ProductName = $this->Products->find()
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
+
+      if(!isset($ProductName[0])){
+
+        return $this->redirect(['action' => 'editpreform',
+        's' => ['mess' => "自社工場：".$factory_name."、製品名：「".$data['name']."」の製品は存在しません。"]]);
+
       }
-      $this->set('arrFactories', $arrFactories);
+
+      $this->set('ProductName', $ProductName);
+
+      $factory_id = $data["factory_id"];
+      $this->set('factory_id', $factory_id);
+      $name = $data["name"];
+      $this->set('name', $name);
+      $tanni = $ProductName[0]["tanni"];
+      $this->set('tanni', $tanni);
+      
+      $Customers = $this->Customers->find()
+      ->where(['id' => $ProductName[0]['customer_id']])->toArray();
+      $customer_name = $Customers[0]["name"];
+      $this->set('customer_name', $customer_name);
+
     }
 
     public function editconfirm()
@@ -659,16 +698,49 @@ class ProductsController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $ProductName = $this->Products->find()
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['namemoto']])->toArray();
+      $this->set('ProductName', $ProductName);
 
-      $Customers = $this->Customers->find()
-      ->where(['id' => $data['customer_id']])->toArray();
-      $customer_name = $Customers[0]["name"];
-      $this->set('customer_name', $customer_name);
+      if(strpos($data["name"],';') !== false){
 
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
+        if(!isset($_SESSION)){
+          session_start();
+          header('Expires:-1');
+          header('Cache-Control:');
+          header('Pragma:');
+        }
+        
+        $_SESSION['editproductcheck'] = array();
+        $_SESSION['editproductcheck'] = ["factory_id" => $data['factory_id'], "name" => $data['namemoto']];
+  
+        return $this->redirect(['action' => 'editform',
+        's' => ['mess' => "品名に「;」（セミコロン）は使用できません。"]]);
+      }
+
+      $arrKoushinproduct = array();
+      $arrDeleteproduct = array();
+      for($i=0; $i<=$data["num"]; $i++){
+
+        if($data["delete".$i] < 1){//登録する場合
+
+          $arrKoushinproduct[] = ["product_code" => $data["product_code".$i], "length" => $data["length".$i]];
+
+            }else{
+
+              $arrDeleteproduct[] = ["product_code" => $data["product_code".$i], "length" => $data["length".$i]];
+
+            }
+
+          }
+          $this->set('arrKoushinproduct', $arrKoushinproduct);
+          $this->set('arrDeleteproduct', $arrDeleteproduct);
+    
     }
 
     public function editdo()
@@ -676,52 +748,85 @@ class ProductsController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
+      $data = $this->request->getData();
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $ProductName = $this->Products->find()
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['namemoto']])->toArray();
+      $this->set('ProductName', $ProductName);
+
       $session = $this->request->getSession();
       $datasession = $session->read();
-
-      $data = $this->request->getData();
-
-      $Customers = $this->Customers->find()
-      ->where(['id' => $data['customer_id']])->toArray();
-      $customer_name = $Customers[0]["name"];
-      $this->set('customer_name', $customer_name);
-
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
       $arrupdateproduct = array();
-      $arrupdateproduct = [
-        'factory_id' => $data["factory_id"],
-        'product_code' => $data["product_code"],
-        'customer_product_code' => $data["customer_product_code"],
-        'name' => $data["name"],
-        'customer_id' => $data["customer_id"],
-        'is_active' => 0,
-        'delete_flag' => 0,
-        'created_at' => date("Y-m-d H:i:s"),
-        'created_staff' => $staff_id
-      ];
-/*
-      echo "<pre>";
-      print_r($arrupdateproduct);
-      echo "</pre>";
-*/
-      $Products = $this->Products->patchEntity($this->Products->newEntity(), $arrupdateproduct);
+      if(isset($data["num"])){
+        for($i=0; $i<=$data["num"]; $i++){
+
+          $arrupdateproduct[] = [
+            'product_code' => $data["product_code".$i],
+            'length' => $data["length".$i],
+            'name' => $data["name"],
+            'tanni' => $data["tanni"],
+            'updated_at' => date("Y-m-d H:i:s"),
+            'updated_staff' => $staff_id
+          ];
+  
+          }
+  
+        }
+        $this->set('arrupdateproduct', $arrupdateproduct);
+
+        $arrdeleteproduct = array();
+        if(isset($data["delete_num"])){
+          for($i=0; $i<=$data["delete_num"]; $i++){
+    
+            $arrdeleteproduct[] = [
+              'product_code' => $data["delete_product_code".$i],
+              'length' => $data["delete_length".$i],
+              'delete_flag' => 1,
+              'updated_at' => date("Y-m-d H:i:s"),
+              'updated_staff' => $staff_id
+            ];
+    
+            }
+        }
+        $this->set('arrdeleteproduct', $arrdeleteproduct);
+
+      $Products = $this->Products->patchEntity($this->Products->newEntity(), $data);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
        $connection->begin();//トランザクション3
        try {//トランザクション4
-         if ($this->Products->save($Products)) {
 
-         $this->Products->updateAll(
-           [ 'delete_flag' => 1,
-             'updated_at' => date('Y-m-d H:i:s'),
-             'updated_staff' => $staff_id],
-           ['id'  => $data['id']]);
+          $count_update = 0;
+          for($i=0; $i<count($arrupdateproduct); $i++){
+            if ($this->Products->updateAll(
+              [ 'length' => $data["length".$i],
+                'name' => $data["name"],
+                'tanni' => $data["tanni"],
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_staff' => $staff_id],
+                ['product_code'  => $data["product_code".$i]])){
+                }
+                $count_update = $count_update + 1;
+            }
+  
+            for($i=0; $i<count($arrdeleteproduct); $i++){
+              if ($this->Products->updateAll(
+                [ 'delete_flag' => 1,
+                  'updated_at' => date('Y-m-d H:i:s'),
+                  'updated_staff' => $staff_id],
+                  ['product_code'  => $data["delete_product_code".$i]])){
+                  }
+                  $count_update = $count_update + 1;
+                }
+    
+         if ($count_update == count($arrupdateproduct) + count($arrdeleteproduct)) {//全部の登録ができた場合
 
          $mes = "※下記のように更新されました";
          $this->set('mes',$mes);

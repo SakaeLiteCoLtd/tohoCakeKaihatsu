@@ -57,7 +57,7 @@ echo $this->Html->css('kensahyou');
 <table>
   <tr class="parents">
   <td width="150">成形機</td>
-  <td width="490">メーカー：材料名：グレードNo.：色</td>
+  <td width="490">原料名</td>
   <td width="190">配合比</td>
   <td width="190">乾燥温度</td>
   <td width="190">乾燥時間</td>
@@ -76,7 +76,7 @@ echo $this->Html->css('kensahyou');
         }
 
         echo "<td>\n";
-        echo ${"material_hyouji".$j.$i};
+        echo ${"material_name".$j.$i};
         echo "</td>\n";
         echo "<td>\n";
         echo ${"mixing_ratio".$j.$i};
@@ -98,6 +98,7 @@ echo $this->Html->css('kensahyou');
 
       <?php for($i=1; $i<=${"tuikagenryou".$j}; $i++): ?>
         <?= $this->Form->control('material_id'.$j.$i, array('type'=>'hidden', 'value'=>${"material_id".$j.$i}, 'label'=>false)) ?>
+        <?= $this->Form->control('material_name'.$j.$i, array('type'=>'hidden', 'value'=>${"material_name".$j.$i}, 'label'=>false)) ?>
         <?= $this->Form->control('mixing_ratio'.$j.$i, array('type'=>'hidden', 'value'=>${"mixing_ratio".$j.$i}, 'label'=>false)) ?>
         <?= $this->Form->control('dry_temp'.$j.$i, array('type'=>'hidden', 'value'=>${"dry_temp".$j.$i}, 'label'=>false)) ?>
         <?= $this->Form->control('dry_hour'.$j.$i, array('type'=>'hidden', 'value'=>${"dry_hour".$j.$i}, 'label'=>false)) ?>

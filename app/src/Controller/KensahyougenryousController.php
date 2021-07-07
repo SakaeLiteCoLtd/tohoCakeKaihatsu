@@ -274,56 +274,22 @@ class KensahyougenryousController extends AppController
         $this->set('product_code', $product_code);
 
       }
-/*
-      $data = $this->request->getData();
 
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
 
-      $staff_id = $data["staff_id"];
-      $this->set('staff_id', $staff_id);
-      $staff_name = $data["staff_name"];
-      $this->set('staff_name', $staff_name);
-      $user_code = $data["user_code"];
-      $this->set('user_code', $user_code);
-
-      $product_code = $data["product_code"];
-      $this->set('product_code', $product_code);
-*/
-/*
-      $htmlproductcheck = new htmlproductcheck();//クラスを使用
-      $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
-
-      if($arrayproductdate[0] === "no_product"){
-
-        if(!isset($_SESSION)){
-          session_start();
-        }
-        $_SESSION['user_code'] = array();
-        $_SESSION['user_code'] = $user_code;
-
-        return $this->redirect(['action' => 'addformpre',
-        's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
-
-      }
-*/
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $this->set('user_code', $user_code);
 
-      $Materialmakers = $this->Materials->find()
-      ->where(['delete_flag' => 0])->order(["grade"=>"ASC"])->toArray();
-
-      $arrMaterialmakers = array();
-      foreach ($Materialmakers as $value) {
-        $array = array($value->maker => $value->maker);
-        $arrMaterialmakers = $arrMaterialmakers + $array;
+      $Material_name_list = $this->Materials->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrMaterial_name_list = array();
+      for($j=0; $j<count($Material_name_list); $j++){
+        array_push($arrMaterial_name_list,$Material_name_list[$j]["name"]);
       }
-      $arrMaterialmakers = array_unique($arrMaterialmakers);
-      $this->set('arrMaterialmakers', $arrMaterialmakers);
+      $this->set('arrMaterial_name_list', $arrMaterial_name_list);
+
 /*
       echo "<pre>";
       print_r($arrMaterialmakers);
@@ -346,14 +312,18 @@ class KensahyougenryousController extends AppController
         }
         $this->set('tuikaseikeiki', $tuikaseikeiki);
 
-        if(!isset($data["material_id".$tuikaseikeiki.$data["tuikagenryou".$tuikaseikeiki]])){//原料が選択されていない場合
+        $Materials = $this->Materials->find()
+        ->where(['name' => $data["material_name".$tuikaseikeiki.$data["tuikagenryou".$tuikaseikeiki]], 'delete_flag' => 0])->toArray();
+  
+        if(!isset($Materials[0])){//原料が存在しない場合
           ${"tuikagenryou".$tuikaseikeiki} = $data["tuikagenryou".$tuikaseikeiki];
 
-          $mess = "原料が選択されていません。";
+          $mess = "入力された原料名に誤りがあります。";
           $this->set('mess', $mess);
 
         }else{
           ${"tuikagenryou".$tuikaseikeiki} = $data["tuikagenryou".$tuikaseikeiki] + 1;
+
         }
 
         for($j=1; $j<=$tuikaseikeiki; $j++){
@@ -376,39 +346,34 @@ class KensahyougenryousController extends AppController
 
           for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
-            if(isset($data["makercheck".$j.$i])){
-              ${"makercheck".$j.$i} = $data["makercheck".$j.$i];
-              $this->set('makercheck'.$j.$i,${"makercheck".$j.$i});
+            if(isset($data["material_name".$j.$i])){
+
+              $Materials = $this->Materials->find()
+              ->where(['name' => $data["material_name".$j.$i], 'delete_flag' => 0])->toArray();
+      
+              if(isset($Materials[0])){//原料が存在する場合
+
+                ${"material_name".$j.$i} = $data["material_name".$j.$i];
+                $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+                ${"check_material_name".$j.$i} = 1;
+                $this->set('check_material_name'.$j.$i,${"check_material_name".$j.$i});
+
+                }else{
+
+                  ${"material_name".$j.$i} = "";
+                  $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+                  ${"check_material_name".$j.$i} = 0;
+                  $this->set('check_material_name'.$j.$i,${"check_material_name".$j.$i});
+                  
+                  }
+
             }else{
-              ${"makercheck".$j.$i} = 0;
-              $this->set('makercheck'.$j.$i,${"makercheck".$j.$i});
+              ${"material_name".$j.$i} = "";
+              $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+              ${"check_material_name".$j.$i} = 0;
+              $this->set('check_material_name'.$j.$i,${"check_material_name".$j.$i});
             }
-
-            if(isset($data["material_maker".$j.$i])){
-              ${"material_maker".$j.$i} = $data["material_maker".$j.$i];
-              $this->set('material_maker'.$j.$i,${"material_maker".$j.$i});
-            }else{
-              ${"material_maker".$j.$i} = "";
-              $this->set('material_maker'.$j.$i,${"material_maker".$j.$i});
-            }
-
-            if(isset($data["material_id".$j.$i])){
-              ${"material_id".$j.$i} = $data["material_id".$j.$i];
-              $this->set('material_id'.$j.$i,${"material_id".$j.$i});
-
-              $Materialhoujis = $this->Materials->find()
-              ->where(['id' => $data["material_id".$j.$i]])->toArray();
-              ${"material_houji".$j.$i} = $Materialhoujis[0]["name"]." : ".$Materialhoujis[0]["grade"]." : ".$Materialhoujis[0]["color"];
-              $this->set('material_houji'.$j.$i,${"material_houji".$j.$i});
-              ${"makercheck".$j.$i} = 2;
-              $this->set('makercheck'.$j.$i,${"makercheck".$j.$i});
-            }else{
-              ${"material_id".$j.$i} = "";
-              $this->set('material_id'.$j.$i,${"material_id".$j.$i});
-              ${"material_houji".$j.$i} = "";
-              $this->set('material_houji'.$j.$i,${"material_houji".$j.$i});
-            }
-
+      
             if(isset($data["mixing_ratio".$j.$i])){
               ${"mixing_ratio".$j.$i} = $data["mixing_ratio".$j.$i];
               $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
@@ -449,16 +414,18 @@ class KensahyougenryousController extends AppController
 
         $tuikaseikeiki = $data["tuikaseikeiki"];
 
-        if(!isset($data["material_id".$tuikaseikeiki.$data["tuikagenryou".$tuikaseikeiki]])){//原料が選択されていない場合
+        $Materials = $this->Materials->find()
+        ->where(['name' => $data["material_name".$tuikaseikeiki.$data["tuikagenryou".$tuikaseikeiki]], 'delete_flag' => 0])->toArray();
+  
+        if(!isset($Materials[0])){//原料が存在しない場合
           $tuikaseikeiki = $data["tuikaseikeiki"];
 
-          $mess = "原料が選択されていません。";
+          $mess = "入力された原料名に誤りがあります。";
           $this->set('mess', $mess);
 
         }else{
           $tuikaseikeiki = $data["tuikaseikeiki"] + 1;
         }
-
         $this->set('tuikaseikeiki', $tuikaseikeiki);
 
         for($j=1; $j<=$tuikaseikeiki; $j++){
@@ -481,37 +448,34 @@ class KensahyougenryousController extends AppController
 
           for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
-            if(isset($data["makercheck".$j.$i])){
-              ${"makercheck".$j.$i} = $data["makercheck".$j.$i];
-              $this->set('makercheck'.$j.$i,${"makercheck".$j.$i});
-            }else{
-              ${"makercheck".$j.$i} = 0;
-              $this->set('makercheck'.$j.$i,${"makercheck".$j.$i});
-            }
+            if(isset($data["material_name".$j.$i])){
 
-            if(isset($data["material_maker".$j.$i])){
-              ${"material_maker".$j.$i} = $data["material_maker".$j.$i];
-              $this->set('material_maker'.$j.$i,${"material_maker".$j.$i});
-            }else{
-              ${"material_maker".$j.$i} = "";
-              $this->set('material_maker'.$j.$i,${"material_maker".$j.$i});
-            }
+              $Materials = $this->Materials->find()
+              ->where(['name' => $data["material_name".$j.$i], 'delete_flag' => 0])->toArray();
+      
+              if(isset($Materials[0])){//原料が存在する場合
 
-            if(isset($data["material_id".$j.$i])){
-              ${"material_id".$j.$i} = $data["material_id".$j.$i];
-              $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+                ${"material_name".$j.$i} = $data["material_name".$j.$i];
+                $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+                ${"check_material_name".$j.$i} = 1;
+                $this->set('check_material_name'.$j.$i,${"check_material_name".$j.$i});
 
-              $Materialhoujis = $this->Materials->find()
-              ->where(['id' => $data["material_id".$j.$i]])->toArray();
-              ${"material_houji".$j.$i} = $Materialhoujis[0]["name"]." : ".$Materialhoujis[0]["grade"]." : ".$Materialhoujis[0]["color"];
-              $this->set('material_houji'.$j.$i,${"material_houji".$j.$i});
-              ${"makercheck".$j.$i} = 2;
-              $this->set('makercheck'.$j.$i,${"makercheck".$j.$i});
+                }else{
+
+                  ${"material_name".$j.$i} = "";
+                  $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+                  ${"check_material_name".$j.$i} = 0;
+                  $this->set('check_material_name'.$j.$i,${"check_material_name".$j.$i});
+                  
+                  }
+
             }else{
-              ${"material_id".$j.$i} = "";
-              $this->set('material_id'.$j.$i,${"material_id".$j.$i});
-              ${"material_houji".$j.$i} = "";
-              $this->set('material_houji'.$j.$i,${"material_houji".$j.$i});
+
+              ${"material_name".$j.$i} = "";
+              $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+              ${"check_material_name".$j.$i} = 0;
+              $this->set('check_material_name'.$j.$i,${"check_material_name".$j.$i});
+
             }
 
             if(isset($data["mixing_ratio".$j.$i])){
@@ -574,39 +538,37 @@ class KensahyougenryousController extends AppController
 
           for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
-            if(strlen($data["makercheck".$j.$i]) > 0){
-              ${"makercheck".$j.$i} = $data["makercheck".$j.$i];
-              $this->set('makercheck'.$j.$i,${"makercheck".$j.$i});
-            }else{
-              ${"makercheck".$j.$i} = 0;
-              $this->set('makercheck'.$j.$i,${"makercheck".$j.$i});
-            }
+            if(strlen($data["material_name".$j.$i]) > 0){
 
-            if(strlen($data["material_maker".$j.$i]) > 0){
-              ${"material_maker".$j.$i} = $data["material_maker".$j.$i];
-              $this->set('material_maker'.$j.$i,${"material_maker".$j.$i});
+              $Materials = $this->Materials->find()
+              ->where(['name' => $data["material_name".$j.$i], 'delete_flag' => 0])->toArray();
+
+              if(!isset($Materials[0])){//原料が存在しない場合
+                $tuikaseikeiki = $data["tuikaseikeiki"];
+      
+                $mess = "入力された原料名に誤りがあります。";
+                $this->set('mess', $mess);
+      
+                ${"material_name".$j.$i} = "";
+                $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+                ${"check_material_name".$j.$i} = 0;
+                $this->set('check_material_name'.$j.$i,${"check_material_name".$j.$i});
+    
+              }else{
+
+                ${"material_name".$j.$i} = $data["material_name".$j.$i];
+                $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+                ${"check_material_name".$j.$i} = 1;
+                $this->set('check_material_name'.$j.$i,${"check_material_name".$j.$i});
+  
+              }
+      
             }else{
-              ${"material_maker".$j.$i} = "";
-              $this->set('material_maker'.$j.$i,${"material_maker".$j.$i});
+              ${"material_name".$j.$i} = "";
+              $this->set('material_name'.$j.$i,${"material_name".$j.$i});
               $mess = "※入力漏れがあります。";
-            }
-
-            if(strlen($data["material_id".$j.$i]) > 0){
-              ${"material_id".$j.$i} = $data["material_id".$j.$i];
-              $this->set('material_id'.$j.$i,${"material_id".$j.$i});
-
-              $Materialhoujis = $this->Materials->find()
-              ->where(['id' => $data["material_id".$j.$i]])->toArray();
-              ${"material_houji".$j.$i} = $Materialhoujis[0]["name"]." : ".$Materialhoujis[0]["grade"]." : ".$Materialhoujis[0]["color"];
-              $this->set('material_houji'.$j.$i,${"material_houji".$j.$i});
-              ${"makercheck".$j.$i} = 2;
-              $this->set('makercheck'.$j.$i,${"makercheck".$j.$i});
-            }else{
-              ${"material_id".$j.$i} = "";
-              $this->set('material_id'.$j.$i,${"material_id".$j.$i});
-              ${"material_houji".$j.$i} = "";
-              $this->set('material_houji'.$j.$i,${"material_houji".$j.$i});
-              $mess = "※入力漏れがあります。";
+              ${"check_material_name".$j.$i} = 0;
+              $this->set('check_material_name'.$j.$i,${"check_material_name".$j.$i});
             }
 
             if(strlen($data["mixing_ratio".$j.$i]) > 0){
@@ -676,12 +638,10 @@ class KensahyougenryousController extends AppController
         $this->set('tuikaseikeiki', $tuikaseikeiki);
         ${"cylinder_name".$j} = "";
         $this->set('cylinder_name'.$j,${"cylinder_name".$j});
-        ${"material_id".$j.$i} = "";
-        $this->set('material_id'.$j.$i,${"material_id".$j.$i});
-        ${"material_maker".$j.$i} = "";
-        $this->set('material_maker'.$j.$i,${"material_maker".$j.$i});
-        ${"makercheck".$j.$i} = "";
-        $this->set('makercheck'.$j.$i,${"makercheck".$j.$i});
+        ${"material_name".$j.$i} = "";
+        $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+        ${"check_material_name".$j.$i} = 0;
+        $this->set('check_material_name'.$j.$i,${"check_material_name".$j.$i});
         ${"mixing_ratio".$j.$i} = "";
         $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
         ${"dry_temp".$j.$i} = "";
@@ -691,127 +651,6 @@ class KensahyougenryousController extends AppController
         ${"recycled_mixing_ratio".$j.$i} = "";
         $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
 
-      }
-
-      //原料の絞り込み
-      if(isset($data["siborikomi"])){
-
-        if(!isset($data["tuikaseikeiki"])){//成形機の追加前
-
-          $tuikaseikeiki = 1;
-
-        }else{//成形機の追加後
-
-          $tuikaseikeiki = $data["tuikaseikeiki"];
-
-        }
-        $this->set('tuikaseikeiki', $tuikaseikeiki);
-
-        ${"tuikagenryou".$tuikaseikeiki} = $data["tuikagenryou".$tuikaseikeiki];
-
-        for($j=1; $j<=$tuikaseikeiki; $j++){
-
-          if($j < $tuikaseikeiki){
-
-            ${"tuikagenryou".$j} = $data["tuikagenryou".$j];
-
-          }
-
-          $this->set('tuikagenryou'.$j, ${"tuikagenryou".$j});
-
-          if(isset($data['cylinder_name'.$j])){
-            ${"cylinder_name".$j} = $data['cylinder_name'.$j];
-            $this->set('cylinder_name'.$j,${"cylinder_name".$j});
-          }else{
-            ${"cylinder_name".$j} = "";
-            $this->set('cylinder_name'.$j,${"cylinder_name".$j});
-          }
-
-          for($i=1; $i<=${"tuikagenryou".$j}; $i++){
-
-            if(isset($data["makercheck".$j.$i])){
-              ${"makercheck".$j.$i} = $data["makercheck".$j.$i];
-              $this->set('makercheck'.$j.$i,${"makercheck".$j.$i});
-            }else{
-              ${"makercheck".$j.$i} = 0;
-              $this->set('makercheck'.$j.$i,${"makercheck".$j.$i});
-            }
-
-            if(isset($data["material_maker".$j.$i])){
-              ${"material_maker".$j.$i} = $data["material_maker".$j.$i];
-              $this->set('material_maker'.$j.$i,${"material_maker".$j.$i});
-            }else{
-              ${"material_maker".$j.$i} = "";
-              $this->set('material_maker'.$j.$i,${"material_maker".$j.$i});
-            }
-
-            if(isset($data["material_id".$j.$i])){
-              ${"material_id".$j.$i} = $data["material_id".$j.$i];
-              $this->set('material_id'.$j.$i,${"material_id".$j.$i});
-
-              $Materialhoujis = $this->Materials->find()
-              ->where(['id' => $data["material_id".$j.$i]])->toArray();
-              ${"material_houji".$j.$i} = $Materialhoujis[0]["name"]." : ".$Materialhoujis[0]["grade"]." : ".$Materialhoujis[0]["color"];
-              $this->set('material_houji'.$j.$i,${"material_houji".$j.$i});
-              ${"makercheck".$j.$i} = 2;
-              $this->set('makercheck'.$j.$i,${"makercheck".$j.$i});
-            }else{
-              ${"material_id".$j.$i} = "";
-              $this->set('material_id'.$j.$i,${"material_id".$j.$i});
-              ${"material_houji".$j.$i} = "";
-              $this->set('material_houji'.$j.$i,${"material_houji".$j.$i});
-            }
-
-            if(isset($data["mixing_ratio".$j.$i])){
-              ${"mixing_ratio".$j.$i} = $data["mixing_ratio".$j.$i];
-              $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
-            }else{
-              ${"mixing_ratio".$j.$i} = "";
-              $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
-            }
-
-            if(isset($data["dry_temp".$j.$i])){
-              ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
-              $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-            }else{
-              ${"dry_temp".$j.$i} = "";
-              $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-            }
-
-            if(isset($data["dry_hour".$j.$i])){
-              ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
-              $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
-            }else{
-              ${"dry_hour".$j.$i} = "";
-              $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
-            }
-
-            if(isset($data["recycled_mixing_ratio".$j.$i])){
-              ${"recycled_mixing_ratio".$j.$i} = $data["recycled_mixing_ratio".$j.$i];
-              $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
-            }else{
-              ${"recycled_mixing_ratio".$j.$i} = "";
-              $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
-            }
-
-          }
-
-        }
-
-        $j = $data["tuikaseikeiki"];
-        $i = $data["tuikagenryou".$data["tuikaseikeiki"]];
-        ${"makercheck".$j.$i} = 1;
-        $this->set('makercheck'.$j.$i,${"makercheck".$j.$i});
-
-        $Materials = $this->Materials->find()
-        ->where(['maker' => $data["material_maker".$j.$i], 'delete_flag' => 0])->order(["grade"=>"ASC"])->toArray();
-
-        $arrMaterials = array();
-        foreach ($Materials as $value) {
-          $array = array($value->id => $value->name." : ".$value->grade." : ".$value->color);
-          $arrMaterials = $arrMaterials + $array;//array_mergeだとキーが0,1,2,…とふりなおされてしまう
-        }
-        $this->set('arrMaterials', $arrMaterials);
       }
 
     }
@@ -863,21 +702,21 @@ class KensahyougenryousController extends AppController
 
         for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
-          if(isset($data["material_id".$j.$i])){
-            $Materials = $this->Materials->find()
-            ->where(['id' => $data["material_id".$j.$i]])->toArray();
+          if(isset($data["material_name".$j.$i])){
+            ${"material_name".$j.$i} = $data["material_name".$j.$i];
+            $this->set('material_name'.$j.$i,${"material_name".$j.$i});
 
-            ${"material_hyouji".$j.$i} = $Materials[0]["maker"]." : ".$Materials[0]["name"]." : "
-            .$Materials[0]["grade"]." : ".$Materials[0]["color"];
-            $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
-            ${"material_id".$j.$i} = $data["material_id".$j.$i];
+            $Materials = $this->Materials->find()
+            ->where(['name' => $data["material_name".$j.$i]])->toArray();
+
+            ${"material_id".$j.$i} = $Materials[0]["id"];
             $this->set('material_id'.$j.$i,${"material_id".$j.$i});
 
           }else{
-            ${"material_hyouji".$j.$i} = "";
-            $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
             ${"material_id".$j.$i} = "";
             $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+            ${"material_name".$j.$i} = "";
+            $this->set('material_name'.$j.$i,${"material_name".$j.$i});
           }
 
           if(isset($data["mixing_ratio".$j.$i])){
@@ -960,19 +799,20 @@ class KensahyougenryousController extends AppController
         for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
           if(isset($data["material_id".$j.$i])){
-            $Materials = $this->Materials->find()
-            ->where(['id' => $data["material_id".$j.$i]])->toArray();
-
-            ${"material_hyouji".$j.$i} = $Materials[0]["grade"].":".$Materials[0]["maker"].":".$Materials[0]["material_code"];
-            $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
             ${"material_id".$j.$i} = $data["material_id".$j.$i];
             $this->set('material_id'.$j.$i,${"material_id".$j.$i});
 
           }else{
-            ${"material_hyouji".$j.$i} = "";
-            $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
             ${"material_id".$j.$i} = "";
             $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+          }
+
+          if(isset($data["material_name".$j.$i])){
+            ${"material_name".$j.$i} = $data["material_name".$j.$i];
+            $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+          }else{
+            ${"material_name".$j.$i} = "";
+            $this->set('material_name'.$j.$i,${"material_name".$j.$i});
           }
 
           if(isset($data["mixing_ratio".$j.$i])){
@@ -1297,14 +1137,14 @@ class KensahyougenryousController extends AppController
       $ProductMachineMaterials = $this->ProductMachineMaterials->find()
       ->contain(['ProductMaterialMachines' => ['ProductConditionParents' => ["Products"]]])
       ->where(['version' => $version, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
-      ->toArray();
+      ->order(["ProductMaterialMachines.id"=>"ASC"])->toArray();
 
       if($ProductMachineMaterials[0]){
 
         $ProductMaterialMachines = $this->ProductMaterialMachines->find()
         ->contain(['ProductConditionParents' => ["Products"]])
         ->where(['version' => $version, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0, 'ProductMaterialMachines.delete_flag' => 0])
-        ->order(["cylinder_number"=>"DESC"])->toArray();
+        ->order(["cylinder_number"=>"ASC"])->toArray();
 
         $tuikaseikeiki = count($ProductMaterialMachines);
         $this->set('tuikaseikeiki', $tuikaseikeiki);
@@ -1326,7 +1166,7 @@ class KensahyougenryousController extends AppController
             $Materials = $this->Materials->find()
             ->where(['id' => $ProductMachineMaterials[$i - 1]["material_id"]])->toArray();
 
-            ${"material_hyouji".$j.$i} = $Materials[0]["grade"].":".$Materials[0]["maker"].":".$Materials[0]["material_code"];
+            ${"material_hyouji".$j.$i} = $Materials[0]["name"];
             $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
 
             ${"mixing_ratio".$j.$i} = $ProductMachineMaterials[$i - 1]["mixing_ratio"];
@@ -1388,25 +1228,13 @@ class KensahyougenryousController extends AppController
       $this->set('mes', $mes);
 
       $data = $this->request->getData();
-      $user_code = $data["user_code"];
-/*//210608更新
-      $htmlinputstaff = new htmlLogin();//クラスを使用
-      $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
-
-      if($arraylogindate[0] === "no_staff"){
-
-        return $this->redirect(['action' => 'addlogin',
-        's' => ['mess' => "社員コードかパスワードに誤りがあります。もう一度やり直してください。"]]);
-
-      }else{
-
-        $staff_id = $arraylogindate[0];
-        $staff_name = $arraylogindate[1];
-        $this->set('staff_id', $staff_id);
-        $this->set('staff_name', $staff_name);
-
-      }
+      /*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
 */
+      $user_code = $data["user_code"];
+
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
@@ -1432,15 +1260,16 @@ class KensahyougenryousController extends AppController
 
       $this->set('user_code', $user_code);
 
-      $Materials = $this->Materials->find()
-      ->where(['delete_flag' => 0])->order(["maker"=>"ASC"])->toArray();
-
-      $arrMaterials = array();
-      foreach ($Materials as $value) {
-        $array = array($value->id => $value->maker." : ".$value->name." : ".$value->grade." : ".$value->color);
-        $arrMaterials = $arrMaterials + $array;//array_mergeだとキーが0,1,2,…とふりなおされてしまう
+      $Material_name_list = $this->Materials->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrMaterial_name_list = array();
+      for($j=0; $j<count($Material_name_list); $j++){
+        array_push($arrMaterial_name_list,$Material_name_list[$j]["name"]);
       }
-      $this->set('arrMaterials', $arrMaterials);
+      $this->set('arrMaterial_name_list', $arrMaterial_name_list);
+
+      $Materials = $this->Materials->find()
+      ->where(['delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
 
       if(isset($data["genryoutuika"])){//原料追加ボタン
 
@@ -1482,12 +1311,37 @@ class KensahyougenryousController extends AppController
 
           for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
-            if(isset($data["material_id".$j.$i])){
-              ${"material_id".$j.$i} = $data["material_id".$j.$i];
-              $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+            if(isset($data["material_name".$j.$i])){
+
+              $Materials = $this->Materials->find()
+              ->where(['name' => $data["material_name".$j.$i]])->toArray();
+              if(isset($Materials[0])){
+                ${"check_material".$j.$i} = 1;
+                $this->set('check_material'.$j.$i,${"check_material".$j.$i});
+    
+                ${"material_name".$j.$i} = $data["material_name".$j.$i];
+                $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+                }else{
+                  ${"check_material".$j.$i} = 0;
+                  $this->set('check_material'.$j.$i,${"check_material".$j.$i});
+      
+                  ${"material_name".$j.$i} = "データなし";
+                  $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+
+                  $mes = "入力された原料名は存在しません。";
+                  $this->set('mes', $mes);
+        
+                  ${"tuikagenryou".$j} = ${"tuikagenryou".$j} - 1;
+                  $this->set('tuikagenryou'.$j, ${"tuikagenryou".$j});
+          
+                  }
             }else{
-              ${"material_id".$j.$i} = "";
-              $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+
+              ${"check_material".$j.$i} = 0;
+              $this->set('check_material'.$j.$i,${"check_material".$j.$i});
+  
+              ${"material_name".$j.$i} = "データなし";
+              $this->set('material_name'.$j.$i,${"material_name".$j.$i});
             }
 
             if(isset($data["mixing_ratio".$j.$i])){
@@ -1556,12 +1410,37 @@ class KensahyougenryousController extends AppController
 
           for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
-            if(isset($data["material_id".$j.$i])){
-              ${"material_id".$j.$i} = $data["material_id".$j.$i];
-              $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+            if(isset($data["material_name".$j.$i])){
+
+              $Materials = $this->Materials->find()
+              ->where(['name' => $data["material_name".$j.$i]])->toArray();
+              if(isset($Materials[0])){
+                ${"check_material".$j.$i} = 1;
+                $this->set('check_material'.$j.$i,${"check_material".$j.$i});
+    
+                ${"material_name".$j.$i} = $data["material_name".$j.$i];
+                $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+                }else{
+                  ${"check_material".$j.$i} = 0;
+                  $this->set('check_material'.$j.$i,${"check_material".$j.$i});
+      
+                  ${"material_name".$j.$i} = "データなし";
+                  $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+
+                  $mes = "入力された原料名は存在しません。";
+                  $this->set('mes', $mes);
+        
+                  $tuikaseikeiki = $tuikaseikeiki - 1;
+                  $this->set('tuikaseikeiki', $tuikaseikeiki);
+          
+                  }
             }else{
-              ${"material_id".$j.$i} = "";
-              $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+
+              ${"check_material".$j.$i} = 0;
+              $this->set('check_material'.$j.$i,${"check_material".$j.$i});
+  
+              ${"material_name".$j.$i} = "データなし";
+              $this->set('material_name'.$j.$i,${"material_name".$j.$i});
             }
 
             if(isset($data["mixing_ratio".$j.$i])){
@@ -1607,6 +1486,26 @@ class KensahyougenryousController extends AppController
         $this->set('staff_id', $staff_id);
         $this->set('staff_name', $staff_name);
 
+        $materila_flag = 0;
+        for($j=1; $j<=$data["tuikaseikeiki"]; $j++){//原料名にミスがないかチェック
+
+          if(isset($data['tuikagenryou'.$j])){
+            ${"tuikagenryou".$j} = $data['tuikagenryou'.$j];
+          }else{
+            ${"tuikagenryou".$j} = 1;
+          }
+
+          for($i=1; $i<=${"tuikagenryou".$j}; $i++){
+
+            $Materials = $this->Materials->find()
+            ->where(['name' => $data["material_name".$j.$i]])->toArray();
+            if(!isset($Materials[0])){
+              $materila_flag = 1;
+            }
+
+          }
+        }
+
         //成形機削除と原料削除が同時に押されていたらアラート
         $double_delete_check = 0;
 
@@ -1628,7 +1527,7 @@ class KensahyougenryousController extends AppController
 
         }
 
-        if($double_delete_check == 0){
+        if($double_delete_check == 0 && $materila_flag == 0){
 
           if(!isset($_SESSION)){
             session_start();
@@ -1641,7 +1540,11 @@ class KensahyougenryousController extends AppController
 
         }else{
 
-          $mes = "同じ成形機内で「成形機削除」と「原料削除」が選択されました。もう一度やり直してください。";
+          if($double_delete_check == 0){
+            $mes = "同じ成形機内で「成形機削除」と「原料削除」が選択されました。もう一度やり直してください。";
+          }else{
+            $mes = "入力された原料名は存在しません。";
+          }
           $this->set('mes', $mes);
 
           $tuikaseikeiki = $data["tuikaseikeiki"];
@@ -1667,14 +1570,36 @@ class KensahyougenryousController extends AppController
 
             for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
-              if(isset($data["material_id".$j.$i])){
-                ${"material_id".$j.$i} = $data["material_id".$j.$i];
-                $this->set('material_id'.$j.$i,${"material_id".$j.$i});
-              }else{
-                ${"material_id".$j.$i} = "";
-                $this->set('material_id'.$j.$i,${"material_id".$j.$i});
-              }
+              if(isset($data["material_name".$j.$i])){
 
+                $Materials = $this->Materials->find()
+                ->where(['name' => $data["material_name".$j.$i]])->toArray();
+                if(isset($Materials[0])){
+                  ${"check_material".$j.$i} = 1;
+                  $this->set('check_material'.$j.$i,${"check_material".$j.$i});
+      
+                  ${"material_name".$j.$i} = $data["material_name".$j.$i];
+                  $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+                  }else{
+                    ${"check_material".$j.$i} = 0;
+                    $this->set('check_material'.$j.$i,${"check_material".$j.$i});
+        
+                    ${"material_name".$j.$i} = "データなし";
+                    $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+  
+                    $mes = "入力された原料名は存在しません。";
+                    $this->set('mes', $mes);
+            
+                    }
+              }else{
+  
+                ${"check_material".$j.$i} = 0;
+                $this->set('check_material'.$j.$i,${"check_material".$j.$i});
+    
+                ${"material_name".$j.$i} = "データなし";
+                $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+              }
+  
               if(isset($data["mixing_ratio".$j.$i])){
                 ${"mixing_ratio".$j.$i} = $data["mixing_ratio".$j.$i];
                 $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
@@ -1729,7 +1654,7 @@ class KensahyougenryousController extends AppController
 
         return $this->redirect(['action' => 'editcomfirm']);
 
-      }else{//最初にこの画面に来た時
+      }elseif(isset($data["password"])){//最初にこの画面に来た時
 
         $userlogincheck = $user_code."_".$data["password"];
 
@@ -1765,7 +1690,7 @@ class KensahyougenryousController extends AppController
         $ProductMaterialMachines = $this->ProductMaterialMachines->find()
         ->contain(['ProductConditionParents' => ["Products"]])
         ->where(['version' => $version, 'product_code' => $product_code, 'ProductMaterialMachines.delete_flag' => 0, 'ProductConditionParents.delete_flag' => 0])
-        ->order(["cylinder_number"=>"DESC"])->toArray();
+        ->order(["cylinder_number"=>"ASC"])->toArray();
 
         $tuikaseikeiki = count($ProductMaterialMachines);
         $this->set('tuikaseikeiki', $tuikaseikeiki);
@@ -1786,9 +1711,14 @@ class KensahyougenryousController extends AppController
 
             $Materials = $this->Materials->find()
             ->where(['id' => $ProductMachineMaterials[$i - 1]["material_id"]])->toArray();
-
-            ${"material_hyouji".$j.$i} = $Materials[0]["grade"].":".$Materials[0]["maker"].":".$Materials[0]["material_code"];
+/*
+            ${"material_hyouji".$j.$i} = $Materials[0]["material_code"].":".$Materials[0]["maker"].":".$Materials[0]["material_code"];
             $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
+*/
+            ${"check_material".$j.$i} = 1;
+            $this->set('check_material'.$j.$i,${"check_material".$j.$i});
+            ${"material_name".$j.$i} = $Materials[0]["name"];
+            $this->set('material_name'.$j.$i,${"material_name".$j.$i});
             ${"material_id".$j.$i} = $ProductMachineMaterials[$i - 1]["material_id"];
             $this->set('material_id'.$j.$i,${"material_id".$j.$i});
 
@@ -1800,6 +1730,125 @@ class KensahyougenryousController extends AppController
             $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
             ${"recycled_mixing_ratio".$j.$i} = $ProductMachineMaterials[$i - 1]["recycled_mixing_ratio"];
             $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
+
+          }
+
+        }
+
+      }else{//原料の変更をするとき
+
+        $staff_id = $data["staff_id"];
+        $staff_name = $data["staff_name"];
+        $this->set('staff_id', $staff_id);
+        $this->set('staff_name', $staff_name);
+  
+        $tuikaseikeiki = $data["tuikaseikeiki"];
+        $this->set('tuikaseikeiki', $tuikaseikeiki);
+
+        $materila_flag = 0;
+        for($j=1; $j<=$tuikaseikeiki; $j++){//原料名にミスがないかチェック
+
+          if(isset($data['tuikagenryou'.$j])){
+            ${"tuikagenryou".$j} = $data['tuikagenryou'.$j];
+          }else{
+            ${"tuikagenryou".$j} = 1;
+          }
+
+          for($i=1; $i<=${"tuikagenryou".$j}; $i++){
+
+            $Materials = $this->Materials->find()
+            ->where(['name' => $data["material_name".$j.$i]])->toArray();
+            if(!isset($Materials[0])){
+              $materila_flag = 1;
+            }
+
+          }
+        }
+
+        for($j=1; $j<=$tuikaseikeiki; $j++){
+
+          if(isset($data['tuikagenryou'.$j])){
+            ${"tuikagenryou".$j} = $data['tuikagenryou'.$j];
+          }else{
+            ${"tuikagenryou".$j} = 1;
+          }
+
+          $this->set('tuikagenryou'.$j, ${"tuikagenryou".$j});
+
+          if(isset($data['cylinder_name'.$j])){
+            ${"cylinder_name".$j} = $data['cylinder_name'.$j];
+            $this->set('cylinder_name'.$j,${"cylinder_name".$j});
+          }else{
+            ${"cylinder_name".$j} = "";
+            $this->set('cylinder_name'.$j,${"cylinder_name".$j});
+          }
+    
+          for($i=1; $i<=${"tuikagenryou".$j}; $i++){
+
+            $Materials = $this->Materials->find()
+            ->where(['name' => $data["material_name".$j.$i]])->toArray();
+            if(isset($Materials[0])){
+              ${"check_material".$j.$i} = 1;
+              $this->set('check_material'.$j.$i,${"check_material".$j.$i});
+  
+              ${"material_name".$j.$i} = $data["material_name".$j.$i];
+              $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+
+              if(isset($data['henkou'.$j.$i]) && $materila_flag == 0){//変更かつほかの入力された原料名にミスがない場合
+                ${"check_material".$j.$i} = 0;
+                $this->set('check_material'.$j.$i,${"check_material".$j.$i});
+                ${"material_name".$j.$i} = $Materials[0]["name"];
+                $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+                }else{
+                  ${"check_material".$j.$i} = 1;
+                  $this->set('check_material'.$j.$i,${"check_material".$j.$i});
+                  ${"material_name".$j.$i} = $Materials[0]["name"];
+                  $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+                  }
+  
+              }else{
+                ${"check_material".$j.$i} = 0;
+                $this->set('check_material'.$j.$i,${"check_material".$j.$i});
+    
+                ${"material_name".$j.$i} = "データなし";
+                $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+
+                $mes = "入力された原料名は存在しません。";
+                $this->set('mes', $mes);
+        
+                }
+
+                if(isset($data["mixing_ratio".$j.$i])){
+              ${"mixing_ratio".$j.$i} = $data["mixing_ratio".$j.$i];
+              $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
+            }else{
+              ${"mixing_ratio".$j.$i} = "";
+              $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
+            }
+
+            if(isset($data["dry_temp".$j.$i])){
+              ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
+              $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+            }else{
+              ${"dry_temp".$j.$i} = "";
+              $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+            }
+
+            if(isset($data["dry_hour".$j.$i])){
+              ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
+              $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
+            }else{
+              ${"dry_hour".$j.$i} = "";
+              $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
+            }
+
+            if(isset($data["recycled_mixing_ratio".$j.$i])){
+              ${"recycled_mixing_ratio".$j.$i} = $data["recycled_mixing_ratio".$j.$i];
+              $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
+            }else{
+              ${"recycled_mixing_ratio".$j.$i} = "";
+              $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
+            }
 
           }
 
@@ -1876,23 +1925,20 @@ class KensahyougenryousController extends AppController
               $m = $m + 1;
 
               $this->set('tuikagenryou'.$n, $m);//原料の数をセット
-/*
-              echo "<pre>";
-              print_r("genryou".$j.$i);
-              echo "</pre>";
-*/
-              if(isset($data["material_id".$j.$i])){
-                $Materials = $this->Materials->find()
-                ->where(['id' => $data["material_id".$j.$i]])->toArray();
 
-                ${"material_hyouji".$j.$i} = $Materials[0]["maker"].":".$Materials[0]["name"].":".$Materials[0]["grade"].":".$Materials[0]["color"];
-                $this->set('material_hyouji'.$n.$m,${"material_hyouji".$j.$i});
-                ${"material_id".$j.$i} = $data["material_id".$j.$i];
-                $this->set('material_id'.$n.$m,${"material_id".$j.$i});
+                if(isset($data["material_name".$j.$i])){
 
+                  $Materials = $this->Materials->find()
+                  ->where(['name' => $data["material_name".$j.$i]])->toArray();
+    
+                  ${"material_name".$j.$i} = $Materials[0]["name"];
+                  $this->set('material_name'.$n.$m,${"material_name".$j.$i});
+                  ${"material_id".$j.$i} = $Materials[0]["id"];
+                  $this->set('material_id'.$n.$m,${"material_id".$j.$i});
+  
               }else{
-                ${"material_hyouji".$j.$i} = "";
-                $this->set('material_hyouji'.$n.$i,${"material_hyouji".$j.$i});
+                ${"material_name".$j.$i} = "";
+                $this->set('material_name'.$n.$i,${"material_name".$j.$i});
                 ${"material_id".$j.$i} = "";
                 $this->set('material_id'.$n.$m,${"material_id".$j.$i});
               }
@@ -1998,14 +2044,14 @@ class KensahyougenryousController extends AppController
             $Materials = $this->Materials->find()
             ->where(['id' => $data["material_id".$j.$i]])->toArray();
 
-            ${"material_hyouji".$j.$i} = $Materials[0]["maker"].":".$Materials[0]["name"].":".$Materials[0]["grade"].":".$Materials[0]["color"];
-            $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
+            ${"material_name".$j.$i} = $Materials[0]["name"];
+            $this->set('material_name'.$j.$i,${"material_name".$j.$i});
             ${"material_id".$j.$i} = $data["material_id".$j.$i];
             $this->set('material_id'.$j.$i,${"material_id".$j.$i});
 
           }else{
-            ${"material_hyouji".$j.$i} = "";
-            $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
+            ${"material_name".$j.$i} = "";
+            $this->set('material_name'.$j.$i,${"material_name".$j.$i});
             ${"material_id".$j.$i} = "";
             $this->set('material_id'.$j.$i,${"material_id".$j.$i});
           }
@@ -2062,7 +2108,7 @@ class KensahyougenryousController extends AppController
       ->contain(['ProductConditionParents' => ["Products"]])
       ->where(['product_condition_parent_id' => $product_condition_parent_id, 'product_code' => $product_code,
        'ProductMaterialMachines.delete_flag' => 0, 'ProductConditionParents.delete_flag' => 0])
-      ->order(["cylinder_number"=>"DESC"])->toArray();
+      ->order(["cylinder_number"=>"ASC"])->toArray();
 
       if($data["delete_flag"] < 1){//削除ではない場合
 

@@ -47,7 +47,7 @@ echo $this->Html->css('kensahyou');
 <table>
   <tr class="parents">
     <td width="150">成形機</td>
-    <td width="490">メーカー：材料名：グレードNo.：色</td>
+    <td width="490">原料名</td>
     <td width="190">配合比</td>
     <td width="190">乾燥温度</td>
     <td width="190">乾燥時間</td>
@@ -66,7 +66,7 @@ echo $this->Html->css('kensahyou');
         }
 
         echo "<td>\n";
-        echo ${"material_hyouji".$j.$i};
+        echo ${"material_name".$j.$i};
         echo "</td>\n";
         echo "<td>\n";
         echo ${"mixing_ratio".$j.$i};

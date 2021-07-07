@@ -340,7 +340,7 @@ class KensahyousokuteidatasController extends AppController
         $ProductMaterialMachines = $this->ProductMaterialMachines->find()
         ->contain(['ProductConditionParents' => ["Products"]])
         ->where(['version' => $version, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0, 'ProductMaterialMachines.delete_flag' => 0])
-        ->order(["cylinder_number"=>"DESC"])->toArray();
+        ->order(["cylinder_number"=>"ASC"])->toArray();
 
         $tuikaseikeiki = count($ProductMaterialMachines);
         $this->set('tuikaseikeiki', $tuikaseikeiki);
@@ -362,7 +362,7 @@ class KensahyousokuteidatasController extends AppController
             $Materials = $this->Materials->find()
             ->where(['id' => $ProductMachineMaterials[$i - 1]["material_id"]])->toArray();
 
-            ${"material_hyouji".$j.$i} = $Materials[0]["grade"].":".$Materials[0]["maker"].":".$Materials[0]["material_code"];
+            ${"material_hyouji".$j.$i} = $Materials[0]["name"];
             $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
 
             ${"mixing_ratio".$j.$i} = $ProductMachineMaterials[$i - 1]["mixing_ratio"];
@@ -1189,7 +1189,9 @@ class KensahyousokuteidatasController extends AppController
           }
           $this->set('lot_number'.$j,${"lot_number".$j});
 
-          if(isset($data['datetime'.$j])){
+          if(isset($data['datetime'.$j]["hour"])){
+            ${"datetime".$j} = $data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"];
+          }elseif(isset($data['datetime'.$j])){
             ${"datetime".$j} = $data['datetime'.$j];
           }else{
             ${"datetime".$j} = date('H:i');
@@ -1236,16 +1238,41 @@ class KensahyousokuteidatasController extends AppController
           }
           $this->set('gouhi'.$j,${"gouhi".$j});
 
+          $gouhi_check = 0;
+
           for($i=1; $i<=10; $i++){
 
-            if(isset($data['result_size'.$j.$i])){
+            if(isset($data['result_size'.$j.$i]) && ${"size".$i} > 0){
               ${"result_size".$j.$i} = $data['result_size'.$j.$i];
+  
+              $dotini = substr(${"result_size".$j.$i}, 0, 1);
+              $dotend = substr(${"result_size".$j.$i}, -1, 1);
+  
+              if($dotini == "."){
+                ${"result_size".$j.$i} = "0".${"result_size".$j.$i};
+              }elseif($dotend == "."){
+                ${"result_size".$j.$i} = ${"result_size".$j.$i}."0";
+              }
+  
             }else{
               ${"result_size".$j.$i} = "";
             }
             $this->set('result_size'.$j.$i,${"result_size".$j.$i});
+            
+            if(${"result_size".$j.$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
+            && ${"result_size".$j.$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
+              $gouhi_check = $gouhi_check;
+            } else {
+              $gouhi_check = $gouhi_check + 1;
+            }
 
           }
+          if($gouhi_check > 0){
+            ${"gouhi".$j} = 1;
+          } else {
+            ${"gouhi".$j} = 0;
+          }
+        $this->set('gouhi'.$j,${"gouhi".$j});
 
         }
 /*
@@ -1260,7 +1287,7 @@ class KensahyousokuteidatasController extends AppController
         $InspectionDataResultParents = $this->InspectionDataResultParents->find()
         ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'],
          'product_conditon_parent_id' => $data['product_conditon_parent_id'],
-         'datetime' => date("Y-m-d ").$data['datetime'.$j].":00"])
+         'datetime' => date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00"])
         ->order(["id"=>"DESC"])->toArray();
 
         if(!isset($InspectionDataResultParents[0])){//再読み込みで同じデータが登録されないようにチェック
@@ -1272,11 +1299,11 @@ class KensahyousokuteidatasController extends AppController
             "product_conditon_parent_id" => $data['product_conditon_parent_id'],
             'product_id' => $data['product_id'.$j],
             'lot_number' => $data['lot_number'.$j],
-            'datetime' => date("Y-m-d ").$data['datetime'.$j].":00",
+            'datetime' => date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00",
             'staff_id' => $Users[0]["staff_id"],
             'appearance' => $data['gaikan'.$j],
             'result_weight' => $data['weight'.$j],
-            'judge' => $data['gouhi'.$j],
+            'judge' => ${"gouhi".$j},
             "delete_flag" => 0,
             'created_at' => date("Y-m-d H:i:s"),
             "created_staff" => $Users[0]["staff_id"]//ログインは不要
@@ -1296,7 +1323,8 @@ class KensahyousokuteidatasController extends AppController
             if($this->InspectionDataResultParents->save($InspectionDataResultParents)){
 
               $InspectionDataResultParentsId = $this->InspectionDataResultParents->find()
-              ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'], 'datetime' => date("Y-m-d ").$data['datetime'.$j].":00"])
+              ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'],
+               'datetime' => date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00"])
               ->order(["id"=>"DESC"])->toArray();
 
               $tourokuInspectionDataResultChildren = array();
@@ -1354,6 +1382,14 @@ class KensahyousokuteidatasController extends AppController
             $connection->rollback();//トランザクション9
           }//トランザクション10
 
+        }else{
+
+          $mes = "※検査時間が同じデータは登録できません。";
+          $this->set('mes',$mes);
+
+          $gyou = $data["gyou"];
+          $this->set('gyou', $gyou);
+  
         }
 
       }elseif(isset($data["kakuninn"])){

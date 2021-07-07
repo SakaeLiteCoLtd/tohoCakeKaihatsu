@@ -13,6 +13,27 @@ $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
 
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<?php
+$arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受け渡すために変換
+?>
+
+<script>
+
+  $(function() {
+      // 入力補完候補の単語リスト
+      let wordlist = <?php echo $arrMaterial_name_list; ?>
+      // 入力補完を実施する要素に単語リストを設定
+      $("#material_name_list").autocomplete({
+        source: wordlist
+      });
+  });
+
+</script>
+
 <table class='sample hesdermenu'>
   <tbody>
     <td style='border: none;align: left'>
@@ -75,8 +96,7 @@ echo $this->Html->css('kensahyou');
 <table>
 <tr class="parents">
   <td width="150">成形機</td>
-  <td width="190">メーカー</td>
-  <td width="300">材料名：グレードNo.：色</td>
+  <td width="490">原料名</td>
   <td width="190">配合比</td>
   <td width="190">乾燥温度</td>
   <td width="190">乾燥時間</td>
@@ -90,85 +110,44 @@ echo $this->Html->css('kensahyou');
 
         if($i==1){
           echo "<td rowspan=${"tuikagenryou".$j}>\n";
-          echo "<input type='text' name=cylinder_name".$j." value=${"cylinder_name".$j}>\n";
+          echo "<input type='text' name=cylinder_name".$j." required value=${"cylinder_name".$j}>\n";
           echo "</td>\n";
         }
 
-        if(${"makercheck".$j.$i}==0){
-
-          echo "<td><div align='center'><select name=material_maker".$j.$i." value=${"material_maker".$j.$i}>\n";
-          foreach ($arrMaterialmakers as $key => $value){
-            if($key == ${"material_maker".$j.$i}){
-              echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
-            }else{
-              echo "<option value=$key>$value</option>";
-            }
-          }
-          echo "</select></div></td>\n";
-
-        }else{
 
           echo "<td>\n";
-          echo "${"material_maker".$j.$i}\n";
-          echo "</td>\n";
-?>
+          if(${"check_material_name".$j.$i} == 1){
+            echo "${"material_name".$j.$i}\n";
 
-<?= $this->Form->control('material_maker'.$j.$i, array('type'=>'hidden', 'value'=>${"material_maker".$j.$i}, 'label'=>false)) ?>
-<?= $this->Form->control('makercheck'.$j.$i, array('type'=>'hidden', 'value'=>${"makercheck".$j.$i}, 'label'=>false)) ?>
+            ?>
 
-<?php
-        }
-
-        if(${"makercheck".$j.$i}==1){
-
-          echo "<td><div align='center'><select name=material_id".$j.$i." value=${"material_id".$j.$i}>\n";
-          foreach ($arrMaterials as $key => $value){
-            if($key == ${"material_id".$j.$i}){
-              echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
-            }else{
-              echo "<option value=$key>$value</option>";
-            }
+            <?= $this->Form->control('check_material_name'.$j.$i, array('type'=>'hidden', 'value'=>${"check_material_name".$j.$i}, 'label'=>false)) ?>
+            <?= $this->Form->control('material_name'.$j.$i, array('type'=>'hidden', 'value'=>${"material_name".$j.$i}, 'label'=>false)) ?>
+    
+            <?php
+    
+          }else{
+            echo "<input type='text' name=material_name".$j.$i." id='material_name_list' required value=${"material_name".$j.$i}>\n";
           }
-          echo "</select></div></td>\n";
-
-        }elseif(${"makercheck".$j.$i}==2){
+          echo "</td>\n";
 
           echo "<td>\n";
-          echo "${"material_houji".$j.$i}\n";
+          echo "<input type='text' name=mixing_ratio".$j.$i." required value=${"mixing_ratio".$j.$i}>\n";
           echo "</td>\n";
-
-?>
-
-<?= $this->Form->control('material_id'.$j.$i, array('type'=>'hidden', 'value'=>${"material_id".$j.$i}, 'label'=>false)) ?>
-
-<?php
-
-        }else{
-
-?>
-
-          <td><?= $this->Form->submit(('メーカー絞り込み'), array('name' => 'siborikomi')) ?></td>
-
-<?php
-
+          echo "<td>\n";
+          echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' name=dry_temp".$j.$i." required value=${"dry_temp".$j.$i}> ℃ \n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' name=dry_hour".$j.$i." required value=${"dry_hour".$j.$i}> h以上\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "<input type='text' name=recycled_mixing_ratio".$j.$i." required value=${"recycled_mixing_ratio".$j.$i}>\n";
+          echo "</td>\n";
+          echo "</tr>\n";
+  
         }
-
-        echo "<td>\n";
-        echo "<input type='text' name=mixing_ratio".$j.$i." value=${"mixing_ratio".$j.$i} >\n";
-        echo "</td>\n";
-        echo "<td>\n";
-        echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' name=dry_temp".$j.$i." value=${"dry_temp".$j.$i} > ℃ \n";
-        echo "</td>\n";
-        echo "<td>\n";
-        echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' name=dry_hour".$j.$i." value=${"dry_hour".$j.$i} > h以上\n";
-        echo "</td>\n";
-        echo "<td>\n";
-        echo "<input type='text' name=recycled_mixing_ratio".$j.$i." value=${"recycled_mixing_ratio".$j.$i} >\n";
-        echo "</td>\n";
-        echo "</tr>\n";
-
-      }
  ?>
+
 </table>
 
 <?php endfor;?>

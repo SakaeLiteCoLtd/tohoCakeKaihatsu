@@ -115,6 +115,15 @@ class CustomersController extends AppController
       $customer = $this->Customers->newEntity();
       $this->set('customer', $customer);
 
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
       $Factories = $this->Factories->find()
       ->where(['delete_flag' => 0])->toArray();
       $arrFactories = array();
@@ -131,6 +140,16 @@ class CustomersController extends AppController
       $this->set('customer', $customer);
 
       $data = $this->request->getData();
+
+      $CustomerData = $this->Customers->find()
+      ->where(['customer_code' => $data['customer_code']])->toArray();
+
+      if(isset($CustomerData[0])){
+  
+        return $this->redirect(['action' => 'addform',
+        's' => ['mess' => "得意先コード：「".$data['customer_code']."」は既に存在します。"]]);
+
+      }
 
       $Factories = $this->Factories->find()
       ->where(['id' => $data['factory_id']])->toArray();
@@ -204,35 +223,83 @@ class CustomersController extends AppController
 
     }
 
-    public function edit($id = null)
+    public function editpreform()
     {
-        $customer = $this->Customers->get($id, [
-            'contain' => []
-        ]);
-        if ($this->request->is(['patch', 'post', 'put'])) {
-            $customer = $this->Customers->patchEntity($customer, $this->request->getData());
-            if ($this->Customers->save($customer)) {
-                $this->Flash->success(__('The customer has been saved.'));
+      $customer = $this->Customers->newEntity();
+      $this->set('customer', $customer);
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The customer could not be saved. Please, try again.'));
-        }
-        $this->set(compact('customer'));
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
+      $Customer_name_list = $this->Customers->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrCustomer_name_list = array();
+      for($j=0; $j<count($Customer_name_list); $j++){
+        array_push($arrCustomer_name_list,$Customer_name_list[$j]["name"]);
+      }
+      $arrCustomer_name_list = array_unique($arrCustomer_name_list);
+      $arrCustomer_name_list = array_values($arrCustomer_name_list);
+      $this->set('arrCustomer_name_list', $arrCustomer_name_list);
     }
 
-    public function editform($id = null)
+    public function editform()
     {
-      $session = $this->request->getSession();
-      $_SESSION = $session->read();
+      $customer = $this->Customers->newEntity();
+      $this->set('customer', $customer);
 
-      $id = $_SESSION['customerdata'];
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
 
-      $customer = $this->Customers->get($id, [
-        'contain' => []
-      ]);
-      $this->set(compact('customer'));
-      $this->set('id', $id);
+         $session = $this->request->getSession();
+         $_SESSION = $session->read();
+        $data = $_SESSION['customer_edit'];
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+        $data = $this->request->getData();
+      }
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+      $CustomerData = $this->Customers->find()
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
+
+      if(!isset($CustomerData[0])){
+
+        return $this->redirect(['action' => 'editpreform',
+        's' => ['mess' => "自社工場：".$factory_name."、得意先名：「".$data['name']."」の得意先は存在しません。"]]);
+
+      }
+
+      $this->set('CustomerData', $CustomerData);
+      $this->set('id', $CustomerData[0]["id"]);
+      $this->set('name', $CustomerData[0]["name"]);
+      $this->set('customer_code', $CustomerData[0]["customer_code"]);
+      $this->set('furigana', $CustomerData[0]["furigana"]);
+      $this->set('department', $CustomerData[0]["department"]);
+      $this->set('tel', $CustomerData[0]["tel"]);
+      $this->set('fax', $CustomerData[0]["fax"]);
+      $this->set('yuubin', $CustomerData[0]["yuubin"]);
+      $this->set('address', $CustomerData[0]["address"]);
 
       $Factories = $this->Factories->find()
       ->where(['delete_flag' => 0])->toArray();
@@ -251,11 +318,40 @@ class CustomersController extends AppController
 
       $data = $this->request->getData();
 
+      $CustomerData = $this->Customers->find()
+      ->where(['id IS NOT' => $data['id'], 'customer_code' => $data['customer_code']])->toArray();
+
+      if(isset($CustomerData[0])){
+
+        if(!isset($_SESSION)){
+          session_start();
+          }
+          $_SESSION['customer_edit'] = array();
+          $_SESSION['customer_edit'] = ["factory_id" => $data['factory_id'],"name" => $data['name']];
+  
+        return $this->redirect(['action' => 'editform',
+        's' => ['mess' => "得意先コード：「".$data['customer_code']."」は既に存在します。"]]);
+
+      }
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
       $Factories = $this->Factories->find()
       ->where(['id' => $data['factory_id']])->toArray();
       $factory_name = $Factories[0]['name'];
       $this->set('factory_name', $factory_name);
 
+      if($data["check"] > 0){
+        $mess = "以下のデータを削除します。よろしければ「決定」ボタンを押してください。";
+        $delete_flag = 1;
+      }else{
+        $mess = "以下のように更新します。よろしければ「決定」ボタンを押してください。";
+        $delete_flag = 0;
+      }
+      $this->set('mess', $mess);
+      $this->set('delete_flag', $delete_flag);
     }
 
     public function editdo()
@@ -273,41 +369,36 @@ class CustomersController extends AppController
       $factory_name = $Factories[0]['name'];
       $this->set('factory_name', $factory_name);
 
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
-      $arrupdatecustomer = array();
-      $arrupdatecustomer = [
-        'factory_id' => $data["factory_id"],
-        'name' => $data["name"],
-  //      'office' => $data["office"],
-  //      'department' => $data["department"],
-        'tel' => $data["tel"],
-        'fax' => $data["fax"],
-        'address' => $data["address"],
-        'is_active' => 0,
-        'delete_flag' => 0,
-        'created_at' => date("Y-m-d H:i:s"),
-        'created_staff' => $staff_id
-      ];
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
-      $Customers = $this->Customers->patchEntity($this->Customers->newEntity(), $arrupdatecustomer);
+      $Customers = $this->Customers->patchEntity($this->Customers->newEntity(), $data);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
        $connection->begin();//トランザクション3
        try {//トランザクション4
-         if ($this->Customers->save($Customers)) {
+         if ($this->Customers->updateAll(
+           ['factory_id' => $data["factory_id"],
+            'name' => $data["name"],
+            'customer_code' => $data["customer_code"],
+            'furigana' => $data["furigana"],
+            'department' => $data["department"],
+            'tel' => $data["tel"],
+            'fax' => $data["fax"],
+            'yuubin' => $data["yuubin"],
+            'address' => $data["address"],
+            'delete_flag' => $data["delete_flag"],
+            'updated_at' => date('Y-m-d H:i:s'),
+            'updated_staff' => $staff_id],
+           ['id'  => $data['id']])){
 
-         $this->Customers->updateAll(
-           [ 'delete_flag' => 1,
-             'updated_at' => date('Y-m-d H:i:s'),
-             'updated_staff' => $staff_id],
-           ['id'  => $data['id']]);
-
-         $mes = "※下記のように更新されました";
+        if($data["delete_flag"] > 0){
+          $mes = "※下記のデータが削除されました";
+        }else{
+          $mes = "※下記のように更新されました";
+        }
          $this->set('mes',$mes);
          $connection->commit();// コミット5
 

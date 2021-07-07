@@ -13,6 +13,27 @@ $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
 
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<?php
+$arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受け渡すために変換
+?>
+
+<script>
+
+  $(function() {
+      // 入力補完候補の単語リスト
+      let wordlist = <?php echo $arrMaterial_name_list; ?>
+      // 入力補完を実施する要素に単語リストを設定
+      $("#material_name_list").autocomplete({
+        source: wordlist
+      });
+  });
+
+</script>
+
 <table class='sample hesdermenu'>
   <tbody>
     <td style='border: none;align: left'>
@@ -76,7 +97,7 @@ echo $this->Html->css('kensahyou');
   <td width="50"><font size='2'>成形機<br>削除</td>
   <td width="150">成形機</td>
   <td width="50"><font size='2'>原料<br>削除</td>
-  <td width="450">メーカー：材料名：グレードNo.：色</td>
+  <td width="450" colspan='2'>原料名</td>
   <td width="150">配合比</td>
   <td width="170">乾燥温度</td>
   <td width="170">乾燥時間</td>
@@ -101,15 +122,22 @@ echo $this->Html->css('kensahyou');
         echo "<input type='checkbox' name=delete_genryou".$j.$i.">\n";
         echo "</td>\n";
 
-        echo "<td><div align='center'><select name=material_id".$j.$i." value=${"material_id".$j.$i}>\n";
-        foreach ($arrMaterials as $key => $value){
-          if($key == ${"material_id".$j.$i}){
-            echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
-          }else{
-            echo "<option value=$key>$value</option>";
+        if(${"check_material".$j.$i} == 1){
+
+        echo "<td style='border-right-style:none'>${"material_name".$j.$i}</td>\n";//
+
+        ?>
+        <td style='border-left-style:none'><?= $this->Form->submit(('変更'), array('name' => 'henkou'.$j.$i)) ?></td>
+        <?= $this->Form->control('material_name'.$j.$i, array('type'=>'hidden', 'value'=>${"material_name".$j.$i}, 'label'=>false)) ?>
+        <?php
+        
+        }else{
+
+          echo "<td colspan='2'>変更前：${"material_name".$j.$i}<br>\n";//
+          echo "<input type='text' required name=material_name".$j.$i." id='material_name_list'>\n";//
+          echo "</td>\n";//
+
           }
-        }
-        echo "</select></div></td>\n";
 
         echo "<td>\n";
         echo "<input type='text' required name=mixing_ratio".$j.$i." value=${"mixing_ratio".$j.$i} >\n";

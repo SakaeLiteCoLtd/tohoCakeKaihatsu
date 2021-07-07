@@ -31,7 +31,7 @@ class htmlkensahyouprogram extends AppController
      $ProductMaterialMachines = $this->ProductMaterialMachines->find()
      ->contain(['ProductConditionParents' => ["Products"]])
      ->where(['version' => $version, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0, 'ProductMaterialMachines.delete_flag' => 0])
-     ->order(["cylinder_number"=>"DESC"])->toArray();
+     ->order(["cylinder_number"=>"ASC"])->toArray();
 
      $tuikaseikeiki = count($ProductMaterialMachines);
      $this->set('tuikaseikeiki', $tuikaseikeiki);
@@ -43,7 +43,7 @@ class htmlkensahyouprogram extends AppController
 
        $ProductMachineMaterials = $this->ProductMachineMaterials->find()
        ->where(['product_material_machine_id' => $ProductMaterialMachines[$j - 1]["id"], 'delete_flag' => 0])
-       ->order(["material_number"=>"DESC"])->toArray();
+       ->order(["material_number"=>"ASC"])->toArray();
 
        ${"tuikagenryou".$j} = count($ProductMachineMaterials);
        $this->set('tuikagenryou'.$j, ${"tuikagenryou".$j});
@@ -53,7 +53,7 @@ class htmlkensahyouprogram extends AppController
          $Materials = $this->Materials->find()
          ->where(['id' => $ProductMachineMaterials[$i - 1]["material_id"]])->toArray();
 
-         ${"material_hyouji".$j.$i} = $Materials[0]["grade"].":".$Materials[0]["maker"].":".$Materials[0]["material_code"];
+         ${"material_hyouji".$j.$i} = $Materials[0]["name"];
          $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
 
          ${"mixing_ratio".$j.$i} = $ProductMachineMaterials[$i - 1]["mixing_ratio"];
@@ -81,7 +81,7 @@ class htmlkensahyouprogram extends AppController
          "<table>\n".
          "<tr class='parents'>\n".
          "<td width='150'>成形機</td>\n".
-         "<td width='490'>メーカー：材料名：グレードNo</td>\n".
+         "<td width='490'>原料名</td>\n".
          "<td width='200'>配合比</td>\n".
          "<td width='189'>乾燥温度</td>\n".
          "<td width='189'>乾燥時間</td>\n".

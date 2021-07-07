@@ -111,7 +111,7 @@ class htmlkensahyoukadoumenu extends AppController
           "管理No\n".
           "</td>\n".
           "<td width='300' style='height: 30px'>$product_code</td>\n".
-          "<td width='200' rowspan='2' style='height: 20px'><strong>顧客名</td>\n".
+          "<td width='200' rowspan='2' style='height: 20px'><strong>得意先名</td>\n".
           "<td width='300' rowspan='2' style='height: 20px'>$customer</td>\n".
           "</tr>\n".
           "<tr>\n".

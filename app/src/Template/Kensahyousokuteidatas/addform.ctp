@@ -131,8 +131,8 @@ setInterval('showClock1()',1000);
 
   <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
-  <td id="RealtimeClockArea" style='width:100; border-top-style:none'>
-  <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false, 'id'=>"RealtimeClockArea")) ?>
+  <td style='width:100; border-top-style:none'>
+  <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false)) ?>
   </td>
   <td style='width:130; border-top-style:none'><font size='1.8'><?= h("社員コード：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'required' => 'true')) ?></td>
 
@@ -217,7 +217,7 @@ setInterval('showClock1()',1000);
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>
-      <td style="border:none"><?= $this->Form->submit(('登録確認'), array('name' => 'kakuninn')) ?></td>
+      <td style="border:none"><?= $this->Form->submit(('登録'), array('name' => 'tuika')) ?></td>
     </tr>
   </tbody>
 </table>

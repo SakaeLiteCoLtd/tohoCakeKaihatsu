@@ -14,56 +14,80 @@
      echo $htmlcustomer;
 ?>
 
-<form method="post" action="/customers/editconfirm">
-
-<?= $this->Form->create($customer, ['url' => ['action' => 'editform']]) ?>
+<?= $this->Form->create($customer, ['url' => ['action' => 'editconfirm']]) ?>
 <br><br><br>
 
 <nav class="large-3 medium-4 columns">
 
     <?= $this->Form->create($customer) ?>
     <fieldset>
-      <legend><strong style="font-size: 15pt; color:red"><?= __('得意先情報編集') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('得意先情報編集・削除') ?></strong></legend>
         <br>
         <table>
           <tbody class='sample non-sample'>
             <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('データを編集してください') ?></strong></td></tr>
+            <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></td></tr>
           </tbody>
         </table>
         <br>
 
         <table>
         <tr>
-          <td width="280"><strong>自社工場名</strong></td>
+          <td width="280"><strong>自社工場</strong></td>
         </tr>
         <tr>
           <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>
         </tr>
       </table>
-        <table>
-        <tr>
-          <td width="280"><strong>得意先名</strong></td>
-          <td width="280"><strong>電話番号</strong></td>
-        </tr>
-        <tr>
-          <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'autofocus'=>true)) ?></td>
-          <td><?= $this->Form->control('tel', array('type'=>'text', 'label'=>false)) ?></td>
-        </tr>
-      </table>
-    <table>
+      <table>
+      <tr>
+        <td width="280"><strong>得意先名</strong></td>
+        <td width="280"><strong>得意先コード</strong></td>
+      </tr>
+      <tr>
+        <td><?= $this->Form->control('name', array('type'=>'text', 'value'=>$name, 'label'=>false, 'required' => 'true')) ?></td>
+        <td><?= $this->Form->control('customer_code', array('type'=>'text', 'value'=>$customer_code, 'label'=>false, 'required' => 'true')) ?></td>
+    </tr>
+    </table>
+  <table>
     <tr>
-      <td width="180"><strong>ファックス</strong></td>
-      <td width="350"><strong>住所</strong></td>
+      <td width="280"><strong>フリガナ</strong></td>
+      <td width="280"><strong>部署</strong></td>
     </tr>
     <tr>
-      <td><?= $this->Form->control('fax', array('type'=>'text', 'label'=>false)) ?></td>
-      <td><?= $this->Form->control('address', array('type'=>'text', 'label'=>false, 'size'=>30)) ?></td>
+      <td><?= $this->Form->control('furigana', array('type'=>'text', 'value'=>$furigana, 'label'=>false)) ?></td>
+      <td><?= $this->Form->control('department', array('type'=>'text', 'value'=>$department, 'label'=>false)) ?></td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <td width="280"><strong>電話番号</strong></td>
+      <td width="280"><strong>ファックス</strong></td>
+    </tr>
+    <tr>
+      <td><?= $this->Form->control('tel', array('type'=>'text', 'value'=>$tel, 'label'=>false)) ?></td>
+      <td><?= $this->Form->control('fax', array('type'=>'text', 'value'=>$fax, 'label'=>false)) ?></td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <td width="150"><strong>郵便番号</strong></td>
+      <td width="410"><strong>住所</strong></td>
+    </tr>
+    <tr>
+      <td><?= $this->Form->control('yuubin', array('type'=>'text', 'value'=>$yuubin, 'label'=>false, 'size'=>10)) ?></td>
+      <td><?= $this->Form->control('address', array('type'=>'text', 'value'=>$address, 'label'=>false, 'size'=>35)) ?></td>
     </tr>
   </table>
 
-  <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$id, 'label'=>false)) ?>
-
-    </fieldset>
+  <table>
+  <tbody>
+    <tr>
+      <td><?= $this->Form->control('check', array('type'=>'checkbox', 'label'=>false)) ?></td>
+      <td><div><strong style="font-size: 13pt; color:blue">データを削除する場合はチェックを入れてください。</strong></div></td>
+    </tr>
+  </tbody>
+</table>
 
     <table>
       <tbody class='sample non-sample'>
@@ -73,5 +97,10 @@
       </tbody>
     </table>
 
+    <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$id, 'label'=>false)) ?>
+
+</fieldset>
+
     <?= $this->Form->end() ?>
   </nav>
+  <br><br><br>

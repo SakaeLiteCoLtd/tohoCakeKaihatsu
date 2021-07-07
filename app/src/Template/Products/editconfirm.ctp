@@ -14,58 +14,98 @@
      echo $htmlproduct;
 ?>
 
-<form method="post" action="/products/editdo">
-
 <?= $this->Form->create($product, ['url' => ['action' => 'editdo']]) ?>
 
-<?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$this->request->getData('id'), 'label'=>false)) ?>
-<?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$this->request->getData('product_code'), 'label'=>false)) ?>
-<?= $this->Form->control('customer_product_code', array('type'=>'hidden', 'value'=>$this->request->getData('customer_product_code'), 'label'=>false)) ?>
-<?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$this->request->getData('name'), 'label'=>false)) ?>
-<?= $this->Form->control('customer_id', array('type'=>'hidden', 'value'=>$this->request->getData('customer_id'), 'label'=>false)) ?>
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
+<?= $this->Form->control('namemoto', array('type'=>'hidden', 'value'=>$this->request->getData('namemoto'), 'label'=>false)) ?>
+<?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$this->request->getData('name'), 'label'=>false)) ?>
+<?= $this->Form->control('tanni', array('type'=>'hidden', 'value'=>$this->request->getData('tanni'), 'label'=>false)) ?>
+<?= $this->Form->control('factory_name', array('type'=>'hidden', 'value'=>$this->request->getData('factory_name'), 'label'=>false)) ?>
+<?= $this->Form->control('customer_name', array('type'=>'hidden', 'value'=>$this->request->getData('customer_name'), 'label'=>false)) ?>
 <br><br><br>
 
 <nav class="large-3 medium-4 columns">
     <fieldset>
-      <legend><strong style="font-size: 15pt; color:red"><?= __('製品情報編集') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('製品情報編集・削除') ?></strong></legend>
       <br>
         <table>
           <tbody class='sample non-sample'>
-            <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('以下のデータを登録します。よろしければ「決定」ボタンを押してください。') ?></strong></td></tr>
+            <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('以下のように更新します。よろしければ「決定」ボタンを押してください。') ?></strong></td></tr>
           </tbody>
         </table>
         <br>
 
         <table>
-          <tr>
-            <td width="280"><strong>工場・営業所名</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($factory_name) ?></td>
-        	</tr>
-        </table>
-        <table>
         <tr>
-          <td width="280"><strong>社内品番</strong></td>
-          <td width="280"><strong>顧客品番</strong></td>
+          <td width="280"><strong>自社工場</strong></td>
+          <td width="280"><strong>得意先</strong></td>
         </tr>
         <tr>
-          <td><?= h($this->request->getData('product_code')) ?></td>
-          <td><?= h($this->request->getData('customer_product_code')) ?></td>
+        <td><?= h($this->request->getData('factory_name')) ?></td>
+        <td><?= h($this->request->getData('customer_name')) ?></td>
         </tr>
       </table>
 
       <table>
+          <tr>
+            <td width="280"><strong>品名</strong></td>
+            <td width="280"><strong>単位</strong></td>
+        	</tr>
+          <tr>
+            <td><?= h($this->request->getData('name')) ?></td>
+            <td><?= h($this->request->getData('tanni')) ?></td>
+        	</tr>
+        </table>
+
+     <br>
+
+     <table>
       <tr>
-        <td width="280"><strong>品名</strong></td>
-        <td width="280"><strong>顧客</strong></td>
+      <td width="280"><strong>管理No.</strong></td>
+      <td><strong>長さ（mm）</strong></td>
       </tr>
+      
+      <?php for($i=0; $i<count($arrKoushinproduct); $i++): ?>
+
       <tr>
-        <td><?= h($this->request->getData('name')) ?></td>
-        <td><?= h($customer_name) ?></td>
+      <td><?= h($arrKoushinproduct[$i]["product_code"]) ?></td>
+      <td><?= h($arrKoushinproduct[$i]["length"]) ?></td>
       </tr>
-    </table>
+
+      <?= $this->Form->control('product_code'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["product_code"], 'label'=>false)) ?>
+      <?= $this->Form->control('length'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["length"], 'label'=>false)) ?>
+      <?= $this->Form->control('num', array('type'=>'hidden', 'value'=>$i, 'label'=>false)) ?>
+
+      <?php endfor;?>
+
+      </table>
+
+      <table>
+          <tbody class='sample non-sample'>
+            <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('以下のデータは削除します。') ?></strong></td></tr>
+          </tbody>
+        </table>
+
+        <table>
+      <tr>
+      <td width="280"><strong>管理No.</strong></td>
+      <td><strong>長さ（mm）</strong></td>
+      </tr>
+
+      <?php for($i=0; $i<count($arrDeleteproduct); $i++): ?>
+
+        <tr>
+        <td><?= h($arrDeleteproduct[$i]["product_code"]) ?></td>
+        <td><?= h($arrDeleteproduct[$i]["length"]) ?></td>
+        </tr>
+
+        <?= $this->Form->control('delete_product_code'.$i, array('type'=>'hidden', 'value'=>$arrDeleteproduct[$i]["product_code"], 'label'=>false)) ?>
+        <?= $this->Form->control('delete_length'.$i, array('type'=>'hidden', 'value'=>$arrDeleteproduct[$i]["length"], 'label'=>false)) ?>
+        <?= $this->Form->control('delete_num', array('type'=>'hidden', 'value'=>$i, 'label'=>false)) ?>
+
+        <?php endfor;?>
+
+     </table>
 
     </fieldset>
 
