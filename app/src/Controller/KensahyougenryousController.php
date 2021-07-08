@@ -121,7 +121,7 @@ class KensahyougenryousController extends AppController
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          }
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -129,7 +129,7 @@ class KensahyougenryousController extends AppController
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          }
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -146,8 +146,12 @@ class KensahyougenryousController extends AppController
 
        if(strlen($data["product_name"]) > 0){//product_nameの入力がある
 
+        $product_name_length = explode(";",$data["product_name"]);
+        $name = $product_name_length[0];
+        $length = str_replace('mm', '', $product_name_length[1]);
+  
          $Products = $this->Products->find()
-         ->where(['name' => $data["product_name"], 'delete_flag' => 0])->toArray();
+         ->where(['name' => $name, 'length' => $length, 'delete_flag' => 0])->toArray();
 
          if(isset($Products[0])){
 
@@ -166,7 +170,7 @@ class KensahyougenryousController extends AppController
 
            $arrProduct_name_list = array();
            for($j=0; $j<count($Product_name_list); $j++){
-             array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+             array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
            }
            $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -182,7 +186,7 @@ class KensahyougenryousController extends AppController
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          }
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -194,7 +198,7 @@ class KensahyougenryousController extends AppController
        ->where(['delete_flag' => 0])->toArray();
        $arrProduct_name_list = array();
        for($j=0; $j<count($Product_name_list); $j++){
-         array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
        }
        $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -274,7 +278,6 @@ class KensahyougenryousController extends AppController
         $this->set('product_code', $product_code);
 
       }
-
 
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
@@ -1033,7 +1036,7 @@ class KensahyougenryousController extends AppController
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          }
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -1041,7 +1044,7 @@ class KensahyougenryousController extends AppController
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          }
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -1051,8 +1054,12 @@ class KensahyougenryousController extends AppController
 
        if(strlen($data["product_name"]) > 0){//product_nameの入力がある
 
+        $product_name_length = explode(";",$data["product_name"]);
+        $name = $product_name_length[0];
+        $length = str_replace('mm', '', $product_name_length[1]);
+  
          $Products = $this->Products->find()
-         ->where(['name' => $data["product_name"], 'delete_flag' => 0])->toArray();
+         ->where(['name' => $name, 'length' => $length, 'delete_flag' => 0])->toArray();
 
          if(isset($Products[0])){
 
@@ -1071,7 +1078,7 @@ class KensahyougenryousController extends AppController
 
            $arrProduct_name_list = array();
            for($j=0; $j<count($Product_name_list); $j++){
-             array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+             array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
            }
            $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -1087,7 +1094,7 @@ class KensahyougenryousController extends AppController
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          }
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -1099,7 +1106,7 @@ class KensahyougenryousController extends AppController
        ->where(['delete_flag' => 0])->toArray();
        $arrProduct_name_list = array();
        for($j=0; $j<count($Product_name_list); $j++){
-         array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
        }
        $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -1120,6 +1127,15 @@ class KensahyougenryousController extends AppController
       ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
 
+      if(!isset($ProductConditionParents[0])){//長さ違いのデータがあればそれを持ってくる
+
+        $product_code_ini = substr($product_code, 0, 11);
+        $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
+        ->where(['product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
+        ->order(["version"=>"DESC"])->toArray();
+
+      }
+
       if(isset($ProductConditionParents[0])){
 
         $version = $ProductConditionParents[0]["version"];
@@ -1139,6 +1155,16 @@ class KensahyougenryousController extends AppController
       ->where(['version' => $version, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
       ->order(["ProductMaterialMachines.id"=>"ASC"])->toArray();
 
+      if(!isset($ProductMachineMaterials[0])){//長さ違いのデータがあればそれを持ってくる
+
+        $product_code_ini = substr($product_code, 0, 11);
+        $ProductMachineMaterials = $this->ProductMachineMaterials->find()
+        ->contain(['ProductMaterialMachines' => ['ProductConditionParents' => ["Products"]]])
+        ->where(['version' => $version, 'Products.product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
+        ->order(["ProductMaterialMachines.id"=>"ASC"])->toArray();
+  
+      }
+
       if($ProductMachineMaterials[0]){
 
         $ProductMaterialMachines = $this->ProductMaterialMachines->find()
@@ -1146,6 +1172,19 @@ class KensahyougenryousController extends AppController
         ->where(['version' => $version, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0, 'ProductMaterialMachines.delete_flag' => 0])
         ->order(["cylinder_number"=>"ASC"])->toArray();
 
+        if(!isset($ProductMaterialMachines[0])){//長さ違いのデータがあればそれを持ってくる
+
+          $product_code_ini = substr($product_code, 0, 11);
+          $ProductMaterialMachines= $this->ProductMaterialMachines->find()
+          ->contain(['ProductConditionParents' => ["Products"]])
+          ->where(['Products.product_code like' => $product_code_ini.'%',
+          'ProductConditionParents.delete_flag' => 0,
+          'ProductMaterialMachines.delete_flag' => 0,
+          'ProductConditionParents.version' => $version])
+          ->order(["cylinder_number"=>"ASC"])->toArray();
+    
+        }
+          
         $tuikaseikeiki = count($ProductMaterialMachines);
         $this->set('tuikaseikeiki', $tuikaseikeiki);
 
@@ -1680,6 +1719,15 @@ class KensahyougenryousController extends AppController
         ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
         ->order(["version"=>"DESC"])->toArray();
 
+        if(!isset($ProductConditionParents[0])){//長さ違いのデータがあればそれを持ってくる
+
+          $product_code_ini = substr($product_code, 0, 11);
+          $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
+          ->where(['product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
+          ->order(["version"=>"DESC"])->toArray();
+  
+        }
+  
         $version = $ProductConditionParents[0]["version"];
 
         $ProductMachineMaterials = $this->ProductMachineMaterials->find()
@@ -1692,6 +1740,19 @@ class KensahyougenryousController extends AppController
         ->where(['version' => $version, 'product_code' => $product_code, 'ProductMaterialMachines.delete_flag' => 0, 'ProductConditionParents.delete_flag' => 0])
         ->order(["cylinder_number"=>"ASC"])->toArray();
 
+        if(!isset($ProductMaterialMachines[0])){//長さ違いのデータがあればそれを持ってくる
+
+          $product_code_ini = substr($product_code, 0, 11);
+          $ProductMaterialMachines= $this->ProductMaterialMachines->find()
+          ->contain(['ProductConditionParents' => ["Products"]])
+          ->where(['Products.product_code like' => $product_code_ini.'%',
+          'ProductConditionParents.delete_flag' => 0,
+          'ProductMaterialMachines.delete_flag' => 0,
+          'ProductConditionParents.version' => $version])
+          ->order(["cylinder_number"=>"ASC"])->toArray();
+    
+        }
+  
         $tuikaseikeiki = count($ProductMaterialMachines);
         $this->set('tuikaseikeiki', $tuikaseikeiki);
 
@@ -2096,6 +2157,15 @@ class KensahyougenryousController extends AppController
       ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
 
+      if(!isset($ProductConditionParents[0])){//長さ違いのデータがあればそれを持ってくる
+
+        $product_code_ini = substr($product_code, 0, 11);
+        $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
+        ->where(['product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
+        ->order(["version"=>"DESC"])->toArray();
+
+      }
+
       $product_condition_parent_id = $ProductConditionParents[0]["id"];
 
       $ProductMachineMaterials = $this->ProductMachineMaterials->find()
@@ -2104,11 +2174,33 @@ class KensahyougenryousController extends AppController
        'ProductMachineMaterials.delete_flag' => 0, 'ProductConditionParents.delete_flag' => 0])
       ->toArray();
 
+      if(!isset($ProductMachineMaterials[0])){//長さ違いのデータがあればそれを持ってくる
+
+        $product_code_ini = substr($product_code, 0, 11);
+        $ProductMachineMaterials = $this->ProductMachineMaterials->find()
+        ->contain(['ProductMaterialMachines' => ['ProductConditionParents' => ["Products"]]])
+        ->where(['product_condition_parent_id' => $product_condition_parent_id, 'product_code like' => $product_code_ini.'%',
+         'ProductMachineMaterials.delete_flag' => 0, 'ProductConditionParents.delete_flag' => 0])
+        ->toArray();
+  
+      }
+
       $ProductMaterialMachines = $this->ProductMaterialMachines->find()
       ->contain(['ProductConditionParents' => ["Products"]])
       ->where(['product_condition_parent_id' => $product_condition_parent_id, 'product_code' => $product_code,
        'ProductMaterialMachines.delete_flag' => 0, 'ProductConditionParents.delete_flag' => 0])
       ->order(["cylinder_number"=>"ASC"])->toArray();
+
+      if(!isset($ProductMaterialMachines[0])){//長さ違いのデータがあればそれを持ってくる
+
+        $product_code_ini = substr($product_code, 0, 11);
+        $ProductMaterialMachines = $this->ProductMaterialMachines->find()
+        ->contain(['ProductConditionParents' => ["Products"]])
+        ->where(['product_condition_parent_id' => $product_condition_parent_id, 'product_code like' => $product_code_ini.'%',
+         'ProductMaterialMachines.delete_flag' => 0, 'ProductConditionParents.delete_flag' => 0])
+        ->order(["cylinder_number"=>"ASC"])->toArray();
+    
+      }
 
       if($data["delete_flag"] < 1){//削除ではない場合
 

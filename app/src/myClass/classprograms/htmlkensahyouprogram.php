@@ -26,12 +26,31 @@ class htmlkensahyouprogram extends AppController
      ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
      ->order(["version"=>"DESC"])->toArray();
 
+     if(!isset($ProductConditionParents[0])){//長さ違いのデータがあればそれを持ってくる
+
+      $product_code_ini = substr($product_code, 0, 11);
+      $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
+      ->where(['product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
+      ->order(["version"=>"DESC"])->toArray();
+ 
+    }
+
      $version = $ProductConditionParents[0]["version"];
 
      $ProductMaterialMachines = $this->ProductMaterialMachines->find()
      ->contain(['ProductConditionParents' => ["Products"]])
      ->where(['version' => $version, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0, 'ProductMaterialMachines.delete_flag' => 0])
      ->order(["cylinder_number"=>"ASC"])->toArray();
+
+     if(!isset($ProductMaterialMachines[0])){//長さ違いのデータがあればそれを持ってくる
+
+      $product_code_ini = substr($product_code, 0, 11);
+      $ProductMaterialMachines = $this->ProductMaterialMachines->find()
+     ->contain(['ProductConditionParents' => ["Products"]])
+     ->where(['version' => $version, 'product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0, 'ProductMaterialMachines.delete_flag' => 0])
+     ->order(["cylinder_number"=>"ASC"])->toArray();
+
+    }
 
      $tuikaseikeiki = count($ProductMaterialMachines);
      $this->set('tuikaseikeiki', $tuikaseikeiki);

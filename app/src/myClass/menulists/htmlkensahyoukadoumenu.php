@@ -88,6 +88,15 @@ class htmlkensahyoukadoumenu extends AppController
     ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
     ->order(["version"=>"DESC"])->toArray();
 
+    if(!isset($inspectionStandardSizeParents[0])){//長さ違いのデータがあればそれを持ってくる
+
+      $product_code_ini = substr($product_code, 0, 11);
+      $inspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+      ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
+     ->order(["version"=>"DESC"])->toArray();
+ 
+    }
+
     if(isset($inspectionStandardSizeParents[0])){
       $date_kaitei = $inspectionStandardSizeParents[0]["created_at"]->format('Y-n-j');
       $image_file_name_dir = "/img/".$inspectionStandardSizeParents[0]["image_file_name_dir"];

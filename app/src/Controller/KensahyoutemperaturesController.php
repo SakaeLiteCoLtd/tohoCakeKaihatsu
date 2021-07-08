@@ -109,7 +109,7 @@ class KensahyoutemperaturesController extends AppController
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          }
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -117,7 +117,7 @@ class KensahyoutemperaturesController extends AppController
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          }
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -134,8 +134,12 @@ class KensahyoutemperaturesController extends AppController
 
        if(strlen($data["product_name"]) > 0){//product_nameの入力がある
 
+        $product_name_length = explode(";",$data["product_name"]);
+        $name = $product_name_length[0];
+        $length = str_replace('mm', '', $product_name_length[1]);
+  
          $Products = $this->Products->find()
-         ->where(['name' => $data["product_name"], 'delete_flag' => 0])->toArray();
+         ->where(['name' => $name, 'length' => $length, 'delete_flag' => 0])->toArray();
 
          if(isset($Products[0])){
 
@@ -154,7 +158,7 @@ class KensahyoutemperaturesController extends AppController
 
            $arrProduct_name_list = array();
            for($j=0; $j<count($Product_name_list); $j++){
-             array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+             array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
            }
            $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -170,7 +174,7 @@ class KensahyoutemperaturesController extends AppController
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          }
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -182,7 +186,7 @@ class KensahyoutemperaturesController extends AppController
        ->where(['delete_flag' => 0])->toArray();
        $arrProduct_name_list = array();
        for($j=0; $j<count($Product_name_list); $j++){
-         array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
        }
        $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -272,29 +276,19 @@ class KensahyoutemperaturesController extends AppController
         $this->set('product_code', $product_code);
 
       }
-/*
-      $product_code = $data["product_code"];
-      $this->set('product_code', $product_code);
 
-      $htmlproductcheck = new htmlproductcheck();//クラスを使用
-      $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
-
-      if($arrayproductdate[0] === "no_product"){
-
-        if(!isset($_SESSION)){
-        session_start();
-        }
-        $_SESSION['user_code'] = array();
-        $_SESSION['user_code'] = $user_code;
-
-        return $this->redirect(['action' => 'addformpre',
-        's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
-
-      }
-*/
       $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
       ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
+
+      if(!isset($ProductConditionParents[0])){//長さ違いのデータがあればそれを持ってくる
+
+        $product_code_ini = substr($product_code, 0, 11);
+        $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
+        ->where(['product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
+        ->order(["version"=>"DESC"])->toArray();
+
+      }
 
       if(isset($ProductConditionParents[0])){
 
@@ -322,6 +316,19 @@ class KensahyoutemperaturesController extends AppController
       'ProductMaterialMachines.delete_flag' => 0,
       'ProductConditionParents.version' => $version])
       ->order(["cylinder_number"=>"ASC"])->toArray();
+
+      if(!isset($ProductMaterialMachines[0])){//長さ違いのデータがあればそれを持ってくる
+
+        $product_code_ini = substr($product_code, 0, 11);
+        $ProductMaterialMachines= $this->ProductMaterialMachines->find()
+        ->contain(['ProductConditionParents' => ["Products"]])
+        ->where(['Products.product_code like' => $product_code_ini.'%',
+        'ProductConditionParents.delete_flag' => 0,
+        'ProductMaterialMachines.delete_flag' => 0,
+        'ProductConditionParents.version' => $version])
+        ->order(["cylinder_number"=>"ASC"])->toArray();
+  
+      }
 
       $countseikeiki = count($ProductMaterialMachines);
       $this->set('countseikeiki', $countseikeiki);
@@ -363,17 +370,22 @@ class KensahyoutemperaturesController extends AppController
               ];
       $this->set('arrScrew',$arrScrew);
 
-
-      $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
-      ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
-      ->order(["version"=>"DESC"])->toArray();
-
       $version = $ProductConditionParents[0]["version"];
 
       $ProductMachineMaterials = $this->ProductMachineMaterials->find()
       ->contain(['ProductMaterialMachines' => ['ProductConditionParents' => ["Products"]]])
       ->where(['version' => $version, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
       ->toArray();
+
+      if(!isset($ProductMachineMaterials[0])){//長さ違いのデータがあればそれを持ってくる
+
+        $product_code_ini = substr($product_code, 0, 11);
+        $ProductMachineMaterials = $this->ProductMachineMaterials->find()
+        ->contain(['ProductMaterialMachines' => ['ProductConditionParents' => ["Products"]]])
+        ->where(['version' => $version, 'product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
+        ->toArray();
+  
+      }
 
       if(isset($ProductMachineMaterials[0])){
 
@@ -663,7 +675,7 @@ class KensahyoutemperaturesController extends AppController
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          }
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -671,7 +683,7 @@ class KensahyoutemperaturesController extends AppController
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          }
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -681,8 +693,12 @@ class KensahyoutemperaturesController extends AppController
 
        if(strlen($data["product_name"]) > 0){//product_nameの入力がある
 
+        $product_name_length = explode(";",$data["product_name"]);
+        $name = $product_name_length[0];
+        $length = str_replace('mm', '', $product_name_length[1]);
+  
          $Products = $this->Products->find()
-         ->where(['name' => $data["product_name"], 'delete_flag' => 0])->toArray();
+         ->where(['name' => $name, 'length' => $length, 'delete_flag' => 0])->toArray();
 
          if(isset($Products[0])){
 
@@ -701,7 +717,7 @@ class KensahyoutemperaturesController extends AppController
 
            $arrProduct_name_list = array();
            for($j=0; $j<count($Product_name_list); $j++){
-             array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+             array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
            }
            $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -717,7 +733,7 @@ class KensahyoutemperaturesController extends AppController
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          }
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -729,7 +745,7 @@ class KensahyoutemperaturesController extends AppController
        ->where(['delete_flag' => 0])->toArray();
        $arrProduct_name_list = array();
        for($j=0; $j<count($Product_name_list); $j++){
-         array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
        }
        $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -750,6 +766,15 @@ class KensahyoutemperaturesController extends AppController
       ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
 
+      if(!isset($ProductConditionParents[0])){//長さ違いのデータがあればそれを持ってくる
+
+        $product_code_ini = substr($product_code, 0, 11);
+        $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
+        ->where(['product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
+        ->order(["version"=>"DESC"])->toArray();
+
+      }
+
       if(isset($ProductConditionParents[0])){
 
         $version = $ProductConditionParents[0]["version"];
@@ -762,6 +787,19 @@ class KensahyoutemperaturesController extends AppController
         'ProductConditionParents.version' => $version])
         ->order(["cylinder_number"=>"ASC"])->toArray();
 
+        if(!isset($ProductMaterialMachines[0])){//長さ違いのデータがあればそれを持ってくる
+
+          $product_code_ini = substr($product_code, 0, 11);
+          $ProductMaterialMachines= $this->ProductMaterialMachines->find()
+          ->contain(['ProductConditionParents' => ["Products"]])
+          ->where(['Products.product_code like' => $product_code_ini.'%',
+          'ProductConditionParents.delete_flag' => 0,
+          'ProductMaterialMachines.delete_flag' => 0,
+          'ProductConditionParents.version' => $version])
+          ->order(["cylinder_number"=>"ASC"])->toArray();
+    
+        }
+  
         $countseikeiki = count($ProductMaterialMachines);
         $this->set('countseikeiki', $countseikeiki);
 
@@ -776,7 +814,7 @@ class KensahyoutemperaturesController extends AppController
           $ProductConditonChildren = $this->ProductConditonChildren->find()
           ->where(['product_material_machine_id' => ${"product_material_machine_id".$j}, 'cylinder_name' => ${"cylinder_name".$j}, 'delete_flag' => 0])
           ->toArray();
-
+    
           if(isset($ProductConditonChildren[0])){
 
             ${"extrude_roatation".$j} = $ProductConditonChildren[0]["extrude_roatation"];
@@ -817,7 +855,7 @@ class KensahyoutemperaturesController extends AppController
             ->where(['product_code' => $product_code])->toArray();
 
             return $this->redirect(['action' => 'kensakupre',
-            's' => ['mess' => "「".$Products[0]["name"]."」は成形温度登録がされていません。"]]);
+            's' => ['mess' => "「".$Products[0]["name"]."」は成形温度登録がされていません。s"]]);
 
           }
 
@@ -902,7 +940,16 @@ class KensahyoutemperaturesController extends AppController
       ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
 
-      if($ProductConditionParents[0]){
+      if(!isset($ProductConditionParents[0])){//長さ違いのデータがあればそれを持ってくる
+
+        $product_code_ini = substr($product_code, 0, 11);
+        $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
+        ->where(['product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
+        ->order(["version"=>"DESC"])->toArray();
+
+      }
+
+      if(isset($ProductConditionParents[0])){
 
         $version = $ProductConditionParents[0]["version"];
 
@@ -914,6 +961,19 @@ class KensahyoutemperaturesController extends AppController
         'ProductConditionParents.version' => $version])
         ->order(["cylinder_number"=>"ASC"])->toArray();
 
+        if(!isset($ProductMaterialMachines[0])){//長さ違いのデータがあればそれを持ってくる
+
+          $product_code_ini = substr($product_code, 0, 11);
+          $ProductMaterialMachines= $this->ProductMaterialMachines->find()
+          ->contain(['ProductConditionParents' => ["Products"]])
+          ->where(['Products.product_code like' => $product_code_ini.'%',
+          'ProductConditionParents.delete_flag' => 0,
+          'ProductMaterialMachines.delete_flag' => 0,
+          'ProductConditionParents.version' => $version])
+          ->order(["cylinder_number"=>"ASC"])->toArray();
+  
+        }
+        
         $countseikeiki = count($ProductMaterialMachines);
         $this->set('countseikeiki', $countseikeiki);
 

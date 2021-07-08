@@ -30,17 +30,15 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
- <br>
  <table class="top_big">
    <tr></tr>
  </table>
 <?php for($j=1; $j<=$tuikaseikeiki; $j++): ?>
-<br>
 
 <table>
   <tr class="parents">
     <td width="150">成形機</td>
-    <td width="490">原料名</td>
+    <td width="497">原料名</td>
     <td width="190">配合比</td>
     <td width="190">乾燥温度</td>
     <td width="190">乾燥時間</td>

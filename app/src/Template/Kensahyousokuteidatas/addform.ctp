@@ -65,13 +65,14 @@ setInterval('showClock1()',1000);
   <td style='width:130'>測定箇所</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
-    <td style='width:80'><?= h(${"size_name".$i}) ?></td>
+    <td style='width:75'><?= h(${"size_name".$i}) ?></td>
   <?php endfor;?>
 
   <td width="72" rowspan='5'>長さ</td>
-  <td width="80" rowspan='3'>外観</td>
+  <td width="69" rowspan='3'>外観</td>
   <td width="80" rowspan='3'>重量<br>（目安）</td>
-  <td width="72" rowspan='5'>合否<br>判定</td>
+  <td width="65" rowspan='5'>合否<br>判定</td>
+  <td width="65" rowspan='5'></td>
 
 </tr>
 <tr>
@@ -96,7 +97,7 @@ setInterval('showClock1()',1000);
       <td><?= h(${"lower_limit".$i}) ?></td>
     <?php endfor;?>
 
-        <td width="80">良 ・ 不</td>
+        <td width="69" style="font-size: 10pt">良 ・ 不</td>
         <td width="80">g / 本</td>
 
 </tr>
@@ -107,7 +108,7 @@ setInterval('showClock1()',1000);
       <td><?= h(${"measuring_instrument".$i}) ?></td>
     <?php endfor;?>
 
-    <td width="80">目視</td>
+    <td width="69">目視</td>
     <td width="80" style="font-size: 10pt">デジタル秤</td>
 
 </tr>
@@ -125,7 +126,7 @@ setInterval('showClock1()',1000);
      }
   ?>
 
-  <?php if ($j == $gyou): ?>
+  <?php if ($checkedit == 0 && $j == $gyou): ?>
 
     <table class="form">
 
@@ -134,20 +135,21 @@ setInterval('showClock1()',1000);
   <td style='width:100; border-top-style:none'>
   <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false)) ?>
   </td>
-  <td style='width:130; border-top-style:none'><font size='1.8'><?= h("社員コード：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'required' => 'true')) ?></td>
+  <td style='width:130; border-top-style:none'><font size='1.8'><?= h("社員コード：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。')) ?></td>
 
   <?php for($i=1; $i<=10; $i++): ?>
-    <td style='width:80; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
+    <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
   <?php endfor;?>
 
   <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false]) ?></td>
-  <td style='width:80; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ['options' => $arrGaikan, 'label'=>false]) ?></td>
-  <td style='width:80; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'required' => 'true')) ?></td>
-  <td style='width:72; border-top-style:none'><?= $this->Form->control('gouhi'.$j, ['options' => $arrGouhi, 'label'=>false]) ?></td>
+  <td style='width:69; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ['options' => $arrGaikan, 'label'=>false]) ?></td>
+  <td style='width:80; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
+  <td style='width:65; border-top-style:none'><?= $this->Form->control('gouhi'.$j, ['options' => $arrGouhi, 'label'=>false]) ?></td>
+  <td style='width:65; border-top-style:none'></td>
 
 </table>
 
-<?php else : ?>
+<?php elseif ($checkedit == 0 && $j < $gyou) : ?>
 
   <table class="white">
 
@@ -163,11 +165,11 @@ setInterval('showClock1()',1000);
       <?php
       if(${"result_size".$j.$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
       && ${"result_size".$j.$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
-        echo '<td style="width:80; border-top-style:none">';
+        echo '<td style="width:75; border-top-style:none">';
         echo ${"result_size".$j.$i} ;
         echo '</td>';
       } else {
-        echo '<td style="width:80; border-top-style:none"><font color="red">';
+        echo '<td style="width:75; border-top-style:none"><font color="red">';
         echo ${"result_size".$j.$i};
         echo '</td>';
       }
@@ -191,9 +193,10 @@ setInterval('showClock1()',1000);
     ?>
 
     <td style='width:72; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
-    <td style='width:80; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
+    <td style='width:69; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
     <td style='width:80; border-top-style:none'><?= h(${"weight".$j}) ?></td>
-    <td style='width:72; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+    <td style='width:65; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+    <td style='width:65; border-top-style:none'><?= $this->Form->submit(('修正'), array('name' => 'edit'.$j)) ?></td>
 
     <?= $this->Form->control('product_id'.$j, array('type'=>'hidden', 'value'=>${"product_id".$j}, 'label'=>false)) ?>
     <?= $this->Form->control('gaikan'.$j, array('type'=>'hidden', 'value'=>${"gaikan".$j}, 'label'=>false)) ?>
@@ -201,6 +204,89 @@ setInterval('showClock1()',1000);
     <?= $this->Form->control('gouhi'.$j, array('type'=>'hidden', 'value'=>${"gouhi".$j}, 'label'=>false)) ?>
 
   </table>
+
+<?php elseif ($j < $gyou) : ?>
+
+  <?php if ($j == $checkedit) : ?>
+
+  <table class="form">
+
+  <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
+  <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
+  <td style='width:100; border-top-style:none'>
+  <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false)) ?>
+  </td>
+  <td style='width:130; border-top-style:none'><font size='1.8'><?= h("社員コード：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'required' => 'true')) ?></td>
+
+  <?php for($i=1; $i<=10; $i++): ?>
+    <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
+  <?php endfor;?>
+
+  <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false]) ?></td>
+  <td style='width:69; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ['options' => $arrGaikan, 'label'=>false]) ?></td>
+  <td style='width:80; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'required' => 'true')) ?></td>
+  <td style='width:65; border-top-style:none'><?= $this->Form->control('gouhi'.$j, ['options' => $arrGouhi, 'label'=>false]) ?></td>
+  <td style='width:65; border-top-style:none'><?= h("修正中") ?></td>
+
+</table>
+
+  <?php else : ?>
+
+    <table class="white">
+
+      <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
+      <td style='width:100; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
+      <td style='width:130; border-top-style:none'><?= h(${"user_code".$j}) ?></td>
+
+      <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
+      <?= $this->Form->control('datetime'.$j, array('type'=>'hidden', 'value'=>${"datetime".$j}, 'label'=>false)) ?>
+      <?= $this->Form->control('user_code'.$j, array('type'=>'hidden', 'value'=>${"user_code".$j}, 'label'=>false)) ?>
+
+      <?php for($i=1; $i<=10; $i++): ?>
+        <?php
+        if(${"result_size".$j.$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
+        && ${"result_size".$j.$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
+          echo '<td style="width:75; border-top-style:none">';
+          echo ${"result_size".$j.$i} ;
+          echo '</td>';
+        } else {
+          echo '<td style="width:75; border-top-style:none"><font color="red">';
+          echo ${"result_size".$j.$i};
+          echo '</td>';
+        }
+        ?>
+        <?= $this->Form->control('result_size'.$j.$i, array('type'=>'hidden', 'value'=>${"result_size".$j.$i}, 'label'=>false)) ?>
+
+      <?php endfor;?>
+
+      <?php
+      if(${"gaikan".$j} == 1){
+        ${"gaikanhyouji".$j} = "不";
+      }else{
+        ${"gaikanhyouji".$j} = "良";
+      }
+
+      if(${"gouhi".$j} == 1){
+        ${"gouhihyouji".$j} = "否";
+      }else{
+        ${"gouhihyouji".$j} = "合";
+      }
+      ?>
+
+      <td style='width:72; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
+      <td style='width:69; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
+      <td style='width:80; border-top-style:none'><?= h(${"weight".$j}) ?></td>
+      <td style='width:65; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+      <td style='width:65; border-top-style:none'></td>
+
+      <?= $this->Form->control('product_id'.$j, array('type'=>'hidden', 'value'=>${"product_id".$j}, 'label'=>false)) ?>
+      <?= $this->Form->control('gaikan'.$j, array('type'=>'hidden', 'value'=>${"gaikan".$j}, 'label'=>false)) ?>
+      <?= $this->Form->control('weight'.$j, array('type'=>'hidden', 'value'=>${"weight".$j}, 'label'=>false)) ?>
+      <?= $this->Form->control('gouhi'.$j, array('type'=>'hidden', 'value'=>${"gouhi".$j}, 'label'=>false)) ?>
+
+      </table>
+
+    <?php endif; ?>
 
 <?php endif; ?>
 
@@ -214,6 +300,8 @@ setInterval('showClock1()',1000);
    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
 </table>
 
+<?php if ($checkedit == 0): ?>
+
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>
@@ -221,6 +309,21 @@ setInterval('showClock1()',1000);
     </tr>
   </tbody>
 </table>
+
+<?php else : ?>
+
+  <table align="center">
+  <tbody class='sample non-sample'>
+    <tr>
+      <td style="border:none"><?= $this->Form->submit(('修正確定'), array('name' => 'edittouroku')) ?></td>
+    </tr>
+  </tbody>
+</table>
+
+<?= $this->Form->control('checkedit', array('type'=>'hidden', 'value'=>$checkedit, 'label'=>false)) ?>
+
+<?php endif; ?>
+
 <br>
 <table>
   <tr><td style="border:none"><strong style="font-size: 13pt"><?= __('成形条件') ?></strong></td></tr>
