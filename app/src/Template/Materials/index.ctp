@@ -27,10 +27,8 @@ echo $this->Html->css('index');
         <thead>
             <tr>
               <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
-              <th scope="col" style='width:150'><?= $this->Paginator->sort('material_code', ['label'=>"原料コード"]) ?></th>
-              <th scope="col" style='width:150'><?= $this->Paginator->sort('grade', ['label'=>"グレード"]) ?></th>
-              <th scope="col" style='width:150'><?= $this->Paginator->sort('color', ['label'=>"色"]) ?></th>
-              <th scope="col" style='width:150'><?= $this->Paginator->sort('maker', ['label'=>"メーカー"]) ?></th>
+              <th scope="col"><?= $this->Paginator->sort('material_code', ['label'=>"原料コード"]) ?></th>
+              <th scope="col" style='width:350'><?= $this->Paginator->sort('name', ['label'=>"原料名"]) ?></th>
                 <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>
         </thead>
@@ -39,9 +37,7 @@ echo $this->Html->css('index');
             <tr>
               <td><?= h($i) ?></td>
                 <td><?= h($material->material_code) ?></td>
-                <td><?= h($material->grade) ?></td>
-                <td><?= h($material->color) ?></td>
-                <td><?= h($material->maker) ?></td>
+                <td><?= h($material->name) ?></td>
                 <td class="actions">
                   <?= $this->Html->link(__('詳細'), ['action' => 'detail', $material->id]) ?>
                 </td>

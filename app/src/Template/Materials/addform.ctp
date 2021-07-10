@@ -34,33 +34,47 @@
 
         <table>
         <tr>
-          <td width="280"><strong>工場・営業所名</strong></td>
-          <td width="280"><strong>原料種類</strong></td>
+          <td width="280"><strong>自社工場</strong></td>
         </tr>
         <tr>
           <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>
-          <td><?= $this->Form->control('type_id', ['options' => $arrMaterialTypes, 'label'=>false]) ?></td>
         </tr>
       </table>
         <table>
         <tr>
-          <td width="280"><strong>原料コード</strong></td>
-          <td width="280"><strong>グレード</strong></td>
+        <td width="260"><strong>原料コード</strong></td>
+        <td width="200"><strong>単位</strong></td>
         </tr>
         <tr>
-          <td><?= $this->Form->control('material_code', array('type'=>'text', 'label'=>false, 'autofocus'=>true)) ?></td>
-          <td><?= $this->Form->control('grade', array('type'=>'text', 'label'=>false)) ?></td>
+        <td><?= $this->Form->control('material_code', array('type'=>'text', 'label'=>false, 'size'=>20, 'autofocus'=>true)) ?></td>
+        <td><?= $this->Form->control('tanni', array('type'=>'text', 'label'=>false, 'size'=>15)) ?></td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <td width="480"><strong>原料名</strong></td>
+        </tr>
+        <tr>
+          <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>40)) ?></td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <td width="480"><strong>原料種類</strong></td>
+        </tr>
+        <tr>
+          <td><?= $this->Form->control('type_id', ['options' => $arrMaterialTypes, 'label'=>false]) ?></td>
         </tr>
       </table>
 
       <table>
       <tr>
-        <td width="280"><strong>色</strong></td>
-        <td width="280"><strong>メーカー</strong></td>
+      <td width="480"><strong>原料仕入先</strong></td>
       </tr>
       <tr>
-        <td><?= $this->Form->control('color', array('type'=>'text', 'label'=>false)) ?></td>
-        <td><?= $this->Form->control('maker', array('type'=>'text', 'label'=>false)) ?></td>
+      <td><?= $this->Form->control('material_supplier_id', ['options' => $arrMaterialSuppliers, 'label'=>false]) ?></td>
       </tr>
     </table>
 

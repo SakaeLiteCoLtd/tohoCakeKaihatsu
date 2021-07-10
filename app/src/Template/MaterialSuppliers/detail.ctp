@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlproductmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlmaterialmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlproductmenu = new htmlproductmenu();
- $htmlproduct = $htmlproductmenu->productmenus();
+ $htmlmaterialmenu = new htmlmaterialmenu();
+ $htmlmaterial = $htmlmaterialmenu->materialmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -13,7 +13,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlproduct;
+     echo $htmlmaterial;
 ?>
 
 <?= $this->Form->create($materialSuppliers, ['url' => ['action' => 'detail']]) ?>
@@ -31,7 +31,7 @@
 
     <table>
       <tr>
-        <td width="280"><strong>工場・営業所名</strong></td>
+        <td width="280"><strong>自社工場</strong></td>
       </tr>
       <tr>
         <td><?= h($factory_name) ?></td>
@@ -40,11 +40,19 @@
     <table>
       <tr>
         <td width="280"><strong>原料仕入先名</strong></td>
-        <td width="280"><strong>支店名</strong></td>
+        <td width="280"><strong>原料仕入先コード</strong></td>
       </tr>
       <tr>
         <td><?= h($name) ?></td>
-        <td><?= h($office) ?></td>
+        <td><?= h($material_supplier_code) ?></td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="560"><strong>部署名</strong></td>
+      </tr>
+      <tr>
+        <td><?= h($department) ?></td>
       </tr>
     </table>
     <table>
@@ -59,11 +67,11 @@
     </table>
     <table>
       <tr>
-        <td width="180"><strong>部署名</strong></td>
+        <td width="180"><strong>郵便番号</strong></td>
         <td width="380"><strong>住所</strong></td>
       </tr>
       <tr>
-        <td><?= h($department) ?></td>
+        <td><?= h($yuubin) ?></td>
         <td><?= h($address) ?></td>
       </tr>
     </table>

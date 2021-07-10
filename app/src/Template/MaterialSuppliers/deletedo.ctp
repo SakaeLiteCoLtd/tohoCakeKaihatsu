@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlproductmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlmaterialmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlproductmenu = new htmlproductmenu();
- $htmlproduct = $htmlproductmenu->productmenus();
+ $htmlmaterialmenu = new htmlmaterialmenu();
+ $htmlmaterial = $htmlmaterialmenu->materialmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -13,7 +13,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlproduct;
+     echo $htmlmaterial;
 ?>
 
 <form method="post" action="/materialSuppliers/index">

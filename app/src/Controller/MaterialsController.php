@@ -14,6 +14,7 @@ class MaterialsController extends AppController
       public function initialize()
     {
      parent::initialize();
+     $this->MaterialSuppliers = TableRegistry::get('MaterialSuppliers');
      $this->MaterialTypes = TableRegistry::get('MaterialTypes');
      $this->Factories = TableRegistry::get('Factories');
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
@@ -100,12 +101,8 @@ class MaterialsController extends AppController
       $this->set('type_name', $type_name);
       $material_code = $Materials[0]["material_code"];
       $this->set('material_code', $material_code);
-      $grade = $Materials[0]["grade"];
-      $this->set('grade', $grade);
-      $color = $Materials[0]["color"];
-      $this->set('color', $color);
-      $maker = $Materials[0]["maker"];
-      $this->set('maker', $maker);
+      $name = $Materials[0]["name"];
+      $this->set('name', $name);
 
     }
 
@@ -132,6 +129,15 @@ class MaterialsController extends AppController
       }
       $this->set('arrMaterialTypes', $arrMaterialTypes);
 
+      $MaterialSuppliers = $this->MaterialSuppliers->find()
+      ->where(['delete_flag' => 0])->toArray();
+
+      $arrMaterialSuppliers = array();
+      foreach ($MaterialSuppliers as $value) {
+        $arrMaterialSuppliers[] = array($value->id=>$value->name);
+      }
+      $this->set('arrMaterialSuppliers', $arrMaterialSuppliers);
+
       $Factories = $this->Factories->find()
       ->where(['delete_flag' => 0])->toArray();
       $arrFactories = array();
@@ -154,6 +160,11 @@ class MaterialsController extends AppController
       $type_name = $MaterialTypes[0]['type'];
       $this->set('type_name', $type_name);
 
+      $MaterialSuppliers = $this->MaterialSuppliers->find()
+      ->where(['id' => $data['material_supplier_id']])->toArray();
+      $supplier_name = $MaterialSuppliers[0]['name'];
+      $this->set('supplier_name', $supplier_name);
+
       $Factories = $this->Factories->find()
       ->where(['id' => $data['factory_id']])->toArray();
       $factory_name = $Factories[0]['name'];
@@ -173,6 +184,11 @@ class MaterialsController extends AppController
       $type_name = $MaterialTypes[0]['type'];
       $this->set('type_name', $type_name);
 
+      $MaterialSuppliers = $this->MaterialSuppliers->find()
+      ->where(['id' => $data['material_supplier_id']])->toArray();
+      $supplier_name = $MaterialSuppliers[0]['name'];
+      $this->set('supplier_name', $supplier_name);
+
       $Factories = $this->Factories->find()
       ->where(['id' => $data['factory_id']])->toArray();
       $factory_name = $Factories[0]['name'];
@@ -187,10 +203,10 @@ class MaterialsController extends AppController
       $arrtourokumaterial = [
         'factory_id' => $data["factory_id"],
         'material_code' => $data["material_code"],
-        'grade' => $data["grade"],
-        'color' => $data["color"],
-        'maker' => $data["maker"],
-        'type_id' => $data["type_id"],
+        'name' => $data["name"],
+        'material_supplier_id' => $data["material_supplier_id"],
+        'material_type_id' => $data["type_id"],
+        'tanni' => $data["tanni"],
         'is_active' => 0,
         'delete_flag' => 0,
         'created_at' => date("Y-m-d H:i:s"),

@@ -95,14 +95,16 @@ class MaterialSuppliersController extends AppController
       $this->set('factory_name', $factory_name);
       $name = $MaterialSuppliers[0]["name"];
       $this->set('name', $name);
-      $office = $MaterialSuppliers[0]["office"];
-      $this->set('office', $office);
+      $material_supplier_code = $MaterialSuppliers[0]["material_supplier_code"];
+      $this->set('material_supplier_code', $material_supplier_code);
       $tel = $MaterialSuppliers[0]["tel"];
       $this->set('tel', $tel);
       $fax = $MaterialSuppliers[0]["fax"];
       $this->set('fax', $fax);
       $department = $MaterialSuppliers[0]["department"];
       $this->set('department', $department);
+      $yuubin = $MaterialSuppliers[0]["yuubin"];
+      $this->set('yuubin', $yuubin);
       $address = $MaterialSuppliers[0]["address"];
       $this->set('address', $address);
 
@@ -182,7 +184,8 @@ class MaterialSuppliersController extends AppController
       $arrtourokumaterialSupplier = [
         'factory_id' => $data["factory_id"],
         'name' => $data["name"],
-        'office' => $data["office"],
+        'material_supplier_code' => $data["material_supplier_code"],
+        'yuubin' => $data["yuubin"],
         'department' => $data["department"],
         'address' => $data["address"],
         'tel' => $data["tel"],
@@ -211,10 +214,10 @@ class MaterialSuppliersController extends AppController
 
         } else {
 
-          $this->Flash->error(__('The data could not be saved. Please, try again.'));
-          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
           $mes = "※登録されませんでした";
           $this->set('mes',$mes);
+          $this->Flash->error(__('The data could not be saved. Please, try again.'));
+          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
 
         }
 

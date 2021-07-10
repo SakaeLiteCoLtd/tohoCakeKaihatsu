@@ -31,7 +31,7 @@
 
     <table>
       <tr>
-        <td width="280"><strong>工場・営業所名</strong></td>
+        <td width="280"><strong>自社工場</strong></td>
         <td width="280"><strong>原料種類</strong></td>
       </tr>
       <tr>
@@ -42,24 +42,13 @@
     <table>
     <tr>
       <td width="280"><strong>原料コード</strong></td>
-      <td width="280"><strong>グレード</strong></td>
+      <td width="280"><strong>原料名</strong></td>
     </tr>
     <tr>
       <td><?= h($material_code) ?></td>
-      <td><?= h($grade) ?></td>
+      <td><?= h($name) ?></td>
     </tr>
   </table>
-
-  <table>
-  <tr>
-    <td width="280"><strong>色</strong></td>
-    <td width="280"><strong>メーカー</strong></td>
-  </tr>
-  <tr>
-    <td><?= h($color) ?></td>
-    <td><?= h($maker) ?></td>
-  </tr>
-</table>
 
     </fieldset>
 

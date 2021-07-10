@@ -19,9 +19,9 @@
 <?= $this->Form->create($material, ['url' => ['action' => 'adddo']]) ?>
 
 <?= $this->Form->control('material_code', array('type'=>'hidden', 'value'=>$this->request->getData('material_code'), 'label'=>false)) ?>
-<?= $this->Form->control('grade', array('type'=>'hidden', 'value'=>$this->request->getData('grade'), 'label'=>false)) ?>
-<?= $this->Form->control('color', array('type'=>'hidden', 'value'=>$this->request->getData('color'), 'label'=>false)) ?>
-<?= $this->Form->control('maker', array('type'=>'hidden', 'value'=>$this->request->getData('maker'), 'label'=>false)) ?>
+<?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$this->request->getData('name'), 'label'=>false)) ?>
+<?= $this->Form->control('tanni', array('type'=>'hidden', 'value'=>$this->request->getData('tanni'), 'label'=>false)) ?>
+<?= $this->Form->control('material_supplier_id', array('type'=>'hidden', 'value'=>$this->request->getData('material_supplier_id'), 'label'=>false)) ?>
 <?= $this->Form->control('type_id', array('type'=>'hidden', 'value'=>$this->request->getData('type_id'), 'label'=>false)) ?>
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 <br><br><br>
@@ -38,34 +38,48 @@
         <br>
 
         <table>
-          <tr>
-            <td width="280"><strong>工場・営業所名</strong></td>
-            <td width="280"><strong>原料種類</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($factory_name) ?></td>
-            <td><?= h($type_name) ?></td>
-        	</tr>
-        </table>
-        <table>
         <tr>
-          <td width="280"><strong>原料コード</strong></td>
-          <td width="280"><strong>グレード</strong></td>
+          <td width="280"><strong>自社工場</strong></td>
         </tr>
         <tr>
-          <td><?= h($this->request->getData('material_code')) ?></td>
-          <td><?= h($this->request->getData('grade')) ?></td>
+        <td><?= h($factory_name) ?></td>
+        </tr>
+      </table>
+        <table>
+        <tr>
+        <td width="260"><strong>原料コード</strong></td>
+        <td width="200"><strong>単位</strong></td>
+        </tr>
+        <tr>
+        <td><?= h($this->request->getData('material_code')) ?></td>
+        <td><?= h($this->request->getData('tanni')) ?></td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <td width="480"><strong>原料名</strong></td>
+        </tr>
+        <tr>
+        <td><?= h($this->request->getData('name')) ?></td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <td width="480"><strong>原料種類</strong></td>
+        </tr>
+        <tr>
+        <td><?= h($type_name) ?></td>
         </tr>
       </table>
 
       <table>
       <tr>
-        <td width="280"><strong>色</strong></td>
-        <td width="280"><strong>メーカー</strong></td>
+      <td width="480"><strong>原料仕入先</strong></td>
       </tr>
       <tr>
-        <td><?= h($this->request->getData('color')) ?></td>
-        <td><?= h($this->request->getData('maker')) ?></td>
+      <td><?= h($supplier_name) ?></td>
       </tr>
     </table>
 
