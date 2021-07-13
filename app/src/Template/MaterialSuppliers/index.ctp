@@ -29,7 +29,7 @@ echo $this->Html->css('index');
             <tr>
               <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
                 <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"会社名"]) ?></th>
-                <th scope="col" style='width:200'><?= $this->Paginator->sort('office', ['label'=>"支店名"]) ?></th>
+                <th scope="col" style='width:200'><?= $this->Paginator->sort('department', ['label'=>"支店名"]) ?></th>
                 <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>
         </thead>
@@ -38,7 +38,7 @@ echo $this->Html->css('index');
             <tr>
               <td><?= h($i) ?></td>
                 <td><?= h($materialSupplier->name) ?></td>
-                <td><?= h($materialSupplier->office) ?></td>
+                <td><?= h($materialSupplier->department) ?></td>
                 <td class="actions">
                   <?= $this->Html->link(__('詳細'), ['action' => 'detail', $materialSupplier->id]) ?>
                 </td>

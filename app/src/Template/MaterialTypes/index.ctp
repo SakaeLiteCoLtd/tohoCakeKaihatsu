@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlproductmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlmaterialmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlproductmenu = new htmlproductmenu();
- $htmlproduct = $htmlproductmenu->productmenus();
+ $htmlmaterialmenu = new htmlmaterialmenu();
+ $htmlmaterial = $htmlmaterialmenu->materialmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -13,7 +13,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlproduct;
+     echo $htmlmaterial;
 ?>
 
 <?php
@@ -27,7 +27,6 @@ echo $this->Html->css('index');
         <thead>
             <tr>
               <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
-              <th scope="col" style='width:200'><?= $this->Paginator->sort('factory_id', ['label'=>"工場・営業所名"]) ?></th>
                 <th scope="col" style='width:200'><?= $this->Paginator->sort('type', ['label'=>"原料種類"]) ?></th>
                 <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>
@@ -36,7 +35,6 @@ echo $this->Html->css('index');
             <?php foreach ($materialTypes as $materialType): ?>
             <tr>
               <td><?= h($i) ?></td>
-               <td><?= h($materialType->factory->name) ?></td>
                <td><?= h($materialType->type) ?></td>
                 <td class="actions">
                   <?= $this->Html->link(__('詳細'), ['action' => 'detail', $materialType->id]) ?>

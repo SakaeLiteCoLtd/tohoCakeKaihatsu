@@ -14,6 +14,7 @@ class MaterialsController extends AppController
       public function initialize()
     {
      parent::initialize();
+     $this->Materials = TableRegistry::get('Materials');
      $this->MaterialSuppliers = TableRegistry::get('MaterialSuppliers');
      $this->MaterialTypes = TableRegistry::get('MaterialTypes');
      $this->Factories = TableRegistry::get('Factories');
@@ -55,6 +56,39 @@ class MaterialsController extends AppController
         $this->set(compact('materials'));
     }
 
+    public function editpreform()
+    {
+      $materials = $this->Materials->newEntity();
+      $this->set('materials', $materials);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
+      $Materials_name_list = $this->Materials->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrMaterials_name_list = array();
+      for($j=0; $j<count($Materials_name_list); $j++){
+        array_push($arrMaterials_name_list,$Materials_name_list[$j]["name"]);
+      }
+      $arrMaterials_name_list = array_unique($arrMaterials_name_list);
+      $arrMaterials_name_list = array_values($arrMaterials_name_list);
+      $this->set('arrMaterials_name_list', $arrMaterials_name_list);
+    }
+
     public function detail($id = null)
     {
       $materials = $this->Materials->newEntity();
@@ -85,24 +119,26 @@ class MaterialsController extends AppController
 
         return $this->redirect(['action' => 'deleteconfirm']);
 
+      }elseif(isset($data["kensaku"])){
+  
+        $Materials = $this->Materials->find()->where(['name' => $data['name']])->toArray();
+
+        if(!isset($Materials[0])){
+
+          return $this->redirect(['action' => 'editpreform',
+          's' => ['mess' => "原料名：「".$data['name']."」は存在しません。"]]);
+  
+        }else{
+          $id = $Materials[0]["id"];
+        }
+
       }
       $this->set('id', $id);
 
-      $Materials = $this->Materials->find()->contain(["Factories", "MaterialTypes"])
-      ->where(['Materials.id' => $id])->toArray();
-/*
-      echo "<pre>";
-      print_r($Materials);
-      echo "</pre>";
-*/
-      $factory_name = $Materials[0]["factory"]['name'];
-      $this->set('factory_name', $factory_name);
-      $type_name = $Materials[0]["material_type"]['type'];
-      $this->set('type_name', $type_name);
-      $material_code = $Materials[0]["material_code"];
-      $this->set('material_code', $material_code);
-      $name = $Materials[0]["name"];
-      $this->set('name', $name);
+      $material = $this->Materials->get($id, [
+        'contain' => ["Factories", "MaterialTypes", "MaterialSuppliers"]
+      ]);
+      $this->set(compact('material'));
 
     }
 
@@ -284,6 +320,15 @@ class MaterialsController extends AppController
       }
       $this->set('arrMaterialTypes', $arrMaterialTypes);
 
+      $MaterialSuppliers = $this->MaterialSuppliers->find()
+      ->where(['delete_flag' => 0])->toArray();
+
+      $arrMaterialSuppliers = array();
+      foreach ($MaterialSuppliers as $value) {
+        $arrMaterialSuppliers[] = array($value->id=>$value->name);
+      }
+      $this->set('arrMaterialSuppliers', $arrMaterialSuppliers);
+
       $Factories = $this->Factories->find()
       ->where(['delete_flag' => 0])->toArray();
       $arrFactories = array();
@@ -302,7 +347,7 @@ class MaterialsController extends AppController
       $data = $this->request->getData();
 
       $MaterialTypes = $this->MaterialTypes->find()
-      ->where(['id' => $data['type_id']])->toArray();
+      ->where(['id' => $data['material_type_id']])->toArray();
       $type_name = $MaterialTypes[0]['type'];
       $this->set('type_name', $type_name);
 
@@ -311,6 +356,10 @@ class MaterialsController extends AppController
       $factory_name = $Factories[0]['name'];
       $this->set('factory_name', $factory_name);
 
+      $MaterialSuppliers = $this->MaterialSuppliers->find()
+      ->where(['id' => $data['material_supplier_id']])->toArray();
+      $supplier_name = $MaterialSuppliers[0]['name'];
+      $this->set('supplier_name', $supplier_name);
     }
 
     public function editdo()
@@ -324,7 +373,7 @@ class MaterialsController extends AppController
       $data = $this->request->getData();
 
       $MaterialTypes = $this->MaterialTypes->find()
-      ->where(['id' => $data['type_id']])->toArray();
+      ->where(['id' => $data['material_type_id']])->toArray();
       $type_name = $MaterialTypes[0]['type'];
       $this->set('type_name', $type_name);
 
@@ -333,38 +382,46 @@ class MaterialsController extends AppController
       $factory_name = $Factories[0]['name'];
       $this->set('factory_name', $factory_name);
 
-      $staff_id = $datasession['Auth']['User']['staff_id'];
+      $MaterialSuppliers = $this->MaterialSuppliers->find()
+      ->where(['id' => $data['material_supplier_id']])->toArray();
+      $supplier_name = $MaterialSuppliers[0]['name'];
+      $this->set('supplier_name', $supplier_name);
 
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+/*
       $arrupdatematerial = array();
       $arrupdatematerial = [
         'factory_id' => $data["factory_id"],
         'material_code' => $data["material_code"],
-        'grade' => $data["grade"],
-        'color' => $data["color"],
-        'maker' => $data["maker"],
-        'type_id' => $data["type_id"],
+        'name' => $data["name"],
+        'material_supplier_id' => $data["material_supplier_id"],
+        'material_type_id' => $data["material_type_id"],
+        'tanni' => $data["tanni"],
         'is_active' => 0,
         'delete_flag' => 0,
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
+
       echo "<pre>";
       print_r($arrupdatematerial);
       echo "</pre>";
 */
-      $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $arrupdatematerial);
+      $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $data);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
        $connection->begin();//トランザクション3
        try {//トランザクション4
-         if ($this->Materials->save($Materials)) {
-
-         $this->Materials->updateAll(
-           [ 'delete_flag' => 1,
-             'updated_at' => date('Y-m-d H:i:s'),
-             'updated_staff' => $staff_id],
-           ['id'  => $data['id']]);
+        if ($this->Materials->updateAll(
+          ['factory_id' => $data["factory_id"],
+           'material_code' => $data["material_code"],
+           'name' => $data["name"],
+           'material_supplier_id' => $data["material_supplier_id"],
+           'material_type_id' => $data["material_type_id"],
+           'tanni' => $data["tanni"],
+           'updated_at' => date('Y-m-d H:i:s'),
+           'updated_staff' => $staff_id],
+          ['id'  => $data['id']])){
 
          $mes = "※下記のように更新されました";
          $this->set('mes',$mes);

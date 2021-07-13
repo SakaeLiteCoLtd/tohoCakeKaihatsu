@@ -31,50 +31,57 @@
         <br>
 
         <table>
-          <tr>
-            <td width="280"><strong>工場・営業所名</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($factory_name) ?></td>
-        	</tr>
-        </table>
+        <tr>
+          <td width="280"><strong>自社工場</strong></td>
+        </tr>
+        <tr>
+        <td><?= h($factory_name) ?></td>
+        </tr>
+      </table>
         <table>
           <tr>
             <td width="280"><strong>原料仕入先名</strong></td>
-            <td width="280"><strong>支店名</strong></td>
+            <td width="280"><strong>原料仕入先コード</strong></td>
         	</tr>
           <tr>
-            <td><?= h($this->request->getData('name')) ?></td>
-            <td><?= h($this->request->getData('office')) ?></td>
+          <td><?= h($this->request->getData('name')) ?></td>
+          <td><?= h($this->request->getData('material_supplier_code')) ?></td>
         	</tr>
         </table>
+        <table>
+      <tr>
+        <td width="580"><strong>部署名</strong></td>
+      </tr>
+      <tr>
+      <td><?= h($this->request->getData('department')) ?></td>
+      </tr>
+    </table>
         <table>
           <tr>
             <td width="280"><strong>電話番号</strong></td>
             <td width="280"><strong>FAX</strong></td>
         	</tr>
           <tr>
-            <td><?= h($this->request->getData('tel')) ?></td>
+          <td><?= h($this->request->getData('tel')) ?></td>
             <td><?= h($this->request->getData('fax')) ?></td>
         	</tr>
         </table>
         <table>
           <tr>
-            <td width="180"><strong>部署名</strong></td>
+            <td width="180"><strong>郵便番号</strong></td>
             <td width="380"><strong>住所</strong></td>
         	</tr>
           <tr>
-            <td><?= h($this->request->getData('department')) ?></td>
+            <td><?= h($this->request->getData('yuubin')) ?></td>
             <td><?= h($this->request->getData('address')) ?></td>
         	</tr>
         </table>
-
     </fieldset>
 
     <table>
       <tr>
         <tbody class='sample non-sample'>
-        <td style="border-style: none;"><div><?= $this->Form->submit('顧客メニュートップへ戻る', array('name' => 'top')); ?></div></td>
+        <td style="border-style: none;"><div><?= $this->Form->submit('原料仕入先メニュートップへ戻る', array('name' => 'top')); ?></div></td>
       </tbody>
     </tr>
     </table>

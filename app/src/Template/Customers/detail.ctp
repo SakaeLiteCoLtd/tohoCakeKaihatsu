@@ -28,33 +28,53 @@
     </table>
 
     <table>
-      <tr>
-        <td width="280"><strong>工場・営業所名</strong></td>
-      </tr>
-      <tr>
+        <tr>
+          <td width="280"><strong>自社工場</strong></td>
+        </tr>
+        <tr>
         <td><?= h($factory_name) ?></td>
+        </tr>
+      </table>
+      <table>
+      <tr>
+        <td width="280"><strong>得意先名</strong></td>
+        <td width="280"><strong>得意先コード</strong></td>
       </tr>
+      <tr>
+      <td><?= h($name) ?></td>
+      <td><?= h($customer_code) ?></td>
+    </tr>
     </table>
-    <table>
+  <table>
     <tr>
-      <td width="280"><strong>得意先名</strong></td>
-      <td width="280"><strong>電話番号</strong></td>
+      <td width="280"><strong>フリガナ</strong></td>
+      <td width="280"><strong>部署</strong></td>
     </tr>
     <tr>
-      <td><?= h($name) ?></td>
-      <td><?= h($tel) ?></td>
+    <td><?= h($furigana) ?></td>
+    <td><?= h($department) ?></td>
     </tr>
   </table>
-<table>
-<tr>
-  <td width="180"><strong>ファックス</strong></td>
-  <td width="380"><strong>住所</strong></td>
-</tr>
-<tr>
-  <td><?= h($fax) ?></td>
-  <td><?= h($address) ?></td>
-</tr>
-</table>
+  <table>
+    <tr>
+      <td width="280"><strong>電話番号</strong></td>
+      <td width="280"><strong>ファックス</strong></td>
+    </tr>
+    <tr>
+    <td><?= h($tel) ?></td>
+    <td><?= h($fax) ?></td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <td width="150"><strong>郵便番号</strong></td>
+      <td width="410"><strong>住所</strong></td>
+    </tr>
+    <tr>
+    <td><?= h($yuubin) ?></td>
+    <td><?= h($address) ?></td>
+    </tr>
+  </table>
 
     </fieldset>
 

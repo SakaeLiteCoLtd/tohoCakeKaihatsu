@@ -16,13 +16,19 @@ class htmlmaterialmenu extends AppController
                           "<br><br>\n".
                           "<font size='4'>　・</font><a href='/materialTypes/addform' /><font size='4' color=black>原料種類新規登録</font></a>\n".
                           "<br><br>\n".
+                          "<font size='4'>　・</font><a href='/materialTypes/editpreform' /><font size='4' color=black>原料種類検索</font></a>\n".
+                          "<br><br>\n".
                           "<font size='4'>　・</font><a href='/materialTypes/index' /><font size='4' color=black>原料種類一覧</font></a>\n".
                           "<br><br>\n".
                           "<font size='4'>　・</font><a href='/materials/addform' /><font size='4' color=black>原料新規登録</font></a>\n".
                           "<br><br>\n".
+                          "<font size='4'>　・</font><a href='/materials/editpreform' /><font size='4' color=black>原料検索</font></a>\n".
+                          "<br><br>\n".
                           "<font size='4'>　・</font><a href='/materials/index' /><font size='4' color=black>原料一覧</font></a>\n".
                           "<br><br>\n".
                           "<font size='4'>　・</font><a href='/materialSuppliers/addform' /><font size='4' color=black>原料仕入先新規登録</font></a>\n".
+                          "<br><br>\n".
+                          "<font size='4'>　・</font><a href='/materialSuppliers/editpreform' /><font size='4' color=black>原料仕入先検索</font></a>\n".
                           "<br><br>\n".
                           "<font size='4'>　・</font><a href='/materialSuppliers/index' /><font size='4' color=black>原料仕入先一覧</font></a>\n".
                           "<br><br>\n".

@@ -30,8 +30,8 @@
 
         <table>
         <tr>
-          <td width="280"><strong>自社工場</strong></td>
-          <td width="280"><strong>得意先</strong></td>
+        <td width="180"><strong>自社工場</strong></td>
+          <td width="380"><strong>得意先</strong></td>
         </tr>
         <tr>
         <td><?= h($this->request->getData('factory_name')) ?></td>
@@ -41,8 +41,8 @@
 
       <table>
           <tr>
-            <td width="280"><strong>品名</strong></td>
-            <td width="280"><strong>単位</strong></td>
+            <td width="380"><strong>品名</strong></td>
+            <td width="180"><strong>単位</strong></td>
         	</tr>
           <tr>
             <td><?= h($this->request->getData('name')) ?></td>
@@ -54,7 +54,8 @@
 
      <table>
       <tr>
-      <td width="280"><strong>管理No.</strong></td>
+      <td><strong>管理No.</strong></td>
+      <td width="300"><strong>品名</strong></td>
       <td><strong>長さ（mm）</strong></td>
       </tr>
       
@@ -62,12 +63,15 @@
 
       <tr>
       <td><?= h($arrupdateproduct[$i]["product_code"]) ?></td>
+      <td><?= h($arrupdateproduct[$i]["name"]) ?></td>
       <td><?= h($arrupdateproduct[$i]["length"]) ?></td>
       </tr>
 
       <?php endfor;?>
 
      </table>
+
+     <?php if (count($arrdeleteproduct) > 0) : ?>
 
      <table>
           <tbody class='sample non-sample'>
@@ -77,7 +81,8 @@
 
         <table>
       <tr>
-      <td width="280"><strong>管理No.</strong></td>
+      <td><strong>管理No.</strong></td>
+      <td width="300"><strong>品名</strong></td>
       <td><strong>長さ（mm）</strong></td>
       </tr>
 
@@ -85,12 +90,16 @@
 
         <tr>
         <td><?= h($arrdeleteproduct[$i]["product_code"]) ?></td>
+        <td><?= h($arrdeleteproduct[$i]["name"]) ?></td>
         <td><?= h($arrdeleteproduct[$i]["length"]) ?></td>
         </tr>
 
         <?php endfor;?>
 
      </table>
+
+     <?php else : ?>
+      <?php endif; ?>
 
     </fieldset>
 

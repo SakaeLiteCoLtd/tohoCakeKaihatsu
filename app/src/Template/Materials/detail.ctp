@@ -29,26 +29,51 @@
       </tbody>
     </table>
 
-    <table>
+  <table>
+        <tr>
+          <td width="280"><strong>自社工場</strong></td>
+        </tr>
+        <tr>
+        <td><?= h($material->factory->name) ?></td>
+        </tr>
+      </table>
+        <table>
+        <tr>
+        <td width="260"><strong>原料コード</strong></td>
+        <td width="200"><strong>単位</strong></td>
+        </tr>
+        <tr>
+        <td><?= h($material['material_code']) ?></td>
+    <td><?= h($material['tanni']) ?></td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <td width="480"><strong>原料名</strong></td>
+        </tr>
+        <tr>
+        <td><?= h($material['name']) ?></td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <td width="480"><strong>原料種類</strong></td>
+        </tr>
+        <tr>
+        <td><?= h($material->material_type->type) ?></td>
+        </tr>
+      </table>
+
+      <table>
       <tr>
-        <td width="280"><strong>自社工場</strong></td>
-        <td width="280"><strong>原料種類</strong></td>
+      <td width="480"><strong>原料仕入先</strong></td>
       </tr>
       <tr>
-        <td><?= h($factory_name) ?></td>
-        <td><?= h($type_name) ?></td>
+      <td><?= h($material->material_supplier->name) ?></td>
       </tr>
     </table>
-    <table>
-    <tr>
-      <td width="280"><strong>原料コード</strong></td>
-      <td width="280"><strong>原料名</strong></td>
-    </tr>
-    <tr>
-      <td><?= h($material_code) ?></td>
-      <td><?= h($name) ?></td>
-    </tr>
-  </table>
 
     </fieldset>
 

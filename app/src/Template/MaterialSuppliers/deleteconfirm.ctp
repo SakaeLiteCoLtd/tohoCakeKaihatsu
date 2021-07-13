@@ -37,43 +37,51 @@
         <br>
 
         <table>
-          <tr>
-            <td width="280"><strong>工場・営業所名</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($materialSupplier->factory->name) ?></td>
-        	</tr>
-        </table>
-        <table>
-          <tr>
-            <td width="280"><strong>原料仕入先名</strong></td>
-            <td width="280"><strong>支店名</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($materialSupplier['name']) ?></td>
-            <td><?= h($materialSupplier['office']) ?></td>
-        	</tr>
-        </table>
-        <table>
-          <tr>
-            <td width="280"><strong>電話番号</strong></td>
-            <td width="280"><strong>FAX</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($materialSupplier['tel']) ?></td>
-            <td><?= h($materialSupplier['fax']) ?></td>
-        	</tr>
-        </table>
-        <table>
-          <tr>
-            <td width="180"><strong>部署名</strong></td>
-            <td width="380"><strong>住所</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($materialSupplier['department']) ?></td>
-            <td><?= h($materialSupplier['address']) ?></td>
-        	</tr>
-        </table>
+      <tr>
+        <td width="280"><strong>自社工場</strong></td>
+      </tr>
+      <tr>
+      <td><?= h($materialSupplier->factory->name) ?></td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="280"><strong>原料仕入先名</strong></td>
+        <td width="280"><strong>原料仕入先コード</strong></td>
+      </tr>
+      <tr>
+      <td><?= h($materialSupplier['name']) ?></td>
+      <td><?= h($materialSupplier['material_supplier_code']) ?></td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="560"><strong>部署名</strong></td>
+      </tr>
+      <tr>
+      <td><?= h($materialSupplier['department']) ?></td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="280"><strong>電話番号</strong></td>
+        <td width="280"><strong>FAX</strong></td>
+      </tr>
+      <tr>
+      <td><?= h($materialSupplier['tel']) ?></td>
+      <td><?= h($materialSupplier['fax']) ?></td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="180"><strong>郵便番号</strong></td>
+        <td width="380"><strong>住所</strong></td>
+      </tr>
+      <tr>
+      <td><?= h($materialSupplier['yuubin']) ?></td>
+      <td><?= h($materialSupplier['address']) ?></td>
+      </tr>
+    </table>
 
     </fieldset>
 

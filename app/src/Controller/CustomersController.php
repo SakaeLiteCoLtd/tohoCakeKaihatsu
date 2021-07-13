@@ -14,6 +14,7 @@ class CustomersController extends AppController
       public function initialize()
     {
      parent::initialize();
+     $this->MaterialSuppliers = TableRegistry::get('MaterialSuppliers');
      $this->Factories = TableRegistry::get('Factories');
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
@@ -92,12 +93,13 @@ class CustomersController extends AppController
       $this->set('name', $name);
       $factory_name = $Customers[0]["factory"]['name'];
       $this->set('factory_name', $factory_name);
-      $address = $Customers[0]["address"];
-      $this->set('address', $address);
-      $tel = $Customers[0]["tel"];
-      $this->set('tel', $tel);
-      $fax = $Customers[0]["fax"];
-      $this->set('fax', $fax);
+      $this->set('customer_code', $Customers[0]["customer_code"]);
+      $this->set('furigana', $Customers[0]["furigana"]);
+      $this->set('department', $Customers[0]["department"]);
+      $this->set('tel', $Customers[0]["tel"]);
+      $this->set('fax', $Customers[0]["fax"]);
+      $this->set('yuubin', $Customers[0]["yuubin"]);
+      $this->set('address', $Customers[0]["address"]);
 
     }
 
@@ -143,6 +145,11 @@ class CustomersController extends AppController
 
       $CustomerData = $this->Customers->find()
       ->where(['customer_code' => $data['customer_code']])->toArray();
+
+      $MaterialSuppliers = $this->MaterialSuppliers->find()
+      ->where(['material_supplier_code' => $data['customer_code']])->toArray();
+
+      $CustomerData = $CustomerData + $MaterialSuppliers;
 
       if(isset($CustomerData[0])){
   
@@ -256,7 +263,7 @@ class CustomersController extends AppController
       $this->set('arrCustomer_name_list', $arrCustomer_name_list);
     }
 
-    public function editform()
+    public function editsyousai()
     {
       $customer = $this->Customers->newEntity();
       $this->set('customer', $customer);
@@ -278,10 +285,16 @@ class CustomersController extends AppController
       $Factories = $this->Factories->find()
       ->where(['id' => $data['factory_id']])->toArray();
       $factory_name = $Factories[0]['name'];
+      $this->set('factory_id', $data['factory_id']);
       $this->set('factory_name', $factory_name);
 
       $CustomerData = $this->Customers->find()
       ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
+
+      $MaterialSuppliers = $this->MaterialSuppliers->find()
+      ->where(['material_supplier_code' => $data['customer_code']])->toArray();
+
+      $CustomerData = $CustomerData + $MaterialSuppliers;
 
       if(!isset($CustomerData[0])){
 
@@ -311,6 +324,54 @@ class CustomersController extends AppController
 
     }
 
+    public function editform()
+    {
+      $customer = $this->Customers->newEntity();
+      $this->set('customer', $customer);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+
+         $session = $this->request->getSession();
+         $_SESSION = $session->read();
+        $data = $_SESSION['customer_edit'];
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+        $data = $this->request->getData();
+      }
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+      $CustomerData = $this->Customers->find()
+      ->where(['id' => $data['id']])->toArray();
+
+      $this->set('CustomerData', $CustomerData);
+      $this->set('id', $data["id"]);
+      $this->set('name', $CustomerData[0]["name"]);
+      $this->set('customer_code', $CustomerData[0]["customer_code"]);
+      $this->set('furigana', $CustomerData[0]["furigana"]);
+      $this->set('department', $CustomerData[0]["department"]);
+      $this->set('tel', $CustomerData[0]["tel"]);
+      $this->set('fax', $CustomerData[0]["fax"]);
+      $this->set('yuubin', $CustomerData[0]["yuubin"]);
+      $this->set('address', $CustomerData[0]["address"]);
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
+    }
+
     public function editconfirm()
     {
       $customer = $this->Customers->newEntity();
@@ -321,13 +382,18 @@ class CustomersController extends AppController
       $CustomerData = $this->Customers->find()
       ->where(['id IS NOT' => $data['id'], 'customer_code' => $data['customer_code']])->toArray();
 
+      $MaterialSuppliers = $this->MaterialSuppliers->find()
+      ->where(['material_supplier_code' => $data['customer_code']])->toArray();
+
+      $CustomerData = $CustomerData + $MaterialSuppliers;
+
       if(isset($CustomerData[0])){
 
         if(!isset($_SESSION)){
           session_start();
           }
           $_SESSION['customer_edit'] = array();
-          $_SESSION['customer_edit'] = ["factory_id" => $data['factory_id'],"name" => $data['name']];
+          $_SESSION['customer_edit'] = ["id" => $data['id'], "factory_id" => $data['factory_id'], "name" => $data['name']];
   
         return $this->redirect(['action' => 'editform',
         's' => ['mess' => "得意先コード：「".$data['customer_code']."」は既に存在します。"]]);

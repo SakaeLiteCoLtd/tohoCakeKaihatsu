@@ -16,7 +16,7 @@ class htmlcustomermenu extends AppController
                           "<br><br>\n".
                           "<font size='4'>　・</font><a href='/customers/addform' /><font size='4' color=black>得意先新規登録</font></a>\n".
                           "<br><br>\n".
-                          "<font size='4'>　・</font><a href='/customers/editpreform' /><font size='4' color=black>得意先情報編集・削除</font></a>\n".
+                          "<font size='4'>　・</font><a href='/customers/editpreform' /><font size='4' color=black>得意先検索</font></a>\n".
                           "<br><br>\n".
                           "<font size='4'>　・</font><a href='/customers/index' /><font size='4' color=black>得意先メニュートップ</font></a>\n".
                           "<br><br>\n".

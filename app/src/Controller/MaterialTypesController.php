@@ -52,6 +52,31 @@ class MaterialTypesController extends AppController
         $this->set(compact('materialTypes'));
     }
 
+    public function editpreform()
+    {
+      $materialType = $this->MaterialTypes->newEntity();
+      $this->set('materialType', $materialType);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
+      $MaterialTypes_name_list = $this->MaterialTypes->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrMaterialTypes_name_list = array();
+      for($j=0; $j<count($MaterialTypes_name_list); $j++){
+        array_push($arrMaterialTypes_name_list,$MaterialTypes_name_list[$j]["type"]);
+      }
+      $arrMaterialTypes_name_list = array_unique($arrMaterialTypes_name_list);
+      $arrMaterialTypes_name_list = array_values($arrMaterialTypes_name_list);
+      $this->set('arrMaterialTypes_name_list', $arrMaterialTypes_name_list);
+    }
+
     public function detail($id = null)
     {
       $materialType = $this->MaterialTypes->newEntity();
@@ -81,6 +106,19 @@ class MaterialTypesController extends AppController
         $_SESSION['materialTypedata'] = $id;
 
         return $this->redirect(['action' => 'deleteconfirm']);
+
+      }elseif(isset($data["kensaku"])){
+  
+        $MaterialTypes = $this->MaterialTypes->find()->where(['type' => $data['type']])->toArray();
+
+        if(!isset($MaterialTypes[0])){
+
+          return $this->redirect(['action' => 'editpreform',
+          's' => ['mess' => "原料種類：「".$data['type']."」は存在しません。"]]);
+  
+        }else{
+          $id = $MaterialTypes[0]["id"];
+        }
 
       }
       $this->set('id', $id);
@@ -331,7 +369,7 @@ class MaterialTypesController extends AppController
       $id = $_SESSION['materialTypedata'];
 
         $materialType = $this->MaterialTypes->get($id, [
-            'contain' => []
+            'contain' => ["Factories"]
         ]);
         $this->set(compact('materialType'));
     }
@@ -344,7 +382,7 @@ class MaterialTypesController extends AppController
       $data = $this->request->getData();
 
       $materialType = $this->MaterialTypes->get($data["id"], [
-          'contain' => []
+          'contain' => ["Factories"]
       ]);
       $this->set(compact('materialType'));
 

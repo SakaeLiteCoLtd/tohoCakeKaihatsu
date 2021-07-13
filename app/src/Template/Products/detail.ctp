@@ -28,34 +28,46 @@
     </table>
 
     <table>
-      <tr>
-        <td width="280"><strong>自社工場</strong></td>
-      </tr>
-      <tr>
+        <tr>
+          <td width="180"><strong>自社工場</strong></td>
+          <td width="380"><strong>得意先</strong></td>
+        </tr>
+        <tr>
         <td><?= h($factory_name) ?></td>
-      </tr>
-    </table>
-    <table>
-    <tr>
-      <td width="280"><strong>社内品番</strong></td>
-      <td width="280"><strong>顧客品番</strong></td>
-    </tr>
-    <tr>
-      <td><?= h($product_code) ?></td>
-      <td><?= h($customer_product_code) ?></td>
-    </tr>
-  </table>
+        <td><?= h($customer_name) ?></td>
+        </tr>
+      </table>
 
-  <table>
-  <tr>
-    <td width="280"><strong>品名</strong></td>
-    <td width="280"><strong>顧客</strong></td>
-  </tr>
-  <tr>
-    <td><?= h($name) ?></td>
-    <td><?= h($customer_name) ?></td>
-  </tr>
-</table>
+      <table>
+          <tr>
+            <td width="380"><strong>品名</strong></td>
+            <td width="180"><strong>単位</strong></td>
+        	</tr>
+          <tr>
+          <td><?= h($name) ?></td>
+          <td><?= h($tanni) ?></td>
+        	</tr>
+        </table>
+
+     <br>
+
+     <table>
+      <tr>
+      <td><strong>管理No.</strong></td>
+      <td width="300"><strong>品名</strong></td>
+      <td><strong>長さ（mm）</strong></td>
+      </tr>
+      
+      <?php for($i=0; $i<count($ProductName); $i++): ?>
+
+      <tr>
+      <td><?= h($ProductName[$i]["product_code"]) ?></td>
+      <td><?= h($ProductName[$i]["name"]) ?></td>
+      <td><?= h($ProductName[$i]["length"]) ?></td>
+
+      <?php endfor;?>
+
+     </table>
 
     </fieldset>
 

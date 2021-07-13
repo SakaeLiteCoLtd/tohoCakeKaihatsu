@@ -37,8 +37,8 @@
 
         <table>
         <tr>
-          <td width="280"><strong>自社工場</strong></td>
-          <td width="280"><strong>得意先</strong></td>
+          <td width="180"><strong>自社工場</strong></td>
+          <td width="380"><strong>得意先</strong></td>
         </tr>
         <tr>
         <td><?= h($this->request->getData('factory_name')) ?></td>
@@ -48,8 +48,8 @@
 
       <table>
           <tr>
-            <td width="280"><strong>品名</strong></td>
-            <td width="280"><strong>単位</strong></td>
+          <td width="380"><strong>品名</strong></td>
+            <td width="180"><strong>単位</strong></td>
         	</tr>
           <tr>
             <td><?= h($this->request->getData('name')) ?></td>
@@ -61,7 +61,8 @@
 
      <table>
       <tr>
-      <td width="280"><strong>管理No.</strong></td>
+      <td><strong>管理No.</strong></td>
+      <td width="300"><strong>品名</strong></td>
       <td><strong>長さ（mm）</strong></td>
       </tr>
       
@@ -69,16 +70,20 @@
 
       <tr>
       <td><?= h($arrKoushinproduct[$i]["product_code"]) ?></td>
+      <td><?= h($arrKoushinproduct[$i]["name"]) ?></td>
       <td><?= h($arrKoushinproduct[$i]["length"]) ?></td>
       </tr>
 
       <?= $this->Form->control('product_code'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["product_code"], 'label'=>false)) ?>
+      <?= $this->Form->control('name'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["name"], 'label'=>false)) ?>
       <?= $this->Form->control('length'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["length"], 'label'=>false)) ?>
       <?= $this->Form->control('num', array('type'=>'hidden', 'value'=>$i, 'label'=>false)) ?>
 
       <?php endfor;?>
 
       </table>
+
+      <?php if (count($arrDeleteproduct) > 0) : ?>
 
       <table>
           <tbody class='sample non-sample'>
@@ -88,7 +93,8 @@
 
         <table>
       <tr>
-      <td width="280"><strong>管理No.</strong></td>
+      <td><strong>管理No.</strong></td>
+      <td width="300"><strong>品名</strong></td>
       <td><strong>長さ（mm）</strong></td>
       </tr>
 
@@ -96,16 +102,21 @@
 
         <tr>
         <td><?= h($arrDeleteproduct[$i]["product_code"]) ?></td>
+        <td><?= h($arrDeleteproduct[$i]["name"]) ?></td>
         <td><?= h($arrDeleteproduct[$i]["length"]) ?></td>
         </tr>
 
         <?= $this->Form->control('delete_product_code'.$i, array('type'=>'hidden', 'value'=>$arrDeleteproduct[$i]["product_code"], 'label'=>false)) ?>
+        <?= $this->Form->control('delete_name'.$i, array('type'=>'hidden', 'value'=>$arrDeleteproduct[$i]["name"], 'label'=>false)) ?>
         <?= $this->Form->control('delete_length'.$i, array('type'=>'hidden', 'value'=>$arrDeleteproduct[$i]["length"], 'label'=>false)) ?>
         <?= $this->Form->control('delete_num', array('type'=>'hidden', 'value'=>$i, 'label'=>false)) ?>
 
         <?php endfor;?>
 
      </table>
+
+     <?php else : ?>
+      <?php endif; ?>
 
     </fieldset>
 
