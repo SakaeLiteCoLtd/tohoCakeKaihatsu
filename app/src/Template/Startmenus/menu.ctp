@@ -8,10 +8,10 @@
      echo $htmllogin;
 ?>
 
-<nav class='large-3 medium-4 columns' id='actions-sidebar' style='width:20%; background-color: #afeeee ;width:20%; position: fixed;top: 0px; left:0%'>
+<nav class='large-3 medium-4 columns' id='actions-sidebar' style='width:20%; ;width:20%; position: fixed;top: 0px; left:0%'>
     <ul class='side-nav'>
 
-      <div>
+      <div class='sample non-sample-div'>
             <br>
             <font size='5'>　総合メニュー</font>
             <br><br>

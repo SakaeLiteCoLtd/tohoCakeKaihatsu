@@ -89,18 +89,31 @@ class ProductsTable extends Table
             ->notEmpty('name');
 
         $validator
-            ->scalar('sakuin')
-            ->maxLength('sakuin', 255)
-            ->allowEmpty('sakuin');
+            ->scalar('tanni')
+            ->maxLength('tanni', 255)
+            ->allowEmpty('tanni');
 
         $validator
             ->numeric('length')
             ->allowEmpty('length');
 
         $validator
-            ->scalar('tanni')
-            ->maxLength('tanni', 255)
-            ->allowEmpty('tanni');
+            ->numeric('length_cut')
+            ->allowEmpty('length_cut');
+
+        $validator
+            ->integer('status_kensahyou')
+            ->requirePresence('status_kensahyou', 'create')
+            ->notEmpty('status_kensahyou');
+
+        $validator
+            ->numeric('weight')
+            ->allowEmpty('weight');
+
+        $validator
+            ->scalar('sakuin')
+            ->maxLength('sakuin', 255)
+            ->allowEmpty('sakuin');
 
         $validator
             ->integer('is_active')

@@ -19,7 +19,11 @@
 <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$id, 'label'=>false)) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<?php
+//<nav class="large-3 medium-4 columns">
+?>
+
+<nav class="sample non-sample">
     <fieldset>
       <table>
       <tbody class='sample non-sample'>
@@ -56,6 +60,7 @@
       <td><strong>管理No.</strong></td>
       <td width="300"><strong>品名</strong></td>
       <td><strong>長さ（mm）</strong></td>
+      <td><strong>カット長さ（mm）</strong></td>
       </tr>
       
       <?php for($i=0; $i<count($ProductName); $i++): ?>
@@ -64,6 +69,7 @@
       <td><?= h($ProductName[$i]["product_code"]) ?></td>
       <td><?= h($ProductName[$i]["name"]) ?></td>
       <td><?= h($ProductName[$i]["length"]) ?></td>
+      <td><?= h($ProductName[$i]["length_cut"]) ?></td>
 
       <?php endfor;?>
 

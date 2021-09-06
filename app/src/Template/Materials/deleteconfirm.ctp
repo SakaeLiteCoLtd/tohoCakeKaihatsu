@@ -21,7 +21,7 @@
 <?= $this->Form->create($material, ['url' => ['action' => 'deletedo']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
     <?= $this->Form->create($material) ?>
     <fieldset>
 

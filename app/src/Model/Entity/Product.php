@@ -10,9 +10,12 @@ use Cake\ORM\Entity;
  * @property int $factory_id
  * @property string $product_code
  * @property string $name
- * @property string|null $sakuin
- * @property float|null $length
  * @property string|null $tanni
+ * @property float|null $length
+ * @property float|null $length_cut
+ * @property int $status_kensahyou
+ * @property float|null $weight
+ * @property string|null $sakuin
  * @property int $customer_id
  * @property int $is_active
  * @property int $delete_flag
@@ -44,9 +47,12 @@ class Product extends Entity
         'factory_id' => true,
         'product_code' => true,
         'name' => true,
-        'sakuin' => true,
-        'length' => true,
         'tanni' => true,
+        'length' => true,
+        'length_cut' => true,
+        'status_kensahyou' => true,
+        'weight' => true,
+        'sakuin' => true,
         'customer_id' => true,
         'is_active' => true,
         'delete_flag' => true,

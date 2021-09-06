@@ -41,7 +41,11 @@ $(function() {
 <?= $this->Form->create($product, ['url' => ['action' => 'addformlength']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<?php
+//<nav class="large-3 medium-4 columns">
+?>
+
+<nav class="sample non-sample">
 
     <?= $this->Form->create($product) ?>
     <fieldset>
@@ -57,7 +61,7 @@ $(function() {
 
         <table>
         <tr>
-          <td width="280"><strong>自社工場</strong></td>
+          <td><strong>自社工場</strong></td>
         </tr>
         <tr>
           <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>
@@ -66,16 +70,20 @@ $(function() {
 
       <table>
       <tr>
-        <td width="320"><strong>得意先</strong></td>
-        <td width="320"><strong>品名</strong></td>
+        <td width="260"><strong>得意先</strong></td>
+        <td width="260"><strong>品名</strong></td>
         <td width="50"><strong>単位</strong></td>
+        <td width="50"><strong>単重(g/m)</strong></td>
+        <td width="50"><strong>検査表</strong></td>
       </tr>
       <tr>
         <td>
-        <?= $this->Form->control('customer_name', array('type'=>'text', 'label'=>false, 'size'=>30, 'id'=>"customer_name_list")) ?>
+        <?= $this->Form->control('customer_name', array('type'=>'text', 'label'=>false, 'size'=>25, 'id'=>"customer_name_list")) ?>
         </td>
-        <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?></td>
+        <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>25)) ?></td>
         <td><?= $this->Form->control('tanni', array('type'=>'text', 'label'=>false, 'size'=>6)) ?></td>
+        <td><?= $this->Form->control('weight', array('type'=>'text', 'pattern'=>'^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'size'=>6)) ?></td>
+        <td><?= $this->Form->control('status_kensahyou', ['options' => $arrStatusKensahyou, 'label'=>false]) ?></td>
       </tr>
     </table>
 

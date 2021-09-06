@@ -6,8 +6,8 @@
 </html>
 */
 ?>
-
-<div class="users form">
+<html class='sample non-sample'>
+<div>
   <?= $this->Flash->render() ?>
   <?= $this->Form->create() ?>
   <fieldset>
@@ -16,12 +16,16 @@
     <table align="center">
       <tr height="45">
         <td width="100"><strong>社員コード</strong></td>
-        <td width="200"><?= $this->Form->control('user_code', array('type'=>'text', 'label'=>false, 'autofocus'=>true, 'size'=>14)) ?></td>
+        <td width="150">
+          <?= $this->Form->control('user_code', array('type'=>'text', 'label'=>false, 'autofocus'=>true, 'size'=>14, 'autocomplete' => 'off')) ?>
+         </td>
       </tr>
       <tr height="45">
+        <input type="password" name="dummypass" style="visibility: hidden; top: -100px; left: -100px;" />
         <td align="center"><strong>パスワード</strong></td>
-        <td align="center"><?= $this->Form->control('password', array('type'=>'password', 'label'=>false, 'size'=>14)) ?></td>
-      </tr>
+        <td align="center">
+          <?= $this->Form->control('password', array('type'=>'password', 'label'=>false, 'size'=>14, 'autocomplete' => 'off')) ?>
+        </td>
     </table>
   </fieldset>
 
@@ -34,3 +38,4 @@
   </table>
   <?= $this->Form->end() ?>
 </div>
+</html>

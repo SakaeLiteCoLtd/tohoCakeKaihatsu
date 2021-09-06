@@ -17,7 +17,19 @@
 <?= $this->Form->create($product, ['url' => ['action' => 'index']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<?php
+if($this->request->getData('status_kensahyou') == 1){
+  $status_kensahyou_name = "表示";
+}else{
+  $status_kensahyou_name = "非表示";
+}
+?>
+
+<?php
+//<nav class="large-3 medium-4 columns">
+?>
+
+<nav class="sample non-sample">
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('製品情報編集・削除') ?></strong></legend>
       <br>
@@ -41,12 +53,16 @@
 
       <table>
           <tr>
-            <td width="380"><strong>品名</strong></td>
-            <td width="180"><strong>単位</strong></td>
+            <td width="360"><strong>品名</strong></td>
+            <td width="90"><strong>単位</strong></td>
+            <td width="90"><strong>単重(g/m)</strong></td>
+            <td width="50"><strong>検査表</strong></td>
         	</tr>
           <tr>
             <td><?= h($this->request->getData('name')) ?></td>
             <td><?= h($this->request->getData('tanni')) ?></td>
+            <td><?= h($this->request->getData('weight')) ?></td>
+            <td><?= h($status_kensahyou_name) ?></td>
         	</tr>
         </table>
 
@@ -57,6 +73,7 @@
       <td><strong>管理No.</strong></td>
       <td width="300"><strong>品名</strong></td>
       <td><strong>長さ（mm）</strong></td>
+      <td><strong>カット長さ（mm）</strong></td>
       </tr>
       
       <?php for($i=0; $i<count($arrupdateproduct); $i++): ?>
@@ -65,6 +82,7 @@
       <td><?= h($arrupdateproduct[$i]["product_code"]) ?></td>
       <td><?= h($arrupdateproduct[$i]["name"]) ?></td>
       <td><?= h($arrupdateproduct[$i]["length"]) ?></td>
+      <td><?= h($arrupdateproduct[$i]["length_cut"]) ?></td>
       </tr>
 
       <?php endfor;?>
@@ -84,6 +102,7 @@
       <td><strong>管理No.</strong></td>
       <td width="300"><strong>品名</strong></td>
       <td><strong>長さ（mm）</strong></td>
+      <td><strong>カット長さ（mm）</strong></td>
       </tr>
 
       <?php for($i=0; $i<count($arrdeleteproduct); $i++): ?>
@@ -92,6 +111,7 @@
         <td><?= h($arrdeleteproduct[$i]["product_code"]) ?></td>
         <td><?= h($arrdeleteproduct[$i]["name"]) ?></td>
         <td><?= h($arrdeleteproduct[$i]["length"]) ?></td>
+        <td><?= h($arrdeleteproduct[$i]["length_cut"]) ?></td>
         </tr>
 
         <?php endfor;?>
@@ -110,6 +130,6 @@
         </tr>
       </tbody>
     </table>
-
+    <br><br><br>
     <?= $this->Form->end() ?>
   </nav>

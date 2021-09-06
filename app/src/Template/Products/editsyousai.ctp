@@ -20,7 +20,11 @@
 <?= $this->Form->create($product, ['url' => ['action' => 'editform']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<?php
+//<nav class="large-3 medium-4 columns">
+?>
+
+<nav class="sample non-sample">
 
     <?= $this->Form->create($product) ?>
     <fieldset>
@@ -41,11 +45,15 @@
       <table>
           <tr>
             <td width="380"><strong>品名</strong></td>
-            <td width="180"><strong>単位</strong></td>
+            <td width="90"><strong>単位</strong></td>
+            <td width="90"><strong>単重(g/m)</strong></td>
+            <td width="90"><strong>検査表</strong></td>
         	</tr>
           <tr>
           <td><?= h($name) ?></td>
           <td><?= h($tanni) ?></td>
+          <td><?= h($weight) ?></td>
+          <td><?= h($status_kensahyou_name) ?></td>
         	</tr>
         </table>
 
@@ -56,6 +64,7 @@
       <td><strong>管理No.</strong></td>
       <td width="300"><strong>品名</strong></td>
       <td><strong>長さ（mm）</strong></td>
+      <td><strong>カット長さ（mm）</strong></td>
       </tr>
       
       <?php for($i=0; $i<count($ProductName); $i++): ?>
@@ -64,6 +73,7 @@
       <td><?= h($ProductName[$i]["product_code"]) ?></td>
       <td><?= h($ProductName[$i]["name"]) ?></td>
       <td><?= h($ProductName[$i]["length"]) ?></td>
+      <td><?= h($ProductName[$i]["length_cut"]) ?></td>
 
       <?php endfor;?>
 

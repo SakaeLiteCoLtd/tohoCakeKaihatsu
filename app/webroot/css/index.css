@@ -20,11 +20,15 @@ nav {
   height: 100%;
   padding: 0rem 0.0rem 0.0rem;
   margin: 0.0rem 0.0rem 0.0rem;
+  background-color: #AEFFBD;
+  /*
   background-color: #afeeee;
+  */
 }
 
 div {
 /*  height: 100%;*/
+margin-right: -200px;
 }
 
 html {
@@ -43,6 +47,7 @@ body {
     margin: 0;
     height: 100%;
     min-height: 100%;
+    background-color: #E6FFFF;
 }
 
 /**
@@ -466,12 +471,12 @@ ul {
   margin: 0;
   padding: 0;
 }
-
+/*
 div {
   margin-left: auto;
   margin-right: auto;
 }
-
+*/
 div.side-menu {
     padding-bottom: 10000px;
     margin-bottom: -10000px;

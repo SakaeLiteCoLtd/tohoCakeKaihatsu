@@ -41,6 +41,7 @@ class CustomersController extends AppController
        }
 
      }
+
     }
 
     public function index()
@@ -134,6 +135,13 @@ class CustomersController extends AppController
       }
       $this->set('arrFactories', $arrFactories);
 
+      if(!isset($_SESSION)){
+        session_start();
+        header('Expires:-1');
+        header('Cache-Control:');
+        header('Pragma:');
+      }
+
     }
 
     public function addcomfirm()
@@ -162,6 +170,14 @@ class CustomersController extends AppController
       ->where(['id' => $data['factory_id']])->toArray();
       $factory_name = $Factories[0]['name'];
       $this->set('factory_name', $factory_name);
+
+      if(!isset($_SESSION)){
+        session_start();
+        header('Expires:-1');
+        header('Cache-Control:');
+        header('Pragma:');
+      }
+  
     }
 
     public function adddo()
@@ -292,7 +308,7 @@ class CustomersController extends AppController
       ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
 
       $MaterialSuppliers = $this->MaterialSuppliers->find()
-      ->where(['material_supplier_code' => $data['customer_code']])->toArray();
+      ->where(['material_supplier_code' => $CustomerData[0]['customer_code']])->toArray();
 
       $CustomerData = $CustomerData + $MaterialSuppliers;
 

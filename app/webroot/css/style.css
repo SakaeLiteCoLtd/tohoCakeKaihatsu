@@ -148,7 +148,7 @@ select[multiple] {
 }
 input[type=checkbox],
 input[type=radio] {
-    margin-right: 0.5em;
+  /*  margin-right: 0.5em;*/
 }
 
 .date select,
@@ -403,7 +403,7 @@ fieldset legend {
     width: 100%;
     line-height: 2rem;
     text-align: center;
-
+    background-color: #E6FFFF;
 }
 
 .form button[type="submit"] {
@@ -503,7 +503,10 @@ div.message.hidden {
 #actions-sidebar {
     margin-bottom: -99999px;
     padding-bottom: 99999px;
-    background-color: #afeeee;
+    background-color: #AEFFBD;
+    /*
+    background-color: #E6FFFF;
+    */
 }
 @media(max-width: 640px) {
     #actions-sidebar {

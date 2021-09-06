@@ -24,7 +24,11 @@
 <?= $this->Form->control('factory_name', array('type'=>'hidden', 'value'=>$factory_name, 'label'=>false)) ?>
 <?= $this->Form->control('customer_name', array('type'=>'hidden', 'value'=>$customer_name, 'label'=>false)) ?>
 
-<nav class="large-3 medium-4 columns">
+<?php
+//<nav class="large-3 medium-4 columns">
+?>
+
+<nav class="sample non-sample">
 
     <?= $this->Form->create($product) ?>
     <fieldset>
@@ -52,12 +56,16 @@
 
       <table>
           <tr>
-          <td width="380"><strong>品名</strong></td>
-            <td width="180"><strong>単位</strong></td>
+          <td width="300"><strong>品名</strong></td>
+          <td width="90"><strong>単位</strong></td>
+            <td width="90"><strong>単重(g/m)</strong></td>
+            <td width="50"><strong>検査表</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->control('name', array('type'=>'text', 'value'=>$name, 'label'=>false, 'size'=>30)) ?></td>
+            <td><?= $this->Form->control('name', array('type'=>'text', 'value'=>$name, 'label'=>false, 'size'=>33)) ?></td>
             <td><?= $this->Form->control('tanni', array('type'=>'text', 'value'=>$tanni, 'label'=>false, 'size'=>6)) ?></td>
+            <td><?= $this->Form->control('weight', array('type'=>'text', 'pattern'=>'^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'size'=>6)) ?></td>
+            <td><?= $this->Form->control('status_kensahyou', ['options' => $arrStatusKensahyou, 'value'=>$status_kensahyou, 'label'=>false]) ?></td>
         	</tr>
         </table>
 
@@ -68,6 +76,7 @@
       <td><strong>管理No.</strong></td>
       <td width="300"><strong>品名</strong></td>
       <td><strong>長さ（mm）</strong></td>
+      <td><strong>カット長さ（mm）</strong></td>
       <td><strong>削除</strong></td>
       </tr>
       
@@ -76,9 +85,11 @@
       <tr>
       <td><?= h($ProductName[$i]["product_code"]) ?></td>
       <td><?= $this->Form->control
-      ('name'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["name"], 'size'=>30, 'required' => 'true')) ?></td>
+      ('name'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["name"], 'size'=>33, 'required' => 'true')) ?></td>
       <td><?= $this->Form->control
       ('length'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length"], 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true')) ?></td>
+      <td><?= $this->Form->control
+      ('length_cut'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_cut"], 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
       <td><?= $this->Form->control('delete'.$i, array('type'=>'checkbox', 'label'=>false)) ?></td>
       </tr>
 

@@ -19,7 +19,11 @@
 <?= $this->Form->create($product, ['url' => ['action' => 'index']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<?php
+//<nav class="large-3 medium-4 columns">
+?>
+
+<nav class="sample non-sample">
     <?= $this->Form->create($product) ?>
     <fieldset>
 

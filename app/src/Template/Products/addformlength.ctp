@@ -30,10 +30,25 @@ if(!isset($_SESSION)){
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 <?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$this->request->getData('name'), 'label'=>false)) ?>
 <?= $this->Form->control('tanni', array('type'=>'hidden', 'value'=>$this->request->getData('tanni'), 'label'=>false)) ?>
+<?= $this->Form->control('weight', array('type'=>'hidden', 'value'=>$this->request->getData('weight'), 'label'=>false)) ?>
 <?= $this->Form->control('customer_name', array('type'=>'hidden', 'value'=>$this->request->getData('customer_name'), 'label'=>false)) ?>
+<?= $this->Form->control('status_kensahyou', array('type'=>'hidden', 'value'=>$this->request->getData('status_kensahyou'), 'label'=>false)) ?>
 <?= $this->Form->control('tuikalength', array('type'=>'hidden', 'value'=>$tuikalength, 'label'=>false)) ?>
 
-<nav class="large-3 medium-4 columns">
+<?php
+
+if($this->request->getData('status_kensahyou') == 1){
+  $status_kensahyou_name = "表示";
+}else{
+  $status_kensahyou_name = "非表示";
+}
+?>
+
+<?php
+//<nav class="large-3 medium-4 columns">
+?>
+
+<nav class="sample non-sample">
 
     <?= $this->Form->create($product) ?>
     <fieldset>
@@ -48,10 +63,12 @@ if(!isset($_SESSION)){
 
         <table>
         <tr>
-          <td width="280"><strong>自社工場</strong></td>
+        <td width="280"><strong>自社工場</strong></td>
+        <td width="150"><strong>検査表に表示</strong></td>
         </tr>
         <tr>
         <td><?= h($factory_name) ?></td>
+        <td><?= h($status_kensahyou_name) ?></td>
         </tr>
       </table>
 
@@ -60,7 +77,9 @@ if(!isset($_SESSION)){
         <td width="320"><strong>得意先</strong></td>
         <td><strong>品名</strong></td>
         <td width="50"><strong>長さ（mm）</strong></td>
+        <td width="50"><strong>カット長さ（mm）</strong></td>
         <td><strong>単位</strong></td>
+        <td><strong>単重(g/m)</strong></td>
       </tr>
       
       <?php for($k=1; $k<=$tuikalength; $k++): ?>
@@ -70,7 +89,10 @@ if(!isset($_SESSION)){
       <td><?= h($name) ?></td>
       <td><?= $this->Form->control
       ('length'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true')) ?></td>
+      <td><?= $this->Form->control
+      ('length_cut'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6)) ?></td>
       <td><?= h($tanni) ?></td>
+      <td><?= h($weight) ?></td>
       </tr>
 
       <?php endfor;?>

@@ -23,7 +23,11 @@
 <?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$name, 'label'=>false)) ?>
 <?= $this->Form->control('tuikalength', array('type'=>'hidden', 'value'=>$tuikalength, 'label'=>false)) ?>
 
-<nav class="large-3 medium-4 columns">
+<?php
+//<nav class="large-3 medium-4 columns">
+?>
+
+<nav class="sample non-sample">
 
     <?= $this->Form->create($product) ?>
     <fieldset>
@@ -50,6 +54,7 @@
         <td><strong>製品コード</strong></td>
         <td><strong>品名</strong></td>
         <td><strong>長さ（mm）</strong></td>
+        <td><strong>カット長さ（mm）</strong></td>
       </tr>
       
       <?php for($i=0; $i<count($ProductName); $i++): ?>
@@ -58,6 +63,7 @@
       <td><?= h($ProductName[$i]["product_code"]) ?></td>
       <td><?= h($ProductName[$i]["name"]) ?></td>
       <td><?= h($ProductName[$i]["length"]) ?></td>
+      <td><?= h($ProductName[$i]["length_cut"]) ?></td>
       </tr>
 
       <?php endfor;?>
@@ -75,6 +81,7 @@
       <tr>
         <td><strong>品名</strong></td>
         <td><strong>長さ（mm）</strong></td>
+        <td><strong>カット長さ（mm）</strong></td>
       </tr>
       
       <?php for($k=1; $k<=$tuikalength; $k++): ?>
@@ -83,6 +90,8 @@
       <td><?= h($name) ?></td>
       <td><?= h(${"length".$k}) ?></td>
       <?= $this->Form->control('length'.$k, array('type'=>'hidden', 'value'=>${"length".$k}, 'label'=>false)) ?>
+      <td><?= h(${"length_cut".$k}) ?></td>
+      <?= $this->Form->control('length_cut'.$k, array('type'=>'hidden', 'value'=>${"length_cut".$k}, 'label'=>false)) ?>
 
       <?php endfor;?>
 

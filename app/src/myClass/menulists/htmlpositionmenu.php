@@ -10,7 +10,7 @@ class htmlpositionmenu extends AppController
   	{
         $html =
         "<nav class='large-3 medium-4 columns' id='actions-sidebar' style='width:20%; position: fixed;top: 0px; left:0%'>\n".
-                      "<ul class='side-nav' style='background-color:#afeeee'>\n".
+                      "<ul class='side-nav' >\n".
                       "<br>\n".
                           "<font size='5'>　役職メニュー</font>\n".
                           "<br><br>\n".

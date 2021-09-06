@@ -9,7 +9,7 @@ class htmlloginmenu extends AppController
      public function Loginmenu()
   	{
         $html =
-        "<table align='right' style='border:none'><tbody class='sample non-sample'><tr style='border:none'><td style='border:none'>\n";
+        "<table align='right' style='border:none; background-color:#E6FFFF'><tbody class='sample non-sample'><tr style='border:none'><td style='border:none'>\n";
         $html = $html."ログイン中：".$this->request->Session()->read('Auth.User.user_code')."　　";
         $html = $html.
         "</td>\n".

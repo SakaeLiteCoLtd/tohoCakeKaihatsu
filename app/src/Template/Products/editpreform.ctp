@@ -41,7 +41,11 @@ $(function() {
 <?= $this->Form->create($product, ['url' => ['action' => 'editsyousai']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<?php
+//<nav class="large-3 medium-4 columns">
+?>
+
+<nav class="sample non-sample">
 
     <?= $this->Form->create($product) ?>
     <fieldset>
@@ -57,7 +61,7 @@ $(function() {
 
         <table>
         <tr>
-          <td width="280"><strong>自社工場</strong></td>
+          <td><strong>自社工場</strong></td>
         </tr>
         <tr>
           <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>
@@ -66,7 +70,7 @@ $(function() {
 
       <table>
       <tr>
-        <td width="320"><strong>品名</strong></td>
+        <td width="300"><strong>品名</strong></td>
       </tr>
       <tr>
         <td>
