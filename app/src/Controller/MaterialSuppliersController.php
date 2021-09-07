@@ -382,20 +382,25 @@ class MaterialSuppliersController extends AppController
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
-      $arrupdatematerialSupplier = array();
-      $arrupdatematerialSupplier = [
-        'factory_id' => $data["factory_id"],
-        'name' => $data["name"],
-        'material_supplier_code' => $data["material_supplier_code"],
-        'department' => $data["department"],
-        'address' => $data["address"],
-        'yuubin' => $data["yuubin"],
-        'tel' => $data["tel"],
-        'fax' => $data["fax"],
-        'is_active' => 0,
-        'delete_flag' => 0,
-        'created_at' => date("Y-m-d H:i:s"),
-        'created_staff' => $staff_id
+      $MaterialSuppliersmoto = $this->MaterialSuppliers->find()
+      ->where(['id' => $data['id']])->toArray();
+
+      $arrMaterialSuppliermoto = array();
+      $arrMaterialSuppliermoto = [
+        'factory_id' => $MaterialSuppliersmoto[0]["factory_id"],
+        'name' => $MaterialSuppliersmoto[0]["name"],
+        'material_supplier_code' => $MaterialSuppliersmoto[0]["material_supplier_code"],
+        'department' => $MaterialSuppliersmoto[0]["department"],
+        'address' => $MaterialSuppliersmoto[0]["address"],
+        'yuubin' => $MaterialSuppliersmoto[0]["yuubin"],
+        'tel' => $MaterialSuppliersmoto[0]["tel"],
+        'fax' => $MaterialSuppliersmoto[0]["fax"],
+        'is_active' => 1,
+        'delete_flag' => 1,
+        'created_at' => $MaterialSuppliersmoto[0]["created_at"]->format("Y-m-d H:i:s"),
+        'created_staff' => $MaterialSuppliersmoto[0]["created_staff"],
+        'updated_at' => date("Y-m-d H:i:s"),
+        'updated_staff' => $staff_id
       ];
 /*
       echo "<pre>";
@@ -419,6 +424,9 @@ class MaterialSuppliersController extends AppController
            'updated_at' => date('Y-m-d H:i:s'),
            'updated_staff' => $staff_id],
           ['id'  => $data['id']])){
+
+            $MaterialSuppliers = $this->MaterialSuppliers->patchEntity($this->MaterialSuppliers->newEntity(), $arrMaterialSuppliermoto);
+            $this->MaterialSuppliers->save($MaterialSuppliers);
 
          $mes = "※下記のように更新されました";
          $this->set('mes',$mes);

@@ -17,7 +17,7 @@
 <?= $this->Form->create($menu, ['url' => ['action' => 'index']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
     <?= $this->Form->create($menu) ?>
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('メニュー情報編集') ?></strong></legend>

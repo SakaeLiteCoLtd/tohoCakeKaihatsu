@@ -456,11 +456,34 @@ class CustomersController extends AppController
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
+      $Customermoto = $this->Customers->find()
+      ->where(['id' => $data['id']])->toArray();
+
+      $arrCustomermoto = array();
+      $arrCustomermoto = [
+        'factory_id' => $Customermoto[0]["factory_id"],
+        'name' => $Customermoto[0]["name"],
+        'customer_code' => $Customermoto[0]["customer_code"],
+        'furigana' => $Customermoto[0]["furigana"],
+        'department' => $Customermoto[0]["department"],
+        'tel' => $Customermoto[0]["tel"],
+        'fax' => $Customermoto[0]["fax"],
+        'yuubin' => $Customermoto[0]["yuubin"],
+        'address' => $Customermoto[0]["address"],
+        'is_active' => 1,
+        'delete_flag' => 1,
+        'created_at' => $Customermoto[0]["created_at"]->format("Y-m-d H:i:s"),
+        'created_staff' => $Customermoto[0]["created_staff"],
+        'updated_at' => date("Y-m-d H:i:s"),
+        'updated_staff' => $staff_id
+      ];
+
       $Customers = $this->Customers->patchEntity($this->Customers->newEntity(), $data);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
        $connection->begin();//トランザクション3
        try {//トランザクション4
+
          if ($this->Customers->updateAll(
            ['factory_id' => $data["factory_id"],
             'name' => $data["name"],
@@ -479,6 +502,10 @@ class CustomersController extends AppController
         if($data["delete_flag"] > 0){
           $mes = "※下記のデータが削除されました";
         }else{
+
+          $Customers = $this->Customers->patchEntity($this->Customers->newEntity(), $arrCustomermoto);
+          $this->Customers->save($Customers);
+  
           $mes = "※下記のように更新されました";
         }
          $this->set('mes',$mes);

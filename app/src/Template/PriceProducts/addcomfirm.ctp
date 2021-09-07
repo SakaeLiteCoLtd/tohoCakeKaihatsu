@@ -23,7 +23,7 @@
 <?= $this->Form->control('finish_deal', array('type'=>'hidden', 'value'=>$finish_deal, 'label'=>false)) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('製品単価新規登録') ?></strong></legend>
       <br>

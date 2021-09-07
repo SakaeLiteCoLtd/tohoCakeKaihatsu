@@ -23,7 +23,7 @@
 ?>
 
 <br><br><br>
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
   <?= $this->Form->create($Staffs, ['url' => ['action' => 'addcomfirm']]) ?>
     <fieldset>
         <legend><strong style="font-size: 15pt; color:red"><?= __('スタッフ新規登録') ?></strong></legend>

@@ -871,28 +871,28 @@ class ProductsController extends AppController
       ->where(['factory_id' => $data['factory_id'], 'name' => $data['namemoto']])->toArray();
       $this->set('ProductName', $ProductName);
 
-      if(strpos($data["name"],';') !== false){
-
-        if(!isset($_SESSION)){
-          session_start();
-          header('Expires:-1');
-          header('Cache-Control:');
-          header('Pragma:');
-        }
-        
-        $_SESSION['editproductcheck'] = array();
-        $_SESSION['editproductcheck'] = ["factory_id" => $data['factory_id'], "name" => $data['namemoto']];
-  
-        return $this->redirect(['action' => 'editform',
-        's' => ['mess' => "品名に「;」（セミコロン）は使用できません。"]]);
-      }
-
       $arrKoushinproduct = array();
       $arrDeleteproduct = array();
       for($i=0; $i<=$data["num"]; $i++){
 
         if($data["delete".$i] < 1){//登録する場合
 
+          if(strpos($data["name".$i],';') !== false){
+
+            if(!isset($_SESSION)){
+              session_start();
+              header('Expires:-1');
+              header('Cache-Control:');
+              header('Pragma:');
+            }
+            
+            $_SESSION['editproductcheck'] = array();
+            $_SESSION['editproductcheck'] = ["factory_id" => $data['factory_id'], "name" => $data['namemoto']];
+      
+            return $this->redirect(['action' => 'editform',
+            's' => ['mess' => "品名に「;」（セミコロン）は使用できません。"]]);
+          }
+    
           $arrKoushinproduct[] = ["product_code" => $data["product_code".$i],
            "name" => $data["name".$i], "length" => $data["length".$i], "length_cut" => $data["length_cut".$i]];
 

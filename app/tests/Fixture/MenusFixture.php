@@ -53,9 +53,9 @@ class MenusFixture extends TestFixture
                 'id' => 1,
                 'name_menu' => 'Lorem ipsum dolor sit amet',
                 'delete_flag' => 1,
-                'created_at' => '2021-04-14 11:24:32',
+                'created_at' => '2021-09-07 11:45:56',
                 'created_staff' => 1,
-                'updated_at' => '2021-04-14 11:24:32',
+                'updated_at' => '2021-09-07 11:45:56',
                 'updated_staff' => 1
             ],
         ];

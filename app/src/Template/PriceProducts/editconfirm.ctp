@@ -26,7 +26,7 @@
 <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$this->request->getData('id'), 'label'=>false)) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('製品単価情報編集') ?></strong></legend>
       <br>

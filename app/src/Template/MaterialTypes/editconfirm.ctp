@@ -25,7 +25,7 @@
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('原料種類情報編集') ?></strong></legend>
       <br>

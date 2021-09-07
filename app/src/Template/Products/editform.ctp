@@ -56,13 +56,11 @@
 
       <table>
           <tr>
-          <td width="300"><strong>品名</strong></td>
           <td width="90"><strong>単位</strong></td>
             <td width="90"><strong>単重(g/m)</strong></td>
             <td width="50"><strong>検査表</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->control('name', array('type'=>'text', 'value'=>$name, 'label'=>false, 'size'=>33)) ?></td>
             <td><?= $this->Form->control('tanni', array('type'=>'text', 'value'=>$tanni, 'label'=>false, 'size'=>6)) ?></td>
             <td><?= $this->Form->control('weight', array('type'=>'text', 'pattern'=>'^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'size'=>6)) ?></td>
             <td><?= $this->Form->control('status_kensahyou', ['options' => $arrStatusKensahyou, 'value'=>$status_kensahyou, 'label'=>false]) ?></td>

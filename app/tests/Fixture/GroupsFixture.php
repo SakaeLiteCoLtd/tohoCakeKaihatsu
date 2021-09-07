@@ -48,9 +48,9 @@ class GroupsFixture extends TestFixture
                 'name_group' => 'Lorem ipsum dolor sit amet',
                 'menu_id' => 1,
                 'delete_flag' => 1,
-                'created_at' => '2021-04-14 11:24:48',
+                'created_at' => '2021-09-07 11:46:52',
                 'created_staff' => 1,
-                'updated_at' => '2021-04-14 11:24:48',
+                'updated_at' => '2021-09-07 11:46:52',
                 'updated_staff' => 1
             ],
         ];

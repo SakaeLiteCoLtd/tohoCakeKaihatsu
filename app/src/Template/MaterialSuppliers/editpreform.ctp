@@ -41,7 +41,7 @@ $(function() {
 <?= $this->Form->create($materialSupplier, ['url' => ['action' => 'detail']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
 
     <?= $this->Form->create($materialSupplier) ?>
     <fieldset>

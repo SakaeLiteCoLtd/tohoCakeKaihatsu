@@ -388,21 +388,26 @@ class MaterialsController extends AppController
       $this->set('supplier_name', $supplier_name);
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
-/*
-      $arrupdatematerial = array();
-      $arrupdatematerial = [
-        'factory_id' => $data["factory_id"],
-        'material_code' => $data["material_code"],
-        'name' => $data["name"],
-        'material_supplier_id' => $data["material_supplier_id"],
-        'material_type_id' => $data["material_type_id"],
-        'tanni' => $data["tanni"],
-        'is_active' => 0,
-        'delete_flag' => 0,
-        'created_at' => date("Y-m-d H:i:s"),
-        'created_staff' => $staff_id
-      ];
 
+      $Materialsmoto = $this->Materials->find()
+      ->where(['id' => $data['id']])->toArray();
+
+      $arrMaterialmoto = array();
+      $arrMaterialmoto = [
+        'factory_id' => $Materialsmoto[0]["factory_id"],
+        'material_code' => $Materialsmoto[0]["material_code"],
+        'name' => $Materialsmoto[0]["name"],
+        'material_supplier_id' => $Materialsmoto[0]["material_supplier_id"],
+        'material_type_id' => $Materialsmoto[0]["material_type_id"],
+        'tanni' => $Materialsmoto[0]["tanni"],
+        'is_active' => 1,
+        'delete_flag' => 1,
+        'created_at' => $Materialsmoto[0]["created_at"]->format("Y-m-d H:i:s"),
+        'created_staff' => $Materialsmoto[0]["created_staff"],
+        'updated_at' => date("Y-m-d H:i:s"),
+        'updated_staff' => $staff_id
+      ];
+/*
       echo "<pre>";
       print_r($arrupdatematerial);
       echo "</pre>";
@@ -422,6 +427,9 @@ class MaterialsController extends AppController
            'updated_at' => date('Y-m-d H:i:s'),
            'updated_staff' => $staff_id],
           ['id'  => $data['id']])){
+
+            $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $arrMaterialmoto);
+            $this->Materials->save($Materials);
 
          $mes = "※下記のように更新されました";
          $this->set('mes',$mes);

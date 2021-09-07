@@ -19,7 +19,7 @@
 <?= $this->Form->control('name_menu', array('type'=>'hidden', 'value'=>$this->request->getData('name_menu'), 'label'=>false)) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
 
     <?= $this->Form->create($menu) ?>
     <fieldset>

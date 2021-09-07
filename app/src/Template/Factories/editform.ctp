@@ -19,7 +19,7 @@
 <?= $this->Form->create($factory, ['url' => ['action' => 'editconfirm']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
     <?= $this->Form->create($factory) ?>
     <fieldset>
         <legend><strong style="font-size: 15pt; color:red"><?= __('工場・営業所情報編集') ?></strong></legend>

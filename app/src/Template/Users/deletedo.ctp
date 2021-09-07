@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
-use App\myClass\menulists\htmlusermenu;//myClassフォルダに配置したクラスを使用
-use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
-$htmlusermenu = new htmlusermenu();
-$htmluser = $htmlusermenu->Usermenus();
+ use App\myClass\menulists\htmlstaffmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
+$htmlstaffmenu = new htmlstaffmenu();
+$htmlstaff = $htmlstaffmenu->Staffmenus();
 $htmlloginmenu = new htmlloginmenu();
 $htmllogin = $htmlloginmenu->Loginmenu();
 ?>
@@ -11,7 +11,7 @@ $htmllogin = $htmlloginmenu->Loginmenu();
      echo $htmllogin;
 ?>
 <?php
-     echo $htmluser;
+     echo $htmlstaff;
 ?>
 
 <form method="post" action="/users/index">
@@ -19,7 +19,7 @@ $htmllogin = $htmlloginmenu->Loginmenu();
 <?= $this->Form->create($user, ['url' => ['action' => 'index']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
     <?= $this->Form->create($user) ?>
     <fieldset>
 

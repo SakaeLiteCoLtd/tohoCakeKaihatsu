@@ -19,7 +19,7 @@
 <?= $this->Form->create($priceMaterial, ['url' => ['action' => 'editconfirm']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
 
     <?= $this->Form->create($priceMaterial) ?>
     <fieldset>

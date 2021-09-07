@@ -49,7 +49,7 @@ $arrProduct_name_list = json_encode($arrProduct_name_list);//javaに配列を受
 
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
   <?= $this->Form->create($inspectionStandardSizeParents, ['url' => ['action' => 'addpre']]) ?>
     <fieldset>
         <legend><strong style="font-size: 15pt; color:red"><?= __('検査表画像新規登録') ?></strong></legend>

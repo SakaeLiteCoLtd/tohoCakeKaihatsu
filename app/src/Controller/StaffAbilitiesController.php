@@ -66,6 +66,7 @@ class StaffAbilitiesController extends AppController
       $StaffAbilities = $this->StaffAbilities->find()->contain(["Menus"])
       ->where(['staff_id' => $staff_id, 'StaffAbilities.delete_flag' => 0])->toArray();
 
+      $arrStaffAbilities = array();
       for($k=0; $k<count($StaffAbilities); $k++){
 
         $arrStaffAbilities[] = $StaffAbilities[$k]['menu']['name_menu'];

@@ -315,13 +315,18 @@ class MaterialTypesController extends AppController
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
+      $MaterialTypesmoto = $this->MaterialTypes->find()
+      ->where(['id' => $data['id']])->toArray();
+      
       $arrupdatematerialType = array();
       $arrupdatematerialType = [
-        'factory_id' => $data["factory_id"],
-        'type' => $data["type"],
-        'delete_flag' => 0,
-        'created_at' => date("Y-m-d H:i:s"),
-        'created_staff' => $staff_id
+        'factory_id' => $MaterialTypesmoto[0]["factory_id"],
+        'type' => $MaterialTypesmoto[0]["type"],
+        'delete_flag' => 1,
+        'created_at' => $MaterialTypesmoto[0]["created_at"]->format("Y-m-d H:i:s"),
+        'created_staff' => $MaterialTypesmoto[0]["created_staff"],
+        'updated_at' => date("Y-m-d H:i:s"),
+        'updated_staff' => $staff_id
       ];
 /*
       echo "<pre>";
@@ -336,9 +341,11 @@ class MaterialTypesController extends AppController
          if ($this->MaterialTypes->save($MaterialTypes)) {
 
          $this->MaterialTypes->updateAll(
-           [ 'delete_flag' => 1,
-             'updated_at' => date('Y-m-d H:i:s'),
-             'updated_staff' => $staff_id],
+           [
+           'factory_id' => $data["factory_id"],
+           'type' => $data["type"],
+           'updated_at' => date('Y-m-d H:i:s'),
+           'updated_staff' => $staff_id],
            ['id'  => $data['id']]);
 
          $mes = "※下記のように更新されました";

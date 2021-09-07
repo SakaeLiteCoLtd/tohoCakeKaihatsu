@@ -17,7 +17,7 @@
 <?= $this->Form->create($Groups, ['url' => ['action' => 'index']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('グループ新規登録') ?></strong></legend>
       <br>

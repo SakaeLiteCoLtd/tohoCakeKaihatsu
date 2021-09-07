@@ -24,8 +24,8 @@ class GroupsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.groups',
-        'app.menus'
+        'app.Groups',
+        'app.Menus'
     ];
 
     /**

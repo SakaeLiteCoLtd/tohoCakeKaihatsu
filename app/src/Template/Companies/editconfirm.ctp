@@ -28,7 +28,7 @@
 <?= $this->Form->control('address', array('type'=>'hidden', 'value'=>$this->request->getData('address'), 'label'=>false)) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
     <?= $this->Form->create($company) ?>
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('会社情報編集') ?></strong></legend>

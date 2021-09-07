@@ -19,7 +19,7 @@
 <?= $this->Form->create($department, ['url' => ['action' => 'editconfirm']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
     <?= $this->Form->create($department) ?>
     <fieldset>
         <legend><strong style="font-size: 15pt; color:red"><?= __('部署情報編集') ?></strong></legend>

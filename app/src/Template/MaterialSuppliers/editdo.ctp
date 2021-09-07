@@ -19,7 +19,7 @@
 <?= $this->Form->create($materialSupplier, ['url' => ['action' => 'index']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('原料仕入先情報編集') ?></strong></legend>
       <br>

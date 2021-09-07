@@ -23,7 +23,7 @@
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
     <?= $this->Form->create($position) ?>
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('役職情報編集') ?></strong></legend>

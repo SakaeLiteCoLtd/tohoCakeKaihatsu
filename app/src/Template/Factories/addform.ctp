@@ -17,7 +17,7 @@
 <?= $this->Form->create($Factories, ['url' => ['action' => 'addcomfirm']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
 
     <?= $this->Form->create($Factories) ?>
     <fieldset>

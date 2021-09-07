@@ -53,13 +53,11 @@ if($this->request->getData('status_kensahyou') == 1){
 
       <table>
           <tr>
-            <td width="360"><strong>品名</strong></td>
             <td width="90"><strong>単位</strong></td>
             <td width="90"><strong>単重(g/m)</strong></td>
             <td width="50"><strong>検査表</strong></td>
         	</tr>
           <tr>
-            <td><?= h($this->request->getData('name')) ?></td>
             <td><?= h($this->request->getData('tanni')) ?></td>
             <td><?= h($this->request->getData('weight')) ?></td>
             <td><?= h($status_kensahyou_name) ?></td>

@@ -1,19 +1,17 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
-use App\myClass\menulists\htmlusermenu;//myClassフォルダに配置したクラスを使用
-use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
-$htmlusermenu = new htmlusermenu();
-$htmluser = $htmlusermenu->Usermenus();
+ use App\myClass\menulists\htmlstaffmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
+$htmlstaffmenu = new htmlstaffmenu();
+$htmlstaff = $htmlstaffmenu->Staffmenus();
 $htmlloginmenu = new htmlloginmenu();
 $htmllogin = $htmlloginmenu->Loginmenu();
-
- $i = 1;
 ?>
 <?php
      echo $htmllogin;
 ?>
 <?php
-     echo $htmluser;
+     echo $htmlstaff;
 ?>
 
 <form method="post" action="/users/editdo">
@@ -28,7 +26,7 @@ $htmllogin = $htmlloginmenu->Loginmenu();
 <?= $this->Form->control('password', array('type'=>'hidden', 'value'=>$this->request->getData('password'), 'label'=>false)) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
     <?= $this->Form->create($user) ?>
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('ユーザー情報編集') ?></strong></legend>

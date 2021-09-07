@@ -24,9 +24,9 @@ class MenusTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.menus',
-        'app.groups',
-        'app.staff_abilities'
+        'app.Menus',
+        'app.Groups',
+        'app.StaffAbilities'
     ];
 
     /**

@@ -17,7 +17,7 @@
 <?= $this->Form->create($Factories, ['url' => ['action' => 'index']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('工場・営業所新規登録') ?></strong></legend>
       <br>

@@ -318,16 +318,21 @@ class UsersController extends AppController
       $makepassword = new DefaultPasswordHasher();
       $password = $makepassword->hash($data["password"]);
 
+      $Users = $this->Users->find()
+      ->where(['id' => $data['id']])->toArray();
+
       $arrupdateuser = array();
       $arrupdateuser = [
-        'user_code' => $data["user_code"],
-        'password' => $password,
-        'staff_id' => $data["staff_id"],
+        'user_code' => $Users[0]["user_code"],
+        'password' => $Users[0]["password"],
+        'staff_id' => $Users[0]["staff_id"],
         'super_user' => 0,
-        'group_name' => $data["group_name"],
-        'delete_flag' => 0,
-        'created_at' => date("Y-m-d H:i:s"),
-        'created_staff' => $staff_id
+        'group_name' => $Users[0]["group_name"],
+        'delete_flag' => 1,
+        'created_at' => $Users[0]["created_at"]->format("Y-m-d H:i:s"),
+        'created_staff' => $Users[0]["created_staff"],
+        'updated_at' => date("Y-m-d H:i:s"),
+        'updated_staff' => $staff_id
       ];
 /*
       echo "<pre>";
@@ -362,9 +367,17 @@ class UsersController extends AppController
          if ($this->Users->save($Users)) {
 
          $this->Users->updateAll(
-           [ 'delete_flag' => 1,
-             'updated_at' => date('Y-m-d H:i:s'),
-             'updated_staff' => $staff_id],
+           [ 
+            'user_code' => $data["user_code"],
+            'password' => $password,
+            'staff_id' => $data["staff_id"],
+            'super_user' => 0,
+            'group_name' => $data["group_name"],
+            'delete_flag' => 0,
+            'created_at' => date("Y-m-d H:i:s"),
+            'created_staff' => $staff_id,
+            'updated_at' => date('Y-m-d H:i:s'),
+            'updated_staff' => $staff_id],
            ['id'  => $data['id']]);
 
            $this->StaffAbilities->updateAll(

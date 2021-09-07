@@ -33,7 +33,7 @@
 <?= $this->Form->control('date_finish', array('type'=>'hidden', 'value'=>$date_finish, 'label'=>false)) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
     <?= $this->Form->create($Staffs) ?>
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('スタッフ情報編集') ?></strong></legend>

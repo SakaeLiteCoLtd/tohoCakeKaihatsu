@@ -17,7 +17,7 @@
 <?= $this->Form->create($occupation, ['url' => ['action' => 'addcomfirm']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
 
     <?= $this->Form->create($occupation) ?>
     <fieldset>

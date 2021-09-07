@@ -19,7 +19,7 @@
 <?= $this->Form->create($company, ['url' => ['action' => 'index']]) ?>
 <br><br><br>
 
-<nav class="large-3 medium-4 columns">
+<nav class="sample non-sample">
     <?= $this->Form->create($company) ?>
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('会社新規登録') ?></strong></legend>
