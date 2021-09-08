@@ -177,7 +177,13 @@ class GroupsController extends AppController
           $arraycheck[] = $data['menu'.$k];
         }
       }
+
+      if(count($arraycheck) < 1){
+        $arraycheck[] = "マスター登録権限なし";
+      }
+
       $this->set('arraycheck', $arraycheck);
+
 /*
       echo "<pre>";
       print_r($arraycheck);
@@ -247,19 +253,34 @@ class GroupsController extends AppController
       $data = $this->request->getData();
 
       $arrtourokugroup = array();
-      for ($k=0; $k<=$data["num_menu"]; $k++){
 
-        $Menus = $this->Menus->find()
-        ->where(['name_menu' => $data['menu_name'.$k]])->toArray();
+      if($data['menu_name0'] === "マスター登録権限なし"){
 
-          $arrtourokugroup[] = [
-            'name_group' => $data["name_group"],
-            'menu_id' => $Menus[0]['id'],
-            'delete_flag' => 0,
-            'created_at' => date("Y-m-d H:i:s"),
-            'created_staff' => $staff_id
-          ];
-      }
+        $arrtourokugroup[] = [
+          'name_group' => $data["name_group"],
+          'menu_id' => 9999,
+          'delete_flag' => 0,
+          'created_at' => date("Y-m-d H:i:s"),
+          'created_staff' => $staff_id
+        ];
+
+      }else{
+
+        for ($k=0; $k<=$data["num_menu"]; $k++){
+
+          $Menus = $this->Menus->find()
+          ->where(['name_menu' => $data['menu_name'.$k]])->toArray();
+  
+            $arrtourokugroup[] = [
+              'name_group' => $data["name_group"],
+              'menu_id' => $Menus[0]['id'],
+              'delete_flag' => 0,
+              'created_at' => date("Y-m-d H:i:s"),
+              'created_staff' => $staff_id
+            ];
+        }
+
+        }
 /*
       echo "<pre>";
       print_r($arrtourokugroup);
@@ -279,10 +300,10 @@ class GroupsController extends AppController
 
         } else {
 
-          $this->Flash->error(__('The data could not be saved. Please, try again.'));
-          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
           $mes = "※登録されませんでした";
           $this->set('mes',$mes);
+          $this->Flash->error(__('The data could not be saved. Please, try again.'));
+          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
 
         }
 

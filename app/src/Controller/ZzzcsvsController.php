@@ -219,8 +219,8 @@ class ZzzcsvsController extends AppController
     public function torikomiproduct()//http://localhost:5050/Zzzcsvs/torikomiproduct
     {
 
-      $fp = fopen("torikomicsvs/products210903.csv", "r");//csvファイルはwebrootに入れる
-    	$fpcount = fopen("torikomicsvs/products210903.csv", 'r' );
+      $fp = fopen("torikomicsvs/products210908ng2.csv", "r");//csvファイルはwebrootに入れる
+    	$fpcount = fopen("torikomicsvs/products210908ng2.csv", 'r' );
     	for( $count = 0; fgets( $fpcount ); $count++ );
     	$this->set('count',$count);
 
@@ -239,6 +239,7 @@ class ZzzcsvsController extends AppController
         $keys[array_search('5',$keys)]='length';
         $keys[array_search('6',$keys)]='length_cut';
         $keys[array_search('7',$keys)]='customer_id';
+        $keys[array_search('8',$keys)]='dammy';
    //     $keys[array_search('5',$keys)]='customer';//
     		$sample = array_combine($keys, $sample);
 
@@ -248,17 +249,33 @@ class ZzzcsvsController extends AppController
         $sample = array_merge($sample,array('is_active' => 0));
         $sample = array_merge($sample,array('delete_flag' => 0));
 
-    		$arrFp[] = $sample;//配列に追加する
+        unset($sample['dammy']);
+
+        $Products = $this->Products->find()
+        ->where(['product_code' => $sample["product_code"]])
+        ->toArray();
+
+        if(isset($Products[0])){
+
+          echo "<pre>";
+          print_r("登録済み　".$sample["product_code"]);
+          echo "</pre>";
+
+            }else{
+
+              $arrFp[] = $sample;//配列に追加する
+
+            }
+
     	}
     	$this->set('arrFp',$arrFp);//$arrFpをctpで使用できるようセット
 
       $count = 0;
 
-      /*
       echo "<pre>";
       print_r($arrFp);
       echo "</pre>";
-*/
+
       $arrFpok = array();//問題なしのデータ
       $arrFpng = array();//顧客コードがないデータ
       for($j=0; $j<count($arrFp); $j++){
@@ -268,7 +285,6 @@ class ZzzcsvsController extends AppController
           $arrFp[$j] = array_merge($arrFp[$j],array('factory_id'=>1));
 
         }elseif(strpos($arrFp[$j]["product_code"],'I') !== false){//石狩工場
-
 
           $arrFp[$j] = array_merge($arrFp[$j],array('factory_id'=>2));
 
@@ -288,10 +304,31 @@ class ZzzcsvsController extends AppController
 
         if(isset($Customers[0])){
           $arrFp[$j] = array_merge($arrFp[$j],array('customer_id'=>$Customers[0]['id']));
-          $arrFpok[] = $arrFp[$j];
-   //       $Products = $this->Products->patchEntity($this->Products->newEntity(), $arrFp[$j]);
-   //       $this->Products->save($Products);
-    
+
+          $Products = $this->Products->patchEntity($this->Products->newEntity(), $arrFp[$j]);
+          $this->Products->save($Products);
+          if ($this->Products->save($Products)) {
+
+            $arrFpok[] = $arrFp[$j];
+
+          }else{//品名にカンマが含まれる、セル内で改行されている
+
+            $Customers = $this->Customers->find()
+            ->where(['id' => (int)$arrFp[$j]["customer_id"]])
+            ->toArray();
+
+            $arrFp[$j] = array_merge($arrFp[$j],array('customer_id'=>$Customers[0]['customer_code']));
+
+            unset($arrFp[$j]['created_at']);
+            unset($arrFp[$j]['created_staff']);
+            unset($arrFp[$j]['factory_id']);
+            unset($arrFp[$j]['is_active']);
+            unset($arrFp[$j]['delete_flag']);
+  
+            $arrFpng[] = $arrFp[$j];
+
+            }
+
           $count = $count + 1;
 
         }else{
@@ -308,32 +345,32 @@ class ZzzcsvsController extends AppController
       }
 
   //    $arrFp = array_values($arrFp);
+  
       echo "<pre>";
       print_r("ok ".count($arrFpok));
       echo "</pre>";
-      
+      /*
       echo "<pre>";
       print_r($arrFpok);
       echo "</pre>";
-       
+       */
       echo "<pre>";
       print_r("ng ".count($arrFpng));
       echo "</pre>";
-      /*
+      
       echo "<pre>";
       print_r($arrFpng);
       echo "</pre>";
-      */
-/*
-      $fp = fopen('torikomicsvs/製品データng210903.csv', 'w');
+
+      $fp = fopen('torikomicsvs/製品データng210908.csv', 'w');
         foreach ($arrFpng as $line) {
     //      $line = mb_convert_encoding($line, 'SJIS-win', 'UTF-8');//UTF-8の文字列をSJIS-winに変更する※文字列に使用、ファイルごとはできない
           fputcsv($fp, $line);
         }
         fclose($fp);
-*/
-      //  $Products = $this->Products->patchEntities($this->Products->newEntity(), $arrFpok);
-      //  $this->Products->saveMany($Products);
+
+   //     $Products = $this->Products->patchEntities($this->Products->newEntity(), $arrFpok);
+   //     $this->Products->saveMany($Products);
 
     }
 

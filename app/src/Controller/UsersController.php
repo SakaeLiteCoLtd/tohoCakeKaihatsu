@@ -33,7 +33,7 @@ class UsersController extends AppController
    if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
      $Groups = $this->Groups->find()->contain(["Menus"])
-     ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "ユーザー", 'Groups.delete_flag' => 0])
+     ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "スタッフ", 'Groups.delete_flag' => 0])
      ->toArray();
 
      if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
@@ -214,7 +214,7 @@ class UsersController extends AppController
 
         if(count($StaffAbilities) < 1){
           $arrMenuids[] = array(
-            'staff_id' => $staff_id,
+            'staff_id' => $data["staff_id"],
             'menu_id' => $Groups[$k]['menu_id'],
             'delete_flag' => 0,
             'created_at' => date("Y-m-d H:i:s"),

@@ -1,11 +1,11 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlusermenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlstaffmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlusermenu = new htmlusermenu();
- $htmluser = $htmlusermenu->Usermenus();
- $htmlloginmenu = new htmlloginmenu();
- $htmllogin = $htmlloginmenu->Loginmenu();
+$htmlstaffmenu = new htmlstaffmenu();
+$htmlstaff = $htmlstaffmenu->Staffmenus();
+$htmlloginmenu = new htmlloginmenu();
+$htmllogin = $htmlloginmenu->Loginmenu();
 
  $i = 1;
 ?>
@@ -13,7 +13,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmluser;
+     echo $htmlstaff;
 ?>
 
 <?php
