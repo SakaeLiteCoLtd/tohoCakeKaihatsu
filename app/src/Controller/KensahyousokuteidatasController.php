@@ -113,7 +113,7 @@ class KensahyousokuteidatasController extends AppController
 
        $Product_name_list = $this->Products->find()
        ->contain(['Customers'])
-       ->where(['Customers.name' => $data["customer_name"], 'Products.delete_flag' => 0])->toArray();
+       ->where(['Customers.name' => $data["customer_name"], 'Products.status_kensahyou' => 1, 'Products.delete_flag' => 0])->toArray();
 
        if(count($Product_name_list) < 1){//顧客名にミスがある場合
 
@@ -121,7 +121,7 @@ class KensahyousokuteidatasController extends AppController
          $this->set('mess',$mess);
 
          $Product_name_list = $this->Products->find()
-         ->where(['delete_flag' => 0])->toArray();
+         ->where(['status_kensahyou' => 1, 'delete_flag' => 0])->toArray();
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
@@ -152,10 +152,15 @@ class KensahyousokuteidatasController extends AppController
 
         $product_name_length = explode(";",$data["product_name"]);
         $name = $product_name_length[0];
-        $length = str_replace('mm', '', $product_name_length[1]);
-  
-         $Products = $this->Products->find()
-         ->where(['name' => $name, 'length' => $length, 'delete_flag' => 0])->toArray();
+        if(isset($product_name_length[1])){
+          $length = str_replace('mm', '', $product_name_length[1]);
+          $Products = $this->Products->find()
+          ->where(['status_kensahyou' => 1, 'name' => $name, 'length' => $length, 'delete_flag' => 0])->toArray();
+         }else{
+          $length = "";
+          $Products = $this->Products->find()
+          ->where(['status_kensahyou' => 1, 'name' => $name, 'delete_flag' => 0])->toArray();
+         }
 
          if(isset($Products[0])){
 
@@ -170,7 +175,7 @@ class KensahyousokuteidatasController extends AppController
            $this->set('mess',$mess);
 
            $Product_name_list = $this->Products->find()
-           ->where(['delete_flag' => 0])->toArray();
+           ->where(['status_kensahyou' => 1, 'delete_flag' => 0])->toArray();
 
            $arrProduct_name_list = array();
            for($j=0; $j<count($Product_name_list); $j++){
@@ -186,7 +191,7 @@ class KensahyousokuteidatasController extends AppController
          $this->set('mess',$mess);
 
          $Product_name_list = $this->Products->find()
-         ->where(['delete_flag' => 0])->toArray();
+         ->where(['status_kensahyou' => 1, 'delete_flag' => 0])->toArray();
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
@@ -199,7 +204,7 @@ class KensahyousokuteidatasController extends AppController
      }else{//はじめ
 
        $Product_name_list = $this->Products->find()
-       ->where(['delete_flag' => 0])->toArray();
+       ->where(['status_kensahyou' => 1, 'delete_flag' => 0])->toArray();
        $arrProduct_name_list = array();
        for($j=0; $j<count($Product_name_list); $j++){
          array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
@@ -1172,8 +1177,9 @@ class KensahyousokuteidatasController extends AppController
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
+      $product_code_ini = substr($product_code, 0, 11);
       $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
-      ->where(['product_code' => $product_code,
+      ->where(['product_code like' => $product_code_ini.'%',
       'ProductConditionParents.is_active' => 0,
       'ProductConditionParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
@@ -1275,9 +1281,9 @@ class KensahyousokuteidatasController extends AppController
       $product_code_ini = substr($product_code, 0, 11);
 
       $ProductParent = $this->Products->find()
-      ->where(['product_code' => $product_code, 'delete_flag' => 0])->toArray();
+      ->where(['product_code' => $product_code, 'status_kensahyou' => 1, 'delete_flag' => 0])->toArray();
       $Products = $this->Products->find()
-      ->where(['product_code IS NOT' => $product_code, 'product_code like' => $product_code_ini.'%', 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+      ->where(['product_code IS NOT' => $product_code, 'product_code like' => $product_code_ini.'%', 'status_kensahyou' => 1, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
 
       $Products = array_merge($ProductParent, $Products);
 

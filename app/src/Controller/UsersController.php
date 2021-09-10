@@ -210,7 +210,7 @@ class UsersController extends AppController
       for($k=0; $k<count($Groups); $k++){
 
         $StaffAbilities = $this->StaffAbilities->find()
-        ->where(['staff_id' => $staff_id, 'menu_id' => $Groups[$k]['menu_id'], 'delete_flag' => 0])->toArray();
+        ->where(['staff_id' => $data["staff_id"], 'menu_id' => $Groups[$k]['menu_id'], 'delete_flag' => 0])->toArray();
 
         if(count($StaffAbilities) < 1){
           $arrMenuids[] = array(
@@ -346,7 +346,7 @@ class UsersController extends AppController
       for($k=0; $k<count($Groups); $k++){
 
         $arrMenuids[] = array(
-          'staff_id' => $staff_id,
+          'staff_id' => $data["staff_id"],
           'menu_id' => $Groups[$k]['menu_id'],
           'delete_flag' => 0,
           'created_at' => date("Y-m-d H:i:s"),
@@ -384,7 +384,7 @@ class UsersController extends AppController
              [ 'delete_flag' => 1,
                'updated_at' => date('Y-m-d H:i:s'),
                'updated_staff' => $staff_id],
-             ['staff_id'  => $staff_id]);
+             ['staff_id'  => $data["staff_id"]]);
 
              $StaffAbilities = $this->StaffAbilities->patchEntities($this->StaffAbilities->newEntity(), $arrMenuids);
              $this->StaffAbilities->saveMany($StaffAbilities);

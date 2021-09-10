@@ -93,7 +93,7 @@ class KensahyoukikakusController extends AppController
 
        $Product_name_list = $this->Products->find()
        ->contain(['Customers'])
-       ->where(['Customers.name' => $data["customer_name"], 'Products.delete_flag' => 0])->toArray();
+       ->where(['Customers.name' => $data["customer_name"], 'Products.status_kensahyou' => 1, 'Products.delete_flag' => 0])->toArray();
 
        if(count($Product_name_list) < 1){//顧客名にミスがある場合
 
@@ -101,7 +101,7 @@ class KensahyoukikakusController extends AppController
          $this->set('mess',$mess);
 
          $Product_name_list = $this->Products->find()
-         ->where(['delete_flag' => 0])->toArray();
+         ->where(['status_kensahyou' => 1, 'delete_flag' => 0])->toArray();
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
@@ -132,10 +132,15 @@ class KensahyoukikakusController extends AppController
 
         $product_name_length = explode(";",$data["product_name"]);
         $name = $product_name_length[0];
-        $length = str_replace('mm', '', $product_name_length[1]);
-  
-         $Products = $this->Products->find()
-         ->where(['name' => $name, 'length' => $length, 'delete_flag' => 0])->toArray();
+        if(isset($product_name_length[1])){
+          $length = str_replace('mm', '', $product_name_length[1]);
+          $Products = $this->Products->find()
+          ->where(['status_kensahyou' => 1, 'name' => $name, 'length' => $length, 'delete_flag' => 0])->toArray();
+         }else{
+          $length = "";
+          $Products = $this->Products->find()
+          ->where(['status_kensahyou' => 1, 'name' => $name, 'delete_flag' => 0])->toArray();
+         }
 
          if(isset($Products[0])){
 
@@ -146,11 +151,11 @@ class KensahyoukikakusController extends AppController
 
          }else{
 
-           $mess = "入力された製品名は登録されていません。確認してください。";
-           $this->set('mess',$mess);
+          $mess = "入力された製品名は登録されていないか、検査表非表示の製品です。確認してください。";
+          $this->set('mess',$mess);
 
            $Product_name_list = $this->Products->find()
-           ->where(['delete_flag' => 0])->toArray();
+           ->where(['status_kensahyou' => 1, 'delete_flag' => 0])->toArray();
 
            $arrProduct_name_list = array();
            for($j=0; $j<count($Product_name_list); $j++){
@@ -166,7 +171,7 @@ class KensahyoukikakusController extends AppController
          $this->set('mess',$mess);
 
          $Product_name_list = $this->Products->find()
-         ->where(['delete_flag' => 0])->toArray();
+         ->where(['status_kensahyou' => 1, 'delete_flag' => 0])->toArray();
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){

@@ -167,8 +167,8 @@ class ZzzcsvsController extends AppController
     public function torikomicustomer()//http://localhost:5050/Zzzcsvs/torikomicustomer
     {
 
-      $fp = fopen("torikomicsvs/customertest3.csv", "r");//csvファイルはwebrootに入れる
-    	$fpcount = fopen("torikomicsvs/customertest3.csv", 'r' );
+      $fp = fopen("torikomicsvs/customer210909.csv", "r");//csvファイルはwebrootに入れる
+    	$fpcount = fopen("torikomicsvs/customer210909.csv", 'r' );
     	for( $count = 0; fgets( $fpcount ); $count++ );
     	$this->set('count',$count);
 
@@ -211,8 +211,8 @@ class ZzzcsvsController extends AppController
      	print_r($arrFp);
       echo "</pre>";
 
-      $Customers = $this->Customers->patchEntities($this->Customers->newEntity(), $arrFp);
-      $this->Customers->saveMany($Customers);
+    //  $Customers = $this->Customers->patchEntities($this->Customers->newEntity(), $arrFp);
+    //  $this->Customers->saveMany($Customers);
 
     }
 

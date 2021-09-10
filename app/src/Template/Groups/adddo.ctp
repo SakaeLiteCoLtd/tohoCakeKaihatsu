@@ -42,7 +42,7 @@
             <td width="280"><strong>取り扱い可能メニュー</strong></td>
         	</tr>
 
-        <?php for($i=0; $i<$this->request->getData('num_menu'); $i++): ?>
+        <?php for($i=0; $i<=$this->request->getData('num_menu'); $i++): ?>
 
           <tr>
             <td><?= h($this->request->getData('menu_name'.$i)) ?></td>
