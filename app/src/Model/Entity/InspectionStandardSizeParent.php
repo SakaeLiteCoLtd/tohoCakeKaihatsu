@@ -9,6 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $product_id
  * @property string $image_file_name_dir
+ * @property string $inspection_standard_size_code
  * @property int $version
  * @property int $is_active
  * @property int $delete_flag
@@ -36,6 +37,7 @@ class InspectionStandardSizeParent extends Entity
     protected $_accessible = [
         'product_id' => true,
         'image_file_name_dir' => true,
+        'inspection_standard_size_code' => true,
         'version' => true,
         'is_active' => true,
         'delete_flag' => true,

@@ -17,7 +17,8 @@
 <?= $this->Form->create($customer, ['url' => ['action' => 'adddo']]) ?>
 
 <?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$this->request->getData('name'), 'label'=>false)) ?>
-<?= $this->Form->control('customer_code', array('type'=>'hidden', 'value'=>$this->request->getData('customer_code'), 'label'=>false)) ?>
+<?= $this->Form->control('customer_code_last', array('type'=>'hidden', 'value'=>$this->request->getData('customer_code_last'), 'label'=>false)) ?>
+<?= $this->Form->control('ryakusyou', array('type'=>'hidden', 'value'=>$this->request->getData('ryakusyou'), 'label'=>false)) ?>
 <?= $this->Form->control('furigana', array('type'=>'hidden', 'value'=>$this->request->getData('furigana'), 'label'=>false)) ?>
 <?= $this->Form->control('department', array('type'=>'hidden', 'value'=>$this->request->getData('department'), 'label'=>false)) ?>
 <?= $this->Form->control('tel', array('type'=>'hidden', 'value'=>$this->request->getData('tel'), 'label'=>false)) ?>
@@ -25,6 +26,7 @@
 <?= $this->Form->control('yuubin', array('type'=>'hidden', 'value'=>$this->request->getData('yuubin'), 'label'=>false)) ?>
 <?= $this->Form->control('address', array('type'=>'hidden', 'value'=>$this->request->getData('address'), 'label'=>false)) ?>
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
+<?= $this->Form->control('customer_code_last_hyouji', array('type'=>'hidden', 'value'=>$customer_code_last_hyouji, 'label'=>false)) ?>
 <br><br><br>
 
 <nav class="sample non-sample">
@@ -50,29 +52,31 @@
         <table>
       <tr>
         <td width="280"><strong>得意先名</strong></td>
-        <td width="280"><strong>得意先コード</strong></td>
+        <td width="280"><strong>営業所（得意先コード6桁目）</strong></td>
       </tr>
       <tr>
       <td><?= h($this->request->getData('name')) ?></td>
-      <td><?= h($this->request->getData('customer_code')) ?></td>
+      <td><?= h($customer_code_last_hyouji) ?></td>
     </tr>
     </table>
-  <table>
+    <table>
     <tr>
       <td width="280"><strong>フリガナ</strong></td>
-      <td width="280"><strong>部署</strong></td>
+      <td width="280"><strong>略称</strong></td>
     </tr>
     <tr>
     <td><?= h($this->request->getData('furigana')) ?></td>
-    <td><?= h($this->request->getData('department')) ?></td>
+    <td><?= h($this->request->getData('ryakusyou')) ?></td>
     </tr>
   </table>
   <table>
     <tr>
-      <td width="280"><strong>電話番号</strong></td>
-      <td width="280"><strong>ファックス</strong></td>
+    <td width="200"><strong>部署</strong></td>
+      <td width="180"><strong>電話番号</strong></td>
+      <td width="180"><strong>ファックス</strong></td>
     </tr>
     <tr>
+    <td><?= h($this->request->getData('department')) ?></td>
     <td><?= h($this->request->getData('tel')) ?></td>
     <td><?= h($this->request->getData('fax')) ?></td>
     </tr>
@@ -99,6 +103,7 @@
         </tr>
       </tbody>
     </table>
+    <br><br>
 
     <?= $this->Form->end() ?>
   </nav>

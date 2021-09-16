@@ -42,31 +42,33 @@
       <table>
       <tr>
         <td width="280"><strong>得意先名</strong></td>
-        <td width="280"><strong>得意先コード</strong></td>
+        <td width="280"><strong>営業所（得意先コード6桁目）</strong></td>
       </tr>
       <tr>
         <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false)) ?></td>
-        <td><?= $this->Form->control('customer_code', array('type'=>'text', 'label'=>false)) ?></td>
+        <td><?= $this->Form->control('customer_code_last', ['options' => $arrcustomer_code_last, 'label'=>false]) ?></td>
     </tr>
     </table>
-  <table>
+    <table>
     <tr>
-      <td width="280"><strong>フリガナ</strong></td>
-      <td width="280"><strong>部署</strong></td>
+      <td width="280"><strong>フリガナ(半角カタカナで入力)</strong></td>
+      <td width="280"><strong>略称</strong></td>
     </tr>
     <tr>
       <td><?= $this->Form->control('furigana', array('type'=>'text', 'label'=>false)) ?></td>
-      <td><?= $this->Form->control('department', array('type'=>'text', 'label'=>false)) ?></td>
+      <td><?= $this->Form->control('ryakusyou', array('type'=>'text', 'label'=>false)) ?></td>
     </tr>
   </table>
   <table>
     <tr>
-      <td width="280"><strong>電話番号</strong></td>
-      <td width="280"><strong>ファックス</strong></td>
+    <td width="200"><strong>部署</strong></td>
+      <td width="180"><strong>電話番号</strong></td>
+      <td width="180"><strong>ファックス</strong></td>
     </tr>
     <tr>
-      <td><?= $this->Form->control('tel', array('type'=>'text', 'label'=>false)) ?></td>
-      <td><?= $this->Form->control('fax', array('type'=>'text', 'label'=>false)) ?></td>
+    <td><?= $this->Form->control('department', array('type'=>'text', 'label'=>false)) ?></td>
+      <td><?= $this->Form->control('tel', array('type'=>'text', 'label'=>false, 'size'=>15)) ?></td>
+      <td><?= $this->Form->control('fax', array('type'=>'text', 'label'=>false, 'size'=>15)) ?></td>
     </tr>
   </table>
   <table>
@@ -75,7 +77,7 @@
       <td width="410"><strong>住所</strong></td>
     </tr>
     <tr>
-      <td><?= $this->Form->control('yuubin', array('type'=>'text', 'label'=>false, 'size'=>10)) ?></td>
+      <td><?= $this->Form->control('yuubin', array('type'=>'text', 'label'=>false, 'size'=>15)) ?></td>
       <td><?= $this->Form->control('address', array('type'=>'text', 'label'=>false, 'size'=>35)) ?></td>
     </tr>
   </table>
@@ -89,6 +91,7 @@
         </tr>
       </tbody>
     </table>
+    <br><br>
 
     <?= $this->Form->end() ?>
   </nav>

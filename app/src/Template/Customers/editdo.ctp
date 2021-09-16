@@ -47,22 +47,24 @@
       <td><?= h($this->request->getData('customer_code')) ?></td>
     </tr>
     </table>
-  <table>
+    <table>
     <tr>
       <td width="280"><strong>フリガナ</strong></td>
-      <td width="280"><strong>部署</strong></td>
+      <td width="280"><strong>略称</strong></td>
     </tr>
     <tr>
     <td><?= h($this->request->getData('furigana')) ?></td>
-    <td><?= h($this->request->getData('department')) ?></td>
+    <td><?= h($this->request->getData('ryakusyou')) ?></td>
     </tr>
   </table>
   <table>
     <tr>
-      <td width="280"><strong>電話番号</strong></td>
-      <td width="280"><strong>ファックス</strong></td>
+    <td width="200"><strong>部署</strong></td>
+      <td width="180"><strong>電話番号</strong></td>
+      <td width="180"><strong>ファックス</strong></td>
     </tr>
     <tr>
+    <td><?= h($this->request->getData('department')) ?></td>
     <td><?= h($this->request->getData('tel')) ?></td>
     <td><?= h($this->request->getData('fax')) ?></td>
     </tr>

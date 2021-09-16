@@ -119,7 +119,7 @@ class ImagesController extends AppController
 
        $Product_name_list = $this->Products->find()
        ->contain(['Customers'])
-       ->where(['Customers.name' => $data["customer_name"], 'Products.delete_flag' => 0])->toArray();
+       ->where(['Customers.name' => $data["customer_name"], 'Products.status_kensahyou' => 1, 'Products.delete_flag' => 0])->toArray();
 
        if(count($Product_name_list) < 1){//顧客名にミスがある場合
 
@@ -127,11 +127,11 @@ class ImagesController extends AppController
          $this->set('mess',$mess);
 
          $Product_name_list = $this->Products->find()
-         ->where(['delete_flag' => 0])->toArray();
+         ->where(['status_kensahyou' => 1, 'delete_flag' => 0])->toArray();
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          }
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -139,7 +139,7 @@ class ImagesController extends AppController
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          }
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -149,8 +149,17 @@ class ImagesController extends AppController
 
        if(strlen($data["product_name"]) > 0){//product_nameの入力がある
 
-         $Products = $this->Products->find()
-         ->where(['name' => $data["product_name"], 'delete_flag' => 0])->toArray();
+        $product_name_length = explode(";",$data["product_name"]);
+        $name = $product_name_length[0];
+        if(isset($product_name_length[1])){
+          $length = str_replace('mm', '', $product_name_length[1]);
+          $Products = $this->Products->find()
+          ->where(['status_kensahyou' => 1, 'name' => $name, 'length' => $length, 'delete_flag' => 0])->toArray();
+         }else{
+          $length = "";
+          $Products = $this->Products->find()
+          ->where(['status_kensahyou' => 1, 'name' => $name, 'delete_flag' => 0])->toArray();
+         }
 
          if(isset($Products[0])){
 
@@ -165,11 +174,11 @@ class ImagesController extends AppController
            $this->set('mess',$mess);
 
            $Product_name_list = $this->Products->find()
-           ->where(['delete_flag' => 0])->toArray();
+           ->where(['status_kensahyou' => 1, 'delete_flag' => 0])->toArray();
 
            $arrProduct_name_list = array();
            for($j=0; $j<count($Product_name_list); $j++){
-             array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+             array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
            }
            $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -181,11 +190,11 @@ class ImagesController extends AppController
          $this->set('mess',$mess);
 
          $Product_name_list = $this->Products->find()
-         ->where(['delete_flag' => 0])->toArray();
+         ->where(['status_kensahyou' => 1, 'delete_flag' => 0])->toArray();
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          }
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -194,10 +203,10 @@ class ImagesController extends AppController
      }else{//はじめ
 
        $Product_name_list = $this->Products->find()
-       ->where(['delete_flag' => 0])->toArray();
+       ->where(['status_kensahyou' => 1, 'delete_flag' => 0])->toArray();
        $arrProduct_name_list = array();
        for($j=0; $j<count($Product_name_list); $j++){
-         array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+         array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
        }
        $this->set('arrProduct_name_list', $arrProduct_name_list);
 
@@ -308,7 +317,10 @@ class ImagesController extends AppController
 
       $fileName =$_FILES['upfile']['tmp_name'];
 
-      if(substr($_FILES['upfile']["name"], -4) !== ".gif"){
+      if(substr($_FILES['upfile']["name"], -4) !== ".JPG"
+      && substr($_FILES['upfile']["name"], -4) !== ".jpg"
+      && substr($_FILES['upfile']["name"], -5) !== ".JPEG"
+      && substr($_FILES['upfile']["name"], -5) !== ".jpeg"){
 
         if(!isset($_SESSION)){
           session_start();
@@ -317,7 +329,7 @@ class ImagesController extends AppController
         $_SESSION['img_product_code'] = $product_code;
 
         return $this->redirect(['action' => 'addform',
-        's' => ['mess' => "※拡張子が「.gif」でないファイルが選択されました。"]]);
+        's' => ['mess' => "※拡張子が「.JPG」でないファイルが選択されました。"]]);
 
       }
 
@@ -336,7 +348,7 @@ class ImagesController extends AppController
 
         }else{
 
-          move_uploaded_file($_FILES['upfile']["tmp_name"],"img/kensahyouimg/".$_FILES['upfile']["name"]);
+          move_uploaded_file($_FILES['upfile']["tmp_name"],"img/kensahyouimg/".$_FILES['upfile']["name"]);//フォルダは0777に設定する
 
         }
 
@@ -357,6 +369,7 @@ class ImagesController extends AppController
         's' => ['mess' => "ファイル名に半角スペースが含まれています。ファイル名に半角スペースを使用しないでください。"]]);
         }
 
+        
 			$gif = "kensahyouimg/".$selectfilename;//ローカル
 			$this->set('gif',$gif);
 

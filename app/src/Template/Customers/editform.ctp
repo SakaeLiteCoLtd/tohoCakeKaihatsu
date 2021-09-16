@@ -25,7 +25,7 @@
         <br>
         <table>
           <tbody class='sample non-sample'>
-            <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('データを編集してください') ?></strong></td></tr>
+          <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('データを編集してください') ?></strong></td></tr>
             <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></td></tr>
           </tbody>
         </table>
@@ -42,31 +42,33 @@
       <table>
       <tr>
         <td width="280"><strong>得意先名</strong></td>
-        <td width="280"><strong>得意先コード</strong></td>
+        <td width="280"><strong>得意先コード（変更不可）</strong></td>
       </tr>
       <tr>
         <td><?= $this->Form->control('name', array('type'=>'text', 'value'=>$name, 'label'=>false, 'required' => 'true')) ?></td>
-        <td><?= $this->Form->control('customer_code', array('type'=>'text', 'value'=>$customer_code, 'label'=>false, 'required' => 'true')) ?></td>
+        <td><?= h($customer_code) ?></td>
     </tr>
     </table>
   <table>
     <tr>
-      <td width="280"><strong>フリガナ</strong></td>
-      <td width="280"><strong>部署</strong></td>
+    <td width="280"><strong>フリガナ(半角カタカナで入力)</strong></td>
+      <td width="280"><strong>略称</strong></td>
     </tr>
     <tr>
       <td><?= $this->Form->control('furigana', array('type'=>'text', 'value'=>$furigana, 'label'=>false)) ?></td>
-      <td><?= $this->Form->control('department', array('type'=>'text', 'value'=>$department, 'label'=>false)) ?></td>
+      <td><?= $this->Form->control('ryakusyou', array('type'=>'text', 'value'=>$ryakusyou, 'label'=>false)) ?></td>
     </tr>
   </table>
   <table>
     <tr>
-      <td width="280"><strong>電話番号</strong></td>
-      <td width="280"><strong>ファックス</strong></td>
+    <td width="200"><strong>部署</strong></td>
+    <td width="180"><strong>電話番号</strong></td>
+      <td width="180"><strong>ファックス</strong></td>
     </tr>
     <tr>
-      <td><?= $this->Form->control('tel', array('type'=>'text', 'value'=>$tel, 'label'=>false)) ?></td>
-      <td><?= $this->Form->control('fax', array('type'=>'text', 'value'=>$fax, 'label'=>false)) ?></td>
+    <td><?= $this->Form->control('department', array('type'=>'text', 'value'=>$department, 'label'=>false)) ?></td>
+      <td><?= $this->Form->control('tel', array('type'=>'text', 'value'=>$tel, 'label'=>false, 'size'=>15)) ?></td>
+      <td><?= $this->Form->control('fax', array('type'=>'text', 'value'=>$fax, 'label'=>false, 'size'=>15)) ?></td>
     </tr>
   </table>
   <table>
@@ -98,6 +100,7 @@
     </table>
 
     <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$id, 'label'=>false)) ?>
+    <?= $this->Form->control('customer_code', array('type'=>'hidden', 'value'=>$customer_code, 'label'=>false)) ?>
 
 </fieldset>
 

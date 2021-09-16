@@ -12,7 +12,7 @@ use Cake\ORM\Entity;
  * @property string $name
  * @property string|null $department
  * @property string|null $ryakusyou
- * @property string|null $furigana
+ * @property string $furigana
  * @property string|null $yuubin
  * @property string|null $address
  * @property string|null $tel

@@ -70,6 +70,12 @@ class InspectionStandardSizeParentsTable extends Table
             ->notEmpty('image_file_name_dir');
 
         $validator
+            ->scalar('inspection_standard_size_code')
+            ->maxLength('inspection_standard_size_code', 255)
+            ->requirePresence('inspection_standard_size_code', 'create')
+            ->notEmpty('inspection_standard_size_code');
+
+        $validator
             ->integer('version')
             ->requirePresence('version', 'create')
             ->notEmpty('version');

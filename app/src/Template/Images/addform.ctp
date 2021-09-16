@@ -45,7 +45,7 @@
 
       <br>
       <div align="center"><font size="4"><?= __($product_name." の検査表に使用する画像ファイルを選択してください。") ?></font></div>
-      <div align="center"><strong style="font-size: 13pt; color:red"><?= __("※画像ファイルの拡張子は「.gif」にしてください。") ?></strong></div>
+      <div align="center"><strong style="font-size: 13pt; color:red"><?= __("※画像ファイルの拡張子は「.JPG」にしてください。") ?></strong></div>
       <br>
 
       <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>

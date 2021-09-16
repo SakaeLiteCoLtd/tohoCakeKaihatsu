@@ -218,13 +218,13 @@ class ZzzcsvsController extends AppController
 
     public function torikomiproduct()//http://localhost:5050/Zzzcsvs/torikomiproduct
     {
-
-      $fp = fopen("torikomicsvs/products210908ng2.csv", "r");//csvファイルはwebrootに入れる
-    	$fpcount = fopen("torikomicsvs/products210908ng2.csv", 'r' );
+      $fp = fopen("torikomicsvs/products210908.csv", "r");//csvファイルはwebrootに入れる
+    	$fpcount = fopen("torikomicsvs/products210908.csv", 'r' );
     	for( $count = 0; fgets( $fpcount ); $count++ );
     	$this->set('count',$count);
 
       $arrFp = array();//空の配列を作る
+      $arrFptourokuzumi = array();//空の配列を作る
     	$line = fgets($fp);//ファイル$fpの上の１行を取る（１行目はカラム名）
     	for ($k=1; $k<=$count-1; $k++) {//行数分
     		$line = fgets($fp);//ファイル$fpの上の１行を取る（２行目から）
@@ -239,7 +239,7 @@ class ZzzcsvsController extends AppController
         $keys[array_search('5',$keys)]='length';
         $keys[array_search('6',$keys)]='length_cut';
         $keys[array_search('7',$keys)]='customer_id';
-        $keys[array_search('8',$keys)]='dammy';
+   //     $keys[array_search('8',$keys)]='dammy';
    //     $keys[array_search('5',$keys)]='customer';//
     		$sample = array_combine($keys, $sample);
 
@@ -249,7 +249,7 @@ class ZzzcsvsController extends AppController
         $sample = array_merge($sample,array('is_active' => 0));
         $sample = array_merge($sample,array('delete_flag' => 0));
 
-        unset($sample['dammy']);
+    //    unset($sample['dammy']);
 
         $Products = $this->Products->find()
         ->where(['product_code' => $sample["product_code"]])
@@ -257,10 +257,13 @@ class ZzzcsvsController extends AppController
 
         if(isset($Products[0])){
 
+          $arrFptourokuzumi[] = $sample;//配列に追加する
+
+/*
           echo "<pre>";
           print_r("登録済み　".$sample["product_code"]);
           echo "</pre>";
-
+*/
             }else{
 
               $arrFp[] = $sample;//配列に追加する
@@ -273,7 +276,7 @@ class ZzzcsvsController extends AppController
       $count = 0;
 
       echo "<pre>";
-      print_r($arrFp);
+      print_r(count($arrFptourokuzumi));
       echo "</pre>";
 
       $arrFpok = array();//問題なしのデータ
@@ -357,12 +360,12 @@ class ZzzcsvsController extends AppController
       echo "<pre>";
       print_r("ng ".count($arrFpng));
       echo "</pre>";
-      
+      /*
       echo "<pre>";
       print_r($arrFpng);
       echo "</pre>";
-
-      $fp = fopen('torikomicsvs/製品データng210908.csv', 'w');
+*/
+      $fp = fopen('torikomicsvs/製品データng210914.csv', 'w');
         foreach ($arrFpng as $line) {
     //      $line = mb_convert_encoding($line, 'SJIS-win', 'UTF-8');//UTF-8の文字列をSJIS-winに変更する※文字列に使用、ファイルごとはできない
           fputcsv($fp, $line);

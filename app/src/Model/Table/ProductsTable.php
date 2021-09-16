@@ -95,16 +95,34 @@ class ProductsTable extends Table
 
         $validator
             ->numeric('length')
-            ->allowEmpty('length');
+            ->requirePresence('length', 'create')
+            ->notEmpty('length');
 
         $validator
             ->numeric('length_cut')
-            ->allowEmpty('length_cut');
+            ->requirePresence('length_cut', 'create')
+            ->notEmpty('length_cut');
+
+        $validator
+            ->numeric('length_size')
+            ->allowEmpty('length_size');
+
+        $validator
+            ->numeric('length_upper_limit')
+            ->allowEmpty('length_upper_limit');
+
+        $validator
+            ->numeric('length_lower_limit')
+            ->allowEmpty('length_lower_limit');
 
         $validator
             ->integer('status_kensahyou')
             ->requirePresence('status_kensahyou', 'create')
             ->notEmpty('status_kensahyou');
+
+        $validator
+            ->integer('ig_bank_modes')
+            ->allowEmpty('ig_bank_modes');
 
         $validator
             ->numeric('weight')
@@ -114,6 +132,10 @@ class ProductsTable extends Table
             ->scalar('sakuin')
             ->maxLength('sakuin', 255)
             ->allowEmpty('sakuin');
+
+        $validator
+            ->scalar('bik')
+            ->allowEmpty('bik');
 
         $validator
             ->integer('is_active')

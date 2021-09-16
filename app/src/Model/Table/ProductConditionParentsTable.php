@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
  * ProductConditionParents Model
  *
  * @property \App\Model\Table\ProductsTable|\Cake\ORM\Association\BelongsTo $Products
- * @property \App\Model\Table\ProductConditonChildrenTable|\Cake\ORM\Association\HasMany $ProductConditonChildren
+ * @property |\Cake\ORM\Association\HasMany $ProductMaterialMachines
  * @property \App\Model\Table\ShotWorksTable|\Cake\ORM\Association\HasMany $ShotWorks
  * @property \App\Model\Table\ShotdataBasesTable|\Cake\ORM\Association\HasMany $ShotdataBases
  *
@@ -44,18 +44,15 @@ class ProductConditionParentsTable extends Table
             'foreignKey' => 'product_id',
             'joinType' => 'INNER'
         ]);
-
-        $this->hasMany('ProductConditonChildren', [
+        $this->hasMany('ProductMaterialMachines', [
             'foreignKey' => 'product_condition_parent_id'
         ]);
-
         $this->hasMany('ShotWorks', [
             'foreignKey' => 'product_condition_parent_id'
         ]);
         $this->hasMany('ShotdataBases', [
             'foreignKey' => 'product_condition_parent_id'
         ]);
-
     }
 
     /**
@@ -69,6 +66,12 @@ class ProductConditionParentsTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
+
+        $validator
+            ->scalar('product_condition_code')
+            ->maxLength('product_condition_code', 255)
+            ->requirePresence('product_condition_code', 'create')
+            ->notEmpty('product_condition_code');
 
         $validator
             ->integer('version')

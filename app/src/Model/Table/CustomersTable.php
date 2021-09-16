@@ -11,6 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\FactoriesTable|\Cake\ORM\Association\BelongsTo $Factories
  * @property \App\Model\Table\ProductsTable|\Cake\ORM\Association\HasMany $Products
+ * @property |\Cake\ORM\Association\HasMany $旧productsLocal
  *
  * @method \App\Model\Entity\Customer get($primaryKey, $options = [])
  * @method \App\Model\Entity\Customer newEntity($data = null, array $options = [])
@@ -43,6 +44,9 @@ class CustomersTable extends Table
             'joinType' => 'INNER'
         ]);
         $this->hasMany('Products', [
+            'foreignKey' => 'customer_id'
+        ]);
+        $this->hasMany('旧productsLocal', [
             'foreignKey' => 'customer_id'
         ]);
     }
@@ -84,7 +88,8 @@ class CustomersTable extends Table
         $validator
             ->scalar('furigana')
             ->maxLength('furigana', 255)
-            ->allowEmpty('furigana');
+            ->requirePresence('furigana', 'create')
+            ->notEmpty('furigana');
 
         $validator
             ->scalar('yuubin')

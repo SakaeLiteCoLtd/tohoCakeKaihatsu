@@ -29,7 +29,7 @@ echo $this->Html->css('index');
               <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
                 <th scope="col" style='width:200'><?= $this->Paginator->sort('product_code', ['label'=>"社内品番"]) ?></th>
                 <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"品名"]) ?></th>
-                <th scope="col" style='width:200'><?= $this->Paginator->sort('custmoer_id', ['label'=>"顧客"]) ?></th>
+                <th scope="col" style='width:200'><?= $this->Paginator->sort('custmoer_id', ['label'=>"得意先"]) ?></th>
                 <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>
         </thead>

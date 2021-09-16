@@ -11,11 +11,16 @@ use Cake\ORM\Entity;
  * @property string $product_code
  * @property string $name
  * @property string|null $tanni
- * @property float|null $length
- * @property float|null $length_cut
+ * @property float $length
+ * @property float $length_cut
+ * @property float|null $length_size
+ * @property float|null $length_upper_limit
+ * @property float|null $length_lower_limit
  * @property int $status_kensahyou
+ * @property int|null $ig_bank_modes
  * @property float|null $weight
  * @property string|null $sakuin
+ * @property string|null $bik
  * @property int $customer_id
  * @property int $is_active
  * @property int $delete_flag
@@ -50,9 +55,14 @@ class Product extends Entity
         'tanni' => true,
         'length' => true,
         'length_cut' => true,
+        'length_size' => true,
+        'length_upper_limit' => true,
+        'length_lower_limit' => true,
         'status_kensahyou' => true,
+        'ig_bank_modes' => true,
         'weight' => true,
         'sakuin' => true,
+        'bik' => true,
         'customer_id' => true,
         'is_active' => true,
         'delete_flag' => true,

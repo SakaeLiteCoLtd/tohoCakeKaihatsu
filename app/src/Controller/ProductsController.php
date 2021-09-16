@@ -47,7 +47,8 @@ class ProductsController extends AppController
     public function ichiran()
     {
         $this->paginate = [
-            'contain' => ['Customers']
+          'limit' => 13,
+          'contain' => ['Customers']
         ];
         $products = $this->paginate($this->Products->find()->where(['Products.delete_flag' => 0]));
 
@@ -112,6 +113,12 @@ class ProductsController extends AppController
       $this->set('name', $name);
       $tanni = $ProductName[0]["tanni"];
       $this->set('tanni', $tanni);
+      $weight = $ProductName[0]["weight"];
+      $this->set('weight', $weight);
+      $status_kensahyou = $ProductName[0]["status_kensahyou"];
+      $this->set('status_kensahyou', $status_kensahyou);
+      $ig_bank_modes = $ProductName[0]["ig_bank_modes"];
+      $this->set('ig_bank_modes', $ig_bank_modes);
       
       $Customers = $this->Customers->find()
       ->where(['id' => $ProductName[0]['customer_id']])->toArray();
@@ -172,6 +179,15 @@ class ProductsController extends AppController
       $arrStatusKensahyou = ["1" => "表示", "0" => "非表示"];
       $this->set('arrStatusKensahyou', $arrStatusKensahyou);
 
+      $arrig_bank_modes = [
+        "" => "",
+        0 => 0,
+        1 => 1,
+        2 => 2,
+        3 => 3,
+      ];
+      $this->set('arrig_bank_modes', $arrig_bank_modes);
+
       if(!isset($_SESSION)){
         session_start();
       }
@@ -198,6 +214,14 @@ class ProductsController extends AppController
       $this->set('tanni', $tanni);
       $weight = $data["weight"];
       $this->set('weight', $weight);
+
+      $status_kensahyou = $data["status_kensahyou"];
+      if($status_kensahyou > 0){//表示の場合
+        $status_kensahyou_flag = 1;
+      }else{//非表示の場合
+        $status_kensahyou_flag = 0;
+      }
+      $this->set('status_kensahyou_flag', $status_kensahyou_flag);
 
       $ProductName = $this->Products->find()
       ->where(['factory_id' => $data['factory_id'], 'name' => $name])->toArray();
@@ -265,6 +289,10 @@ class ProductsController extends AppController
       header('Cache-Control:');
       header('Pragma:');
   
+      echo "<pre>";
+      print_r("");
+      echo "</pre>";
+
     }
 
     public function addcomfirm()
@@ -291,12 +319,25 @@ class ProductsController extends AppController
       $this->set('factory_id', $factory_id);
       $status_kensahyou = $data["status_kensahyou"];
       $this->set('status_kensahyou', $status_kensahyou);
+      $ig_bank_modes = $data["ig_bank_modes"];
+      $this->set('ig_bank_modes', $ig_bank_modes);
+
+      $status_kensahyou_flag = $data["status_kensahyou_flag"];
+      $this->set('status_kensahyou_flag', $status_kensahyou_flag);
 
       for($j=1; $j<=$tuikalength; $j++){
         ${"length".$j} = $data["length".$j];
         $this->set('length'.$j, ${"length".$j});
         ${"length_cut".$j} = $data["length_cut".$j];
         $this->set('length_cut'.$j, ${"length_cut".$j});
+        ${"length_size".$j} = $data["length_size".$j];
+        $this->set('length_size'.$j, ${"length_size".$j});
+        ${"length_upper_limit".$j} = $data["length_upper_limit".$j];
+        $this->set('length_upper_limit'.$j, ${"length_upper_limit".$j});
+        ${"length_lower_limit".$j} = $data["length_lower_limit".$j];
+        $this->set('length_lower_limit'.$j, ${"length_lower_limit".$j});
+        ${"bik".$j} = $data["bik".$j];
+        $this->set('bik'.$j, ${"bik".$j});
       }
 
       $Factories = $this->Factories->find()
@@ -332,6 +373,11 @@ class ProductsController extends AppController
       $this->set('weight', $weight);
       $customer_name = $data["customer_name"];
       $this->set('customer_name', $customer_name);
+      $ig_bank_modes = $data["ig_bank_modes"];
+      $this->set('ig_bank_modes', $ig_bank_modes);
+
+      $status_kensahyou_flag = $data["status_kensahyou_flag"];
+      $this->set('status_kensahyou_flag', $status_kensahyou_flag);
 
       $CustomerName = $this->Customers->find()
       ->where(['name' => $customer_name])->toArray();
@@ -344,19 +390,10 @@ class ProductsController extends AppController
         $code_factory = "I";
       }elseif($data['factory_id'] == 3){
         $code_factory = "B";
-      }else{
+      }elseif($data['factory_id'] == 4){
         $code_factory = "K";
-      }
-
-      $Productnow = $this->Products->find()
-      ->where(['product_code like' => $customer_code.$code_factory.'%'])
-      ->order(["product_code"=>"DESC"])->toArray();
-
-      if(isset($Productnow[0])){
-        $prodct_renban = substr($Productnow[0]["product_code"], -6, 4) + 1;
-        $prodct_renban = sprintf('%04d', $prodct_renban);//0埋め
       }else{
-        $prodct_renban = "0001";
+        $code_factory = "H";
       }
       
       $tuikalength = $data["tuikalength"];
@@ -367,6 +404,14 @@ class ProductsController extends AppController
         $this->set('length'.$j, ${"length".$j});
         ${"length_cut".$j} = $data["length_cut".$j];
         $this->set('length_cut'.$j, ${"length_cut".$j});
+        ${"length_size".$j} = $data["length_size".$j];
+        $this->set('length_size'.$j, ${"length_size".$j});
+        ${"length_upper_limit".$j} = $data["length_upper_limit".$j];
+        $this->set('length_upper_limit'.$j, ${"length_upper_limit".$j});
+        ${"length_lower_limit".$j} = $data["length_lower_limit".$j];
+        $this->set('length_lower_limit'.$j, ${"length_lower_limit".$j});
+        ${"bik".$j} = $data["bik".$j];
+        $this->set('bik'.$j, ${"bik".$j});
       }
 
       $Factories = $this->Factories->find()
@@ -379,40 +424,60 @@ class ProductsController extends AppController
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
-      $arrtourokuproduct = array();
-      for($j=1; $j<=$tuikalength; $j++){
-
-        ${"length".$j} = $data["length".$j];
-        $color_renban = sprintf('%02d', $j);
-
-        $arrtourokuproduct[] = [
-          'factory_id' => $data["factory_id"],
-          'product_code' => $customer_code.$code_factory.$prodct_renban.$color_renban,
-          'name' => $data["name"],
-          'tanni' => $data["tanni"],
-          'weight' => $data["weight"],
-          'length' => ${"length".$j},
-          'length_cut' => ${"length_cut".$j},
-          'customer_id' => $customer_id,
-          'status_kensahyou' => $data["status_kensahyou"],
-          'is_active' => 0,
-          'delete_flag' => 0,
-          'created_at' => date("Y-m-d H:i:s"),
-          'created_staff' => $staff_id
-        ];
-
-      }
-/*
-      echo "<pre>";
-      print_r($arrtourokuproduct);
-      echo "</pre>";
-*/
       //新しいデータを登録
-      $Products = $this->Products->patchEntities($this->Products->newEntity(), $arrtourokuproduct);
       $connection = ConnectionManager::get('default');//トランザクション1
       // トランザクション開始2
       $connection->begin();//トランザクション3
       try {//トランザクション4
+
+        $Productnow = $this->Products->find()
+        ->where(['product_code like' => $customer_code.$code_factory.'%'])
+        ->order(["product_code"=>"DESC"])->toArray();
+  
+        if(isset($Productnow[0])){
+          $prodct_renban = substr($Productnow[0]["product_code"], -6, 4) + 1;
+          $prodct_renban = sprintf('%04d', $prodct_renban);//0埋め
+        }else{
+          $prodct_renban = "0001";
+        }
+  
+        $arrtourokuproduct = array();
+        for($j=1; $j<=$tuikalength; $j++){
+  
+          ${"length".$j} = $data["length".$j];
+          $color_renban = sprintf('%02d', $j);
+  
+          ${"product_code".$j} = $customer_code.$code_factory.$prodct_renban.$color_renban;
+          $this->set('product_code'.$j, ${"product_code".$j});
+  
+          $arrtourokuproduct[] = [
+            'factory_id' => $data["factory_id"],
+            'product_code' => $customer_code.$code_factory.$prodct_renban.$color_renban,
+            'name' => $data["name"],
+            'tanni' => $data["tanni"],
+            'weight' => $data["weight"],
+            'ig_bank_modes' => $data["ig_bank_modes"],
+            'length' => ${"length".$j},
+            'length_cut' => ${"length_cut".$j},
+            'length_size' => ${"length_size".$j},
+            'length_upper_limit' => ${"length_upper_limit".$j},
+            'length_lower_limit' => ${"length_lower_limit".$j},
+            'bik' => ${"bik".$j},
+            'customer_id' => $customer_id,
+            'status_kensahyou' => $data["status_kensahyou"],
+            'is_active' => 0,
+            'delete_flag' => 0,
+            'created_at' => date("Y-m-d H:i:s"),
+            'created_staff' => $staff_id
+          ];
+  
+        }
+  /*
+        echo "<pre>";
+        print_r($arrtourokuproduct);
+        echo "</pre>";
+  */
+        $Products = $this->Products->patchEntities($this->Products->newEntity(), $arrtourokuproduct);
         if ($this->Products->saveMany($Products)) {
 
           $connection->commit();// コミット5
@@ -776,6 +841,10 @@ class ProductsController extends AppController
       $this->set('tanni', $tanni);
       $weight = $ProductName[0]["weight"];
       $this->set('weight', $weight);
+      $status_kensahyou = $ProductName[0]["status_kensahyou"];
+      $this->set('status_kensahyou', $status_kensahyou);
+      $ig_bank_modes = $ProductName[0]["ig_bank_modes"];
+      $this->set('ig_bank_modes', $ig_bank_modes);
       
       $status_kensahyou = $ProductName[0]["status_kensahyou"];
       if($status_kensahyou == 1){
@@ -845,6 +914,17 @@ class ProductsController extends AppController
       $this->set('weight', $weight);
       $status_kensahyou = $ProductName[0]["status_kensahyou"];
       $this->set('status_kensahyou', $status_kensahyou);
+      $ig_bank_modes = $ProductName[0]["ig_bank_modes"];
+      $this->set('ig_bank_modes', $ig_bank_modes);
+
+      $arrig_bank_modes = [
+        "" => "",
+        0 => 0,
+        1 => 1,
+        2 => 2,
+        3 => 3,
+      ];
+      $this->set('arrig_bank_modes', $arrig_bank_modes);
 
       $Customers = $this->Customers->find()
       ->where(['id' => $ProductName[0]['customer_id']])->toArray();
@@ -853,6 +933,17 @@ class ProductsController extends AppController
 
       $arrStatusKensahyou = ["1" => "表示", "0" => "非表示"];
       $this->set('arrStatusKensahyou', $arrStatusKensahyou);
+
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      header('Expires:-1');
+      header('Cache-Control:');
+      header('Pragma:');
+
+      echo "<pre>";
+      print_r(" ");
+      echo "</pre>";
 
     }
 
@@ -894,12 +985,26 @@ class ProductsController extends AppController
           }
     
           $arrKoushinproduct[] = ["product_code" => $data["product_code".$i],
-           "name" => $data["name".$i], "length" => $data["length".$i], "length_cut" => $data["length_cut".$i]];
+           "name" => $data["name".$i],
+            "length" => $data["length".$i],
+            "length_cut" => $data["length_cut".$i],
+            "length_size" => $data["length_size".$i],
+            "length_upper_limit" => $data["length_upper_limit".$i],
+            "length_lower_limit" => $data["length_lower_limit".$i],
+            "bik" => $data["bik".$i]
+          ];
 
             }else{
 
               $arrDeleteproduct[] = ["product_code" => $data["product_code".$i],
-               "name" => $data["name".$i], "length" => $data["length".$i], "length_cut" => $data["length_cut".$i]];
+               "name" => $data["name".$i],
+                "length" => $data["length".$i],
+                "length_cut" => $data["length_cut".$i],
+                "length_size" => $data["length_size".$i],
+                "length_upper_limit" => $data["length_upper_limit".$i],
+                "length_lower_limit" => $data["length_lower_limit".$i],
+                "bik" => $data["bik".$i]
+                  ];
 
             }
 
@@ -930,13 +1035,45 @@ class ProductsController extends AppController
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
       $arrupdateproduct = array();
+      $arrupdateproductmoto = array();
       if(isset($data["num"])){
         for($i=0; $i<=$data["num"]; $i++){
+
+          $Productsmoto = $this->Products->find()
+          ->where(['product_code' => $data['product_code'.$i]])->toArray();
+    
+          $arrupdateproductmoto = array();
+          $arrupdateproductmoto[] = [
+            'factory_id' => $Productsmoto[0]["factory_id"],
+            'product_code' => $Productsmoto[0]["product_code"],
+            'length' => $Productsmoto[0]["length"],
+            'length_cut' => $Productsmoto[0]["length_cut"],
+            'length_size' => $Productsmoto[0]["length_size"],
+            'length_upper_limit' => $Productsmoto[0]["length_upper_limit"],
+            'length_lower_limit' => $Productsmoto[0]["length_lower_limit"],
+            'ig_bank_modes' => $Productsmoto[0]["ig_bank_modes"],
+            'bik' => $Productsmoto[0]["bik"],
+            'name' => $Productsmoto[0]["name"],
+            'tanni' => $Productsmoto[0]["tanni"],
+            'weight' => $Productsmoto[0]["weight"],
+            'status_kensahyou' => $Productsmoto[0]["status_kensahyou"],
+            'customer_id' => $Productsmoto[0]["customer_id"],
+            'is_active' => 1,
+            'delete_flag' => 1,
+            'created_at' => $Productsmoto[0]["created_at"]->format("Y-m-d H:i:s"),
+            'created_staff' => $Productsmoto[0]["created_staff"],
+            'updated_at' => date("Y-m-d H:i:s"),
+            'updated_staff' => $staff_id
+              ];
 
           $arrupdateproduct[] = [
             'product_code' => $data["product_code".$i],
             'length' => $data["length".$i],
             'length_cut' => $data["length_cut".$i],
+            'length_size' => $data["length_size".$i],
+            'length_upper_limit' => $data["length_upper_limit".$i],
+            'length_lower_limit' => $data["length_lower_limit".$i],
+            'bik' => $data["bik".$i],
             'name' => $data["name".$i],
             'tanni' => $data["tanni"],
             'weight' => $data["weight"],
@@ -959,6 +1096,10 @@ class ProductsController extends AppController
               'name' => $data["delete_name".$i],
               'length' => $data["delete_length".$i],
               'length_cut' => $data["delete_length_cut".$i],
+              'length_size' => $data["delete_length_size".$i],
+              'length_upper_limit' => $data["delete_length_upper_limit".$i],
+              'length_lower_limit' => $data["delete_length_lower_limit".$i],
+              'bik' => $data["delete_bik".$i],
               'delete_flag' => 1,
               'updated_at' => date("Y-m-d H:i:s"),
               'updated_staff' => $staff_id
@@ -968,17 +1109,23 @@ class ProductsController extends AppController
         }
         $this->set('arrdeleteproduct', $arrdeleteproduct);
 
-      $Products = $this->Products->patchEntity($this->Products->newEntity(), $data);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
        $connection->begin();//トランザクション3
        try {//トランザクション4
+
+        $Products = $this->Products->patchEntities($this->Products->newEntity(), $arrupdateproductmoto);
+        $this->Products->saveMany($Products);
 
           $count_update = 0;
           for($i=0; $i<count($arrupdateproduct); $i++){
             if ($this->Products->updateAll(
               [ 'length' => $data["length".$i],
                 'length_cut' => $data["length_cut".$i],
+                'length_size' => $data["length_size".$i],
+                'length_upper_limit' => $data["length_upper_limit".$i],
+                'length_lower_limit' => $data["length_lower_limit".$i],
+                'bik' => $data["bik".$i],
                 'name' => $data["name".$i],
                 'tanni' => $data["tanni"],
                 'weight' => $data["weight"],
