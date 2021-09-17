@@ -137,7 +137,7 @@ if($this->request->getData('status_kensahyou') == 1){
       <td><?= $this->Form->control
       ('length'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true')) ?></td>
       <td><?= $this->Form->control
-      ('length_cut'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6)) ?></td>
+      ('length_cut'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true')) ?></td>
       <?= $this->Form->control('length_size'.$k, array('type'=>'hidden', 'value'=>"", 'label'=>false)) ?>
       <?= $this->Form->control('length_upper_limit'.$k, array('type'=>'hidden', 'value'=>"", 'label'=>false)) ?>
       <?= $this->Form->control('length_lower_limit'.$k, array('type'=>'hidden', 'value'=>"", 'label'=>false)) ?>

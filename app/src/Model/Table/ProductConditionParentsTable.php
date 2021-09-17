@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
  * ProductConditionParents Model
  *
  * @property \App\Model\Table\ProductsTable|\Cake\ORM\Association\BelongsTo $Products
- * @property |\Cake\ORM\Association\HasMany $ProductMaterialMachines
+ * @property \App\Model\Table\ProductMaterialMachinesTable|\Cake\ORM\Association\HasMany $ProductMaterialMachines
  * @property \App\Model\Table\ShotWorksTable|\Cake\ORM\Association\HasMany $ShotWorks
  * @property \App\Model\Table\ShotdataBasesTable|\Cake\ORM\Association\HasMany $ShotdataBases
  *

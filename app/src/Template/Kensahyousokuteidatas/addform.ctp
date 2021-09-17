@@ -12,6 +12,10 @@ $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
 
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <script>
 
 function showClock1() {
@@ -52,13 +56,37 @@ setInterval('showClock1()',1000);
       echo $htmlkensahyouheader;
  ?>
 
+<script>
+
+$(document).ready(function() {
+    $("#auto1").focusout(function() {
+      var inputNumber = $("#auto1").val();
+      var resultDivision = 1000 / inputNumber; 
+      $("#auto2").text(resultDivision);
+    })
+});
+
+</script>
+
+<br>
+<table class="white">
+<tr><td width="280"><strong>自動補完テスト１</strong></td></tr>
+<td><?= $this->Form->input('name_menu1', array('type'=>'text', 'label'=>false, 'id'=>"auto1")) ?></td>
+<tr><td width="280"><strong>自動補完テスト２</strong></td></tr>
+<td><div id="auto2"></div></td>
+</table>
+<br>
+
 <table class="white">
 
   <tr>
-    <td width="50" rowspan='7'>No.</td>
+    <td width="50" rowspan='8'>No.</td>
   </tr>
   <tr>
-    <td width="100" rowspan='6'>時間</td>
+    <td width="100" rowspan='7'>時間</td>
+  </tr>
+  <tr>
+  <td width="72" rowspan='6'>長さ</td>
   </tr>
 
 <tr>
@@ -68,7 +96,6 @@ setInterval('showClock1()',1000);
     <td style='width:75'><?= h(${"size_name".$i}) ?></td>
   <?php endfor;?>
 
-  <td width="72" rowspan='5'>長さ</td>
   <td width="69" rowspan='3'>外観</td>
   <td width="80" rowspan='3'>重量<br>（目安）</td>
   <td width="65" rowspan='5'>合否<br>判定</td>
@@ -86,7 +113,11 @@ setInterval('showClock1()',1000);
   <td>上限</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
-    <td><?= h(${"upper_limit".$i}) ?></td>
+    <?php if (strlen(${"upper_limit".$i}) > 0 && substr(${"upper_limit".$i}, 0, 1) != "+"): ?>
+    <td><?= h("+".${"upper_limit".$i}) ?></td>
+    <?php else : ?>
+      <td><?= h(${"upper_limit".$i}) ?></td>
+      <?php endif; ?>
   <?php endfor;?>
 
 </tr>
@@ -135,13 +166,13 @@ setInterval('showClock1()',1000);
   <td style='width:100; border-top-style:none'>
   <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false)) ?>
   </td>
+  <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false]) ?></td>
   <td style='width:130; border-top-style:none'><font size='1.8'><?= h("社員コード：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。')) ?></td>
 
   <?php for($i=1; $i<=10; $i++): ?>
     <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
   <?php endfor;?>
 
-  <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false]) ?></td>
   <td style='width:69; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ['options' => $arrGaikan, 'label'=>false]) ?></td>
   <td style='width:80; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
   <td style='width:65; border-top-style:none'><?= $this->Form->control('gouhi'.$j, ['options' => $arrGouhi, 'label'=>false]) ?></td>
@@ -155,6 +186,7 @@ setInterval('showClock1()',1000);
 
     <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
     <td style='width:100; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
+    <td style='width:72; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
     <td style='width:130; border-top-style:none'><?= h(${"user_code".$j}) ?></td>
 
     <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
@@ -192,7 +224,6 @@ setInterval('showClock1()',1000);
     }
     ?>
 
-    <td style='width:72; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
     <td style='width:69; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
     <td style='width:80; border-top-style:none'><?= h(${"weight".$j}) ?></td>
     <td style='width:65; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
@@ -216,13 +247,13 @@ setInterval('showClock1()',1000);
   <td style='width:100; border-top-style:none'>
   <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false)) ?>
   </td>
+  <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false]) ?></td>
   <td style='width:130; border-top-style:none'><font size='1.8'><?= h("社員コード：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'required' => 'true')) ?></td>
 
   <?php for($i=1; $i<=10; $i++): ?>
     <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
   <?php endfor;?>
 
-  <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false]) ?></td>
   <td style='width:69; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ['options' => $arrGaikan, 'label'=>false]) ?></td>
   <td style='width:80; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'required' => 'true')) ?></td>
   <td style='width:65; border-top-style:none'><?= $this->Form->control('gouhi'.$j, ['options' => $arrGouhi, 'label'=>false]) ?></td>
@@ -236,6 +267,7 @@ setInterval('showClock1()',1000);
 
       <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
       <td style='width:100; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
+      <td style='width:72; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
       <td style='width:130; border-top-style:none'><?= h(${"user_code".$j}) ?></td>
 
       <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
@@ -273,7 +305,6 @@ setInterval('showClock1()',1000);
       }
       ?>
 
-      <td style='width:72; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
       <td style='width:69; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
       <td style='width:80; border-top-style:none'><?= h(${"weight".$j}) ?></td>
       <td style='width:65; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>

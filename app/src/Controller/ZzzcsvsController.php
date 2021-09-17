@@ -16,10 +16,16 @@ class ZzzcsvsController extends AppController
     parent::beforeFilter($event);
 
     // 認証なしでアクセスできるアクションの指定
-    $this->Auth->allow(["torikomicustomer","torikomiproduct","torikomiMaterialSuppliers","torikomiMaterials"]);
+    $this->Auth->allow(["jidoutest","torikomicustomer",
+    "torikomiproduct","torikomiMaterialSuppliers","torikomiMaterials"]);
   }
 
-      public function initialize()
+      public function jidoutest()//http://localhost:5050/Zzzcsvs/jidoutest
+    {
+
+    }
+
+    public function initialize()
     {
      parent::initialize();
      $this->MaterialTypes = TableRegistry::get('MaterialTypes');

@@ -50,7 +50,11 @@ echo $this->Html->css('kensahyou');
   <td>上限</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
-    <td><?= h($this->request->getData('upper_limit'.$i)) ?></td>
+    <?php if (strlen($this->request->getData('upper_limit'.$i)) > 0 && substr($this->request->getData('upper_limit'.$i), 0, 1) != "+"): ?>
+    <td><?= h("+".$this->request->getData('upper_limit'.$i)) ?></td>
+    <?php else : ?>
+      <td><?= h($this->request->getData('upper_limit'.$i)) ?></td>
+      <?php endif; ?>
   <?php endfor;?>
 
 </tr>

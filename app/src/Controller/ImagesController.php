@@ -406,10 +406,19 @@ class ImagesController extends AppController
         $version = 1;
       }
 
+      $code_date = date('y').date('m').date('d');
+      $InspectionStandardSizeParentcodes = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+      ->where(['product_code' => $data['product_code'], 'inspection_standard_size_code like' => $code_date."%"])
+      ->toArray();
+
+      $renban = count($InspectionStandardSizeParentcodes) + 1;
+      $inspection_standard_size_code = $code_date."-".$renban;
+
       $arrtourokuinspectionStandardSizeParent = array();
       $arrtourokuinspectionStandardSizeParent = [
         'product_id' => $product_id,
         'image_file_name_dir' => $data["gif"],
+        'inspection_standard_size_code' => $inspection_standard_size_code,
         'version' => $version,
         'is_active' => 0,
         'delete_flag' => 0,
@@ -444,10 +453,10 @@ class ImagesController extends AppController
 
         } else {
 
-          $this->Flash->error(__('The data could not be saved. Please, try again.'));
-          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
           $mes = "※登録されませんでした";
           $this->set('mes',$mes);
+          $this->Flash->error(__('The data could not be saved. Please, try again.'));
+          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
 
         }
 

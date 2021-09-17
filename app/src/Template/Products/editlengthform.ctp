@@ -52,9 +52,13 @@
     <table>
       <tr>
         <td><strong>製品コード</strong></td>
-        <td><strong>品名</strong></td>
+        <td width="200"><strong>品名</strong></td>
         <td><strong>長さ（mm）</strong></td>
-        <td><strong>カット長さ（mm）</strong></td>
+        <td width="80"><strong>カット長さ（mm）</strong></td>
+        <td width="80"><strong>規 格 長 さ（mm）</strong></td>
+        <td width="50"><strong>上限</strong></td>
+        <td width="50"><strong>下限</strong></td>
+        <td width="200"><strong>備考</strong></td>
       </tr>
       
       <?php for($i=0; $i<count($ProductName); $i++): ?>
@@ -64,6 +68,10 @@
       <td><?= h($ProductName[$i]["name"]) ?></td>
       <td><?= h($ProductName[$i]["length"]) ?></td>
       <td><?= h($ProductName[$i]["length_cut"]) ?></td>
+      <td><?= h($ProductName[$i]["length_size"]) ?></td>
+      <td><?= h($ProductName[$i]["length_upper_limit"]) ?></td>
+      <td><?= h($ProductName[$i]["length_lower_limit"]) ?></td>
+      <td><?= h($ProductName[$i]["bik"]) ?></td>
       </tr>
 
       <?php endfor;?>
@@ -81,7 +89,11 @@
       <tr>
         <td><strong>品名</strong></td>
         <td width="50"><strong>長さ（mm）</strong></td>
-        <td width="50"><strong>カット長さ（mm）</strong></td>
+        <td width="80"><strong>カット長さ（mm）</strong></td>
+        <td width="80"><strong>規 格 長 さ（mm）</strong></td>
+        <td width="50"><strong>上限</strong></td>
+        <td width="50"><strong>下限</strong></td>
+        <td width="200"><strong>備考</strong></td>
       </tr>
       
       <?php for($k=1; $k<=$tuikalength; $k++): ?>
@@ -92,6 +104,13 @@
       ('length'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true')) ?></td>
       <td><?= $this->Form->control
       ('length_cut'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6)) ?></td>
+      <td><?= $this->Form->control
+      ('length_size'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6)) ?></td>
+      <td><?= $this->Form->control
+      ('length_upper_limit'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6)) ?></td>
+      <td><?= $this->Form->control
+      ('length_lower_limit'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6)) ?></td>
+        <td><?= $this->Form->control('bik'.$k, array('type'=>'text', 'label'=>false)) ?></td>
       </tr>
 
       <?php endfor;?>

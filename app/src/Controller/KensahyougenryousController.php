@@ -876,16 +876,29 @@ class KensahyougenryousController extends AppController
         $motoid = 0;
       }
 
+      $code_date = date('y').date('m').date('d');
+      $ProductConditionParents = $this->ProductConditionParents->find()
+      ->where(['product_id' => $product_id, 'product_condition_code like' => $code_date."%"])
+      ->toArray();
+
+      $renban = count($ProductConditionParents) + 1;
+      $product_condition_code = $code_date."-".$renban;
+
       $tourokuProductConditionParent = [
         "product_id" => $product_id,
         "version" => $version,
+        "product_condition_code" => $product_condition_code,
         "start_datetime" => date("Y-m-d H:i:s"),
         "is_active" => 0,
         "delete_flag" => 0,
         'created_at' => date("Y-m-d H:i:s"),
         "created_staff" => $staff_id
       ];
-
+/*
+      echo "<pre>";
+      print_r($tourokuProductConditionParent);
+      echo "</pre>";
+*/
       //新しいデータを登録
       $ProductConditionParents = $this->ProductConditionParents
       ->patchEntity($this->ProductConditionParents->newEntity(), $tourokuProductConditionParent);

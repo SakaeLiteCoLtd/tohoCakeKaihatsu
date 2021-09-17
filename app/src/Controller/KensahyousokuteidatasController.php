@@ -1250,11 +1250,11 @@ class KensahyousokuteidatasController extends AppController
           $num = $InspectionStandardSizeChildren[$i]["size_number"];
           ${"size_name".$num} = $InspectionStandardSizeChildren[$i]["size_name"];
           $this->set('size_name'.$num,${"size_name".$num});
-          ${"upper_limit".$num} = $InspectionStandardSizeChildren[$i]["upper_limit"];
+          ${"upper_limit".$num} = sprintf("%.1f", $InspectionStandardSizeChildren[$i]["upper_limit"]);
           $this->set('upper_limit'.$num,${"upper_limit".$num});
-          ${"lower_limit".$num} = $InspectionStandardSizeChildren[$i]["lower_limit"];
+          ${"lower_limit".$num} = sprintf("%.1f", $InspectionStandardSizeChildren[$i]["lower_limit"]);
           $this->set('lower_limit'.$num,${"lower_limit".$num});
-          ${"size".$num} = $InspectionStandardSizeChildren[$i]["size"];
+          ${"size".$num} = sprintf("%.1f", $InspectionStandardSizeChildren[$i]["size"]);
           $this->set('size'.$num,${"size".$num});
           ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
           $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
@@ -1407,7 +1407,7 @@ class KensahyousokuteidatasController extends AppController
             for($i=1; $i<=10; $i++){
 
               if(isset($data['result_size'.$j.$i])){
-                ${"result_size".$j.$i} = $data['result_size'.$j.$i];
+                ${"result_size".$j.$i} = sprintf("%.2f", $data['result_size'.$j.$i]);
               }else{
                 ${"result_size".$j.$i} = "";
               }
@@ -1495,6 +1495,7 @@ class KensahyousokuteidatasController extends AppController
               }elseif($dotend == "."){
                 ${"result_size".$j.$i} = ${"result_size".$j.$i}."0";
               }
+              ${"result_size".$j.$i} = sprintf("%.2f", ${"result_size".$j.$i});
   
             }else{
               ${"result_size".$j.$i} = "";
@@ -1716,7 +1717,8 @@ class KensahyousokuteidatasController extends AppController
               }elseif($dotend == "."){
                 ${"result_size".$j.$i} = ${"result_size".$j.$i}."0";
               }
-  
+              ${"result_size".$j.$i} = sprintf("%.2f", ${"result_size".$j.$i});
+
             }else{
               ${"result_size".$j.$i} = "";
             }
@@ -1819,7 +1821,8 @@ class KensahyousokuteidatasController extends AppController
               }elseif($dotend == "."){
                 ${"result_size".$j.$i} = ${"result_size".$j.$i}."0";
               }
-  
+              ${"result_size".$j.$i} = sprintf("%.2f", ${"result_size".$j.$i});
+
             }else{
               ${"result_size".$j.$i} = "";
             }
@@ -1945,6 +1948,8 @@ class KensahyousokuteidatasController extends AppController
               }else{
                 ${"result_size".$j.$i} = "";
               }
+              ${"result_size".$j.$i} = sprintf("%.2f", ${"result_size".$j.$i});
+
               $this->set('result_size'.$j.$i,${"result_size".$j.$i});
 
             }

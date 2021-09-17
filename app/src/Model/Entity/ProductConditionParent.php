@@ -20,7 +20,7 @@ use Cake\ORM\Entity;
  * @property int|null $updated_staff
  *
  * @property \App\Model\Entity\Product $product
- * @property \App\Model\Entity\ProductConditonChild[] $product_conditon_children
+ * @property \App\Model\Entity\ProductMaterialMachine[] $product_material_machines
  * @property \App\Model\Entity\ShotWork[] $shot_works
  * @property \App\Model\Entity\ShotdataBase[] $shotdata_bases
  */
@@ -49,7 +49,7 @@ class ProductConditionParent extends Entity
         'updated_at' => true,
         'updated_staff' => true,
         'product' => true,
-        'product_conditon_children' => true,
+        'product_material_machines' => true,
         'shot_works' => true,
         'shotdata_bases' => true
     ];

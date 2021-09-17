@@ -55,7 +55,7 @@
       <td width="280"><strong>略称</strong></td>
     </tr>
     <tr>
-      <td><?= $this->Form->control('furigana', array('type'=>'text', 'value'=>$furigana, 'label'=>false)) ?></td>
+      <td><?= $this->Form->control('furigana', array('type'=>'text', 'pattern' => '[\uFF66-\uFF9F]*', 'title'=>'半角カタカナで入力してください', 'value'=>$furigana, 'label'=>false)) ?></td>
       <td><?= $this->Form->control('ryakusyou', array('type'=>'text', 'value'=>$ryakusyou, 'label'=>false)) ?></td>
     </tr>
   </table>

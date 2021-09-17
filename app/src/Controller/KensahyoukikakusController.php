@@ -390,11 +390,11 @@ echo "</pre>";
 
             ${"size_name".$i} = $data['size_name'.$i];
             $this->set('size_name'.$i,${"size_name".$i});
-            ${"upper_limit".$i} = $data['upper_limit'.$i];
+            ${"upper_limit".$i} = sprintf("%.1f", $data['upper_limit'.$i]);
             $this->set('upper_limit'.$i,${"upper_limit".$i});
-            ${"lower_limit".$i} = $data['lower_limit'.$i];
+            ${"lower_limit".$i} = sprintf("%.1f", $data['lower_limit'.$i]);
             $this->set('lower_limit'.$i,${"lower_limit".$i});
-            ${"size".$i} = $data['size'.$i];
+            ${"size".$i} = sprintf("%.1f", $data['size'.$i]);
             $this->set('size'.$i,${"size".$i});
             ${"measuring_instrument".$i} = $data['measuring_instrument'.$i];
             $this->set('measuring_instrument'.$i,${"measuring_instrument".$i});
@@ -464,9 +464,9 @@ echo "</pre>";
             "inspection_standard_size_parent_id" => $data['inspection_standard_size_parent_id'],
             "size_name" => $data['size_name'.$i],
             "size_number" => $i,
-            "size" => $data['size'.$i],
-            "upper_limit" => $data['upper_limit'.$i],
-            "lower_limit" => $data['lower_limit'.$i],
+            "size" => sprintf("%.1f", $data['size'.$i]),
+            "upper_limit" => sprintf("%.1f", $data['upper_limit'.$i]),
+            "lower_limit" => sprintf("%.1f", $data['lower_limit'.$i]),
             "measuring_instrument" => $data['measuring_instrument'.$i],
             "delete_flag" => 0,
             'created_at' => date("Y-m-d H:i:s"),

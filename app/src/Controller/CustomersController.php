@@ -168,22 +168,19 @@ class CustomersController extends AppController
       $this->set('customer', $customer);
 
       $data = $this->request->getData();
-/*
-      $CustomerData = $this->Customers->find()
-      ->where(['customer_code' => $data['customer_code']])->toArray();
 
-      $MaterialSuppliers = $this->MaterialSuppliers->find()
-      ->where(['material_supplier_code' => $data['customer_code']])->toArray();
+      $initial_kana = mb_substr($data["furigana"], 0, 1);//半角カタカナはmb_substrを使う
 
-      $CustomerData = $CustomerData + $MaterialSuppliers;
+      $CustomerCodeRules = $this->CustomerCodeRules->find()
+      ->where(['initial_kana' => $initial_kana, 'delete_flag' => 0])->toArray();
 
-      if(isset($CustomerData[0])){
-  
+      if(!isset($CustomerCodeRules[0])){
+
         return $this->redirect(['action' => 'addform',
-        's' => ['mess' => "得意先コード：「".$data['customer_code']."」は既に存在します。"]]);
+        's' => ['mess' => "フリガナは半角カタカナで入力してください"]]);
 
       }
-*/
+
       $Factories = $this->Factories->find()
       ->where(['id' => $data['factory_id']])->toArray();
       $factory_name = $Factories[0]['name'];
