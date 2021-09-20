@@ -22,6 +22,51 @@ class ZzzcsvsController extends AppController
 
       public function jidoutest()//http://localhost:5050/Zzzcsvs/jidoutest
     {
+      //自動入力のテスト
+
+      for($i=1; $i<=10; $i++){
+
+        if($i < 4){
+          ${"result_size".$i} = 8.5;
+        }else{
+          ${"result_size".$i} = "";
+        }
+        $this->set('result_size'.$i,${"result_size".$i});
+
+      }
+      $num_length = 3;
+      $size_length = 4.1;
+      $upper_length = 4.2;
+      $lower_length = 4.3;
+      $this->set('num_length',$num_length);
+      $this->set('size_length1',$size_length);
+      $this->set('upper_length',$upper_length);
+      $this->set('lower_length',$lower_length);
+
+      $arrLength_size0 = array();
+      $arrLength_size0 = [
+        "length" => 10,
+        "size" => 10.1,
+        "upper" => 10.2,
+        "lower" => 10.3
+      ];
+      $this->set('arrLength_size0',$arrLength_size0);
+
+      $arrLength_size1 = array();
+      $arrLength_size1 = [
+        "length" => 20,
+        "size" => 20.1,
+        "upper" => 20.2,
+        "lower" => 20.3
+      ];
+      $this->set('arrLength_size1',$arrLength_size1);
+      /*
+      echo "<pre>";
+      print_r($arrLength_size1);
+      echo "</pre>";
+*/
+      $count_length = 2;
+      $this->set('count_length',$count_length);
 
     }
 
