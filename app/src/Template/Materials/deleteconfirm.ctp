@@ -27,7 +27,7 @@
 
       <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$material['id'], 'label'=>false)) ?>
 
-      <legend><strong style="font-size: 15pt; color:red"><?= __('原料情報削除') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('仕入品情報削除') ?></strong></legend>
         <br>
         <table align="center">
           <tbody class='sample non-sample'>
@@ -37,34 +37,50 @@
         <br>
 
         <table>
-          <tr>
-            <td width="280"><strong>原料コード</strong></td>
-            <td width="280"><strong>グレード</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($material['material_code']) ?></td>
-            <td><?= h($material['grade']) ?></td>
-        	</tr>
-        </table>
-        <table>
-          <tr>
-            <td width="280"><strong>色</strong></td>
-            <td width="280"><strong>メーカー</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($material['color']) ?></td>
-            <td><?= h($material['maker']) ?></td>
-        	</tr>
-        </table>
-        <table>
-          <tr>
-            <td width="280"><strong>原料種類</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($material->material_type->type) ?></td>
-        	</tr>
-        </table>
+        <tr>
+          <td width="280"><strong>自社工場</strong></td>
+        </tr>
+        <tr>
+        <td><?= h($material->factory->name) ?></td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+        <td width="260"><strong>仕入品コード</strong></td>
+        <td width="200"><strong>単位</strong></td>
+        </tr>
+        <tr>
+        <td><?= h($material['material_code']) ?></td>
+        <td><?= h($material['tanni']) ?></td>
+        </tr>
+      </table>
 
+      <table>
+        <tr>
+          <td width="480"><strong>仕入品名</strong></td>
+        </tr>
+        <tr>
+        <td><?= h($material['name']) ?></td>
+        </tr>
+      </table>
+
+      <table>
+        <tr>
+          <td width="480"><strong>仕入品種類</strong></td>
+        </tr>
+        <tr>
+        <td><?= h($material->material_type->type) ?></td>
+        </tr>
+      </table>
+
+      <table>
+      <tr>
+      <td width="480"><strong>仕入品仕入先</strong></td>
+      </tr>
+      <tr>
+      <td><?= h($material->material_supplier->name) ?></td>
+      </tr>
+    </table>
     </fieldset>
 
     <table align="center">

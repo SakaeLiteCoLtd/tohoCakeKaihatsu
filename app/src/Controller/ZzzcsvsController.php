@@ -17,7 +17,7 @@ class ZzzcsvsController extends AppController
 
     // 認証なしでアクセスできるアクションの指定
     $this->Auth->allow(["jidoutest","torikomicustomer",
-    "torikomiproduct","torikomiMaterialSuppliers","torikomiMaterials"]);
+    "torikomiproduct","torikomimaterialsuppliers","torikomiMaterials"]);
   }
 
       public function jidoutest()//http://localhost:5050/Zzzcsvs/jidoutest
@@ -83,8 +83,8 @@ class ZzzcsvsController extends AppController
     public function torikomimaterials()//http://localhost:5050/Zzzcsvs/torikomimaterials
     {
 
-      $fp = fopen("torikomicsvs/Materials.csv", "r");//csvファイルはwebrootに入れる
-    	$fpcount = fopen("torikomicsvs/Materials.csv", 'r' );
+      $fp = fopen("torikomicsvs/Materials210921.csv", "r");//csvファイルはwebrootに入れる
+    	$fpcount = fopen("torikomicsvs/Materials210921.csv", 'r' );
     	for( $count = 0; fgets( $fpcount ); $count++ );
     	$this->set('count',$count);
 
@@ -136,7 +136,7 @@ class ZzzcsvsController extends AppController
 
         $tourokuarr = $arrFp[$j];
 
-        $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $tourokuarr);
+   //     $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $tourokuarr);
         if ($this->Materials->save($Materials)) {
 /*
           echo "<pre>";
@@ -167,8 +167,8 @@ class ZzzcsvsController extends AppController
     public function torikomimaterialsuppliers()//http://localhost:5050/Zzzcsvs/torikomimaterialsuppliers
     {
 
-      $fp = fopen("torikomicsvs/MaterialSuppliers.csv", "r");//csvファイルはwebrootに入れる
-    	$fpcount = fopen("torikomicsvs/MaterialSuppliers.csv", 'r' );
+      $fp = fopen("torikomicsvs/MaterialSuppliers210921.csv", "r");//csvファイルはwebrootに入れる
+    	$fpcount = fopen("torikomicsvs/MaterialSuppliers210921.csv", 'r' );
     	for( $count = 0; fgets( $fpcount ); $count++ );
     	$this->set('count',$count);
 
@@ -182,10 +182,12 @@ class ZzzcsvsController extends AppController
     		$keys[array_search('0',$keys)]='material_supplier_code';//名前の変更
     		$keys[array_search('1',$keys)]='name';
     		$keys[array_search('2',$keys)]='department';
-        $keys[array_search('3',$keys)]='yuubin';
-        $keys[array_search('4',$keys)]='address';
-        $keys[array_search('5',$keys)]='tel';
-        $keys[array_search('6',$keys)]='fax';
+    		$keys[array_search('3',$keys)]='ryakusyou';
+    		$keys[array_search('4',$keys)]='furigana';
+        $keys[array_search('5',$keys)]='yuubin';
+        $keys[array_search('6',$keys)]='address';
+        $keys[array_search('7',$keys)]='tel';
+        $keys[array_search('8',$keys)]='fax';
     		$sample = array_combine($keys, $sample);
 
         $sample = array_merge($sample,array('created_at' => date("Y-m-d H:i:s")));
@@ -198,7 +200,7 @@ class ZzzcsvsController extends AppController
         unset($sample['customercode_local']);
         unset($sample['department']);
 */
-        if(strpos($sample['name'],'□') === false){
+        if(strpos($sample['name'],'□') === false && strpos($sample['name'],'■') === false){
           //'abcd'のなかに'□'が含まれていない場合
           $arrFp[] = $sample;//配列に追加する
         }
@@ -206,13 +208,27 @@ class ZzzcsvsController extends AppController
       }
     	$this->set('arrFp',$arrFp);//$arrFpをctpで使用できるようセット
 
-    	echo "<pre>";
-     	print_r($arrFp);
-      echo "</pre>";
+      for($j=0; $j<count($arrFp); $j++){
 
+        if(strlen($arrFp[$j]["furigana"]) < 1){
+
+          $arrFp[$j] = array_merge($arrFp[$j],array('furigana'=>0));
+
+        }
+
+      }
+
+      echo "<pre>";
+      print_r($arrFp);
+     echo "</pre>";
+/*
+      $MaterialSuppliers = $this->MaterialSuppliers->patchEntity($this->MaterialSuppliers->newEntity(), $arrFp[0]);
+      $this->MaterialSuppliers->save($MaterialSuppliers);
+*/
+    /*  
       $MaterialSuppliers = $this->MaterialSuppliers->patchEntities($this->MaterialSuppliers->newEntity(), $arrFp);
       $this->MaterialSuppliers->saveMany($MaterialSuppliers);
-
+*/
     }
 
     public function torikomicustomer()//http://localhost:5050/Zzzcsvs/torikomicustomer

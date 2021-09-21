@@ -52,7 +52,7 @@
         <table>
       <tr>
         <td width="280"><strong>得意先名</strong></td>
-        <td width="280"><strong>営業所（得意先コード6桁目）</strong></td>
+        <td width="280"><strong>得意先コード6桁目</strong></td>
       </tr>
       <tr>
       <td><?= h($this->request->getData('name')) ?></td>

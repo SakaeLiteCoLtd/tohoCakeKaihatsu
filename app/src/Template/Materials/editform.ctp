@@ -25,7 +25,7 @@
 
     <?= $this->Form->create($material) ?>
     <fieldset>
-        <legend><strong style="font-size: 15pt; color:red"><?= __('原料新規登録') ?></strong></legend>
+        <legend><strong style="font-size: 15pt; color:red"><?= __('仕入品新規登録') ?></strong></legend>
         <br>
         <table>
           <tbody class='sample non-sample'>
@@ -36,35 +36,35 @@
 
         <table>
         <tr>
-          <td width="280"><strong>自社工場</strong></td>
+          <td width="280"><strong>自社工場（変更不可）</strong></td>
         </tr>
         <tr>
-        <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>
+        <td><?= h($factory_name) ?></td>
         </tr>
       </table>
         <table>
         <tr>
-        <td width="260"><strong>原料コード</strong></td>
+        <td width="260"><strong>仕入品コード（変更不可）</strong></td>
         <td width="200"><strong>単位</strong></td>
         </tr>
         <tr>
-        <td><?= $this->Form->control('material_code', array('type'=>'text', 'label'=>false)) ?></td>
+        <td><?= h($material_code) ?></td>
         <td><?= $this->Form->control('tanni', array('type'=>'text', 'label'=>false, 'size'=>15)) ?></td>
         </tr>
       </table>
 
       <table>
         <tr>
-          <td width="480"><strong>原料名</strong></td>
+          <td width="480"><strong>仕入品名</strong></td>
         </tr>
         <tr>
-          <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>40)) ?></td>
+          <td><?= $this->Form->control('name', array('type'=>'text', 'value'=>$name, 'label'=>false, 'size'=>40)) ?></td>
         </tr>
       </table>
 
       <table>
         <tr>
-          <td width="480"><strong>原料種類</strong></td>
+          <td width="480"><strong>仕入品種類</strong></td>
         </tr>
         <tr>
         <td><?= $this->Form->control('material_type_id', ['options' => $arrMaterialTypes, 'label'=>false]) ?></td>
@@ -73,14 +73,17 @@
 
       <table>
       <tr>
-      <td width="480"><strong>原料仕入先</strong></td>
+      <td width="480"><strong>仕入品仕入先（変更不可）</strong></td>
       </tr>
       <tr>
-      <td><?= $this->Form->control('material_supplier_id', ['options' => $arrMaterialSuppliers, 'label'=>false]) ?></td>
+      <td><?= h($supplier_name) ?></td>
       </tr>
     </table>
 
   <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$id, 'label'=>false)) ?>
+  <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$factory_id, 'label'=>false)) ?>
+  <?= $this->Form->control('material_code', array('type'=>'hidden', 'value'=>$material_code, 'label'=>false)) ?>
+  <?= $this->Form->control('material_supplier_id', array('type'=>'hidden', 'value'=>$material_supplier_id, 'label'=>false)) ?>
 
     </fieldset>
 

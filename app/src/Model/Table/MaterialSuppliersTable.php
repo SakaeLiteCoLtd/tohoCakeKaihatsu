@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
  * MaterialSuppliers Model
  *
  * @property \App\Model\Table\FactoriesTable|\Cake\ORM\Association\BelongsTo $Factories
- * @property |\Cake\ORM\Association\HasMany $Materials
+ * @property \App\Model\Table\MaterialsTable|\Cake\ORM\Association\HasMany $Materials
  * @property \App\Model\Table\PriceMaterialsTable|\Cake\ORM\Association\HasMany $PriceMaterials
  *
  * @method \App\Model\Entity\MaterialSupplier get($primaryKey, $options = [])
@@ -79,6 +79,17 @@ class MaterialSuppliersTable extends Table
             ->scalar('department')
             ->maxLength('department', 255)
             ->allowEmpty('department');
+
+        $validator
+            ->scalar('ryakusyou')
+            ->maxLength('ryakusyou', 255)
+            ->allowEmpty('ryakusyou');
+
+        $validator
+            ->scalar('furigana')
+            ->maxLength('furigana', 255)
+            ->requirePresence('furigana', 'create')
+            ->notEmpty('furigana');
 
         $validator
             ->scalar('yuubin')

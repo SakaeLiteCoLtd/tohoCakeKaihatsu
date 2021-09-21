@@ -31,20 +31,22 @@
         <table>
           <tr>
             <td width="280"><strong>自社工場名</strong></td>
+            <td width="280"><strong>得意先コード（変更前）</strong></td>
         	</tr>
           <tr>
             <td><?= h($factory_name) ?></td>
+            <td><?= h($this->request->getData('customer_code')) ?></td>
         	</tr>
         </table>
 
         <table>
       <tr>
         <td width="280"><strong>得意先名</strong></td>
-        <td width="280"><strong>得意先コード</strong></td>
+        <td width="280"><strong>新得意先コード</strong></td>
       </tr>
       <tr>
       <td><?= h($this->request->getData('name')) ?></td>
-      <td><?= h($this->request->getData('customer_code')) ?></td>
+      <td><?= h($this->request->getData('customer_code_new')) ?></td>
     </tr>
     </table>
     <table>

@@ -961,7 +961,7 @@ class ProductsController extends AppController
       header('Pragma:');
 
       echo "<pre>";
-      print_r(" ");
+      print_r("");
       echo "</pre>";
 
     }
@@ -1258,6 +1258,46 @@ class ProductsController extends AppController
      //ロールバック8
        $connection->rollback();//トランザクション9
      }//トランザクション10
+
+    }
+
+    public function kensakupreform()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
+      $Product_name_list = $this->Products->find()
+      ->where(['delete_flag' => 0])->toArray();
+
+      $arrProduct_name_list = array();
+      for($j=0; $j<count($Product_name_list); $j++){
+        array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+      }
+      $arrProduct_name_list = array_unique($arrProduct_name_list);
+      $arrProduct_name_list = array_values($arrProduct_name_list);
+
+      $this->set('arrProduct_name_list', $arrProduct_name_list);
+    }
+
+    public function kensakuichiran()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->getData();
+
+      $Products = $this->Products->find()->contain(["Factories"])
+      ->where(['Products.name like' => "%".$data["name"]."%", 'Products.delete_flag' => 0])->toArray();
+      $this->set('Products', $Products);
 
     }
 

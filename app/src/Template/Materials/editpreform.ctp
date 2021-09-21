@@ -45,7 +45,7 @@ $(function() {
 
     <?= $this->Form->create($materials) ?>
     <fieldset>
-        <legend><strong style="font-size: 15pt; color:red"><?= __('原料情報検索') ?></strong></legend>
+        <legend><strong style="font-size: 15pt; color:red"><?= __('仕入品情報検索') ?></strong></legend>
         <br>
         <table>
           <tbody class='sample non-sample'>
@@ -57,7 +57,7 @@ $(function() {
 
       <table>
       <tr>
-        <td width="320"><strong>原料仕入先名</strong></td>
+        <td width="320"><strong>仕入品仕入先名</strong></td>
       </tr>
       <tr>
         <td>

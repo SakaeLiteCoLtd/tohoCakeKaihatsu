@@ -39,7 +39,7 @@
       </table>
         <table>
         <tr>
-        <td width="260"><strong>原料コード</strong></td>
+        <td width="260"><strong>仕入品コード</strong></td>
         <td width="200"><strong>単位</strong></td>
         </tr>
         <tr>
@@ -50,7 +50,7 @@
 
       <table>
         <tr>
-          <td width="480"><strong>原料名</strong></td>
+          <td width="480"><strong>仕入品名</strong></td>
         </tr>
         <tr>
         <td><?= h($material['name']) ?></td>
@@ -59,7 +59,7 @@
 
       <table>
         <tr>
-          <td width="480"><strong>原料種類</strong></td>
+          <td width="480"><strong>仕入品種類</strong></td>
         </tr>
         <tr>
         <td><?= h($material->material_type->type) ?></td>
@@ -68,7 +68,7 @@
 
       <table>
       <tr>
-      <td width="480"><strong>原料仕入先</strong></td>
+      <td width="480"><strong>仕入品仕入先</strong></td>
       </tr>
       <tr>
       <td><?= h($material->material_supplier->name) ?></td>

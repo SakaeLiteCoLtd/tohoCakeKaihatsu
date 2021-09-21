@@ -140,16 +140,14 @@ class CustomersController extends AppController
       $this->set('arrFactories', $arrFactories);
 
       $arrcustomer_code_last = [
-        "1" => "大阪（1）",
-        "2" => "北海道（2）",
-        "3" => "東京（3）",
-        "4" => "その他（4）",
-        "5" => "その他（5）",
-        "6" => "その他（6）",
-        "7" => "その他（7）",
-        "8" => "その他（8）",
-        "9" => "その他（9）",
-        "0" => "その他（0）",
+        "1" => "１：大阪顧客",
+        "2" => "２：石狩顧客",
+        "3" => "３：大阪顧客予備",
+        "4" => "４：石狩顧客予備",
+        "5" => "５：大阪仕入",
+        "6" => "６：石狩仕入",
+        "7" => "７：大阪仕入予備",
+        "8" => "８：石狩仕入予備"
       ];
       $this->set('arrcustomer_code_last', $arrcustomer_code_last);
 
@@ -188,25 +186,21 @@ class CustomersController extends AppController
 
       $customer_code_last = $data['customer_code_last'];
       if($customer_code_last == 1){
-        $customer_code_last_hyouji = "大阪（1）";
+        $customer_code_last_hyouji = "１：大阪顧客";
       }elseif($customer_code_last == 2){
-        $customer_code_last_hyouji = "北海道（2）";
+        $customer_code_last_hyouji = "２：石狩顧客";
       }elseif($customer_code_last == 3){
-        $customer_code_last_hyouji = "東京（3）";
+        $customer_code_last_hyouji = "３：大阪顧客予備";
       }elseif($customer_code_last == 4){
-        $customer_code_last_hyouji = "その他（4）";
+        $customer_code_last_hyouji = "４：石狩顧客予備";
       }elseif($customer_code_last == 5){
-        $customer_code_last_hyouji = "その他（5）";
+        $customer_code_last_hyouji = "５：大阪仕入";
       }elseif($customer_code_last == 6){
-        $customer_code_last_hyouji = "その他（6）";
+        $customer_code_last_hyouji = "６：石狩仕入";
       }elseif($customer_code_last == 7){
-        $customer_code_last_hyouji = "その他（7）";
-      }elseif($customer_code_last == 8){
-        $customer_code_last_hyouji = "その他（8）";
-      }elseif($customer_code_last == 9){
-        $customer_code_last_hyouji = "その他（9）";
+        $customer_code_last_hyouji = "７：大阪仕入予備";
       }else{
-        $customer_code_last_hyouji = "その他（0）";
+        $customer_code_last_hyouji = "８：石狩仕入予備";
       }
       $this->set('customer_code_last_hyouji', $customer_code_last_hyouji);
 
@@ -294,6 +288,24 @@ class CustomersController extends AppController
           'created_at' => date("Y-m-d H:i:s"),
           'created_staff' => $staff_id
         ];
+
+        $arrtourokuMaterialSuppliers = [
+          'factory_id' => $data["factory_id"],
+          'name' => $data["name"],
+          'material_supplier_code' => $customer_code,
+          'department' => $data["department"],
+          'furigana' => $data["furigana"],
+          'ryakusyou' => $data["ryakusyou"],
+          'tel' => $data["tel"],
+          'fax' => $data["fax"],
+          'yuubin' => $data["yuubin"],
+          'address' => $data["address"],
+          'is_active' => 0,
+          'delete_flag' => 0,
+          'created_at' => date("Y-m-d H:i:s"),
+          'created_staff' => $staff_id
+        ];
+
   /*
         echo "<pre>";
         print_r($arrtourokucustomer);
@@ -302,6 +314,9 @@ class CustomersController extends AppController
         $Customers = $this->Customers->patchEntity($this->Customers->newEntity(), $arrtourokucustomer);
         if ($this->Customers->save($Customers)) {
 
+          $MaterialSuppliers = $this->MaterialSuppliers->patchEntity($this->MaterialSuppliers->newEntity(), $arrtourokuMaterialSuppliers);
+          $this->MaterialSuppliers->save($MaterialSuppliers);
+    
           $connection->commit();// コミット5
           $mes = "以下のように登録されました。";
           $this->set('mes',$mes);
@@ -355,6 +370,7 @@ class CustomersController extends AppController
       $this->set('arrCustomer_name_list', $arrCustomer_name_list);
     }
 
+    
     public function editsyousai()
     {
       $customer = $this->Customers->newEntity();
@@ -459,6 +475,21 @@ class CustomersController extends AppController
       }
       $this->set('arrFactories', $arrFactories);
 
+      $customer_code_last = substr($CustomerData[0]["customer_code"], -1, 1);
+      $this->set('customer_code_last', $customer_code_last);
+
+      $arrcustomer_code_last = [
+        "1" => "１：大阪顧客",
+        "2" => "２：石狩顧客",
+        "3" => "３：大阪顧客予備",
+        "4" => "４：石狩顧客予備",
+        "5" => "５：大阪仕入",
+        "6" => "６：石狩仕入",
+        "7" => "７：大阪仕入予備",
+        "8" => "８：石狩仕入予備"
+      ];
+      $this->set('arrcustomer_code_last', $arrcustomer_code_last);
+
     }
 
     public function editconfirm()
@@ -467,14 +498,17 @@ class CustomersController extends AppController
       $this->set('customer', $customer);
 
       $data = $this->request->getData();
-/*
+
+      $customer_code_new = substr($data['customer_code'], 0, -1).$data['customer_code_last'];
+      $this->set('customer_code_new', $customer_code_new);
+
       $CustomerData = $this->Customers->find()
-      ->where(['id IS NOT' => $data['id'], 'customer_code' => $data['customer_code']])->toArray();
+      ->where(['id IS NOT' => $data['id'], 'customer_code' => $customer_code_new])->toArray();
 
-      $MaterialSuppliers = $this->MaterialSuppliers->find()
-      ->where(['material_supplier_code' => $data['customer_code']])->toArray();
+ //     $MaterialSuppliers = $this->MaterialSuppliers->find()
+ //     ->where(['material_supplier_code' => $customer_code_new])->toArray();
 
-      $CustomerData = $CustomerData + $MaterialSuppliers;
+ //     $CustomerData = $CustomerData + $MaterialSuppliers;
 
       if(isset($CustomerData[0])){
 
@@ -485,10 +519,10 @@ class CustomersController extends AppController
           $_SESSION['customer_edit'] = ["id" => $data['id'], "factory_id" => $data['factory_id'], "name" => $data['name']];
   
         return $this->redirect(['action' => 'editform',
-        's' => ['mess' => "得意先コード：「".$data['customer_code']."」は既に存在します。"]]);
+        's' => ['mess' => "コード：「".$customer_code_new."」は既に存在します。"]]);
 
       }
-*/
+
       $Factories = $this->Factories->find()
       ->where(['id' => $data['factory_id']])->toArray();
       $factory_name = $Factories[0]['name'];
@@ -528,11 +562,33 @@ class CustomersController extends AppController
       $Customermoto = $this->Customers->find()
       ->where(['id' => $data['id']])->toArray();
 
+      $MaterialSuppliermoto = $this->MaterialSuppliers->find()
+      ->where(['material_supplier_code' => $Customermoto[0]["customer_code"], 'delete_flag' => 0])->toArray();
+
       $arrCustomermoto = array();
       $arrCustomermoto = [
         'factory_id' => $Customermoto[0]["factory_id"],
         'name' => $Customermoto[0]["name"],
         'customer_code' => $Customermoto[0]["customer_code"],
+        'furigana' => $Customermoto[0]["furigana"],
+        'ryakusyou' => $Customermoto[0]["ryakusyou"],
+        'department' => $Customermoto[0]["department"],
+        'tel' => $Customermoto[0]["tel"],
+        'fax' => $Customermoto[0]["fax"],
+        'yuubin' => $Customermoto[0]["yuubin"],
+        'address' => $Customermoto[0]["address"],
+        'is_active' => 1,
+        'delete_flag' => 1,
+        'created_at' => $Customermoto[0]["created_at"]->format("Y-m-d H:i:s"),
+        'created_staff' => $Customermoto[0]["created_staff"],
+        'updated_at' => date("Y-m-d H:i:s"),
+        'updated_staff' => $staff_id
+      ];
+
+      $arrMaterialSuppliermoto = [
+        'factory_id' => $Customermoto[0]["factory_id"],
+        'name' => $Customermoto[0]["name"],
+        'material_supplier_code' => $Customermoto[0]["customer_code"],
         'furigana' => $Customermoto[0]["furigana"],
         'ryakusyou' => $Customermoto[0]["ryakusyou"],
         'department' => $Customermoto[0]["department"],
@@ -556,8 +612,9 @@ class CustomersController extends AppController
 
          if ($this->Customers->updateAll(
            ['factory_id' => $data["factory_id"],
-            'name' => $data["name"],
-            'furigana' => $data["furigana"],
+           'name' => $data["name"],
+           'customer_code' => $data["customer_code_new"],
+           'furigana' => $data["furigana"],
             'ryakusyou' => $data["ryakusyou"],
             'department' => $data["department"],
             'tel' => $data["tel"],
@@ -569,9 +626,28 @@ class CustomersController extends AppController
             'updated_staff' => $staff_id],
            ['id'  => $data['id']])){
 
+            $this->MaterialSuppliers->updateAll(
+              ['factory_id' => $data["factory_id"],
+               'name' => $data["name"],
+               'material_supplier_code' => $data["customer_code_new"],
+               'furigana' => $data["furigana"],
+               'ryakusyou' => $data["ryakusyou"],
+               'department' => $data["department"],
+               'tel' => $data["tel"],
+               'fax' => $data["fax"],
+               'yuubin' => $data["yuubin"],
+               'address' => $data["address"],
+               'delete_flag' => $data["delete_flag"],
+               'updated_at' => date('Y-m-d H:i:s'),
+               'updated_staff' => $staff_id],
+              ['id'  => $MaterialSuppliermoto[0]['id']]);
+  
         if($data["delete_flag"] > 0){
           $mes = "※下記のデータが削除されました";
         }else{
+
+          $MaterialSuppliers = $this->MaterialSuppliers->patchEntity($this->MaterialSuppliers->newEntity(), $arrMaterialSuppliermoto);
+          $this->MaterialSuppliers->save($MaterialSuppliers);
 
           $Customers = $this->Customers->patchEntity($this->Customers->newEntity(), $arrCustomermoto);
           $this->Customers->save($Customers);
@@ -596,7 +672,7 @@ class CustomersController extends AppController
      }//トランザクション10
 
     }
-
+/*
     public function deleteconfirm($id = null)
     {
       $session = $this->request->getSession();
@@ -628,11 +704,7 @@ class CustomersController extends AppController
       $arrdeletecustomer = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeletecustomer);
-      echo "</pre>";
-*/
+
       $Customers = $this->Customers->patchEntity($this->Customers->newEntity(), $arrdeletecustomer);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -662,6 +734,44 @@ class CustomersController extends AppController
      //ロールバック8
        $connection->rollback();//トランザクション9
      }//トランザクション10
+
+    }
+*/
+    public function kensakupreform()
+    {
+      $customer = $this->Customers->newEntity();
+      $this->set('customer', $customer);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
+      $Customer_name_list = $this->Customers->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrCustomer_name_list = array();
+      for($j=0; $j<count($Customer_name_list); $j++){
+        array_push($arrCustomer_name_list,$Customer_name_list[$j]["name"]);
+      }
+      $arrCustomer_name_list = array_unique($arrCustomer_name_list);
+      $arrCustomer_name_list = array_values($arrCustomer_name_list);
+      $this->set('arrCustomer_name_list', $arrCustomer_name_list);
+    }
+
+    public function kensakuichiran()
+    {
+      $customer = $this->Customers->newEntity();
+      $this->set('customer', $customer);
+
+      $data = $this->request->getData();
+
+      $Customers = $this->Customers->find()->contain(["Factories"])
+      ->where(['Customers.name like' => "%".$data["name"]."%", 'Customers.delete_flag' => 0])->toArray();
+      $this->set('Customers', $Customers);
 
     }
 

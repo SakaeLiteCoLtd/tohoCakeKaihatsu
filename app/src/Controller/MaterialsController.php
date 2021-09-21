@@ -156,6 +156,15 @@ class MaterialsController extends AppController
       $material = $this->Materials->newEntity();
       $this->set('material', $material);
 
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
       $MaterialTypes = $this->MaterialTypes->find()
       ->where(['delete_flag' => 0])->toArray();
 
@@ -168,12 +177,6 @@ class MaterialsController extends AppController
       $MaterialSuppliers = $this->MaterialSuppliers->find()
       ->where(['delete_flag' => 0])->toArray();
 
-      $arrMaterialSuppliers = array();
-      foreach ($MaterialSuppliers as $value) {
-        $arrMaterialSuppliers[] = array($value->id=>$value->name);
-      }
-      $this->set('arrMaterialSuppliers', $arrMaterialSuppliers);
-
       $Factories = $this->Factories->find()
       ->where(['delete_flag' => 0])->toArray();
       $arrFactories = array();
@@ -181,6 +184,16 @@ class MaterialsController extends AppController
         $arrFactories[] = array($value->id=>$value->name);
       }
       $this->set('arrFactories', $arrFactories);
+
+      $MaterialSuppliers_name_list = $this->MaterialSuppliers->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrMaterialSuppliers_name_list = array();
+      for($j=0; $j<count($MaterialSuppliers_name_list); $j++){
+        array_push($arrMaterialSuppliers_name_list,$MaterialSuppliers_name_list[$j]["name"]);
+      }
+      $arrMaterialSuppliers_name_list = array_unique($arrMaterialSuppliers_name_list);
+      $arrMaterialSuppliers_name_list = array_values($arrMaterialSuppliers_name_list);
+      $this->set('arrMaterialSuppliers_name_list', $arrMaterialSuppliers_name_list);
 
     }
 
@@ -197,9 +210,20 @@ class MaterialsController extends AppController
       $this->set('type_name', $type_name);
 
       $MaterialSuppliers = $this->MaterialSuppliers->find()
-      ->where(['id' => $data['material_supplier_id']])->toArray();
-      $supplier_name = $MaterialSuppliers[0]['name'];
-      $this->set('supplier_name', $supplier_name);
+      ->where(['name' => $data['material_supplier_name']])->toArray();
+      if(isset($MaterialSuppliers[0])){
+
+        $material_supplier_id = $MaterialSuppliers[0]['id'];
+        $this->set('material_supplier_id', $material_supplier_id);
+        $supplier_name = $MaterialSuppliers[0]['name'];
+        $this->set('supplier_name', $supplier_name);
+
+        }else{
+
+        return $this->redirect(['action' => 'addform',
+        's' => ['mess' => "入力された仕入先名は存在しません。"]]);
+
+      }
 
       $Factories = $this->Factories->find()
       ->where(['id' => $data['factory_id']])->toArray();
@@ -222,6 +246,7 @@ class MaterialsController extends AppController
 
       $MaterialSuppliers = $this->MaterialSuppliers->find()
       ->where(['id' => $data['material_supplier_id']])->toArray();
+      $material_supplier_code = $MaterialSuppliers[0]['material_supplier_code'];
       $supplier_name = $MaterialSuppliers[0]['name'];
       $this->set('supplier_name', $supplier_name);
 
@@ -235,10 +260,51 @@ class MaterialsController extends AppController
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
+      if($data['factory_id'] == 1){
+        $code_factory = "D";
+      }elseif($data['factory_id'] == 2){
+        $code_factory = "I";
+      }elseif($data['factory_id'] == 3){
+        $code_factory = "B";
+      }elseif($data['factory_id'] == 4){
+        $code_factory = "K";
+      }else{
+        $code_factory = "H";
+      }
+
+      $Materialsnow = $this->Materials->find()
+      ->where(['material_code like' => "S".$material_supplier_code.$code_factory.'%'])
+      ->order(["material_code"=>"DESC"])->toArray();
+
+      if(isset($Materialsnow[0])){
+        $material_code_renban = substr($Materialsnow[0]["material_code"], -5, 3) + 1;
+        $material_code_renban = sprintf('%03d', $material_code_renban);//0埋め
+      }else{
+        $material_code_renban = "001";
+      }
+
+      $Materialsnow2 = $this->Materials->find()
+      ->where(['material_code like' => "S".$material_supplier_code.$code_factory.$material_code_renban.'%'])
+      ->order(["material_code"=>"DESC"])->toArray();
+
+      if(isset($Materialsnow2[0])){
+        $material_code_renban2 = substr($Materialsnow2[0]["material_code"], -1, 2) + 1;
+        $material_code_renban2 = sprintf('%02d', $material_code_renban2);//0埋め
+      }else{
+        $material_code_renban2 = "01";
+      }
+
+      $material_code = "S".$material_supplier_code.$code_factory.$material_code_renban.$material_code_renban2;
+      $this->set('material_code', $material_code);
+/*
+      echo "<pre>";
+      print_r($material_code);
+      echo "</pre>";
+*/
       $arrtourokumaterial = array();
       $arrtourokumaterial = [
         'factory_id' => $data["factory_id"],
-        'material_code' => $data["material_code"],
+        'material_code' => $material_code,
         'name' => $data["name"],
         'material_supplier_id' => $data["material_supplier_id"],
         'material_type_id' => $data["type_id"],
@@ -299,17 +365,30 @@ class MaterialsController extends AppController
 
     public function editform($id = null)
     {
+      $material = $this->Materials->newEntity();
+      $this->set('material', $material);
+
       $session = $this->request->getSession();
       $_SESSION = $session->read();
 
       $id = $_SESSION['materialdata'];
-
-      $material = $this->Materials->get($id, [
-        'contain' => ['MaterialTypes']
-      ]);
-      $MaterialTypes = $this->Materials->MaterialTypes->find('list', ['limit' => 200]);
-      $this->set(compact('material', 'MaterialTypes'));
       $this->set('id', $id);
+
+      $Materials = $this->Materials->find()
+      ->where(['id' => $id])->toArray();
+      $this->set('name', $Materials[0]["name"]);
+      $this->set('material_code', $Materials[0]["material_code"]);
+      $this->set('material_supplier_id', $Materials[0]["material_supplier_id"]);
+
+      $MaterialSuppliers = $this->MaterialSuppliers->find()
+      ->where(['id' => $Materials[0]["material_supplier_id"]])->toArray();
+      $this->set('supplier_name', $MaterialSuppliers[0]["name"]);
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $Materials[0]['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_id', $Materials[0]['factory_id']);
+      $this->set('factory_name', $factory_name);
 
       $MaterialTypes = $this->MaterialTypes->find()
       ->where(['delete_flag' => 0])->toArray();
@@ -319,23 +398,6 @@ class MaterialsController extends AppController
         $arrMaterialTypes[] = array($value->id=>$value->type);
       }
       $this->set('arrMaterialTypes', $arrMaterialTypes);
-
-      $MaterialSuppliers = $this->MaterialSuppliers->find()
-      ->where(['delete_flag' => 0])->toArray();
-
-      $arrMaterialSuppliers = array();
-      foreach ($MaterialSuppliers as $value) {
-        $arrMaterialSuppliers[] = array($value->id=>$value->name);
-      }
-      $this->set('arrMaterialSuppliers', $arrMaterialSuppliers);
-
-      $Factories = $this->Factories->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrFactories = array();
-      foreach ($Factories as $value) {
-        $arrFactories[] = array($value->id=>$value->name);
-      }
-      $this->set('arrFactories', $arrFactories);
 
     }
 
@@ -478,7 +540,7 @@ class MaterialsController extends AppController
       $id = $_SESSION['materialdata'];
 
         $material = $this->Materials->get($id, [
-          'contain' => ['MaterialTypes']
+          'contain' => ['MaterialTypes', 'MaterialSuppliers', 'Factories']
         ]);
         $this->set(compact('material'));
     }
@@ -491,7 +553,7 @@ class MaterialsController extends AppController
       $data = $this->request->getData();
 
       $material = $this->Materials->get($data["id"], [
-        'contain' => ['MaterialTypes']
+        'contain' => ['MaterialTypes', 'MaterialSuppliers', 'Factories']
       ]);
       $this->set(compact('material'));
 

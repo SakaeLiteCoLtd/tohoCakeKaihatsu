@@ -1230,6 +1230,9 @@ class KensahyousokuteidatasController extends AppController
 
       if(isset($InspectionStandardSizeChildren[0])){
 
+        $num_length = count($InspectionStandardSizeChildren);
+        $this->set('num_length',$num_length);
+
         for($i=1; $i<=10; $i++){
 
           ${"size_name".$i} = "";
@@ -1289,10 +1292,29 @@ class KensahyousokuteidatasController extends AppController
 
       $arrLength = array();
       foreach ($Products as $value) {
-        $array = array($value->id => $value->length);
+        $array = array($value->id => sprintf("%.1f", $value->length));
         $arrLength = $arrLength + $array;
       }
       $this->set('arrLength', $arrLength);
+
+      for($n=0; $n<count($Products); $n++){
+
+        ${"arrLength_size".$n} = array();
+        ${"arrLength_size".$n} = [
+          "product_id" => $Products[$n]["id"],
+          "size" => sprintf("%.1f", $Products[$n]["length_size"]),
+          "upper" => "+".sprintf("%.1f", $Products[$n]["length_upper_limit"]),
+          "lower" => sprintf("%.1f", $Products[$n]["length_lower_limit"])
+        ];
+
+        $this->set('arrLength_size'.$n,${"arrLength_size".$n});
+  
+      }
+
+      $count_length = count($Products);
+      $this->set('count_length',$count_length);
+      $nagasa = "長さ";
+      $this->set('nagasa',$nagasa);
 
       $checkedit = 0;
       $this->set('checkedit', $checkedit);

@@ -11,6 +11,8 @@ use Cake\ORM\Entity;
  * @property string $material_supplier_code
  * @property string $name
  * @property string|null $department
+ * @property string|null $ryakusyou
+ * @property string $furigana
  * @property string|null $yuubin
  * @property string|null $address
  * @property string|null $tel
@@ -23,6 +25,7 @@ use Cake\ORM\Entity;
  * @property int|null $updated_staff
  *
  * @property \App\Model\Entity\Factory $factory
+ * @property \App\Model\Entity\Material[] $materials
  * @property \App\Model\Entity\PriceMaterial[] $price_materials
  */
 class MaterialSupplier extends Entity
@@ -42,6 +45,8 @@ class MaterialSupplier extends Entity
         'material_supplier_code' => true,
         'name' => true,
         'department' => true,
+        'ryakusyou' => true,
+        'furigana' => true,
         'yuubin' => true,
         'address' => true,
         'tel' => true,
@@ -53,6 +58,7 @@ class MaterialSupplier extends Entity
         'updated_at' => true,
         'updated_staff' => true,
         'factory' => true,
+        'materials' => true,
         'price_materials' => true
     ];
 }

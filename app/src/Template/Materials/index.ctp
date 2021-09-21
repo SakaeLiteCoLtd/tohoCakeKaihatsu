@@ -22,13 +22,13 @@ echo $this->Html->css('index');
 ?>
 <br>
 <div class="materials index large-9 medium-8 columns content">
-  <h2><font color=red><?= __('原料一覧') ?></font></h2>
+  <h2><font color=red><?= __('仕入品一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
               <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
-              <th scope="col"><?= $this->Paginator->sort('material_code', ['label'=>"原料コード"]) ?></th>
-              <th scope="col" style='width:350'><?= $this->Paginator->sort('name', ['label'=>"原料名"]) ?></th>
+              <th scope="col"><?= $this->Paginator->sort('material_code', ['label'=>"仕入品コード"]) ?></th>
+              <th scope="col" style='width:350'><?= $this->Paginator->sort('name', ['label'=>"仕入品名"]) ?></th>
                 <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>
         </thead>

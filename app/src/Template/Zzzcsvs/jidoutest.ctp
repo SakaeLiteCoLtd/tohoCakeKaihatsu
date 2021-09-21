@@ -13,12 +13,6 @@ $j = 1;
 $num_length = json_encode($num_length);//jsに配列を受け渡すために変換
 $count_length = json_encode($count_length);//jsに配列を受け渡すために変換
 
-$size_length = ${"size_length".$j};
-$size_length = json_encode($size_length);//jsに配列を受け渡すために変換
-
-$upper_length = json_encode($upper_length);//jsに配列を受け渡すために変換
-$lower_length = json_encode($lower_length);//jsに配列を受け渡すために変換
-
 for($i=0; $i<$count_length; $i++){
   ${"Length_length".$i} = json_encode(${"arrLength_size".$i}['length']);//jsに配列を受け渡すために変換
   ${"Length_size".$i} = json_encode(${"arrLength_size".$i}['size']);//jsに配列を受け渡すために変換
@@ -61,8 +55,6 @@ $i = 0;
       }
       */
 
-      for(var i=1;i<10;i++){
-
         if (inputNumber == <?php echo ${"Length_length".$i}; ?>) {
 
           var size_length = <?php echo ${"Length_size".$i}; ?>;
@@ -82,8 +74,6 @@ $i = 0;
           $("#auto3").text(resultDivision1);
 
         }
-
-      }
 
     })
 

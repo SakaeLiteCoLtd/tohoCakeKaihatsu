@@ -34,19 +34,21 @@
         <table>
         <tr>
           <td width="280"><strong>自社工場</strong></td>
+          <td width="280"><strong>得意先コード（変更前）</strong></td>
         </tr>
         <tr>
           <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>
+          <td><?= h($customer_code) ?></td>
         </tr>
       </table>
       <table>
       <tr>
         <td width="280"><strong>得意先名</strong></td>
-        <td width="280"><strong>得意先コード（変更不可）</strong></td>
+        <td width="280"><strong>得意先コード6桁目</strong></td>
       </tr>
       <tr>
         <td><?= $this->Form->control('name', array('type'=>'text', 'value'=>$name, 'label'=>false, 'required' => 'true')) ?></td>
-        <td><?= h($customer_code) ?></td>
+        <td><?= $this->Form->control('customer_code_last', ['options' => $arrcustomer_code_last, 'value'=>$customer_code_last, 'label'=>false]) ?></td>
     </tr>
     </table>
   <table>

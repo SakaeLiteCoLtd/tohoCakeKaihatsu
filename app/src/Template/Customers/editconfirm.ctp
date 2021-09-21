@@ -28,6 +28,7 @@
 <?= $this->Form->control('address', array('type'=>'hidden', 'value'=>$this->request->getData('address'), 'label'=>false)) ?>
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 <?= $this->Form->control('delete_flag', array('type'=>'hidden', 'value'=>$delete_flag, 'label'=>false)) ?>
+<?= $this->Form->control('customer_code_new', array('type'=>'hidden', 'value'=>$customer_code_new, 'label'=>false)) ?>
 <br><br><br>
 
 <nav class="sample non-sample">
@@ -44,20 +45,22 @@
         <table>
           <tr>
             <td width="280"><strong>自社工場名</strong></td>
+            <td width="280"><strong>得意先コード（変更前）</strong></td>
         	</tr>
           <tr>
             <td><?= h($factory_name) ?></td>
+            <td><?= h($this->request->getData('customer_code')) ?></td>
         	</tr>
         </table>
 
         <table>
       <tr>
         <td width="280"><strong>得意先名</strong></td>
-        <td width="280"><strong>得意先コード</strong></td>
+        <td width="280"><strong>新得意先コード</strong></td>
       </tr>
       <tr>
       <td><?= h($this->request->getData('name')) ?></td>
-      <td><?= h($this->request->getData('customer_code')) ?></td>
+      <td><?= h($customer_code_new) ?></td>
     </tr>
     </table>
     <table>

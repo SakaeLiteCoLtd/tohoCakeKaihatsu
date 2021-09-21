@@ -32,6 +32,51 @@ setInterval('showClock1()',1000);
 
 </script>
 
+<?php
+$j = 1;
+$num_length = json_encode($num_length);//jsに配列を受け渡すために変換
+$count_length = json_encode($count_length);//jsに配列を受け渡すために変換
+$nagasa = json_encode($nagasa);//jsに配列を受け渡すために変換
+
+for($i=0; $i<$count_length; $i++){
+  ${"Length_product_id".$i} = json_encode(${"arrLength_size".$i}['product_id']);//jsに配列を受け渡すために変換
+  ${"Length_size".$i} = json_encode(${"arrLength_size".$i}['size']);//jsに配列を受け渡すために変換
+  ${"Length_upper".$i} = json_encode(${"arrLength_size".$i}['upper']);//jsに配列を受け渡すために変換
+  ${"Length_lower".$i} = json_encode(${"arrLength_size".$i}['lower']);//jsに配列を受け渡すために変換
+}
+
+?>
+
+<?php for($i=0; $i<=10; $i++): ?>
+
+<script>
+
+    $(document).ready(function() {
+      $("#auto1").focusout(function() {
+        var inputNumber = $("#auto1").val();
+            
+        if (inputNumber == <?php echo ${"Length_product_id".$i}; ?>) {
+
+          var size_length = <?php echo ${"Length_size".$i}; ?>;
+          var upper_length = <?php echo ${"Length_upper".$i}; ?>;
+          var lower_length = <?php echo ${"Length_lower".$i}; ?>;
+          var nagasa = <?php echo $nagasa; ?>;
+
+          $("#length<?php echo $num_length; ?>").text(nagasa);
+          $("#size<?php echo $num_length; ?>").text(size_length);
+          $("#upper<?php echo $num_length; ?>").text(upper_length);
+          $("#lower<?php echo $num_length; ?>").text(lower_length);
+
+        }
+
+    })
+
+});
+
+</script>
+
+<?php endfor;?>
+
 <table class='sample hesdermenu'>
   <tbody>
     <td style='border: none;'>
@@ -56,27 +101,6 @@ setInterval('showClock1()',1000);
       echo $htmlkensahyouheader;
  ?>
 
-<script>
-
-$(document).ready(function() {
-    $("#auto1").focusout(function() {
-      var inputNumber = $("#auto1").val();
-      var resultDivision = 1000 / inputNumber; 
-      $("#auto2").text(resultDivision);
-    })
-});
-
-</script>
-
-<br>
-<table class="white">
-<tr><td width="280"><strong>自動補完テスト１</strong></td></tr>
-<td><?= $this->Form->input('name_menu1', array('type'=>'text', 'label'=>false, 'id'=>"auto1")) ?></td>
-<tr><td width="280"><strong>自動補完テスト２</strong></td></tr>
-<td><div id="auto2"></div></td>
-</table>
-<br>
-
 <table class="white">
 
   <tr>
@@ -93,7 +117,7 @@ $(document).ready(function() {
   <td style='width:130'>測定箇所</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
-    <td style='width:75'><?= h(${"size_name".$i}) ?></td>
+    <td style='width:75'><div class="length"></div><?= h(${"size_name".$i}) ?></td>
   <?php endfor;?>
 
   <td width="69" rowspan='3'>外観</td>
@@ -106,7 +130,7 @@ $(document).ready(function() {
   <td>規格</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= h(${"size".$i}) ?></td>
+      <td><div class="size"></div><?= h(${"size".$i}) ?></td>
     <?php endfor;?>
 </tr>
 <tr>
@@ -114,9 +138,9 @@ $(document).ready(function() {
 
   <?php for($i=1; $i<=10; $i++): ?>
     <?php if (strlen(${"upper_limit".$i}) > 0 && substr(${"upper_limit".$i}, 0, 1) != "+"): ?>
-    <td><?= h("+".${"upper_limit".$i}) ?></td>
+    <td><div class="upper"></div><?= h("+".${"upper_limit".$i}) ?></td>
     <?php else : ?>
-      <td><?= h(${"upper_limit".$i}) ?></td>
+      <td><div class="upper"></div><?= h(${"upper_limit".$i}) ?></td>
       <?php endif; ?>
   <?php endfor;?>
 
@@ -125,7 +149,7 @@ $(document).ready(function() {
   <td>下限</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= h(${"lower_limit".$i}) ?></td>
+      <td><div class="lower"></div><?= h(${"lower_limit".$i}) ?></td>
     <?php endfor;?>
 
         <td width="69" style="font-size: 10pt">良 ・ 不</td>
@@ -145,6 +169,42 @@ $(document).ready(function() {
 </tr>
 
 </table>
+
+<script>
+//こちらがhtmlよりもあとに来ないと反映されない
+var moji = "length"
+    var tmp = document.getElementsByClassName("length") ;
+
+    for(var i=1;i<10;i++){
+        //id追加
+        tmp[i].setAttribute("id",moji+i);
+    }
+
+    var moji = "size"
+    var tmp = document.getElementsByClassName("size") ;
+
+    for(var i=1;i<10;i++){
+        //id追加
+        tmp[i].setAttribute("id",moji+i);
+    }
+
+    var moji = "upper"
+    var tmp = document.getElementsByClassName("upper") ;
+
+    for(var i=1;i<10;i++){
+        //id追加
+        tmp[i].setAttribute("id",moji+i);
+    }
+
+    var moji = "lower"
+    var tmp = document.getElementsByClassName("lower") ;
+
+    for(var i=1;i<10;i++){
+        //id追加
+        tmp[i].setAttribute("id",moji+i);
+    }
+
+</script>
 
 <?php for($k=1; $k<=$gyou; $k++): ?>
 
@@ -166,7 +226,7 @@ $(document).ready(function() {
   <td style='width:100; border-top-style:none'>
   <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false)) ?>
   </td>
-  <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false]) ?></td>
+  <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
   <td style='width:130; border-top-style:none'><font size='1.8'><?= h("社員コード：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。')) ?></td>
 
   <?php for($i=1; $i<=10; $i++): ?>
