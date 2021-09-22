@@ -33,7 +33,7 @@ class MaterialsController extends AppController
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
        $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "原料関係", 'Groups.delete_flag' => 0])
+       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "製品・仕入品", 'Groups.delete_flag' => 0])
        ->toArray();
 
        if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
@@ -597,6 +597,44 @@ class MaterialsController extends AppController
      //ロールバック8
        $connection->rollback();//トランザクション9
      }//トランザクション10
+
+    }
+
+    public function kensakupreform()
+    {
+      $material = $this->Materials->newEntity();
+      $this->set('material', $material);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
+      $Materials_name_list = $this->Materials->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrMaterials_name_list = array();
+      for($j=0; $j<count($Materials_name_list); $j++){
+        array_push($arrMaterials_name_list,$Materials_name_list[$j]["name"]);
+      }
+      $arrMaterials_name_list = array_unique($arrMaterials_name_list);
+      $arrMaterials_name_list = array_values($arrMaterials_name_list);
+      $this->set('arrMaterials_name_list', $arrMaterials_name_list);
+    }
+
+    public function kensakuichiran()
+    {
+      $material = $this->Materials->newEntity();
+      $this->set('material', $material);
+
+      $data = $this->request->getData();
+
+      $Materials = $this->Materials->find()->contain(["Factories"])
+      ->where(['Materials.name like' => "%".$data["name"]."%", 'Materials.delete_flag' => 0])->toArray();
+      $this->set('Materials', $Materials);
 
     }
 

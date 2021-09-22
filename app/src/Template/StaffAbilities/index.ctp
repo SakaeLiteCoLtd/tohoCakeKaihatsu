@@ -1,8 +1,9 @@
+<?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlstaffAbilitymenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlstaffmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlstaffAbilitymenu = new htmlstaffAbilitymenu();
- $htmlstaffAbility = $htmlstaffAbilitymenu->StaffAbilitymenus();
+ $htmlstaffmenu = new htmlstaffmenu();
+ $htmlstaff = $htmlstaffmenu->Staffmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -12,7 +13,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlstaffAbility;
+     echo $htmlstaff;
 ?>
 
 <?php
@@ -32,6 +33,9 @@ echo $this->Html->css('index');
         </thead>
         <tbody bgcolor="#FFFFCC">
             <?php foreach ($staffAbilities as $staffAbility): ?>
+
+            <?php if ($staffAbility->staff_id > 1): ?>
+
             <tr>
               <td><?= h($i) ?></td>
               <td><?= h($staffAbility->staff->name) ?></td>
@@ -42,16 +46,21 @@ echo $this->Html->css('index');
             <?php
             $i = $i + 1;
             ?>
+
+          <?php else : ?>
+
+          <?php endif; ?>
+
             <?php endforeach; ?>
         </tbody>
     </table>
     <div class="paginator">
         <ul class="pagination">
-            <?= $this->Paginator->first('<< ' . __('first')) ?>
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
-            <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
-            <?= $this->Paginator->last(__('last') . ' >>') ?>
+          <?= $this->Paginator->first('<< ' . __('最初のページ')) ?>
+          <?= $this->Paginator->prev('< ' . __('前へ')) ?>
+          <?= $this->Paginator->numbers() ?>
+          <?= $this->Paginator->next(__('次へ') . ' >') ?>
+          <?= $this->Paginator->last(__('最後のページ') . ' >>') ?>
         </ul>
         <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
     </div>

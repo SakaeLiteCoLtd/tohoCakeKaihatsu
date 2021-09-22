@@ -1,13 +1,19 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlmaterialmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlproductmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlmaterialmenu = new htmlmaterialmenu();
- $htmlmaterial = $htmlmaterialmenu->materialmenus();
+ $htmlproductmenu = new htmlproductmenu();
+ $htmlproduct = $htmlproductmenu->productmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
  $i = 1;
+?>
+<?php
+     echo $htmllogin;
+?>
+<?php
+     echo $htmlproduct;
 ?>
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
@@ -30,13 +36,6 @@ $(function() {
   });
 
 </script>
-
-<?php
-     echo $htmllogin;
-?>
-<?php
-     echo $htmlmaterial;
-     ?>
 
 <?= $this->Form->create($materials, ['url' => ['action' => 'detail']]) ?>
 <br><br><br>

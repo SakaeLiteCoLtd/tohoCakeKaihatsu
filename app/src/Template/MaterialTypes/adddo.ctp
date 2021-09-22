@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlmaterialmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlproductmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlmaterialmenu = new htmlmaterialmenu();
- $htmlmaterial = $htmlmaterialmenu->materialmenus();
+ $htmlproductmenu = new htmlproductmenu();
+ $htmlproduct = $htmlproductmenu->productmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -13,7 +13,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlmaterial;
+     echo $htmlproduct;
 ?>
 
 <?= $this->Form->create($materialType, ['url' => ['action' => 'index']]) ?>
@@ -21,7 +21,7 @@
 
 <nav class="sample non-sample">
     <fieldset>
-      <legend><strong style="font-size: 15pt; color:red"><?= __('原料種類新規登録') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('仕入品種類新規登録') ?></strong></legend>
       <br>
         <table>
           <tbody class='sample non-sample'>
@@ -33,7 +33,7 @@
         <table>
         <tr>
           <td width="280"><strong>自社工場</strong></td>
-          <td width="280"><strong>原料種類</strong></td>
+          <td width="280"><strong>仕入品種類</strong></td>
         </tr>
         <tr>
           <td><?= h($factory_name) ?></td>
@@ -46,7 +46,7 @@
     <table>
       <tr>
         <tbody class='sample non-sample'>
-        <td style="border-style: none;"><div><?= $this->Form->submit('原料種類メニュートップへ戻る', array('name' => 'top')); ?></div></td>
+        <td style="border-style: none;"><div><?= $this->Form->submit('トップへ戻る', array('name' => 'top')); ?></div></td>
       </tbody>
     </tr>
     </table>

@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlmaterialmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlproductmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlmaterialmenu = new htmlmaterialmenu();
- $htmlmaterial = $htmlmaterialmenu->materialmenus();
+ $htmlproductmenu = new htmlproductmenu();
+ $htmlproduct = $htmlproductmenu->productmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -13,7 +13,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlmaterial;
+     echo $htmlproduct;
 ?>
 
 <form method="post" action="/materialTypes/deletedo">
@@ -27,7 +27,7 @@
 
       <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$materialType['id'], 'label'=>false)) ?>
 
-      <legend><strong style="font-size: 15pt; color:red"><?= __('原料種類情報削除') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('仕入品種類情報削除') ?></strong></legend>
         <br>
         <table align="center">
           <tbody class='sample non-sample'>
@@ -39,7 +39,7 @@
         <table>
         <tr>
         <td width="280"><strong>自社工場</strong></td>
-          <td width="280"><strong>原料種類</strong></td>
+          <td width="280"><strong>仕入品種類</strong></td>
         </tr>
         <tr>
         <td><?= h($materialType->factory->name) ?></td>

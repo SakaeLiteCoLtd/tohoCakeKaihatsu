@@ -50,6 +50,10 @@ class KensahyoukikakusController extends AppController
 */
     }
 
+    public function menu()
+    {
+    }
+
     public function addlogin()
     {
       $product = $this->Products->newEntity();

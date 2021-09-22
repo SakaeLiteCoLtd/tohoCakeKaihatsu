@@ -23,16 +23,23 @@
     <fieldset>
       <table>
       <tbody class='sample non-sample'>
-        <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('詳細表示') ?></strong></td></tr>
+      <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('詳細表示') ?></strong></td></tr>
       </tbody>
     </table>
+    <table>
+  <tbody class='sample non-sample'>
+    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('長さのみ異なる製品には同じ検査表画像が使用されます。') ?></strong></td></tr>
+  </tbody>
+</table>
 
     <table>
       <tr>
-        <td width="280"><strong>製品名</strong></td>
+      <td width="280"><strong>製品名</strong></td>
+      <td width="280"><strong>登録長さ（mm）</strong></td>
       </tr>
       <tr>
-        <td><?= h($name) ?></td>
+      <td><?= h($name) ?></td>
+      <td><?= h($product_length) ?></td>
       </tr>
     </table>
 
@@ -52,6 +59,8 @@
 <table>
   <tbody class='sample non-sample'>
     <tr>
+    <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+          <td style="border-style: none;"><?= __("　") ?></td>
       <td style="border-style: none;"><div><?= $this->Form->submit('削除', array('name' => 'delete')); ?></div></td>
     </tr>
   </tbody>

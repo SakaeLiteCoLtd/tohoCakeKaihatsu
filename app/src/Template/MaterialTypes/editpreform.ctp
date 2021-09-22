@@ -1,13 +1,19 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlmaterialmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlproductmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlmaterialmenu = new htmlmaterialmenu();
- $htmlmaterial = $htmlmaterialmenu->materialmenus();
+ $htmlproductmenu = new htmlproductmenu();
+ $htmlproduct = $htmlproductmenu->productmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
  $i = 1;
+?>
+<?php
+     echo $htmllogin;
+?>
+<?php
+     echo $htmlproduct;
 ?>
 
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
@@ -31,13 +37,6 @@ $(function() {
 
 </script>
 
-<?php
-     echo $htmllogin;
-?>
-<?php
-     echo $htmlmaterial;
-     ?>
-
 <?= $this->Form->create($materialType, ['url' => ['action' => 'detail']]) ?>
 <br><br><br>
 
@@ -45,7 +44,7 @@ $(function() {
 
     <?= $this->Form->create($materialType) ?>
     <fieldset>
-        <legend><strong style="font-size: 15pt; color:red"><?= __('原料種類情報検索') ?></strong></legend>
+        <legend><strong style="font-size: 15pt; color:red"><?= __('仕入品種類情報検索') ?></strong></legend>
         <br>
         <table>
           <tbody class='sample non-sample'>
@@ -57,7 +56,7 @@ $(function() {
 
       <table>
       <tr>
-        <td width="320"><strong>原料種類</strong></td>
+        <td width="320"><strong>仕入品種類</strong></td>
       </tr>
       <tr>
         <td>

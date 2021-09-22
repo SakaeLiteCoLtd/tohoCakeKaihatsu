@@ -47,13 +47,13 @@ echo $this->Html->css('index');
     </tbody>
 </table>
 <div class="paginator">
-    <ul class="pagination">
-      <?= $this->Paginator->first('<< ' . __('最初のページ')) ?>
-      <?= $this->Paginator->prev('< ' . __('前へ')) ?>
-      <?= $this->Paginator->numbers() ?>
-      <?= $this->Paginator->next(__('次へ') . ' >') ?>
-      <?= $this->Paginator->last(__('最後のページ') . ' >>') ?>
-    </ul>
-    <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
-</div>
+        <ul class="pagination">
+          <?= $this->Paginator->first('<< ' . __('最初のページ')) ?>
+          <?= $this->Paginator->prev('< ' . __('前へ')) ?>
+          <?= $this->Paginator->numbers() ?>
+          <?= $this->Paginator->next(__('次へ') . ' >') ?>
+          <?= $this->Paginator->last(__('最後のページ') . ' >>') ?>
+        </ul>
+        <p><?= $this->Paginator->counter(['format' => __('Page {{page}} of {{pages}}, showing {{current}} record(s) out of {{count}} total')]) ?></p>
+    </div>
 </div>

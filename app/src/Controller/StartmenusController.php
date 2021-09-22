@@ -64,6 +64,10 @@ class StartmenusController extends AppController
       print_r(session_id());
       echo "</pre>";
 */
+
+      $arrMenus = array();
+      $arrController = array();
+
       if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合
 
         $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
@@ -73,18 +77,32 @@ class StartmenusController extends AppController
       }else{//スーパーユーザーの場合（全メニュー表示）
 
         $Menus = $this->Menus->find()
-        ->where(['delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+        ->where(['delete_flag >=' => 0])->order(["id"=>"ASC"])->toArray();
 
         for($k=0; $k<count($Menus); $k++){
           $Groups[]['menu'] = array('name_menu'=>$Menus[$k]['name_menu']);
         }
 
+        for($k=0; $k<count($Groups); $k++){//表示可能なコントローラーの名前を配列に追加する
+
+          if($Groups[$k]['menu']['name_menu'] == "会社"){
+
+            $arrMenus[] = $Groups[$k]['menu']['name_menu'];
+            $arrController[] = "companies";
+          
+          }elseif($Groups[$k]['menu']['name_menu'] == "工場・営業所"){
+          
+            $arrMenus[] = $Groups[$k]['menu']['name_menu'];
+            $arrController[] = "factories";
+          
+          }
+  
+        }
+        
       }
 
-      $arrMenus = array();
-      $arrController = array();
       for($k=0; $k<count($Groups); $k++){//表示可能なコントローラーの名前を配列に追加する
-
+/*
         if($Groups[$k]['menu']['name_menu'] == "会社"){
 
           $arrMenus[] = $Groups[$k]['menu']['name_menu'];
@@ -161,6 +179,29 @@ class StartmenusController extends AppController
           $arrController[] = "priceProducts";
 
         }elseif($Groups[$k]['menu']['name_menu'] == "検査表画像"){
+
+          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
+          $arrController[] = "Images";
+
+        }
+*/
+
+        if($Groups[$k]['menu']['name_menu'] == "管理者メニュー"){
+
+          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
+          $arrController[] = "staffs";
+
+        }elseif($Groups[$k]['menu']['name_menu'] == "得意先・仕入先"){
+
+          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
+          $arrController[] = "customers";
+
+        }elseif($Groups[$k]['menu']['name_menu'] == "製品・仕入品"){
+
+          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
+          $arrController[] = "products";
+
+        }elseif($Groups[$k]['menu']['name_menu'] == "検査表・成形条件表"){
 
           $arrMenus[] = $Groups[$k]['menu']['name_menu'];
           $arrController[] = "Images";

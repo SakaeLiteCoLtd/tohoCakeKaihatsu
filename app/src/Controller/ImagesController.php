@@ -42,7 +42,7 @@ class ImagesController extends AppController
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
        $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "検査表画像", 'Groups.delete_flag' => 0])
+       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "検査表・成形条件表", 'Groups.delete_flag' => 0])
        ->toArray();
 
        if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
@@ -71,6 +71,7 @@ class ImagesController extends AppController
       $this->set('inspectionStandardSizeParents', $inspectionStandardSizeParents);
 
       $data = $this->request->getData();
+
       if(isset($data["delete"])){
 
         $id = $data["id"];
@@ -83,6 +84,58 @@ class ImagesController extends AppController
 
         return $this->redirect(['action' => 'deleteconfirm']);
 
+      }elseif(isset($data["name"])){
+
+        $product_name_length = explode(";",$data["name"]);
+        $name = $product_name_length[0];
+        if(isset($product_name_length[1])){
+          $length = str_replace('mm', '', $product_name_length[1]);
+          $Products = $this->Products->find()
+          ->where(['status_kensahyou' => 1, 'name' => $name, 'length' => $length, 'delete_flag' => 0])->toArray();
+         }else{
+          $length = "";
+          $Products = $this->Products->find()
+          ->where(['status_kensahyou' => 1, 'name' => $name, 'delete_flag' => 0])->toArray();
+         }
+
+         if(!isset($Products[0])){
+
+           return $this->redirect(['action' => 'kensakupreform',
+           's' => ['mess' => "入力された製品名は登録されていません。確認してください。"]]);
+
+         }else{
+
+          $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()
+          ->where(['product_id' => $Products[0]["id"], 'delete_flag' => 0])->toArray();
+
+          if(isset($InspectionStandardSizeParents[0])){
+
+            $id = $InspectionStandardSizeParents[0]["id"];
+
+          }else{
+
+            $product_code_ini = substr($Products[0]["product_code"], 0, 11);
+            $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+            ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.delete_flag' => 0])
+            ->toArray();
+
+            if(isset($InspectionStandardSizeParents[0])){
+                        
+              $id = $InspectionStandardSizeParents[0]["id"];
+
+            }else{
+
+              return $this->redirect(['action' => 'kensakupreform',
+              's' => ['mess' => "入力された製品は画像登録されていません。"]]);
+
+            }
+
+
+          }
+
+
+         }
+
       }
       $this->set('id', $id);
 
@@ -91,6 +144,8 @@ class ImagesController extends AppController
 
       $name = $InspectionStandardSizeParents[0]["product"]["name"];
       $this->set('name', $name);
+      $product_length = $InspectionStandardSizeParents[0]["product"]["length"];
+      $this->set('product_length', $product_length);
       $product_code = $InspectionStandardSizeParents[0]["product"]["product_code"];
       $this->set('product_code', $product_code);
       $image_file_name_dir = $InspectionStandardSizeParents[0]["image_file_name_dir"];
@@ -550,5 +605,29 @@ class ImagesController extends AppController
      }//トランザクション10
 
     }
+
+    public function kensakupreform()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
+      $Product_name_list = $this->Products->find()
+      ->where(['status_kensahyou' => 1, 'delete_flag' => 0])->toArray();
+
+      $arrProduct_name_list = array();
+      for($j=0; $j<count($Product_name_list); $j++){
+        array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
+      }
+      $this->set('arrProduct_name_list', $arrProduct_name_list);
+ }
 
 }

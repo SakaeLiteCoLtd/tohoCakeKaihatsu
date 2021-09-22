@@ -1,8 +1,9 @@
+<?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlstaffAbilitymenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlstaffmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlstaffAbilitymenu = new htmlstaffAbilitymenu();
- $htmlstaffAbility = $htmlstaffAbilitymenu->StaffAbilitymenus();
+ $htmlstaffmenu = new htmlstaffmenu();
+ $htmlstaff = $htmlstaffmenu->Staffmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -12,7 +13,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlstaffAbility;
+     echo $htmlstaff;
 ?>
 
 <?= $this->Form->create($staffAbility, ['url' => ['action' => 'detail']]) ?>

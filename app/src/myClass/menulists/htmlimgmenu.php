@@ -15,11 +15,15 @@ class htmlimgmenu extends AppController
                       "<br>\n".
                           "<font size='5'>　検査表画像メニュー</font>\n".
                           "<br><br>\n".
+                          "<font size='4'>　・</font><a href='/Startmenus/menu' /><font size='4' color=black>総合メニューへ戻る</font></a>\n".
+                          "<br><br>\n".
+                          "<font size='4'>　・</font><a href='/images/index' /><font size='4' color=black>検査表画像一覧</font></a>\n".
+                          "<br><br>\n".
                           "<font size='4'>　・</font><a href='/images/addpre' /><font size='4' color=black>検査表画像新規登録</font></a>\n".
                           "<br><br>\n".
-                          "<font size='4'>　・</font><a href='/images/index' /><font size='4' color=black>検査表画像メニュートップ</font></a>\n".
+                          "<font size='4'>　・</font><a href='/images/kensakupreform' /><font size='4' color=black>検査表画像検索</font></a>\n".
                           "<br><br>\n".
-                          "<font size='4'>　・</font><a href='/Startmenus/menu' /><font size='4' color=black>総合メニューへ戻る</font></a>\n".
+                          "<font size='4'>　・</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表メニュートップ</font></a>\n".
                           "<br><br><br><br><br><br><br>\n".
                           "<br><br><br><br><br><br><br>\n".
                           "<br><br><br><br><br><br><br>\n".

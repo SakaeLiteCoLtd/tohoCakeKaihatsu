@@ -19,6 +19,11 @@
     <fieldset>
         <legend><strong style="font-size: 15pt; color:red"><?= __('検査表画像新規登録') ?></strong></legend>
     </fieldset>
+    <table>
+  <tbody class='sample non-sample'>
+  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('長さのみ異なる製品には同じ検査表画像が使用されます。') ?></strong></td></tr>
+  </tbody>
+</table>
 
     <br>
     <div align="center"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></div>
