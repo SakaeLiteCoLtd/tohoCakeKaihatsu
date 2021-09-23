@@ -197,8 +197,8 @@ $mes = "";
               echo "<td>\n";
               echo "${"screw_number_1".$j}\n";
               echo "</td>\n";
-              echo "<td>\n";
-              echo "${"screw_1".$j}\n";
+              echo "<td rowspan=3>\n";
+              echo "${"screw".$j}\n";
               echo "</td>\n";
             }elseif($i==2){
 
@@ -220,9 +220,11 @@ $mes = "";
               echo "<td>\n";
               echo "${"screw_number_2".$j}\n";
               echo "</td>\n";
+              /*
               echo "<td>\n";
               echo "${"screw_2".$j}\n";
               echo "</td>\n";
+              */
             }else{
               echo "<td>\n";
               echo "± 1.0\n";
@@ -233,9 +235,11 @@ $mes = "";
               echo "<td>\n";
               echo "${"screw_number_3".$j}\n";
               echo "</td>\n";
+              /*
               echo "<td>\n";
               echo "${"screw_3".$j}\n";
               echo "</td>\n";
+              */
             }
         }else{
           if($i==1){
@@ -247,8 +251,8 @@ $mes = "";
             echo "<td>\n";
             echo "${"screw_number_1".$j}\n";
             echo "</td>\n";
-            echo "<td>\n";
-            echo "${"screw_1".$j}\n";
+            echo "<td rowspan=3>\n";
+            echo "${"screw".$j}\n";
             echo "</td>\n";
           }elseif($i==2){
             echo "<td style='border-bottom-style:none; border-top-style:none;'>\n";
@@ -259,9 +263,11 @@ $mes = "";
             echo "<td>\n";
             echo "${"screw_number_2".$j}\n";
             echo "</td>\n";
+/*
             echo "<td>\n";
             echo "${"screw_2".$j}\n";
             echo "</td>\n";
+*/
           }else{
             echo "<td style='border-top-style:none;'>\n";
             echo "</td>\n";
@@ -271,9 +277,11 @@ $mes = "";
             echo "<td>\n";
             echo "${"screw_number_3".$j}\n";
             echo "</td>\n";
+            /*
             echo "<td>\n";
             echo "${"screw_3".$j}\n";
             echo "</td>\n";
+            */
           }
         }
 

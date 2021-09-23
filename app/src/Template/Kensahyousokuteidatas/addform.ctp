@@ -1,5 +1,10 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
+use Cake\ORM\TableRegistry;//独立したテーブルを扱う
+$this->Products = TableRegistry::get('Products');
+?>
+
+<?php
  use App\myClass\menulists\htmlkensahyoukadoumenu;//myClassフォルダに配置したクラスを使用
  $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
@@ -37,6 +42,7 @@ $j = 1;
 $num_length = json_encode($num_length);//jsに配列を受け渡すために変換
 $count_length = json_encode($count_length);//jsに配列を受け渡すために変換
 $nagasa = json_encode($nagasa);//jsに配列を受け渡すために変換
+$haihun = json_encode($haihun);//jsに配列を受け渡すために変換
 
 for($i=0; $i<$count_length; $i++){
   ${"Length_product_id".$i} = json_encode(${"arrLength_size".$i}['product_id']);//jsに配列を受け渡すために変換
@@ -61,11 +67,13 @@ for($i=0; $i<$count_length; $i++){
           var upper_length = <?php echo ${"Length_upper".$i}; ?>;
           var lower_length = <?php echo ${"Length_lower".$i}; ?>;
           var nagasa = <?php echo $nagasa; ?>;
+          var haihun = <?php echo $haihun; ?>;
 
           $("#length<?php echo $num_length; ?>").text(nagasa);
           $("#size<?php echo $num_length; ?>").text(size_length);
           $("#upper<?php echo $num_length; ?>").text(upper_length);
           $("#lower<?php echo $num_length; ?>").text(lower_length);
+          $("#measuring_instrument<?php echo $num_length; ?>").text(haihun);
 
         }
 
@@ -160,7 +168,7 @@ for($i=0; $i<$count_length; $i++){
   <td>検査機</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= h(${"measuring_instrument".$i}) ?></td>
+      <td><div class="measuring_instrument"></div><?= h(${"measuring_instrument".$i}) ?></td>
     <?php endfor;?>
 
     <td width="69">目視</td>
@@ -204,6 +212,14 @@ var moji = "length"
         tmp[i].setAttribute("id",moji+i);
     }
 
+    var moji = "measuring_instrument"
+    var tmp = document.getElementsByClassName("measuring_instrument") ;
+
+    for(var i=1;i<10;i++){
+        //id追加
+        tmp[i].setAttribute("id",moji+i);
+    }
+
 </script>
 
 <?php for($k=1; $k<=$gyou; $k++): ?>
@@ -235,7 +251,7 @@ var moji = "length"
 
   <td style='width:69; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ['options' => $arrGaikan, 'label'=>false]) ?></td>
   <td style='width:80; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
-  <td style='width:65; border-top-style:none'><?= $this->Form->control('gouhi'.$j, ['options' => $arrGouhi, 'label'=>false]) ?></td>
+  <td style='width:65; border-top-style:none'>-</td>
   <td style='width:65; border-top-style:none'></td>
 
 </table>
@@ -255,8 +271,18 @@ var moji = "length"
 
     <?php for($i=1; $i<=10; $i++): ?>
       <?php
-      if(${"result_size".$j.$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
-      && ${"result_size".$j.$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
+
+      if($i == $num_length + 1){//長さ列の場合
+
+        $Products= $this->Products->find()->where(['length' => ${"lengthhyouji".$j}])->toArray();
+        ${"size".$i} = ${"lengthhyouji".$j};
+        ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
+        ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
+  
+      }
+
+      if(${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+      && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
         echo '<td style="width:75; border-top-style:none">';
         echo ${"result_size".$j.$i} ;
         echo '</td>';
@@ -277,11 +303,6 @@ var moji = "length"
       ${"gaikanhyouji".$j} = "良";
     }
 
-    if(${"gouhi".$j} == 1){
-      ${"gouhihyouji".$j} = "否";
-    }else{
-      ${"gouhihyouji".$j} = "合";
-    }
     ?>
 
     <td style='width:69; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
@@ -307,7 +328,7 @@ var moji = "length"
   <td style='width:100; border-top-style:none'>
   <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false)) ?>
   </td>
-  <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false]) ?></td>
+  <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
   <td style='width:130; border-top-style:none'><font size='1.8'><?= h("社員コード：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'required' => 'true')) ?></td>
 
   <?php for($i=1; $i<=10; $i++): ?>
@@ -316,7 +337,7 @@ var moji = "length"
 
   <td style='width:69; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ['options' => $arrGaikan, 'label'=>false]) ?></td>
   <td style='width:80; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'required' => 'true')) ?></td>
-  <td style='width:65; border-top-style:none'><?= $this->Form->control('gouhi'.$j, ['options' => $arrGouhi, 'label'=>false]) ?></td>
+  <td style='width:65; border-top-style:none'>-</td>
   <td style='width:65; border-top-style:none'><?= h("修正中") ?></td>
 
 </table>
@@ -336,8 +357,18 @@ var moji = "length"
 
       <?php for($i=1; $i<=10; $i++): ?>
         <?php
-        if(${"result_size".$j.$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
-        && ${"result_size".$j.$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
+
+        if($i == $num_length + 1){//長さ列の場合
+
+          $Products= $this->Products->find()->where(['length' => ${"lengthhyouji".$j}])->toArray();
+          ${"size".$i} = ${"lengthhyouji".$j};
+          ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
+          ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
+
+        }
+
+        if(${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+        && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
           echo '<td style="width:75; border-top-style:none">';
           echo ${"result_size".$j.$i} ;
           echo '</td>';
@@ -357,12 +388,13 @@ var moji = "length"
       }else{
         ${"gaikanhyouji".$j} = "良";
       }
-
+/*
       if(${"gouhi".$j} == 1){
         ${"gouhihyouji".$j} = "否";
       }else{
         ${"gouhihyouji".$j} = "合";
       }
+*/
       ?>
 
       <td style='width:69; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
@@ -574,8 +606,8 @@ var moji = "length"
                echo "<td>\n";
                echo "${"screw_number_1".$j}\n";
                echo "</td>\n";
-               echo "<td>\n";
-               echo "${"screw_1".$j}\n";
+               echo "<td rowspan=3>\n";
+               echo "${"screw".$j}\n";
                echo "</td>\n";
              }elseif($i==2){
                echo "<td>\n";
@@ -587,9 +619,11 @@ var moji = "length"
                echo "<td>\n";
                echo "${"screw_number_2".$j}\n";
                echo "</td>\n";
+               /*
                echo "<td>\n";
                echo "${"screw_2".$j}\n";
                echo "</td>\n";
+               */
              }else{
                echo "<td>\n";
                echo "± 1.0\n";
@@ -600,9 +634,11 @@ var moji = "length"
                echo "<td>\n";
                echo "${"screw_number_3".$j}\n";
                echo "</td>\n";
+               /*
                echo "<td>\n";
                echo "${"screw_3".$j}\n";
                echo "</td>\n";
+               */
              }
          }else{
            if($i==1){
@@ -614,8 +650,8 @@ var moji = "length"
              echo "<td>\n";
              echo "${"screw_number_1".$j}\n";
              echo "</td>\n";
-             echo "<td>\n";
-             echo "${"screw_1".$j}\n";
+             echo "<td rowspan=3>\n";
+             echo "${"screw".$j}\n";
              echo "</td>\n";
            }elseif($i==2){
              echo "<td style='border-bottom-style:none; border-top-style:none;'>\n";
@@ -626,9 +662,11 @@ var moji = "length"
              echo "<td>\n";
              echo "${"screw_number_2".$j}\n";
              echo "</td>\n";
+             /*
              echo "<td>\n";
              echo "${"screw_2".$j}\n";
              echo "</td>\n";
+             */
            }else{
              echo "<td style='border-top-style:none;'>\n";
              echo "</td>\n";
@@ -638,9 +676,11 @@ var moji = "length"
              echo "<td>\n";
              echo "${"screw_number_3".$j}\n";
              echo "</td>\n";
+             /*
              echo "<td>\n";
              echo "${"screw_3".$j}\n";
              echo "</td>\n";
+             */
            }
          }
 

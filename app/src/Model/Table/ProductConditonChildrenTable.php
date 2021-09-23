@@ -10,6 +10,7 @@ use Cake\Validation\Validator;
  * ProductConditonChildren Model
  *
  * @property \App\Model\Table\ProductMaterialMachinesTable|\Cake\ORM\Association\BelongsTo $ProductMaterialMachines
+ * @property |\Cake\ORM\Association\HasMany $InspectionDataConditonChildren
  *
  * @method \App\Model\Entity\ProductConditonChild get($primaryKey, $options = [])
  * @method \App\Model\Entity\ProductConditonChild newEntity($data = null, array $options = [])
@@ -40,6 +41,9 @@ class ProductConditonChildrenTable extends Table
         $this->belongsTo('ProductMaterialMachines', [
             'foreignKey' => 'product_material_machine_id',
             'joinType' => 'INNER'
+        ]);
+        $this->hasMany('InspectionDataConditonChildren', [
+            'foreignKey' => 'product_conditon_child_id'
         ]);
     }
 
@@ -199,11 +203,6 @@ class ProductConditonChildrenTable extends Table
             ->allowEmpty('screw_number_1');
 
         $validator
-            ->scalar('screw_1')
-            ->maxLength('screw_1', 255)
-            ->allowEmpty('screw_1');
-
-        $validator
             ->scalar('screw_mesh_2')
             ->maxLength('screw_mesh_2', 255)
             ->allowEmpty('screw_mesh_2');
@@ -212,11 +211,6 @@ class ProductConditonChildrenTable extends Table
             ->scalar('screw_number_2')
             ->maxLength('screw_number_2', 255)
             ->allowEmpty('screw_number_2');
-
-        $validator
-            ->scalar('screw_2')
-            ->maxLength('screw_2', 255)
-            ->allowEmpty('screw_2');
 
         $validator
             ->scalar('screw_mesh_3')
@@ -229,9 +223,9 @@ class ProductConditonChildrenTable extends Table
             ->allowEmpty('screw_number_3');
 
         $validator
-            ->scalar('screw_3')
-            ->maxLength('screw_3', 255)
-            ->allowEmpty('screw_3');
+            ->scalar('screw')
+            ->maxLength('screw', 255)
+            ->allowEmpty('screw');
 
         $validator
             ->integer('delete_flag')

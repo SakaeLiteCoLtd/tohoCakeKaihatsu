@@ -23,7 +23,7 @@ class KensahyoukikakusController extends AppController
   		parent::beforeFilter($event);
 
   		// 認証なしでアクセスできるアクションの指定
-  		$this->Auth->allow(["addlogin", "addformpre", "addform", "addcomfirm", "adddo"
+  		$this->Auth->allow(["menu", "addlogin", "addformpre", "addform", "addcomfirm", "adddo"
       ,"kensakupre", "kensakuhyouji", "editlogin", "editform", "editcomfirm", "editdo"]);
   	}
 
@@ -480,6 +480,22 @@ echo "</pre>";
         }
 
       }
+
+      //長さの列を追加（idが必要なため取得しておく）
+      $tourokuInspectionStandardSizeChildren[] = [
+        "inspection_standard_size_parent_id" => $data['inspection_standard_size_parent_id'],
+        "size_name" => "長さ",
+        "size_number" => $i,
+        "size" => 0,
+        "upper_limit" => 0,
+        "lower_limit" => 0,
+        "measuring_instrument" => "-",
+        "delete_flag" => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        "created_staff" => $staff_id
+      ];
+
+
 /*
       echo "<pre>";
       print_r($tourokuInspectionStandardSizeChildren);

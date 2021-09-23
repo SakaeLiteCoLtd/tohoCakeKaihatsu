@@ -40,13 +40,11 @@ use Cake\ORM\Entity;
  * @property float|null $pickup_speed_lower_limit
  * @property string|null $screw_mesh_1
  * @property string|null $screw_number_1
- * @property string|null $screw_1
  * @property string|null $screw_mesh_2
  * @property string|null $screw_number_2
- * @property string|null $screw_2
  * @property string|null $screw_mesh_3
  * @property string|null $screw_number_3
- * @property string|null $screw_3
+ * @property string|null $screw
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at
  * @property int $created_staff
@@ -101,13 +99,11 @@ class ProductConditonChild extends Entity
         'pickup_speed_lower_limit' => true,
         'screw_mesh_1' => true,
         'screw_number_1' => true,
-        'screw_1' => true,
         'screw_mesh_2' => true,
         'screw_number_2' => true,
-        'screw_2' => true,
         'screw_mesh_3' => true,
         'screw_number_3' => true,
-        'screw_3' => true,
+        'screw' => true,
         'delete_flag' => true,
         'created_at' => true,
         'created_staff' => true,

@@ -23,7 +23,7 @@ class htmlimgmenu extends AppController
                           "<br><br>\n".
                           "<font size='4'>　・</font><a href='/images/kensakupreform' /><font size='4' color=black>検査表画像検索</font></a>\n".
                           "<br><br>\n".
-                          "<font size='4'>　・</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表メニュートップ</font></a>\n".
+                          "<font size='4'>　・</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>成形メニュートップ</font></a>\n".
                           "<br><br><br><br><br><br><br>\n".
                           "<br><br><br><br><br><br><br>\n".
                           "<br><br><br><br><br><br><br>\n".

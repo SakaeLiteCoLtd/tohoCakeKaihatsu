@@ -581,20 +581,16 @@ class KensahyousokuteidatasController extends AppController
             $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
             ${"screw_number_1".$j} = $ProductConditonChildren[0]['screw_number_1'];
             $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
-            ${"screw_1".$j} = $ProductConditonChildren[0]['screw_1'];
-            $this->set('screw_1'.$j, ${"screw_1".$j});
             ${"screw_mesh_2".$j} = $ProductConditonChildren[0]['screw_mesh_2'];
             $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
             ${"screw_number_2".$j} = $ProductConditonChildren[0]['screw_number_2'];
             $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
-            ${"screw_2".$j} = $ProductConditonChildren[0]['screw_2'];
-            $this->set('screw_2'.$j, ${"screw_2".$j});
             ${"screw_mesh_3".$j} = $ProductConditonChildren[0]['screw_mesh_3'];
             $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
             ${"screw_number_3".$j} = $ProductConditonChildren[0]['screw_number_3'];
             $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
-            ${"screw_3".$j} = $ProductConditonChildren[0]['screw_3'];
-            $this->set('screw_3'.$j, ${"screw_3".$j});
+            ${"screw".$j} = $ProductConditonChildren[0]['screw'];
+            $this->set('screw'.$j, ${"screw".$j});
 
           }else{
 
@@ -809,20 +805,16 @@ class KensahyousokuteidatasController extends AppController
             $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
             ${"screw_number_1".$j} = $ProductConditonChildren[0]['screw_number_1'];
             $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
-            ${"screw_1".$j} = $ProductConditonChildren[0]['screw_1'];
-            $this->set('screw_1'.$j, ${"screw_1".$j});
             ${"screw_mesh_2".$j} = $ProductConditonChildren[0]['screw_mesh_2'];
             $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
             ${"screw_number_2".$j} = $ProductConditonChildren[0]['screw_number_2'];
             $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
-            ${"screw_2".$j} = $ProductConditonChildren[0]['screw_2'];
-            $this->set('screw_2'.$j, ${"screw_2".$j});
             ${"screw_mesh_3".$j} = $ProductConditonChildren[0]['screw_mesh_3'];
             $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
             ${"screw_number_3".$j} = $ProductConditonChildren[0]['screw_number_3'];
             $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
-            ${"screw_3".$j} = $ProductConditonChildren[0]['screw_3'];
-            $this->set('screw_3'.$j, ${"screw_3".$j});
+            ${"screw".$j} = $ProductConditonChildren[0]['screw'];
+            $this->set('screw'.$j, ${"screw".$j});
 
           }
 
@@ -1021,20 +1013,16 @@ class KensahyousokuteidatasController extends AppController
             $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
             ${"screw_number_1".$j} = $ProductConditonChildren[0]['screw_number_1'];
             $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
-            ${"screw_1".$j} = $ProductConditonChildren[0]['screw_1'];
-            $this->set('screw_1'.$j, ${"screw_1".$j});
             ${"screw_mesh_2".$j} = $ProductConditonChildren[0]['screw_mesh_2'];
             $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
             ${"screw_number_2".$j} = $ProductConditonChildren[0]['screw_number_2'];
             $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
-            ${"screw_2".$j} = $ProductConditonChildren[0]['screw_2'];
-            $this->set('screw_2'.$j, ${"screw_2".$j});
             ${"screw_mesh_3".$j} = $ProductConditonChildren[0]['screw_mesh_3'];
             $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
             ${"screw_number_3".$j} = $ProductConditonChildren[0]['screw_number_3'];
             $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
-            ${"screw_3".$j} = $ProductConditonChildren[0]['screw_3'];
-            $this->set('screw_3'.$j, ${"screw_3".$j});
+            ${"screw".$j} = $ProductConditonChildren[0]['screw'];
+            $this->set('screw'.$j, ${"screw".$j});
 
           }
 
@@ -1150,11 +1138,11 @@ class KensahyousokuteidatasController extends AppController
       $this->set('mes',$mes);
 
       $data = $this->request->getData();
-/*
+
       echo "<pre>";
       print_r($data);
       echo "</pre>";
-*/
+
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
       $inspection_data_conditon_parent_id = $data['inspection_data_conditon_parent_id'];
@@ -1230,7 +1218,7 @@ class KensahyousokuteidatasController extends AppController
 
       if(isset($InspectionStandardSizeChildren[0])){
 
-        $num_length = count($InspectionStandardSizeChildren);
+        $num_length = count($InspectionStandardSizeChildren) - 1;
         $this->set('num_length',$num_length);
 
         for($i=1; $i<=10; $i++){
@@ -1248,7 +1236,7 @@ class KensahyousokuteidatasController extends AppController
 
         }
 
-        for($i=0; $i<count($InspectionStandardSizeChildren); $i++){
+        for($i=0; $i<count($InspectionStandardSizeChildren) - 1; $i++){
 
           $num = $InspectionStandardSizeChildren[$i]["size_number"];
           ${"size_name".$num} = $InspectionStandardSizeChildren[$i]["size_name"];
@@ -1315,6 +1303,8 @@ class KensahyousokuteidatasController extends AppController
       $this->set('count_length',$count_length);
       $nagasa = "長さ";
       $this->set('nagasa',$nagasa);
+      $haihun = "-";
+      $this->set('haihun',$haihun);
 
       $checkedit = 0;
       $this->set('checkedit', $checkedit);
@@ -1441,8 +1431,8 @@ class KensahyousokuteidatasController extends AppController
 
         }else{//ちゃんと入力されている場合
 
-        $gyou = $data["gyou"] + 1;
-        $this->set('gyou', $gyou);
+  //      $gyou = $data["gyou"] + 1;
+  //      $this->set('gyou', $gyou);
 
         for($j=1; $j<=$gyou; $j++){
 
@@ -1506,7 +1496,8 @@ class KensahyousokuteidatasController extends AppController
 
           for($i=1; $i<=10; $i++){
 
-            if(isset($data['result_size'.$j.$i]) && ${"size".$i} > 0){
+            if(strlen($data['result_size'.$j.$i]) > 0){
+              //    if(strlen($data['result_size'.$j.$i]) > 0 && ${"size".$i} > 0){
               ${"result_size".$j.$i} = $data['result_size'.$j.$i];
   
               $dotini = substr(${"result_size".$j.$i}, 0, 1);
@@ -1524,8 +1515,17 @@ class KensahyousokuteidatasController extends AppController
             }
             $this->set('result_size'.$j.$i,${"result_size".$j.$i});
             
-            if(${"result_size".$j.$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
-            && ${"result_size".$j.$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
+            if($i == $num_length + 1){//長さ列の場合
+
+              $Products= $this->Products->find()->where(['length' => ${"lengthhyouji".$j}])->toArray();
+              ${"size".$i} = ${"lengthhyouji".$j};
+              ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
+              ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
+        
+            }
+      
+            if(${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+            && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
               $gouhi_check = $gouhi_check;
             } else {
               $gouhi_check = $gouhi_check + 1;
@@ -1534,12 +1534,19 @@ class KensahyousokuteidatasController extends AppController
           }
           if($gouhi_check > 0){
             ${"gouhi".$j} = 1;
+            ${"gouhihyouji".$j} = "否";
           } else {
             ${"gouhi".$j} = 0;
+            ${"gouhihyouji".$j} = "合";
           }
-        $this->set('gouhi'.$j,${"gouhi".$j});
-
+          $this->set('gouhi'.$j,${"gouhi".$j});
+          $this->set('gouhihyouji'.$j,${"gouhihyouji".$j});
+  
         }
+
+        $gyou = $data["gyou"] + 1;
+        $this->set('gyou', $gyou);
+
 /*
         echo "<pre>";
         print_r($data);
@@ -1596,7 +1603,8 @@ class KensahyousokuteidatasController extends AppController
 
               for($i=1; $i<=10; $i++){
 
-                if(strlen($data['result_size'.$j.$i]) > 0 && ${"size".$i} > 0){
+                if(strlen($data['result_size'.$j.$i]) > 0){
+              //    if(strlen($data['result_size'.$j.$i]) > 0 && ${"size".$i} > 0){
 
                   $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren->find()
                   ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'], "size_number" => $i])
@@ -1728,7 +1736,8 @@ class KensahyousokuteidatasController extends AppController
 
           for($i=1; $i<=10; $i++){
 
-            if(isset($data['result_size'.$j.$i]) && ${"size".$i} > 0){
+            if(strlen($data['result_size'.$j.$i]) > 0){
+              //    if(strlen($data['result_size'.$j.$i]) > 0 && ${"size".$i} > 0){
               ${"result_size".$j.$i} = $data['result_size'.$j.$i];
   
               $dotini = substr(${"result_size".$j.$i}, 0, 1);
@@ -1746,8 +1755,17 @@ class KensahyousokuteidatasController extends AppController
             }
             $this->set('result_size'.$j.$i,${"result_size".$j.$i});
             
-            if(${"result_size".$j.$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
-            && ${"result_size".$j.$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
+            if($i == $num_length + 1){//長さ列の場合
+
+              $Products= $this->Products->find()->where(['length' => ${"lengthhyouji".$j}])->toArray();
+              ${"size".$i} = ${"lengthhyouji".$j};
+              ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
+              ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
+        
+            }
+
+            if(${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+            && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
               $gouhi_check = $gouhi_check;
             } else {
               $gouhi_check = $gouhi_check + 1;
@@ -1756,19 +1774,22 @@ class KensahyousokuteidatasController extends AppController
           }
           if($gouhi_check > 0){
             ${"gouhi".$j} = 1;
+            ${"gouhihyouji".$j} = "否";
           } else {
             ${"gouhi".$j} = 0;
+            ${"gouhihyouji".$j} = "合";
           }
-        $this->set('gouhi'.$j,${"gouhi".$j});
-
+          $this->set('gouhi'.$j,${"gouhi".$j});
+          $this->set('gouhihyouji'.$j,${"gouhihyouji".$j});
+  
         }
 
       }elseif(isset($data["edittouroku"])){
 
         $edit_num = $data["checkedit"];
 
-        $gyou = $data["gyou"];
-        $this->set('gyou', $gyou);
+        $gyou = $data["gyou"] - 1;
+  //      $this->set('gyou', $gyou);
 
         for($j=1; $j<=$gyou; $j++){
 
@@ -1832,7 +1853,8 @@ class KensahyousokuteidatasController extends AppController
 
           for($i=1; $i<=10; $i++){
 
-            if(isset($data['result_size'.$j.$i]) && ${"size".$i} > 0){
+            if(strlen($data['result_size'.$j.$i]) > 0){
+              //    if(strlen($data['result_size'.$j.$i]) > 0 && ${"size".$i} > 0){
               ${"result_size".$j.$i} = $data['result_size'.$j.$i];
   
               $dotini = substr(${"result_size".$j.$i}, 0, 1);
@@ -1850,8 +1872,17 @@ class KensahyousokuteidatasController extends AppController
             }
             $this->set('result_size'.$j.$i,${"result_size".$j.$i});
             
-            if(${"result_size".$j.$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
-            && ${"result_size".$j.$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
+            if($i == $num_length + 1){//長さ列の場合
+
+              $Products= $this->Products->find()->where(['length' => ${"lengthhyouji".$j}])->toArray();
+              ${"size".$i} = ${"lengthhyouji".$j};
+              ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
+              ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
+        
+            }
+
+            if(${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+            && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
               $gouhi_check = $gouhi_check;
             } else {
               $gouhi_check = $gouhi_check + 1;
@@ -1860,12 +1891,18 @@ class KensahyousokuteidatasController extends AppController
           }
           if($gouhi_check > 0){
             ${"gouhi".$j} = 1;
+            ${"gouhihyouji".$j} = "否";
           } else {
             ${"gouhi".$j} = 0;
+            ${"gouhihyouji".$j} = "合";
           }
-        $this->set('gouhi'.$j,${"gouhi".$j});
+          $this->set('gouhi'.$j,${"gouhi".$j});
+          $this->set('gouhihyouji'.$j,${"gouhihyouji".$j});
 
         }
+
+        $gyou = $data["gyou"];
+        $this->set('gyou', $gyou);
 
         //ここから登録できるかデータチェック
         $checknull = 0;
@@ -2008,7 +2045,8 @@ class KensahyousokuteidatasController extends AppController
 
         for($i=1; $i<=10; $i++){
 
-          if(strlen($data['result_size'.$j.$i]) > 0 && ${"size".$i} > 0){
+          if(strlen($data['result_size'.$j.$i]) > 0){
+            //    if(strlen($data['result_size'.$j.$i]) > 0 && ${"size".$i} > 0){
 
             $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren->find()
             ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'], "size_number" => $i])
@@ -2241,20 +2279,16 @@ class KensahyousokuteidatasController extends AppController
             $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
             ${"screw_number_1".$j} = $ProductConditonChildren[0]['screw_number_1'];
             $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
-            ${"screw_1".$j} = $ProductConditonChildren[0]['screw_1'];
-            $this->set('screw_1'.$j, ${"screw_1".$j});
             ${"screw_mesh_2".$j} = $ProductConditonChildren[0]['screw_mesh_2'];
             $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
             ${"screw_number_2".$j} = $ProductConditonChildren[0]['screw_number_2'];
             $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
-            ${"screw_2".$j} = $ProductConditonChildren[0]['screw_2'];
-            $this->set('screw_2'.$j, ${"screw_2".$j});
             ${"screw_mesh_3".$j} = $ProductConditonChildren[0]['screw_mesh_3'];
             $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
             ${"screw_number_3".$j} = $ProductConditonChildren[0]['screw_number_3'];
             $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
-            ${"screw_3".$j} = $ProductConditonChildren[0]['screw_3'];
-            $this->set('screw_3'.$j, ${"screw_3".$j});
+            ${"screw".$j} = $ProductConditonChildren[0]['screw'];
+            $this->set('screw'.$j, ${"screw".$j});
 
           }
 

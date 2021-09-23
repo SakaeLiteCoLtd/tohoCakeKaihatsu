@@ -363,7 +363,6 @@ class KensahyoutemperaturesController extends AppController
       $this->set('arrScrewNumber',$arrScrewNumber);
 
       $arrScrew = [
-        '-' => '',
         'フルフライト' => 'フルフライト',
         'ミキシング' => 'ミキシング',
         'ダルメージ' => 'ダルメージ'
@@ -468,20 +467,16 @@ class KensahyoutemperaturesController extends AppController
         $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
         ${"screw_number_1".$j} = $data['screw_number_1'.$j];
         $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
-        ${"screw_1".$j} = $data['screw_1'.$j];
-        $this->set('screw_1'.$j, ${"screw_1".$j});
         ${"screw_mesh_2".$j} = $data['screw_mesh_2'.$j];
         $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
         ${"screw_number_2".$j} = $data['screw_number_2'.$j];
         $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
-        ${"screw_2".$j} = $data['screw_2'.$j];
-        $this->set('screw_2'.$j, ${"screw_2".$j});
         ${"screw_mesh_3".$j} = $data['screw_mesh_3'.$j];
         $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
         ${"screw_number_3".$j} = $data['screw_number_3'.$j];
         $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
-        ${"screw_3".$j} = $data['screw_3'.$j];
-        $this->set('screw_3'.$j, ${"screw_3".$j});
+        ${"screw".$j} = $data['screw'.$j];
+        $this->set('screw'.$j, ${"screw".$j});
 
       }
 
@@ -543,20 +538,16 @@ class KensahyoutemperaturesController extends AppController
         $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
         ${"screw_number_1".$j} = $data['screw_number_1'.$j];
         $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
-        ${"screw_1".$j} = $data['screw_1'.$j];
-        $this->set('screw_1'.$j, ${"screw_1".$j});
         ${"screw_mesh_2".$j} = $data['screw_mesh_2'.$j];
         $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
         ${"screw_number_2".$j} = $data['screw_number_2'.$j];
         $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
-        ${"screw_2".$j} = $data['screw_2'.$j];
-        $this->set('screw_2'.$j, ${"screw_2".$j});
         ${"screw_mesh_3".$j} = $data['screw_mesh_3'.$j];
         $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
         ${"screw_number_3".$j} = $data['screw_number_3'.$j];
         $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
-        ${"screw_3".$j} = $data['screw_3'.$j];
-        $this->set('screw_3'.$j, ${"screw_3".$j});
+        ${"screw".$j} = $data['screw'.$j];
+        $this->set('screw'.$j, ${"screw".$j});
 
         $tourokuProductConditonChildren[] = [
           "product_material_machine_id" => $data['product_material_machine_id'.$j],
@@ -574,13 +565,11 @@ class KensahyoutemperaturesController extends AppController
           "pickup_speed" => $data['pickup_speed'],
           "screw_mesh_1" => $data['screw_mesh_1'.$j],
           "screw_number_1" => $data['screw_number_1'.$j],
-          "screw_1" => $data['screw_1'.$j],
           "screw_mesh_2" => $data['screw_mesh_2'.$j],
           "screw_number_2" => $data['screw_number_2'.$j],
-          "screw_2" => $data['screw_2'.$j],
           "screw_mesh_3" => $data['screw_mesh_3'.$j],
           "screw_number_3" => $data['screw_number_3'.$j],
-          "screw_3" => $data['screw_3'.$j],
+          "screw" => $data['screw'.$j],
           "delete_flag" => 0,
           'created_at' => date("Y-m-d H:i:s"),
           "created_staff" => $staff_id
@@ -834,20 +823,16 @@ class KensahyoutemperaturesController extends AppController
             $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
             ${"screw_number_1".$j} = $ProductConditonChildren[0]['screw_number_1'];
             $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
-            ${"screw_1".$j} = $ProductConditonChildren[0]['screw_1'];
-            $this->set('screw_1'.$j, ${"screw_1".$j});
             ${"screw_mesh_2".$j} = $ProductConditonChildren[0]['screw_mesh_2'];
             $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
             ${"screw_number_2".$j} = $ProductConditonChildren[0]['screw_number_2'];
             $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
-            ${"screw_2".$j} = $ProductConditonChildren[0]['screw_2'];
-            $this->set('screw_2'.$j, ${"screw_2".$j});
             ${"screw_mesh_3".$j} = $ProductConditonChildren[0]['screw_mesh_3'];
             $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
             ${"screw_number_3".$j} = $ProductConditonChildren[0]['screw_number_3'];
             $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
-            ${"screw_3".$j} = $ProductConditonChildren[0]['screw_3'];
-            $this->set('screw_3'.$j, ${"screw_3".$j});
+            ${"screw".$j} = $ProductConditonChildren[0]['screw'];
+            $this->set('screw'.$j, ${"screw".$j});
 
           }else{
 
@@ -1009,20 +994,16 @@ class KensahyoutemperaturesController extends AppController
           $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
           ${"screw_number_1".$j} = $ProductConditonChildren[0]['screw_number_1'];
           $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
-          ${"screw_1".$j} = $ProductConditonChildren[0]['screw_1'];
-          $this->set('screw_1'.$j, ${"screw_1".$j});
           ${"screw_mesh_2".$j} = $ProductConditonChildren[0]['screw_mesh_2'];
           $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
           ${"screw_number_2".$j} = $ProductConditonChildren[0]['screw_number_2'];
           $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
-          ${"screw_2".$j} = $ProductConditonChildren[0]['screw_2'];
-          $this->set('screw_2'.$j, ${"screw_2".$j});
           ${"screw_mesh_3".$j} = $ProductConditonChildren[0]['screw_mesh_3'];
           $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
           ${"screw_number_3".$j} = $ProductConditonChildren[0]['screw_number_3'];
           $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
-          ${"screw_3".$j} = $ProductConditonChildren[0]['screw_3'];
-          $this->set('screw_3'.$j, ${"screw_3".$j});
+          ${"screw".$j} = $ProductConditonChildren[0]['screw'];
+          $this->set('screw'.$j, ${"screw".$j});
 
         }
 
@@ -1053,7 +1034,6 @@ class KensahyoutemperaturesController extends AppController
       $this->set('arrScrewNumber',$arrScrewNumber);
 
       $arrScrew = [
-        '-' => '',
         'フルフライト' => 'フルフライト',
         'ミキシング' => 'ミキシング',
         'ダルメージ' => 'ダルメージ'
@@ -1126,20 +1106,16 @@ class KensahyoutemperaturesController extends AppController
         $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
         ${"screw_number_1".$j} = $data['screw_number_1'.$j];
         $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
-        ${"screw_1".$j} = $data['screw_1'.$j];
-        $this->set('screw_1'.$j, ${"screw_1".$j});
         ${"screw_mesh_2".$j} = $data['screw_mesh_2'.$j];
         $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
         ${"screw_number_2".$j} = $data['screw_number_2'.$j];
         $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
-        ${"screw_2".$j} = $data['screw_2'.$j];
-        $this->set('screw_2'.$j, ${"screw_2".$j});
         ${"screw_mesh_3".$j} = $data['screw_mesh_3'.$j];
         $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
         ${"screw_number_3".$j} = $data['screw_number_3'.$j];
         $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
-        ${"screw_3".$j} = $data['screw_3'.$j];
-        $this->set('screw_3'.$j, ${"screw_3".$j});
+        ${"screw".$j} = $data['screw'.$j];
+        $this->set('screw'.$j, ${"screw".$j});
 
       }
 
@@ -1212,20 +1188,16 @@ class KensahyoutemperaturesController extends AppController
         $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
         ${"screw_number_1".$j} = $data['screw_number_1'.$j];
         $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
-        ${"screw_1".$j} = $data['screw_1'.$j];
-        $this->set('screw_1'.$j, ${"screw_1".$j});
         ${"screw_mesh_2".$j} = $data['screw_mesh_2'.$j];
         $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
         ${"screw_number_2".$j} = $data['screw_number_2'.$j];
         $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
-        ${"screw_2".$j} = $data['screw_2'.$j];
-        $this->set('screw_2'.$j, ${"screw_2".$j});
         ${"screw_mesh_3".$j} = $data['screw_mesh_3'.$j];
         $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
         ${"screw_number_3".$j} = $data['screw_number_3'.$j];
         $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
-        ${"screw_3".$j} = $data['screw_3'.$j];
-        $this->set('screw_3'.$j, ${"screw_3".$j});
+        ${"screw".$j} = $data['screw'.$j];
+        $this->set('screw'.$j, ${"screw".$j});
 
         $updateProductConditonChildren[] = [
           "product_material_machine_id" => $data['product_material_machine_id'.$j],
@@ -1243,13 +1215,11 @@ class KensahyoutemperaturesController extends AppController
           "pickup_speed" => $data['pickup_speed'],
           "screw_mesh_1" => $data['screw_mesh_1'.$j],
           "screw_number_1" => $data['screw_number_1'.$j],
-          "screw_1" => $data['screw_1'.$j],
           "screw_mesh_2" => $data['screw_mesh_2'.$j],
           "screw_number_2" => $data['screw_number_2'.$j],
-          "screw_2" => $data['screw_2'.$j],
           "screw_mesh_3" => $data['screw_mesh_3'.$j],
           "screw_number_3" => $data['screw_number_3'.$j],
-          "screw_3" => $data['screw_3'.$j],
+          "screw" => $data['screw'.$j],
           "delete_flag" => 0,
           'created_at' => date("Y-m-d H:i:s"),
           "created_staff" => $staff_id

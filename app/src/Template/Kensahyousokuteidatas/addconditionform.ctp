@@ -72,13 +72,16 @@ echo $this->Html->css('kensahyou');
          echo "<td>\n";
          echo ${"dry_hour".$j.$i}." h以上";
          echo "</td>\n";
-         if($i==1){
-           echo "<td rowspan=${"tuikagenryou".$j} style='font-size: 10pt'>\n";
+         if(${"dry_hour".$j.$i} > 0){
+           echo "<td style='font-size: 10pt'>\n";
            echo "確認チェック";
            echo "<br>\n";
            echo "<input type='checkbox' name=check".$j." required>\n";
            echo "</td>\n";
-         }
+         }else{
+          echo "<td>\n";
+          echo "</td>\n";
+          }
          echo "<td>\n";
          echo ${"recycled_mixing_ratio".$j.$i};
          echo "</td>\n";
@@ -228,8 +231,8 @@ echo $this->Html->css('kensahyou');
               echo "<td>\n";
               echo "${"screw_number_1".$j}\n";
               echo "</td>\n";
-              echo "<td>\n";
-              echo "${"screw_1".$j}\n";
+              echo "<td rowspan=3>\n";
+              echo "${"screw".$j}\n";
               echo "</td>\n";
             }elseif($i==2){
               echo "<td>\n";
@@ -241,9 +244,11 @@ echo $this->Html->css('kensahyou');
               echo "<td>\n";
               echo "${"screw_number_2".$j}\n";
               echo "</td>\n";
+/*
               echo "<td>\n";
               echo "${"screw_2".$j}\n";
               echo "</td>\n";
+*/
             }else{
               echo "<td>\n";
               echo "± 1.0\n";
@@ -254,9 +259,11 @@ echo $this->Html->css('kensahyou');
               echo "<td>\n";
               echo "${"screw_number_3".$j}\n";
               echo "</td>\n";
+/*
               echo "<td>\n";
               echo "${"screw_3".$j}\n";
               echo "</td>\n";
+*/
             }
         }else{
           if($i==1){
@@ -268,8 +275,8 @@ echo $this->Html->css('kensahyou');
             echo "<td>\n";
             echo "${"screw_number_1".$j}\n";
             echo "</td>\n";
-            echo "<td>\n";
-            echo "${"screw_1".$j}\n";
+            echo "<td rowspan=3>\n";
+            echo "${"screw".$j}\n";
             echo "</td>\n";
           }elseif($i==2){
             echo "<td style='border-bottom-style:none; border-top-style:none;'>\n";
@@ -280,9 +287,11 @@ echo $this->Html->css('kensahyou');
             echo "<td>\n";
             echo "${"screw_number_2".$j}\n";
             echo "</td>\n";
+/*
             echo "<td>\n";
             echo "${"screw_2".$j}\n";
             echo "</td>\n";
+*/
           }else{
             echo "<td style='border-top-style:none;'>\n";
             echo "</td>\n";
@@ -292,9 +301,11 @@ echo $this->Html->css('kensahyou');
             echo "<td>\n";
             echo "${"screw_number_3".$j}\n";
             echo "</td>\n";
+/*
             echo "<td>\n";
             echo "${"screw_3".$j}\n";
             echo "</td>\n";
+*/
           }
         }
 
