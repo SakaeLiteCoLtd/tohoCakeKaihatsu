@@ -661,6 +661,10 @@ class KensahyougenryousController extends AppController
 
       }
 
+      echo "<pre>";
+      print_r("");
+      echo "</pre>";
+ 
     }
 
     public function addcomfirm()
@@ -1130,6 +1134,10 @@ class KensahyougenryousController extends AppController
 
      }
 
+     echo "<pre>";
+     print_r("");
+     echo "</pre>";
+
     }
 
     public function kensakuhyouji()
@@ -1253,7 +1261,10 @@ class KensahyougenryousController extends AppController
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
       $this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
-
+      echo "<pre>";
+      print_r("");
+      echo "</pre>";
+ 
     }
 
     public function editlogin()
@@ -1274,6 +1285,11 @@ class KensahyougenryousController extends AppController
         $mess = "";
         $this->set('mess',$mess);
       }
+
+      echo "<pre>";
+      print_r("");
+      echo "</pre>";
+
     }
 
     public function editform()
@@ -1934,11 +1950,11 @@ class KensahyougenryousController extends AppController
         }
 
       }
-/*
+
       echo "<pre>";
-      print_r("aaa");
+      print_r("");
       echo "</pre>";
-  */
+
     }
 
     public function editcomfirm()

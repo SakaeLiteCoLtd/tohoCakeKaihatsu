@@ -238,7 +238,7 @@ class KensahyoutemperaturesController extends AppController
 
      }
      echo "<pre>";
-     print_r(" ");
+     print_r("");
      echo "</pre>";
 
     }
@@ -410,6 +410,10 @@ class KensahyoutemperaturesController extends AppController
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
+
+      echo "<pre>";
+      print_r("");
+      echo "</pre>";
 
     }
 
@@ -740,6 +744,10 @@ class KensahyoutemperaturesController extends AppController
 
      }
 
+     echo "<pre>";
+     print_r("");
+     echo "</pre>";
+
     }
 
     public function kensakuhyouji()
@@ -864,6 +872,10 @@ class KensahyoutemperaturesController extends AppController
       $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheader($product_code);
       $this->set('htmlgenryouheader',$htmlgenryouheader);
 
+      echo "<pre>";
+      print_r("");
+      echo "</pre>";
+
     }
 
     public function editlogin()
@@ -884,6 +896,11 @@ class KensahyoutemperaturesController extends AppController
         $mess = "";
         $this->set('mess',$mess);
       }
+
+      echo "<pre>";
+      print_r("");
+      echo "</pre>";
+
     }
 
     public function editform()
@@ -1043,6 +1060,10 @@ class KensahyoutemperaturesController extends AppController
       $htmlkensahyougenryouheader = new htmlkensahyouprogram();
       $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheader($product_code);
       $this->set('htmlgenryouheader',$htmlgenryouheader);
+
+      echo "<pre>";
+      print_r("");
+      echo "</pre>";
 
     }
 

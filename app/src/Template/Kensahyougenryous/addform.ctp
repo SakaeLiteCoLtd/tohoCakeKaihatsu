@@ -152,4 +152,11 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
 
 <?php endfor;?>
 
-<br><br><br>
+<br>
+<table class="top">
+    <tr><td style="border:none"><strong style="font-size: 13pt; color:red">
+    <?= __("※乾燥温度・乾燥時間が不要な場合は「0」を入力してください。") ?>
+    <?= __("※配合比・再生配合比が不要な場合は「-」を入力してください。") ?>
+  </strong></td></tr>
+  </table>
+<br><br>

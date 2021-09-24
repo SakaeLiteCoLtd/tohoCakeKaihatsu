@@ -86,6 +86,8 @@ $arrProduct_name_list = json_encode($arrProduct_name_list);//javaに配列を受
 <table>
   <tbody class='sample non-sample'>
     <tr>
+    <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+      <td style="border-style: none;"><?= __("　") ?></td>
       <td style="border:none"><?= $this->Form->submit(('次へ'), array('name' => 'next')) ?></td>
     </tr>
   </tbody>

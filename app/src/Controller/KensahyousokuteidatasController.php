@@ -259,7 +259,7 @@ class KensahyousokuteidatasController extends AppController
 
      }
      echo "<pre>";
-     print_r(" ");
+     print_r("");
      echo "</pre>";
 
     }
@@ -627,7 +627,7 @@ class KensahyousokuteidatasController extends AppController
       }
 
       echo "<pre>";
-      print_r(" ");
+      print_r("");
       echo "</pre>";
 
     }
@@ -1112,6 +1112,34 @@ class KensahyousokuteidatasController extends AppController
           $connection->commit();// コミット5
           $mes = "";
           $this->set('mes',$mes);
+          
+          if(!isset($_SESSION)){
+            session_start();
+            }
+            $session = $this->request->getSession();
+    
+            $_SESSION['InspectionDataConditons'] = array(
+              'chenk' => 1,
+              'product_code' => $product_code,
+              'inspection_standard_size_parent_id' => $inspection_standard_size_parent_id,
+              'product_conditon_parent_id' => $product_conditon_parent_id,
+              'inspection_data_conditon_parent_id' => $inspection_data_conditon_parent_id,
+              'inspection_pickup_speed' => $inspection_pickup_speed,
+            );
+
+            for($j=1; $j<=$countseikeiki; $j++){
+              
+              $_SESSION['InspectionDataConditons'] = $_SESSION['InspectionDataConditons'] + array('inspection_extrude_roatation'.$j => ${"inspection_extrude_roatation".$j});
+              $_SESSION['InspectionDataConditons'] = $_SESSION['InspectionDataConditons'] + array('inspection_extrusion_load'.$j => ${"inspection_extrusion_load".$j});
+
+              for($n=1; $n<=7; $n++){
+                $_SESSION['InspectionDataConditons'] = $_SESSION['InspectionDataConditons'] + array('inspection_temp_'.$n.$j => ${"inspection_temp_".$n.$j});
+              }
+
+              }
+ 
+
+          return $this->redirect(['action' => 'addform']);
 
         } else {
 
@@ -1127,6 +1155,7 @@ class KensahyousokuteidatasController extends AppController
         $connection->rollback();//トランザクション9
       }//トランザクション10
 
+      
     }
 
     public function addform()
@@ -1137,12 +1166,25 @@ class KensahyousokuteidatasController extends AppController
       $mes = "";
       $this->set('mes',$mes);
 
-      $data = $this->request->getData();
+      if(!isset($_SESSION)){
+        session_start();
+        }
+        $session = $this->request->getSession();
+        $sessiondata = $session->read();
+  
+      if(isset($_SESSION['InspectionDataConditons']["chenk"])){//最初
 
+        $data = $_SESSION['InspectionDataConditons'];
+        $_SESSION['InspectionDataConditons'] = array();
+  
+      }else{
+        $data = $this->request->getData();
+      }
+/*
       echo "<pre>";
       print_r($data);
       echo "</pre>";
-
+*/
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
       $inspection_data_conditon_parent_id = $data['inspection_data_conditon_parent_id'];
@@ -2320,7 +2362,7 @@ class KensahyousokuteidatasController extends AppController
       $this->set('inspection_pickup_speed', $inspection_pickup_speed);
 
       echo "<pre>";//フォームの再読み込みの防止
-      print_r("  ");
+      print_r("");
       echo "</pre>";
 
     }

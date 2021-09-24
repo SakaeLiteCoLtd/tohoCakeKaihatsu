@@ -321,6 +321,8 @@ echo $this->Html->css('kensahyou');
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>
+    <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+      <td style="border-style: none;"><?= __("　") ?></td>
       <td style="border:none"><?= $this->Form->submit(('登録確認へ'), array('name' => 'kakuninn')) ?></td>
     </tr>
   </tbody>

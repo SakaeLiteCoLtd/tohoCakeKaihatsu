@@ -94,10 +94,16 @@ echo $this->Html->css('kensahyou');
   </tbody>
 </table>
 
+<table class="top">
+    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __("長さの規格は製品登録時に登録してください。") ?></strong></td></tr>
+  </table>
+
 <br><br>
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>
+    <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+      <td style="border-style: none;"><?= __("　") ?></td>
       <td style="border:none"><?= $this->Form->submit(('登録確認へ'), array('name' => 'kakuninn')) ?></td>
     </tr>
   </tbody>
