@@ -876,8 +876,26 @@ class KensahyougenryousController extends AppController
         $version = $ProductConditionParents[0]["version"] + 1;
         $motoid = $ProductConditionParents[0]["id"];
       }else{
-        $version = 1;
-        $motoid = 0;
+
+        $product_code_ini = substr($product_code, 0, 11);
+        $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
+        ->where(['product_code like' => $product_code_ini.'%',
+        'ProductConditionParents.is_active' => 0,
+        'ProductConditionParents.delete_flag' => 0])
+        ->order(["version"=>"DESC"])->toArray();
+
+        if(isset($ProductConditionParents[0])){
+          
+          $version = $ProductConditionParents[0]["version"] + 1;
+          $motoid = $ProductConditionParents[0]["id"];
+
+        }else{
+
+          $version = 1;
+          $motoid = 0;
+
+          }
+  
       }
 
       $code_date = date('y').date('m').date('d');

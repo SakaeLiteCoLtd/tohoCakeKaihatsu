@@ -339,7 +339,7 @@ class KensahyoukikakusController extends AppController
          ->where(['product_code' => $product_code])->toArray();
  
          return $this->redirect(['action' => 'addformpre',
-         's' => ['mess' => "「".$Products[0]["name"]."」の製品は登録済みです。内容を確認・修正する場合は規格検索から確認してください。"]]);
+         's' => ['mess' => "「".$Products[0]["name"]."」の製品は規格登録済みです。内容を確認・修正する場合は規格検索から確認してください。"]]);
        }
 
 echo "<pre>";

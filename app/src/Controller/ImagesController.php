@@ -220,8 +220,31 @@ class ImagesController extends AppController
 
            $product_code = $Products[0]["product_code"];
 
-           return $this->redirect(['action' => 'addform',
-           's' => ['product_code' => $product_code]]);
+           $product_code_ini = substr($product_code, 0, 11);
+           $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+           ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
+           ->order(["version"=>"DESC"])->toArray();
+
+          if(isset($InspectionStandardSizeParents[0])){
+
+            $mess = "入力された製品は既に画像登録済みです。情報を更新する場合は登録済みのデータを削除してから再度登録してください。";
+            $this->set('mess',$mess);
+ 
+            $Product_name_list = $this->Products->find()
+            ->where(['status_kensahyou' => 1, 'delete_flag' => 0])->toArray();
+ 
+            $arrProduct_name_list = array();
+            for($j=0; $j<count($Product_name_list); $j++){
+              array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
+            }
+            $this->set('arrProduct_name_list', $arrProduct_name_list);
+ 
+          }else{
+
+            return $this->redirect(['action' => 'addform',
+            's' => ['product_code' => $product_code]]);
+
+           }
 
          }else{
 
@@ -537,6 +560,8 @@ class ImagesController extends AppController
 
       $product_code = $inspectionStandardSizeParents[0]["product"]["product_code"];
       $this->set('product_code', $product_code);
+      $name = $inspectionStandardSizeParents[0]["product"]["name"];
+      $this->set('name', $name);
       $image_file_name_dir = $inspectionStandardSizeParents[0]["image_file_name_dir"];
       $this->set('image_file_name_dir', $image_file_name_dir);
 

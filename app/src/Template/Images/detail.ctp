@@ -28,18 +28,16 @@
     </table>
     <table>
   <tbody class='sample non-sample'>
-    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('長さのみ異なる製品には同じ検査表画像が使用されます。') ?></strong></td></tr>
+    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('長さのみが異なる製品には同じ検査表画像が使用されます。') ?></strong></td></tr>
   </tbody>
 </table>
 
     <table>
       <tr>
       <td width="280"><strong>製品名</strong></td>
-      <td width="280"><strong>登録長さ（mm）</strong></td>
       </tr>
       <tr>
       <td><?= h($name) ?></td>
-      <td><?= h($product_length) ?></td>
       </tr>
     </table>
 
@@ -70,7 +68,7 @@
 
 <table>
   <tbody class='sample non-sample'>
-    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('検査表画像を訂正する場合は、新規登録しなおしてください。') ?></strong></td></tr>
+    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('検査表画像を訂正する場合は、このデータを削除し、新規登録しなおしてください。') ?></strong></td></tr>
   </tbody>
 </table>
 

@@ -49,6 +49,7 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('extrusion_load'.$j, array('type'=>'hidden', 'value'=>${"extrusion_load".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('product_material_machine_id'.$j, array('type'=>'hidden', 'value'=>${"product_material_machine_id".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('idmoto'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('idmoto'.$j), 'label'=>false)) ?>
+<?= $this->Form->control('screw'.$j, array('type'=>'hidden', 'value'=>${"screw".$j}, 'label'=>false)) ?>
 
 <?php for($n=1; $n<=7; $n++): ?>
 
@@ -60,7 +61,6 @@ echo $this->Html->css('kensahyou');
 
   <?= $this->Form->control('screw_mesh_'.$n.$j, array('type'=>'hidden', 'value'=>${"screw_mesh_".$n.$j}, 'label'=>false)) ?>
   <?= $this->Form->control('screw_number_'.$n.$j, array('type'=>'hidden', 'value'=>${"screw_number_".$n.$j}, 'label'=>false)) ?>
-  <?= $this->Form->control('screw_'.$n.$j, array('type'=>'hidden', 'value'=>${"screw_".$n.$j}, 'label'=>false)) ?>
 
 <?php endfor;?>
 
@@ -189,8 +189,8 @@ echo $this->Html->css('kensahyou');
               echo "<td>\n";
               echo "${"screw_number_1".$j}\n";
               echo "</td>\n";
-              echo "<td>\n";
-              echo "${"screw_1".$j}\n";
+              echo "<td rowspan=3>\n";
+              echo "${"screw".$j}\n";
               echo "</td>\n";
             }elseif($i==2){
               echo "<td>\n";
@@ -201,9 +201,11 @@ echo $this->Html->css('kensahyou');
               echo "<td>\n";
               echo "${"screw_number_2".$j}\n";
               echo "</td>\n";
+              /*
               echo "<td>\n";
               echo "${"screw_2".$j}\n";
               echo "</td>\n";
+              */
             }else{
               echo "<td>\n";
               echo "± 1.0\n";
@@ -214,9 +216,11 @@ echo $this->Html->css('kensahyou');
               echo "<td>\n";
               echo "${"screw_number_3".$j}\n";
               echo "</td>\n";
+              /*
               echo "<td>\n";
               echo "${"screw_3".$j}\n";
               echo "</td>\n";
+              */
             }
         }else{
           if($i==1){
@@ -228,8 +232,8 @@ echo $this->Html->css('kensahyou');
             echo "<td>\n";
             echo "${"screw_number_1".$j}\n";
             echo "</td>\n";
-            echo "<td>\n";
-            echo "${"screw_1".$j}\n";
+            echo "<td rowspan=3>\n";
+            echo "${"screw".$j}\n";
             echo "</td>\n";
           }elseif($i==2){
             echo "<td style='border-bottom-style:none; border-top-style:none;'>\n";
@@ -240,9 +244,11 @@ echo $this->Html->css('kensahyou');
             echo "<td>\n";
             echo "${"screw_number_2".$j}\n";
             echo "</td>\n";
+            /*
             echo "<td>\n";
             echo "${"screw_2".$j}\n";
             echo "</td>\n";
+            */
           }else{
             echo "<td style='border-top-style:none;'>\n";
             echo "</td>\n";
@@ -252,9 +258,11 @@ echo $this->Html->css('kensahyou');
             echo "<td>\n";
             echo "${"screw_number_3".$j}\n";
             echo "</td>\n";
+            /*
             echo "<td>\n";
             echo "${"screw_3".$j}\n";
             echo "</td>\n";
+            */
           }
         }
 

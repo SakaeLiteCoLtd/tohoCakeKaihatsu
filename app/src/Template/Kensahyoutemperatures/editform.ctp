@@ -181,9 +181,9 @@ echo $this->Html->css('kensahyou');
                 }
               }
               echo "</select></div></td>\n";
-              echo "<td><div align='center'><select name=screw_1".$j.">\n";
+              echo "<td rowspan=3><div align='center'><select name=screw".$j.">\n";
               foreach ($arrScrew as $key => $value){
-                if($key == ${"screw_1".$j}){
+                if($key == ${"screw".$j}){
                   echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
                 }else{
                   echo "<option value=$key>$value</option>";
@@ -211,6 +211,7 @@ echo $this->Html->css('kensahyou');
                 }
               }
               echo "</select></div></td>\n";
+              /*
               echo "<td><div align='center'><select name=screw_2".$j.">\n";
               foreach ($arrScrew as $key => $value){
                 if($key == ${"screw_2".$j}){
@@ -220,6 +221,7 @@ echo $this->Html->css('kensahyou');
                 }
               }
               echo "</select></div></td>\n";
+              */
             }else{
               echo "<td>\n";
               echo "± 1.0\n";
@@ -242,6 +244,7 @@ echo $this->Html->css('kensahyou');
                 }
               }
               echo "</select></div></td>\n";
+              /*
               echo "<td><div align='center'><select name=screw_3".$j.">\n";
               foreach ($arrScrew as $key => $value){
                 if($key == ${"screw_3".$j}){
@@ -251,6 +254,7 @@ echo $this->Html->css('kensahyou');
                 }
               }
               echo "</select></div></td>\n";
+              */
             }
         }elseif($i==1){
           echo "<td style='border-bottom-style:none;'>\n";
@@ -273,9 +277,9 @@ echo $this->Html->css('kensahyou');
             }
           }
           echo "</select></div></td>\n";
-          echo "<td><div align='center'><select name=screw_1".$j.">\n";
+          echo "<td rowspan=3><div align='center'><select name=screw".$j.">\n";
           foreach ($arrScrew as $key => $value){
-            if($key == ${"screw_1".$j}){
+            if($key == ${"screw".$j}){
               echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
             }else{
               echo "<option value=$key>$value</option>";
@@ -303,6 +307,7 @@ echo $this->Html->css('kensahyou');
             }
           }
           echo "</select></div></td>\n";
+          /*
           echo "<td><div align='center'><select name=screw_2".$j.">\n";
           foreach ($arrScrew as $key => $value){
             if($key == ${"screw_2".$j}){
@@ -312,6 +317,7 @@ echo $this->Html->css('kensahyou');
             }
           }
           echo "</select></div></td>\n";
+          */
         }else{
           echo "<td style='border-top-style:none;'>\n";
           echo "</td>\n";
@@ -333,6 +339,7 @@ echo $this->Html->css('kensahyou');
             }
           }
           echo "</select></div></td>\n";
+          /*
           echo "<td><div align='center'><select name=screw_3".$j.">\n";
           foreach ($arrScrew as $key => $value){
             if($key == ${"screw_3".$j}){
@@ -342,6 +349,7 @@ echo $this->Html->css('kensahyou');
             }
           }
           echo "</select></div></td>\n";
+          */
         }
 
         echo "</tr>\n";
@@ -367,6 +375,8 @@ echo $this->Html->css('kensahyou');
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>
+    <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+      <td style="border-style: none;"><?= __("　") ?></td>
       <td style="border:none"><?= $this->Form->submit(('登録確認へ'), array('name' => 'kakuninn')) ?></td>
     </tr>
   </tbody>
