@@ -82,8 +82,12 @@ echo $this->Html->css('kensahyou');
 </tr>
 
 </table>
+<br>
+<table class="top">
+    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __("長さの規格は製品登録時に登録してください。") ?></strong></td></tr>
+  </table>
 
-<br><br>
+<br>
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>

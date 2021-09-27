@@ -289,7 +289,7 @@ class ProductsController extends AppController
       header('Cache-Control:');
       header('Pragma:');
   
-      print_r("  ");
+      print_r("");
 
     }
 
@@ -960,9 +960,7 @@ class ProductsController extends AppController
       header('Cache-Control:');
       header('Pragma:');
 
-      echo "<pre>";
       print_r("");
-      echo "</pre>";
 
     }
 
