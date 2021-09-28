@@ -25,7 +25,8 @@ class KensahyoutemperaturesController extends AppController
 
   		// 認証なしでアクセスできるアクションの指定
   		$this->Auth->allow(["menu","addlogin","addformpre","addform","addcomfirm","adddo"
-      ,"kensakupre", "kensakuhyouji", "editlogin", "editform", "editcomfirm", "editdo"]);
+      , "kensakupre", "kensakuhyouji", "editlogin", "editform", "editcomfirm", "editdo"
+      , "kensakumenu", "kensakurirekipre", "kensakurirekiichiran", "kensakurirekihyouji"]);
   	}
 
       public function initialize()
@@ -51,6 +52,10 @@ class KensahyoutemperaturesController extends AppController
     }
 
     public function menu()
+    {
+    }
+
+    public function kensakumenu()
     {
     }
 
@@ -1327,6 +1332,390 @@ class KensahyoutemperaturesController extends AppController
           }
 
         }
+
+    }
+
+    public function kensakurirekipre()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->getData();
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
+      $Customer_name_list = $this->Customers->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrCustomer_name_list = array();
+      for($j=0; $j<count($Customer_name_list); $j++){
+        array_push($arrCustomer_name_list,$Customer_name_list[$j]["name"]);
+      }
+      $this->set('arrCustomer_name_list', $arrCustomer_name_list);
+
+     if(isset($data["customer"])){//顧客絞り込みをしたとき
+
+       $Product_name_list = $this->Products->find()
+       ->contain(['Customers'])
+       ->where(['Customers.name' => $data["customer_name"], 'Products.delete_flag' => 0])->toArray();
+
+       if(count($Product_name_list) < 1){//顧客名にミスがある場合
+
+         $mess = "入力された顧客の製品は登録されていません。確認してください。";
+         $this->set('mess',$mess);
+
+         $Product_name_list = $this->Products->find()
+         ->where(['delete_flag' => 0])->toArray();
+
+         $arrProduct_name_list = array();
+         for($j=0; $j<count($Product_name_list); $j++){
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
+         }
+         $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+       }else{
+
+         $arrProduct_name_list = array();
+         for($j=0; $j<count($Product_name_list); $j++){
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
+         }
+         $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+       }
+
+     }elseif(isset($data["next"])){//「次へ」ボタンを押したとき
+
+       if(strlen($data["product_name"]) > 0){//product_nameの入力がある
+
+        $product_name_length = explode(";",$data["product_name"]);
+        $name = $product_name_length[0];
+        $length = str_replace('mm', '', $product_name_length[1]);
+  
+         $Products = $this->Products->find()
+         ->where(['name' => $name, 'length' => $length, 'delete_flag' => 0])->toArray();
+
+         if(isset($Products[0])){
+
+           $product_code = $Products[0]["product_code"];
+
+           return $this->redirect(['action' => 'kensakurirekiichiran',
+           's' => ['product_code' => $product_code]]);
+
+         }else{
+
+           $mess = "入力された製品名は登録されていません。確認してください。";
+           $this->set('mess',$mess);
+
+           $Product_name_list = $this->Products->find()
+           ->where(['delete_flag' => 0])->toArray();
+
+           $arrProduct_name_list = array();
+           for($j=0; $j<count($Product_name_list); $j++){
+             array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
+           }
+           $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+         }
+
+       }else{//product_nameの入力がない
+
+         $mess = "製品名が入力されていません。";
+         $this->set('mess',$mess);
+
+         $Product_name_list = $this->Products->find()
+         ->where(['delete_flag' => 0])->toArray();
+
+         $arrProduct_name_list = array();
+         for($j=0; $j<count($Product_name_list); $j++){
+           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
+         }
+         $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+       }
+
+     }else{//はじめ
+
+       $Product_name_list = $this->Products->find()
+       ->where(['delete_flag' => 0])->toArray();
+       $arrProduct_name_list = array();
+       for($j=0; $j<count($Product_name_list); $j++){
+         array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
+       }
+       $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+     }
+
+     echo "<pre>";
+     print_r("");
+     echo "</pre>";
+
+    }
+
+    public function kensakurirekiichiran()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["product_code"])){
+        $product_code = $Data["product_code"];
+        $this->set('product_code', $product_code);
+        }else{
+          $data = $this->request->getData();
+          $product_code = $data["product_code"];
+          $this->set('product_code', $product_code);
+          }
+
+      $Products = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $product_name = $Products[0]["name"];
+      $this->set('product_name', $product_name);
+
+      $product_code_ini = substr($product_code, 0, 11);
+      $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
+      ->where(['product_code like' => $product_code_ini.'%'])
+      ->order(["version"=>"DESC"])->toArray();
+
+      if(isset($ProductConditionParents[0])){
+
+        $version = $ProductConditionParents[0]["version"];
+
+        $ProductMaterialMachines= $this->ProductMaterialMachines->find()
+        ->contain(['ProductConditionParents' => ["Products"]])
+        ->where(['Products.product_code' => $product_code,
+        'ProductConditionParents.delete_flag' => 0,
+        'ProductMaterialMachines.delete_flag' => 0,
+        'ProductConditionParents.version' => $version])
+        ->order(["cylinder_number"=>"ASC"])->toArray();
+
+        if(!isset($ProductMaterialMachines[0])){//長さ違いのデータがあればそれを持ってくる
+
+          $product_code_ini = substr($product_code, 0, 11);
+          $ProductMaterialMachines= $this->ProductMaterialMachines->find()
+          ->contain(['ProductConditionParents' => ["Products"]])
+          ->where(['Products.product_code like' => $product_code_ini.'%',
+          'ProductConditionParents.delete_flag' => 0,
+          'ProductMaterialMachines.delete_flag' => 0,
+          'ProductConditionParents.version' => $version])
+          ->order(["cylinder_number"=>"ASC"])->toArray();
+    
+        }
+  
+        $countseikeiki = count($ProductMaterialMachines);
+        $this->set('countseikeiki', $countseikeiki);
+
+        for($k=0; $k<$countseikeiki; $k++){
+
+          $j = $k + 1;
+          ${"product_material_machine_id".$j} = $ProductMaterialMachines[$k]["id"];
+          $this->set('product_material_machine_id'.$j, ${"product_material_machine_id".$j});
+          ${"cylinder_name".$j} = $ProductMaterialMachines[$k]["cylinder_name"];
+          $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
+
+          $ProductConditonChildren = $this->ProductConditonChildren->find()
+          ->where(['product_material_machine_id' => ${"product_material_machine_id".$j}, 'cylinder_name' => ${"cylinder_name".$j}])
+          ->order(["ProductConditonChildren.created_at"=>"DESC"])->toArray();
+    
+          if(isset($ProductConditonChildren[0])){
+
+            for($l=0; $l<count($ProductConditonChildren); $l++){
+
+              $created_at = $ProductConditonChildren[$l]["created_at"]->format('Y-m-d H:i:s');
+              if(isset($ProductConditonChildren[$l]["updated_at"])){
+                $updated_at = $ProductConditonChildren[$l]["updated_at"]->format('Y-m-d H:i:s');
+              }else{
+                $updated_at = "使用中";
+              }
+
+              $arrDates[] = [
+                "created_at" => $created_at,
+                "updated_at" => $updated_at
+              ];
+
+              }
+      
+          }else{
+
+            $Products = $this->Products->find()
+            ->where(['product_code' => $product_code])->toArray();
+
+            return $this->redirect(['action' => 'kensakurirekipre',
+            's' => ['mess' => "「".$Products[0]["name"]."」は成形温度登録がされていません。s"]]);
+
+          }
+
+        }
+
+      }else{
+
+        $Products = $this->Products->find()
+        ->where(['product_code' => $product_code])->toArray();
+
+        return $this->redirect(['action' => 'kensakurirekipre',
+        's' => ['mess' => "「".$Products[0]["name"]."」は成形温度登録がされていません。"]]);
+
+      }
+
+      foreach($arrDates as $key => $value)
+      {
+          $sort_keys[$key] = $value['created_at'];
+      }
+      array_multisort($sort_keys, SORT_DESC, $arrDates);
+
+      $countDate = count($arrDates);
+      for($i=0; $i<$countDate; $i++){
+
+        if($i > 0 && $arrDates[$i-1]["created_at"] == $arrDates[$i]["created_at"]){
+          unset($arrDates[$i-1]);
+        }
+
+      }
+      $arrDates = array_values($arrDates);
+/*
+      echo "<pre>";
+      print_r($arrDates);
+      echo "</pre>";
+*/
+      $this->set('arrDates',$arrDates);
+
+      $mes = '＊最新の上位３つのデータです。';
+      $this->set('mes', $mes);
+      $checksaerch = 0;
+      $this->set('checksaerch', $checksaerch);
+
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+      $this->set('htmlkensahyouheader',$htmlkensahyouheader);
+
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();
+      $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheader($product_code);
+      $this->set('htmlgenryouheader',$htmlgenryouheader);
+
+      if(isset($data['saerch'])){
+
+        $startY = $data['start']['year'];
+    		$startM = $data['start']['month'];
+    		$startD = $data['start']['day'];
+        $startYMD = $startY."-".$startM."-".$startD." 00:00";
+
+        $endY = $data['end']['year'];
+    		$endM = $data['end']['month'];
+    		$endD = $data['end']['day'];
+        $endYMD = $endY."-".$endM."-".$endD." 23:59";
+
+        $countDate = count($arrDates);
+        for($i=0; $i<$countDate; $i++){
+  
+          if($startYMD < $arrDates[$i]["created_at"] && $arrDates[$i]["created_at"] < $endYMD){
+            //OK
+          }else{
+            unset($arrDates[$i]);
+          }
+  
+        }
+        $arrDates = array_values($arrDates);
+  /*
+        echo "<pre>";
+        print_r($arrDates);
+        echo "</pre>";
+  */
+        $this->set('arrDates',$arrDates);
+  
+        $mes = "検索期間： ".$startY."-".$startM."-".$startD .' ～ '.$endY."-".$endM."-".$endD;
+        $this->set('mes', $mes);
+
+        $checksaerch = 1;
+        $this->set('checksaerch', $checksaerch);
+
+      }
+
+      echo "<pre>";
+      print_r("");
+      echo "</pre>";
+
+    }
+
+    public function kensakurirekihyouji()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->query('s');
+
+      $arrdata = explode("_",$data);
+
+      $created_at = $arrdata[0];
+      $product_code = $arrdata[1];
+      $this->set('product_code', $product_code);
+      $product_code_ini = substr($product_code, 0, 11);
+
+      $ProductConditonChildren = $this->ProductConditonChildren->find()
+      ->where(['created_at' => $created_at])
+      ->order(["cylinder_number"=>"ASC"])->toArray();
+/*
+      echo "<pre>";
+      print_r($ProductConditonChildren);
+      echo "</pre>";
+*/
+      $countseikeiki = count($ProductConditonChildren);
+      $this->set('countseikeiki', $countseikeiki);
+
+      for($k=0; $k<$countseikeiki; $k++){
+
+        $j = $k + 1;
+        ${"extrude_roatation".$j} = $ProductConditonChildren[$k]["extrude_roatation"];
+        $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
+        ${"extrusion_load".$j} = $ProductConditonChildren[$k]["extrusion_load"];
+        $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
+        ${"cylinder_name".$j} = $ProductConditonChildren[$k]["cylinder_name"];
+        $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
+
+        for($n=1; $n<8; $n++){
+          ${"temp_".$n.$j} = $ProductConditonChildren[$k]["temp_".$n];
+          $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
+        }
+
+        $pickup_speed = $ProductConditonChildren[$k]["pickup_speed"];
+        $this->set('pickup_speed', $pickup_speed);
+
+        ${"screw_mesh_1".$j} = $ProductConditonChildren[$k]['screw_mesh_1'];
+        $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
+        ${"screw_number_1".$j} = $ProductConditonChildren[$k]['screw_number_1'];
+        $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
+        ${"screw_mesh_2".$j} = $ProductConditonChildren[$k]['screw_mesh_2'];
+        $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
+        ${"screw_number_2".$j} = $ProductConditonChildren[$k]['screw_number_2'];
+        $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
+        ${"screw_mesh_3".$j} = $ProductConditonChildren[$k]['screw_mesh_3'];
+        $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
+        ${"screw_number_3".$j} = $ProductConditonChildren[$k]['screw_number_3'];
+        $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
+        ${"screw".$j} = $ProductConditonChildren[$k]['screw'];
+        $this->set('screw'.$j, ${"screw".$j});
+
+      }
+
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();//これは最新のものを表示
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+      $this->set('htmlkensahyouheader',$htmlkensahyouheader);
+
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();//その時の原料情報を取得
+      $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderrireki($created_at);
+      $this->set('htmlgenryouheader',$htmlgenryouheader);
+
+      echo "<pre>";
+      print_r("");
+      echo "</pre>";
 
     }
 

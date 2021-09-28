@@ -23,7 +23,8 @@ class KensahyougenryousController extends AppController
 
   		// 認証なしでアクセスできるアクションの指定
       $this->Auth->allow(["menu","addlogin","addformpre","addform","addcomfirm","adddo"
-      ,"kensakupre", "kensakuhyouji", "editlogin", "editform", "editcomfirm", "editdo"]);
+      ,"kensakupre", "kensakuhyouji", "editlogin", "editform", "editcomfirm", "editdo"
+      , "kensakumenu", "kensakurirekipre"]);
 /*
       session_start();//全部NG
       header('Expires:-1');

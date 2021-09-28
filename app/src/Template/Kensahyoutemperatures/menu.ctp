@@ -24,8 +24,8 @@ echo $this->Html->css('kensahyou');
 
 <table>
   <tr>
-    <td style='border: none'><?php echo $this->Html->image('/img/menus/subtouroku.gif',array('width'=>'145','height'=>'50','url'=>array('action'=>'addlogin')));?></td>
+  <td style='border: none'><?php echo $this->Html->image('/img/menus/subtouroku.gif',array('width'=>'145','height'=>'50','url'=>array('action'=>'addlogin')));?></td>
     <td style='border: none'>　　</td>
-    <td style='border: none'><?php echo $this->Html->image('/img/menus/subyobidashi.gif',array('width'=>'145','height'=>'50','url'=>array('action'=>'kensakupre')));?></td>
+    <td style='border: none'><?php echo $this->Html->image('/img/menus/subyobidashi.gif',array('width'=>'145','height'=>'50','url'=>array('action'=>'kensakumenu')));?></td>
   </tr>
 </table>

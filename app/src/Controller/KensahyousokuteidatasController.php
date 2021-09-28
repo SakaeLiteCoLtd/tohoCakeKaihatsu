@@ -2579,7 +2579,7 @@ class KensahyousokuteidatasController extends AppController
       }
 
       echo "<pre>";//フォームの再読み込みの防止
-      print_r("  ");
+      print_r("");
       echo "</pre>";
 
     }
