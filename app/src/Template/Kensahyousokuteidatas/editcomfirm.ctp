@@ -16,7 +16,7 @@ echo $this->Html->css('kensahyou');
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/menu' /><font size='4' color=black>測定データ登録</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/kensakupre' /><font size='4' color=black>登録データ呼出</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/kensakumenu' /><font size='4' color=black>登録データ呼出</font></a>
     </td>
   </tbody>
 </table>
@@ -44,11 +44,12 @@ $mes = "";
  <table class="white">
 
   <tr>
-    <td width="50" rowspan='7'>No.</td>
+    <td width="50" rowspan='8'>No.</td>
   </tr>
   <tr>
-  <td width="80" rowspan='6'><font size='2'><br></font><br><br>日付<br><font size='2'><?= h($datekensaku) ?></font><br><br><br>時間</td>
+  <td width="80" rowspan='7'><font size='2'><br></font><br><br>日付<br><font size='2'><?= h($datekensaku) ?></font><br><br><br>時間</td>
   </tr>
+  <td width="75" rowspan='6'>長さ</td>
 
 <tr>
   <td style='width:120'>測定箇所</td>
@@ -57,7 +58,6 @@ $mes = "";
     <td style='width:84'><?= h(${"size_name".$i}) ?></td>
   <?php endfor;?>
 
-  <td width="75" rowspan='5'>長さ</td>
   <td width="80" rowspan='3'>外観</td>
   <td width="80" rowspan='3'>重量<br>（目安）</td>
   <td width="59" rowspan='5'>合否<br>判定</td>
@@ -74,7 +74,11 @@ $mes = "";
   <td>上限</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
-    <td><?= h(${"upper_limit".$i}) ?></td>
+    <?php if (strlen(${"upper_limit".$i}) > 0 && substr(${"upper_limit".$i}, 0, 1) != "+"): ?>
+    <td><div class="upper"></div><?= h("+".${"upper_limit".$i}) ?></td>
+    <?php else : ?>
+      <td><div class="upper"></div><?= h(${"upper_limit".$i}) ?></td>
+      <?php endif; ?>
   <?php endfor;?>
 
 </tr>
@@ -110,6 +114,7 @@ $mes = "";
   <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
   <td style='width:80; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
+  <td style='width:75; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
   <td style='width:120; border-top-style:none'><font size='1.8'><?= h("社員コード：") ?></font><br><?= h(${"user_code".$j}) ?></td>
 
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
@@ -140,15 +145,8 @@ $mes = "";
   }else{
     ${"gaikanhyouji".$j} = "良";
   }
-
-  if(${"judge".$j} == 1){
-    ${"gouhihyouji".$j} = "否";
-  }else{
-    ${"gouhihyouji".$j} = "合";
-  }
   ?>
 
-  <td style='width:75; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
   <td style='width:80; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
   <td style='width:80; border-top-style:none'><?= h(${"result_weight".$j}) ?></td>
   <td style='width:59; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>

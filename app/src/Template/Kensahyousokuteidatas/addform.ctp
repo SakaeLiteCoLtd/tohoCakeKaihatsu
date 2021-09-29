@@ -274,8 +274,8 @@ var moji = "length"
 
       if($i == $num_length + 1){//長さ列の場合
 
-        $Products= $this->Products->find()->where(['length' => ${"lengthhyouji".$j}])->toArray();
-        ${"size".$i} = ${"lengthhyouji".$j};
+        $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
+        ${"size".$i} = $Products[0]["length_size"];
         ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
         ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
   
@@ -284,7 +284,7 @@ var moji = "length"
       if(${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
       && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
         echo '<td style="width:75; border-top-style:none">';
-        echo ${"result_size".$j.$i} ;
+        echo ${"result_size".$j.$i};
         echo '</td>';
       } else {
         echo '<td style="width:75; border-top-style:none"><font color="red">';
@@ -360,8 +360,8 @@ var moji = "length"
 
         if($i == $num_length + 1){//長さ列の場合
 
-          $Products= $this->Products->find()->where(['length' => ${"lengthhyouji".$j}])->toArray();
-          ${"size".$i} = ${"lengthhyouji".$j};
+          $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
+          ${"size".$i} = $Products[0]["length_size"];
           ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
           ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
 
@@ -370,11 +370,11 @@ var moji = "length"
         if(${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
         && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
           echo '<td style="width:75; border-top-style:none">';
-          echo ${"result_size".$j.$i} ;
+          echo ${"result_size".$j.$i};
           echo '</td>';
         } else {
           echo '<td style="width:75; border-top-style:none"><font color="red">';
-          echo ${"result_size".$j.$i};
+          echo "A".${"result_size".$j.$i};
           echo '</td>';
         }
         ?>
