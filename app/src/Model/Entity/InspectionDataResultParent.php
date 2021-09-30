@@ -9,7 +9,7 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $inspection_data_conditon_parent_id
  * @property int $inspection_standard_size_parent_id
- * @property int $product_conditon_parent_id
+ * @property int $product_condition_parent_id
  * @property int $product_id
  * @property string $lot_number
  * @property \Cake\I18n\FrozenTime $datetime
@@ -25,7 +25,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\InspectionDataConditonParent $inspection_data_conditon_parent
  * @property \App\Model\Entity\InspectionStandardSizeParent $inspection_standard_size_parent
- * @property \App\Model\Entity\ProductConditonParent $product_conditon_parent
+ * @property \App\Model\Entity\ProductConditonParent $product_condition_parent
  * @property \App\Model\Entity\Product $product
  * @property \App\Model\Entity\Staff $staff
  * @property \App\Model\Entity\InspectionDataResultChild[] $inspection_data_result_children
@@ -45,7 +45,7 @@ class InspectionDataResultParent extends Entity
     protected $_accessible = [
         'inspection_data_conditon_parent_id' => true,
         'inspection_standard_size_parent_id' => true,
-        'product_conditon_parent_id' => true,
+        'product_condition_parent_id' => true,
         'product_id' => true,
         'lot_number' => true,
         'datetime' => true,
@@ -60,7 +60,7 @@ class InspectionDataResultParent extends Entity
         'updated_staff' => true,
         'inspection_data_conditon_parent' => true,
         'inspection_standard_size_parent' => true,
-        'product_conditon_parent' => true,
+        'product_condition_parent' => true,
         'product' => true,
         'staff' => true,
         'inspection_data_result_children' => true

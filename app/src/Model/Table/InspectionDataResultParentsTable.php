@@ -50,8 +50,8 @@ class InspectionDataResultParentsTable extends Table
             'foreignKey' => 'inspection_standard_size_parent_id',
             'joinType' => 'INNER'
         ]);
-        $this->belongsTo('ProductConditonParents', [
-            'foreignKey' => 'product_conditon_parent_id',
+        $this->belongsTo('ProductConditionParents', [
+            'foreignKey' => 'product_condition_parent_id',
             'joinType' => 'INNER'
         ]);
         $this->belongsTo('Products', [
@@ -142,7 +142,7 @@ class InspectionDataResultParentsTable extends Table
     {
         $rules->add($rules->existsIn(['inspection_data_conditon_parent_id'], 'InspectionDataConditonParents'));
         $rules->add($rules->existsIn(['inspection_standard_size_parent_id'], 'InspectionStandardSizeParents'));
-  //      $rules->add($rules->existsIn(['product_conditon_parent_id'], 'ProductConditonParents'));
+        $rules->add($rules->existsIn(['product_condition_parent_id'], 'ProductConditionParents'));
         $rules->add($rules->existsIn(['product_id'], 'Products'));
         $rules->add($rules->existsIn(['staff_id'], 'Staffs'));
 

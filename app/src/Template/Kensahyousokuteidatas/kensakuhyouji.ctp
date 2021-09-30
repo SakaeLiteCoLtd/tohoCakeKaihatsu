@@ -36,11 +36,12 @@ echo $this->Html->css('kensahyou');
   <table class="white">
 
   <tr>
-    <td width="40" rowspan='7'>No.</td>
+    <td width="40" rowspan='8'>No.</td>
   </tr>
   <tr>
-    <td width="150" rowspan='6'>時間</td>
+    <td width="150" rowspan='7'>時間</td>
   </tr>
+  <td width="75" rowspan='6'>長さ</td>
 
 <tr>
   <td style='width:110'>測定箇所</td>
@@ -49,7 +50,6 @@ echo $this->Html->css('kensahyou');
     <td style='width:80'><?= h(${"size_name".$i}) ?></td>
   <?php endfor;?>
 
-  <td width="75" rowspan='5'>長さ</td>
   <td width="75" rowspan='3'>外観</td>
   <td width="75" rowspan='3'>重量<br>（目安）</td>
   <td width="59" rowspan='5'>合否<br>判定</td>
@@ -101,6 +101,9 @@ echo $this->Html->css('kensahyou');
 
   <td style='width:40; border-top-style:none; font-size: 11pt'><?= h(${"lot_number".$j}) ?></td>
   <td style='width:150; border-top-style:none; font-size: 11pt'><?= h(${"datetime".$j}) ?></td></td>
+
+  <td style='width:75; border-top-style:none'><?= h($Length) ?></td>
+
   <td style='width:110; border-top-style:none'><?= h(${"staff_hyouji".$j}) ?></td>
 
   <?php for($i=1; $i<=10; $i++): ?>
@@ -121,7 +124,6 @@ echo $this->Html->css('kensahyou');
   }
   ?>
 
-  <td style='width:75; border-top-style:none'><?= h($Length) ?></td>
   <td style='width:75; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
   <td style='width:75; border-top-style:none'><?= h(${"result_weight".$j}) ?></td>
   <td style='width:59; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
