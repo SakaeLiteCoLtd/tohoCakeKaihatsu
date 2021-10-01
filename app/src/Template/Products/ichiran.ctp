@@ -27,7 +27,7 @@ echo $this->Html->css('index');
         <thead>
             <tr>
               <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
-                <th scope="col" style='width:200'><?= $this->Paginator->sort('product_code', ['label'=>"社内品番"]) ?></th>
+                <th scope="col" style='width:200'><?= $this->Paginator->sort('product_code', ['label'=>"製品コード"]) ?></th>
                 <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"品名"]) ?></th>
                 <th scope="col" style='width:200'><?= $this->Paginator->sort('custmoer_id', ['label'=>"得意先"]) ?></th>
                 <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
@@ -41,7 +41,7 @@ echo $this->Html->css('index');
                 <td><?= h($product->name) ?></td>
                 <td><?= h($product->customer->name) ?></td>
                 <td class="actions">
-                  <?= $this->Html->link(__('詳細'), ['action' => 'detail', $product->id]) ?>
+                  <?= $this->Html->link(__('編集'), ['action' => 'detail', $product->id]) ?>
                 </td>
             </tr>
 

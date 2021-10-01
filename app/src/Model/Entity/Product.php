@@ -13,7 +13,6 @@ use Cake\ORM\Entity;
  * @property string|null $tanni
  * @property float $length
  * @property float $length_cut
- * @property float|null $length_size
  * @property float|null $length_upper_limit
  * @property float|null $length_lower_limit
  * @property int $status_kensahyou
@@ -55,7 +54,6 @@ class Product extends Entity
         'tanni' => true,
         'length' => true,
         'length_cut' => true,
-        'length_size' => true,
         'length_upper_limit' => true,
         'length_lower_limit' => true,
         'status_kensahyou' => true,

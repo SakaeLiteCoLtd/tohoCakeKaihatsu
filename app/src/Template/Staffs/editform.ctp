@@ -59,10 +59,8 @@
         <table>
           <tr>
             <td width="280"><strong>職種</strong></td>
-            <td width="280"><strong>役職</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->control('occupation_id', ['options' => $occupations, 'label'=>false, 'empty' => true]) ?></td>
             <td><?= $this->Form->control('position_id', ['options' => $positions, 'label'=>false, 'empty' => true]) ?></td>
         	</tr>
         </table>

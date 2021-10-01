@@ -15,7 +15,7 @@
 ?>
 <?php
 
-if($status_kensahyou == 1){
+if($status_kensahyou == 0){
   $status_kensahyou_name = "表示";
 }else{
   $status_kensahyou_name = "非表示";
@@ -41,7 +41,7 @@ if($status_kensahyou == 1){
 
     <table>
         <tr>
-          <td width="180"><strong>自社工場</strong></td>
+          <td width="180"><strong>工場名</strong></td>
           <td width="380"><strong>得意先</strong></td>
         </tr>
         <tr>
@@ -56,7 +56,7 @@ if($status_kensahyou == 1){
         <td><strong>単位</strong></td>
         <td><strong>単重(g/m)</strong></td>
         <td><strong>検査表に表示</strong></td>
-        <td><strong>モード番号</strong></td>
+        <td><strong>幅測定器モード番号</strong></td>
         </tr>
         <tr>
         <td><?= h($name) ?></td>
@@ -73,7 +73,7 @@ if($status_kensahyou == 1){
 
      <table>
       <tr>
-      <td><strong>管理No.</strong></td>
+      <td><strong>製品コード</strong></td>
       <td width="200"><strong>品名</strong></td>
       <td><strong>長さ（mm）</strong></td>
       <td><strong>カット長さ（mm）</strong></td>
@@ -103,7 +103,7 @@ if($status_kensahyou == 1){
 
       <table>
       <tr>
-      <td><strong>管理No.</strong></td>
+      <td><strong>製品コード</strong></td>
       <td width="300"><strong>品名</strong></td>
       <td><strong>長さ（mm）</strong></td>
       <td><strong>カット長さ（mm）</strong></td>

@@ -28,7 +28,7 @@ $htmllogin = $htmlloginmenu->Loginmenu();
     </table>
     <table>
       <tr>
-        <td width="280"><strong>社員コード</strong></td>
+        <td width="280"><strong>ユーザーID</strong></td>
         <td width="280"><strong>氏名</strong></td>
       </tr>
       <tr>

@@ -39,7 +39,7 @@ if(!isset($_SESSION)){
 
 <?php
 
-if($this->request->getData('status_kensahyou') == 1){
+if($this->request->getData('status_kensahyou') == 0){
   $status_kensahyou_name = "表示";
 }else{
   $status_kensahyou_name = "非表示";
@@ -65,7 +65,7 @@ if($this->request->getData('status_kensahyou') == 1){
 
         <table>
         <tr>
-        <td width="150"><strong>自社工場</strong></td>
+        <td width="150"><strong>工場名</strong></td>
         <td width="350"><strong>得意先</strong></td>
         </tr>
         <tr>
@@ -79,7 +79,7 @@ if($this->request->getData('status_kensahyou') == 1){
         <td><strong>単位</strong></td>
         <td><strong>単重(g/m)</strong></td>
         <td><strong>検査表に表示</strong></td>
-        <td><strong>モード番号</strong></td>
+        <td><strong>幅測定器モード番号</strong></td>
         </tr>
         <tr>
         <td><?= h($name) ?></td>
@@ -96,7 +96,6 @@ if($this->request->getData('status_kensahyou') == 1){
       <tr>
         <td width="50"><strong>長さ（mm）</strong></td>
         <td width="50"><strong>カット長さ（mm）</strong></td>
-        <td width="50"><strong>規 格 長 さ（mm）</strong></td>
         <td width="50"><strong>上限</strong></td>
         <td width="50"><strong>下限</strong></td>
         <td width="200"><strong>備考</strong></td>
@@ -109,8 +108,6 @@ if($this->request->getData('status_kensahyou') == 1){
       ('length'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true')) ?></td>
       <td><?= $this->Form->control
       ('length_cut'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true')) ?></td>
-      <td><?= $this->Form->control
-      ('length_size'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6)) ?></td>
       <td><?= $this->Form->control
       ('length_upper_limit'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6)) ?></td>
       <td><?= $this->Form->control
@@ -138,7 +135,6 @@ if($this->request->getData('status_kensahyou') == 1){
       ('length'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true')) ?></td>
       <td><?= $this->Form->control
       ('length_cut'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true')) ?></td>
-      <?= $this->Form->control('length_size'.$k, array('type'=>'hidden', 'value'=>"", 'label'=>false)) ?>
       <?= $this->Form->control('length_upper_limit'.$k, array('type'=>'hidden', 'value'=>"", 'label'=>false)) ?>
       <?= $this->Form->control('length_lower_limit'.$k, array('type'=>'hidden', 'value'=>"", 'label'=>false)) ?>
       <td><?= $this->Form->control('bik'.$k, array('type'=>'text', 'label'=>false)) ?></td>

@@ -40,7 +40,7 @@
 
         <table>
           <tr>
-            <td width="280"><strong>社内品番</strong></td>
+            <td width="280"><strong>製品コード</strong></td>
             <td width="280"><strong>顧客品番</strong></td>
         	</tr>
           <tr>

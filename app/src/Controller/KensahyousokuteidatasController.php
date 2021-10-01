@@ -496,8 +496,8 @@ class KensahyousokuteidatasController extends AppController
 
       if(isset($ProductConditionParents[0])){
 
-        $product_conditon_parent_id = $ProductConditionParents[0]['id'];
-        $this->set('product_conditon_parent_id', $product_conditon_parent_id);
+        $product_condition_parent_id = $ProductConditionParents[0]['id'];
+        $this->set('product_condition_parent_id', $product_condition_parent_id);
 
       }else{
 
@@ -711,8 +711,8 @@ class KensahyousokuteidatasController extends AppController
 
       if(isset($ProductConditionParents[0])){
 
-        $product_conditon_parent_id = $ProductConditionParents[0]['id'];
-        $this->set('product_conditon_parent_id', $product_conditon_parent_id);
+        $product_condition_parent_id = $ProductConditionParents[0]['id'];
+        $this->set('product_condition_parent_id', $product_condition_parent_id);
 
       }else{
 
@@ -931,8 +931,8 @@ class KensahyousokuteidatasController extends AppController
 
       if(isset($ProductConditionParents[0])){
 
-        $product_conditon_parent_id = $ProductConditionParents[0]['id'];
-        $this->set('product_conditon_parent_id', $product_conditon_parent_id);
+        $product_condition_parent_id = $ProductConditionParents[0]['id'];
+        $this->set('product_condition_parent_id', $product_condition_parent_id);
 
       }else{
 
@@ -1066,10 +1066,9 @@ class KensahyousokuteidatasController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         "created_staff" => $staff_id
       ];
-
 /*
       echo "<pre>";
-      print_r($tourokuInspectionDataConditonChildren);
+      print_r($tourokuInspectionDataConditonParents);
       echo "</pre>";
 */
       //新しいデータを登録
@@ -1111,7 +1110,11 @@ class KensahyousokuteidatasController extends AppController
             ];
 
           }
-
+/*
+          echo "<pre>";
+          print_r($tourokuInspectionDataConditonChildren);
+          echo "</pre>";
+  */  
           $InspectionDataConditonChildren = $this->InspectionDataConditonChildren->patchEntities($this->InspectionDataConditonChildren->newEntity(), $tourokuInspectionDataConditonChildren);
           $this->InspectionDataConditonChildren->saveMany($InspectionDataConditonChildren);
 
@@ -1128,7 +1131,7 @@ class KensahyousokuteidatasController extends AppController
               'chenk' => 1,
               'product_code' => $product_code,
               'inspection_standard_size_parent_id' => $inspection_standard_size_parent_id,
-              'product_conditon_parent_id' => $product_conditon_parent_id,
+              'product_condition_parent_id' => $product_condition_parent_id,
               'inspection_data_conditon_parent_id' => $inspection_data_conditon_parent_id,
               'inspection_pickup_speed' => $inspection_pickup_speed,
             );
@@ -1143,7 +1146,6 @@ class KensahyousokuteidatasController extends AppController
               }
 
               }
- 
 
           return $this->redirect(['action' => 'addform']);
 
@@ -1233,8 +1235,8 @@ class KensahyousokuteidatasController extends AppController
 
       if(isset($ProductConditionParents[0])){
 
-        $product_conditon_parent_id = $ProductConditionParents[0]['id'];
-        $this->set('product_conditon_parent_id', $product_conditon_parent_id);
+        $product_condition_parent_id = $ProductConditionParents[0]['id'];
+        $this->set('product_condition_parent_id', $product_condition_parent_id);
 
       }else{
 
@@ -1339,7 +1341,7 @@ class KensahyousokuteidatasController extends AppController
         ${"arrLength_size".$n} = array();
         ${"arrLength_size".$n} = [
           "product_id" => $Products[$n]["id"],
-          "size" => sprintf("%.1f", $Products[$n]["length_size"]),
+          "size" => sprintf("%.1f", $Products[$n]["length"]),
           "upper" => "+".sprintf("%.1f", $Products[$n]["length_upper_limit"]),
           "lower" => sprintf("%.1f", $Products[$n]["length_lower_limit"])
         ];
@@ -1567,7 +1569,7 @@ class KensahyousokuteidatasController extends AppController
             if($i == $num_length + 1){//長さ列の場合
 
               $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
-              ${"size".$i} = $Products[0]["length_size"];
+              ${"size".$i} = $Products[0]["length"];
               ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
               ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
         
@@ -1607,7 +1609,7 @@ class KensahyousokuteidatasController extends AppController
 
         $InspectionDataResultParents = $this->InspectionDataResultParents->find()
         ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'],
-         'product_conditon_parent_id' => $data['product_conditon_parent_id'],
+         'product_condition_parent_id' => $data['product_condition_parent_id'],
          'datetime' => date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00"])
         ->order(["id"=>"DESC"])->toArray();
 
@@ -1617,7 +1619,7 @@ class KensahyousokuteidatasController extends AppController
           $tourokuInspectionDataResultParents = [
             'inspection_data_conditon_parent_id' => (int)$data['inspection_data_conditon_parent_id'],
             "inspection_standard_size_parent_id" => $data['inspection_standard_size_parent_id'],
-            "product_conditon_parent_id" => $data['product_conditon_parent_id'],
+            "product_condition_parent_id" => $data['product_condition_parent_id'],
             'product_id' => $data['product_id'.$j],
             'lot_number' => $data['lot_number'.$j],
             'datetime' => date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00",
@@ -1807,7 +1809,7 @@ class KensahyousokuteidatasController extends AppController
             if($i == $num_length + 1){//長さ列の場合
 
               $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
-              ${"size".$i} = $Products[0]["length_size"];
+              ${"size".$i} = $Products[0]["length"];
               ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
               ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
         
@@ -1924,7 +1926,7 @@ class KensahyousokuteidatasController extends AppController
             if($i == $num_length + 1){//長さ列の場合
 
               $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
-              ${"size".$i} = $Products[0]["length_size"];
+              ${"size".$i} = $Products[0]["length"];
               ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
               ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
         
@@ -2085,7 +2087,7 @@ class KensahyousokuteidatasController extends AppController
 */
         $InspectionDataResultParents = $this->InspectionDataResultParents->find()
         ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'],
-         'product_conditon_parent_id' => $data['product_conditon_parent_id'],
+         'product_condition_parent_id' => $data['product_condition_parent_id'],
          'lot_number' => $data['lot_number'.$edit_num]])->toArray();
 
         $motoInspectionDataResultParentId = $InspectionDataResultParents[0]["id"];
@@ -2240,8 +2242,8 @@ class KensahyousokuteidatasController extends AppController
 
       if(isset($ProductConditionParents[0])){
 
-        $product_conditon_parent_id = $ProductConditionParents[0]['id'];
-        $this->set('product_conditon_parent_id', $product_conditon_parent_id);
+        $product_condition_parent_id = $ProductConditionParents[0]['id'];
+        $this->set('product_condition_parent_id', $product_condition_parent_id);
 
       }else{
 
@@ -2695,7 +2697,7 @@ class KensahyousokuteidatasController extends AppController
               $this->set('upper_limit'.$num,${"upper_limit".$num});
               ${"lower_limit".$num} = sprintf("%.1f", $ProductParent[0]["length_lower_limit"]);
               $this->set('lower_limit'.$num,${"lower_limit".$num});
-              ${"size".$num} = sprintf("%.1f", $ProductParent[0]["length_size"]);
+              ${"size".$num} = sprintf("%.1f", $ProductParent[0]["length"]);
               $this->set('size'.$num,${"size".$num});
               ${"measuring_instrument".$num} = "-";
               $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
@@ -2944,7 +2946,7 @@ class KensahyousokuteidatasController extends AppController
               $this->set('upper_limit'.$num,${"upper_limit".$num});
               ${"lower_limit".$num} = sprintf("%.1f", $ProductParent[0]["length_lower_limit"]);
               $this->set('lower_limit'.$num,${"lower_limit".$num});
-              ${"size".$num} = sprintf("%.1f", $ProductParent[0]["length_size"]);
+              ${"size".$num} = sprintf("%.1f", $ProductParent[0]["length"]);
               $this->set('size'.$num,${"size".$num});
               ${"measuring_instrument".$num} = "-";
               $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
@@ -3141,7 +3143,7 @@ class KensahyousokuteidatasController extends AppController
               $this->set('upper_limit'.$num,${"upper_limit".$num});
               ${"lower_limit".$num} = sprintf("%.1f", $ProductParent[0]["length_lower_limit"]);
               $this->set('lower_limit'.$num,${"lower_limit".$num});
-              ${"size".$num} = sprintf("%.1f", $ProductParent[0]["length_size"]);
+              ${"size".$num} = sprintf("%.1f", $ProductParent[0]["length"]);
               $this->set('size'.$num,${"size".$num});
               ${"measuring_instrument".$num} = "-";
               $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
@@ -3378,7 +3380,7 @@ class KensahyousokuteidatasController extends AppController
               $this->set('upper_limit'.$num,${"upper_limit".$num});
               ${"lower_limit".$num} = sprintf("%.1f", $ProductParent[0]["length_lower_limit"]);
               $this->set('lower_limit'.$num,${"lower_limit".$num});
-              ${"size".$num} = sprintf("%.1f", $ProductParent[0]["length_size"]);
+              ${"size".$num} = sprintf("%.1f", $ProductParent[0]["length"]);
               $this->set('size'.$num,${"size".$num});
               ${"measuring_instrument".$num} = "-";
               $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
@@ -3467,7 +3469,7 @@ class KensahyousokuteidatasController extends AppController
     
         }
   
-        $product_conditon_parent_id = $ProductConditionParents[0]['id'];
+        $product_condition_parent_id = $ProductConditionParents[0]['id'];
 
         $InspectionDataResultParentsmoto = $this->InspectionDataResultParents->find()
         ->where(['delete_flag' => 0, 'product_id' => $product_id,
@@ -3484,7 +3486,7 @@ class KensahyousokuteidatasController extends AppController
           $updateInspectionDataResultParents = [
             "inspection_data_conditon_parent_id" => $inspection_data_conditon_parent_id,
             "inspection_standard_size_parent_id" => $inspection_standard_size_parent_id,
-            "product_conditon_parent_id" => $product_conditon_parent_id,
+            "product_condition_parent_id" => $product_condition_parent_id,
             'lot_number' => $data['lot_number'.$j],
             'datetime' => $data['datekensaku']." ".$data['datetime'.$j].":00",
             'staff_id' => $Users[0]["staff_id"],
@@ -3920,7 +3922,7 @@ class KensahyousokuteidatasController extends AppController
               $this->set('upper_limit'.$num,${"upper_limit".$num});
               ${"lower_limit".$num} = sprintf("%.1f", $ProductParent[0]["length_lower_limit"]);
               $this->set('lower_limit'.$num,${"lower_limit".$num});
-              ${"size".$num} = sprintf("%.1f", $ProductParent[0]["length_size"]);
+              ${"size".$num} = sprintf("%.1f", $ProductParent[0]["length"]);
               $this->set('size'.$num,${"size".$num});
               ${"measuring_instrument".$num} = "-";
               $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
@@ -3985,7 +3987,7 @@ class KensahyousokuteidatasController extends AppController
       ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.delete_flag' => 0,
        'InspectionDataResultParents.delete_flag' => 0,
       'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin])
-      ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
+      ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
 /*
       echo "<pre>";
       print_r($InspectionDataResultParents);

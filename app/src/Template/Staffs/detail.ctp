@@ -52,10 +52,8 @@
         <table>
           <tr>
             <td width="280"><strong>職種</strong></td>
-            <td width="280"><strong>役職</strong></td>
         	</tr>
           <tr>
-            <td><?= h($occupation_name) ?></td>
             <td><?= h($position_name) ?></td>
         	</tr>
         </table>

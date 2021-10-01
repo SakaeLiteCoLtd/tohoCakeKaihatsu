@@ -102,7 +102,7 @@ for($i=0; $i<$count_length; $i++){
 
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('inspection_standard_size_parent_id', array('type'=>'hidden', 'value'=>$inspection_standard_size_parent_id, 'label'=>false)) ?>
-<?= $this->Form->control('product_conditon_parent_id', array('type'=>'hidden', 'value'=>$product_conditon_parent_id, 'label'=>false)) ?>
+<?= $this->Form->control('product_condition_parent_id', array('type'=>'hidden', 'value'=>$product_condition_parent_id, 'label'=>false)) ?>
 <?= $this->Form->control('inspection_data_conditon_parent_id', array('type'=>'hidden', 'value'=>$inspection_data_conditon_parent_id, 'label'=>false)) ?>
 
 <?php
@@ -165,7 +165,7 @@ for($i=0; $i<$count_length; $i++){
 
 </tr>
 <tr>
-  <td>検査機</td>
+  <td>検査器具</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
       <td><div class="measuring_instrument"></div><?= h(${"measuring_instrument".$i}) ?></td>
@@ -275,7 +275,7 @@ var moji = "length"
       if($i == $num_length + 1){//長さ列の場合
 
         $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
-        ${"size".$i} = $Products[0]["length_size"];
+        ${"size".$i} = $Products[0]["length"];
         ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
         ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
   
@@ -361,7 +361,7 @@ var moji = "length"
         if($i == $num_length + 1){//長さ列の場合
 
           $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
-          ${"size".$i} = $Products[0]["length_size"];
+          ${"size".$i} = $Products[0]["length"];
           ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
           ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
 

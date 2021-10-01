@@ -176,8 +176,11 @@ class ProductsController extends AppController
       }
       $this->set('arrCustomer_name_list', $arrCustomer_name_list);
 
-      $arrStatusKensahyou = ["1" => "表示", "0" => "非表示"];
+      $arrStatusKensahyou = ["0" => "表示", "1" => "非表示"];
       $this->set('arrStatusKensahyou', $arrStatusKensahyou);
+
+      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個"];
+      $this->set('arrTanni', $arrTanni);
 
       $arrig_bank_modes = [
         "" => "",
@@ -216,10 +219,10 @@ class ProductsController extends AppController
       $this->set('weight', $weight);
 
       $status_kensahyou = $data["status_kensahyou"];
-      if($status_kensahyou > 0){//表示の場合
-        $status_kensahyou_flag = 1;
-      }else{//非表示の場合
+      if($status_kensahyou > 0){//非表示の場合
         $status_kensahyou_flag = 0;
+      }else{//非表示の場合
+        $status_kensahyou_flag = 1;
       }
       $this->set('status_kensahyou_flag', $status_kensahyou_flag);
 
@@ -328,8 +331,6 @@ class ProductsController extends AppController
         $this->set('length'.$j, ${"length".$j});
         ${"length_cut".$j} = $data["length_cut".$j];
         $this->set('length_cut'.$j, ${"length_cut".$j});
-        ${"length_size".$j} = $data["length_size".$j];
-        $this->set('length_size'.$j, ${"length_size".$j});
         ${"length_upper_limit".$j} = $data["length_upper_limit".$j];
         $this->set('length_upper_limit'.$j, ${"length_upper_limit".$j});
         ${"length_lower_limit".$j} = $data["length_lower_limit".$j];
@@ -402,8 +403,6 @@ class ProductsController extends AppController
         $this->set('length'.$j, ${"length".$j});
         ${"length_cut".$j} = $data["length_cut".$j];
         $this->set('length_cut'.$j, ${"length_cut".$j});
-        ${"length_size".$j} = $data["length_size".$j];
-        $this->set('length_size'.$j, ${"length_size".$j});
         ${"length_upper_limit".$j} = $data["length_upper_limit".$j];
         $this->set('length_upper_limit'.$j, ${"length_upper_limit".$j});
         ${"length_lower_limit".$j} = $data["length_lower_limit".$j];
@@ -457,7 +456,6 @@ class ProductsController extends AppController
             'ig_bank_modes' => $data["ig_bank_modes"],
             'length' => ${"length".$j},
             'length_cut' => ${"length_cut".$j},
-            'length_size' => ${"length_size".$j},
             'length_upper_limit' => ${"length_upper_limit".$j},
             'length_lower_limit' => ${"length_lower_limit".$j},
             'bik' => ${"bik".$j},
@@ -631,8 +629,6 @@ class ProductsController extends AppController
         $this->set('length'.$j, ${"length".$j});
         ${"length_cut".$j} = $data["length_cut".$j];
         $this->set('length_cut'.$j, ${"length_cut".$j});
-        ${"length_size".$j} = $data["length_size".$j];
-        $this->set('length_size'.$j, ${"length_size".$j});
         ${"length_upper_limit".$j} = $data["length_upper_limit".$j];
         $this->set('length_upper_limit'.$j, ${"length_upper_limit".$j});
         ${"length_lower_limit".$j} = $data["length_lower_limit".$j];
@@ -693,8 +689,6 @@ class ProductsController extends AppController
         $this->set('length'.$j, ${"length".$j});
         ${"length_cut".$j} = $data["length_cut".$j];
         $this->set('length_cut'.$j, ${"length_cut".$j});
-        ${"length_size".$j} = $data["length_size".$j];
-        $this->set('length_size'.$j, ${"length_size".$j});
         ${"length_upper_limit".$j} = $data["length_upper_limit".$j];
         $this->set('length_upper_limit'.$j, ${"length_upper_limit".$j});
         ${"length_lower_limit".$j} = $data["length_lower_limit".$j];
@@ -737,7 +731,6 @@ class ProductsController extends AppController
             'tanni' => $ProductName[0]["tanni"],
             'length' => ${"length".$j},
             'length_cut' => ${"length_cut".$j},
-            'length_size' => ${"length_size".$j},
             'length_upper_limit' => ${"length_upper_limit".$j},
             'length_lower_limit' => ${"length_lower_limit".$j},
             'bik' => ${"bik".$j},
@@ -866,7 +859,7 @@ class ProductsController extends AppController
       $this->set('ig_bank_modes', $ig_bank_modes);
       
       $status_kensahyou = $ProductName[0]["status_kensahyou"];
-      if($status_kensahyou == 1){
+      if($status_kensahyou == 0){
         $status_kensahyou_name = "表示";
       }else{
         $status_kensahyou_name = "非表示";
@@ -936,6 +929,9 @@ class ProductsController extends AppController
       $ig_bank_modes = $ProductName[0]["ig_bank_modes"];
       $this->set('ig_bank_modes', $ig_bank_modes);
 
+      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個"];
+      $this->set('arrTanni', $arrTanni);
+
       $arrig_bank_modes = [
         "" => "",
         0 => 0,
@@ -950,7 +946,7 @@ class ProductsController extends AppController
       $customer_name = $Customers[0]["name"];
       $this->set('customer_name', $customer_name);
 
-      $arrStatusKensahyou = ["1" => "表示", "0" => "非表示"];
+      $arrStatusKensahyou = ["0" => "表示", "1" => "非表示"];
       $this->set('arrStatusKensahyou', $arrStatusKensahyou);
 
       if(!isset($_SESSION)){
@@ -1005,7 +1001,6 @@ class ProductsController extends AppController
            "name" => $data["name".$i],
             "length" => $data["length".$i],
             "length_cut" => $data["length_cut".$i],
-            "length_size" => $data["length_size".$i],
             "length_upper_limit" => $data["length_upper_limit".$i],
             "length_lower_limit" => $data["length_lower_limit".$i],
             "bik" => $data["bik".$i]
@@ -1017,7 +1012,6 @@ class ProductsController extends AppController
                "name" => $data["name".$i],
                 "length" => $data["length".$i],
                 "length_cut" => $data["length_cut".$i],
-                "length_size" => $data["length_size".$i],
                 "length_upper_limit" => $data["length_upper_limit".$i],
                 "length_lower_limit" => $data["length_lower_limit".$i],
                 "bik" => $data["bik".$i]
@@ -1065,7 +1059,6 @@ class ProductsController extends AppController
             'product_code' => $Productsmoto[0]["product_code"],
             'length' => $Productsmoto[0]["length"],
             'length_cut' => $Productsmoto[0]["length_cut"],
-            'length_size' => $Productsmoto[0]["length_size"],
             'length_upper_limit' => $Productsmoto[0]["length_upper_limit"],
             'length_lower_limit' => $Productsmoto[0]["length_lower_limit"],
             'ig_bank_modes' => $Productsmoto[0]["ig_bank_modes"],
@@ -1087,7 +1080,6 @@ class ProductsController extends AppController
             'product_code' => $data["product_code".$i],
             'length' => $data["length".$i],
             'length_cut' => $data["length_cut".$i],
-            'length_size' => $data["length_size".$i],
             'length_upper_limit' => $data["length_upper_limit".$i],
             'length_lower_limit' => $data["length_lower_limit".$i],
             'bik' => $data["bik".$i],
@@ -1113,7 +1105,6 @@ class ProductsController extends AppController
               'name' => $data["delete_name".$i],
               'length' => $data["delete_length".$i],
               'length_cut' => $data["delete_length_cut".$i],
-              'length_size' => $data["delete_length_size".$i],
               'length_upper_limit' => $data["delete_length_upper_limit".$i],
               'length_lower_limit' => $data["delete_length_lower_limit".$i],
               'bik' => $data["delete_bik".$i],
@@ -1144,7 +1135,6 @@ class ProductsController extends AppController
             if ($this->Products->updateAll(
               [ 'length' => $data["length".$i],
                 'length_cut' => $data["length_cut".$i],
-                'length_size' => $data["length_size".$i],
                 'length_upper_limit' => $data["length_upper_limit".$i],
                 'length_lower_limit' => $data["length_lower_limit".$i],
                 'bik' => $data["bik".$i],

@@ -61,7 +61,7 @@ $(function() {
 
         <table>
         <tr>
-          <td><strong>自社工場</strong></td>
+          <td><strong>工場名</strong></td>
         </tr>
         <tr>
           <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>

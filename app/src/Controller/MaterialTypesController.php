@@ -45,6 +45,7 @@ class MaterialTypesController extends AppController
     public function index()
     {
         $this->paginate = [
+          'limit' => 13,
             'contain' => ['Factories']
         ];
         $materialTypes = $this->paginate($this->MaterialTypes->find()->where(['MaterialTypes.delete_flag' => 0]));

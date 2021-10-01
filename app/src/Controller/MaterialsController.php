@@ -49,6 +49,7 @@ class MaterialsController extends AppController
     public function index()
     {
         $this->paginate = [
+          'limit' => 13,
             'contain' => ['MaterialTypes', 'Factories']
         ];
         $materials = $this->paginate($this->Materials->find()->where(['Materials.delete_flag' => 0]));
@@ -164,6 +165,9 @@ class MaterialsController extends AppController
         $mess = "";
         $this->set('mess',$mess);
       }
+      
+      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個"];
+      $this->set('arrTanni', $arrTanni);
 
       $MaterialTypes = $this->MaterialTypes->find()
       ->where(['delete_flag' => 0])->toArray();
@@ -373,6 +377,9 @@ class MaterialsController extends AppController
 
       $id = $_SESSION['materialdata'];
       $this->set('id', $id);
+
+      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個"];
+      $this->set('arrTanni', $arrTanni);
 
       $Materials = $this->Materials->find()
       ->where(['id' => $id])->toArray();

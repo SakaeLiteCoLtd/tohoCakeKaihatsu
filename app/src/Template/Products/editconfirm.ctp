@@ -28,7 +28,7 @@
 <br><br><br>
 
 <?php
-if($this->request->getData('status_kensahyou') == 1){
+if($this->request->getData('status_kensahyou') == 0){
   $status_kensahyou_name = "表示";
 }else{
   $status_kensahyou_name = "非表示";
@@ -52,7 +52,7 @@ if($this->request->getData('status_kensahyou') == 1){
 
         <table>
         <tr>
-          <td width="180"><strong>自社工場</strong></td>
+          <td width="180"><strong>工場名</strong></td>
           <td width="380"><strong>得意先</strong></td>
         </tr>
         <tr>
@@ -66,7 +66,7 @@ if($this->request->getData('status_kensahyou') == 1){
           <td width="90"><strong>単位</strong></td>
             <td width="90"><strong>単重(g/m)</strong></td>
             <td width="50"><strong>検査表</strong></td>
-            <td width="50"><strong>モード番号</strong></td>
+            <td width="50"><strong>幅測定器モード番号</strong></td>
         	</tr>
           <tr>
             <td><?= h($this->request->getData('tanni')) ?></td>
@@ -82,7 +82,7 @@ if($this->request->getData('status_kensahyou') == 1){
 
      <table>
       <tr>
-      <td><strong>管理No.</strong></td>
+      <td><strong>製品コード</strong></td>
       <td width="200"><strong>品名</strong></td>
       <td><strong>長さ（mm）</strong></td>
       <td><strong>カット長さ（mm）</strong></td>
@@ -123,7 +123,7 @@ if($this->request->getData('status_kensahyou') == 1){
 
         <table>
       <tr>
-      <td><strong>管理No.</strong></td>
+      <td><strong>製品コード</strong></td>
       <td width="300"><strong>品名</strong></td>
       <td><strong>長さ（mm）</strong></td>
       <td><strong>カット長さ（mm）</strong></td>
@@ -163,7 +163,7 @@ if($this->request->getData('status_kensahyou') == 1){
 
         <table>
       <tr>
-      <td><strong>管理No.</strong></td>
+      <td><strong>製品コード</strong></td>
       <td width="300"><strong>品名</strong></td>
       <td><strong>長さ（mm）</strong></td>
       <td><strong>カット長さ（mm）</strong></td>

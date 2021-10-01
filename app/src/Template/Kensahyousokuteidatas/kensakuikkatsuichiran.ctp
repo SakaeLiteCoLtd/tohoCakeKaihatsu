@@ -33,10 +33,10 @@ echo $this->Html->css('kensahyou');
 
   <table class="white">
 
-  <td width="45" rowspan='9'></td>
   <tr>
-  <td width="69" rowspan='8' style='font-size: 10pt'>画像・規格<br>条件</td>
-  <td width="69" rowspan='7' style='font-size: 10pt'>原料・温度<br>条件</td>
+  <td width="61" rowspan='9' style='font-size: 10pt'>画像<br>・<br>規格<br>条件</td>
+  <td width="61" rowspan='8' style='font-size: 10pt'>原料<br>・<br>温度<br>条件</td>
+  <td width="61" rowspan='7' style='font-size: 10pt'>成形<br>条件</td>
   </tr>
   <tr>
     <td width="80" rowspan='6'>時間</td>
@@ -81,7 +81,7 @@ echo $this->Html->css('kensahyou');
 
 </tr>
 <tr>
-  <td>検査機</td>
+  <td>検査器具</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
       <td><?= h(${"measuring_instrument".$i}) ?></td>
@@ -108,14 +108,12 @@ echo $this->Html->css('kensahyou');
 
   <tr>
 
-<td style='width:45; border-top-style:none'><?= h($Length) ?></td>
-
 <?php if($j == $numkikakucheck): ?>
 
 <?php
 $numkikakucheck = $numkikakucheck + $arr_numnakama_kikaku[$numkikakucount];
 
-echo "<td style='width:69; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_kikaku[$numkikakucount]>";
+echo "<td style='width:61; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_kikaku[$numkikakucount]>";
 //echo $this->Form->submit("表示" , ['action'=>'kensakusyousai', 'name' => $j]) ;
 echo " ";
 echo "</td>";
@@ -131,7 +129,7 @@ $numkikakucount = $numkikakucount + 1;
   <?php
   $numondocheck = $numondocheck + $arr_numnakama_ondo[$numondocount];
 
-  echo "<td style='width:69; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_ondo[$numondocount]>";
+  echo "<td style='width:61; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_ondo[$numondocount]>";
 //echo $this->Form->submit("表示" , ['action'=>'kensakusyousai', 'name' => $j]) ;
 echo " ";
   echo "</td>";
@@ -142,8 +140,9 @@ echo " ";
 <?php else: ?>
 <?php endif; ?>
 
-<td style='width:80; border-top-style:none; font-size: 10pt'><?= h(${"datetime".$j}) ?></td></td>
+<td style='width:61; border-top-style:none'><?= h($Length) ?></td>
 
+<td style='width:80; border-top-style:none; font-size: 10pt'><?= h(${"datetime".$j}) ?></td></td>
 
 <td style='width:110; border-top-style:none'><?= h(${"staff_hyouji".$j}) ?></td>
 

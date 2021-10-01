@@ -104,10 +104,6 @@ class ProductsTable extends Table
             ->notEmpty('length_cut');
 
         $validator
-            ->numeric('length_size')
-            ->allowEmpty('length_size');
-
-        $validator
             ->numeric('length_upper_limit')
             ->allowEmpty('length_upper_limit');
 

@@ -23,7 +23,7 @@
 
 <?php
 
-if($this->request->getData('status_kensahyou') == 1){
+if($this->request->getData('status_kensahyou') == 0){
   $status_kensahyou_name = "表示";
 }else{
   $status_kensahyou_name = "非表示";
@@ -43,7 +43,7 @@ if($this->request->getData('status_kensahyou') == 1){
 
         <table>
         <tr>
-        <td width="150"><strong>自社工場</strong></td>
+        <td width="150"><strong>工場名</strong></td>
         <td width="350"><strong>得意先</strong></td>
         </tr>
         <tr>
@@ -57,7 +57,7 @@ if($this->request->getData('status_kensahyou') == 1){
         <td><strong>単位</strong></td>
         <td><strong>単重(g/m)</strong></td>
         <td><strong>検査表に表示</strong></td>
-        <td><strong>モード番号</strong></td>
+        <td><strong>幅測定器モード番号</strong></td>
         </tr>
         <tr>
         <td><?= h($name) ?></td>
@@ -75,7 +75,6 @@ if($this->request->getData('status_kensahyou') == 1){
       <td><strong>製品コード</strong></td>
       <td><strong>長さ（mm）</strong></td>
         <td><strong>カット長さ（mm）</strong></td>
-        <td><strong>規格長さ（mm）</strong></td>
         <td width="50"><strong>上限</strong></td>
         <td width="50"><strong>下限</strong></td>
         <td width="200"><strong>備考</strong></td>
@@ -87,7 +86,6 @@ if($this->request->getData('status_kensahyou') == 1){
       <td><?= h(${"product_code".$k}) ?></td>
       <td><?= h(${"length".$k}) ?></td>
       <td><?= h(${"length_cut".$k}) ?></td>
-      <td><?= h(${"length_size".$k}) ?></td>
       <td><?= h(${"length_upper_limit".$k}) ?></td>
       <td><?= h(${"length_lower_limit".$k}) ?></td>
       <td><?= h(${"bik".$k}) ?></td>

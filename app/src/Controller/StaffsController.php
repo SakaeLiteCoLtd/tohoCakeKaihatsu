@@ -15,7 +15,6 @@ class StaffsController extends AppController
      parent::initialize();
      $this->Factories = TableRegistry::get('Factories');
      $this->Departments = TableRegistry::get('Departments');
-     $this->Occupations = TableRegistry::get('Occupations');
      $this->Positions = TableRegistry::get('Positions');
 
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
@@ -49,7 +48,7 @@ class StaffsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Factories', 'Departments', 'Occupations', 'Positions']
+            'contain' => ['Factories', 'Departments', 'Positions']
         ];
         $staffs = $this->paginate($this->Staffs->find()->where(['Staffs.delete_flag' => 0]));
 
@@ -89,7 +88,7 @@ class StaffsController extends AppController
       }
       $this->set('id', $id);
 
-      $Staffs = $this->Staffs->find()->contain(["Factories", "Departments", "Occupations", "Positions"])
+      $Staffs = $this->Staffs->find()->contain(["Factories", "Departments", "Positions"])
       ->where(['Staffs.id' => $id])->toArray();
 
       $name = $Staffs[0]["name"];
@@ -165,7 +164,7 @@ class StaffsController extends AppController
     public function view($id = null)
     {
         $staff = $this->Staffs->get($id, [
-            'contain' => ['Factories', 'Departments', 'Occupations', 'Positions', 'StaffAbilities', 'Users']
+            'contain' => ['Factories', 'Departments', 'Positions', 'StaffAbilities', 'Users']
         ]);
 
         $this->set('staff', $staff);
@@ -185,7 +184,6 @@ class StaffsController extends AppController
         }
         $Factories = $this->Staffs->Factories->find('list', ['limit' => 200]);
         $departments = $this->Staffs->Departments->find('list', ['limit' => 200]);
-        $occupations = $this->Staffs->Occupations->find('list', ['limit' => 200]);
         $positions = $this->Staffs->Positions->find('list', ['limit' => 200]);
         $this->set(compact('staff', 'Factories', 'departments', 'occupations', 'positions'));
     }
@@ -205,14 +203,6 @@ class StaffsController extends AppController
         $departments[] = array($value->id=>$value->department);
       }
       $this->set('departments', $departments);
-
-      $Occupations = $this->Occupations->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $occupations = array();
-      foreach ($Occupations as $value) {
-        $occupations[] = array($value->id=>$value->occupation);
-      }
-      $this->set('occupations', $occupations);
 
       $Positions = $this->Positions->find()
       ->where(['delete_flag' => 0])->toArray();
@@ -256,16 +246,6 @@ class StaffsController extends AppController
       }else{
         $department_name = "";
         $this->set('department_name', $department_name);
-      }
-
-      if($data['occupation_id'] > 0){
-        $Occupations = $this->Occupations->find()
-        ->where(['id' => $data['occupation_id']])->toArray();
-        $occupation_name = $Occupations[0]['occupation'];
-        $this->set('occupation_name', $occupation_name);
-      }else{
-        $occupation_name = "";
-        $this->set('occupation_name', $occupation_name);
       }
 
       if($data['position_id'] > 0){
@@ -328,16 +308,6 @@ class StaffsController extends AppController
       }else{
         $department_name = "";
         $this->set('department_name', $department_name);
-      }
-
-      if($data['occupation_id'] > 0){
-        $Occupations = $this->Occupations->find()
-        ->where(['id' => $data['occupation_id']])->toArray();
-        $occupation_name = $Occupations[0]['occupation'];
-        $this->set('occupation_name', $occupation_name);
-      }else{
-        $occupation_name = "";
-        $this->set('occupation_name', $occupation_name);
       }
 
       if($data['position_id'] > 0){
@@ -431,14 +401,6 @@ class StaffsController extends AppController
       }
       $this->set('departments', $departments);
 
-      $Occupations = $this->Occupations->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $occupations = array();
-      foreach ($Occupations as $value) {
-        $occupations[] = array($value->id=>$value->occupation);
-      }
-      $this->set('occupations', $occupations);
-
       $Positions = $this->Positions->find()
       ->where(['delete_flag' => 0])->toArray();
       $positions = array();
@@ -480,16 +442,6 @@ class StaffsController extends AppController
       }else{
         $department_name = "";
         $this->set('department_name', $department_name);
-      }
-
-      if($data['occupation_id'] > 0){
-        $Occupations = $this->Occupations->find()
-        ->where(['id' => $data['occupation_id']])->toArray();
-        $occupation_name = $Occupations[0]['occupation'];
-        $this->set('occupation_name', $occupation_name);
-      }else{
-        $occupation_name = "";
-        $this->set('occupation_name', $occupation_name);
       }
 
       if($data['position_id'] > 0){
@@ -558,16 +510,6 @@ class StaffsController extends AppController
       }else{
         $department_name = "";
         $this->set('department_name', $department_name);
-      }
-
-      if($data['occupation_id'] > 0){
-        $Occupations = $this->Occupations->find()
-        ->where(['id' => $data['occupation_id']])->toArray();
-        $occupation_name = $Occupations[0]['occupation'];
-        $this->set('occupation_name', $occupation_name);
-      }else{
-        $occupation_name = "";
-        $this->set('occupation_name', $occupation_name);
       }
 
       if($data['position_id'] > 0){
@@ -674,7 +616,7 @@ class StaffsController extends AppController
       $id = $_SESSION['staffdata'];
       $this->set('id', $id);
 
-      $Staffs = $this->Staffs->find()->contain(["Factories", "Departments", "Occupations", "Positions"])
+      $Staffs = $this->Staffs->find()->contain(["Factories", "Departments", "Positions"])
       ->where(['Staffs.id' => $id])->toArray();
 
       $name = $Staffs[0]["name"];
@@ -742,7 +684,7 @@ class StaffsController extends AppController
 
       $data = $this->request->getData();
 
-      $Staffs = $this->Staffs->find()->contain(["Factories", "Departments", "Occupations", "Positions"])
+      $Staffs = $this->Staffs->find()->contain(["Factories", "Departments", "Positions"])
       ->where(['Staffs.id' => $data["id"]])->toArray();
 
       $name = $Staffs[0]["name"];

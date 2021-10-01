@@ -38,7 +38,7 @@
 
         <table>
         <tr>
-          <td width="280"><strong>自社工場</strong></td>
+          <td width="280"><strong>工場名</strong></td>
           <td width="200"><strong>単位</strong></td>
         </tr>
         <tr>

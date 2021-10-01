@@ -37,7 +37,7 @@
         <table>
           <tbody class='sample non-sample'>
           <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt; color:red">
-          <?= __('管理No.と得意先は変更できません。') ?>
+          <?= __('製品コードと得意先は変更できません。') ?>
           </strong></td></tr>
           <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></td></tr>
           </tbody>
@@ -45,7 +45,7 @@
 
         <table>
         <tr>
-        <td width="180"><strong>自社工場</strong></td>
+        <td width="180"><strong>工場名</strong></td>
           <td width="380"><strong>得意先</strong></td>
         </tr>
         <tr>
@@ -59,10 +59,10 @@
           <td width="90"><strong>単位</strong></td>
             <td width="90"><strong>単重(g/m)</strong></td>
             <td width="50"><strong>検査表</strong></td>
-            <td width="50"><strong>モード番号</strong></td>
+            <td width="50"><strong>幅測定器モード番号</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->control('tanni', array('type'=>'text', 'value'=>$tanni, 'label'=>false, 'size'=>6)) ?></td>
+          <td><?= $this->Form->control('tanni', ['options' => $arrTanni, 'label'=>false]) ?></td>
             <td><?= $this->Form->control('weight', array('type'=>'text', 'pattern'=>'^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'size'=>6)) ?></td>
             <td><?= $this->Form->control('status_kensahyou', ['options' => $arrStatusKensahyou, 'value'=>$status_kensahyou, 'label'=>false]) ?></td>
             <td><?= $this->Form->control('ig_bank_modes', ['options' => $arrig_bank_modes, 'value'=>$ig_bank_modes, 'label'=>false]) ?></td>
@@ -73,7 +73,7 @@
 
      <table>
       <tr>
-      <td><strong>管理No.</strong></td>
+      <td><strong>製品コード</strong></td>
       <td width="150"><strong>品名</strong></td>
       <td width="40"><strong>長さ（mm）</strong></td>
       <td width="40"><strong style="font-size: 9pt">カット長さ（mm）</strong></td>

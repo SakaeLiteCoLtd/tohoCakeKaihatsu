@@ -11,10 +11,13 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\FactoriesTable|\Cake\ORM\Association\BelongsTo $Factories
  * @property \App\Model\Table\DepartmentsTable|\Cake\ORM\Association\BelongsTo $Departments
- * @property \App\Model\Table\OccupationsTable|\Cake\ORM\Association\BelongsTo $Occupations
  * @property \App\Model\Table\PositionsTable|\Cake\ORM\Association\BelongsTo $Positions
+ * @property \App\Model\Table\FactoriesTable|\Cake\ORM\Association\HasMany $Factories
+ * @property \App\Model\Table\InspectionDataResultParentsTable|\Cake\ORM\Association\HasMany $InspectionDataResultParents
+ * @property \App\Model\Table\LoginStaffsTable|\Cake\ORM\Association\HasMany $LoginStaffs
  * @property \App\Model\Table\StaffAbilitiesTable|\Cake\ORM\Association\HasMany $StaffAbilities
  * @property \App\Model\Table\UsersTable|\Cake\ORM\Association\HasMany $Users
+ * @property \App\Model\Table\不使用productMaterialLotNumbersTable|\Cake\ORM\Association\HasMany $不使用productMaterialLotNumbers
  *
  * @method \App\Model\Entity\Staff get($primaryKey, $options = [])
  * @method \App\Model\Entity\Staff newEntity($data = null, array $options = [])
@@ -49,11 +52,19 @@ class StaffsTable extends Table
         $this->belongsTo('Departments', [
             'foreignKey' => 'department_id'
         ]);
-        $this->belongsTo('Occupations', [
-            'foreignKey' => 'occupation_id'
-        ]);
         $this->belongsTo('Positions', [
             'foreignKey' => 'position_id'
+        ]);
+
+        /*
+        $this->hasMany('Factories', [
+            'foreignKey' => 'staff_id'
+        ]);
+        $this->hasMany('InspectionDataResultParents', [
+            'foreignKey' => 'staff_id'
+        ]);
+        $this->hasMany('LoginStaffs', [
+            'foreignKey' => 'staff_id'
         ]);
         $this->hasMany('StaffAbilities', [
             'foreignKey' => 'staff_id'
@@ -61,6 +72,11 @@ class StaffsTable extends Table
         $this->hasMany('Users', [
             'foreignKey' => 'staff_id'
         ]);
+        $this->hasMany('不使用productMaterialLotNumbers', [
+            'foreignKey' => 'staff_id'
+        ]);
+
+        */
     }
 
     /**
@@ -74,6 +90,12 @@ class StaffsTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
+
+        $validator
+            ->scalar('staff_code')
+            ->maxLength('staff_code', 255)
+            ->requirePresence('staff_code', 'create')
+            ->notEmpty('staff_code');
 
         $validator
             ->scalar('name')
@@ -103,11 +125,13 @@ class StaffsTable extends Table
 
         $validator
             ->date('birth')
-            ->allowEmpty('birth');
+            ->requirePresence('birth', 'create')
+            ->notEmpty('birth');
 
         $validator
             ->date('date_start')
-            ->allowEmpty('date_start');
+            ->requirePresence('date_start', 'create')
+            ->notEmpty('date_start');
 
         $validator
             ->date('date_finish')
@@ -150,7 +174,6 @@ class StaffsTable extends Table
     {
         $rules->add($rules->existsIn(['factory_id'], 'Factories'));
         $rules->add($rules->existsIn(['department_id'], 'Departments'));
-        $rules->add($rules->existsIn(['occupation_id'], 'Occupations'));
         $rules->add($rules->existsIn(['position_id'], 'Positions'));
 
         return $rules;

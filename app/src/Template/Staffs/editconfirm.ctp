@@ -23,7 +23,6 @@
 <?= $this->Form->control('sex', array('type'=>'hidden', 'value'=>$this->request->getData('sex'), 'label'=>false)) ?>
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 <?= $this->Form->control('department_id', array('type'=>'hidden', 'value'=>$this->request->getData('department_id'), 'label'=>false)) ?>
-<?= $this->Form->control('occupation_id', array('type'=>'hidden', 'value'=>$this->request->getData('occupation_id'), 'label'=>false)) ?>
 <?= $this->Form->control('position_id', array('type'=>'hidden', 'value'=>$this->request->getData('position_id'), 'label'=>false)) ?>
 <?= $this->Form->control('tel', array('type'=>'hidden', 'value'=>$this->request->getData('tel'), 'label'=>false)) ?>
 <?= $this->Form->control('mail', array('type'=>'hidden', 'value'=>$this->request->getData('mail'), 'label'=>false)) ?>
@@ -67,10 +66,8 @@
         <table>
           <tr>
             <td width="280"><strong>職種</strong></td>
-            <td width="280"><strong>役職</strong></td>
         	</tr>
           <tr>
-            <td><?= h($occupation_name) ?></td>
             <td><?= h($position_name) ?></td>
         	</tr>
         </table>

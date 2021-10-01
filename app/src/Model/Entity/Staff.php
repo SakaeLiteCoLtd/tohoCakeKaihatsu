@@ -9,15 +9,15 @@ use Cake\ORM\Entity;
  * @property int $id
  * @property int $factory_id
  * @property int|null $department_id
- * @property int|null $occupation_id
  * @property int|null $position_id
+ * @property string $staff_code
  * @property string $name
  * @property int $sex
  * @property string|null $mail
  * @property string|null $tel
  * @property string|null $address
- * @property \Cake\I18n\FrozenDate|null $birth
- * @property \Cake\I18n\FrozenDate|null $date_start
+ * @property \Cake\I18n\FrozenDate $birth
+ * @property \Cake\I18n\FrozenDate $date_start
  * @property \Cake\I18n\FrozenDate|null $date_finish
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at
@@ -25,12 +25,14 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime|null $updated_at
  * @property int|null $updated_staff
  *
- * @property \App\Model\Entity\factory $factory
+ * @property \App\Model\Entity\Factory[] $factories
  * @property \App\Model\Entity\Department $department
- * @property \App\Model\Entity\Occupation $occupation
  * @property \App\Model\Entity\Position $position
+ * @property \App\Model\Entity\InspectionDataResultParent[] $inspection_data_result_parents
+ * @property \App\Model\Entity\LoginStaff[] $login_staffs
  * @property \App\Model\Entity\StaffAbility[] $staff_abilities
  * @property \App\Model\Entity\User[] $users
+ * @property \App\Model\Entity\不使用productMaterialLotNumber[] $不使用product_material_lot_numbers
  */
 class Staff extends Entity
 {
@@ -47,8 +49,8 @@ class Staff extends Entity
     protected $_accessible = [
         'factory_id' => true,
         'department_id' => true,
-        'occupation_id' => true,
         'position_id' => true,
+        'staff_code' => true,
         'name' => true,
         'sex' => true,
         'mail' => true,
@@ -62,11 +64,13 @@ class Staff extends Entity
         'created_staff' => true,
         'updated_at' => true,
         'updated_staff' => true,
-        'factory' => true,
+        'factories' => true,
         'department' => true,
-        'occupation' => true,
         'position' => true,
+        'inspection_data_result_parents' => true,
+        'login_staffs' => true,
         'staff_abilities' => true,
-        'users' => true
+        'users' => true,
+        '不使用product_material_lot_numbers' => true
     ];
 }

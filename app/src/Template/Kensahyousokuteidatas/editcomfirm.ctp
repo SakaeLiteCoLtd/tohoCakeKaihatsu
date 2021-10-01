@@ -94,7 +94,7 @@ $mes = "";
 
 </tr>
 <tr>
-  <td>検査機</td>
+  <td>検査器具</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
       <td><?= h(${"measuring_instrument".$i}) ?></td>

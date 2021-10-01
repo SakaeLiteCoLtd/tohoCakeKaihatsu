@@ -39,7 +39,7 @@ echo $this->Html->css('index');
                 <td><?= h($occupation->factory->name) ?></td>
                 <td><?= h($occupation->occupation) ?></td>
                 <td class="actions">
-                  <?= $this->Html->link(__('詳細'), ['action' => 'detail', $occupation->id]) ?>
+                  <?= $this->Html->link(__('編集'), ['action' => 'detail', $occupation->id]) ?>
                 </td>
             </tr>
             <?php

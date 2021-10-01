@@ -21,13 +21,9 @@ class htmlstaffmenu extends AppController
                           "<br><br>\n".
                           "<font size='4'>　・</font><a href='/departments/index' /><font size='4' color=black>部署一覧</font></a>\n".
                           "<br><br>\n".
-                          "<font size='4'>　・</font><a href='/positions/addform' /><font size='4' color=black>役職新規登録</font></a>\n".
+                          "<font size='4'>　・</font><a href='/positions/addform' /><font size='4' color=black>職種新規登録</font></a>\n".
                           "<br><br>\n".
-                          "<font size='4'>　・</font><a href='/positions/index' /><font size='4' color=black>役職一覧</font></a>\n".
-                          "<br><br>\n".
-                          "<font size='4'>　・</font><a href='/occupations/addform' /><font size='4' color=black>職種新規登録</font></a>\n".
-                          "<br><br>\n".
-                          "<font size='4'>　・</font><a href='/occupations/index' /><font size='4' color=black>職種一覧</font></a>\n".
+                          "<font size='4'>　・</font><a href='/positions/index' /><font size='4' color=black>職種一覧</font></a>\n".
                           "<br><br>\n".
                           "<font size='4'>　・</font><a href='/groups/addpre' /><font size='4' color=black>グループ新規登録</font></a>\n".
                           "<br><br>\n".

@@ -41,12 +41,12 @@ echo $this->Html->css('kensahyou');
 
 <br>
  <div align="center"><font color="red" size="3"><?= __($mess) ?></font></div>
- <div align="center"><font size="3"><?= __("データ登録者の社員コードとパスワードを入力してください。") ?></font></div>
+ <div align="center"><font size="3"><?= __("データ登録者のユーザーIDとパスワードを入力してください。") ?></font></div>
 <br>
 <table align="center">
   <tbody class="login">
     <tr height="45">
-      <td width="150"><strong>社員コード</strong></td>
+      <td width="150"><strong>ユーザーID</strong></td>
       <td class="login" width="200"><?= $this->Form->control('user_code', array('type'=>'text', 'label'=>false, 'autofocus'=>true)) ?></td>
     </tr>
     <tr height="45">

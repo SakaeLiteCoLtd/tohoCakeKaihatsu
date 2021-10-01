@@ -27,7 +27,7 @@ echo $this->Html->css('index');
         <thead>
           <tr>
             <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
-              <th scope="col" style='width:200'><?= $this->Paginator->sort('user_code', ['label'=>"社員コード"]) ?></th>
+              <th scope="col" style='width:200'><?= $this->Paginator->sort('user_code', ['label'=>"ユーザーID"]) ?></th>
               <th scope="col" style='width:200'><?= $this->Paginator->sort('staff', ['label'=>"氏名"]) ?></th>
                 <th scope="col" class="actions" style='width:100'><?= __('') ?></th>
             </tr>
@@ -39,7 +39,7 @@ echo $this->Html->css('index');
               <td><?= h($user->user_code) ?></td>
               <td><?= h($user->staff->name) ?></td>
                 <td class="actions">
-                  <?= $this->Html->link(__('詳細'), ['action' => 'detail', $user->id]) ?>
+                  <?= $this->Html->link(__('編集'), ['action' => 'detail', $user->id]) ?>
                 </td>
             </tr>
             <?php

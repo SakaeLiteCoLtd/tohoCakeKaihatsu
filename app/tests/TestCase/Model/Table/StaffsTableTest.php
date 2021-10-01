@@ -24,13 +24,15 @@ class StaffsTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.staffs',
-        'app.offices',
-        'app.departments',
-        'app.occupations',
-        'app.positions',
-        'app.staff_abilities',
-        'app.users'
+        'app.Staffs',
+        'app.Factories',
+        'app.Departments',
+        'app.Positions',
+        'app.InspectionDataResultParents',
+        'app.LoginStaffs',
+        'app.StaffAbilities',
+        'app.Users',
+        'app.不使用productMaterialLotNumbers'
     ];
 
     /**
