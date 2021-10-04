@@ -30,12 +30,18 @@
 <?= $this->Form->control('birth', array('type'=>'hidden', 'value'=>$birth, 'label'=>false)) ?>
 <?= $this->Form->control('date_start', array('type'=>'hidden', 'value'=>$date_start, 'label'=>false)) ?>
 <?= $this->Form->control('date_finish', array('type'=>'hidden', 'value'=>$date_finish, 'label'=>false)) ?>
+<?= $this->Form->control('user_code', array('type'=>'hidden', 'value'=>$this->request->getData('user_code'), 'label'=>false)) ?>
+<?= $this->Form->control('staff_code', array('type'=>'hidden', 'value'=>$this->request->getData('staff_code'), 'label'=>false)) ?>
+<?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$this->request->getData('staff_id'), 'label'=>false)) ?>
+<?= $this->Form->control('super_user', array('type'=>'hidden', 'value'=>$this->request->getData('super_user'), 'label'=>false)) ?>
+<?= $this->Form->control('group_name', array('type'=>'hidden', 'value'=>$this->request->getData('group_name'), 'label'=>false)) ?>
+<?= $this->Form->control('password', array('type'=>'hidden', 'value'=>$this->request->getData('password'), 'label'=>false)) ?>
 <br><br><br>
 
 <nav class="sample non-sample">
     <?= $this->Form->create($Staffs) ?>
     <fieldset>
-      <legend><strong style="font-size: 15pt; color:red"><?= __('スタッフ情報編集') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('メンバー情報編集') ?></strong></legend>
       <br>
         <table align="center">
           <tbody class='sample non-sample'>
@@ -43,6 +49,14 @@
           </tbody>
         </table>
         <br>
+        <table>
+          <tr>
+            <td width="280"><strong>工場・営業所</strong></td>
+        	</tr>
+          <tr>
+            <td><?= h($factory_name) ?></td>
+        	</tr>
+        </table>
         <table>
           <tr>
             <td width="280"><strong>氏名</strong></td>
@@ -55,19 +69,11 @@
         </table>
         <table>
           <tr>
-            <td width="280"><strong>工場・営業所</strong></td>
-            <td width="280"><strong>部署</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($factory_name) ?></td>
-            <td><?= h($department_name) ?></td>
-        	</tr>
-        </table>
-        <table>
-          <tr>
+          <td width="280"><strong>部署</strong></td>
             <td width="280"><strong>職種</strong></td>
         	</tr>
           <tr>
+          <td><?= h($department_name) ?></td>
             <td><?= h($position_name) ?></td>
         	</tr>
         </table>
@@ -101,6 +107,27 @@
             <td><?= h($date_finish) ?></td>
         	</tr>
         </table>
+        <table>
+          <tr>
+          <td width="280"><strong>ユーザーID</strong></td>
+          <td width="280"><strong>メンバーコード</strong></td>
+        	</tr>
+          <tr>
+          <td><?= h($this->request->getData('user_code')) ?></td>
+          <td><?= h($this->request->getData('staff_code')) ?></td>
+        	</tr>
+        </table>
+        <table>
+          <tr>
+            <td width="280"><strong>グループ</strong></td>
+            <td width="280"><strong>パスワード</strong></td>
+        	</tr>
+          <tr>
+            <td><?= h($this->request->getData('group_name')) ?></td>
+            <td><?= __("****") ?></td>
+        	</tr>
+        </table>
+
     </fieldset>
 
     <table>

@@ -6,6 +6,7 @@ use Cake\Datasource\ConnectionManager;//トランザクション
 use Cake\Core\Exception\Exception;//トランザクション
 use Cake\Core\Configure;//トランザクション
 use Cake\ORM\TableRegistry;//独立したテーブルを扱う
+use Cake\Auth\DefaultPasswordHasher;//パスワードの更新時のハッシュ化
 
 class StaffsController extends AppController
 {
@@ -13,6 +14,9 @@ class StaffsController extends AppController
       public function initialize()
     {
      parent::initialize();
+     $this->Staffs = TableRegistry::get('Staffs');
+     $this->Users = TableRegistry::get('Users');
+     $this->StaffAbilities = TableRegistry::get('StaffAbilities');
      $this->Factories = TableRegistry::get('Factories');
      $this->Departments = TableRegistry::get('Departments');
      $this->Positions = TableRegistry::get('Positions');
@@ -89,10 +93,12 @@ class StaffsController extends AppController
       $this->set('id', $id);
 
       $Staffs = $this->Staffs->find()->contain(["Factories", "Departments", "Positions"])
-      ->where(['Staffs.id' => $id])->toArray();
+      ->where(['Staffs.id' => $id, 'Staffs.delete_flag' => 0])->toArray();
 
       $name = $Staffs[0]["name"];
       $this->set('name', $name);
+      $staff_code = $Staffs[0]["staff_code"];
+      $this->set('staff_code', $staff_code);
       $tel = $Staffs[0]["tel"];
       $this->set('tel', $tel);
       $mail = $Staffs[0]["mail"];
@@ -129,14 +135,6 @@ class StaffsController extends AppController
         $this->set('department_name', $department_name);
       }
 
-      if($Staffs[0]["occupation"]['id'] >= 0){
-        $occupation_name = $Staffs[0]["occupation"]['occupation'];
-        $this->set('occupation_name', $occupation_name);
-      }else{
-        $occupation_name = "";
-        $this->set('occupation_name', $occupation_name);
-      }
-
       if($Staffs[0]["position"]['id'] >= 0){
         $position_name = $Staffs[0]["position"]['position'];
         $this->set('position_name', $position_name);
@@ -145,31 +143,18 @@ class StaffsController extends AppController
         $this->set('position_name', $position_name);
       }
 
+      $Users = $this->Users->find()
+      ->where(['staff_id' => $id, 'delete_flag' => 0])->toArray();
+
+      $user_code = $Users[0]["user_code"];
+      $this->set('user_code', $user_code);
+      $group_name = $Users[0]["group_name"];
+      $this->set('group_name', $group_name);
+      $staffhyouji = $Users[0]["staff"]['name'];
+      $this->set('staffhyouji', $staffhyouji);
+
     }
 /*
-
-/*
-    public function top()
-    {
-      return $this->redirect(
-       ['controller' => 'Startmenus', 'action' => 'menu']
-      );
-    }
-
-    public function logout()
-    {
-      return $this->redirect($this->Auth->logout());
-    }
-
-    public function view($id = null)
-    {
-        $staff = $this->Staffs->get($id, [
-            'contain' => ['Factories', 'Departments', 'Positions', 'StaffAbilities', 'Users']
-        ]);
-
-        $this->set('staff', $staff);
-    }
-
     public function addmoto()
     {
         $staff = $this->Staffs->newEntity();
@@ -211,6 +196,16 @@ class StaffsController extends AppController
         $positions[] = array($value->id=>$value->position);
       }
       $this->set('positions', $positions);
+
+      $Groups = $this->Groups->find()
+      ->where(['delete_flag' => 0])->toArray();
+
+      $Groupnames = array();
+      for($k=0; $k<count($Groups); $k++){
+        $Groupnames = array_merge($Groupnames,array($Groups[$k]['name_group']=>$Groups[$k]['name_group']));
+      }
+      $Groupnames = array_unique($Groupnames);
+      $this->set('Groupnames', $Groupnames);
 
     }
 
@@ -331,9 +326,9 @@ class StaffsController extends AppController
       $arrtourokustaff = [
         'factory_id' => $data["factory_id"],
         'department_id' => $data["department_id"],
-        'occupation_id' => $data["occupation_id"],
         'position_id' => $data["position_id"],
         'name' => $data["name"],
+        'staff_code' => $data["staff_code"],
         'sex' => $data["sex"],
         'mail' => $data["mail"],
         'tel' => $data["tel"],
@@ -357,6 +352,55 @@ class StaffsController extends AppController
       try {//トランザクション4
         if ($this->Staffs->save($Staffs)) {
 
+          $Staffs = $this->Staffs->find()
+          ->where(['name' => $data["name"], 'delete_flag' => 0])->order(["id"=>"DESC"])->toArray();
+
+            $arrtourokuuser = array();
+            $arrtourokuuser = [
+              'user_code' => $data["user_code"],
+              'password' => $data["password"],
+              'staff_id' => $Staffs[0]["id"],
+              'super_user' => 0,
+              'group_name' => $data["group_name"],
+              'delete_flag' => 0,
+              'created_at' => date("Y-m-d H:i:s"),
+              'created_staff' => $staff_id
+            ];
+
+            $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
+            ->where(['Groups.name_group' => $data["group_name"], 'Groups.delete_flag' => 0])->order(["menu_id"=>"ASC"])->toArray();
+
+            $arrMenuids = array();
+            for($k=0; $k<count($Groups); $k++){
+
+              $StaffAbilities = $this->StaffAbilities->find()
+              ->where(['staff_id' => $Staffs[0]["id"], 'menu_id' => $Groups[$k]['menu_id'], 'delete_flag' => 0])->toArray();
+
+              if(count($StaffAbilities) < 1){
+                $arrMenuids[] = array(
+                  'staff_id' => $Staffs[0]["id"],
+                  'menu_id' => $Groups[$k]['menu_id'],
+                  'delete_flag' => 0,
+                  'created_at' => date("Y-m-d H:i:s"),
+                  'created_staff' => $staff_id
+                );
+              }
+
+            }
+/*
+            echo "<pre>";
+            print_r($arrtourokuuser);
+            echo "</pre>";
+            echo "<pre>";
+            print_r($arrMenuids);
+            echo "</pre>";
+*/
+          $Users = $this->Users->patchEntity($this->Users->newEntity(), $arrtourokuuser);
+          $this->Users->save($Users);
+
+          $StaffAbilities = $this->StaffAbilities->patchEntities($this->StaffAbilities->newEntity(), $arrMenuids);
+          $this->StaffAbilities->saveMany($StaffAbilities);
+
           $connection->commit();// コミット5
           $mes = "以下のように登録されました。";
           $this->set('mes',$mes);
@@ -374,7 +418,7 @@ class StaffsController extends AppController
       //ロールバック8
         $connection->rollback();//トランザクション9
       }//トランザクション10
-
+      
     }
 
     public function editform()
@@ -393,6 +437,13 @@ class StaffsController extends AppController
       $Factories = $this->Staffs->Factories->find('list', ['limit' => 200]);
       $this->set(compact('Factories'));
 
+      $Users = $this->Users->find()
+      ->where(['staff_id' => $id, 'delete_flag' => 0])->toArray();
+      $user_code = $Users[0]["user_code"];
+      $this->set('user_code', $user_code);
+      $group_name = $Users[0]["group_name"];
+      $this->set('group_name', $group_name);
+
       $Departments = $this->Departments->find()
       ->where(['delete_flag' => 0])->toArray();
       $departments = array();
@@ -408,6 +459,18 @@ class StaffsController extends AppController
         $positions[] = array($value->id=>$value->position);
       }
       $this->set('positions', $positions);
+
+      $Groups = $this->Groups->find()
+      ->where(['delete_flag' => 0])->toArray();
+
+      $Groupnames = array();
+      for($k=0; $k<count($Groups); $k++){
+        $Groupnames = array_merge($Groupnames,array($Groups[$k]['name_group']=>$Groups[$k]['name_group']));
+      }
+
+      $Groupnames = array_unique($Groupnames);
+      $this->set('Groupnames', $Groupnames);
+
     }
 
     public function editconfirm()
@@ -531,23 +594,29 @@ class StaffsController extends AppController
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $data['id']])->toArray();
+      $userId = $Staffs[0]['id'];
+
       $arrupdatestaff = array();
       $arrupdatestaff = [
-        'factory_id' => $data["factory_id"],
-        'department_id' => $data["department_id"],
-        'occupation_id' => $data["occupation_id"],
-        'position_id' => $data["position_id"],
-        'name' => $data["name"],
-        'sex' => $data["sex"],
-        'mail' => $data["mail"],
-        'tel' => $data["tel"],
-        'address' => $data["address"],
-        'birth' => $data["birth"],
-        'date_start' => $data["date_start"],
-        'date_finish' => $data["date_finish"],
-        'delete_flag' => 0,
-        'created_at' => date("Y-m-d H:i:s"),
-        'created_staff' => $staff_id
+        'factory_id' => $Staffs[0]["factory_id"],
+        'department_id' => $Staffs[0]["department_id"],
+        'position_id' => $Staffs[0]["position_id"],
+        'name' => $Staffs[0]["name"],
+        'staff_code' => $Staffs[0]["staff_code"],
+        'sex' => $Staffs[0]["sex"],
+        'mail' => $Staffs[0]["mail"],
+        'tel' => $Staffs[0]["tel"],
+        'address' => $Staffs[0]["address"],
+        'birth' => $Staffs[0]["birth"],
+        'date_start' => $Staffs[0]["date_start"],
+        'date_finish' => $Staffs[0]["date_finish"],
+        'delete_flag' => 1,
+        'created_at' => $Staffs[0]["created_at"]->format("Y-m-d H:i:s"),
+        'created_staff' => $Staffs[0]["created_staff"],
+        'updated_at' => date("Y-m-d H:i:s"),
+        'updated_staff' => $staff_id
       ];
 
       if(strlen($arrupdatestaff["birth"]) < 1){
@@ -567,10 +636,58 @@ class StaffsController extends AppController
       }else{
         $updatedate_finish = $arrupdatestaff["date_finish"];
       }
+
+      $makepassword = new DefaultPasswordHasher();
+      $password = $makepassword->hash($data["password"]);
+
+      $Users = $this->Users->find()
+      ->where(['staff_id' => $data['id'], 'delete_flag' => 0])->toArray();
+      $userId = $Users[0]['id'];
+
+      $arrupdateuser = array();
+      $arrupdateuser = [
+        'user_code' => $Users[0]["user_code"],
+        'password' => $Users[0]["password"],
+        'staff_id' => $Users[0]["staff_id"],
+        'super_user' => 0,
+        'group_name' => $Users[0]["group_name"],
+        'delete_flag' => 1,
+        'created_at' => $Users[0]["created_at"]->format("Y-m-d H:i:s"),
+        'created_staff' => $Users[0]["created_staff"],
+        'updated_at' => date("Y-m-d H:i:s"),
+        'updated_staff' => $staff_id
+      ];
+
+      $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
+      ->where(['Groups.name_group' => $data["group_name"], 'Groups.delete_flag' => 0])
+      ->order(["menu_id"=>"ASC"])->toArray();
+
+      $arrMenuids = array();
+      for($k=0; $k<count($Groups); $k++){
+
+        $arrMenuids[] = array(
+          'staff_id' => $data["staff_id"],
+          'menu_id' => $Groups[$k]['menu_id'],
+          'delete_flag' => 0,
+          'created_at' => date("Y-m-d H:i:s"),
+          'created_staff' => $staff_id
+        );
+
+      }
 /*
       echo "<pre>";
-      print_r(strlen($arrupdatestaff["date_start"]));
+      print_r(strlen($data["date_start"]));
       echo "</pre>";
+      
+      if(strlen($data["date_finish"]) > 0){
+        echo "<pre>";
+        print_r("1");
+        echo "</pre>";
+        }else{
+          echo "<pre>";
+          print_r("2");
+          echo "</pre>";
+        }
 */
       $Staffs = $this->Staffs->patchEntity($this->Staffs->newEntity(), $arrupdatestaff);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -579,16 +696,73 @@ class StaffsController extends AppController
        try {//トランザクション4
          if ($this->Staffs->save($Staffs)) {
 
-         $this->Staffs->updateAll(
-           [ 'delete_flag' => 1,
+        if(strlen($data["date_finish"]) > 0){
+          $this->Staffs->updateAll(
+            [  'factory_id' => $data["factory_id"],
+               'department_id' => $data["department_id"],
+               'position_id' => $data["position_id"],
+               'name' => $data["name"],
+               'staff_code' => $data["staff_code"],
+               'sex' => $data["sex"],
+               'mail' => $data["mail"],
+               'tel' => $data["tel"],
+               'address' => $data["address"],
+               'birth' => $data["birth"],
+               'date_start' => $data["date_start"],
+               'date_finish' => $data["date_finish"],
+               'delete_flag' => 0,
+               'updated_at' => date('Y-m-d H:i:s'),
+               'updated_staff' => $staff_id],
+            ['id'  => $data['id']]);
+         }else{
+          $this->Staffs->updateAll(
+            [  'factory_id' => $data["factory_id"],
+               'department_id' => $data["department_id"],
+               'position_id' => $data["position_id"],
+               'name' => $data["name"],
+               'staff_code' => $data["staff_code"],
+               'sex' => $data["sex"],
+               'mail' => $data["mail"],
+               'tel' => $data["tel"],
+               'address' => $data["address"],
+               'birth' => $data["birth"],
+               'date_start' => $data["date_start"],
+               'delete_flag' => 0,
+               'updated_at' => date('Y-m-d H:i:s'),
+               'updated_staff' => $staff_id],
+            ['id'  => $data['id']]);
+         }
+
+           $Users = $this->Users->patchEntity($this->Users->newEntity(), $arrupdateuser);
+           $this->Users->save($Users);
+
+           $this->Users->updateAll(
+            [ 
+             'user_code' => $data["user_code"],
+             'password' => $password,
+             'staff_id' => $data["staff_id"],
+             'super_user' => 0,
+             'group_name' => $data["group_name"],
+             'delete_flag' => 0,
+             'created_at' => date("Y-m-d H:i:s"),
+             'created_staff' => $staff_id,
              'updated_at' => date('Y-m-d H:i:s'),
              'updated_staff' => $staff_id],
-           ['id'  => $data['id']]);
-
-         $mes = "※下記のように更新されました";
-         $this->set('mes',$mes);
-         $connection->commit();// コミット5
-
+            ['id'  => $userId]);
+ 
+            $this->StaffAbilities->updateAll(
+              [ 'delete_flag' => 1,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_staff' => $staff_id],
+              ['staff_id'  => $data["staff_id"]]);
+ 
+              $StaffAbilities = $this->StaffAbilities->patchEntities($this->StaffAbilities->newEntity(), $arrMenuids);
+              $this->StaffAbilities->saveMany($StaffAbilities);
+ 
+              $mes = "※下記のように更新されました";
+              $this->set('mes',$mes);
+              $connection->commit();// コミット5
+     
        } else {
 
          $mes = "※更新されませんでした";
@@ -621,6 +795,8 @@ class StaffsController extends AppController
 
       $name = $Staffs[0]["name"];
       $this->set('name', $name);
+      $staff_code = $Staffs[0]["staff_code"];
+      $this->set('staff_code', $staff_code);
       $tel = $Staffs[0]["tel"];
       $this->set('tel', $tel);
       $mail = $Staffs[0]["mail"];
@@ -672,6 +848,17 @@ class StaffsController extends AppController
         $occupation_name = "";
         $this->set('position_name', $position_name);
       }
+
+      $Users = $this->Users->find()
+      ->where(['staff_id' => $id, 'delete_flag' => 0])->toArray();
+
+      $user_code = $Users[0]["user_code"];
+      $this->set('user_code', $user_code);
+      $group_name = $Users[0]["group_name"];
+      $this->set('group_name', $group_name);
+      $staffhyouji = $Users[0]["staff"]['name'];
+      $this->set('staffhyouji', $staffhyouji);
+
     }
 
     public function deletedo()
@@ -689,6 +876,8 @@ class StaffsController extends AppController
 
       $name = $Staffs[0]["name"];
       $this->set('name', $name);
+      $staff_code = $Staffs[0]["staff_code"];
+      $this->set('staff_code', $staff_code);
       $tel = $Staffs[0]["tel"];
       $this->set('tel', $tel);
       $mail = $Staffs[0]["mail"];
@@ -740,6 +929,16 @@ class StaffsController extends AppController
         $occupation_name = "";
         $this->set('position_name', $position_name);
       }
+
+      $Users = $this->Users->find()
+      ->where(['staff_id' => $data["id"], 'delete_flag' => 0])->toArray();
+
+      $user_code = $Users[0]["user_code"];
+      $this->set('user_code', $user_code);
+      $group_name = $Users[0]["group_name"];
+      $this->set('group_name', $group_name);
+      $staffhyouji = $Users[0]["staff"]['name'];
+      $this->set('staffhyouji', $staffhyouji);
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
@@ -764,6 +963,19 @@ class StaffsController extends AppController
            ['id'  => $arrdeletestaff['id']]
          )){
 
+          $this->Users->updateAll(
+            [ 'delete_flag' => 1,
+              'updated_at' => date('Y-m-d H:i:s'),
+              'updated_staff' => $staff_id],
+            ['staff_id'  => $arrdeletestaff['id']]
+          );
+ 
+            $this->StaffAbilities->updateAll(
+              [ 'delete_flag' => 1,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_staff' => $staff_id],
+              ['staff_id'  => $arrdeletestaff['id']]);
+ 
          $mes = "※以下のデータが削除されました。";
          $this->set('mes',$mes);
          $connection->commit();// コミット5

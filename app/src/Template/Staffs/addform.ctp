@@ -26,7 +26,7 @@
 <nav class="sample non-sample">
   <?= $this->Form->create($Staffs, ['url' => ['action' => 'addcomfirm']]) ?>
     <fieldset>
-        <legend><strong style="font-size: 15pt; color:red"><?= __('スタッフ新規登録') ?></strong></legend>
+        <legend><strong style="font-size: 15pt; color:red"><?= __('メンバー新規登録') ?></strong></legend>
         <br>
         <table>
           <tbody class='sample non-sample'>
@@ -35,6 +35,14 @@
         </table>
         <br>
 
+        <table>
+          <tr>
+            <td width="280"><strong>工場・営業所</strong></td>
+        	</tr>
+          <tr>
+            <td><?= $this->Form->control('factory_id', ['options' => $Factories, 'label'=>false]) ?></td>
+        	</tr>
+        </table>
         <table>
           <tr>
             <td width="280"><strong>氏名</strong></td>
@@ -47,19 +55,11 @@
         </table>
         <table>
           <tr>
-            <td width="280"><strong>工場・営業所</strong></td>
-            <td width="280"><strong>部署</strong></td>
-        	</tr>
-          <tr>
-            <td><?= $this->Form->control('factory_id', ['options' => $Factories, 'label'=>false]) ?></td>
-            <td><?= $this->Form->control('department_id', ['options' => $departments, 'label'=>false, 'empty' => true]) ?></td>
-        	</tr>
-        </table>
-        <table>
-          <tr>
+          <td width="280"><strong>部署</strong></td>
             <td width="280"><strong>職種</strong></td>
         	</tr>
           <tr>
+          <td><?= $this->Form->control('department_id', ['options' => $departments, 'label'=>false, 'empty' => true]) ?></td>
             <td><?= $this->Form->control('position_id', ['options' => $positions, 'label'=>false, 'empty' => true]) ?></td>
         	</tr>
         </table>
@@ -87,8 +87,28 @@
             <td width="280"><strong>入社日</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->input("birth", array('type' => 'date', 'minYear' => date('Y') - 70, 'monthNames' => false, 'label'=>false, 'empty' => true)); ?></td>
-            <td><?= $this->Form->input("date_start", array('type' => 'date', 'monthNames' => false, 'label'=>false, 'empty' => true)); ?></td>
+            <td><?= $this->Form->input("birth", array('type' => 'date', 'minYear' => date('Y') - 80, 'monthNames' => false, 'label'=>false, 'empty' => true)); ?></td>
+            <td><?= $this->Form->input("date_start", array('type' => 'date', 'minYear' => date('Y') - 50, 'monthNames' => false, 'label'=>false, 'empty' => true)); ?></td>
+        	</tr>
+        </table>
+        <table>
+          <tr>
+          <td width="280"><strong>ユーザーID</strong></td>
+          <td width="280"><strong>メンバーコード</strong></td>
+        	</tr>
+          <tr>
+          <td><?= $this->Form->control('user_code', array('type'=>'text', 'label'=>false, 'required'=>true)) ?></td>
+          <td><?= $this->Form->control('staff_code', array('type'=>'text', 'label'=>false, 'required'=>true)) ?></td>
+        	</tr>
+        </table>
+        <table>
+          <tr>
+            <td width="280"><strong>グループ</strong></td>
+            <td width="280"><strong>パスワード</strong></td>
+        	</tr>
+          <tr>
+            <td><?= $this->Form->control('group_name', ['options' => $Groupnames, 'label'=>false, "empty"=>"選択してください", 'required'=>true]) ?></td>
+            <td><?= $this->Form->control('password', array('type'=>'password', 'label'=>false, 'required'=>true, 'size'=>20)) ?></td>
         	</tr>
         </table>
 
@@ -102,4 +122,7 @@
       </tbody>
     </table>
     <?= $this->Form->end() ?>
+
+    <br><br><br>
+
   </nav>

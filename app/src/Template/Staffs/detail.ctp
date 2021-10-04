@@ -29,6 +29,14 @@
         <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('詳細表示') ?></strong></td></tr>
       </tbody>
     </table>
+    <table>
+          <tr>
+            <td width="280"><strong>工場・営業所</strong></td>
+        	</tr>
+          <tr>
+            <td><?= h($factory_name) ?></td>
+        	</tr>
+        </table>
         <table>
           <tr>
             <td width="280"><strong>氏名</strong></td>
@@ -41,19 +49,11 @@
         </table>
         <table>
           <tr>
-            <td width="280"><strong>工場・営業所</strong></td>
-            <td width="280"><strong>部署</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($factory_name) ?></td>
-            <td><?= h($department_name) ?></td>
-        	</tr>
-        </table>
-        <table>
-          <tr>
+          <td width="280"><strong>部署</strong></td>
             <td width="280"><strong>職種</strong></td>
         	</tr>
           <tr>
+          <td><?= h($department_name) ?></td>
             <td><?= h($position_name) ?></td>
         	</tr>
         </table>
@@ -93,6 +93,26 @@
             <td><?= h($date_finish) ?></td>
         	</tr>
         </table>
+        <table>
+          <tr>
+            <td width="280"><strong>ユーザーID</strong></td>
+            <td width="280"><strong>メンバーコード</strong></td>
+        	</tr>
+          <tr>
+            <td><?= h($user_code) ?></td>
+            <td><?= h($staff_code) ?></td>
+        	</tr>
+        </table>
+    <table>
+      <tr>
+        <td width="280"><strong>グループ</strong></td>
+        <td width="280"><strong>パスワード</strong></td>
+      </tr>
+      <tr>
+        <td><?= h($group_name) ?></td>
+        <td><?= __("****") ?></td>
+      </tr>
+    </table>
 
     </fieldset>
 

@@ -20,7 +20,7 @@
 <nav class="sample non-sample">
     <?= $this->Form->create($Staffs) ?>
     <fieldset>
-      <legend><strong style="font-size: 15pt; color:red"><?= __('スタッフ情報編集') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('メンバー情報編集') ?></strong></legend>
       <br>
         <table align="center">
           <tbody class='sample non-sample'>
@@ -42,18 +42,18 @@
         <table>
           <tr>
             <td width="280"><strong>工場・営業所</strong></td>
-            <td width="280"><strong>部署</strong></td>
         	</tr>
           <tr>
             <td><?= h($factory_name) ?></td>
-            <td><?= h($department_name) ?></td>
         	</tr>
         </table>
         <table>
           <tr>
+          <td width="280"><strong>部署</strong></td>
             <td width="280"><strong>職種</strong></td>
         	</tr>
           <tr>
+          <td><?= h($department_name) ?></td>
             <td><?= h($position_name) ?></td>
         	</tr>
         </table>
@@ -87,13 +87,33 @@
             <td><?= h($date_finish) ?></td>
         	</tr>
         </table>
+        <table>
+          <tr>
+          <td width="280"><strong>ユーザーID</strong></td>
+          <td width="280"><strong>メンバーコード</strong></td>
+        	</tr>
+          <tr>
+          <td><?= h($this->request->getData('user_code')) ?></td>
+          <td><?= h($this->request->getData('staff_code')) ?></td>
+        	</tr>
+        </table>
+        <table>
+          <tr>
+            <td width="280"><strong>グループ</strong></td>
+            <td width="280"><strong>パスワード</strong></td>
+        	</tr>
+          <tr>
+            <td><?= h($this->request->getData('group_name')) ?></td>
+            <td><?= __("****") ?></td>
+        	</tr>
+        </table>
 
     </fieldset>
 
     <table align="center">
       <tbody class='sample non-sample'>
         <tr>
-          <td style="border-style: none;"><div align="center"><?= $this->Form->submit('スタッフメニュートップへ戻る', array('name' => 'top')); ?></div></td>
+          <td style="border-style: none;"><div align="center"><?= $this->Form->submit('メンバーメニュートップへ戻る', array('name' => 'top')); ?></div></td>
         </tr>
       </tbody>
     </table>
