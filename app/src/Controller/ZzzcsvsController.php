@@ -20,6 +20,17 @@ class ZzzcsvsController extends AppController
     "torikomiproduct","torikomimaterialsuppliers","torikomiMaterials"]);
   }
 
+  public function initialize()
+  {
+   parent::initialize();
+   $this->MaterialTypes = TableRegistry::get('MaterialTypes');
+   $this->Materials = TableRegistry::get('Materials');
+   $this->MaterialSuppliers = TableRegistry::get('MaterialSuppliers');
+   $this->Products = TableRegistry::get('Products');
+   $this->Customers = TableRegistry::get('Customers');
+   $this->Factories = TableRegistry::get('Factories');
+  }
+
       public function jidoutest()//http://localhost:5050/Zzzcsvs/jidoutest
     {
       //自動入力のテスト
@@ -68,16 +79,24 @@ class ZzzcsvsController extends AppController
       $count_length = 2;
       $this->set('count_length',$count_length);
 
-    }
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
 
-    public function initialize()
-    {
-     parent::initialize();
-     $this->MaterialTypes = TableRegistry::get('MaterialTypes');
-     $this->Materials = TableRegistry::get('Materials');
-     $this->MaterialSuppliers = TableRegistry::get('MaterialSuppliers');
-     $this->Products = TableRegistry::get('Products');
-     $this->Customers = TableRegistry::get('Customers');
+      $this->set('countFactories', count($Factories));
+      for($i=0; $i<count($Factories); $i++){
+
+        $this->set('factory_id'.$i, $Factories[$i]["id"]);
+        echo "<pre>";
+        print_r($Factories[$i]["id"]);
+        echo "</pre>";
+
+      }
+
     }
 
     public function torikomimaterials()//http://localhost:5050/Zzzcsvs/torikomimaterials

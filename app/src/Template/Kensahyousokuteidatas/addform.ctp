@@ -38,6 +38,7 @@ setInterval('showClock1()',1000);
 </script>
 
 <?php
+
 $j = 1;
 $num_length = json_encode($num_length);//jsに配列を受け渡すために変換
 $count_length = json_encode($count_length);//jsに配列を受け渡すために変換

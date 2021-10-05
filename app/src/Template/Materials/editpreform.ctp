@@ -20,22 +20,43 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+
 <?php
-$arrMaterials_name_list = json_encode($arrMaterials_name_list);//jsに配列を受け渡すために変換
+      for($i=0; $i<$countFactories; $i++){
+        ${"factory_id".$i} = json_encode(${"factory_id".$i});//jsに配列を受け渡すために変換
+        ${"arrMaterials_name_list".$i} = json_encode(${"arrMaterials_name_list".$i});//jsに配列を受け渡すために変換
+      }
 ?>
+
+<?php for($i=0; $i<$countFactories; $i++): ?>
 
 <script>
 
-$(function() {
-      // 入力補完候補の単語リスト
-      let wordlist = <?php echo $arrMaterials_name_list; ?>
-      // 入力補完を実施する要素に単語リストを設定
-      $("#Materials_name_list").autocomplete({
-        source: wordlist
-      });
-  });
+$(document).ready(function() {
+      $("#auto1").focusout(function() {
+        var inputNumber = $("#auto1").val();
+
+          if (inputNumber == <?php echo ${"factory_id".$i}; ?>) {
+     //       $("#auto2").text(inputNumber);
+
+            $(function() {
+                // 入力補完候補の単語リスト
+                let wordlist = <?php echo ${"arrMaterials_name_list".$i}; ?>
+                // 入力補完を実施する要素に単語リストを設定
+                $("#Materials_name_list").autocomplete({
+                  source: wordlist
+                });
+            });
+            
+          }
+
+    })
+});
 
 </script>
+
+<?php endfor;?>
+
 
 <?= $this->Form->create($materials, ['url' => ['action' => 'detail']]) ?>
 <br><br><br>
@@ -54,9 +75,17 @@ $(function() {
         </table>
         <br>
 
+        <table>
+        <tr>
+          <td><strong>工場名</strong></td>
+        </tr>
+        <tr>
+          <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
+        </tr>
+      </table>
       <table>
       <tr>
-        <td width="320"><strong>仕入品仕入先名</strong></td>
+        <td width="320"><strong>仕入品名</strong></td>
       </tr>
       <tr>
         <td>

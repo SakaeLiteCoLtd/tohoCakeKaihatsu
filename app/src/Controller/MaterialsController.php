@@ -33,7 +33,7 @@ class MaterialsController extends AppController
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
        $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "製品・仕入品", 'Groups.delete_flag' => 0])
+       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "業務メニュー", 'Groups.delete_flag' => 0])
        ->toArray();
 
        if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
@@ -79,6 +79,25 @@ class MaterialsController extends AppController
       }
       $this->set('arrFactories', $arrFactories);
 
+      $this->set('countFactories', count($Factories));
+      for($i=0; $i<count($Factories); $i++){
+
+        $this->set('factory_id'.$i, $Factories[$i]["id"]);
+
+        ${"Materials_name_list".$i} = $this->Materials->find()
+        ->where(['factory_id' => $Factories[$i]["id"], 'delete_flag' => 0])->toArray();
+  
+        ${"arrMaterials_name_list".$i} = array();
+        for($j=0; $j<count(${"Materials_name_list".$i}); $j++){
+          array_push(${"arrMaterials_name_list".$i},${"Materials_name_list".$i}[$j]["name"]);
+        }
+        ${"arrMaterials_name_list".$i} = array_unique(${"arrMaterials_name_list".$i});
+        ${"arrMaterials_name_list".$i} = array_values(${"arrMaterials_name_list".$i});
+  
+        $this->set('arrMaterials_name_list'.$i, ${"arrMaterials_name_list".$i});
+      }
+
+      /*
       $Materials_name_list = $this->Materials->find()
       ->where(['delete_flag' => 0])->toArray();
       $arrMaterials_name_list = array();
@@ -88,6 +107,7 @@ class MaterialsController extends AppController
       $arrMaterials_name_list = array_unique($arrMaterials_name_list);
       $arrMaterials_name_list = array_values($arrMaterials_name_list);
       $this->set('arrMaterials_name_list', $arrMaterials_name_list);
+      */
     }
 
     public function detail($id = null)
@@ -122,12 +142,16 @@ class MaterialsController extends AppController
 
       }elseif(isset($data["kensaku"])){
   
-        $Materials = $this->Materials->find()->where(['name' => $data['name']])->toArray();
+        $Materials = $this->Materials->find()->where(['name' => $data['name'], 'factory_id' => $data['factory_id']])->toArray();
 
         if(!isset($Materials[0])){
 
+          $Factories = $this->Factories->find()
+          ->where(['id' => $data['factory_id']])->toArray();
+          $factory_name = $Factories[0]['name'];
+    
           return $this->redirect(['action' => 'editpreform',
-          's' => ['mess' => "原料名：「".$data['name']."」は存在しません。"]]);
+          's' => ['mess' => "自社工場：".$factory_name."、原料名：「".$data['name']."」の仕入品は存在しません。"]]);
   
         }else{
           $id = $Materials[0]["id"];

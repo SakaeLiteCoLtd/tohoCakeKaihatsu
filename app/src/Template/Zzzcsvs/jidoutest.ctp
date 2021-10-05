@@ -88,18 +88,15 @@ $i = 0;
 <br>
 <table class="white">
 <tr><td width="280"><strong>自動補完テスト１</strong></td></tr>
-<td><?= $this->Form->input('name_menu1', array('type'=>'text', 'label'=>false, 'id'=>"auto1")) ?></td>
-
-<?php
-/*
+<td><?= $this->Form->input('name_menu1', array('type'=>'text', 'label'=>false, 'id'=>"aaauto1")) ?></td>
+<tr><td width="280"><strong>自動補完テスト２</strong></td></tr>
+<td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false, 'id'=>"auto1"]) ?></td>
 <tr><td width="280"><strong>同じ</strong></td></tr>
 <td><div id="auto2"></div></td>
 <tr><td width="280"><strong>違う</strong></td></tr>
 <td><div id="auto3"></div></td>
 <tr><td width="280"><strong>テスト</strong></td></tr>
 <td><?= h($i) ?></td>
-*/
-?>
 
 </table>
 <br>

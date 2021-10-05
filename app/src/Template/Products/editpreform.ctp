@@ -3,7 +3,7 @@
  use App\myClass\menulists\htmlproductmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
  $htmlproductmenu = new htmlproductmenu();
- $htmlproduct = $htmlproductmenu->productmenus();
+ $htmlproduct = $htmlproductmenu->productmenus($check_gyoumu);
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -15,27 +15,55 @@
 <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <?php
-$arrProduct_name_list = json_encode($arrProduct_name_list);//jsに配列を受け渡すために変換
+      for($i=0; $i<$countFactories; $i++){
+        ${"factory_id".$i} = json_encode(${"factory_id".$i});//jsに配列を受け渡すために変換
+        ${"arrProduct_name_list".$i} = json_encode(${"arrProduct_name_list".$i});//jsに配列を受け渡すために変換
+      }
 ?>
+
+<?php for($i=0; $i<$countFactories; $i++): ?>
 
 <script>
 
-$(function() {
-      // 入力補完候補の単語リスト
-      let wordlist = <?php echo $arrProduct_name_list; ?>
-      // 入力補完を実施する要素に単語リストを設定
-      $("#product_name_list").autocomplete({
-        source: wordlist
-      });
-  });
+$(document).ready(function() {
+      $("#auto1").focusout(function() {
+        var inputNumber = $("#auto1").val();
+
+          if (inputNumber == <?php echo ${"factory_id".$i}; ?>) {
+     //       $("#auto2").text(inputNumber);
+
+            $(function() {
+                // 入力補完候補の単語リスト
+                let wordlist = <?php echo ${"arrProduct_name_list".$i}; ?>
+                // 入力補完を実施する要素に単語リストを設定
+                $("#product_name_list").autocomplete({
+                  source: wordlist
+                });
+            });
+            
+          }
+
+    })
+});
 
 </script>
+
+<?php endfor;?>
 
 <?php
      echo $htmllogin;
 ?>
 <?php
      echo $htmlproduct;
+
+/*
+<table class="white">
+   <tr><td width="280"><strong>自動補完テスト１</strong></td></tr>
+   <td><?= $this->Form->input('name_menu1', array('type'=>'text', 'label'=>false, 'id'=>"aaauto1")) ?></td>
+   <tr><td width="280"><strong>てすと</strong></td></tr>
+   <td><div id="auto2"></div></td>
+</table>
+*/
 ?>
 
 <?= $this->Form->create($product, ['url' => ['action' => 'editsyousai']]) ?>
@@ -64,7 +92,7 @@ $(function() {
           <td><strong>工場名</strong></td>
         </tr>
         <tr>
-          <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>
+          <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
         </tr>
       </table>
 

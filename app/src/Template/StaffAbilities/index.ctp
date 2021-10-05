@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlstaffmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlstaffAbilitymenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlstaffmenu = new htmlstaffmenu();
- $htmlstaff = $htmlstaffmenu->Staffmenus();
+ $htmlstaffAbilitymenu = new htmlstaffAbilitymenu();
+ $htmlstaffAbility = $htmlstaffAbilitymenu->StaffAbilitymenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -13,7 +13,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlstaff;
+     echo $htmlstaffAbility;
 ?>
 
 <?php
@@ -22,7 +22,7 @@ echo $this->Html->css('index');
 ?>
 <br>
 <div class="staffAbilities index large-9 medium-8 columns content">
-  <h2><font color=red><?= __('スタッフ権限一覧') ?></font></h2>
+  <h2><font color=red><?= __('メンバー権限一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
           <tr bgcolor="#f0e68c">

@@ -65,6 +65,16 @@ class ImagesController extends AppController
       $this->set(compact('inspectionStandardSizeParents'));
     }
 
+    public function ichiran()
+    {
+      $this->paginate = [
+          'contain' => ['Products']
+      ];
+      $inspectionStandardSizeParents = $this
+      ->paginate($this->InspectionStandardSizeParents->find()->where(['InspectionStandardSizeParents.delete_flag' => 0]));
+      $this->set(compact('inspectionStandardSizeParents'));
+    }
+
     public function detail($id = null)
     {
       $inspectionStandardSizeParents = $this->InspectionStandardSizeParents->newEntity();
@@ -328,44 +338,21 @@ class ImagesController extends AppController
         $_SESSION['img_product_code'] = array();
         $this->set('product_code', $product_code);
 
+      }else{
+
+        $session = $this->request->getSession();
+        $_SESSION = $session->read();
+        $product_code = $_SESSION["img_product_code"];
+        $_SESSION['img_product_code'] = array();
+        $this->set('product_code', $product_code);
+
       }
+
       $ProductNs = $this->Products->find()
       ->where(['product_code' => $product_code])->toArray();
       $product_name = $ProductNs[0]["name"];
       $this->set('product_name',$product_name);
 
-/*
-      $Data=$this->request->query('s');
-      if(isset($Data["mess"])){
-        $mess = $Data["mess"];
-        $this->set('mess',$mess);
-
-        $session = $this->request->getSession();
-        $_SESSION = $session->read();
-        $product_code = $_SESSION["img_product_code"];
-  //      $_SESSION['img_product_code'] = array();
-        $this->set('product_code', $product_code);
-
-      }else{
-        $mess = "";
-        $this->set('mess',$mess);
-
-        $data = $this->request->getData();
-
-        $product_code = $data["product_code"];
-        $this->set('product_code', $product_code);
-      }
-
-      $htmlproductcheck = new htmlproductcheck();//クラスを使用
-      $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
-
-      if($arrayproductdate[0] === "no_product"){
-
-        return $this->redirect(['action' => 'addpre',
-        's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
-
-      }
-*/
       $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
       ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
@@ -376,6 +363,13 @@ class ImagesController extends AppController
         $mes = "";
         $this->set('mes',$mes);
       }
+
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      header('Expires:-1');
+      header('Cache-Control:');
+      header('Pragma:');
 
     }
 
@@ -393,7 +387,13 @@ class ImagesController extends AppController
       $product_name = $ProductNs[0]["name"];
       $this->set('product_name',$product_name);
 
-      $fileName =$_FILES['upfile']['tmp_name'];
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      $_SESSION['img_product_code'] = array();
+      $_SESSION['img_product_code'] = $product_code;
+
+      $fileName = $_FILES['upfile']['tmp_name'];
 
       if(substr($_FILES['upfile']["name"], -4) !== ".JPG"
       && substr($_FILES['upfile']["name"], -4) !== ".jpg"
@@ -410,10 +410,14 @@ class ImagesController extends AppController
         's' => ['mess' => "※拡張子が「.JPG」でないファイルが選択されました。"]]);
 
       }
+/*
+      echo "<pre>";
+      print_r($_FILES);
+      echo "</pre>";
+*/
+      if($_FILES['upfile']['error'] == 0){
 
-      if($_FILES['upfile']['size']>0){
-
-        if($_FILES['upfile']['size']>1000000){
+        if($_FILES['upfile']['size']>2000000){
 
           if(!isset($_SESSION)){
             session_start();
@@ -422,13 +426,48 @@ class ImagesController extends AppController
           $_SESSION['img_product_code'] = $product_code;
 
           return $this->redirect(['action' => 'addform',
-          's' => ['mess' => "画像サイズが大き過ぎます。"]]);
+          's' => ['mess' => "※画像サイズが大き過ぎます（アップロードできるサイズの上限は２MBです）"]]);
 
         }else{
 
-          move_uploaded_file($_FILES['upfile']["tmp_name"],"img/kensahyouimg/".$_FILES['upfile']["name"]);//フォルダは0777に設定する
+          if(move_uploaded_file($_FILES['upfile']["tmp_name"],"img/kensahyouimg/".$_FILES['upfile']["name"])){
+
+          }else{
+      
+            if(!isset($_SESSION)){
+              session_start();
+            }
+            $_SESSION['img_product_code'] = array();
+            $_SESSION['img_product_code'] = $product_code;
+  
+            return $this->redirect(['action' => 'addform',
+            's' => ['mess' => "※ファイルが読み込まれませんでした。"]]);
+      
+          }
 
         }
+
+      }elseif($_FILES['upfile']['error'] == 1){
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['img_product_code'] = array();
+        $_SESSION['img_product_code'] = $product_code;
+
+        return $this->redirect(['action' => 'addform',
+        's' => ['mess' => "※画像サイズが大き過ぎます（アップロードできるサイズの上限は２MBです）"]]);
+        
+      }else{
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['img_product_code'] = array();
+        $_SESSION['img_product_code'] = $product_code;
+
+        return $this->redirect(['action' => 'addform',
+        's' => ['mess' => "※ファイルが読み込まれませんでした。"]]);
 
       }
 
@@ -444,9 +483,8 @@ class ImagesController extends AppController
         $_SESSION['img_product_code'] = $product_code;
 
         return $this->redirect(['action' => 'addform',
-        's' => ['mess' => "ファイル名に半角スペースが含まれています。ファイル名に半角スペースを使用しないでください。"]]);
+        's' => ['mess' => "※ファイル名に半角スペースが含まれています。ファイル名に半角スペースを使用しないでください。"]]);
         }
-
         
 			$gif = "kensahyouimg/".$selectfilename;//ローカル
 			$this->set('gif',$gif);

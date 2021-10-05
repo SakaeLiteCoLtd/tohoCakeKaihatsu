@@ -55,18 +55,9 @@ $(function() {
         </table>
         <br>
 
-        <table>
-        <tr>
-          <td width="280"><strong>自社工場</strong></td>
-        </tr>
-        <tr>
-          <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>
-        </tr>
-      </table>
-
       <table>
       <tr>
-        <td width="320"><strong>得意先名</strong></td>
+        <td width="320"><strong>得意先名_部署（営業所）名</strong></td>
       </tr>
       <tr>
         <td>

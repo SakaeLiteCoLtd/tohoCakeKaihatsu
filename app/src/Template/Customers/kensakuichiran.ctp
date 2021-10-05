@@ -27,15 +27,17 @@
 
     <table>
           <tr>
-          <td width="280"><strong>得意先名</strong></td>
-          <td width="180"><strong>得意先コード</strong></td>
-          <td width="180"><strong>使用工場</strong></td>
+          <td width="250"><strong>得意先名</strong></td>
+          <td width="250"><strong>部署・営業所名</strong></td>
+          <td width="150"><strong>得意先コード</strong></td>
+          <td width="150"><strong>使用工場</strong></td>
         	</tr>
 
         <?php for($i=0; $i<count($Customers); $i++): ?>
 
           <tr>
           <td><?= h($Customers[$i]["name"]) ?></td>
+          <td><?= h($Customers[$i]["department"]) ?></td>
           <td><?= h($Customers[$i]["customer_code"]) ?></td>
           <td><?= h($Customers[$i]["factory"]["name"]) ?></td>
           </tr>

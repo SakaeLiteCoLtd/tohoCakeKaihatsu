@@ -186,22 +186,12 @@ class StartmenusController extends AppController
         }
 */
 
-        if($Groups[$k]['menu']['name_menu'] == "管理者メニュー"){
+        if($Groups[$k]['menu']['name_menu'] == "業務メニュー"){
 
           $arrMenus[] = $Groups[$k]['menu']['name_menu'];
           $arrController[] = "staffs";
 
-        }elseif($Groups[$k]['menu']['name_menu'] == "得意先・仕入先"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "customers";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "製品・仕入品"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "products";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "検査表・成形条件表"){
+        }elseif($Groups[$k]['menu']['name_menu'] == "製造メニュー"){
 
           $arrMenus[] = $Groups[$k]['menu']['name_menu'];
           $arrController[] = "Images";

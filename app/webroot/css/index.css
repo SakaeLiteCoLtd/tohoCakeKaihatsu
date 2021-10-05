@@ -5,6 +5,15 @@
  * 2. Prevent iOS text size adjust after orientation change, without disabling
  *    user zoom.
  */
+
+
+ .button {
+    padding : 12px 12px;   /* 余白*/
+    color: #333;
+    font-size: 18px;
+    background-color: #f0e68c;
+  }
+
  .fullheight {
    height: 100%;
  }

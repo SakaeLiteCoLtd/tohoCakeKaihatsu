@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlstaffmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmldepartmentmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlstaffmenu = new htmlstaffmenu();
- $htmlstaff = $htmlstaffmenu->Staffmenus();
+ $htmldepartmentmenu = new htmldepartmentmenu();
+ $htmldepartment = $htmldepartmentmenu->Departmentmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -13,7 +13,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlstaff;
+     echo $htmldepartment;
 ?>
 
 <?php
@@ -22,6 +22,11 @@ echo $this->Html->css('index');
 ?>
 <br>
 <div class="departments index large-9 medium-8 columns content">
+  
+<div style="text-align: right;">
+<a alien="center" href='/departments/addform' class="button"/><font size='4' color=black><?= __('▷新規登録') ?></font></a>
+</div>
+
   <h2><font color=red><?= __('部署一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>

@@ -31,12 +31,24 @@ class ProductsController extends AppController
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
        $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "製品・仕入品", 'Groups.delete_flag' => 0])
+       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "業務メニュー", 'Groups.delete_flag' => 0])
        ->toArray();
 
-       if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
+       if(!isset($Groups[0])){//業務ではない
 
-         return $this->redirect($this->Auth->logout());
+        $Groups = $this->Groups->find()->contain(["Menus"])
+        ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "製造メニュー", 'Groups.delete_flag' => 0])
+        ->toArray();
+
+        $this->set('check_gyoumu', 0);
+
+        if(!isset($Groups[0])){//製造でもない
+          return $this->redirect($this->Auth->logout());
+        }
+
+       }else{
+        
+        $this->set('check_gyoumu', 1);
 
        }
 
@@ -789,6 +801,30 @@ class ProductsController extends AppController
       }
       $this->set('arrFactories', $arrFactories);
 
+      $this->set('countFactories', count($Factories));
+      for($i=0; $i<count($Factories); $i++){
+
+        $this->set('factory_id'.$i, $Factories[$i]["id"]);
+
+        ${"Product_name_list".$i} = $this->Products->find()
+        ->where(['factory_id' => $Factories[$i]["id"], 'delete_flag' => 0])->toArray();
+  
+        ${"arrProduct_name_list".$i} = array();
+        for($j=0; $j<count(${"Product_name_list".$i}); $j++){
+          array_push(${"arrProduct_name_list".$i},${"Product_name_list".$i}[$j]["name"]);
+        }
+        ${"arrProduct_name_list".$i} = array_unique(${"arrProduct_name_list".$i});
+        ${"arrProduct_name_list".$i} = array_values(${"arrProduct_name_list".$i});
+  
+        $this->set('arrProduct_name_list'.$i, ${"arrProduct_name_list".$i});
+  /*
+        echo "<pre>";
+        print_r($i." ".$Factories[$i]["id"]);
+        echo "</pre>";
+  */
+      }
+
+      /*
       $Product_name_list = $this->Products->find()
       ->where(['delete_flag' => 0])->toArray();
 
@@ -800,6 +836,8 @@ class ProductsController extends AppController
       $arrProduct_name_list = array_values($arrProduct_name_list);
 
       $this->set('arrProduct_name_list', $arrProduct_name_list);
+*/
+      
     }
 
     public function editsyousai()

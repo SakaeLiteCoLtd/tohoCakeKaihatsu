@@ -32,7 +32,7 @@ class CustomersController extends AppController
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
        $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "得意先・仕入先", 'Groups.delete_flag' => 0])
+       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "業務メニュー", 'Groups.delete_flag' => 0])
        ->toArray();
 
        if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
@@ -363,7 +363,7 @@ class CustomersController extends AppController
       ->where(['delete_flag' => 0])->toArray();
       $arrCustomer_name_list = array();
       for($j=0; $j<count($Customer_name_list); $j++){
-        array_push($arrCustomer_name_list,$Customer_name_list[$j]["name"]);
+        array_push($arrCustomer_name_list,$Customer_name_list[$j]["name"]."_".$Customer_name_list[$j]["department"]);
       }
       $arrCustomer_name_list = array_unique($arrCustomer_name_list);
       $arrCustomer_name_list = array_values($arrCustomer_name_list);
@@ -390,22 +390,39 @@ class CustomersController extends AppController
         $data = $this->request->getData();
       }
 
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_id', $data['factory_id']);
-      $this->set('factory_name', $factory_name);
+      $arrname = explode("_",$data['name']);
+      $name = $arrname[0];
+      if(strlen($arrname[1]) > 0){
 
-      $CustomerData = $this->Customers->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
+        $CustomerData = $this->Customers->find()
+        ->where(['name' => $name, 'department' => $arrname[1]])->toArray();
+  
+        if(!isset($CustomerData[0])){
+  
+          return $this->redirect(['action' => 'editpreform',
+          's' => ['mess' => "得意先名：「".$data['name']."」部署名：「".$arrname[1]."」の得意先は存在しません。"]]);
+  
+        }
 
-      if(!isset($CustomerData[0])){
+      }else{
 
-        return $this->redirect(['action' => 'editpreform',
-        's' => ['mess' => "自社工場：".$factory_name."、得意先名：「".$data['name']."」の得意先は存在しません。"]]);
-
+        $CustomerData = $this->Customers->find()
+        ->where(['name' => $name])->toArray();
+  
+        if(!isset($CustomerData[0])){
+  
+          return $this->redirect(['action' => 'editpreform',
+          's' => ['mess' => "得意先名：「".$data['name']."」の得意先は存在しません。"]]);
+  
+        }
+  
       }
 
+      $Factories = $this->Factories->find()
+      ->where(['id' => $CustomerData[0]['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_id', $CustomerData[0]['factory_id']);
+      $this->set('factory_name', $factory_name);
       $this->set('CustomerData', $CustomerData);
       $this->set('id', $CustomerData[0]["id"]);
       $this->set('name', $CustomerData[0]["name"]);

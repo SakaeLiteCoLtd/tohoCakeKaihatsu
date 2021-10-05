@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlstaffmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlpositionmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlstaffmenu = new htmlstaffmenu();
- $htmlstaff = $htmlstaffmenu->Staffmenus();
+ $htmlpositionmenu = new htmlpositionmenu();
+ $htmlposition = $htmlpositionmenu->Positionmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -13,7 +13,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlstaff;
+     echo $htmlposition;
 ?>
 
 <?php
@@ -22,13 +22,13 @@ echo $this->Html->css('index');
 ?>
 <br>
 <div class="positions index large-9 medium-8 columns content">
-  <h2><font color=red><?= __('役職一覧') ?></font></h2>
+  <h2><font color=red><?= __('職種一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
           <tr>
             <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
             <th scope="col" style='width:200'><?= $this->Paginator->sort('factory_id', ['label'=>"工場・営業所名"]) ?></th>
-            <th scope="col" style='width:200'><?= $this->Paginator->sort('position', ['label'=>"役職名"]) ?></th>
+            <th scope="col" style='width:200'><?= $this->Paginator->sort('position', ['label'=>"職種名"]) ?></th>
             <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
         </tr>
         </thead>
