@@ -13,18 +13,10 @@ class htmlproductmenu extends AppController
                       "<ul class='side-nav' >\n".
                       "<br>\n".
                       "<font size='4'>　・</font><a href='/Startmenus/menu' /><font size='4' color=black>総合メニュー</font></a>\n".
-                      "<br><br>\n";
-
-                if($check_gyoumu > 0){
-
-                    $html = $html.
-                    "<font size='4'>　・</font><a href='/staffs/index' /><font size='4' color=black>業務メニュー</font></a>\n".
-                    "<br><br>\n";
-
-                    }
-
-                    $html = $html.
-                    "<font size='5'>　製品メニュー</font>\n".
+                      "<br><br>\n".
+                      "<font size='4'>　・</font><a href='/staffs/index' /><font size='4' color=black>製造メニュー</font></a>\n".
+                      "<br><br>\n".
+                      "<font size='5'>　製品メニュー</font>\n".
                       "<br><br>\n".
                       "<font size='4'>　・</font><a href='/products/ichiran' /><font size='4' color=black>製品一覧</font></a>\n".
                       "<br><br>\n".

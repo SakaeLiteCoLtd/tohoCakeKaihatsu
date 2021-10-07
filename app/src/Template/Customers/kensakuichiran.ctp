@@ -27,9 +27,9 @@
 
     <table>
           <tr>
-          <td width="250"><strong>得意先名</strong></td>
+          <td width="250"><strong>得意先・仕入先名</strong></td>
           <td width="250"><strong>部署・営業所名</strong></td>
-          <td width="150"><strong>得意先コード</strong></td>
+          <td width="150"><strong>得意先・仕入先コード</strong></td>
           <td width="150"><strong>使用工場</strong></td>
         	</tr>
 

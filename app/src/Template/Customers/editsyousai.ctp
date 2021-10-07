@@ -21,7 +21,7 @@
 
     <?= $this->Form->create($customer) ?>
     <fieldset>
-      <legend><strong style="font-size: 15pt; color:red"><?= __('得意先情報詳細') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('得意先・仕入先情報詳細') ?></strong></legend>
         <br>
 
         <table>
@@ -34,8 +34,8 @@
       </table>
       <table>
       <tr>
-        <td width="280"><strong>得意先名</strong></td>
-        <td width="280"><strong>得意先コード</strong></td>
+        <td width="280"><strong>得意先・仕入先名</strong></td>
+        <td width="280"><strong>得意先・仕入先コード</strong></td>
       </tr>
       <tr>
       <td><?= h($name) ?></td>

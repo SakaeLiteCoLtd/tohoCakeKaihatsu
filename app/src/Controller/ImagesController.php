@@ -29,20 +29,20 @@ class ImagesController extends AppController
      $this->Customers = TableRegistry::get('Customers');
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
-/*
+
      $session = $this->request->getSession();
      $datasession = $session->read();
 
      if(!isset($datasession['Auth']['User'])){//そもそもログインしていない場合
 
-  //     return $this->redirect($this->Auth->logout());//検査表メニューからくる場合があるからチェックはなし
+       return $this->redirect($this->Auth->logout());
 
      }
-*//*
+
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
        $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "検査表・成形条件表", 'Groups.delete_flag' => 0])
+       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "検査表画像", 'Groups.delete_flag' => 0])
        ->toArray();
 
        if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
@@ -52,27 +52,36 @@ class ImagesController extends AppController
        }
 
      }
-     */
+     
     }
 
     public function index()
     {
-      $this->paginate = [
-          'contain' => ['Products']
-      ];
-      $inspectionStandardSizeParents = $this
-      ->paginate($this->InspectionStandardSizeParents->find()->where(['InspectionStandardSizeParents.delete_flag' => 0]));
-      $this->set(compact('inspectionStandardSizeParents'));
     }
 
-    public function ichiran()
+    public function ichiran($id = null)
     {
-      $this->paginate = [
+      if(strlen($id) > 0){
+  
+        $this->paginate = [
+          'contain' => ['Products'],
+          'order' => ['updated_at' => 'desc',
+          'created_at' => 'desc']
+    ];
+      $inspectionStandardSizeParents = $this
+      ->paginate($this->InspectionStandardSizeParents->find()->where(['InspectionStandardSizeParents.delete_flag' => 0]));
+      $this->set(compact('inspectionStandardSizeParents'));
+
+      }else{
+
+        $this->paginate = [
           'contain' => ['Products']
       ];
       $inspectionStandardSizeParents = $this
       ->paginate($this->InspectionStandardSizeParents->find()->where(['InspectionStandardSizeParents.delete_flag' => 0]));
       $this->set(compact('inspectionStandardSizeParents'));
+
+      }
     }
 
     public function detail($id = null)

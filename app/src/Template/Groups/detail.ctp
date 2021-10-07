@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlstaffmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlgroupmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlstaffmenu = new htmlstaffmenu();
- $htmlstaff = $htmlstaffmenu->Staffmenus();
+ $htmlgroupmenu = new htmlgroupmenu();
+ $htmlgroup = $htmlgroupmenu->Groupmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -13,7 +13,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlstaff;
+     echo $htmlgroup;
 ?>
 
 <?= $this->Form->create($groups, ['url' => ['action' => 'detail']]) ?>
@@ -31,7 +31,7 @@
 
     <table>
       <tr>
-        <td width="280"><strong>グループ名</strong></td>
+        <td width="280"><strong>権限グループ名</strong></td>
       </tr>
       <tr>
         <td><?= h($name_group) ?></td>
@@ -68,7 +68,7 @@
 
     <table>
       <tbody class='sample non-sample'>
-        <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('グループを修正する場合は、一度削除してから登録しなおしてください。') ?></strong></td></tr>
+        <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('権限グループを修正する場合は、一度削除してから登録しなおしてください。') ?></strong></td></tr>
       </tbody>
     </table>
 

@@ -22,6 +22,11 @@ echo $this->Html->css('index');
 ?>
 <br>
 <div class="materialTypes index large-9 medium-8 columns content">
+  
+<div style="text-align: right;">
+<a style="text-decoration: none" alien="center" href='/materialTypes/addform' class="buttonlayout"/><font size='4' color=black><?= __('▷新規登録') ?></font></a>
+</div>
+
   <h2><font color=red><?= __('仕入品種類一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>

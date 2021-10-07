@@ -22,12 +22,17 @@ echo $this->Html->css('index');
 ?>
 <br>
 <div class="groups index large-9 medium-8 columns content">
+  
+<div style="text-align: right;">
+<a style="text-decoration: none" alien="center" href='/groups/addpre' class="buttonlayout"/><font size='4' color=black><?= __('▷新規登録') ?></font></a>
+</div>
+
   <h2><font color=red><?= __('権限グループ一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
           <tr>
             <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
-            <th scope="col" style='width:200'><?= $this->Paginator->sort('name_group', ['label'=>"グループ名"]) ?></th>
+            <th scope="col" style='width:200'><?= $this->Paginator->sort('name_group', ['label'=>"権限グループ名"]) ?></th>
             <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
           </tr>
         </thead>

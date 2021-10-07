@@ -30,7 +30,7 @@ class MaterialTypesController extends AppController
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
        $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "業務メニュー", 'Groups.delete_flag' => 0])
+       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "仕入品種類", 'Groups.delete_flag' => 0])
        ->toArray();
 
        if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
@@ -107,19 +107,6 @@ class MaterialTypesController extends AppController
         $_SESSION['materialTypedata'] = $id;
 
         return $this->redirect(['action' => 'deleteconfirm']);
-
-      }elseif(isset($data["kensaku"])){
-  
-        $MaterialTypes = $this->MaterialTypes->find()->where(['type' => $data['type']])->toArray();
-
-        if(!isset($MaterialTypes[0])){
-
-          return $this->redirect(['action' => 'editpreform',
-          's' => ['mess' => "原料種類：「".$data['type']."」は存在しません。"]]);
-  
-        }else{
-          $id = $MaterialTypes[0]["id"];
-        }
 
       }
       $this->set('id', $id);

@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlstaffmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlpositionmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlstaffmenu = new htmlstaffmenu();
- $htmlstaff = $htmlstaffmenu->Staffmenus();
+ $htmlpositionmenu = new htmlpositionmenu();
+ $htmlposition = $htmlpositionmenu->Positionmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -13,7 +13,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlstaff;
+     echo $htmlposition;
 ?>
 
 <form method="post" action="/positions/editdo">
@@ -28,7 +28,7 @@
 <nav class="sample non-sample">
     <?= $this->Form->create($position) ?>
     <fieldset>
-      <legend><strong style="font-size: 15pt; color:red"><?= __('役職情報編集') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('職種情報編集') ?></strong></legend>
       <br>
         <table align="center">
           <tbody class='sample non-sample'>
@@ -38,7 +38,7 @@
         <br>
         <table>
           <tr>
-            <td width="280"><strong>役職名</strong></td>
+            <td width="280"><strong>職種名</strong></td>
             <td width="280"><strong>工場・営業所名</strong></td>
         	</tr>
           <tr>

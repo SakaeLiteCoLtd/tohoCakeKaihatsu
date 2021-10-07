@@ -37,8 +37,8 @@
       </table>
       <table>
       <tr>
-        <td width="280"><strong>得意先名</strong></td>
-        <td width="280"><strong>得意先コード</strong></td>
+        <td width="280"><strong>得意先・仕入先名</strong></td>
+        <td width="280"><strong>得意先・仕入先コード</strong></td>
       </tr>
       <tr>
       <td><?= h($name) ?></td>

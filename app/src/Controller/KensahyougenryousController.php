@@ -41,6 +41,7 @@ class KensahyougenryousController extends AppController
       public function initialize()
     {
      parent::initialize();
+     $this->Seikeikis = TableRegistry::get('Seikeikis');
      $this->Users = TableRegistry::get('Users');
      $this->Staffs = TableRegistry::get('Staffs');
      $this->Products = TableRegistry::get('Products');
@@ -299,12 +300,18 @@ class KensahyougenryousController extends AppController
       }
       $this->set('arrMaterial_name_list', $arrMaterial_name_list);
 
+      $Seikeikis = $this->Seikeikis->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrSeikeikis = array();
+      for($j=0; $j<count($Seikeikis); $j++){
+        $arrSeikeikis[] = $Seikeikis[$j]["name"];
+      }
+      $this->set('arrSeikeikis', $arrSeikeikis);
 /*
       echo "<pre>";
-      print_r($arrMaterialmakers);
+      print_r($arrSeikeikis);
       echo "</pre>";
 */
-
       $mess = "";
       $this->set('mess', $mess);
 

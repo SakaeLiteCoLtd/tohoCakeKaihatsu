@@ -32,7 +32,7 @@ class CustomersController extends AppController
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
        $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "業務メニュー", 'Groups.delete_flag' => 0])
+       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "得意先・仕入先", 'Groups.delete_flag' => 0])
        ->toArray();
 
        if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
@@ -45,16 +45,35 @@ class CustomersController extends AppController
 
     }
 
-    public function index()
+    public function index($id = null)
     {
+
+      if(strlen($id) > 0){
+  
         $this->paginate = [
-            'limit' => 13,
-            'contain' => ['Factories']
+          'limit' => 13,
+          'contain' => ['Factories'],
+          'order' => ['Customers.updated_at' => 'desc',
+          'Customers.created_at' => 'desc']
         ];
         $customers = $this->paginate($this->Customers->find()
-        ->where(['Customers.delete_flag' => 0])->order(["customer_code"=>"ASC"]));
+        ->where(['Customers.delete_flag' => 0]));
 
-        $this->set(compact('customers'));
+      $this->set(compact('customers'));
+
+      }else{
+
+        $this->paginate = [
+          'limit' => 13,
+          'contain' => ['Factories']
+      ];
+      $customers = $this->paginate($this->Customers->find()
+      ->where(['Customers.delete_flag' => 0])->order(["customer_code"=>"ASC"]));
+
+      $this->set(compact('customers'));
+
+      }
+
     }
 
     public function detail($id = null)
@@ -62,50 +81,20 @@ class CustomersController extends AppController
       $customer = $this->Customers->newEntity();
       $this->set('customer', $customer);
 
-      $data = $this->request->getData();
-      if(isset($data["edit"])){
-
-        $id = $data["id"];
-
-        if(!isset($_SESSION)){
-          session_start();
-        }
-        $_SESSION['customerdata'] = array();
-        $_SESSION['customerdata'] = $id;
-
-        return $this->redirect(['action' => 'editform']);
-
-      }elseif(isset($data["delete"])){
-
-        $id = $data["id"];
-
-        if(!isset($_SESSION)){
-          session_start();
-        }
-        $_SESSION['customerdata'] = array();
-        $_SESSION['customerdata'] = $id;
-
-        return $this->redirect(['action' => 'deleteconfirm']);
-
-      }
-      $this->set('id', $id);
-
       $Customers = $this->Customers->find()->contain(["Factories"])
       ->where(['Customers.id' => $id])->toArray();
 
       $name = $Customers[0]["name"];
-      $this->set('name', $name);
-      $factory_name = $Customers[0]["factory"]['name'];
-      $this->set('factory_name', $factory_name);
-      $this->set('customer_code', $Customers[0]["customer_code"]);
-      $this->set('furigana', $Customers[0]["furigana"]);
-      $this->set('department', $Customers[0]["department"]);
-      $this->set('tel', $Customers[0]["tel"]);
-      $this->set('fax', $Customers[0]["fax"]);
-      $this->set('yuubin', $Customers[0]["yuubin"]);
-      $this->set('address', $Customers[0]["address"]);
-      $this->set('ryakusyou', $Customers[0]["ryakusyou"]);
+      $department = $Customers[0]["department"];
 
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      $_SESSION['customername_department'] = array();
+      $_SESSION['customername_department'][0] = "check";
+      $_SESSION['customername_department']["name"] = $name."_".$department;
+
+      return $this->redirect(['action' => 'editsyousai']);
     }
 
     public function view($id = null)
@@ -376,18 +365,29 @@ class CustomersController extends AppController
       $customer = $this->Customers->newEntity();
       $this->set('customer', $customer);
 
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+
       $Data=$this->request->query('s');
       if(isset($Data["mess"])){
         $mess = $Data["mess"];
         $this->set('mess',$mess);
 
-         $session = $this->request->getSession();
-         $_SESSION = $session->read();
         $data = $_SESSION['customer_edit'];
+
+      }elseif(isset($_SESSION['customername_department'][0])){
+
+        $mess = "";
+        $this->set('mess',$mess);
+        $data = $_SESSION['customername_department'];
+        $_SESSION['customername_department'] = array();
+
       }else{
+
         $mess = "";
         $this->set('mess',$mess);
         $data = $this->request->getData();
+
       }
 
       $arrname = explode("_",$data['name']);

@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlstaffmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlgroupmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlstaffmenu = new htmlstaffmenu();
- $htmlstaff = $htmlstaffmenu->Staffmenus();
+ $htmlgroupmenu = new htmlgroupmenu();
+ $htmlgroup = $htmlgroupmenu->Groupmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -13,7 +13,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlstaff;
+     echo $htmlgroup;
 ?>
 
 <form method="post" action="/groups/index">
@@ -25,7 +25,7 @@
     <?= $this->Form->create($group) ?>
     <fieldset>
 
-      <legend><strong style="font-size: 15pt; color:red"><?= __('グループ情報削除') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('権限グループ情報削除') ?></strong></legend>
         <br>
         <table align="center">
           <tbody class='sample non-sample'>
@@ -36,7 +36,7 @@
 
         <table>
           <tr>
-            <td width="280"><strong>グループ</strong></td>
+            <td width="280"><strong>権限グループ</strong></td>
         	</tr>
           <tr>
             <td><?= h($group['name_group']) ?></td>
@@ -48,7 +48,7 @@
     <table align="center">
       <tbody class='sample non-sample'>
         <tr>
-          <td style="border-style: none;"><div align="center"><?= $this->Form->submit('グループメニュートップへ戻る', array('name' => 'top')); ?></div></td>
+          <td style="border-style: none;"><div align="center"><?= $this->Form->submit('権限グループメニュートップへ戻る', array('name' => 'top')); ?></div></td>
         </tr>
       </tbody>
     </table>

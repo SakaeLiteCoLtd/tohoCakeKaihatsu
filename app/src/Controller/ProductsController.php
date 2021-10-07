@@ -29,12 +29,12 @@ class ProductsController extends AppController
      }
 
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
-
+/*
        $Groups = $this->Groups->find()->contain(["Menus"])
        ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "業務メニュー", 'Groups.delete_flag' => 0])
        ->toArray();
 
-       if(!isset($Groups[0])){//業務ではない
+       if(!isset($Groups[0])){
 
         $Groups = $this->Groups->find()->contain(["Menus"])
         ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "製造メニュー", 'Groups.delete_flag' => 0])
@@ -42,7 +42,7 @@ class ProductsController extends AppController
 
         $this->set('check_gyoumu', 0);
 
-        if(!isset($Groups[0])){//製造でもない
+        if(!isset($Groups[0])){
           return $this->redirect($this->Auth->logout());
         }
 
@@ -51,20 +51,39 @@ class ProductsController extends AppController
         $this->set('check_gyoumu', 1);
 
        }
+*/
+      $this->set('check_gyoumu', 0);
 
      }
 
     }
 
-    public function ichiran()
+    public function ichiran($id = null)
     {
+      if(strlen($id) > 0){
+
         $this->paginate = [
           'limit' => 13,
-          'contain' => ['Customers']
+          'contain' => ['Customers'],
+          'order' => ['Products.updated_at' => 'desc',
+          'Products.created_at' => 'desc']
         ];
         $products = $this->paginate($this->Products->find()->where(['Products.delete_flag' => 0]));
 
         $this->set(compact('products'));
+
+      }else{
+
+        $this->paginate = [
+          'limit' => 13,
+          'contain' => ['Customers'],
+        ];
+        $products = $this->paginate($this->Products->find()->where(['Products.delete_flag' => 0]));
+
+        $this->set(compact('products'));
+
+      }
+  
     }
 
     public function detail($id = null)
@@ -72,6 +91,20 @@ class ProductsController extends AppController
       $products = $this->Products->newEntity();
       $this->set('products', $products);
 
+      $Products = $this->Products->find()->contain(["Factories", "Customers"])
+      ->where(['Products.id' => $id])->toArray();
+
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      $_SESSION['product_detail'] = array();
+      $_SESSION['product_detail'][0] = "check";
+      $_SESSION['product_detail']["name"] = $Products[0]["name"];
+      $_SESSION['product_detail']["factory_id"] = $Products[0]["factory_id"];
+
+      return $this->redirect(['action' => 'editsyousai']);
+
+      /*
       $data = $this->request->getData();
       if(isset($data["edit"])){
 
@@ -136,7 +169,7 @@ class ProductsController extends AppController
       ->where(['id' => $ProductName[0]['customer_id']])->toArray();
       $customer_name = $Customers[0]["name"];
       $this->set('customer_name', $customer_name);
-
+*/
     }
 
     public function index()
@@ -855,10 +888,23 @@ class ProductsController extends AppController
   
         $data = $_SESSION['editproductcheck'];
   
-      }else{
+      }elseif(isset($_SESSION['product_detail'][0])){
+
+        $mess = "";
+        $this->set('mess',$mess);
+        $data = $_SESSION['product_detail'];
+        $_SESSION['product_detail'] = array();
+
+      }elseif(isset($this->request->getData()["factory_id"])){
+
         $mess = "";
         $this->set('mess',$mess);
         $data = $this->request->getData();
+
+      }else{
+
+        return $this->redirect(['action' => 'ichiran']);
+
       }
 
       $Factories = $this->Factories->find()

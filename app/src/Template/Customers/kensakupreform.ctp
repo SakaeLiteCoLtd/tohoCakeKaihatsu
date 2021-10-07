@@ -45,18 +45,18 @@ $(function() {
 
     <?= $this->Form->create($customer) ?>
     <fieldset>
-        <legend><strong style="font-size: 15pt; color:red"><?= __('得意先情報検索') ?></strong></legend>
+        <legend><strong style="font-size: 15pt; color:red"><?= __('得意先・仕入先情報検索') ?></strong></legend>
         <br>
         <table>
           <tbody class='sample non-sample'>
-          <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt"><?= __('検索するデータを入力してください（得意先名の一部で検索できます）') ?></strong></td></tr>
+          <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt"><?= __('検索するデータを入力してください（得意先・仕入先名の一部で検索できます）') ?></strong></td></tr>
           </tbody>
         </table>
         <br>
 
       <table>
       <tr>
-        <td width="320"><strong>得意先名（一部のみも可）</strong></td>
+        <td width="320"><strong>得意先・仕入先名（一部のみも可）</strong></td>
       </tr>
       <tr>
         <td>

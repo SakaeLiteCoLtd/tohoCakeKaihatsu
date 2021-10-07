@@ -1,9 +1,9 @@
 <?php header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策?>
 <?php
- use App\myClass\menulists\htmlstaffmenu;//myClassフォルダに配置したクラスを使用
+ use App\myClass\menulists\htmlgroupmenu;//myClassフォルダに配置したクラスを使用
  use App\myClass\menulists\htmlloginmenu;//myClassフォルダに配置したクラスを使用
- $htmlstaffmenu = new htmlstaffmenu();
- $htmlstaff = $htmlstaffmenu->Staffmenus();
+ $htmlgroupmenu = new htmlgroupmenu();
+ $htmlgroup = $htmlgroupmenu->Groupmenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
 
@@ -13,7 +13,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlstaff;
+     echo $htmlgroup;
 ?>
 
 <form method="post" action="/groups/deletedo">
@@ -27,7 +27,7 @@
 
       <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$group['id'], 'label'=>false)) ?>
 
-      <legend><strong style="font-size: 15pt; color:red"><?= __('グループ情報削除') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('権限グループ情報削除') ?></strong></legend>
         <br>
         <table align="center">
           <tbody class='sample non-sample'>
@@ -38,7 +38,7 @@
 
         <table>
           <tr>
-            <td width="280"><strong>グループ</strong></td>
+            <td width="280"><strong>権限グループ</strong></td>
         	</tr>
           <tr>
             <td><?= h($group['name_group']) ?></td>
@@ -48,8 +48,12 @@
         <table align="center">
           <tbody class='sample non-sample'>
             <tr align="center"><td style="border:none"><strong style="font-size: 13pt; color:red">
-              <?= __('※上のグループが削除されます。削除後は該当ユーザーのグループを登録しなおしてください。　') ?><br>
-              <?= __('（登録しなおされない場合は、該当ユーザーのグループは削除されたグループのままになります）') ?>
+              <?= __('※上の権限グループが削除されます。削除後は該当ユーザーの権限グループを登録しなおしてください。　') ?><br>
+              <?php
+              /*
+              <?= __('（登録しなおされない場合は、該当ユーザーのグループは削除された権限グループのままになります）') ?>
+              */
+              ?>
             </strong></td></tr>
           </tbody>
         </table>

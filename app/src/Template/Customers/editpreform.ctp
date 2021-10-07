@@ -45,7 +45,7 @@ $(function() {
 
     <?= $this->Form->create($customer) ?>
     <fieldset>
-        <legend><strong style="font-size: 15pt; color:red"><?= __('得意先情報検索') ?></strong></legend>
+        <legend><strong style="font-size: 15pt; color:red"><?= __('得意先・仕入先情報検索') ?></strong></legend>
         <br>
         <table>
           <tbody class='sample non-sample'>
@@ -57,7 +57,7 @@ $(function() {
 
       <table>
       <tr>
-        <td width="320"><strong>得意先名_部署（営業所）名</strong></td>
+        <td width="320"><strong>得意先・仕入先名_部署（営業所）名</strong></td>
       </tr>
       <tr>
         <td>

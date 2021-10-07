@@ -22,7 +22,23 @@ echo $this->Html->css('index');
 ?>
 <br>
 <div class="factories index large-9 medium-8 columns content">
+  
+<div style="text-align: right;">
+<a style="text-decoration: none" alien="center" href='/images/addpre' class="buttonlayout"/><font size='4' color=black><?= __('▷新規登録') ?></font></a>
+</div>
+
   <h2><font color=red><?= __('検査表画像一覧') ?></font></h2>
+
+  <table>
+      <tbody class='sample non-sample'>
+        <tr alien='right'>
+          <td style="border-style:none; background-color: #E6FFFF"><?= __("　　　　　　　　　　　　　　　　　") ?></td>
+          <td style="border-style:none; background-color: #E6FFFF"><?= __("　　　　　　　　　　　　　　　　　") ?></td>
+          <td style="border:none; background-color: #E6FFFF" class="actions"><?= $this->Html->link(__('データの新しい順に並び替え'), ['action' => 'ichiran', "narabikae"]) ?></td>
+        </tr>
+      </tbody>
+    </table>
+
 <table cellpadding="0" cellspacing="0">
     <thead>
       <tr>

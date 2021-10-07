@@ -21,7 +21,7 @@
 
     <?= $this->Form->create($customer) ?>
     <fieldset>
-      <legend><strong style="font-size: 15pt; color:red"><?= __('得意先情報編集・削除') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('得意先・仕入先情報編集・削除') ?></strong></legend>
         <br>
         <table>
           <tbody class='sample non-sample'>
@@ -34,7 +34,7 @@
         <table>
         <tr>
           <td width="280"><strong>自社工場</strong></td>
-          <td width="280"><strong>得意先コード（変更前）</strong></td>
+          <td width="280"><strong>得意先・仕入先コード（変更前）</strong></td>
         </tr>
         <tr>
           <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>
@@ -43,8 +43,8 @@
       </table>
       <table>
       <tr>
-        <td width="280"><strong>得意先名</strong></td>
-        <td width="280"><strong>得意先コード6桁目</strong></td>
+        <td width="280"><strong>得意先・仕入先名</strong></td>
+        <td width="280"><strong>得意先・仕入先コード6桁目</strong></td>
       </tr>
       <tr>
         <td><?= $this->Form->control('name', array('type'=>'text', 'value'=>$name, 'label'=>false, 'required' => 'true')) ?></td>

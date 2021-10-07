@@ -16,10 +16,21 @@
             <font size='5'>　総合メニュー</font>
             <br><br>
 
+            <?php
+/*
           <?php for($k=0; $k<count($arrMenus); $k++): ?>
             <font size='4'>　・</font><a><font size='4' color=black><?= $this->Html->link(__($arrMenus[$k].'トップ'), ['controller' => $arrController[$k], 'action' => 'index']) ?></font></a>
             <br><br>
           <?php endfor;?>
+          "<br><br>\n".
+*/
+          ?>
+          
+            <font size='4'>　・</font><a><font size='4' color=black><?= $this->Html->link(__("業務メニュートップ"), ['controller' => "staffs", 'action' => 'index']) ?></font></a>
+            <br><br>
+            <font size='4'>　・</font><a><font size='4' color=black><?= $this->Html->link(__("製造メニュートップ"), ['controller' => "Images", 'action' => 'index']) ?></font></a>
+            <br><br>
+            <font size='4'>　・</font><a><font size='4' color=black><?= $this->Html->link(__("成形メニュートップ"), ['controller' => "Kensahyoukadous", 'action' => 'kensahyoumenu']) ?></font></a>
 
           <br><br><br><br><br><br><br><br>
           <br><br><br><br><br><br><br><br>

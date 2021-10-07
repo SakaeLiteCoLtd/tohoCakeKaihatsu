@@ -18,7 +18,7 @@ class htmldepartmentmenu extends AppController
                       "<br><br>\n".
                       "<font size='5'>　部署メニュー</font>\n".
                       "<br><br>\n".
-                      "<font size='4'>　・</font><a href='/departments/index' /><font size='4' color=black>職種一覧</font></a>\n".
+                      "<font size='4'>　・</font><a href='/departments/index' /><font size='4' color=black>部署一覧</font></a>\n".
                       "<br><br><br><br><br><br><br>\n".
                       "<br><br><br><br><br><br><br>\n".
                       "<br><br><br><br><br><br><br>\n".

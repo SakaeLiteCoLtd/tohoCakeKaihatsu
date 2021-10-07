@@ -19,6 +19,10 @@ class htmlkensahyoukadoumenu extends AppController
         $html =
             "<table>\n".
             "<td style='border: none'>\n".
+            "<a href='/startmenus/login'>\n".
+            "<img src='/img/menus/kanrimenutop.gif' width=145 height=50>\n".
+            "</a></td><td style='border: none'>　　　</td>\n".
+            "<td style='border: none'>\n".
             "<a href='/Kensahyoukadous/kensahyoumenu'>\n".
             "<img src='/img/menus/kensahyoumenu.gif' width=145 height=50>\n".
    //         "</a></td><td style='border: none'>　　　</td>\n".

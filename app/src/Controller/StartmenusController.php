@@ -198,6 +198,9 @@ class StartmenusController extends AppController
 
         }
 
+//211007トップメニューは全員に表示する
+//その先は権限によって表示するメニューを分ける
+
       }
       $this->set('arrMenus', $arrMenus);
       $this->set('arrController', $arrController);

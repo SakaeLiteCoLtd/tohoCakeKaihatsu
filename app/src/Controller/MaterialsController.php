@@ -33,7 +33,7 @@ class MaterialsController extends AppController
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
        $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "業務メニュー", 'Groups.delete_flag' => 0])
+       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "仕入品", 'Groups.delete_flag' => 0])
        ->toArray();
 
        if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
@@ -46,15 +46,32 @@ class MaterialsController extends AppController
 
     }
 
-    public function index()
+    public function index($id = null)
     {
+
+      if(strlen($id) > 0){
+  
         $this->paginate = [
           'limit' => 13,
-            'contain' => ['MaterialTypes', 'Factories']
-        ];
+            'contain' => ['MaterialTypes', 'Factories'],
+            'order' => ['Materials.updated_at' => 'desc',
+            'Materials.created_at' => 'desc']
+          ];
         $materials = $this->paginate($this->Materials->find()->where(['Materials.delete_flag' => 0]));
-
         $this->set(compact('materials'));
+
+      }else{
+
+        $this->paginate = [
+          'limit' => 13,
+            'contain' => ['MaterialTypes', 'Factories'],
+            'order' => ['Materials.material_code' => 'asc']
+          ];
+        $materials = $this->paginate($this->Materials->find()->where(['Materials.delete_flag' => 0]));
+        $this->set(compact('materials'));
+
+      }
+
     }
 
     public function editpreform()

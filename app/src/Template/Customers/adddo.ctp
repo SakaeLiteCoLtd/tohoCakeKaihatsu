@@ -19,7 +19,7 @@
 
 <nav class="sample non-sample">
     <fieldset>
-      <legend><strong style="font-size: 15pt; color:red"><?= __('得意先新規登録') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('得意先・仕入先新規登録') ?></strong></legend>
       <br>
         <table>
           <tbody class='sample non-sample'>
@@ -38,8 +38,8 @@
         </table>
         <table>
       <tr>
-        <td width="280"><strong>得意先名</strong></td>
-        <td width="280"><strong>得意先コード6桁目</strong></td>
+        <td width="280"><strong>得意先・仕入先名</strong></td>
+        <td width="280"><strong>得意先・仕入先コード6桁目</strong></td>
       </tr>
       <tr>
       <td><?= h($this->request->getData('name')) ?></td>
@@ -81,7 +81,7 @@
 
   <table>
           <tr>
-            <td width="280"><strong>得意先コード</strong></td>
+            <td width="280"><strong>得意先・仕入先コード</strong></td>
         	</tr>
           <tr>
             <td><?= h($customer_code) ?></td>
@@ -93,7 +93,7 @@
     <table>
       <tr>
         <tbody class='sample non-sample'>
-        <td style="border-style: none;"><div><?= $this->Form->submit('得意先メニュートップへ戻る', array('name' => 'top')); ?></div></td>
+        <td style="border-style: none;"><div><?= $this->Form->submit('得意先・仕入先メニュートップへ戻る', array('name' => 'top')); ?></div></td>
       </tbody>
     </tr>
     </table>

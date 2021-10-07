@@ -31,7 +31,7 @@
 
 <nav class="sample non-sample">
     <fieldset>
-      <legend><strong style="font-size: 15pt; color:red"><?= __('得意先新規登録') ?></strong></legend>
+      <legend><strong style="font-size: 15pt; color:red"><?= __('得意先・仕入先新規登録') ?></strong></legend>
       <br>
         <table>
           <tbody class='sample non-sample'>
@@ -51,8 +51,8 @@
 
         <table>
       <tr>
-        <td width="280"><strong>得意先名</strong></td>
-        <td width="280"><strong>得意先コード6桁目</strong></td>
+        <td width="280"><strong>得意先・仕入先名</strong></td>
+        <td width="280"><strong>得意先・仕入先コード6桁目</strong></td>
       </tr>
       <tr>
       <td><?= h($this->request->getData('name')) ?></td>

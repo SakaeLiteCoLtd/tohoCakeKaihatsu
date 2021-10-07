@@ -20,9 +20,26 @@
 $this->layout = false;
 echo $this->Html->css('index');
 ?>
+
 <br>
 <div class="products index large-9 medium-8 columns content">
+  
+<div style="text-align: right;">
+<a style="text-decoration: none" alien="center" href='/products/addform' class="buttonlayout"/><font size='4' color=black><?= __('▷新規登録') ?></font></a>
+</div>
+
   <h2><font color=red><?= __('製品一覧') ?></font></h2>
+
+  <table>
+      <tbody class='sample non-sample'>
+        <tr alien='right'>
+          <td style="border-style:none; background-color: #E6FFFF"><?= __("　　　　　　　　　　　　　　　　　") ?></td>
+          <td style="border-style:none; background-color: #E6FFFF"><?= __("　　　　　　　　　　　　　　　　　") ?></td>
+          <td style="border:none; background-color: #E6FFFF" class="actions"><?= $this->Html->link(__('データの新しい順に並び替え'), ['action' => 'ichiran', "narabikae"]) ?></td>
+        </tr>
+      </tbody>
+    </table>
+
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
@@ -30,9 +47,10 @@ echo $this->Html->css('index');
                 <th scope="col" style='width:200'><?= $this->Paginator->sort('product_code', ['label'=>"製品コード"]) ?></th>
                 <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"品名"]) ?></th>
                 <th scope="col" style='width:200'><?= $this->Paginator->sort('custmoer_id', ['label'=>"得意先"]) ?></th>
-                <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
+                <th scope="col" style='width:100'><?= __('') ?></th>
             </tr>
         </thead>
+
         <tbody>
             <?php foreach ($products as $product): ?>
             <tr>

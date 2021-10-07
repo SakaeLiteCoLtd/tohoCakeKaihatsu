@@ -24,7 +24,7 @@ echo $this->Html->css('index');
 <div class="departments index large-9 medium-8 columns content">
   
 <div style="text-align: right;">
-<a alien="center" href='/departments/addform' class="button"/><font size='4' color=black><?= __('▷新規登録') ?></font></a>
+<a style="text-decoration: none" alien="center" href='/departments/addform' class="buttonlayout"/><font size='4' color=black><?= __('▷新規登録') ?></font></a>
 </div>
 
   <h2><font color=red><?= __('部署一覧') ?></font></h2>
