@@ -36,20 +36,22 @@
 
         <table>
         <tr>
-          <td width="280"><strong>工場名（変更不可）</strong></td>
+          <td width="240"><strong>工場名（変更不可）</strong></td>
+          <td width="240"><strong>仕入品コード（変更不可）</strong></td>
         </tr>
         <tr>
         <td><?= h($factory_name) ?></td>
+        <td><?= h($material_code) ?></td>
         </tr>
       </table>
         <table>
         <tr>
-        <td width="260"><strong>仕入品コード（変更不可）</strong></td>
-        <td width="200"><strong>単位</strong></td>
+        <td width="240"><strong>単位</strong></td>
+        <td width="240"><strong>検査表</strong></td>
         </tr>
         <tr>
-        <td><?= h($material_code) ?></td>
         <td><?= $this->Form->control('tanni', ['options' => $arrTanni, 'label'=>false]) ?></td>
+        <td><?= $this->Form->control('status_kensahyou', ['options' => $arrStatusKensahyou, 'value'=>$status_kensahyou, 'label'=>false]) ?></td>
         </tr>
       </table>
 
@@ -67,7 +69,7 @@
           <td width="480"><strong>仕入品種類</strong></td>
         </tr>
         <tr>
-        <td><?= $this->Form->control('material_type_id', ['options' => $arrMaterialTypes, 'label'=>false]) ?></td>
+        <td><?= $this->Form->control('material_type_id', ['options' => $arrMaterialTypes, 'value'=>$material_type_id, 'label'=>false]) ?></td>
         </tr>
       </table>
 

@@ -23,7 +23,6 @@
 
 <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$this->request->getData('id'), 'label'=>false)) ?>
 <?= $this->Form->control('department', array('type'=>'hidden', 'value'=>$this->request->getData('department'), 'label'=>false)) ?>
-<?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 <br><br><br>
 
 <nav class="sample non-sample">
@@ -40,11 +39,9 @@
         <table>
           <tr>
             <td width="280"><strong>部署名</strong></td>
-            <td width="280"><strong>工場名</strong></td>
         	</tr>
           <tr>
             <td><?= h($this->request->getData('department')) ?></td>
-            <td><?= h($factory_name) ?></td>
         	</tr>
         </table>
     </fieldset>

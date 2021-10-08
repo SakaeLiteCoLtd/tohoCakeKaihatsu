@@ -182,6 +182,11 @@ class MaterialsController extends AppController
       ]);
       $this->set(compact('material'));
 
+      $Materials = $this->Materials->find()
+      ->where(['id' => $id])->toArray();
+      $status_kensahyou = $Materials[0]["status_kensahyou"];
+      $this->set('status_kensahyou', $status_kensahyou);
+
     }
 
     public function view($id = null)
@@ -209,6 +214,9 @@ class MaterialsController extends AppController
       
       $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個"];
       $this->set('arrTanni', $arrTanni);
+
+      $arrStatusKensahyou = ["0" => "表示", "1" => "非表示"];
+      $this->set('arrStatusKensahyou', $arrStatusKensahyou);
 
       $MaterialTypes = $this->MaterialTypes->find()
       ->where(['delete_flag' => 0])->toArray();
@@ -275,6 +283,9 @@ class MaterialsController extends AppController
       $factory_name = $Factories[0]['name'];
       $this->set('factory_name', $factory_name);
 
+      $status_kensahyou = $data["status_kensahyou"];
+      $this->set('status_kensahyou', $status_kensahyou);
+
     }
 
     public function adddo()
@@ -288,6 +299,9 @@ class MaterialsController extends AppController
       ->where(['id' => $data['type_id']])->toArray();
       $type_name = $MaterialTypes[0]['type'];
       $this->set('type_name', $type_name);
+
+      $status_kensahyou = $data["status_kensahyou"];
+      $this->set('status_kensahyou', $status_kensahyou);
 
       $MaterialSuppliers = $this->MaterialSuppliers->find()
       ->where(['id' => $data['material_supplier_id']])->toArray();
@@ -354,6 +368,7 @@ class MaterialsController extends AppController
         'material_supplier_id' => $data["material_supplier_id"],
         'material_type_id' => $data["type_id"],
         'tanni' => $data["tanni"],
+        'status_kensahyou' => $data["status_kensahyou"],
         'is_active' => 0,
         'delete_flag' => 0,
         'created_at' => date("Y-m-d H:i:s"),
@@ -422,11 +437,16 @@ class MaterialsController extends AppController
       $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個"];
       $this->set('arrTanni', $arrTanni);
 
+      $arrStatusKensahyou = ["0" => "表示", "1" => "非表示"];
+      $this->set('arrStatusKensahyou', $arrStatusKensahyou);
+
       $Materials = $this->Materials->find()
       ->where(['id' => $id])->toArray();
       $this->set('name', $Materials[0]["name"]);
       $this->set('material_code', $Materials[0]["material_code"]);
+      $this->set('material_type_id', $Materials[0]["material_type_id"]);
       $this->set('material_supplier_id', $Materials[0]["material_supplier_id"]);
+      $this->set('status_kensahyou', $Materials[0]["status_kensahyou"]);
 
       $MaterialSuppliers = $this->MaterialSuppliers->find()
       ->where(['id' => $Materials[0]["material_supplier_id"]])->toArray();
@@ -470,6 +490,10 @@ class MaterialsController extends AppController
       ->where(['id' => $data['material_supplier_id']])->toArray();
       $supplier_name = $MaterialSuppliers[0]['name'];
       $this->set('supplier_name', $supplier_name);
+
+      $status_kensahyou = $data["status_kensahyou"];
+      $this->set('status_kensahyou', $status_kensahyou);
+
     }
 
     public function editdo()
@@ -481,6 +505,9 @@ class MaterialsController extends AppController
       $datasession = $session->read();
 
       $data = $this->request->getData();
+
+      $status_kensahyou = $data["status_kensahyou"];
+      $this->set('status_kensahyou', $status_kensahyou);
 
       $MaterialTypes = $this->MaterialTypes->find()
       ->where(['id' => $data['material_type_id']])->toArray();
@@ -510,6 +537,7 @@ class MaterialsController extends AppController
         'material_supplier_id' => $Materialsmoto[0]["material_supplier_id"],
         'material_type_id' => $Materialsmoto[0]["material_type_id"],
         'tanni' => $Materialsmoto[0]["tanni"],
+        'status_kensahyou' => $Materialsmoto[0]["status_kensahyou"],
         'is_active' => 1,
         'delete_flag' => 1,
         'created_at' => $Materialsmoto[0]["created_at"]->format("Y-m-d H:i:s"),
@@ -534,6 +562,7 @@ class MaterialsController extends AppController
            'material_supplier_id' => $data["material_supplier_id"],
            'material_type_id' => $data["material_type_id"],
            'tanni' => $data["tanni"],
+           'status_kensahyou' => $data["status_kensahyou"],
            'updated_at' => date('Y-m-d H:i:s'),
            'updated_staff' => $staff_id],
           ['id'  => $data['id']])){
@@ -591,6 +620,12 @@ class MaterialsController extends AppController
           'contain' => ['MaterialTypes', 'MaterialSuppliers', 'Factories']
         ]);
         $this->set(compact('material'));
+
+        $Materials = $this->Materials->find()
+        ->where(['id' => $id])->toArray();
+        $status_kensahyou = $Materials[0]["status_kensahyou"];
+        $this->set('status_kensahyou', $status_kensahyou);
+  
     }
 
     public function deletedo()
@@ -604,6 +639,11 @@ class MaterialsController extends AppController
         'contain' => ['MaterialTypes', 'MaterialSuppliers', 'Factories']
       ]);
       $this->set(compact('material'));
+
+      $Materials = $this->Materials->find()
+      ->where(['id' => $data["id"]])->toArray();
+      $status_kensahyou = $Materials[0]["status_kensahyou"];
+      $this->set('status_kensahyou', $status_kensahyou);
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 

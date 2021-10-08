@@ -39,11 +39,9 @@
         <table>
           <tr>
             <td width="280"><strong>部署名</strong></td>
-            <td width="280"><strong>工場名</strong></td>
         	</tr>
           <tr>
             <td><?= h($department['department']) ?></td>
-            <td><?= h($department->factory->name) ?></td>
         	</tr>
         </table>
 

@@ -57,11 +57,13 @@ $(function() {
         <table>
         <tr>
           <td width="240"><strong>工場名</strong></td>
-          <td width="240"><strong>単位</strong></td>
+          <td width="120"><strong>単位</strong></td>
+          <td width="120"><strong>検査表</strong></td>
         </tr>
         <tr>
           <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>
           <td><?= $this->Form->control('tanni', ['options' => $arrTanni, 'label'=>false]) ?></td>
+          <td><?= $this->Form->control('status_kensahyou', ['options' => $arrStatusKensahyou, 'label'=>false]) ?></td>
         </tr>
       </table>
 

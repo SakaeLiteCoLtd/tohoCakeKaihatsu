@@ -32,7 +32,11 @@ echo $this->Html->css('index');
         <thead>
           <tr>
             <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
+            <?php
+/*
               <th scope="col" style='width:200'><?= $this->Paginator->sort('factory_id', ['label'=>"工場名"]) ?></th>
+*/
+              ?>
               <th scope="col" style='width:200'><?= $this->Paginator->sort('department', ['label'=>"部署名"]) ?></th>
                 <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>
@@ -41,7 +45,11 @@ echo $this->Html->css('index');
             <?php foreach ($departments as $department): ?>
             <tr>
               <td><?= h($i) ?></td>
+              <?php
+/*
                 <td><?= h($department->factory->name) ?></td>
+*/
+              ?>
                 <td><?= h($department->department) ?></td>
                 <td class="actions">
                   <?= $this->Html->link(__('編集'), ['action' => 'detail', $department->id]) ?>

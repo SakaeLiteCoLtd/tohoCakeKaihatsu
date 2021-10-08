@@ -13,6 +13,7 @@ class PositionsController extends AppController
       public function initialize()
     {
      parent::initialize();
+     $this->Staffs = TableRegistry::get('Staffs');
      $this->Factories = TableRegistry::get('Factories');
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
@@ -108,29 +109,12 @@ class PositionsController extends AppController
     {
       $position = $this->Positions->newEntity();
       $this->set('position', $position);
-
-      $Factories = $this->Factories->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrFactories = array();
-      foreach ($Factories as $value) {
-        $arrFactories[] = array($value->id=>$value->name);
-      }
-      $this->set('arrFactories', $arrFactories);
-
     }
 
     public function addcomfirm()
     {
       $position = $this->Positions->newEntity();
       $this->set('position', $position);
-
-      $data = $this->request->getData();
-
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
-
     }
 
     public function adddo()
@@ -140,20 +124,18 @@ class PositionsController extends AppController
 
       $data = $this->request->getData();
 
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
-
       $session = $this->request->getSession();
       $datasession = $session->read();
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
+      $Staffs = $this->Staffs->find()->where(['id' => $staff_id])->toArray();//工場を取得
+      $factory_id = $Staffs[0]["factory_id"];
+
       $arrtourokuposition = array();
       $arrtourokuposition = [
         'position' => $data["position"],
-        'factory_id' => $data["factory_id"],
+        'factory_id' => $factory_id,
         'delete_flag' => 0,
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
@@ -203,28 +185,12 @@ class PositionsController extends AppController
         ]);
         $this->set(compact('position'));
         $this->set('id', $id);
-
-        $Factories = $this->Factories->find()
-        ->where(['delete_flag' => 0])->toArray();
-        $arrFactories = array();
-        foreach ($Factories as $value) {
-          $arrFactories[] = array($value->id=>$value->name);
-        }
-        $this->set('arrFactories', $arrFactories);
-
     }
 
     public function editconfirm()
     {
       $position = $this->Positions->newEntity();
       $this->set('position', $position);
-
-      $data = $this->request->getData();
-
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
     }
 
     public function editdo()
@@ -237,20 +203,20 @@ class PositionsController extends AppController
 
       $data = $this->request->getData();
 
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
-
       $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $Positionsmoto = $this->Positions->find()
+      ->where(['id' => $data['id']])->toArray();
 
       $arrupdateposition = array();
       $arrupdateposition = [
-        'position' => $data["position"],
-        'factory_id' => $data["factory_id"],
-        'delete_flag' => 0,
-        'created_at' => date("Y-m-d H:i:s"),
-        'created_staff' => $staff_id
+        'position' => $Positionsmoto[0]["position"],
+        'factory_id' => $Positionsmoto[0]["factory_id"],
+        'delete_flag' => 1,
+        'created_at' => $Positionsmoto[0]["created_at"]->format("Y-m-d H:i:s"),
+        'created_staff' => $Positionsmoto[0]["created_staff"],
+        'updated_at' => date("Y-m-d H:i:s"),
+        'updated_staff' => $staff_id
       ];
 /*
       echo "<pre>";
@@ -265,7 +231,7 @@ class PositionsController extends AppController
          if ($this->Positions->save($Positions)) {
 
          $this->Positions->updateAll(
-           [ 'delete_flag' => 1,
+           [ 'position' => $data['position'],
              'updated_at' => date('Y-m-d H:i:s'),
              'updated_staff' => $staff_id],
            ['id'  => $data['id']]);

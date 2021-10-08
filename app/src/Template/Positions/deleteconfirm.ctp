@@ -39,11 +39,9 @@
         <table>
           <tr>
             <td width="280"><strong>職種名</strong></td>
-            <td width="280"><strong>工場・営業所名</strong></td>
         	</tr>
           <tr>
             <td><?= h($position['position']) ?></td>
-            <td><?= h($position->factory->name) ?></td>
         	</tr>
         </table>
 

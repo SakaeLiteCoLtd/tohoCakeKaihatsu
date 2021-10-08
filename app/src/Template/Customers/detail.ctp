@@ -27,14 +27,6 @@
       </tbody>
     </table>
 
-    <table>
-        <tr>
-          <td width="280"><strong>自社工場</strong></td>
-        </tr>
-        <tr>
-        <td><?= h($factory_name) ?></td>
-        </tr>
-      </table>
       <table>
       <tr>
         <td width="280"><strong>得意先・仕入先名</strong></td>

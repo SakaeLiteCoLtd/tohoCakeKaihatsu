@@ -36,11 +36,9 @@
 
         <table>
         <tr>
-          <td width="280"><strong>自社工場</strong></td>
           <td width="280"><strong>仕入品種類</strong></td>
         </tr>
         <tr>
-          <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>
           <td><?= $this->Form->control('type', array('type'=>'text', 'label'=>false, 'autofocus'=>true)) ?></td>
         </tr>
       </table>
@@ -52,6 +50,8 @@
     <table>
       <tbody class='sample non-sample'>
         <tr>
+        <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+          <td style="border-style: none;"><?= __("　") ?></td>
           <td style="border:none"><?= $this->Form->submit(__('次へ')) ?></td>
         </tr>
       </tbody>

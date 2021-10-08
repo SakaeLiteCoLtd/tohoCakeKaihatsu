@@ -27,7 +27,18 @@
 <?= $this->Form->control('material_type_id', array('type'=>'hidden', 'value'=>$this->request->getData('material_type_id'), 'label'=>false)) ?>
 <?= $this->Form->control('tanni', array('type'=>'hidden', 'value'=>$this->request->getData('tanni'), 'label'=>false)) ?>
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
+<?= $this->Form->control('status_kensahyou', array('type'=>'hidden', 'value'=>$this->request->getData('status_kensahyou'), 'label'=>false)) ?>
 <br><br><br>
+
+<?php
+
+if($status_kensahyou == 0){
+  $status_kensahyou_name = "表示";
+}else{
+  $status_kensahyou_name = "非表示";
+}
+
+?>
 
 <nav class="sample non-sample">
     <fieldset>
@@ -42,20 +53,22 @@
 
         <table>
         <tr>
-          <td width="280"><strong>工場名</strong></td>
+          <td width="240"><strong>工場名（変更不可）</strong></td>
+          <td width="240"><strong>仕入品コード（変更不可）</strong></td>
         </tr>
         <tr>
         <td><?= h($factory_name) ?></td>
+        <td><?= h($this->request->getData('material_code')) ?></td>
         </tr>
       </table>
         <table>
         <tr>
-        <td width="260"><strong>仕入品コード</strong></td>
-        <td width="200"><strong>単位</strong></td>
+        <td width="240"><strong>単位</strong></td>
+        <td width="240"><strong>検査表</strong></td>
         </tr>
         <tr>
-        <td><?= h($this->request->getData('material_code')) ?></td>
         <td><?= h($this->request->getData('tanni')) ?></td>
+        <td><?= h($status_kensahyou_name) ?></td>
         </tr>
       </table>
 

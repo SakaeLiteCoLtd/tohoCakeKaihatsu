@@ -13,6 +13,7 @@ class DepartmentsController extends AppController
       public function initialize()
     {
      parent::initialize();
+     $this->Staffs = TableRegistry::get('Staffs');
      $this->Factories = TableRegistry::get('Factories');
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
@@ -107,29 +108,12 @@ class DepartmentsController extends AppController
     {
       $department = $this->Departments->newEntity();
       $this->set('department', $department);
-
-      $Factories = $this->Factories->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrFactories = array();
-      foreach ($Factories as $value) {
-        $arrFactories[] = array($value->id=>$value->name);
-      }
-      $this->set('arrFactories', $arrFactories);
-
     }
 
     public function addcomfirm()
     {
       $department = $this->Departments->newEntity();
       $this->set('department', $department);
-
-      $data = $this->request->getData();
-
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
-
     }
 
     public function adddo()
@@ -139,20 +123,19 @@ class DepartmentsController extends AppController
 
       $data = $this->request->getData();
 
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
-
+      
       $session = $this->request->getSession();
       $datasession = $session->read();
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
+      $Staffs = $this->Staffs->find()->where(['id' => $staff_id])->toArray();//工場を取得
+      $factory_id = $Staffs[0]["factory_id"];
+
       $arrtourokudepartment = array();
       $arrtourokudepartment = [
         'department' => $data["department"],
-        'factory_id' => $data["factory_id"],
+        'factory_id' => $factory_id,
         'delete_flag' => 0,
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
@@ -202,28 +185,12 @@ class DepartmentsController extends AppController
       ]);
       $this->set(compact('department'));
       $this->set('id', $id);
-
-      $Factories = $this->Factories->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrFactories = array();
-      foreach ($Factories as $value) {
-        $arrFactories[] = array($value->id=>$value->name);
-      }
-      $this->set('arrFactories', $arrFactories);
-
     }
 
     public function editconfirm()
     {
       $department = $this->Departments->newEntity();
       $this->set('department', $department);
-
-      $data = $this->request->getData();
-
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
     }
 
     public function editdo()
@@ -236,20 +203,20 @@ class DepartmentsController extends AppController
 
       $data = $this->request->getData();
 
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
-
       $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $Departmentsmoto = $this->Departments->find()
+      ->where(['id' => $data['id']])->toArray();
 
       $arrupdatedepartment = array();
       $arrupdatedepartment = [
-        'department' => $data["department"],
-        'factory_id' => $data["factory_id"],
-        'delete_flag' => 0,
-        'created_at' => date("Y-m-d H:i:s"),
-        'created_staff' => $staff_id
+        'department' => $Departmentsmoto[0]["department"],
+        'factory_id' => $Departmentsmoto[0]["factory_id"],
+        'delete_flag' => 1,
+        'created_at' => $Departmentsmoto[0]["created_at"]->format("Y-m-d H:i:s"),
+        'created_staff' => $Departmentsmoto[0]["created_staff"],
+        'updated_at' => date("Y-m-d H:i:s"),
+        'updated_staff' => $staff_id
       ];
 /*
       echo "<pre>";
@@ -264,7 +231,7 @@ class DepartmentsController extends AppController
          if ($this->Departments->save($Departments)) {
 
          $this->Departments->updateAll(
-           [ 'delete_flag' => 1,
+           [ 'department' => $data['department'],
              'updated_at' => date('Y-m-d H:i:s'),
              'updated_staff' => $staff_id],
            ['id'  => $data['id']]);

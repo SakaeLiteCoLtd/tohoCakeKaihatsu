@@ -35,11 +35,9 @@
         <table>
           <tr>
             <td width="280"><strong>部署名</strong></td>
-            <td width="280"><strong>工場名</strong></td>
         	</tr>
           <tr>
             <td><?= h($this->request->getData('department')) ?></td>
-            <td><?= h($factory_name) ?></td>
         	</tr>
         </table>
 

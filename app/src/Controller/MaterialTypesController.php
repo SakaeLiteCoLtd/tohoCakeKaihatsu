@@ -14,6 +14,7 @@ class MaterialTypesController extends AppController
       public function initialize()
     {
      parent::initialize();
+     $this->Staffs = TableRegistry::get('Staffs');
      $this->Factories = TableRegistry::get('Factories');
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
@@ -84,6 +85,7 @@ class MaterialTypesController extends AppController
       $this->set('materialType', $materialType);
 
       $data = $this->request->getData();
+
       if(isset($data["edit"])){
 
         $id = $data["id"];
@@ -108,6 +110,12 @@ class MaterialTypesController extends AppController
 
         return $this->redirect(['action' => 'deleteconfirm']);
 
+      }else{
+
+        $MaterialTypes = $this->MaterialTypes->find()
+        ->where(['type' => $data["type"]])->toArray();
+        $id = $MaterialTypes[0]["id"];
+
       }
       $this->set('id', $id);
 
@@ -118,6 +126,15 @@ class MaterialTypesController extends AppController
       $this->set('type', $type);
       $factory_name = $MaterialTypes[0]["factory"]['name'];
       $this->set('factory_name', $factory_name);
+
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      header('Expires:-1');
+      header('Cache-Control:');
+      header('Pragma:');
+
+      print_r(" ");
 
     }
 
@@ -149,29 +166,12 @@ class MaterialTypesController extends AppController
     {
       $materialType = $this->MaterialTypes->newEntity();
       $this->set('materialType', $materialType);
-
-      $Factories = $this->Factories->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrFactories = array();
-      foreach ($Factories as $value) {
-        $arrFactories[] = array($value->id=>$value->name);
-      }
-      $this->set('arrFactories', $arrFactories);
-
     }
 
     public function addcomfirm()
     {
       $materialType = $this->MaterialTypes->newEntity();
       $this->set('materialType', $materialType);
-
-      $data = $this->request->getData();
-
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
-
     }
 
     public function adddo()
@@ -181,19 +181,17 @@ class MaterialTypesController extends AppController
 
       $data = $this->request->getData();
 
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
-
       $session = $this->request->getSession();
       $datasession = $session->read();
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
+      $Staffs = $this->Staffs->find()->where(['id' => $staff_id])->toArray();//工場を取得
+      $factory_id = $Staffs[0]["factory_id"];
+
       $arrtourokumaterialType = array();
       $arrtourokumaterialType = [
-        'factory_id' => $data["factory_id"],
+        'factory_id' => $factory_id,
         'type' => $data["type"],
         'delete_flag' => 0,
         'created_at' => date("Y-m-d H:i:s"),
@@ -261,29 +259,12 @@ class MaterialTypesController extends AppController
       ]);
       $this->set(compact('materialType'));
       $this->set('id', $id);
-
-      $Factories = $this->Factories->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrFactories = array();
-      foreach ($Factories as $value) {
-        $arrFactories[] = array($value->id=>$value->name);
-      }
-      $this->set('arrFactories', $arrFactories);
-
     }
 
     public function editconfirm()
     {
       $materialType = $this->MaterialTypes->newEntity();
       $this->set('materialType', $materialType);
-
-      $data = $this->request->getData();
-
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
-
     }
 
     public function editdo()
@@ -295,11 +276,6 @@ class MaterialTypesController extends AppController
       $datasession = $session->read();
 
       $data = $this->request->getData();
-
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
@@ -330,7 +306,6 @@ class MaterialTypesController extends AppController
 
          $this->MaterialTypes->updateAll(
            [
-           'factory_id' => $data["factory_id"],
            'type' => $data["type"],
            'updated_at' => date('Y-m-d H:i:s'),
            'updated_staff' => $staff_id],

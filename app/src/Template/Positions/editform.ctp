@@ -35,12 +35,10 @@
         <table>
         <tr>
           <td width="280"><strong>職種名</strong></td>
-          <td width="282"><strong>工場・営業所名</strong></td>
         </tr>
 
         <tr>
           <td><?= $this->Form->control('position', array('type'=>'text', 'label'=>false)) ?></td>
-          <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>
         </tr>
       </table>
     </fieldset>

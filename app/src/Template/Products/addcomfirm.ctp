@@ -23,18 +23,8 @@
 <?= $this->Form->control('customer_name', array('type'=>'hidden', 'value'=>$customer_name, 'label'=>false)) ?>
 <?= $this->Form->control('status_kensahyou', array('type'=>'hidden', 'value'=>$status_kensahyou, 'label'=>false)) ?>
 <?= $this->Form->control('tuikalength', array('type'=>'hidden', 'value'=>$tuikalength, 'label'=>false)) ?>
-<?= $this->Form->control('status_kensahyou_flag', array('type'=>'hidden', 'value'=>$status_kensahyou_flag, 'label'=>false)) ?>
 <?= $this->Form->control('ig_bank_modes', array('type'=>'hidden', 'value'=>$ig_bank_modes, 'label'=>false)) ?>
 <br><br><br>
-
-<?php
-
-if($status_kensahyou == 0){
-  $status_kensahyou_name = "表示";
-}else{
-  $status_kensahyou_name = "非表示";
-}
-?>
 
 <?php
 //<nav class="large-3 medium-4 columns">
@@ -66,22 +56,19 @@ if($status_kensahyou == 0){
         <td width="280"><strong>品名</strong></td>
         <td><strong>単位</strong></td>
         <td><strong>単重(g/m)</strong></td>
-        <td><strong>検査表に表示</strong></td>
         <td><strong>幅測定器モード番号</strong></td>
         </tr>
         <tr>
         <td><?= h($name) ?></td>
         <td><?= h($tanni) ?></td>
         <td><?= h($weight) ?></td>
-        <td><?= h($status_kensahyou_name) ?></td>
         <td><?= h($ig_bank_modes) ?></td>
         </tr>
       </table>
 
-      <?php if ($status_kensahyou_flag > 0): ?>
-
       <table>
       <tr>
+      <td><strong>検査表に表示</strong></td>
       <td><strong>長さ（mm）</strong></td>
         <td><strong>カット長さ（mm）</strong></td>
         <td width="50"><strong>上限</strong></td>
@@ -92,6 +79,9 @@ if($status_kensahyou == 0){
       <?php for($k=1; $k<=$tuikalength; $k++): ?>
 
       <tr>
+      <td><?= h(${"status_kensahyou_name".$k}) ?></td>
+      <?= $this->Form->control('status_kensahyou'.$k, array('type'=>'hidden', 'value'=>${"status_kensahyou".$k}, 'label'=>false)) ?>
+      <?= $this->Form->control('status_kensahyou_name'.$k, array('type'=>'hidden', 'value'=>${"status_kensahyou_name".$k}, 'label'=>false)) ?>
       <td><?= h(${"length".$k}) ?></td>
       <?= $this->Form->control('length'.$k, array('type'=>'hidden', 'value'=>${"length".$k}, 'label'=>false)) ?>
       <td><?= h(${"length_cut".$k}) ?></td>
@@ -106,34 +96,6 @@ if($status_kensahyou == 0){
       <?php endfor;?>
 
      </table>
-
-     <?php else : ?>
-
-<table>
-<tr>
-<td><strong>長さ（mm）</strong></td>
-        <td><strong>カット長さ（mm）</strong></td>
-  <td width="200"><strong>備考</strong></td>
-</tr>
-
-<?php for($k=1; $k<=$tuikalength; $k++): ?>
-
-<tr>
-<td><?= h(${"length".$k}) ?></td>
-<?= $this->Form->control('length'.$k, array('type'=>'hidden', 'value'=>${"length".$k}, 'label'=>false)) ?>
-      <td><?= h(${"length_cut".$k}) ?></td>
-      <?= $this->Form->control('length_cut'.$k, array('type'=>'hidden', 'value'=>${"length_cut".$k}, 'label'=>false)) ?>
-      <?= $this->Form->control('length_upper_limit'.$k, array('type'=>'hidden', 'value'=>${"length_upper_limit".$k}, 'label'=>false)) ?>
-      <?= $this->Form->control('length_lower_limit'.$k, array('type'=>'hidden', 'value'=>${"length_lower_limit".$k}, 'label'=>false)) ?>
-      <td><?= h(${"bik".$k}) ?></td>
-      <?= $this->Form->control('bik'.$k, array('type'=>'hidden', 'value'=>${"bik".$k}, 'label'=>false)) ?>
-</tr>
-
-<?php endfor;?>
-
-</table>
-
-<?php endif; ?>
 
     </fieldset>
 

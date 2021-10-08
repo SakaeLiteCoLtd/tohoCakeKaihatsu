@@ -21,6 +21,16 @@
 <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$id, 'label'=>false)) ?>
 <br><br><br>
 
+<?php
+
+if($status_kensahyou == 0){
+  $status_kensahyou_name = "表示";
+}else{
+  $status_kensahyou_name = "非表示";
+}
+
+?>
+
 <nav class="sample non-sample">
     <fieldset>
       <table>
@@ -31,10 +41,12 @@
 
   <table>
         <tr>
-          <td width="280"><strong>工場名</strong></td>
+          <td width="260"><strong>工場名</strong></td>
+          <td width="200"><strong>検査表</strong></td>
         </tr>
         <tr>
         <td><?= h($material->factory->name) ?></td>
+        <td><?= h($status_kensahyou_name) ?></td>
         </tr>
       </table>
         <table>
@@ -44,7 +56,7 @@
         </tr>
         <tr>
         <td><?= h($material['material_code']) ?></td>
-    <td><?= h($material['tanni']) ?></td>
+        <td><?= h($material['tanni']) ?></td>
         </tr>
       </table>
 

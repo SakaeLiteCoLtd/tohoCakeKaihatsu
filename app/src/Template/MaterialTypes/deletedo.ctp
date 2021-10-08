@@ -36,11 +36,9 @@
 
         <table>
         <tr>
-        <td width="280"><strong>自社工場</strong></td>
           <td width="280"><strong>仕入品種類</strong></td>
         </tr>
         <tr>
-        <td><?= h($materialType->factory->name) ?></td>
           <td><?= h($materialType['type']) ?></td>
         </tr>
       </table>
@@ -50,7 +48,7 @@
     <table align="center">
       <tbody class='sample non-sample'>
         <tr>
-          <td style="border-style: none;"><div align="center"><?= $this->Form->submit('メニュートップへ戻る', array('name' => 'top')); ?></div></td>
+          <td style="border-style: none;"><div align="center"><?= $this->Form->submit('仕入品種類メニュートップへ戻る', array('name' => 'top')); ?></div></td>
         </tr>
       </tbody>
     </table>

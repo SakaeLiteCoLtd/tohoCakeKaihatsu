@@ -72,8 +72,7 @@ $(function() {
         <td width="260"><strong>品名</strong></td>
         <td width="50"><strong>単位</strong></td>
         <td width="50"><strong>単重(g/m)</strong></td>
-        <td width="50"><strong>検査表</strong></td>
-        <td width="50"><strong>幅測定器モード番号</strong></td>
+        <td width="80"><strong>幅測定器<br>モード番号</strong></td>
       </tr>
       <tr>
         <td>
@@ -82,7 +81,6 @@ $(function() {
         <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>25)) ?></td>
         <td><?= $this->Form->control('tanni', ['options' => $arrTanni, 'label'=>false]) ?></td>
         <td><?= $this->Form->control('weight', array('type'=>'text', 'pattern'=>'^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'size'=>6)) ?></td>
-        <td><?= $this->Form->control('status_kensahyou', ['options' => $arrStatusKensahyou, 'label'=>false]) ?></td>
         <td><?= $this->Form->control('ig_bank_modes', ['options' => $arrig_bank_modes, 'label'=>false]) ?></td>
       </tr>
     </table>

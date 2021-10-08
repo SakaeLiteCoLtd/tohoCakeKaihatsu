@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
  * Materials Model
  *
  * @property \App\Model\Table\FactoriesTable|\Cake\ORM\Association\BelongsTo $Factories
- * @property |\Cake\ORM\Association\BelongsTo $MaterialSuppliers
+ * @property \App\Model\Table\MaterialSuppliersTable|\Cake\ORM\Association\BelongsTo $MaterialSuppliers
  * @property \App\Model\Table\MaterialTypesTable|\Cake\ORM\Association\BelongsTo $MaterialTypes
  * @property \App\Model\Table\PriceMaterialsTable|\Cake\ORM\Association\HasMany $PriceMaterials
  * @property \App\Model\Table\ProductMachineMaterialsTable|\Cake\ORM\Association\HasMany $ProductMachineMaterials
@@ -85,24 +85,9 @@ class MaterialsTable extends Table
             ->notEmpty('name');
 
         $validator
-            ->scalar('sakuin')
-            ->maxLength('sakuin', 255)
-            ->allowEmpty('sakuin');
-
-        $validator
-            ->scalar('grade')
-            ->maxLength('grade', 255)
-            ->allowEmpty('grade');
-
-        $validator
-            ->scalar('color')
-            ->maxLength('color', 255)
-            ->allowEmpty('color');
-
-        $validator
-            ->scalar('maker')
-            ->maxLength('maker', 255)
-            ->allowEmpty('maker');
+            ->integer('status_kensahyou')
+            ->requirePresence('status_kensahyou', 'create')
+            ->notEmpty('status_kensahyou');
 
         $validator
             ->scalar('tanni')

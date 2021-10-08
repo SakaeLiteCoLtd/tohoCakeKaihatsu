@@ -14,6 +14,7 @@ class CustomersController extends AppController
       public function initialize()
     {
      parent::initialize();
+     $this->Staffs = TableRegistry::get('Staffs');
      $this->CustomerCodeRules = TableRegistry::get('CustomerCodeRules');
      $this->MaterialSuppliers = TableRegistry::get('MaterialSuppliers');
      $this->Factories = TableRegistry::get('Factories');
@@ -120,14 +121,6 @@ class CustomersController extends AppController
         $this->set('mess',$mess);
       }
 
-      $Factories = $this->Factories->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrFactories = array();
-      foreach ($Factories as $value) {
-        $arrFactories[] = array($value->id=>$value->name);
-      }
-      $this->set('arrFactories', $arrFactories);
-
       $arrcustomer_code_last = [
         "1" => "１：大阪顧客",
         "2" => "２：石狩顧客",
@@ -168,11 +161,6 @@ class CustomersController extends AppController
 
       }
 
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
-
       $customer_code_last = $data['customer_code_last'];
       if($customer_code_last == 1){
         $customer_code_last_hyouji = "１：大阪顧客";
@@ -209,15 +197,13 @@ class CustomersController extends AppController
 
       $data = $this->request->getData();
 
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
-
       $session = $this->request->getSession();
       $datasession = $session->read();
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $Staffs = $this->Staffs->find()->where(['id' => $staff_id])->toArray();//工場を取得
+      $factory_id = $Staffs[0]["factory_id"];
 
       //新しいデータを登録
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -262,7 +248,7 @@ class CustomersController extends AppController
   
         $arrtourokucustomer = array();
         $arrtourokucustomer = [
-          'factory_id' => $data["factory_id"],
+          'factory_id' => $factory_id,
           'name' => $data["name"],
           'customer_code' => $customer_code,
           'department' => $data["department"],
@@ -279,7 +265,7 @@ class CustomersController extends AppController
         ];
 
         $arrtourokuMaterialSuppliers = [
-          'factory_id' => $data["factory_id"],
+          'factory_id' => $factory_id,
           'name' => $data["name"],
           'material_supplier_code' => $customer_code,
           'department' => $data["department"],
@@ -418,11 +404,7 @@ class CustomersController extends AppController
   
       }
 
-      $Factories = $this->Factories->find()
-      ->where(['id' => $CustomerData[0]['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
       $this->set('factory_id', $CustomerData[0]['factory_id']);
-      $this->set('factory_name', $factory_name);
       $this->set('CustomerData', $CustomerData);
       $this->set('id', $CustomerData[0]["id"]);
       $this->set('name', $CustomerData[0]["name"]);
@@ -434,14 +416,6 @@ class CustomersController extends AppController
       $this->set('yuubin', $CustomerData[0]["yuubin"]);
       $this->set('address', $CustomerData[0]["address"]);
       $this->set('ryakusyou', $CustomerData[0]["ryakusyou"]);
-
-      $Factories = $this->Factories->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrFactories = array();
-      foreach ($Factories as $value) {
-        $arrFactories[] = array($value->id=>$value->name);
-      }
-      $this->set('arrFactories', $arrFactories);
 
     }
 
@@ -464,11 +438,6 @@ class CustomersController extends AppController
         $data = $this->request->getData();
       }
 
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
-
       $CustomerData = $this->Customers->find()
       ->where(['id' => $data['id']])->toArray();
 
@@ -483,14 +452,6 @@ class CustomersController extends AppController
       $this->set('yuubin', $CustomerData[0]["yuubin"]);
       $this->set('address', $CustomerData[0]["address"]);
       $this->set('ryakusyou', $CustomerData[0]["ryakusyou"]);
-
-      $Factories = $this->Factories->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrFactories = array();
-      foreach ($Factories as $value) {
-        $arrFactories[] = array($value->id=>$value->name);
-      }
-      $this->set('arrFactories', $arrFactories);
 
       $customer_code_last = substr($CustomerData[0]["customer_code"], -1, 1);
       $this->set('customer_code_last', $customer_code_last);
@@ -520,7 +481,7 @@ class CustomersController extends AppController
       $this->set('customer_code_new', $customer_code_new);
 
       $CustomerData = $this->Customers->find()
-      ->where(['id IS NOT' => $data['id'], 'customer_code' => $customer_code_new])->toArray();
+      ->where(['id IS NOT' => $data['id'], 'customer_code' => $customer_code_new, 'delete_flag' => 0])->toArray();
 
  //     $MaterialSuppliers = $this->MaterialSuppliers->find()
  //     ->where(['material_supplier_code' => $customer_code_new])->toArray();
@@ -533,17 +494,12 @@ class CustomersController extends AppController
           session_start();
           }
           $_SESSION['customer_edit'] = array();
-          $_SESSION['customer_edit'] = ["id" => $data['id'], "factory_id" => $data['factory_id'], "name" => $data['name']];
+          $_SESSION['customer_edit'] = ["id" => $data['id'], "name" => $data['name']];
   
         return $this->redirect(['action' => 'editform',
         's' => ['mess' => "コード：「".$customer_code_new."」は既に存在します。"]]);
 
       }
-
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
 
       if($data["check"] > 0){
         $mess = "以下のデータを削除します。よろしければ「決定」ボタンを押してください。";
@@ -566,15 +522,13 @@ class CustomersController extends AppController
 
       $data = $this->request->getData();
 
-      $Factories = $this->Factories->find()
-      ->where(['id' => $data['factory_id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
-
       $session = $this->request->getSession();
       $datasession = $session->read();
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $Staffs = $this->Staffs->find()->where(['id' => $staff_id])->toArray();//工場を取得
+      $factory_id = $Staffs[0]["factory_id"];
 
       $Customermoto = $this->Customers->find()
       ->where(['id' => $data['id']])->toArray();
@@ -628,7 +582,7 @@ class CustomersController extends AppController
        try {//トランザクション4
 
          if ($this->Customers->updateAll(
-           ['factory_id' => $data["factory_id"],
+           ['factory_id' => $factory_id,
            'name' => $data["name"],
            'customer_code' => $data["customer_code_new"],
            'furigana' => $data["furigana"],
@@ -644,7 +598,7 @@ class CustomersController extends AppController
            ['id'  => $data['id']])){
 
             $this->MaterialSuppliers->updateAll(
-              ['factory_id' => $data["factory_id"],
+              ['factory_id' => $factory_id,
                'name' => $data["name"],
                'material_supplier_code' => $data["customer_code_new"],
                'furigana' => $data["furigana"],

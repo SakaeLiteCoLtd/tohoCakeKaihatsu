@@ -19,6 +19,16 @@
 <?= $this->Form->create($material, ['url' => ['action' => 'index']]) ?>
 <br><br><br>
 
+<?php
+
+if($status_kensahyou == 0){
+  $status_kensahyou_name = "表示";
+}else{
+  $status_kensahyou_name = "非表示";
+}
+
+?>
+
 <nav class="sample non-sample">
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('仕入品新規登録') ?></strong></legend>
@@ -32,10 +42,12 @@
 
         <table>
         <tr>
-          <td width="280"><strong>工場名</strong></td>
+        <td width="260"><strong>工場名</strong></td>
+          <td width="200"><strong>検査表</strong></td>
         </tr>
         <tr>
         <td><?= h($factory_name) ?></td>
+        <td><?= h($status_kensahyou_name) ?></td>
         </tr>
       </table>
       <table>

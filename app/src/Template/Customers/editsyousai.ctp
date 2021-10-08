@@ -24,14 +24,6 @@
       <legend><strong style="font-size: 15pt; color:red"><?= __('得意先・仕入先情報詳細') ?></strong></legend>
         <br>
 
-        <table>
-        <tr>
-          <td width="280"><strong>自社工場</strong></td>
-        </tr>
-        <tr>
-        <td><?= h($factory_name) ?></td>
-        </tr>
-      </table>
       <table>
       <tr>
         <td width="280"><strong>得意先・仕入先名</strong></td>
@@ -78,6 +70,8 @@
     <table>
       <tbody class='sample non-sample'>
         <tr>
+        <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+          <td style="border-style: none;"><?= __("　") ?></td>
           <td style="border:none"><?= $this->Form->submit(__('編集・削除')) ?></td>
         </tr>
       </tbody>

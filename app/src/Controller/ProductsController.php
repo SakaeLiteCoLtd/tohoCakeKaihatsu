@@ -263,13 +263,8 @@ class ProductsController extends AppController
       $weight = $data["weight"];
       $this->set('weight', $weight);
 
-      $status_kensahyou = $data["status_kensahyou"];
-      if($status_kensahyou > 0){//非表示の場合
-        $status_kensahyou_flag = 0;
-      }else{//非表示の場合
-        $status_kensahyou_flag = 1;
-      }
-      $this->set('status_kensahyou_flag', $status_kensahyou_flag);
+      $arrStatusKensahyou = ["0" => "表示", "1" => "非表示"];
+      $this->set('arrStatusKensahyou', $arrStatusKensahyou);
 
       $ProductName = $this->Products->find()
       ->where(['factory_id' => $data['factory_id'], 'name' => $name])->toArray();
@@ -337,7 +332,7 @@ class ProductsController extends AppController
       header('Cache-Control:');
       header('Pragma:');
   
-      print_r("");
+      print_r(" ");
 
     }
 
@@ -368,9 +363,6 @@ class ProductsController extends AppController
       $ig_bank_modes = $data["ig_bank_modes"];
       $this->set('ig_bank_modes', $ig_bank_modes);
 
-      $status_kensahyou_flag = $data["status_kensahyou_flag"];
-      $this->set('status_kensahyou_flag', $status_kensahyou_flag);
-
       for($j=1; $j<=$tuikalength; $j++){
         ${"length".$j} = $data["length".$j];
         $this->set('length'.$j, ${"length".$j});
@@ -382,6 +374,17 @@ class ProductsController extends AppController
         $this->set('length_lower_limit'.$j, ${"length_lower_limit".$j});
         ${"bik".$j} = $data["bik".$j];
         $this->set('bik'.$j, ${"bik".$j});
+
+        ${"status_kensahyou".$j} = $data["status_kensahyou".$j];
+        $this->set('status_kensahyou'.$j, ${"status_kensahyou".$j});
+
+        if(${"status_kensahyou".$j} == 0){
+          ${"status_kensahyou_name".$j} = "表示";
+        }else{
+          ${"status_kensahyou_name".$j} = "非表示";
+        }
+        $this->set('status_kensahyou_name'.$j, ${"status_kensahyou_name".$j});
+  
       }
 
       $Factories = $this->Factories->find()
@@ -420,9 +423,6 @@ class ProductsController extends AppController
       $ig_bank_modes = $data["ig_bank_modes"];
       $this->set('ig_bank_modes', $ig_bank_modes);
 
-      $status_kensahyou_flag = $data["status_kensahyou_flag"];
-      $this->set('status_kensahyou_flag', $status_kensahyou_flag);
-
       $CustomerName = $this->Customers->find()
       ->where(['name' => $customer_name])->toArray();
       $customer_id = $CustomerName[0]["id"];
@@ -444,6 +444,7 @@ class ProductsController extends AppController
       $this->set('tuikalength', $tuikalength);
 
       for($j=1; $j<=$tuikalength; $j++){
+        
         ${"length".$j} = $data["length".$j];
         $this->set('length'.$j, ${"length".$j});
         ${"length_cut".$j} = $data["length_cut".$j];
@@ -454,6 +455,12 @@ class ProductsController extends AppController
         $this->set('length_lower_limit'.$j, ${"length_lower_limit".$j});
         ${"bik".$j} = $data["bik".$j];
         $this->set('bik'.$j, ${"bik".$j});
+
+        ${"status_kensahyou".$j} = $data["status_kensahyou".$j];
+        $this->set('status_kensahyou'.$j, ${"status_kensahyou".$j});
+        ${"status_kensahyou_name".$j} = $data["status_kensahyou_name".$j];
+        $this->set('status_kensahyou_name'.$j, ${"status_kensahyou_name".$j});
+
       }
 
       $Factories = $this->Factories->find()
@@ -499,13 +506,13 @@ class ProductsController extends AppController
             'tanni' => $data["tanni"],
             'weight' => $data["weight"],
             'ig_bank_modes' => $data["ig_bank_modes"],
+            'status_kensahyou' => ${"status_kensahyou".$j},
             'length' => ${"length".$j},
             'length_cut' => ${"length_cut".$j},
             'length_upper_limit' => ${"length_upper_limit".$j},
             'length_lower_limit' => ${"length_lower_limit".$j},
             'bik' => ${"bik".$j},
             'customer_id' => $customer_id,
-            'status_kensahyou' => $data["status_kensahyou"],
             'is_active' => 0,
             'delete_flag' => 0,
             'created_at' => date("Y-m-d H:i:s"),

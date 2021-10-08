@@ -21,6 +21,16 @@
 <?= $this->Form->create($material, ['url' => ['action' => 'index']]) ?>
 <br><br><br>
 
+<?php
+
+if($status_kensahyou == 0){
+  $status_kensahyou_name = "表示";
+}else{
+  $status_kensahyou_name = "非表示";
+}
+
+?>
+
 <nav class="sample non-sample">
     <?= $this->Form->create($material) ?>
     <fieldset>
@@ -36,13 +46,15 @@
 
         <table>
         <tr>
-          <td width="280"><strong>工場名</strong></td>
+          <td width="260"><strong>工場名</strong></td>
+          <td width="200"><strong>検査表</strong></td>
         </tr>
         <tr>
         <td><?= h($material->factory->name) ?></td>
+        <td><?= h($status_kensahyou_name) ?></td>
         </tr>
       </table>
-      <table>
+        <table>
         <tr>
         <td width="260"><strong>仕入品コード</strong></td>
         <td width="200"><strong>単位</strong></td>

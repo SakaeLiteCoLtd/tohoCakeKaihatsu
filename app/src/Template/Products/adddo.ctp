@@ -21,15 +21,6 @@
 //<nav class="large-3 medium-4 columns">
 ?>
 
-<?php
-
-if($this->request->getData('status_kensahyou') == 0){
-  $status_kensahyou_name = "表示";
-}else{
-  $status_kensahyou_name = "非表示";
-}
-?>
-
 <nav class="sample non-sample">
     <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('製品新規登録') ?></strong></legend>
@@ -56,22 +47,19 @@ if($this->request->getData('status_kensahyou') == 0){
         <td width="280"><strong>品名</strong></td>
         <td><strong>単位</strong></td>
         <td><strong>単重(g/m)</strong></td>
-        <td><strong>検査表に表示</strong></td>
         <td><strong>幅測定器モード番号</strong></td>
         </tr>
         <tr>
         <td><?= h($name) ?></td>
         <td><?= h($tanni) ?></td>
         <td><?= h($weight) ?></td>
-        <td><?= h($status_kensahyou_name) ?></td>
         <td><?= h($ig_bank_modes) ?></td>
         </tr>
       </table>
 
-      <?php if ($status_kensahyou_flag > 0): ?>
-
       <table>
       <tr>
+      <td><strong>検査表に表示</strong></td>
       <td><strong>製品コード</strong></td>
       <td><strong>長さ（mm）</strong></td>
         <td><strong>カット長さ（mm）</strong></td>
@@ -83,6 +71,7 @@ if($this->request->getData('status_kensahyou') == 0){
       <?php for($k=1; $k<=$tuikalength; $k++): ?>
 
       <tr>
+      <td><?= h(${"status_kensahyou_name".$k}) ?></td>
       <td><?= h(${"product_code".$k}) ?></td>
       <td><?= h(${"length".$k}) ?></td>
       <td><?= h(${"length_cut".$k}) ?></td>
@@ -93,31 +82,6 @@ if($this->request->getData('status_kensahyou') == 0){
       <?php endfor;?>
 
      </table>
-
-     <?php else : ?>
-
-<table>
-<tr>
-<td><strong>製品コード</strong></td>
-<td><strong>長さ（mm）</strong></td>
-        <td><strong>カット長さ（mm）</strong></td>
-  <td width="200"><strong>備考</strong></td>
-</tr>
-
-<?php for($k=1; $k<=$tuikalength; $k++): ?>
-
-<tr>
-<td><?= h(${"product_code".$k}) ?></td>
-      <td><?= h(${"length".$k}) ?></td>
-      <td><?= h(${"length_cut".$k}) ?></td>
-      <td><?= h(${"bik".$k}) ?></td>
-</tr>
-
-<?php endfor;?>
-
-</table>
-
-<?php endif; ?>
 
     </fieldset>
 

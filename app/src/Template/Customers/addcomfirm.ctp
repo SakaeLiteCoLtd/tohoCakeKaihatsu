@@ -25,7 +25,6 @@
 <?= $this->Form->control('fax', array('type'=>'hidden', 'value'=>$this->request->getData('fax'), 'label'=>false)) ?>
 <?= $this->Form->control('yuubin', array('type'=>'hidden', 'value'=>$this->request->getData('yuubin'), 'label'=>false)) ?>
 <?= $this->Form->control('address', array('type'=>'hidden', 'value'=>$this->request->getData('address'), 'label'=>false)) ?>
-<?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 <?= $this->Form->control('customer_code_last_hyouji', array('type'=>'hidden', 'value'=>$customer_code_last_hyouji, 'label'=>false)) ?>
 <br><br><br>
 
@@ -39,15 +38,6 @@
           </tbody>
         </table>
         <br>
-
-        <table>
-          <tr>
-            <td width="280"><strong>自社工場名</strong></td>
-        	</tr>
-          <tr>
-            <td><?= h($factory_name) ?></td>
-        	</tr>
-        </table>
 
         <table>
       <tr>

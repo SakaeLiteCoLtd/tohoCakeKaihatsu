@@ -33,11 +33,9 @@
 
         <table>
         <tr>
-          <td width="280"><strong>自社工場</strong></td>
           <td width="280"><strong>得意先・仕入先コード（変更前）</strong></td>
         </tr>
         <tr>
-          <td><?= $this->Form->control('factory_id', ['options' => $arrFactories, 'label'=>false]) ?></td>
           <td><?= h($customer_code) ?></td>
         </tr>
       </table>

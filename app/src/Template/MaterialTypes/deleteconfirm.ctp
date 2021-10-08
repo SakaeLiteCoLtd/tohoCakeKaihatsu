@@ -38,11 +38,9 @@
 
         <table>
         <tr>
-        <td width="280"><strong>自社工場</strong></td>
           <td width="280"><strong>仕入品種類</strong></td>
         </tr>
         <tr>
-        <td><?= h($materialType->factory->name) ?></td>
           <td><?= h($materialType['type']) ?></td>
         </tr>
       </table>
