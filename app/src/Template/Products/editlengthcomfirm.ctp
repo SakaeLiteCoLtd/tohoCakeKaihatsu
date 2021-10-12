@@ -53,9 +53,9 @@
       <tr>
       <td><strong>製品コード</strong></td>
         <td width="200"><strong>品名</strong></td>
+        <td width="50"><strong>検査表に表示</strong></td>
         <td><strong>長さ（mm）</strong></td>
         <td width="80"><strong>カット長さ（mm）</strong></td>
-        <td width="80"><strong>規 格 長 さ（mm）</strong></td>
         <td width="50"><strong>上限</strong></td>
         <td width="50"><strong>下限</strong></td>
         <td width="200"><strong>備考</strong></td>
@@ -66,9 +66,19 @@
       <tr>
       <td><?= h($ProductName[$i]["product_code"]) ?></td>
       <td><?= h($ProductName[$i]["name"]) ?></td>
+
+      <?php
+      if($ProductName[$i]["status_kensahyou"] == 0){
+        $status_kensahyou_name = "表示";
+      }else{
+        $status_kensahyou_name = "非表示";
+      }
+?>
+
+      <td><?= h($status_kensahyou_name) ?></td>
+
       <td><?= h($ProductName[$i]["length"]) ?></td>
       <td><?= h($ProductName[$i]["length_cut"]) ?></td>
-      <td><?= h($ProductName[$i]["length_size"]) ?></td>
       <td><?= h($ProductName[$i]["length_upper_limit"]) ?></td>
       <td><?= h($ProductName[$i]["length_lower_limit"]) ?></td>
       <td><?= h($ProductName[$i]["bik"]) ?></td>
@@ -88,9 +98,9 @@
      <table>
       <tr>
         <td><strong>品名</strong></td>
+        <td><strong>検査表に表示</strong></td>
         <td><strong>長さ（mm）</strong></td>
         <td width="80"><strong>カット長さ（mm）</strong></td>
-        <td width="80"><strong>規 格 長 さ（mm）</strong></td>
         <td width="50"><strong>上限</strong></td>
         <td width="50"><strong>下限</strong></td>
         <td width="200"><strong>備考</strong></td>
@@ -100,12 +110,13 @@
 
       <tr>
       <td><?= h($name) ?></td>
+      <td><?= h(${"status_kensahyou_name".$k}) ?></td>
+      <?= $this->Form->control('status_kensahyou'.$k, array('type'=>'hidden', 'value'=>${"status_kensahyou".$k}, 'label'=>false)) ?>
+      <?= $this->Form->control('status_kensahyou_name'.$k, array('type'=>'hidden', 'value'=>${"status_kensahyou_name".$k}, 'label'=>false)) ?>
       <td><?= h(${"length".$k}) ?></td>
       <?= $this->Form->control('length'.$k, array('type'=>'hidden', 'value'=>${"length".$k}, 'label'=>false)) ?>
       <td><?= h(${"length_cut".$k}) ?></td>
       <?= $this->Form->control('length_cut'.$k, array('type'=>'hidden', 'value'=>${"length_cut".$k}, 'label'=>false)) ?>
-      <td><?= h(${"length_size".$k}) ?></td>
-      <?= $this->Form->control('length_size'.$k, array('type'=>'hidden', 'value'=>${"length_size".$k}, 'label'=>false)) ?>
       <td><?= h(${"length_upper_limit".$k}) ?></td>
       <?= $this->Form->control('length_upper_limit'.$k, array('type'=>'hidden', 'value'=>${"length_upper_limit".$k}, 'label'=>false)) ?>
       <td><?= h(${"length_lower_limit".$k}) ?></td>

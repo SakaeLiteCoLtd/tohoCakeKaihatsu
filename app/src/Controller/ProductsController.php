@@ -29,15 +29,15 @@ class ProductsController extends AppController
      }
 
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
-/*
+
        $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "業務メニュー", 'Groups.delete_flag' => 0])
+       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "製品", 'Groups.delete_flag' => 0])
        ->toArray();
 
        if(!isset($Groups[0])){
 
         $Groups = $this->Groups->find()->contain(["Menus"])
-        ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "製造メニュー", 'Groups.delete_flag' => 0])
+        ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "成形条件表", 'Groups.delete_flag' => 0])
         ->toArray();
 
         $this->set('check_gyoumu', 0);
@@ -50,9 +50,11 @@ class ProductsController extends AppController
         
         $this->set('check_gyoumu', 1);
 
-       }
-*/
-      $this->set('check_gyoumu', 0);
+      }
+
+     }else{//どっちも表示
+
+      $this->set('check_gyoumu', 1);
 
      }
 
@@ -65,7 +67,7 @@ class ProductsController extends AppController
         $this->paginate = [
           'limit' => 13,
           'contain' => ['Customers'],
-          'order' => ['Products.updated_at' => 'desc',
+          'order' => [//'Products.updated_at' => 'desc',
           'Products.created_at' => 'desc']
         ];
         $products = $this->paginate($this->Products->find()->where(['Products.delete_flag' => 0]));
@@ -616,6 +618,9 @@ class ProductsController extends AppController
       $name = $data["name"];
       $this->set('name', $name);
       
+      $arrStatusKensahyou = ["0" => "表示", "1" => "非表示"];
+      $this->set('arrStatusKensahyou', $arrStatusKensahyou);
+
       if(isset($data["tuika"])){//追加
 
         $tuikalength = $data["tuikalength"] + 1;
@@ -642,6 +647,15 @@ class ProductsController extends AppController
 
       }
 
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      header('Expires:-1');
+      header('Cache-Control:');
+      header('Pragma:');
+  
+      print_r(" ");
+      
     }
 
     public function editlengthcomfirm()
@@ -687,12 +701,31 @@ class ProductsController extends AppController
         $this->set('length_lower_limit'.$j, ${"length_lower_limit".$j});
         ${"bik".$j} = $data["bik".$j];
         $this->set('bik'.$j, ${"bik".$j});
+
+        ${"status_kensahyou".$j} = $data["status_kensahyou".$j];
+        $this->set('status_kensahyou'.$j, ${"status_kensahyou".$j});
+
+        if(${"status_kensahyou".$j} == 0){
+          ${"status_kensahyou_name".$j} = "表示";
+        }else{
+          ${"status_kensahyou_name".$j} = "非表示";
+        }
+        $this->set('status_kensahyou_name'.$j, ${"status_kensahyou_name".$j});
+
       }
 
       $Factories = $this->Factories->find()
       ->where(['id' => $data['factory_id']])->toArray();
       $factory_name = $Factories[0]['name'];
       $this->set('factory_name', $factory_name);
+
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      header('Expires:-1');
+      header('Cache-Control:');
+      header('Pragma:');
+
     }
 
     public function editlengthdo()
@@ -747,6 +780,12 @@ class ProductsController extends AppController
         $this->set('length_lower_limit'.$j, ${"length_lower_limit".$j});
         ${"bik".$j} = $data["bik".$j];
         $this->set('bik'.$j, ${"bik".$j});
+
+        ${"status_kensahyou".$j} = $data["status_kensahyou".$j];
+        $this->set('status_kensahyou'.$j, ${"status_kensahyou".$j});
+        ${"status_kensahyou_name".$j} = $data["status_kensahyou_name".$j];
+        $this->set('status_kensahyou_name'.$j, ${"status_kensahyou_name".$j});
+
       }
 
       $Factories = $this->Factories->find()
@@ -776,6 +815,9 @@ class ProductsController extends AppController
           ${"length_cut".$j} = $data["length_cut".$j];
           $color_renban = sprintf('%02d', $product_color_renban + $j);
   
+          ${"product_code".$j} = $product_code_moto.$color_renban;
+          $this->set('product_code'.$j, ${"product_code".$j});
+  
           $arrtourokuproduct[] = [
             'factory_id' => $data["factory_id"],
             'product_code' => $product_code_moto.$color_renban,
@@ -787,7 +829,7 @@ class ProductsController extends AppController
             'length_lower_limit' => ${"length_lower_limit".$j},
             'bik' => ${"bik".$j},
             'customer_id' => $ProductName[0]["customer_id"],
-            'status_kensahyou' => $status_kensahyou,
+            'status_kensahyou' => ${"status_kensahyou".$j},
             'is_active' => 0,
             'delete_flag' => 0,
             'created_at' => date("Y-m-d H:i:s"),
@@ -1047,7 +1089,7 @@ class ProductsController extends AppController
       header('Cache-Control:');
       header('Pragma:');
 
-      print_r("");
+      print_r(" ");
 
     }
 
@@ -1087,10 +1129,18 @@ class ProductsController extends AppController
             return $this->redirect(['action' => 'editform',
             's' => ['mess' => "品名に「;」（セミコロン）は使用できません。"]]);
           }
-    
+  
+          if($data["status_kensahyou".$i] == 0){
+            ${"status_kensahyou_name".$i} = "表示";
+          }else{
+            ${"status_kensahyou_name".$i} = "非表示";
+          }
+  
           $arrKoushinproduct[] = ["product_code" => $data["product_code".$i],
-           "name" => $data["name".$i],
-            "length" => $data["length".$i],
+          "name" => $data["name".$i],
+          "status_kensahyou" => $data["status_kensahyou".$i],
+          "status_kensahyou_name" => ${"status_kensahyou_name".$i},
+          "length" => $data["length".$i],
             "length_cut" => $data["length_cut".$i],
             "length_upper_limit" => $data["length_upper_limit".$i],
             "length_lower_limit" => $data["length_lower_limit".$i],
@@ -1099,10 +1149,18 @@ class ProductsController extends AppController
 
             }else{
 
+              if($data["status_kensahyou".$i] == 0){
+                ${"status_kensahyou_name".$i} = "表示";
+              }else{
+                ${"status_kensahyou_name".$i} = "非表示";
+              }
+    
               $arrDeleteproduct[] = ["product_code" => $data["product_code".$i],
                "name" => $data["name".$i],
-                "length" => $data["length".$i],
-                "length_cut" => $data["length_cut".$i],
+               "status_kensahyou" => $data["status_kensahyou".$i],
+               "status_kensahyou_name" => ${"status_kensahyou_name".$i},
+               "length" => $data["length".$i],
+               "length_cut" => $data["length_cut".$i],
                 "length_upper_limit" => $data["length_upper_limit".$i],
                 "length_lower_limit" => $data["length_lower_limit".$i],
                 "bik" => $data["bik".$i]
@@ -1113,6 +1171,13 @@ class ProductsController extends AppController
           }
           $this->set('arrKoushinproduct', $arrKoushinproduct);
           $this->set('arrDeleteproduct', $arrDeleteproduct);
+    
+          if(!isset($_SESSION)){
+            session_start();
+          }
+          header('Expires:-1');
+          header('Cache-Control:');
+          header('Pragma:');
     
     }
 
@@ -1169,6 +1234,8 @@ class ProductsController extends AppController
 
           $arrupdateproduct[] = [
             'product_code' => $data["product_code".$i],
+            'status_kensahyou' => $data["status_kensahyou".$i],
+            'status_kensahyou_name' => $data["status_kensahyou_name".$i],
             'length' => $data["length".$i],
             'length_cut' => $data["length_cut".$i],
             'length_upper_limit' => $data["length_upper_limit".$i],
@@ -1177,7 +1244,6 @@ class ProductsController extends AppController
             'name' => $data["name".$i],
             'tanni' => $data["tanni"],
             'weight' => $data["weight"],
-            'status_kensahyou' => $data["status_kensahyou"],
             'updated_at' => date("Y-m-d H:i:s"),
             'updated_staff' => $staff_id
           ];
@@ -1194,6 +1260,8 @@ class ProductsController extends AppController
             $arrdeleteproduct[] = [
               'product_code' => $data["delete_product_code".$i],
               'name' => $data["delete_name".$i],
+              'status_kensahyou' => $data["delete_status_kensahyou".$i],
+              'status_kensahyou_name' => $data["delete_status_kensahyou_name".$i],
               'length' => $data["delete_length".$i],
               'length_cut' => $data["delete_length_cut".$i],
               'length_upper_limit' => $data["delete_length_upper_limit".$i],
@@ -1226,13 +1294,13 @@ class ProductsController extends AppController
             if ($this->Products->updateAll(
               [ 'length' => $data["length".$i],
                 'length_cut' => $data["length_cut".$i],
+                'status_kensahyou' => $data["status_kensahyou".$i],
                 'length_upper_limit' => $data["length_upper_limit".$i],
                 'length_lower_limit' => $data["length_lower_limit".$i],
                 'bik' => $data["bik".$i],
                 'name' => $data["name".$i],
                 'tanni' => $data["tanni"],
                 'weight' => $data["weight"],
-                'status_kensahyou' => $data["status_kensahyou"],
                 'updated_at' => date('Y-m-d H:i:s'),
                 'updated_staff' => $staff_id],
                 ['id'  => $ProductsId[0]["id"]])){
@@ -1377,6 +1445,462 @@ class ProductsController extends AppController
       $Products = $this->Products->find()->contain(["Factories"])
       ->where(['Products.name like' => "%".$data["name"]."%", 'Products.delete_flag' => 0])->toArray();
       $this->set('Products', $Products);
+
+    }
+
+    public function kikakueditpreform()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
+      $this->set('countFactories', count($Factories));
+      for($i=0; $i<count($Factories); $i++){
+
+        $this->set('factory_id'.$i, $Factories[$i]["id"]);
+
+        ${"Product_name_list".$i} = $this->Products->find()
+        ->where(['factory_id' => $Factories[$i]["id"], 'delete_flag' => 0])->toArray();
+  
+        ${"arrProduct_name_list".$i} = array();
+        for($j=0; $j<count(${"Product_name_list".$i}); $j++){
+          array_push(${"arrProduct_name_list".$i},${"Product_name_list".$i}[$j]["name"]);
+        }
+        ${"arrProduct_name_list".$i} = array_unique(${"arrProduct_name_list".$i});
+        ${"arrProduct_name_list".$i} = array_values(${"arrProduct_name_list".$i});
+  
+        $this->set('arrProduct_name_list'.$i, ${"arrProduct_name_list".$i});
+    }
+
+  }
+
+    public function kikakueditsyousai()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+
+        $session = $this->request->getSession();
+        $_SESSION = $session->read();
+  
+        $data = $_SESSION['editproductcheck'];
+  
+      }elseif(isset($_SESSION['product_detail'][0])){
+
+        $mess = "";
+        $this->set('mess',$mess);
+        $data = $_SESSION['product_detail'];
+        $_SESSION['product_detail'] = array();
+
+      }elseif(isset($this->request->getData()["factory_id"])){
+
+        $mess = "";
+        $this->set('mess',$mess);
+        $data = $this->request->getData();
+
+      }else{
+
+        return $this->redirect(['action' => 'ichiran']);
+
+      }
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+      $ProductName = $this->Products->find()
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
+
+      if(!isset($ProductName[0])){
+
+        return $this->redirect(['action' => 'kikakueditpreform',
+        's' => ['mess' => "自社工場：".$factory_name."、製品名：「".$data['name']."」の製品は存在しません。"]]);
+
+      }
+
+      $product_code_ini = substr($ProductName[0]["product_code"], 0, 11);
+
+      $ProductName = $this->Products->find()
+      ->where(['product_code like' => $product_code_ini.'%', 'delete_flag' => 0])->toArray();
+
+      $this->set('ProductName', $ProductName);
+
+      $factory_id = $data["factory_id"];
+      $this->set('factory_id', $factory_id);
+      $name = $data["name"];
+      $this->set('name', $name);
+      $tanni = $ProductName[0]["tanni"];
+      $this->set('tanni', $tanni);
+      $weight = $ProductName[0]["weight"];
+      $this->set('weight', $weight);
+      $status_kensahyou = $ProductName[0]["status_kensahyou"];
+      $this->set('status_kensahyou', $status_kensahyou);
+      $ig_bank_modes = $ProductName[0]["ig_bank_modes"];
+      $this->set('ig_bank_modes', $ig_bank_modes);
+      
+      $status_kensahyou = $ProductName[0]["status_kensahyou"];
+      if($status_kensahyou == 0){
+        $status_kensahyou_name = "表示";
+      }else{
+        $status_kensahyou_name = "非表示";
+      }
+      $this->set('status_kensahyou_name', $status_kensahyou_name);
+
+      $Customers = $this->Customers->find()
+      ->where(['id' => $ProductName[0]['customer_id']])->toArray();
+      $customer_name = $Customers[0]["name"];
+      $this->set('customer_name', $customer_name);
+
+    }
+    
+    public function kikakueditform()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+
+        $session = $this->request->getSession();
+        $_SESSION = $session->read();
+  
+        $data = $_SESSION['editproductcheck'];
+  
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+        $data = $this->request->getData();
+      }
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+      $ProductName = $this->Products->find()
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
+
+      if(!isset($ProductName[0])){
+
+        return $this->redirect(['action' => 'kikakueditpreform',
+        's' => ['mess' => "自社工場：".$factory_name."、製品名：「".$data['name']."」の製品は存在しません。"]]);
+
+      }
+
+      $product_code_ini = substr($ProductName[0]["product_code"], 0, 11);
+
+      $ProductName = $this->Products->find()
+      ->where(['product_code like' => $product_code_ini.'%', 'delete_flag' => 0])->toArray();
+
+      $this->set('ProductName', $ProductName);
+
+      $factory_id = $data["factory_id"];
+      $this->set('factory_id', $factory_id);
+      $name = $data["name"];
+      $this->set('name', $name);
+      $tanni = $ProductName[0]["tanni"];
+      $this->set('tanni', $tanni);
+      $weight = $ProductName[0]["weight"];
+      $this->set('weight', $weight);
+      $status_kensahyou = $ProductName[0]["status_kensahyou"];
+      $this->set('status_kensahyou', $status_kensahyou);
+      $ig_bank_modes = $ProductName[0]["ig_bank_modes"];
+      $this->set('ig_bank_modes', $ig_bank_modes);
+
+      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個"];
+      $this->set('arrTanni', $arrTanni);
+
+      $arrig_bank_modes = [
+        "" => "",
+        0 => 0,
+        1 => 1,
+        2 => 2,
+        3 => 3,
+      ];
+      $this->set('arrig_bank_modes', $arrig_bank_modes);
+
+      $Customers = $this->Customers->find()
+      ->where(['id' => $ProductName[0]['customer_id']])->toArray();
+      $customer_name = $Customers[0]["name"];
+      $this->set('customer_name', $customer_name);
+
+      $arrStatusKensahyou = ["0" => "表示", "1" => "非表示"];
+      $this->set('arrStatusKensahyou', $arrStatusKensahyou);
+
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      header('Expires:-1');
+      header('Cache-Control:');
+      header('Pragma:');
+
+      print_r(" ");
+
+    }
+
+    public function kikakueditconfirm()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->getData();
+
+      $ProductName = $this->Products->find()
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['namemoto']])->toArray();
+      $this->set('ProductName', $ProductName);
+
+      $arrKoushinproduct = array();
+      $arrDeleteproduct = array();
+      for($i=0; $i<=$data["num"]; $i++){
+
+        if($data["delete".$i] < 1){//登録する場合
+
+          if(strpos($data["name".$i],';') !== false){
+
+            if(!isset($_SESSION)){
+              session_start();
+              header('Expires:-1');
+              header('Cache-Control:');
+              header('Pragma:');
+            }
+            
+            $_SESSION['editproductcheck'] = array();
+            $_SESSION['editproductcheck'] = ["factory_id" => $data['factory_id'], "name" => $data['namemoto']];
+      
+            return $this->redirect(['action' => 'editform',
+            's' => ['mess' => "品名に「;」（セミコロン）は使用できません。"]]);
+          }
+  
+          if($data["status_kensahyou".$i] == 0){
+            ${"status_kensahyou_name".$i} = "表示";
+          }else{
+            ${"status_kensahyou_name".$i} = "非表示";
+          }
+  
+          $arrKoushinproduct[] = ["product_code" => $data["product_code".$i],
+          "name" => $data["name".$i],
+          "status_kensahyou" => $data["status_kensahyou".$i],
+          "status_kensahyou_name" => ${"status_kensahyou_name".$i},
+          "length" => $data["length".$i],
+            "length_cut" => $data["length_cut".$i],
+            "length_upper_limit" => $data["length_upper_limit".$i],
+            "length_lower_limit" => $data["length_lower_limit".$i],
+            "bik" => $data["bik".$i]
+          ];
+
+            }else{
+
+              if($data["status_kensahyou".$i] == 0){
+                ${"status_kensahyou_name".$i} = "表示";
+              }else{
+                ${"status_kensahyou_name".$i} = "非表示";
+              }
+    
+              $arrDeleteproduct[] = ["product_code" => $data["product_code".$i],
+               "name" => $data["name".$i],
+               "status_kensahyou" => $data["status_kensahyou".$i],
+               "status_kensahyou_name" => ${"status_kensahyou_name".$i},
+               "length" => $data["length".$i],
+               "length_cut" => $data["length_cut".$i],
+                "length_upper_limit" => $data["length_upper_limit".$i],
+                "length_lower_limit" => $data["length_lower_limit".$i],
+                "bik" => $data["bik".$i]
+                  ];
+
+            }
+
+          }
+          $this->set('arrKoushinproduct', $arrKoushinproduct);
+          $this->set('arrDeleteproduct', $arrDeleteproduct);
+    
+          if(!isset($_SESSION)){
+            session_start();
+          }
+          header('Expires:-1');
+          header('Cache-Control:');
+          header('Pragma:');
+    
+    }
+
+    public function kikakueditdo()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->getData();
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $ProductName = $this->Products->find()
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['namemoto']])->toArray();
+      $this->set('ProductName', $ProductName);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $arrupdateproduct = array();
+      $arrupdateproductmoto = array();
+      if(isset($data["num"])){
+        for($i=0; $i<=$data["num"]; $i++){
+
+          $Productsmoto = $this->Products->find()
+          ->where(['product_code' => $data['product_code'.$i]])->toArray();
+    
+          $arrupdateproductmoto = array();
+          $arrupdateproductmoto[] = [
+            'factory_id' => $Productsmoto[0]["factory_id"],
+            'product_code' => $Productsmoto[0]["product_code"],
+            'length' => $Productsmoto[0]["length"],
+            'length_cut' => $Productsmoto[0]["length_cut"],
+            'length_upper_limit' => $Productsmoto[0]["length_upper_limit"],
+            'length_lower_limit' => $Productsmoto[0]["length_lower_limit"],
+            'ig_bank_modes' => $Productsmoto[0]["ig_bank_modes"],
+            'bik' => $Productsmoto[0]["bik"],
+            'name' => $Productsmoto[0]["name"],
+            'tanni' => $Productsmoto[0]["tanni"],
+            'weight' => $Productsmoto[0]["weight"],
+            'status_kensahyou' => $Productsmoto[0]["status_kensahyou"],
+            'customer_id' => $Productsmoto[0]["customer_id"],
+            'is_active' => 1,
+            'delete_flag' => 1,
+            'created_at' => $Productsmoto[0]["created_at"]->format("Y-m-d H:i:s"),
+            'created_staff' => $Productsmoto[0]["created_staff"],
+            'updated_at' => date("Y-m-d H:i:s"),
+            'updated_staff' => $staff_id
+              ];
+
+          $arrupdateproduct[] = [
+            'product_code' => $data["product_code".$i],
+            'status_kensahyou' => $data["status_kensahyou".$i],
+            'status_kensahyou_name' => $data["status_kensahyou_name".$i],
+            'length' => $data["length".$i],
+            'length_cut' => $data["length_cut".$i],
+            'length_upper_limit' => $data["length_upper_limit".$i],
+            'length_lower_limit' => $data["length_lower_limit".$i],
+            'bik' => $data["bik".$i],
+            'name' => $data["name".$i],
+            'tanni' => $data["tanni"],
+            'weight' => $data["weight"],
+            'updated_at' => date("Y-m-d H:i:s"),
+            'updated_staff' => $staff_id
+          ];
+  
+          }
+  
+        }
+        $this->set('arrupdateproduct', $arrupdateproduct);
+
+        $arrdeleteproduct = array();
+        if(isset($data["delete_num"])){
+          for($i=0; $i<=$data["delete_num"]; $i++){
+    
+            $arrdeleteproduct[] = [
+              'product_code' => $data["delete_product_code".$i],
+              'name' => $data["delete_name".$i],
+              'status_kensahyou' => $data["delete_status_kensahyou".$i],
+              'status_kensahyou_name' => $data["delete_status_kensahyou_name".$i],
+              'length' => $data["delete_length".$i],
+              'length_cut' => $data["delete_length_cut".$i],
+              'length_upper_limit' => $data["delete_length_upper_limit".$i],
+              'length_lower_limit' => $data["delete_length_lower_limit".$i],
+              'bik' => $data["delete_bik".$i],
+              'delete_flag' => 1,
+              'updated_at' => date("Y-m-d H:i:s"),
+              'updated_staff' => $staff_id
+            ];
+    
+            }
+        }
+        $this->set('arrdeleteproduct', $arrdeleteproduct);
+
+      $connection = ConnectionManager::get('default');//トランザクション1
+       // トランザクション開始2
+       $connection->begin();//トランザクション3
+       try {//トランザクション4
+
+        $Products = $this->Products->patchEntities($this->Products->newEntity(), $arrupdateproductmoto);
+        $this->Products->saveMany($Products);
+
+          $count_update = 0;
+          for($i=0; $i<count($arrupdateproduct); $i++){
+
+            $ProductsId = $this->Products->find()
+            ->where(['product_code' => $data['product_code'.$i], 'delete_flag' => 0])
+            ->toArray();
+
+            if ($this->Products->updateAll(
+              [ 'length' => $data["length".$i],
+                'length_cut' => $data["length_cut".$i],
+                'status_kensahyou' => $data["status_kensahyou".$i],
+                'length_upper_limit' => $data["length_upper_limit".$i],
+                'length_lower_limit' => $data["length_lower_limit".$i],
+                'bik' => $data["bik".$i],
+                'name' => $data["name".$i],
+                'tanni' => $data["tanni"],
+                'weight' => $data["weight"],
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_staff' => $staff_id],
+                ['id'  => $ProductsId[0]["id"]])){
+                }
+                $count_update = $count_update + 1;
+            }
+  
+            for($i=0; $i<count($arrdeleteproduct); $i++){
+              if ($this->Products->updateAll(
+                [ 'delete_flag' => 1,
+                  'updated_at' => date('Y-m-d H:i:s'),
+                  'updated_staff' => $staff_id],
+                  ['product_code'  => $data["delete_product_code".$i]])){
+                  }
+                  $count_update = $count_update + 1;
+                }
+    
+         if ($count_update == count($arrupdateproduct) + count($arrdeleteproduct)) {//全部の登録ができた場合
+
+         $mes = "※下記のように更新されました";
+         $this->set('mes',$mes);
+         $connection->commit();// コミット5
+
+       } else {
+
+         $mes = "※更新されませんでした";
+         $this->set('mes',$mes);
+         $this->Flash->error(__('The data could not be saved. Please, try again.'));
+         throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+       }
+
+     } catch (Exception $e) {//トランザクション7
+     //ロールバック8
+       $connection->rollback();//トランザクション9
+     }//トランザクション10
 
     }
 

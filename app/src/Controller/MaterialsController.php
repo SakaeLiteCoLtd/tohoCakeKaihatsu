@@ -54,7 +54,7 @@ class MaterialsController extends AppController
         $this->paginate = [
           'limit' => 13,
             'contain' => ['MaterialTypes', 'Factories'],
-            'order' => ['Materials.updated_at' => 'desc',
+            'order' => [//'Materials.updated_at' => 'desc',
             'Materials.created_at' => 'desc']
           ];
         $materials = $this->paginate($this->Materials->find()->where(['Materials.delete_flag' => 0]));

@@ -6,7 +6,6 @@
  *    user zoom.
  */
 
-
  .buttonlayout {
     padding : 12px 12px;   /* 余白*/
  /*   color: #333;
@@ -39,6 +38,10 @@
  background-color: initial; /*背景色*/
  padding: initial; /*背景余白*/
  }
+
+ div.left {
+    text-align: left; 
+}
 
 nav {
   height: 100%;

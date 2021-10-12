@@ -58,13 +58,11 @@
           <tr>
           <td width="90"><strong>単位</strong></td>
             <td width="90"><strong>単重(g/m)</strong></td>
-            <td width="50"><strong>検査表</strong></td>
             <td width="50"><strong>幅測定器モード番号</strong></td>
         	</tr>
           <tr>
           <td><?= $this->Form->control('tanni', ['options' => $arrTanni, 'label'=>false]) ?></td>
             <td><?= $this->Form->control('weight', array('type'=>'text', 'pattern'=>'^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'size'=>6)) ?></td>
-            <td><?= $this->Form->control('status_kensahyou', ['options' => $arrStatusKensahyou, 'value'=>$status_kensahyou, 'label'=>false]) ?></td>
             <td><?= $this->Form->control('ig_bank_modes', ['options' => $arrig_bank_modes, 'value'=>$ig_bank_modes, 'label'=>false]) ?></td>
         	</tr>
         </table>
@@ -75,9 +73,9 @@
       <tr>
       <td><strong>製品コード</strong></td>
       <td width="150"><strong>品名</strong></td>
-      <td width="40"><strong>長さ（mm）</strong></td>
+      <td width="90"><strong>検査表に表示</strong></td>
+      <td width="40"><strong>長さ<br>（mm）</strong></td>
       <td width="40"><strong style="font-size: 9pt">カット長さ（mm）</strong></td>
-      <td width="40"><strong style="font-size: 9pt">規 格 長 さ（mm）</strong></td>
         <td width="20"><strong style="font-size: 9pt">上限</strong></td>
         <td width="20"><strong style="font-size: 9pt">下限</strong></td>
         <td width="120"><strong>備考</strong></td>
@@ -90,12 +88,11 @@
       <td><?= h($ProductName[$i]["product_code"]) ?></td>
       <td><?= $this->Form->control
       ('name'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["name"], 'required' => 'true')) ?></td>
+      <td><?= $this->Form->control('status_kensahyou'.$i, ['options' => $arrStatusKensahyou, 'value'=>$ProductName[$i]["status_kensahyou"], 'label'=>false]) ?></td>
       <td><?= $this->Form->control
       ('length'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length"], 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>3, 'required' => 'true')) ?></td>
       <td><?= $this->Form->control
       ('length_cut'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_cut"], 'pattern' => '^[0-9.-]+$','size'=>3,  'title'=>'半角数字で入力して下さい。')) ?></td>
-      <td><?= $this->Form->control
-      ('length_size'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_size"], 'pattern' => '^[0-9.-]+$','size'=>3,  'title'=>'半角数字で入力して下さい。')) ?></td>
       <td><?= $this->Form->control
       ('length_upper_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_upper_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。')) ?></td>
       <td><?= $this->Form->control

@@ -47,6 +47,11 @@ class htmlkensahyoukadoumenu extends AppController
            "</a></td><td style='border: none'>　</td>\n".
 
            "<td style='border: none'>\n".
+           "<a href='/Kensahyoukadous/kensahyouseihinmenu'>\n".
+           "<img src='/img/menus/seihinntop.gif' width=145 height=50>\n".
+           "</a></td><td style='border: none'>　</td>\n".
+
+           "<td style='border: none'>\n".
            "<a href='/Kensahyoukikakus/menu'>\n".
            "<img src='/img/menus/kikakutouroku.gif' width=145 height=50>\n".
            "</a></td><td style='border: none'>　</td>\n".
@@ -69,6 +74,42 @@ class htmlkensahyoukadoumenu extends AppController
            */
            "<a href='/Kensahyousokuteidatas/menu'>\n".
            "<img src='/img/menus/sokuteidatatouroku.gif' width=145 height=50>\n".
+           "</a></td>\n".
+           "</table>\n";
+
+       return $html;
+       $this->html = $html;
+   }
+
+   public function kensahyouseihinmenus()
+   {
+       $html =
+           "<table>\n".
+           "<td style='border: none'>\n".
+           "<a href='/Kensahyoukadous/seihinyobidashimenu'>\n".
+           "<img src='/img/menus/seihinnyobidashi.gif' width=145 height=50>\n".
+           "</a></td><td style='border: none'>　　　</td>\n".
+           "<td style='border: none'>\n".
+           "<a href='/Kensahyoukadous/kikakunagasalogin'>\n".
+           "<img src='/img/menus/seihinnagasa.gif' width=145 height=50>\n".
+           "</a></td>\n".
+           "</table>\n";
+
+       return $html;
+       $this->html = $html;
+   }
+
+   public function seihinyobidashimenus()
+   {
+       $html =
+           "<table>\n".
+           "<td style='border: none'>\n".
+           "<a href='/Kensahyoukadous/seihinyobidashiichiran'>\n".
+           "<img src='/img/menus/seihinichiran.gif' width=145 height=50>\n".
+           "</a></td><td style='border: none'>　　　</td>\n".
+           "<td style='border: none'>\n".
+           "<a href='/Kensahyoukadous/seihinkensakuform'>\n".
+           "<img src='/img/menus/seihinkensaku.gif' width=145 height=50>\n".
            "</a></td>\n".
            "</table>\n";
 

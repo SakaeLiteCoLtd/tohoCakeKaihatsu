@@ -105,6 +105,8 @@ for($i=0; $i<$count_length; $i++){
 <?= $this->Form->control('inspection_standard_size_parent_id', array('type'=>'hidden', 'value'=>$inspection_standard_size_parent_id, 'label'=>false)) ?>
 <?= $this->Form->control('product_condition_parent_id', array('type'=>'hidden', 'value'=>$product_condition_parent_id, 'label'=>false)) ?>
 <?= $this->Form->control('inspection_data_conditon_parent_id', array('type'=>'hidden', 'value'=>$inspection_data_conditon_parent_id, 'label'=>false)) ?>
+<?= $this->Form->control('count_seikeijouken', array('type'=>'hidden', 'value'=>$count_seikeijouken, 'label'=>false)) ?>
+<?= $this->Form->control('countseikeiki', array('type'=>'hidden', 'value'=>$countseikeiki, 'label'=>false)) ?>
 
 <?php
       echo $htmlkensahyouheader;
@@ -234,7 +236,7 @@ var moji = "length"
      }
   ?>
 
-  <?php if ($checkedit == 0 && $j == $gyou): ?>
+  <?php if ($checkedit == 0 && $j == $gyou && $check_seikeijouken == 0)://測定データ入力部分 ?>
 
     <table class="form">
 
@@ -243,8 +245,22 @@ var moji = "length"
   <td style='width:100; border-top-style:none'>
   <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false)) ?>
   </td>
+
+  <?php if ($j == 1): ?>
+
   <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
-  <td style='width:130; border-top-style:none'><font size='1.8'><?= h("社員コード：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。')) ?></td>
+  
+  <?php else : ?>
+
+    <?php
+    $h = $j - 1;
+      ?>
+
+    <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'value'=>${"product_id".$h}, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
+
+    <?php endif; ?>
+
+  <td style='width:130; border-top-style:none'><font size='1.8'><?= h("ユーザーID：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。')) ?></td>
 
   <?php for($i=1; $i<=10; $i++): ?>
     <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
@@ -257,7 +273,7 @@ var moji = "length"
 
 </table>
 
-<?php elseif ($checkedit == 0 && $j < $gyou) : ?>
+<?php elseif ($checkedit == 0 && $j < $gyou) ://測定データ表示部分 ?>
 
   <table class="white">
 
@@ -298,6 +314,7 @@ var moji = "length"
     <?php endfor;?>
 
     <?php
+
     if(${"gaikan".$j} == 1){
       ${"gaikanhyouji".$j} = "不";
     }else{
@@ -309,7 +326,16 @@ var moji = "length"
     <td style='width:69; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
     <td style='width:80; border-top-style:none'><?= h(${"weight".$j}) ?></td>
     <td style='width:65; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
-    <td style='width:65; border-top-style:none'><?= $this->Form->submit(('修正'), array('name' => 'edit'.$j)) ?></td>
+
+    <?php if ($check_seikeijouken == 0)://成形条件調整中ではないとき ?>
+
+      <td style='width:65; border-top-style:none'><?= $this->Form->submit(('修正'), array('name' => 'edit'.$j)) ?></td>
+
+    <?php else ://成形条件調整中 ?>
+
+      <td style='width:65; border-top-style:none'>-</td>
+
+    <?php endif; ?>
 
     <?= $this->Form->control('product_id'.$j, array('type'=>'hidden', 'value'=>${"product_id".$j}, 'label'=>false)) ?>
     <?= $this->Form->control('gaikan'.$j, array('type'=>'hidden', 'value'=>${"gaikan".$j}, 'label'=>false)) ?>
@@ -318,9 +344,9 @@ var moji = "length"
 
   </table>
 
-<?php elseif ($j < $gyou) : ?>
+<?php elseif ($j < $gyou) ://入力する行ではないとき ?>
 
-  <?php if ($j == $checkedit) : ?>
+  <?php if ($j == $checkedit) ://修正する行ではないとき ?>
 
   <table class="form">
 
@@ -330,7 +356,7 @@ var moji = "length"
   <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false)) ?>
   </td>
   <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
-  <td style='width:130; border-top-style:none'><font size='1.8'><?= h("社員コード：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'required' => 'true')) ?></td>
+  <td style='width:130; border-top-style:none'><font size='1.8'><?= h("ユーザーID：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'required' => 'true')) ?></td>
 
   <?php for($i=1; $i<=10; $i++): ?>
     <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
@@ -343,7 +369,7 @@ var moji = "length"
 
 </table>
 
-  <?php else : ?>
+  <?php else : //修正する行の時?>
 
     <table class="white">
 
@@ -414,7 +440,6 @@ var moji = "length"
 
 <?php endif; ?>
 
-
 <?php endfor;?>
 
 <?= $this->Form->control('gyou', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
@@ -424,7 +449,7 @@ var moji = "length"
    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
 </table>
 
-<?php if ($checkedit == 0): ?>
+<?php if ($checkedit == 0 && $check_seikeijouken == 0)://修正ではなくて成形条件調整でもないとき ?>
 
 <table align="center">
   <tbody class='sample non-sample'>
@@ -434,7 +459,7 @@ var moji = "length"
   </tbody>
 </table>
 
-<?php else : ?>
+<?php elseif($check_seikeijouken == 0) ://修正の時 ?>
 
   <table align="center">
   <tbody class='sample non-sample'>
@@ -458,18 +483,10 @@ var moji = "length"
  ?>
 
  <br>
-
+  
  <?php for($j=1; $j<=$countseikeiki; $j++): ?>
 
-   <?= $this->Form->control('inspection_extrude_roatation'.$j, array('type'=>'hidden', 'value'=>${"inspection_extrude_roatation".$j}, 'label'=>false)) ?>
-   <?= $this->Form->control('inspection_extrusion_load'.$j, array('type'=>'hidden', 'value'=>${"inspection_extrusion_load".$j}, 'label'=>false)) ?>
-   <?= $this->Form->control('inspection_pickup_speed', array('type'=>'hidden', 'value'=>$inspection_pickup_speed, 'label'=>false)) ?>
-
-   <?php for($n=1; $n<=7; $n++): ?>
-
-     <?= $this->Form->control('inspection_temp_'.$n.$j, array('type'=>'hidden', 'value'=>${"inspection_temp_".$n.$j}, 'label'=>false)) ?>
-
-   <?php endfor;?>
+   <?= $this->Form->control('product_conditon_child_id'.$j, array('type'=>'hidden', 'value'=>${"product_conditon_child_id".$j}, 'label'=>false)) ?>
 
  <table>
    <tr class="parents">
@@ -488,13 +505,17 @@ var moji = "length"
    <td style='width:200'>ｽｸﾘｭｳ</td>
  </tr>
 
+ <?php if ($check_seikeijouken == 0)://表示のとき ?>
+
  <?php
-    for($i=1; $i<=3; $i++){
+
+    $num = 2 + $count_seikeijouken;
+    for($i=1; $i<=$num; $i++){
 
       echo "<tr class='children'>\n";
 
          if($i==1){
-           echo "<td rowspan=3>\n";
+           echo "<td rowspan=$num>\n";
            echo "${"cylinder_name".$j}\n";
            echo "</td>\n";
          }
@@ -504,16 +525,12 @@ var moji = "length"
            echo "基 準 値\n";
            echo "</td>\n";
          }elseif($i==2){
-           echo "<td style='width:50px'>\n";
-           echo "記    録\n";
-           echo "</td>\n";
-         }elseif($i==3){
-           echo "<td style='width:50px'>\n";
-           echo "許容範囲\n";
+           echo "<td rowspan=$count_seikeijouken style='width:50px; font-size: 10pt'>\n";
+           echo "記録(最新順)\n";
            echo "</td>\n";
          }
 
-         if($i == 1){
+         if($i == 1){//基準値
            echo "<td>\n";
            echo "${"temp_1".$j}\n";
            echo "</td>\n";
@@ -541,35 +558,78 @@ var moji = "length"
            echo "<td style='border-left-style:none; text-align:left'>\n";
            echo "/ ${"extrusion_load".$j}(A)\n";
            echo "</td>\n";
-         }elseif($i == 2){
-           echo "<td>\n";
-           echo "${"inspection_temp_1".$j}\n";
+         }elseif($i < $num){
+
+          if($i == 2){
+
+            $joukenn_num = $i - 1;
+            echo "<td>\n";
+            echo "${"inspection_temp_1".$j.$joukenn_num}\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"inspection_temp_2".$j.$joukenn_num}\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"inspection_temp_3".$j.$joukenn_num}\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"inspection_temp_4".$j.$joukenn_num}\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"inspection_temp_5".$j.$joukenn_num}\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"inspection_temp_6".$j.$joukenn_num}\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"inspection_temp_7".$j.$joukenn_num}\n";
+            echo "</td>\n";
+            echo "<td style='border-right-style:none; text-align:right'>\n";
+            echo "${"inspection_extrude_roatation".$j.$joukenn_num}(rpm)\n";
+            echo "</td>\n";
+            echo "<td style='border-left-style:none; text-align:left'>\n";
+            echo "/ ${"inspection_extrusion_load".$j.$joukenn_num}(A)\n";
+            echo "</td>\n";
+ 
+          }else{
+
+          $joukenn_num = $i - 1;
+           echo "<td style='background-color:#f5f5f5'>\n";
+           echo "${"inspection_temp_1".$j.$joukenn_num}\n";
            echo "</td>\n";
-           echo "<td>\n";
-           echo "${"inspection_temp_2".$j}\n";
+           echo "<td style='background-color:#f5f5f5'>\n";
+           echo "${"inspection_temp_2".$j.$joukenn_num}\n";
            echo "</td>\n";
-           echo "<td>\n";
-           echo "${"inspection_temp_3".$j}\n";
+           echo "<td style='background-color:#f5f5f5'>\n";
+           echo "${"inspection_temp_3".$j.$joukenn_num}\n";
            echo "</td>\n";
-           echo "<td>\n";
-           echo "${"inspection_temp_4".$j}\n";
+           echo "<td style='background-color:#f5f5f5'>\n";
+           echo "${"inspection_temp_4".$j.$joukenn_num}\n";
            echo "</td>\n";
-           echo "<td>\n";
-           echo "${"inspection_temp_5".$j}\n";
+           echo "<td style='background-color:#f5f5f5'>\n";
+           echo "${"inspection_temp_5".$j.$joukenn_num}\n";
            echo "</td>\n";
-           echo "<td>\n";
-           echo "${"inspection_temp_6".$j}\n";
+           echo "<td style='background-color:#f5f5f5'>\n";
+           echo "${"inspection_temp_6".$j.$joukenn_num}\n";
            echo "</td>\n";
-           echo "<td>\n";
-           echo "${"inspection_temp_7".$j}\n";
+           echo "<td style='background-color:#f5f5f5'>\n";
+           echo "${"inspection_temp_7".$j.$joukenn_num}\n";
            echo "</td>\n";
-           echo "<td style='border-right-style:none; text-align:right'>\n";
-           echo "${"inspection_extrude_roatation".$j}(rpm)\n";
+           echo "<td style='border-right-style:none; text-align:right; background-color:#f5f5f5'>\n";
+           echo "${"inspection_extrude_roatation".$j.$joukenn_num}(rpm)\n";
            echo "</td>\n";
-           echo "<td style='border-left-style:none; text-align:left'>\n";
-           echo "/ ${"inspection_extrusion_load".$j}(A)\n";
+           echo "<td style='border-left-style:none; text-align:left; background-color:#f5f5f5'>\n";
+           echo "/ ${"inspection_extrusion_load".$j.$joukenn_num}(A)\n";
            echo "</td>\n";
+
+          }
+
          }else{
+           if($i == $num){
+            echo "<td style='width:50px'>\n";
+            echo "許容範囲\n";
+            echo "</td>\n";
+           }
            echo "<td>\n";
            echo "± 10\n";
            echo "</td>\n";
@@ -597,7 +657,7 @@ var moji = "length"
          }
 
          if($j==1){
-             if($i==1){
+             if($i==1){//基準値
                echo "<td>\n";
                echo "$pickup_speed\n";
                echo "</td>\n";
@@ -607,40 +667,57 @@ var moji = "length"
                echo "<td>\n";
                echo "${"screw_number_1".$j}\n";
                echo "</td>\n";
-               echo "<td rowspan=3>\n";
+               echo "<td rowspan=$num>\n";
                echo "${"screw".$j}\n";
                echo "</td>\n";
-             }elseif($i==2){
-               echo "<td>\n";
-               echo "$inspection_pickup_speed\n";
-               echo "</td>\n";
-               echo "<td>\n";
-               echo "${"screw_mesh_2".$j}\n";
-               echo "</td>\n";
-               echo "<td>\n";
-               echo "${"screw_number_2".$j}\n";
-               echo "</td>\n";
-               /*
-               echo "<td>\n";
-               echo "${"screw_2".$j}\n";
-               echo "</td>\n";
-               */
              }else{
-               echo "<td>\n";
-               echo "± 1.0\n";
-               echo "</td>\n";
-               echo "<td>\n";
-               echo "${"screw_mesh_3".$j}\n";
-               echo "</td>\n";
-               echo "<td>\n";
-               echo "${"screw_number_3".$j}\n";
-               echo "</td>\n";
-               /*
-               echo "<td>\n";
-               echo "${"screw_3".$j}\n";
-               echo "</td>\n";
-               */
+
+              if($i == 2){
+                $joukenn_num = $i - 1;
+                echo "<td>\n";
+                echo "${"inspection_pickup_speed".$j.$joukenn_num}\n";
+                echo "</td>\n";
+                echo "<td>\n";
+                echo "${"screw_mesh_2".$j}\n";
+                echo "</td>\n";
+                echo "<td>\n";
+                echo "${"screw_number_2".$j}\n";
+                echo "</td>\n";
+               }elseif($i == 3){
+                $joukenn_num = $i - 1;
+                echo "<td style='background-color:#f5f5f5'>\n";
+                echo "${"inspection_pickup_speed".$j.$joukenn_num}\n";
+                echo "</td>\n";
+                echo "<td>\n";
+                echo "${"screw_mesh_3".$j}\n";
+                echo "</td>\n";
+                echo "<td>\n";
+                echo "${"screw_number_3".$j}\n";
+                echo "</td>\n";
+              }elseif($i == $num){
+                echo "<td style='border-top-style:none;'>\n";
+                echo "± 1.0\n";
+                echo "</td>\n";
+                echo "<td>\n";
+                echo "\n";
+                echo "</td>\n";
+                echo "<td>\n";
+                echo "\n";
+                echo "</td>\n";
+              }else{
+                echo "<td style='border-top-style:none;background-color:#f5f5f5'>\n";
+                echo "${"inspection_pickup_speed".$j.$joukenn_num}\n";
+                echo "</td>\n";
+                echo "<td>\n";
+                echo "\n";
+                echo "</td>\n";
+                echo "<td>\n";
+                echo "\n";
+                echo "</td>\n";
+              }
+
              }
+
          }else{
            if($i==1){
              echo "<td style='border-bottom-style:none;'>\n";
@@ -651,7 +728,7 @@ var moji = "length"
              echo "<td>\n";
              echo "${"screw_number_1".$j}\n";
              echo "</td>\n";
-             echo "<td rowspan=3>\n";
+             echo "<td rowspan=$num>\n";
              echo "${"screw".$j}\n";
              echo "</td>\n";
            }elseif($i==2){
@@ -663,33 +740,341 @@ var moji = "length"
              echo "<td>\n";
              echo "${"screw_number_2".$j}\n";
              echo "</td>\n";
-             /*
-             echo "<td>\n";
-             echo "${"screw_2".$j}\n";
-             echo "</td>\n";
-             */
-           }else{
+           }elseif($i == 3){
+            echo "<td style='border-bottom-style:none; border-top-style:none;'>\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"screw_mesh_3".$j}\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"screw_number_3".$j}\n";
+            echo "</td>\n";
+           }elseif($i == $num){
              echo "<td style='border-top-style:none;'>\n";
              echo "</td>\n";
              echo "<td>\n";
-             echo "${"screw_mesh_3".$j}\n";
-             echo "</td>\n";
-             echo "<td>\n";
-             echo "${"screw_number_3".$j}\n";
-             echo "</td>\n";
-             /*
-             echo "<td>\n";
-             echo "${"screw_3".$j}\n";
-             echo "</td>\n";
-             */
-           }
+            echo "\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "\n";
+            echo "</td>\n";
+          }else{
+            echo "<td style='border-bottom-style:none; border-top-style:none;'>\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "\n";
+            echo "</td>\n";
+          }
          }
 
          echo "</tr>\n";
 
        }
   ?>
+
+<?php else ://条件変更のとき?>
+
+  <?php
+
+    $num = 2 + $count_seikeijouken;
+
+   for($i=1; $i<=$num; $i++){
+
+     echo "<tr class='children'>\n";
+
+        if($i==1){
+          echo "<td rowspan=$num>\n";
+          echo "${"cylinder_name".$j}\n";
+          echo "</td>\n";
+        }
+
+        if($i==1){
+          echo "<td style='width:50px'>\n";
+          echo "基 準 値\n";
+          echo "</td>\n";
+        }elseif($i==2){
+          echo "<td rowspan=$count_seikeijouken style='width:50px; font-size: 10pt'>\n";
+          echo "記録(最新順)\n";
+          echo "</td>\n";
+        }
+
+        if($i == 1){
+          echo "<td>\n";
+          echo "${"temp_1".$j}\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "${"temp_2".$j}\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "${"temp_3".$j}\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "${"temp_4".$j}\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "${"temp_5".$j}\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "${"temp_6".$j}\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "${"temp_7".$j}\n";
+          echo "</td>\n";
+          echo "<td style='border-right-style:none; text-align:right'>\n";
+          echo "${"extrude_roatation".$j}(rpm)\n";
+          echo "</td>\n";
+          echo "<td style='border-left-style:none; text-align:left'>\n";
+          echo "/ ${"extrusion_load".$j}(A)\n";
+          echo "</td>\n";
+        }elseif($i == 2){
+          echo "<td>\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_temp_1".$j.">\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_temp_2".$j.">\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_temp_3".$j.">\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_temp_4".$j.">\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_temp_5".$j.">\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_temp_6".$j.">\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_temp_7".$j.">\n";
+          echo "</td>\n";
+          echo "<td style='border-right-style:none'>\n";
+          echo "<input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_extrude_roatation".$j.">(rpm)\n";
+          echo "</td>\n";
+          echo "<td style='border-left-style:none'>\n";
+          echo "/ <input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_extrusion_load".$j.">(A)\n";
+          echo "</td>\n";
+          
+        }elseif($i < $num){
+          
+          $joukenn_num = $i - 2;
+          echo "<td>\n";
+          echo "${"inspection_temp_1".$j.$joukenn_num}\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "${"inspection_temp_2".$j.$joukenn_num}\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "${"inspection_temp_3".$j.$joukenn_num}\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "${"inspection_temp_4".$j.$joukenn_num}\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "${"inspection_temp_5".$j.$joukenn_num}\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "${"inspection_temp_6".$j.$joukenn_num}\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "${"inspection_temp_7".$j.$joukenn_num}\n";
+          echo "</td>\n";
+          echo "<td style='border-right-style:none; text-align:right'>\n";
+          echo "${"inspection_extrude_roatation".$j.$joukenn_num}(rpm)\n";
+          echo "</td>\n";
+          echo "<td style='border-left-style:none; text-align:left'>\n";
+          echo "/ ${"inspection_extrusion_load".$j.$joukenn_num}(A)\n";
+          echo "</td>\n";
+
+        }else{
+         
+          if($i == $num){
+            echo "<td style='width:50px'>\n";
+            echo "許容範囲\n";
+            echo "</td>\n";
+           }
+          echo "<td>\n";
+          echo "± 10\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "± 10\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "± 10\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "± 10\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "± 10\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "± 10\n";
+          echo "</td>\n";
+          echo "<td>\n";
+          echo "± 10\n";
+          echo "</td>\n";
+          echo "<td colspan=2>\n";
+          echo "± 5.0\n";
+          echo "</td>\n";
+
+        }
+
+        if($j==1){
+            if($i==1){
+              echo "<td>\n";
+              echo "$pickup_speed\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo "${"screw_mesh_1".$j}\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo "${"screw_number_1".$j}\n";
+              echo "</td>\n";
+              echo "<td rowspan=$num>\n";
+              echo "${"screw".$j}\n";
+              echo "</td>\n";
+            }elseif($i==2){
+              echo "<td>\n";
+              echo "<input type='text' style='width:70px' required name=inspection_pickup_speed>\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo "${"screw_mesh_2".$j}\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo "${"screw_number_2".$j}\n";
+              echo "</td>\n";
+            }elseif($i == 3){
+              $joukenn_num = $i - 2;
+              echo "<td>\n";
+              echo "${"inspection_pickup_speed".$j.$joukenn_num}\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo "${"screw_mesh_3".$j}\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo "${"screw_number_3".$j}\n";
+              echo "</td>\n";
+            }elseif($i == $num){
+              echo "<td>\n";
+              echo "± 1.0\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo "${"screw_mesh_3".$j}\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo "${"screw_number_3".$j}\n";
+              echo "</td>\n";
+            }else{
+              echo "<td>\n";
+              echo "${"inspection_pickup_speed".$j.$joukenn_num}\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo "${"screw_mesh_3".$j}\n";
+              echo "</td>\n";
+              echo "<td>\n";
+              echo "${"screw_number_3".$j}\n";
+              echo "</td>\n";
+            }
+        }else{
+          if($i==1){
+            echo "<td style='border-bottom-style:none;'>\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"screw_mesh_1".$j}\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"screw_number_1".$j}\n";
+            echo "</td>\n";
+            echo "<td rowspan=$num>\n";
+            echo "${"screw".$j}\n";
+            echo "</td>\n";
+          }elseif($i==2){
+            echo "<td style='border-bottom-style:none; border-top-style:none;'>\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"screw_mesh_2".$j}\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"screw_number_2".$j}\n";
+            echo "</td>\n";
+          }elseif($i == 3){
+            echo "<td style='border-bottom-style:none; border-top-style:none;'>\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"screw_mesh_3".$j}\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "${"screw_number_3".$j}\n";
+            echo "</td>\n";
+          }elseif($i == $num){
+            echo "<td style='border-top-style:none;'>\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "\n";
+            echo "</td>\n";
+           }else{
+            echo "<td style='border-bottom-style:none; border-top-style:none;'>\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "\n";
+            echo "</td>\n";
+            echo "<td>\n";
+            echo "\n";
+            echo "</td>\n";
+          }
+        }
+
+        echo "</tr>\n";
+
+      }
+ ?>
+
+<?php endif; ?>
+
  </table>
 
  <?php endfor;?>
+
+ <br>
+
+ <?php if ($check_seikeijouken == 0 && $checkedit == 0): ?>
+
+ <table align="center">
+  <tbody class='sample non-sample'>
+    <tr>
+      <td style="border:none"><?= $this->Form->submit(('成形条件調整'), array('name' => 'seikei')) ?></td>
+    </tr>
+  </tbody>
+</table>
+
+<?php elseif ($checkedit == 0) : ?>
+
+  <table align="center">
+  <tbody class="login">
+    <tr height="45">
+      <td width="200">条件変更者ユーザーID</td>
+      <td class="login" width="200"><?= $this->Form->control('user_code_henkou', array('type'=>'text', 'label'=>false, 'required'=>true)) ?></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<table align="center">
+<tbody class='sample non-sample'>
+  <tr>
+  <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+          <td style="border-style: none;"><?= __("　") ?></td>
+    <td style="border:none"><?= $this->Form->submit(('成形条件調整確定'), array('name' => 'seikeikakutei')) ?></td>
+  </tr>
+</tbody>
+</table>
+
+<?php endif; ?>
+
 <br><br>

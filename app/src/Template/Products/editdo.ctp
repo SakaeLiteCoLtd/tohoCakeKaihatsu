@@ -55,28 +55,24 @@ if($this->request->getData('status_kensahyou') == 0){
           <tr>
             <td width="90"><strong>単位</strong></td>
             <td width="90"><strong>単重(g/m)</strong></td>
-            <td width="50"><strong>検査表</strong></td>
             <td width="50"><strong>幅測定器モード番号</strong></td>
         	</tr>
           <tr>
             <td><?= h($this->request->getData('tanni')) ?></td>
             <td><?= h($this->request->getData('weight')) ?></td>
-            <td><?= h($status_kensahyou_name) ?></td>
             <td><?= h($this->request->getData('ig_bank_modes')) ?></td>
        	</tr>
         </table>
 
      <br>
 
-     <?php if ($this->request->getData('status_kensahyou') > 0): ?>
-
      <table>
       <tr>
       <td><strong>製品コード</strong></td>
       <td width="200"><strong>品名</strong></td>
+      <td width="50"><strong>検査表に表示</strong></td>
       <td><strong>長さ（mm）</strong></td>
       <td><strong>カット長さ（mm）</strong></td>
-      <td><strong>規格長さ（mm）</strong></td>
         <td width="50"><strong>上限</strong></td>
         <td width="50"><strong>下限</strong></td>
         <td width="120"><strong>備考</strong></td>
@@ -87,9 +83,9 @@ if($this->request->getData('status_kensahyou') == 0){
         <tr>
       <td><?= h($arrupdateproduct[$i]["product_code"]) ?></td>
       <td><?= h($arrupdateproduct[$i]["name"]) ?></td>
+      <td><?= h($arrupdateproduct[$i]["status_kensahyou_name"]) ?></td>
       <td><?= h($arrupdateproduct[$i]["length"]) ?></td>
       <td><?= h($arrupdateproduct[$i]["length_cut"]) ?></td>
-      <td><?= h($arrupdateproduct[$i]["length_size"]) ?></td>
       <td><?= h($arrupdateproduct[$i]["length_upper_limit"]) ?></td>
       <td><?= h($arrupdateproduct[$i]["length_lower_limit"]) ?></td>
       <td><?= h($arrupdateproduct[$i]["bik"]) ?></td>
@@ -98,33 +94,6 @@ if($this->request->getData('status_kensahyou') == 0){
       <?php endfor;?>
 
      </table>
-
-     <?php else : ?>
-
-      <table>
-      <tr>
-      <td><strong>製品コード</strong></td>
-      <td width="300"><strong>品名</strong></td>
-      <td><strong>長さ（mm）</strong></td>
-      <td><strong>カット長さ（mm）</strong></td>
-      <td width="120"><strong>備考</strong></td>
-      </tr>
-      
-      <?php for($i=0; $i<count($arrupdateproduct); $i++): ?>
-
-      <tr>
-      <td><?= h($arrupdateproduct[$i]["product_code"]) ?></td>
-      <td><?= h($arrupdateproduct[$i]["name"]) ?></td>
-      <td><?= h($arrupdateproduct[$i]["length"]) ?></td>
-      <td><?= h($arrupdateproduct[$i]["length_cut"]) ?></td>
-      <td><?= h($arrupdateproduct[$i]["bik"]) ?></td>
-      </tr>
-
-      <?php endfor;?>
-
-     </table>
-
-      <?php endif; ?>
 
      <?php if (count($arrdeleteproduct) > 0) : ?>
 
@@ -138,6 +107,7 @@ if($this->request->getData('status_kensahyou') == 0){
       <tr>
       <td><strong>製品コード</strong></td>
       <td width="300"><strong>品名</strong></td>
+      <td width="50"><strong>検査表に表示</strong></td>
       <td><strong>長さ（mm）</strong></td>
       <td><strong>カット長さ（mm）</strong></td>
       <td width="120"><strong>備考</strong></td>
@@ -148,6 +118,7 @@ if($this->request->getData('status_kensahyou') == 0){
         <tr>
         <td><?= h($arrdeleteproduct[$i]["product_code"]) ?></td>
         <td><?= h($arrdeleteproduct[$i]["name"]) ?></td>
+        <td><?= h($arrdeleteproduct[$i]["status_kensahyou_name"]) ?></td>
         <td><?= h($arrdeleteproduct[$i]["length"]) ?></td>
         <td><?= h($arrdeleteproduct[$i]["length_cut"]) ?></td>
         <td><?= h($arrdeleteproduct[$i]["bik"]) ?></td>

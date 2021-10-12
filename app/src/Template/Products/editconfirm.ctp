@@ -22,18 +22,9 @@
 <?= $this->Form->control('tanni', array('type'=>'hidden', 'value'=>$this->request->getData('tanni'), 'label'=>false)) ?>
 <?= $this->Form->control('weight', array('type'=>'hidden', 'value'=>$this->request->getData('weight'), 'label'=>false)) ?>
 <?= $this->Form->control('factory_name', array('type'=>'hidden', 'value'=>$this->request->getData('factory_name'), 'label'=>false)) ?>
-<?= $this->Form->control('status_kensahyou', array('type'=>'hidden', 'value'=>$this->request->getData('status_kensahyou'), 'label'=>false)) ?>
 <?= $this->Form->control('customer_name', array('type'=>'hidden', 'value'=>$this->request->getData('customer_name'), 'label'=>false)) ?>
 <?= $this->Form->control('ig_bank_modes', array('type'=>'hidden', 'value'=>$this->request->getData('ig_bank_modes'), 'label'=>false)) ?>
 <br><br><br>
-
-<?php
-if($this->request->getData('status_kensahyou') == 0){
-  $status_kensahyou_name = "表示";
-}else{
-  $status_kensahyou_name = "非表示";
-}
-?>
 
 <?php
 //<nav class="large-3 medium-4 columns">
@@ -65,28 +56,24 @@ if($this->request->getData('status_kensahyou') == 0){
           <tr>
           <td width="90"><strong>単位</strong></td>
             <td width="90"><strong>単重(g/m)</strong></td>
-            <td width="50"><strong>検査表</strong></td>
             <td width="50"><strong>幅測定器モード番号</strong></td>
         	</tr>
           <tr>
             <td><?= h($this->request->getData('tanni')) ?></td>
             <td><?= h($this->request->getData('weight')) ?></td>
-            <td><?= h($status_kensahyou_name) ?></td>
             <td><?= h($this->request->getData('ig_bank_modes')) ?></td>
         	</tr>
         </table>
 
      <br>
 
-     <?php if ($this->request->getData('status_kensahyou') > 0): ?>
-
      <table>
       <tr>
       <td><strong>製品コード</strong></td>
       <td width="200"><strong>品名</strong></td>
+      <td width="50"><strong>検査表に表示</strong></td>
       <td><strong>長さ（mm）</strong></td>
       <td><strong>カット長さ（mm）</strong></td>
-      <td><strong>規格長さ（mm）</strong></td>
         <td width="50"><strong>上限</strong></td>
         <td width="50"><strong>下限</strong></td>
         <td width="120"><strong>備考</strong></td>
@@ -97,9 +84,9 @@ if($this->request->getData('status_kensahyou') == 0){
       <tr>
       <td><?= h($arrKoushinproduct[$i]["product_code"]) ?></td>
       <td><?= h($arrKoushinproduct[$i]["name"]) ?></td>
+      <td><?= h($arrKoushinproduct[$i]["status_kensahyou_name"]) ?></td>
       <td><?= h($arrKoushinproduct[$i]["length"]) ?></td>
       <td><?= h($arrKoushinproduct[$i]["length_cut"]) ?></td>
-      <td><?= h($arrKoushinproduct[$i]["length_size"]) ?></td>
       <td><?= h($arrKoushinproduct[$i]["length_upper_limit"]) ?></td>
       <td><?= h($arrKoushinproduct[$i]["length_lower_limit"]) ?></td>
       <td><?= h($arrKoushinproduct[$i]["bik"]) ?></td>
@@ -107,9 +94,10 @@ if($this->request->getData('status_kensahyou') == 0){
 
       <?= $this->Form->control('product_code'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["product_code"], 'label'=>false)) ?>
       <?= $this->Form->control('name'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["name"], 'label'=>false)) ?>
+      <?= $this->Form->control('status_kensahyou'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["status_kensahyou"], 'label'=>false)) ?>
+      <?= $this->Form->control('status_kensahyou_name'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["status_kensahyou_name"], 'label'=>false)) ?>
       <?= $this->Form->control('length'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["length"], 'label'=>false)) ?>
       <?= $this->Form->control('length_cut'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["length_cut"], 'label'=>false)) ?>
-      <?= $this->Form->control('length_size'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["length_size"], 'label'=>false)) ?>
       <?= $this->Form->control('length_upper_limit'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["length_upper_limit"], 'label'=>false)) ?>
       <?= $this->Form->control('length_lower_limit'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["length_lower_limit"], 'label'=>false)) ?>
       <?= $this->Form->control('bik'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["bik"], 'label'=>false)) ?>
@@ -118,40 +106,6 @@ if($this->request->getData('status_kensahyou') == 0){
       <?php endfor;?>
 
       </table>
-
-      <?php else : ?>
-
-        <table>
-      <tr>
-      <td><strong>製品コード</strong></td>
-      <td width="300"><strong>品名</strong></td>
-      <td><strong>長さ（mm）</strong></td>
-      <td><strong>カット長さ（mm）</strong></td>
-      <td width="120"><strong>備考</strong></td>
-      </tr>
-      
-      <?php for($i=0; $i<count($arrKoushinproduct); $i++): ?>
-
-      <tr>
-      <td><?= h($arrKoushinproduct[$i]["product_code"]) ?></td>
-      <td><?= h($arrKoushinproduct[$i]["name"]) ?></td>
-      <td><?= h($arrKoushinproduct[$i]["length"]) ?></td>
-      <td><?= h($arrKoushinproduct[$i]["length_cut"]) ?></td>
-      <td><?= h($arrKoushinproduct[$i]["bik"]) ?></td>
-      </tr>
-
-      <?= $this->Form->control('product_code'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["product_code"], 'label'=>false)) ?>
-      <?= $this->Form->control('name'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["name"], 'label'=>false)) ?>
-      <?= $this->Form->control('length'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["length"], 'label'=>false)) ?>
-      <?= $this->Form->control('length_cut'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["length_cut"], 'label'=>false)) ?>
-      <?= $this->Form->control('bik'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["bik"], 'label'=>false)) ?>
-      <?= $this->Form->control('num', array('type'=>'hidden', 'value'=>$i, 'label'=>false)) ?>
-
-      <?php endfor;?>
-
-      </table>
-
-        <?php endif; ?>
 
       <?php if (count($arrDeleteproduct) > 0) : ?>
 
@@ -165,6 +119,7 @@ if($this->request->getData('status_kensahyou') == 0){
       <tr>
       <td><strong>製品コード</strong></td>
       <td width="300"><strong>品名</strong></td>
+      <td width="50"><strong>検査表に表示</strong></td>
       <td><strong>長さ（mm）</strong></td>
       <td><strong>カット長さ（mm）</strong></td>
       <td width="120"><strong>備考</strong></td>
@@ -175,6 +130,7 @@ if($this->request->getData('status_kensahyou') == 0){
         <tr>
         <td><?= h($arrDeleteproduct[$i]["product_code"]) ?></td>
         <td><?= h($arrDeleteproduct[$i]["name"]) ?></td>
+        <td><?= h($arrDeleteproduct[$i]["status_kensahyou_name"]) ?></td>
         <td><?= h($arrDeleteproduct[$i]["length"]) ?></td>
         <td><?= h($arrDeleteproduct[$i]["length_cut"]) ?></td>
         <td><?= h($arrDeleteproduct[$i]["bik"]) ?></td>
@@ -182,9 +138,10 @@ if($this->request->getData('status_kensahyou') == 0){
 
         <?= $this->Form->control('delete_product_code'.$i, array('type'=>'hidden', 'value'=>$arrDeleteproduct[$i]["product_code"], 'label'=>false)) ?>
         <?= $this->Form->control('delete_name'.$i, array('type'=>'hidden', 'value'=>$arrDeleteproduct[$i]["name"], 'label'=>false)) ?>
+        <?= $this->Form->control('delete_status_kensahyou'.$i, array('type'=>'hidden', 'value'=>$arrDeleteproduct[$i]["status_kensahyou"], 'label'=>false)) ?>
+        <?= $this->Form->control('delete_status_kensahyou_name'.$i, array('type'=>'hidden', 'value'=>$arrDeleteproduct[$i]["status_kensahyou_name"], 'label'=>false)) ?>
         <?= $this->Form->control('delete_length_cut'.$i, array('type'=>'hidden', 'value'=>$arrDeleteproduct[$i]["length_cut"], 'label'=>false)) ?>
         <?= $this->Form->control('delete_length'.$i, array('type'=>'hidden', 'value'=>$arrDeleteproduct[$i]["length"], 'label'=>false)) ?>
-        <?= $this->Form->control('delete_length_size'.$i, array('type'=>'hidden', 'value'=>$arrDeleteproduct[$i]["length_size"], 'label'=>false)) ?>
         <?= $this->Form->control('delete_length_upper_limit'.$i, array('type'=>'hidden', 'value'=>$arrDeleteproduct[$i]["length_upper_limit"], 'label'=>false)) ?>
         <?= $this->Form->control('delete_length_lower_limit'.$i, array('type'=>'hidden', 'value'=>$arrDeleteproduct[$i]["length_lower_limit"], 'label'=>false)) ?>
         <?= $this->Form->control('delete_bik'.$i, array('type'=>'hidden', 'value'=>$arrDeleteproduct[$i]["bik"], 'label'=>false)) ?>
