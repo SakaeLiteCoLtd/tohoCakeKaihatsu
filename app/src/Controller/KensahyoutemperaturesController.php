@@ -16,6 +16,8 @@ use App\myClass\menulists\htmlkensahyoukadoumenu;//myClassフォルダに配置�
 $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
 use App\myClass\classprograms\htmlkensahyouprogram;//myClassフォルダに配置したクラスを使用
 $htmlkensahyougenryouheader = new htmlkensahyouprogram();
+use App\myClass\classprograms\htmlkensahyoulogincheck;//myClassフォルダに配置したクラスを使用
+$htmlkensahyoulogincheck = new htmlkensahyoulogincheck();
 
 class KensahyoutemperaturesController extends AppController
 {
@@ -110,7 +112,7 @@ class KensahyoutemperaturesController extends AppController
          $this->set('mess',$mess);
 
          $Product_name_list = $this->Products->find()
-         ->where(['delete_flag' => 0])->toArray();
+         ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
@@ -159,7 +161,7 @@ class KensahyoutemperaturesController extends AppController
            $this->set('mess',$mess);
 
            $Product_name_list = $this->Products->find()
-           ->where(['delete_flag' => 0])->toArray();
+           ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
 
            $arrProduct_name_list = array();
            for($j=0; $j<count($Product_name_list); $j++){
@@ -175,7 +177,7 @@ class KensahyoutemperaturesController extends AppController
          $this->set('mess',$mess);
 
          $Product_name_list = $this->Products->find()
-         ->where(['delete_flag' => 0])->toArray();
+         ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
@@ -188,7 +190,7 @@ class KensahyoutemperaturesController extends AppController
      }else{//はじめ
 
        $Product_name_list = $this->Products->find()
-       ->where(['delete_flag' => 0])->toArray();
+       ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
        $arrProduct_name_list = array();
        for($j=0; $j<count($Product_name_list); $j++){
          array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
@@ -220,8 +222,7 @@ class KensahyoutemperaturesController extends AppController
          $userlogincheck = $user_code."_".$data["password"];
 
          $htmlinputstaff = new htmlLogin();//クラスを使用
-     //    $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
-         $arraylogindate = $htmlinputstaff->inputstaffprogram($userlogincheck);//クラスを使用210608更新
+         $arraylogindate = $htmlinputstaff->inputstaffprogram($userlogincheck);//クラスを使用
 
          if($arraylogindate[0] === "no_staff"){
 
@@ -229,6 +230,16 @@ class KensahyoutemperaturesController extends AppController
            's' => ['mess' => "社員コードまたはパスワードが間違っています。もう一度やり直してください。"]]);
 
          }else{
+
+          $htmlkensahyoulogincheck = new htmlkensahyoulogincheck();//クラスを使用
+          $logincheck = $htmlkensahyoulogincheck->kensahyoulogincheckprogram($user_code);//クラスを使用
+    
+          if($logincheck === 1){
+  
+          return $this->redirect(['action' => 'addlogin',
+          's' => ['mess' => "データ登録の権限がありません。"]]);
+  
+          }
 
            $staff_id = $arraylogindate[0];
            $staff_name = $arraylogindate[1];
@@ -669,7 +680,7 @@ class KensahyoutemperaturesController extends AppController
          $this->set('mess',$mess);
 
          $Product_name_list = $this->Products->find()
-         ->where(['delete_flag' => 0])->toArray();
+         ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
@@ -711,7 +722,7 @@ class KensahyoutemperaturesController extends AppController
            $this->set('mess',$mess);
 
            $Product_name_list = $this->Products->find()
-           ->where(['delete_flag' => 0])->toArray();
+           ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
 
            $arrProduct_name_list = array();
            for($j=0; $j<count($Product_name_list); $j++){
@@ -727,7 +738,7 @@ class KensahyoutemperaturesController extends AppController
          $this->set('mess',$mess);
 
          $Product_name_list = $this->Products->find()
-         ->where(['delete_flag' => 0])->toArray();
+         ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
@@ -740,7 +751,7 @@ class KensahyoutemperaturesController extends AppController
      }else{//はじめ
 
        $Product_name_list = $this->Products->find()
-       ->where(['delete_flag' => 0])->toArray();
+       ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
        $arrProduct_name_list = array();
        for($j=0; $j<count($Product_name_list); $j++){
          array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
@@ -924,10 +935,20 @@ class KensahyoutemperaturesController extends AppController
 
       if($arraylogindate[0] === "no_staff"){
 
-        return $this->redirect(['action' => 'addlogin',
+        return $this->redirect(['action' => 'kensakupre',
         's' => ['mess' => "社員コードかパスワードに誤りがあります。もう一度やり直してください。"]]);
 
       }else{
+
+        $htmlkensahyoulogincheck = new htmlkensahyoulogincheck();//クラスを使用
+        $logincheck = $htmlkensahyoulogincheck->kensahyoulogincheckprogram($user_code);//クラスを使用
+  
+        if($logincheck === 1){
+
+        return $this->redirect(['action' => 'kensakupre',
+        's' => ['mess' => "データ登録の権限がありません。"]]);
+
+        }
 
         $staff_id = $arraylogindate[0];
         $staff_name = $arraylogindate[1];
@@ -1375,7 +1396,7 @@ class KensahyoutemperaturesController extends AppController
          $this->set('mess',$mess);
 
          $Product_name_list = $this->Products->find()
-         ->where(['delete_flag' => 0])->toArray();
+         ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
@@ -1417,7 +1438,7 @@ class KensahyoutemperaturesController extends AppController
            $this->set('mess',$mess);
 
            $Product_name_list = $this->Products->find()
-           ->where(['delete_flag' => 0])->toArray();
+           ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
 
            $arrProduct_name_list = array();
            for($j=0; $j<count($Product_name_list); $j++){
@@ -1433,7 +1454,7 @@ class KensahyoutemperaturesController extends AppController
          $this->set('mess',$mess);
 
          $Product_name_list = $this->Products->find()
-         ->where(['delete_flag' => 0])->toArray();
+         ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
@@ -1446,7 +1467,7 @@ class KensahyoutemperaturesController extends AppController
      }else{//はじめ
 
        $Product_name_list = $this->Products->find()
-       ->where(['delete_flag' => 0])->toArray();
+       ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
        $arrProduct_name_list = array();
        for($j=0; $j<count($Product_name_list); $j++){
          array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");

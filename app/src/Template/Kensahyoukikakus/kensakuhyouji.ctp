@@ -56,7 +56,11 @@ echo $this->Html->css('kensahyou');
   <td>上限</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
-    <td><?= h(${"upper_limit".$i}) ?></td>
+    <?php if (strlen(${"upper_limit".$i}) > 0 && substr(${"upper_limit".$i}, 0, 1) != "+"): ?>
+    <td><?= h("+".${"upper_limit".$i}) ?></td>
+    <?php else : ?>
+      <td><?= h(${"upper_limit".$i}) ?></td>
+      <?php endif; ?>
     <?= $this->Form->control('upper_limit'.$i, array('type'=>'hidden', 'value'=>${"upper_limit".$i}, 'label'=>false)) ?>
   <?php endfor;?>
 
