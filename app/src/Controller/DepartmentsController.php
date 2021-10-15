@@ -13,6 +13,7 @@ class DepartmentsController extends AppController
       public function initialize()
     {
      parent::initialize();
+     $this->Users = TableRegistry::get('Users');
      $this->Staffs = TableRegistry::get('Staffs');
      $this->Factories = TableRegistry::get('Factories');
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
@@ -44,10 +45,18 @@ class DepartmentsController extends AppController
 
     public function index()
     {
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $Users = $this->Users->find()->contain(["Staffs"])
+      ->where(['Staffs.id' => $datasession['Auth']['User']['staff_id'], 'Users.delete_flag' => 0])
+      ->toArray();
+
         $this->paginate = [
             'contain' => ['Factories']
         ];
-        $departments = $this->paginate($this->Departments->find()->where(['Departments.delete_flag' => 0]));
+        $departments = $this->paginate($this->Departments->find()
+        ->where(['Departments.factory_id' => $Users[0]["staff"]["factory_id"], 'Departments.delete_flag' => 0]));
 
         $this->set(compact('departments'));
     }

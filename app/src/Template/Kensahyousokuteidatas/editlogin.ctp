@@ -41,11 +41,11 @@ echo $this->Html->css('kensahyou');
   <tbody class="login">
     <tr height="45">
       <td width="150"><strong>ユーザーID</strong></td>
-      <td class="login" width="200"><?= $this->Form->control('user_code', array('type'=>'text', 'label'=>false, 'autofocus'=>true)) ?></td>
+      <td class="login" width="200"><?= $this->Form->control('user_code', array('type'=>'text', 'label'=>false, 'autofocus'=>true, 'autocomplete'=>"off")) ?></td>
     </tr>
     <tr height="45">
       <td align="center"><strong>パスワード</strong></td>
-      <td class="login" align="center"><?= $this->Form->control('password', array('type'=>'password', 'label'=>false)) ?></td>
+      <td class="login" align="center"><?= $this->Form->control('password', array('type'=>'password', 'label'=>false, 'autocomplete'=>"off")) ?></td>
     </tr>
   </tbody>
 </table>
@@ -55,6 +55,8 @@ echo $this->Html->css('kensahyou');
 <table>
   <tbody class='sample non-sample'>
     <tr>
+    <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+          <td style="border-style: none;"><?= __("　") ?></td>
       <td style="border:none"><?= $this->Form->submit(__('次へ')) ?></td>
     </tr>
   </tbody>

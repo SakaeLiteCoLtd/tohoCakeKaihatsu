@@ -110,7 +110,7 @@ class MaterialTypesController extends AppController
 
         return $this->redirect(['action' => 'deleteconfirm']);
 
-      }else{
+      }elseif(isset($data["kensaku"])){
 
         $MaterialTypes = $this->MaterialTypes->find()
         ->where(['type' => $data["type"]])->toArray();

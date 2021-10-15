@@ -44,7 +44,7 @@ echo $this->Html->css('kensahyou');
   <td style='width:102'>測定箇所</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
-    <td style='width:130'><?= $this->Form->control('size_name'.$i, array('type'=>'text', 'label'=>false)) ?></td>
+    <td style='width:130'><?= $this->Form->control('size_name'.$i, array('type'=>'text', 'label'=>false, 'autocomplete'=>"off")) ?></td>
   <?php endfor;?>
 
 </tr>
@@ -52,7 +52,7 @@ echo $this->Html->css('kensahyou');
   <td>規格</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= $this->Form->control('size'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
+      <td><?= $this->Form->control('size'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'autocomplete'=>"off")) ?></td>
     <?php endfor;?>
 
 </tr>
@@ -60,7 +60,7 @@ echo $this->Html->css('kensahyou');
   <td>上限</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
-    <td><?= $this->Form->control('upper_limit'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
+    <td><?= $this->Form->control('upper_limit'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'autocomplete'=>"off")) ?></td>
   <?php endfor;?>
 
 </tr>
@@ -68,7 +68,7 @@ echo $this->Html->css('kensahyou');
   <td>下限</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= $this->Form->control('lower_limit'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
+      <td><?= $this->Form->control('lower_limit'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'autocomplete'=>"off")) ?></td>
     <?php endfor;?>
 
 </tr>
@@ -76,7 +76,7 @@ echo $this->Html->css('kensahyou');
   <td>検査器具</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= $this->Form->control('measuring_instrument'.$i, array('type'=>'text', 'label'=>false)) ?></td>
+      <td><?= $this->Form->control('measuring_instrument'.$i, array('type'=>'text', 'label'=>false, 'autocomplete'=>"off")) ?></td>
     <?php endfor;?>
 
 </tr>

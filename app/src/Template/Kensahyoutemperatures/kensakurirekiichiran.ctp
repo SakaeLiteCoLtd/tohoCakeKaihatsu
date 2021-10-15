@@ -146,3 +146,10 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
     <br><br>
 
 <?php endif; ?>
+<table>
+  <tbody class='sample non-sample'>
+    <tr>
+    <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+    </tr>
+  </tbody>
+</table>

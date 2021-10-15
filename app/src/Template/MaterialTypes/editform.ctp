@@ -39,7 +39,7 @@
           <td width="280"><strong>仕入品種類</strong></td>
         </tr>
         <tr>
-          <td><?= $this->Form->control('type', array('type'=>'text', 'label'=>false, 'autofocus'=>true)) ?></td>
+          <td><?= $this->Form->control('type', array('type'=>'text', 'label'=>false, 'autofocus'=>true, 'autocomplete'=>"off")) ?></td>
         </tr>
       </table>
 

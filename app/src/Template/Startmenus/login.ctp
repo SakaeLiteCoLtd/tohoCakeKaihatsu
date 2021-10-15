@@ -24,7 +24,7 @@
         <input type="password" name="dummypass" style="visibility: hidden; top: -100px; left: -100px;" />
         <td align="center"><strong>パスワード</strong></td>
         <td align="center">
-          <?= $this->Form->control('password', array('type'=>'password', 'label'=>false, 'size'=>14, 'autocomplete' => 'off')) ?>
+          <?= $this->Form->control('password', array('type'=>'password', 'label'=>false, 'size'=>14, 'autocomplete' => 'new-password')) ?>
         </td>
     </table>
   </fieldset>

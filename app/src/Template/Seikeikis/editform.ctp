@@ -39,7 +39,7 @@
           <td width="280"><strong>成形機</strong></td>
         </tr>
         <tr>
-          <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'autofocus'=>true)) ?></td>
+          <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'autofocus'=>true, 'autocomplete'=>"off")) ?></td>
         </tr>
       </table>
 
@@ -50,6 +50,8 @@
     <table>
       <tbody class='sample non-sample'>
         <tr>
+        <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+          <td style="border-style: none;"><?= __("　") ?></td>
           <td style="border:none"><?= $this->Form->submit(__('次へ')) ?></td>
         </tr>
       </tbody>

@@ -52,7 +52,7 @@
             <td width="280"><strong>性別</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false)) ?></td>
+            <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'autocomplete'=>"off")) ?></td>
             <td><?= $this->Form->control('sex', ['options' => $sexoptions, 'label'=>false]) ?></td>
         	</tr>
         </table>
@@ -72,8 +72,8 @@
             <td width="280"><strong>メール</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->control('tel', array('type'=>'text', 'label'=>false)) ?></td>
-            <td><?= $this->Form->control('mail', array('type'=>'text', 'label'=>false)) ?></td>
+            <td><?= $this->Form->control('tel', array('type'=>'text', 'label'=>false, 'autocomplete'=>"off")) ?></td>
+            <td><?= $this->Form->control('mail', array('type'=>'text', 'label'=>false, 'autocomplete'=>"off")) ?></td>
         	</tr>
         </table>
         <table>
@@ -81,7 +81,7 @@
             <td width="560"><strong>住所</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->control('address', array('type'=>'text', 'label'=>false, 'size'=>50)) ?></td>
+            <td><?= $this->Form->control('address', array('type'=>'text', 'label'=>false, 'size'=>50, 'autocomplete'=>"off")) ?></td>
         	</tr>
         </table>
         <table>
@@ -102,8 +102,8 @@
             <td width="280"><strong>メンバーコード</strong></td>
         	</tr>
           <tr>
-          <td><?= $this->Form->control('user_code', array('type'=>'text', 'value'=>$user_code, 'label'=>false, 'required'=>true)) ?></td>
-          <td><?= $this->Form->control('staff_code', array('type'=>'text', 'label'=>false, 'required'=>true)) ?></td>
+          <td><?= $this->Form->control('user_code', array('type'=>'text', 'value'=>$user_code, 'label'=>false, 'required'=>true, 'autocomplete'=>"off")) ?></td>
+          <td><?= $this->Form->control('staff_code', array('type'=>'text', 'label'=>false, 'required'=>true, 'autocomplete'=>"off")) ?></td>
         	</tr>
         </table>
         <table>
@@ -125,6 +125,8 @@
     <table>
       <tbody class='sample non-sample'>
         <tr>
+        <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+          <td style="border-style: none;"><?= __("　") ?></td>
           <td style="border:none"><?= $this->Form->submit(__('次へ')) ?></td>
         </tr>
       </tbody>
@@ -132,3 +134,4 @@
     <?= $this->Form->end() ?>
   </nav>
 </form>
+<br><br><br>

@@ -49,7 +49,7 @@
             <td width="280"><strong>性別</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false)) ?></td>
+            <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'autocomplete'=>"off")) ?></td>
             <td><?= $this->Form->control('sex', ['options' => $sexoptions, 'label'=>false]) ?></td>
         	</tr>
         </table>
@@ -69,8 +69,8 @@
             <td width="280"><strong>メール</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->control('tel', array('type'=>'text', 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
-            <td><?= $this->Form->control('mail', array('type'=>'text', 'pattern' => '^[0-9A-Za-z@._-]+$', 'title'=>'半角英数字で入力して下さい。', 'label'=>false)) ?></td>
+            <td><?= $this->Form->control('tel', array('type'=>'text', 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'autocomplete'=>"off")) ?></td>
+            <td><?= $this->Form->control('mail', array('type'=>'text', 'pattern' => '^[0-9A-Za-z@._-]+$', 'title'=>'半角英数字で入力して下さい。', 'label'=>false, 'autocomplete'=>"off")) ?></td>
         	</tr>
         </table>
         <table>
@@ -78,7 +78,7 @@
             <td width="560"><strong>住所</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->control('address', array('type'=>'text', 'label'=>false, 'size'=>50)) ?></td>
+            <td><?= $this->Form->control('address', array('type'=>'text', 'label'=>false, 'size'=>50, 'autocomplete'=>"off")) ?></td>
         	</tr>
         </table>
         <table>
@@ -87,8 +87,8 @@
             <td width="280"><strong>入社日</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->input("birth", array('type' => 'date', 'minYear' => date('Y') - 80, 'monthNames' => false, 'label'=>false, 'empty' => true)); ?></td>
-            <td><?= $this->Form->input("date_start", array('type' => 'date', 'minYear' => date('Y') - 50, 'monthNames' => false, 'label'=>false, 'empty' => true)); ?></td>
+            <td><?= $this->Form->input("birth", array('type' => 'date', 'minYear' => date('Y') - 80, 'monthNames' => false, 'label'=>false, 'empty' => true, 'autocomplete'=>"off")); ?></td>
+            <td><?= $this->Form->input("date_start", array('type' => 'date', 'minYear' => date('Y') - 50, 'monthNames' => false, 'label'=>false, 'empty' => true, 'autocomplete'=>"off")); ?></td>
         	</tr>
         </table>
         <table>
@@ -97,8 +97,8 @@
           <td width="280"><strong>メンバーコード</strong></td>
         	</tr>
           <tr>
-          <td><?= $this->Form->control('user_code', array('type'=>'text', 'label'=>false, 'required'=>true)) ?></td>
-          <td><?= $this->Form->control('staff_code', array('type'=>'text', 'label'=>false, 'required'=>true)) ?></td>
+          <td><?= $this->Form->control('user_code', array('type'=>'text', 'label'=>false, 'required'=>true, 'autocomplete'=>"off")) ?></td>
+          <td><?= $this->Form->control('staff_code', array('type'=>'text', 'label'=>false, 'required'=>true, 'autocomplete'=>"off")) ?></td>
         	</tr>
         </table>
         <table>
@@ -117,6 +117,8 @@
     <table>
       <tbody class='sample non-sample'>
         <tr>
+        <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+          <td style="border-style: none;"><?= __("　") ?></td>
           <td style="border:none"><?= $this->Form->submit(__('次へ')) ?></td>
         </tr>
       </tbody>

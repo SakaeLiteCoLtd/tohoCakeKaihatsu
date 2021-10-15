@@ -112,13 +112,13 @@
       <td><?= h($name) ?></td>
       <td><?= $this->Form->control('status_kensahyou'.$k, ['options' => $arrStatusKensahyou, 'label'=>false]) ?></td>
       <td><?= $this->Form->control
-      ('length'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true')) ?></td>
+      ('length'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true', 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
-      ('length_cut'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6)) ?></td>
+      ('length_cut'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true', 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
-      ('length_upper_limit'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6)) ?></td>
+      ('length_upper_limit'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
-      ('length_lower_limit'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6)) ?></td>
+      ('length_lower_limit'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'autocomplete'=>"off")) ?></td>
         <td><?= $this->Form->control('bik'.$k, array('type'=>'text', 'label'=>false)) ?></td>
       </tr>
 

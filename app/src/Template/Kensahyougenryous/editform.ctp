@@ -113,9 +113,11 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
           echo "<td rowspan=${"tuikagenryou".$j}>\n";
           echo "<input type='checkbox' name=delete_seikeiki".$j.">\n";
           echo "</td>\n";
-          echo "<td rowspan=${"tuikagenryou".$j}>\n";
-          echo "<input type='text' required name=cylinder_name".$j." value=${"cylinder_name".$j}>\n";
-          echo "</td>\n";
+          echo "<td rowspan=${"tuikagenryou".$j}><select name=cylinder_name".$j." required value=${"cylinder_name".$j}>\n";
+          foreach ($arrSeikeikis as $key => $value){
+            echo "<option value=$value>$value</option>";
+          }
+          echo "</select></td>\n";
         }
 
         echo "<td>\n";
@@ -134,22 +136,22 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
         }else{
 
           echo "<td colspan='2'>変更前：${"material_name".$j.$i}<br>\n";//
-          echo "<input type='text' required name=material_name".$j.$i." id='material_name_list'>\n";//
+          echo "<input type='text' autocomplete='off' required name=material_name".$j.$i." id='material_name_list'>\n";//
           echo "</td>\n";//
 
           }
 
         echo "<td>\n";
-        echo "<input type='text' required name=mixing_ratio".$j.$i." value=${"mixing_ratio".$j.$i} >\n";
+        echo "<input type='text' autocomplete='off' required name=mixing_ratio".$j.$i." value=${"mixing_ratio".$j.$i} >\n";
         echo "</td>\n";
         echo "<td>\n";
-        echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=dry_temp".$j.$i." value=${"dry_temp".$j.$i} > ℃ \n";
+        echo "<input type='text' autocomplete='off' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=dry_temp".$j.$i." value=${"dry_temp".$j.$i} > ℃ \n";
         echo "</td>\n";
         echo "<td>\n";
-        echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=dry_hour".$j.$i." value=${"dry_hour".$j.$i} > h以上\n";
+        echo "<input type='text' autocomplete='off' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=dry_hour".$j.$i." value=${"dry_hour".$j.$i} > h以上\n";
         echo "</td>\n";
         echo "<td>\n";
-        echo "<input type='text' required name=recycled_mixing_ratio".$j.$i." value=${"recycled_mixing_ratio".$j.$i} >\n";
+        echo "<input type='text' autocomplete='off' required name=recycled_mixing_ratio".$j.$i." value=${"recycled_mixing_ratio".$j.$i} >\n";
         echo "</td>\n";
         echo "</tr>\n";
 

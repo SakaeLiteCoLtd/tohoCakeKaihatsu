@@ -76,11 +76,11 @@ $(function() {
       </tr>
       <tr>
         <td>
-        <?= $this->Form->control('customer_name', array('type'=>'text', 'label'=>false, 'size'=>25, 'id'=>"customer_name_list")) ?>
+        <?= $this->Form->control('customer_name', array('type'=>'text', 'label'=>false, 'size'=>25, 'id'=>"customer_name_list", 'autocomplete'=>"off")) ?>
         </td>
-        <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>25)) ?></td>
+        <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>25, 'autocomplete'=>"off")) ?></td>
         <td><?= $this->Form->control('tanni', ['options' => $arrTanni, 'label'=>false]) ?></td>
-        <td><?= $this->Form->control('weight', array('type'=>'text', 'pattern'=>'^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'size'=>6)) ?></td>
+        <td><?= $this->Form->control('weight', array('type'=>'text', 'pattern'=>'^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'size'=>6, 'autocomplete'=>"off")) ?></td>
         <td><?= $this->Form->control('ig_bank_modes', ['options' => $arrig_bank_modes, 'label'=>false]) ?></td>
       </tr>
     </table>
@@ -90,6 +90,8 @@ $(function() {
     <table>
       <tbody class='sample non-sample'>
         <tr>
+        <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+          <td style="border-style: none;"><?= __("　") ?></td>
           <td style="border:none"><?= $this->Form->submit(__('次へ')) ?></td>
         </tr>
       </tbody>

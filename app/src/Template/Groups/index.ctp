@@ -40,7 +40,7 @@ echo $this->Html->css('index');
             <?php foreach ($groups as $group): ?>
             <tr>
               <td><?= h($i) ?></td>
-                <td><?= h($group->name_group) ?></td>
+              <td><?= h($group->name_group) ?></td>
                 <td class="actions">
                   <?= $this->Html->link(__('詳細'), ['action' => 'detail', $group->name_group]) ?>
                 </td>

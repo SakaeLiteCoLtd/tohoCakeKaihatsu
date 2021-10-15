@@ -13,6 +13,7 @@ class PositionsController extends AppController
       public function initialize()
     {
      parent::initialize();
+     $this->Users = TableRegistry::get('Users');
      $this->Staffs = TableRegistry::get('Staffs');
      $this->Factories = TableRegistry::get('Factories');
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
@@ -45,10 +46,18 @@ class PositionsController extends AppController
 
     public function index()
     {
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $Users = $this->Users->find()->contain(["Staffs"])
+      ->where(['Staffs.id' => $datasession['Auth']['User']['staff_id'], 'Users.delete_flag' => 0])
+      ->toArray();
+
         $this->paginate = [
             'contain' => ['Factories']
         ];
-        $positions = $this->paginate($this->Positions->find()->where(['Positions.delete_flag' => 0]));
+        $positions = $this->paginate($this->Positions->find()
+        ->where(['Positions.factory_id' => $Users[0]["staff"]["factory_id"], 'Positions.delete_flag' => 0]));
 
         $this->set(compact('positions'));
     }

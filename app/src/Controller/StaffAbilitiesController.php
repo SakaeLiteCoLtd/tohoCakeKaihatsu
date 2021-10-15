@@ -14,6 +14,7 @@ class StaffAbilitiesController extends AppController
       public function initialize()
     {
      parent::initialize();
+     $this->Users = TableRegistry::get('Users');
      $this->Staffs = TableRegistry::get('Staffs');
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
@@ -30,7 +31,7 @@ class StaffAbilitiesController extends AppController
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
        $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "業務メニュー", 'Groups.delete_flag' => 0])
+       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "メンバー", 'Groups.delete_flag' => 0])
        ->toArray();
 
        if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
@@ -45,13 +46,23 @@ class StaffAbilitiesController extends AppController
 
     public function index()
     {
+        $session = $this->request->getSession();
+        $datasession = $session->read();
+  
+        $Users = $this->Users->find()->contain(["Staffs"])
+        ->where(['Staffs.id' => $datasession['Auth']['User']['staff_id'], 'Users.delete_flag' => 0])
+        ->toArray();
+        $factory_id = $Users[0]["staff"]["factory_id"];
+        $this->set('factory_id', $factory_id);
+
         $this->paginate = [
             'contain' => ['Staffs']
         ];
         $staffAbilities = $this->paginate($this->StaffAbilities->find()->contain(["Staffs"])
-        ->select(['StaffAbilities.staff_id','Staffs.name','delete_flag' => 0])
+        ->select(['StaffAbilities.staff_id', 'Staffs.name', 'Staffs.factory_id' ,'delete_flag' => 0])
         ->group(['staff_id']));
         $this->set(compact('staffAbilities'));
+  
     }
 
     public function detail($staff_id = null)

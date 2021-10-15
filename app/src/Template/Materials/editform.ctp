@@ -60,7 +60,7 @@
           <td width="480"><strong>仕入品名</strong></td>
         </tr>
         <tr>
-          <td><?= $this->Form->control('name', array('type'=>'text', 'value'=>$name, 'label'=>false, 'size'=>40)) ?></td>
+          <td><?= $this->Form->control('name', array('type'=>'text', 'value'=>$name, 'label'=>false, 'size'=>40, 'autocomplete'=>"off")) ?></td>
         </tr>
       </table>
 
@@ -92,6 +92,8 @@
     <table>
       <tbody class='sample non-sample'>
         <tr>
+        <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+          <td style="border-style: none;"><?= __("　") ?></td>
           <td style="border:none"><?= $this->Form->submit(__('次へ')) ?></td>
         </tr>
       </tbody>

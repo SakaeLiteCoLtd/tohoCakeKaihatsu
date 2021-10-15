@@ -91,13 +91,13 @@
       <td><?= $this->Form->control('status_kensahyou'.$i, ['options' => $arrStatusKensahyou, 'value'=>$ProductName[$i]["status_kensahyou"], 'label'=>false]) ?></td>
       <td><?= h($ProductName[$i]["length"]) ?></td>
       <td><?= $this->Form->control
-      ('length_cut'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_cut"], 'pattern' => '^[0-9.-]+$','size'=>3,  'title'=>'半角数字で入力して下さい。')) ?></td>
+      ('length_cut'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_cut"], 'pattern' => '^[0-9.-]+$','size'=>3,  'title'=>'半角数字で入力して下さい。', 'required' => 'true', 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
-      ('length_upper_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_upper_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。')) ?></td>
+      ('length_upper_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_upper_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
-      ('length_lower_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_lower_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。')) ?></td>
+      ('length_lower_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_lower_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
-      ('bik'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["bik"], 'size'=>15)) ?></td>
+      ('bik'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["bik"], 'size'=>15, 'autocomplete'=>"off")) ?></td>
       </tr>
 
       <?= $this->Form->control('product_code'.$i, array('type'=>'hidden', 'value'=>$ProductName[$i]["product_code"], 'label'=>false)) ?>
@@ -114,6 +114,8 @@
      <table>
       <tbody class='sample non-sample'>
         <tr>
+        <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+          <td style="border-style: none;"><?= __("　") ?></td>
           <td style="border:none"><?= $this->Form->submit(__('次へ')) ?></td>
         </tr>
       </tbody>

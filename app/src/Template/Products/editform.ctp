@@ -62,7 +62,7 @@
         	</tr>
           <tr>
           <td><?= $this->Form->control('tanni', ['options' => $arrTanni, 'label'=>false]) ?></td>
-            <td><?= $this->Form->control('weight', array('type'=>'text', 'pattern'=>'^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'size'=>6)) ?></td>
+            <td><?= $this->Form->control('weight', array('type'=>'text', 'pattern'=>'^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'size'=>6, 'autocomplete'=>"off")) ?></td>
             <td><?= $this->Form->control('ig_bank_modes', ['options' => $arrig_bank_modes, 'value'=>$ig_bank_modes, 'label'=>false]) ?></td>
         	</tr>
         </table>
@@ -90,13 +90,13 @@
       ('name'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["name"], 'required' => 'true')) ?></td>
       <td><?= $this->Form->control('status_kensahyou'.$i, ['options' => $arrStatusKensahyou, 'value'=>$ProductName[$i]["status_kensahyou"], 'label'=>false]) ?></td>
       <td><?= $this->Form->control
-      ('length'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length"], 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>3, 'required' => 'true')) ?></td>
+      ('length'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length"], 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>3, 'required' => 'true', 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
-      ('length_cut'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_cut"], 'pattern' => '^[0-9.-]+$','size'=>3,  'title'=>'半角数字で入力して下さい。')) ?></td>
+      ('length_cut'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_cut"], 'pattern' => '^[0-9.-]+$','size'=>3,  'title'=>'半角数字で入力して下さい。', 'required' => 'true', 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
-      ('length_upper_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_upper_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。')) ?></td>
+      ('length_upper_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_upper_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
-      ('length_lower_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_lower_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。')) ?></td>
+      ('length_lower_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_lower_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
       ('bik'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["bik"], 'size'=>15)) ?></td>
       <td><?= $this->Form->control('delete'.$i, array('type'=>'checkbox', 'label'=>false)) ?></td>
@@ -112,6 +112,8 @@
      <table>
       <tbody class='sample non-sample'>
         <tr>
+        <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+          <td style="border-style: none;"><?= __("　") ?></td>
           <td style="border:none"><?= $this->Form->submit(__('次へ')) ?></td>
         </tr>
       </tbody>

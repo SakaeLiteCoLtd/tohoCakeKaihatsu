@@ -45,7 +45,7 @@
         <td width="280"><strong>得意先・仕入先コード6桁目</strong></td>
       </tr>
       <tr>
-        <td><?= $this->Form->control('name', array('type'=>'text', 'value'=>$name, 'label'=>false, 'required' => 'true')) ?></td>
+        <td><?= $this->Form->control('name', array('type'=>'text', 'value'=>$name, 'label'=>false, 'required' => 'true', 'autocomplete'=>"off")) ?></td>
         <td><?= $this->Form->control('customer_code_last', ['options' => $arrcustomer_code_last, 'value'=>$customer_code_last, 'label'=>false]) ?></td>
     </tr>
     </table>
@@ -55,8 +55,8 @@
       <td width="280"><strong>略称</strong></td>
     </tr>
     <tr>
-      <td><?= $this->Form->control('furigana', array('type'=>'text', 'pattern' => '[\uFF66-\uFF9F]*', 'title'=>'半角カタカナで入力してください', 'value'=>$furigana, 'label'=>false)) ?></td>
-      <td><?= $this->Form->control('ryakusyou', array('type'=>'text', 'value'=>$ryakusyou, 'label'=>false)) ?></td>
+      <td><?= $this->Form->control('furigana', array('type'=>'text', 'pattern' => '[\uFF66-\uFF9F]*', 'title'=>'半角カタカナで入力してください', 'value'=>$furigana, 'label'=>false, 'autocomplete'=>"off")) ?></td>
+      <td><?= $this->Form->control('ryakusyou', array('type'=>'text', 'value'=>$ryakusyou, 'label'=>false, 'autocomplete'=>"off")) ?></td>
     </tr>
   </table>
   <table>
@@ -66,9 +66,9 @@
       <td width="180"><strong>ファックス</strong></td>
     </tr>
     <tr>
-    <td><?= $this->Form->control('department', array('type'=>'text', 'value'=>$department, 'label'=>false)) ?></td>
-      <td><?= $this->Form->control('tel', array('type'=>'text', 'value'=>$tel, 'label'=>false, 'size'=>15)) ?></td>
-      <td><?= $this->Form->control('fax', array('type'=>'text', 'value'=>$fax, 'label'=>false, 'size'=>15)) ?></td>
+    <td><?= $this->Form->control('department', array('type'=>'text', 'value'=>$department, 'label'=>false, 'autocomplete'=>"off")) ?></td>
+      <td><?= $this->Form->control('tel', array('type'=>'text', 'value'=>$tel, 'label'=>false, 'size'=>15, 'autocomplete'=>"off")) ?></td>
+      <td><?= $this->Form->control('fax', array('type'=>'text', 'value'=>$fax, 'label'=>false, 'size'=>15, 'autocomplete'=>"off")) ?></td>
     </tr>
   </table>
   <table>
@@ -77,8 +77,8 @@
       <td width="410"><strong>住所</strong></td>
     </tr>
     <tr>
-      <td><?= $this->Form->control('yuubin', array('type'=>'text', 'value'=>$yuubin, 'label'=>false, 'size'=>10)) ?></td>
-      <td><?= $this->Form->control('address', array('type'=>'text', 'value'=>$address, 'label'=>false, 'size'=>35)) ?></td>
+      <td><?= $this->Form->control('yuubin', array('type'=>'text', 'value'=>$yuubin, 'label'=>false, 'size'=>10, 'autocomplete'=>"off")) ?></td>
+      <td><?= $this->Form->control('address', array('type'=>'text', 'value'=>$address, 'label'=>false, 'size'=>35, 'autocomplete'=>"off")) ?></td>
     </tr>
   </table>
 
@@ -94,6 +94,8 @@
     <table>
       <tbody class='sample non-sample'>
         <tr>
+        <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+          <td style="border-style: none;"><?= __("　") ?></td>
           <td style="border:none"><?= $this->Form->submit(__('次へ')) ?></td>
         </tr>
       </tbody>

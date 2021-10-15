@@ -28,6 +28,8 @@ class htmlproductmenu extends AppController
                         $html = $html.
                         "<font size='4'>　・</font><a href='/Startmenus/menu' /><font size='4' color=black>総合メニュー</font></a>\n".
                         "<br><br>\n".
+                        "<font size='4'>　・</font><a href='/staffs/index' /><font size='4' color=black>業務メニュー</font></a>\n".
+                        "<br><br>\n".
                         "<font size='4'>　・</font><a href='/staffs/index' /><font size='4' color=black>製造メニュー</font></a>\n".
                         "<br><br>\n".
                         "<font size='5'>　製品メニュー</font>\n".

@@ -1004,6 +1004,15 @@ class ProductsController extends AppController
       $customer_name = $Customers[0]["name"];
       $this->set('customer_name', $customer_name);
 
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      header('Expires:-1');
+      header('Cache-Control:');
+      header('Pragma:');
+  
+      print_r(" ");
+
     }
     
     public function editform()
@@ -1571,6 +1580,15 @@ class ProductsController extends AppController
       ->where(['id' => $ProductName[0]['customer_id']])->toArray();
       $customer_name = $Customers[0]["name"];
       $this->set('customer_name', $customer_name);
+
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      header('Expires:-1');
+      header('Cache-Control:');
+      header('Pragma:');
+  
+      print_r(" ");
 
     }
     

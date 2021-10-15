@@ -260,6 +260,10 @@ class KensahyougenryousController extends AppController
 
      }
 
+     echo "<pre>";
+     print_r("");
+     echo "</pre>";
+
     }
 
     public function addform()
@@ -1380,6 +1384,14 @@ class KensahyougenryousController extends AppController
 
       $Materials = $this->Materials->find()
       ->where(['delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+
+      $Seikeikis = $this->Seikeikis->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrSeikeikis = array();
+      for($j=0; $j<count($Seikeikis); $j++){
+        $arrSeikeikis[] = $Seikeikis[$j]["name"];
+      }
+      $this->set('arrSeikeikis', $arrSeikeikis);
 
       if(isset($data["genryoutuika"])){//原料追加ボタン
 

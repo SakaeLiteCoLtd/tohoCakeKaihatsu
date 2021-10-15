@@ -58,7 +58,7 @@ $(function() {
       </tr>
       <tr>
         <td>
-        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30, 'id'=>"product_name_list")) ?>
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30, 'id'=>"product_name_list", 'autocomplete'=>"off")) ?>
         </td>
       </tr>
     </table>

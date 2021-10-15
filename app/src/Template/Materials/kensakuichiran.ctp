@@ -28,9 +28,7 @@
 
     <table>
           <tr>
-          <td width="280"><strong>製品名</strong></td>
-          <td width="100"><strong>長さ</strong></td>
-          <td width="180"><strong>製品コード</strong></td>
+          <td width="280"><strong>仕入品名</strong></td>
           <td width="180"><strong>使用工場</strong></td>
         	</tr>
 
@@ -38,8 +36,6 @@
 
           <tr>
           <td><?= h($Materials[$i]["name"]) ?></td>
-          <td><?= h($Materials[$i]["length"]) ?></td>
-          <td><?= h($Materials[$i]["product_code"]) ?></td>
           <td><?= h($Materials[$i]["factory"]["name"]) ?></td>
           </tr>
 

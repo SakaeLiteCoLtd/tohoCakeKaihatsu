@@ -261,14 +261,14 @@ var moji = "length"
 
     <?php endif; ?>
 
-  <td style='width:130; border-top-style:none'><font size='1.8'><?= h("ユーザーID：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。')) ?></td>
+  <td style='width:130; border-top-style:none'><font size='1.8'><?= h("ユーザーID：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
 
   <?php for($i=1; $i<=10; $i++): ?>
-    <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
+    <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
   <?php endfor;?>
 
   <td style='width:69; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ['options' => $arrGaikan, 'label'=>false]) ?></td>
-  <td style='width:80; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
+  <td style='width:80; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
   <td style='width:65; border-top-style:none'>-</td>
   <td style='width:65; border-top-style:none'></td>
 
@@ -685,12 +685,18 @@ var moji = "length"
                 echo "${"screw_number_2".$j}\n";
                 echo "</td>\n";
                }elseif($i == 3){
-                $joukenn_num = $i - 1;
-                echo "<td style='background-color:#f5f5f5'>\n";
-                echo "${"inspection_pickup_speed".$j.$joukenn_num}\n";
-                echo "</td>\n";
-                echo "<td>\n";
-                echo "${"screw_mesh_3".$j}\n";
+                if($num > 3){//下線なし
+                  $joukenn_num = $i - 1;
+                  echo "<td style='background-color:#f5f5f5'>\n";
+                  echo "${"inspection_pickup_speed".$j.$joukenn_num}\n";
+                  echo "</td>\n";
+                }else{
+                  echo "<td style='border-top-style:none;'>\n";
+                  echo "± 1.0\n";
+                  echo "</td>\n";
+                  }
+                  echo "<td>\n";
+                  echo "${"screw_mesh_3".$j}\n";
                 echo "</td>\n";
                 echo "<td>\n";
                 echo "${"screw_number_3".$j}\n";
@@ -742,10 +748,15 @@ var moji = "length"
              echo "${"screw_number_2".$j}\n";
              echo "</td>\n";
            }elseif($i == 3){
-            echo "<td style='border-bottom-style:none; border-top-style:none;'>\n";
-            echo "</td>\n";
+            if($num > 3){//下線なし
+              echo "<td style='border-bottom-style:none; border-top-style:none;'>\n";
+              echo "</td>\n";
+              }else{
+                echo "<td style='border-top-style:none;'>\n";
+                echo "</td>\n";
+                }
             echo "<td>\n";
-            echo "${"screw_mesh_3".$j}\n";
+            echo "$num.${"screw_mesh_3".$j}\n";
             echo "</td>\n";
             echo "<td>\n";
             echo "${"screw_number_3".$j}\n";
@@ -832,31 +843,31 @@ var moji = "length"
           echo "</td>\n";
         }elseif($i == 2){
           echo "<td>\n";
-          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_temp_1".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=inspection_temp_1".$j.">\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_temp_2".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=inspection_temp_2".$j.">\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_temp_3".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=inspection_temp_3".$j.">\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_temp_4".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=inspection_temp_4".$j.">\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_temp_5".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=inspection_temp_5".$j.">\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_temp_6".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=inspection_temp_6".$j.">\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_temp_7".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=inspection_temp_7".$j.">\n";
           echo "</td>\n";
           echo "<td style='border-right-style:none'>\n";
-          echo "<input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_extrude_roatation".$j.">(rpm)\n";
+          echo "<input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=inspection_extrude_roatation".$j.">(rpm)\n";
           echo "</td>\n";
           echo "<td style='border-left-style:none'>\n";
-          echo "/ <input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=inspection_extrusion_load".$j.">(A)\n";
+          echo "/ <input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=inspection_extrusion_load".$j.">(A)\n";
           echo "</td>\n";
           
         }elseif($i < $num){
@@ -940,7 +951,7 @@ var moji = "length"
               echo "</td>\n";
             }elseif($i==2){
               echo "<td>\n";
-              echo "<input type='text' style='width:70px' required name=inspection_pickup_speed>\n";
+              echo "<input type='text' style='width:70px' autocomplete='off' required name=inspection_pickup_speed>\n";
               echo "</td>\n";
               echo "<td>\n";
               echo "${"screw_mesh_2".$j}\n";
@@ -1061,7 +1072,7 @@ var moji = "length"
   <tbody class="login">
     <tr height="45">
       <td width="200">条件変更者ユーザーID</td>
-      <td class="login" width="200"><?= $this->Form->control('user_code_henkou', array('type'=>'text', 'label'=>false, 'required'=>true)) ?></td>
+      <td class="login" width="200"><?= $this->Form->control('user_code_henkou', array('type'=>'text', 'label'=>false, 'required'=>true, 'autocomplete'=>"off")) ?></td>
     </tr>
   </tbody>
 </table>

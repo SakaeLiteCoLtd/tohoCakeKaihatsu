@@ -46,7 +46,8 @@ class GroupsController extends AppController
         $this->paginate = [
             'contain' => ['Menus']
         ];
-        $groups = $this->paginate($this->Groups->find()->select(['name_group','delete_flag' => 0])->group(['name_group']));
+        $groups = $this->paginate($this->Groups->find()
+        ->select(['name_group','delete_flag' => 0])->group(['name_group']));
 
         $this->set(compact('groups'));
     }

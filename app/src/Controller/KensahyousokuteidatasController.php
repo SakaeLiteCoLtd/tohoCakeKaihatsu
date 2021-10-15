@@ -2345,11 +2345,6 @@ class KensahyousokuteidatasController extends AppController
 
       $j = 1;
 
-      ${"inspection_extrude_roatation".$j} = $InspectionDataConditonChildren[0]["inspection_extrude_roatation"];
-      $this->set('inspection_extrude_roatation'.$j, ${"inspection_extrude_roatation".$j});
-      ${"inspection_extrusion_load".$j} = $InspectionDataConditonChildren[0]["inspection_extrusion_load"];
-      $this->set('inspection_extrusion_load'.$j, ${"inspection_extrusion_load".$j});
-
       $Users = $this->Users->find()->contain(["Staffs"])->where(['user_code' => $data["user_code_henkou"], 'Users.delete_flag' => 0])->toArray();
       if(!isset($Users[0])){
         $mess = '<br>'."※入力された社員コードは登録されていません。";
@@ -2749,9 +2744,14 @@ class KensahyousokuteidatasController extends AppController
 
       }
 
+      if(isset($data['inspection_data_conditon_parent_id_moto'])){
+        $inspection_data_conditon_parent_id = $data['inspection_data_conditon_parent_id_moto'];
+      }else{
+        $inspection_data_conditon_parent_id = $data['inspection_data_conditon_parent_id'];
+      }
       //ここから当日成形条件の表示用
       $InspectionDataConditonParentsall = $this->InspectionDataConditonParents->find()
-      ->where(['id' => $data['inspection_data_conditon_parent_id_moto']])
+      ->where(['id' => $inspection_data_conditon_parent_id])
       ->order(["id"=>"DESC"])->toArray();
       $inspection_data_conditon_parent_created = $InspectionDataConditonParentsall[0]["created_at"]->format("Y-m-d H:i:s");
 
@@ -2930,26 +2930,24 @@ class KensahyousokuteidatasController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $Data = $this->request->query('s');
-      $product_code = $Data["product_code"];
-      $this->set('product_code', $product_code);
+      $data = $this->request->getData();
 
-      $Products = $this->Products->find()
-      ->where(['product_code' => $product_code])->toArray();
-      $product_name = $Products[0]["name"];
-      $this->set('product_name', $product_name);
-/*
-      $htmlproductcheck = new htmlproductcheck();//クラスを使用
-      $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
-
-      if($arrayproductdate[0] === "no_product"){
-
-        return $this->redirect(['action' => 'kensakupre',
-        's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
-
-      }
-*/
       if(isset($data['saerch'])){
+
+        $data = $this->request->getData();
+ /*
+        echo "<pre>";
+        print_r($data);
+        echo "</pre>";
+*/
+        $Data = $this->request->query('s');
+        $product_code = $data["product_code"];
+        $this->set('product_code', $product_code);
+  
+        $Products = $this->Products->find()
+        ->where(['product_code' => $product_code])->toArray();
+        $product_name = $Products[0]["name"];
+        $this->set('product_name', $product_name);
 
         $startY = $data['start']['year'];
     		$startM = $data['start']['month'];
@@ -2960,7 +2958,7 @@ class KensahyousokuteidatasController extends AppController
     		$endM = $data['end']['month'];
     		$endD = $data['end']['day'];
         $endYMD = $endY."-".$endM."-".$endD." 23:59";
-
+  
         $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
         ->contain(['InspectionDataResultParents' => ['Products']])//測定データのうち、管理ナンバーが一致するものを検索
         ->where(['product_code' => $product_code, 'InspectionDataResultChildren.delete_flag' => 0,
@@ -2988,6 +2986,15 @@ class KensahyousokuteidatasController extends AppController
 
       }else{
 
+        $Data = $this->request->query('s');
+        $product_code = $Data["product_code"];
+        $this->set('product_code', $product_code);
+  
+        $Products = $this->Products->find()
+        ->where(['product_code' => $product_code])->toArray();
+        $product_name = $Products[0]["name"];
+        $this->set('product_name', $product_name);
+  
         $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
         ->contain(['InspectionDataResultParents' => ['Products']])//測定データのうち、管理ナンバーが一致するものを検索
         ->where(['product_code' => $product_code, 'InspectionDataResultChildren.delete_flag' => 0])

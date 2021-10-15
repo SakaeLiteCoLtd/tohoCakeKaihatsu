@@ -14,6 +14,7 @@ class CustomersController extends AppController
       public function initialize()
     {
      parent::initialize();
+     $this->Users = TableRegistry::get('Users');
      $this->Staffs = TableRegistry::get('Staffs');
      $this->CustomerCodeRules = TableRegistry::get('CustomerCodeRules');
      $this->MaterialSuppliers = TableRegistry::get('MaterialSuppliers');
@@ -48,6 +49,12 @@ class CustomersController extends AppController
 
     public function index($id = null)
     {
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $Users = $this->Users->find()->contain(["Staffs"])
+      ->where(['Staffs.id' => $datasession['Auth']['User']['staff_id'], 'Users.delete_flag' => 0])
+      ->toArray();
 
       if(strlen($id) > 0){
   
@@ -58,7 +65,7 @@ class CustomersController extends AppController
           'Customers.created_at' => 'desc']
         ];
         $customers = $this->paginate($this->Customers->find()
-        ->where(['Customers.delete_flag' => 0]));
+        ->where(['Customers.factory_id' => $Users[0]["staff"]["factory_id"], 'Customers.delete_flag' => 0]));
 
       $this->set(compact('customers'));
 
@@ -69,7 +76,8 @@ class CustomersController extends AppController
           'contain' => ['Factories']
       ];
       $customers = $this->paginate($this->Customers->find()
-      ->where(['Customers.delete_flag' => 0])->order(["customer_code"=>"ASC"]));
+      ->where(['Customers.factory_id' => $Users[0]["staff"]["factory_id"], 'Customers.delete_flag' => 0])
+      ->order(["customer_code"=>"ASC"]));
 
       $this->set(compact('customers'));
 
@@ -343,8 +351,12 @@ class CustomersController extends AppController
       $arrCustomer_name_list = array_unique($arrCustomer_name_list);
       $arrCustomer_name_list = array_values($arrCustomer_name_list);
       $this->set('arrCustomer_name_list', $arrCustomer_name_list);
-    }
 
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+      $_SESSION['customername_department'] = array();
+
+    }
     
     public function editsyousai()
     {
@@ -360,7 +372,7 @@ class CustomersController extends AppController
         $this->set('mess',$mess);
 
         $data = $_SESSION['customer_edit'];
-
+  
       }elseif(isset($_SESSION['customername_department'][0])){
 
         $mess = "";
@@ -376,6 +388,11 @@ class CustomersController extends AppController
 
       }
 
+      if(!isset($data['name'])){
+
+        return $this->redirect(['action' => 'index']);
+
+      }
       $arrname = explode("_",$data['name']);
       $name = $arrname[0];
       if(strlen($arrname[1]) > 0){
@@ -416,6 +433,15 @@ class CustomersController extends AppController
       $this->set('yuubin', $CustomerData[0]["yuubin"]);
       $this->set('address', $CustomerData[0]["address"]);
       $this->set('ryakusyou', $CustomerData[0]["ryakusyou"]);
+
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      header('Expires:-1');
+      header('Cache-Control:');
+      header('Pragma:');
+  
+      print_r(" ");
 
     }
 

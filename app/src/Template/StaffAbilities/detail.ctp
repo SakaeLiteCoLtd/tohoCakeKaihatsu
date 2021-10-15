@@ -51,6 +51,14 @@
     <?php endfor;?>
 
   </table>
+  <br>
+  <table>
+      <tbody class='sample non-sample'>
+        <tr>
+        <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+        </tr>
+      </tbody>
+    </table>
 
     </fieldset>
 

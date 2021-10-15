@@ -61,10 +61,18 @@ class StaffsController extends AppController
 
     public function ichiran()
     {
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $Users = $this->Users->find()->contain(["Staffs"])
+      ->where(['Staffs.id' => $datasession['Auth']['User']['staff_id'], 'Users.delete_flag' => 0])
+      ->toArray();
+
         $this->paginate = [
             'contain' => ['Factories', 'Departments', 'Positions']
         ];
-        $staffs = $this->paginate($this->Staffs->find()->where(['Staffs.delete_flag' => 0]));
+        $staffs = $this->paginate($this->Staffs->find()
+        ->where(['Staffs.factory_id' => $Users[0]["staff"]["factory_id"], 'Staffs.delete_flag' => 0]));
 
         $this->set(compact('staffs'));
     }
@@ -188,11 +196,18 @@ class StaffsController extends AppController
       $Staffs = $this->Staffs->newEntity();
       $this->set('Staffs', $Staffs);
 
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $Users = $this->Users->find()->contain(["Staffs"])
+      ->where(['Staffs.id' => $datasession['Auth']['User']['staff_id'], 'Users.delete_flag' => 0])
+      ->toArray();
+
       $Factories = $this->Staffs->Factories->find('list', ['limit' => 200]);
       $this->set(compact('Factories'));
 
       $Departments = $this->Departments->find()
-      ->where(['delete_flag' => 0])->toArray();
+      ->where(['factory_id' => $Users[0]["staff"]["factory_id"], 'delete_flag' => 0])->toArray();
       $departments = array();
       foreach ($Departments as $value) {
         $departments[] = array($value->id=>$value->department);
@@ -200,7 +215,7 @@ class StaffsController extends AppController
       $this->set('departments', $departments);
 
       $Positions = $this->Positions->find()
-      ->where(['delete_flag' => 0])->toArray();
+      ->where(['factory_id' => $Users[0]["staff"]["factory_id"], 'delete_flag' => 0])->toArray();
       $positions = array();
       foreach ($Positions as $value) {
         $positions[] = array($value->id=>$value->position);
@@ -444,6 +459,13 @@ class StaffsController extends AppController
       $this->set(compact('Staffs'));
       $this->set('id', $id);
 
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $Users = $this->Users->find()->contain(["Staffs"])
+      ->where(['Staffs.id' => $datasession['Auth']['User']['staff_id'], 'Users.delete_flag' => 0])
+      ->toArray();
+
       $Factories = $this->Staffs->Factories->find('list', ['limit' => 200]);
       $this->set(compact('Factories'));
 
@@ -455,7 +477,7 @@ class StaffsController extends AppController
       $this->set('group_name', $group_name);
 
       $Departments = $this->Departments->find()
-      ->where(['delete_flag' => 0])->toArray();
+      ->where(['factory_id' => $Users[0]["staff"]["factory_id"], 'delete_flag' => 0])->toArray();
       $departments = array();
       foreach ($Departments as $value) {
         $departments[] = array($value->id=>$value->department);
@@ -463,7 +485,7 @@ class StaffsController extends AppController
       $this->set('departments', $departments);
 
       $Positions = $this->Positions->find()
-      ->where(['delete_flag' => 0])->toArray();
+      ->where(['factory_id' => $Users[0]["staff"]["factory_id"], 'delete_flag' => 0])->toArray();
       $positions = array();
       foreach ($Positions as $value) {
         $positions[] = array($value->id=>$value->position);
