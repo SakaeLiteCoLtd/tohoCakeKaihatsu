@@ -27,7 +27,7 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'kensakuikkatsudate']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'kensakuikkatsujouken']]) ?>
 
 <?=$this->Form->hidden("product_code", array('type' => 'value', 'value' => $product_code)); ?>
 
@@ -102,6 +102,8 @@ echo $this->Html->css('kensahyou');
   $numondocount = 0;
   $numkikakucheck = 1;
   $numkikakucount = 0;
+  $numtoujitucheck = 1;
+  $numtoujitucount = 0;
   ?>
 
 <?php for($j=1; $j<=$gyou; $j++): ?>
@@ -114,8 +116,8 @@ echo $this->Html->css('kensahyou');
 $numkikakucheck = $numkikakucheck + $arr_numnakama_kikaku[$numkikakucount];
 
 echo "<td style='width:61; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_kikaku[$numkikakucount]>";
-//echo $this->Form->submit("表示" , ['action'=>'kensakusyousai', 'name' => $j]) ;
-echo " ";
+echo $this->Form->submit("表示" , ['action'=>'kensakusyousai', 'name' => "kikaku_".${"datetime".$j}]) ;
+//echo " ";
 echo "</td>";
 
 $numkikakucount = $numkikakucount + 1;
@@ -130,8 +132,8 @@ $numkikakucount = $numkikakucount + 1;
   $numondocheck = $numondocheck + $arr_numnakama_ondo[$numondocount];
 
   echo "<td style='width:61; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_ondo[$numondocount]>";
-//echo $this->Form->submit("表示" , ['action'=>'kensakusyousai', 'name' => $j]) ;
-echo " ";
+  echo $this->Form->submit("表示" , ['action'=>'kensakusyousai', 'name' => "ondo_".${"datetime".$j}]) ;
+  //echo " ";
   echo "</td>";
 
   $numondocount = $numondocount + 1;
@@ -140,7 +142,21 @@ echo " ";
 <?php else: ?>
 <?php endif; ?>
 
-<td style='width:61; border-top-style:none'><?= h($Length) ?></td>
+<?php if($j == $numtoujitucheck): ?>
+
+<?php
+$numtoujitucheck = $numtoujitucheck + $arr_numnakama_toujitu[$numtoujitucount];
+
+echo "<td style='width:61; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_toujitu[$numtoujitucount]>";
+echo $this->Form->submit("表示" , ['action'=>'kensakusyousai', 'name' => "toujitu_".${"datetime".$j}]) ;
+//echo " ";
+echo "</td>";
+
+$numtoujitucount = $numtoujitucount + 1;
+?>
+
+<?php else: ?>
+<?php endif; ?>
 
 <td style='width:80; border-top-style:none; font-size: 10pt'><?= h(${"datetime".$j}) ?></td></td>
 
