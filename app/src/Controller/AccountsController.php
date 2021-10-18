@@ -651,6 +651,192 @@ class AccountsController extends AppController
 
     public function productdeletedselect()
     {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
+      $this->set('countFactories', count($Factories));
+      for($i=0; $i<count($Factories); $i++){
+
+        $this->set('factory_id'.$i, $Factories[$i]["id"]);
+
+        ${"Product_name_list".$i} = $this->Products->find()
+        ->where(['factory_id' => $Factories[$i]["id"], 'delete_flag' => 1])->toArray();
+  
+        ${"arrProduct_name_list".$i} = array();
+        for($j=0; $j<count(${"Product_name_list".$i}); $j++){
+
+          ${"Product_check".$j} = $this->Products->find()
+          ->where(['product_code' => ${"Product_name_list".$i}[$j]["product_code"], 'delete_flag' => 0])->toArray();
+          if(!isset(${"Product_check".$j}[0])){
+            array_push(${"arrProduct_name_list".$i},${"Product_name_list".$i}[$j]["name"].";".${"Product_name_list".$i}[$j]["length"]."mm");
+          }
+
+        }
+        ${"arrProduct_name_list".$i} = array_unique(${"arrProduct_name_list".$i});
+        ${"arrProduct_name_list".$i} = array_values(${"arrProduct_name_list".$i});
+  
+        $this->set('arrProduct_name_list'.$i, ${"arrProduct_name_list".$i});
+  
+      }
+
+    }
+
+    public function productdeletedconfirm()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+      
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+        $data = $Data;
+
+      }else{
+
+        $data = $this->request->getData();
+        $mess = "";
+        $this->set('mess',$mess);
+
+      }
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+      $product_name_length = explode(";",$data["name"]);
+      $name = $product_name_length[0];
+
+      if(isset($product_name_length[1])){
+        $length = str_replace('mm', '', $product_name_length[1]);
+        $ProductName1 = $this->Products->find()
+        ->where(['factory_id' => $data['factory_id'], 'name' => $name, 'length' => $length, 'delete_flag' => 1])->toArray();
+       }else{
+        $length = "";
+        $ProductName1 = $this->Products->find()
+        ->where(['factory_id' => $data['factory_id'], 'name' => $name, 'delete_flag' => 1])->toArray();
+       }
+       $this->set('length',$length);
+
+      if(!isset($ProductName1[0])){
+
+        return $this->redirect(['action' => 'productdeletedselect',
+        's' => ['mess' => "入力された削除済み製品は存在しません"]]);
+
+      }
+
+      $factory_id = $data["factory_id"];
+      $this->set('factory_id', $factory_id);
+      $product_code = $ProductName1[0]["product_code"];
+      $this->set('product_code', $product_code);
+      $name = $ProductName1[0]["name"];
+      $this->set('name', $name);
+      $tanni = $ProductName1[0]["tanni"];
+      $this->set('tanni', $tanni);
+      $weight = $ProductName1[0]["weight"];
+      $this->set('weight', $weight);
+      $id = $ProductName1[0]["id"];
+      $this->set('id', $id);
+
+      $Customers = $this->Customers->find()
+      ->where(['id' => $ProductName1[0]['customer_id']])->toArray();
+      $customer_name = $Customers[0]["name"];
+      $this->set('customer_name', $customer_name);
+
+    }
+
+    public function productdeleteddo()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+      
+      $data = $this->request->getData();
+      /*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+      $ProductName1 = $this->Products->find()
+      ->where(['id' => $data['id']])->toArray();
+
+      $factory_id = $data["factory_id"];
+      $this->set('factory_id', $factory_id);
+      $product_code = $ProductName1[0]["product_code"];
+      $this->set('product_code', $product_code);
+      $name = $ProductName1[0]["name"];
+      $this->set('name', $name);
+      $tanni = $ProductName1[0]["tanni"];
+      $this->set('tanni', $tanni);
+      $weight = $ProductName1[0]["weight"];
+      $this->set('weight', $weight);
+      $id = $ProductName1[0]["id"];
+      $this->set('id', $id);
+      $length = $ProductName1[0]["length"];
+      $this->set('length', $length);
+
+      $Customers = $this->Customers->find()
+      ->where(['id' => $ProductName1[0]['customer_id']])->toArray();
+      $customer_name = $Customers[0]["name"];
+      $this->set('customer_name', $customer_name);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $connection = ConnectionManager::get('default');//トランザクション1
+       // トランザクション開始2
+       $connection->begin();//トランザクション3
+       try {//トランザクション4
+         if ($this->Products->updateAll(
+           [ 'is_active' => 0,
+             'delete_flag' => 0,
+             'updated_at' => date('Y-m-d H:i:s'),
+             'updated_staff' => $staff_id],
+           ['id'  => $data['id']]
+         )){
+
+         $mes = "※以下のデータが復元されました。";
+         $this->set('mes',$mes);
+         $connection->commit();// コミット5
+
+       } else {
+
+         $mes = "※復元されませんでした";
+         $this->set('mes',$mes);
+         $this->Flash->error(__('The data could not be saved. Please, try again.'));
+         throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+       }
+
+     } catch (Exception $e) {//トランザクション7
+     //ロールバック8
+       $connection->rollback();//トランザクション9
+     }//トランザクション10
 
     }
 

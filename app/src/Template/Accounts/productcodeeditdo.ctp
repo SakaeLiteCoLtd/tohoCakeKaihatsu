@@ -16,7 +16,7 @@
      echo $htmlproductcodemenus;
 ?>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'productcodeeditdo']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'index']]) ?>
 <br><br><br>
 
 <nav class="sample non-sample">
