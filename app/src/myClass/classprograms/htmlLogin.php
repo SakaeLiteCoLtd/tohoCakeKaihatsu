@@ -13,6 +13,22 @@ class htmlLogin extends AppController
         $this->Users = TableRegistry::get('Users');
     }
 
+    public function login()
+  	{
+        $html =
+                "<table align='center'><tr height='45'>\n".
+                "<td width='100'><strong>ユーザーID</strong></td>\n".
+        		    "<td  width='150' bgcolor='#FFFFCC'style='font-size: 12pt;'><input type='text' name=user_code size='14' autocomplete='new-password' content='no-cache'/>\n".
+        		    "</td></tr>\n".
+        		    "<tr height='45'><input type='password' name='dummypass' style='visibility: hidden; top: -100px; left: -100px;' />\n".
+        		    "<td align='center'><strong>パスワード</strong></td>\n".
+        		    "<td  width='150' bgcolor='#FFFFCC'style='font-size: 12pt;'><input type='password' name=password size='14' autocomplete='off'/>\n".
+        		    "</td></table>\n";
+
+    		return $html;
+
+  	}
+
      public function inputstaffctp()
   	{
         $html =

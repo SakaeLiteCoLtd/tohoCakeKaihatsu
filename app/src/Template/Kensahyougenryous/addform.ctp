@@ -107,21 +107,20 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
    for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
         echo "<tr class='children'>\n";
-
         if($i==1){
-   //       echo "<td rowspan=${"tuikagenryou".$j}>\n";
-    //      echo "<input type='text' name=cylinder_name".$j." required value=${"cylinder_name".$j}>\n";
-      //    echo "</td>\n";
-
-          echo "<td rowspan=${"tuikagenryou".$j}><select name=cylinder_name".$j." required value=${"cylinder_name".$j}>\n";
-          foreach ($arrSeikeikis as $key => $value){
-            echo "<option value=$value>$value</option>";
-          }
-          echo "</select></td>\n";
-
+          echo "<td rowspan=${"tuikagenryou".$j}>\n";
         }
+?>
 
+<?php if ($i==1): ?>
 
+    <?= $this->Form->control('cylinder_name'.$j, ['options' => $arrSeikeikis, 'value'=>${"cylinder_name".$j}, 'label'=>false]) ?>
+  </td>
+
+<?php else : ?>
+<?php endif; ?>
+
+        <?php
           echo "<td>\n";
           if(${"check_material_name".$j.$i} == 1){
             echo "${"material_name".$j.$i}\n";

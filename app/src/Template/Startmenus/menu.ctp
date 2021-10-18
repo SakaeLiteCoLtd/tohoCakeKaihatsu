@@ -26,6 +26,14 @@
 */
           ?>
           
+          <?php if ($check_admin == 1): ?>
+
+          <font size='4'>　・</font><a><font size='4' color=black><?= $this->Html->link(__("管理者用メニュートップ"), ['controller' => "accounts", 'action' => 'index']) ?></font></a>
+            <br><br>
+
+          <?php else :?>
+          <?php endif; ?>
+
             <font size='4'>　・</font><a><font size='4' color=black><?= $this->Html->link(__("業務メニュートップ"), ['controller' => "staffs", 'action' => 'index']) ?></font></a>
             <br><br>
             <font size='4'>　・</font><a><font size='4' color=black><?= $this->Html->link(__("製造メニュートップ"), ['controller' => "Images", 'action' => 'index']) ?></font></a>

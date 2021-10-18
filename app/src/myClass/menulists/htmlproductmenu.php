@@ -30,7 +30,7 @@ class htmlproductmenu extends AppController
                         "<br><br>\n".
                         "<font size='4'>　・</font><a href='/staffs/index' /><font size='4' color=black>業務メニュー</font></a>\n".
                         "<br><br>\n".
-                        "<font size='4'>　・</font><a href='/staffs/index' /><font size='4' color=black>製造メニュー</font></a>\n".
+                        "<font size='4'>　・</font><a href='/images/index' /><font size='4' color=black>製造メニュー</font></a>\n".
                         "<br><br>\n".
                         "<font size='5'>　製品メニュー</font>\n".
                         "<br><br>\n".

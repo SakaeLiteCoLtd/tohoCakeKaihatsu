@@ -74,7 +74,21 @@ class StartmenusController extends AppController
         ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Groups.delete_flag' => 0])
         ->order(["menu_id"=>"ASC"])->toArray();
 
+        $Groupsadmin = $this->Groups->find()->contain(["Menus"])
+        ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "管理者用メニュー", 'Groups.delete_flag' => 0])
+        ->toArray();
+ 
+        if(isset($Groupsadmin[0])){//管理者メニュー表示
+          $check_admin = 1;
+        }else{
+          $check_admin = 0;
+        }
+        $this->set('check_admin', $check_admin);
+
       }else{//スーパーユーザーの場合（全メニュー表示）
+
+        $check_admin = 1;//管理者メニュー表示
+        $this->set('check_admin', $check_admin);
 
         $Menus = $this->Menus->find()
         ->where(['delete_flag >=' => 0])->order(["id"=>"ASC"])->toArray();

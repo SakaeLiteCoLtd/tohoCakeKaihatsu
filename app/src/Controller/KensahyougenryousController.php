@@ -300,7 +300,11 @@ class KensahyougenryousController extends AppController
         $this->set('product_code', $product_code);
 
       }
-
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -308,6 +312,7 @@ class KensahyougenryousController extends AppController
       $this->set('user_code', $user_code);
 
       $Material_name_list = $this->Materials->find()
+ //     ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
       ->where(['delete_flag' => 0])->toArray();
       $arrMaterial_name_list = array();
       for($j=0; $j<count($Material_name_list); $j++){
