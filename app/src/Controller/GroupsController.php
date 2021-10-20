@@ -50,6 +50,27 @@ class GroupsController extends AppController
         ->select(['name_group','delete_flag' => 0])->group(['name_group']));
 
         $this->set(compact('groups'));
+
+        $Groups = $this->Groups->find()->contain(["Menus"])
+        ->where(['Groups.delete_flag' => 0])->toArray();
+
+        $tmp = array();
+        $array_result = array();
+       
+        foreach( $Groups as $key => $value ){
+         // 配列に値が見つからなければ$tmpに格納
+         if( !in_array( $value['name_group'], $tmp ) ) {
+          $tmp[] = $value['name_group'];
+          $array_result[] = $value;
+         }
+        }
+        $Groups = $array_result;
+        $this->set('Groups', $Groups);
+/*
+        echo "<pre>";
+        print_r($Groups);
+        echo "</pre>";
+  */
     }
 
     public function detail($name_group = null)

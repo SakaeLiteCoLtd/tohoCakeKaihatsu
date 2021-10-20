@@ -16,7 +16,7 @@
 
 <form method="post" action="/customers/index">
 
-<?= $this->Form->create($customer, ['url' => ['action' => 'index']]) ?>
+<?= $this->Form->create($customer, ['url' => ['action' => 'editpreform']]) ?>
 <br><br><br>
 
 <nav class="sample non-sample">
@@ -58,7 +58,7 @@
     <table align="center">
       <tbody class='sample non-sample'>
         <tr>
-          <td style="border-style: none;"><div align="center"><?= $this->Form->submit('得意先・仕入先メニュートップへ戻る', array('name' => 'top')); ?></div></td>
+          <td style="border-style: none;"><div align="center"><?= $this->Form->submit('得意先・仕入先編集トップへ戻る', array('name' => 'top')); ?></div></td>
         </tr>
       </tbody>
     </table>

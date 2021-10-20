@@ -37,7 +37,7 @@
 
         <table>
           <tr>
-            <td width="280"><strong>工場・営業所</strong></td>
+            <td width="280"><strong>工場名</strong></td>
         	</tr>
           <tr>
             <td><?= $this->Form->control('factory_id', ['options' => $Factories, 'label'=>false]) ?></td>
@@ -55,8 +55,8 @@
         </table>
         <table>
           <tr>
-          <td width="280"><strong>部署</strong></td>
-            <td width="280"><strong>職種</strong></td>
+          <td width="280"><strong>※部署</strong></td>
+            <td width="280"><strong>※職種</strong></td>
         	</tr>
           <tr>
           <td><?= $this->Form->control('department_id', ['options' => $departments, 'label'=>false, 'empty' => true]) ?></td>
@@ -65,8 +65,8 @@
         </table>
         <table>
           <tr>
-            <td width="280"><strong>電話番号</strong></td>
-            <td width="280"><strong>メール</strong></td>
+            <td width="280"><strong>※電話番号</strong></td>
+            <td width="280"><strong>※メール</strong></td>
         	</tr>
           <tr>
             <td><?= $this->Form->control('tel', array('type'=>'text', 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'autocomplete'=>"off")) ?></td>
@@ -75,7 +75,7 @@
         </table>
         <table>
           <tr>
-            <td width="560"><strong>住所</strong></td>
+            <td width="560"><strong>※住所</strong></td>
         	</tr>
           <tr>
             <td><?= $this->Form->control('address', array('type'=>'text', 'label'=>false, 'size'=>50, 'autocomplete'=>"off")) ?></td>
@@ -87,8 +87,8 @@
             <td width="280"><strong>入社日</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->input("birth", array('type' => 'date', 'minYear' => date('Y') - 80, 'monthNames' => false, 'label'=>false, 'empty' => true, 'autocomplete'=>"off")); ?></td>
-            <td><?= $this->Form->input("date_start", array('type' => 'date', 'minYear' => date('Y') - 50, 'monthNames' => false, 'label'=>false, 'empty' => true, 'autocomplete'=>"off")); ?></td>
+            <td><?= $this->Form->input("birth", array('type' => 'date', 'minYear' => date('Y') - 100,  'maxYear' => date('Y'), 'monthNames' => false, 'label'=>false, 'empty' => true, 'autocomplete'=>"off")); ?></td>
+            <td><?= $this->Form->input("date_start", array('type' => 'date', 'minYear' => date('Y') - 100, 'maxYear' => date('Y'), 'monthNames' => false, 'label'=>false, 'empty' => true, 'autocomplete'=>"off")); ?></td>
         	</tr>
         </table>
         <table>
@@ -112,7 +112,15 @@
         	</tr>
         </table>
 
-    </fieldset>
+            <table>
+          <tbody class='sample non-sample'>
+            <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 12pt">
+            <?= __('「※」のついている欄は空白のまま登録できます。') ?>
+          </strong></td></tr>
+          </tbody>
+        </table>
+
+        </fieldset>
 
     <table>
       <tbody class='sample non-sample'>

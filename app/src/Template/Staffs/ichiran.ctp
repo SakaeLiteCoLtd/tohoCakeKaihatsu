@@ -32,7 +32,7 @@ echo $this->Html->css('index');
         <thead>
           <tr>
             <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
-            <th scope="col" style='width:200'><?= $this->Paginator->sort('office', ['label'=>"工場・営業所"]) ?></th>
+            <th scope="col" style='width:200'><?= $this->Paginator->sort('office', ['label'=>"工場名"]) ?></th>
             <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"氏名"]) ?></th>
             <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
           </tr>

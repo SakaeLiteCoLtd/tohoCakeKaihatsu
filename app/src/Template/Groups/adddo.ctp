@@ -59,7 +59,7 @@
     <table>
       <tr>
         <tbody class='sample non-sample'>
-        <td style="border-style: none;"><div><?= $this->Form->submit('権限グループメニュートップへ戻る', array('name' => 'top')); ?></div></td>
+        <td style="border-style: none;"><div><?= $this->Form->submit('権限一覧へ戻る', array('name' => 'top')); ?></div></td>
       </tbody>
     </tr>
     </table>

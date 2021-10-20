@@ -55,8 +55,13 @@ class DepartmentsController extends AppController
         $this->paginate = [
             'contain' => ['Factories']
         ];
-        $departments = $this->paginate($this->Departments->find()
-        ->where(['Departments.factory_id' => $Users[0]["staff"]["factory_id"], 'Departments.delete_flag' => 0]));
+        if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
+          $departments = $this->paginate($this->Departments->find()
+          ->where(['Departments.delete_flag' => 0]));
+          }else{
+          $departments = $this->paginate($this->Departments->find()
+          ->where(['Departments.factory_id' => $Users[0]["staff"]["factory_id"], 'Departments.delete_flag' => 0]));
+          }
 
         $this->set(compact('departments'));
     }

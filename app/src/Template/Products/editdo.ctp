@@ -14,7 +14,7 @@
      echo $htmlproduct;
 ?>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'index']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'editpreform']]) ?>
 <br><br><br>
 
 <?php
@@ -136,7 +136,7 @@ if($this->request->getData('status_kensahyou') == 0){
     <table align="center">
       <tbody class='sample non-sample'>
         <tr>
-          <td style="border-style: none;"><div align="center"><?= $this->Form->submit('製品メニュートップへ戻る', array('name' => 'top')); ?></div></td>
+          <td style="border-style: none;"><div align="center"><?= $this->Form->submit('製品編集トップへ戻る', array('name' => 'top')); ?></div></td>
         </tr>
       </tbody>
     </table>

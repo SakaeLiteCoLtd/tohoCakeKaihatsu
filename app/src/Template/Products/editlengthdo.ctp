@@ -17,7 +17,7 @@
      echo $htmlproduct;
 ?>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'index']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'editlengthpreform']]) ?>
 <br><br><br>
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 <?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$this->request->getData('name'), 'label'=>false)) ?>
@@ -126,7 +126,7 @@
      <table>
       <tr>
         <tbody class='sample non-sample'>
-        <td style="border-style: none;"><div><?= $this->Form->submit('製品メニュートップへ戻る', array('name' => 'top')); ?></div></td>
+        <td style="border-style: none;"><div><?= $this->Form->submit('製品長さ追加トップへ戻る', array('name' => 'top')); ?></div></td>
       </tbody>
     </tr>
     </table>

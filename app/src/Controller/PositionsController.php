@@ -56,8 +56,13 @@ class PositionsController extends AppController
         $this->paginate = [
             'contain' => ['Factories']
         ];
-        $positions = $this->paginate($this->Positions->find()
-        ->where(['Positions.factory_id' => $Users[0]["staff"]["factory_id"], 'Positions.delete_flag' => 0]));
+        if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
+          $positions = $this->paginate($this->Positions->find()
+          ->where(['Positions.delete_flag' => 0]));
+            }else{
+              $positions = $this->paginate($this->Positions->find()
+              ->where(['Positions.factory_id' => $Users[0]["staff"]["factory_id"], 'Positions.delete_flag' => 0]));
+                }
 
         $this->set(compact('positions'));
     }

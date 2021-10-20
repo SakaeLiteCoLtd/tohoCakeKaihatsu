@@ -61,11 +61,17 @@ class CustomersController extends AppController
         $this->paginate = [
           'limit' => 13,
           'contain' => ['Factories'],
-          'order' => ['Customers.updated_at' => 'desc',
+          'order' => [//'Customers.updated_at' => 'desc',
           'Customers.created_at' => 'desc']
         ];
-        $customers = $this->paginate($this->Customers->find()
-        ->where(['Customers.factory_id' => $Users[0]["staff"]["factory_id"], 'Customers.delete_flag' => 0]));
+
+        if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
+          $customers = $this->paginate($this->Customers->find()
+          ->where(['Customers.delete_flag' => 0]));
+        }else{
+          $customers = $this->paginate($this->Customers->find()
+          ->where(['Customers.factory_id' => $Users[0]["staff"]["factory_id"], 'Customers.delete_flag' => 0]));
+        }
 
       $this->set(compact('customers'));
 
@@ -75,9 +81,17 @@ class CustomersController extends AppController
           'limit' => 13,
           'contain' => ['Factories']
       ];
-      $customers = $this->paginate($this->Customers->find()
-      ->where(['Customers.factory_id' => $Users[0]["staff"]["factory_id"], 'Customers.delete_flag' => 0])
-      ->order(["customer_code"=>"ASC"]));
+
+      if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
+        $customers = $this->paginate($this->Customers->find()
+        ->where(['Customers.delete_flag' => 0])
+        ->order(["customer_code"=>"ASC"]));
+        }else{
+          $customers = $this->paginate($this->Customers->find()
+          ->where(['Customers.factory_id' => $Users[0]["staff"]["factory_id"], 'Customers.delete_flag' => 0])
+          ->order(["customer_code"=>"ASC"]));
+          }
+
 
       $this->set(compact('customers'));
 

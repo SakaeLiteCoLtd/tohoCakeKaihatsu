@@ -28,7 +28,6 @@ echo $this->Html->css('index');
           <tr bgcolor="#f0e68c">
             <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
             <th scope="col" style='width:200'><?= $this->Paginator->sort('staff_id', ['label'=>"スタッフ"]) ?></th>
-            <th scope="col" style='width:200'><?= $this->Paginator->sort('factory_id', ['label'=>"スタッフ"]) ?></th>
                 <th scope="col" style='width:250' class="actions"><?= __('') ?></th>
             </tr>
         </thead>
@@ -40,7 +39,6 @@ echo $this->Html->css('index');
             <tr>
               <td><?= h($i) ?></td>
               <td><?= h($staffAbility->staff->name) ?></td>
-              <td><?= h($staffAbility->staff->factory_id) ?></td>
                 <td class="actions">
                   <?= $this->Html->link(__('取り扱い可能メニュー表示'), ['action' => 'detail', $staffAbility->staff_id]) ?>
                 </td>

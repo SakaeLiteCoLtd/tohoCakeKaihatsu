@@ -14,7 +14,7 @@
      echo $htmlproduct;
 ?>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'index']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'ichiran']]) ?>
 <br><br><br>
 
 <?php
@@ -88,7 +88,7 @@
     <table>
       <tr>
         <tbody class='sample non-sample'>
-        <td style="border-style: none;"><div><?= $this->Form->submit('製品メニュートップへ戻る', array('name' => 'top')); ?></div></td>
+        <td style="border-style: none;"><div><?= $this->Form->submit('製品一覧へ戻る', array('name' => 'top')); ?></div></td>
       </tbody>
     </tr>
     </table>

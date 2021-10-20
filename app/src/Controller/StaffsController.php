@@ -71,9 +71,14 @@ class StaffsController extends AppController
         $this->paginate = [
             'contain' => ['Factories', 'Departments', 'Positions']
         ];
-        $staffs = $this->paginate($this->Staffs->find()
-        ->where(['Staffs.factory_id' => $Users[0]["staff"]["factory_id"], 'Staffs.delete_flag' => 0]));
-
+        if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
+          $staffs = $this->paginate($this->Staffs->find()
+          ->where(['Staffs.delete_flag' => 0]));
+            }else{
+              $staffs = $this->paginate($this->Staffs->find()
+              ->where(['Staffs.factory_id' => $Users[0]["staff"]["factory_id"], 'Staffs.delete_flag' => 0]));
+                  }
+  
         $this->set(compact('staffs'));
     }
 
@@ -206,19 +211,29 @@ class StaffsController extends AppController
       $Factories = $this->Staffs->Factories->find('list', ['limit' => 200]);
       $this->set(compact('Factories'));
 
-      $Departments = $this->Departments->find()
-      ->where(['factory_id' => $Users[0]["staff"]["factory_id"], 'delete_flag' => 0])->toArray();
+      if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
+        $Departments = $this->Departments->find()
+        ->where(['delete_flag' => 0])->toArray();
+      }else{
+        $Departments = $this->Departments->find()
+        ->where(['factory_id' => $Users[0]["staff"]["factory_id"], 'delete_flag' => 0])->toArray();
+      }
       $departments = array();
-      foreach ($Departments as $value) {
-        $departments[] = array($value->id=>$value->department);
+      for($k=0; $k<count($Departments); $k++){
+        $departments = $departments + array($Departments[$k]['id']=>$Departments[$k]['department']);
       }
       $this->set('departments', $departments);
 
-      $Positions = $this->Positions->find()
-      ->where(['factory_id' => $Users[0]["staff"]["factory_id"], 'delete_flag' => 0])->toArray();
+      if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
+        $Positions = $this->Positions->find()
+        ->where(['delete_flag' => 0])->toArray();
+      }else{
+        $Positions = $this->Positions->find()
+        ->where(['factory_id' => $Users[0]["staff"]["factory_id"], 'delete_flag' => 0])->toArray();
+      }
       $positions = array();
-      foreach ($Positions as $value) {
-        $positions[] = array($value->id=>$value->position);
+      for($k=0; $k<count($Positions); $k++){
+        $positions = $positions + array($Positions[$k]['id']=>$Positions[$k]['position']);
       }
       $this->set('positions', $positions);
 
@@ -476,16 +491,26 @@ class StaffsController extends AppController
       $group_name = $Users[0]["group_name"];
       $this->set('group_name', $group_name);
 
-      $Departments = $this->Departments->find()
-      ->where(['factory_id' => $Users[0]["staff"]["factory_id"], 'delete_flag' => 0])->toArray();
+      if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
+        $Departments = $this->Departments->find()
+        ->where(['delete_flag' => 0])->toArray();
+            }else{
+              $Departments = $this->Departments->find()
+              ->where(['factory_id' => $Users[0]["staff"]["factory_id"], 'delete_flag' => 0])->toArray();
+                      }
       $departments = array();
       foreach ($Departments as $value) {
         $departments[] = array($value->id=>$value->department);
       }
       $this->set('departments', $departments);
 
-      $Positions = $this->Positions->find()
-      ->where(['factory_id' => $Users[0]["staff"]["factory_id"], 'delete_flag' => 0])->toArray();
+      if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
+        $Positions = $this->Positions->find()
+        ->where(['delete_flag' => 0])->toArray();
+              }else{
+                $Positions = $this->Positions->find()
+                ->where(['factory_id' => $Users[0]["staff"]["factory_id"], 'delete_flag' => 0])->toArray();
+                                }
       $positions = array();
       foreach ($Positions as $value) {
         $positions[] = array($value->id=>$value->position);

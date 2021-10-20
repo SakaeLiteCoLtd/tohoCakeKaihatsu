@@ -85,7 +85,7 @@
     <table>
       <tr>
         <tbody class='sample non-sample'>
-        <td style="border-style: none;"><div><?= $this->Form->submit('得意先・仕入先メニュートップへ戻る', array('name' => 'top')); ?></div></td>
+        <td style="border-style: none;"><div><?= $this->Form->submit('得意先・仕入先一覧へ戻る', array('name' => 'top')); ?></div></td>
       </tbody>
     </tr>
     </table>

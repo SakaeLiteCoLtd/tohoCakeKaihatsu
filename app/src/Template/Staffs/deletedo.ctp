@@ -18,7 +18,7 @@
 
 <form method="post" action="/staffs/index">
 
-<?= $this->Form->create($staff, ['url' => ['action' => 'index']]) ?>
+<?= $this->Form->create($staff, ['url' => ['action' => 'ichiran']]) ?>
 <br><br><br>
 
 <nav class="sample non-sample">
@@ -36,7 +36,7 @@
 
         <table>
           <tr>
-            <td width="280"><strong>工場・営業所</strong></td>
+            <td width="280"><strong>工場名</strong></td>
         	</tr>
           <tr>
             <td><?= h($factory_name) ?></td>
@@ -124,7 +124,7 @@
     <table align="center">
       <tbody class='sample non-sample'>
         <tr>
-          <td style="border-style: none;"><div align="center"><?= $this->Form->submit('メンバーメニュートップへ戻る', array('name' => 'top')); ?></div></td>
+          <td style="border-style: none;"><div align="center"><?= $this->Form->submit('メンバー一覧へ戻る', array('name' => 'top')); ?></div></td>
         </tr>
       </tbody>
     </table>

@@ -33,17 +33,15 @@ class ZzzcsvsController extends AppController
 
       public function jidoutest()//http://localhost:5050/Zzzcsvs/jidoutest
     {
+      /*
       //自動入力のテスト
-
       for($i=1; $i<=10; $i++){
-
         if($i < 4){
           ${"result_size".$i} = 8.5;
         }else{
           ${"result_size".$i} = "";
         }
         $this->set('result_size'.$i,${"result_size".$i});
-
       }
       $num_length = 3;
       $size_length = 4.1;
@@ -71,11 +69,6 @@ class ZzzcsvsController extends AppController
         "lower" => 20.3
       ];
       $this->set('arrLength_size1',$arrLength_size1);
-      /*
-      echo "<pre>";
-      print_r($arrLength_size1);
-      echo "</pre>";
-*/
       $count_length = 2;
       $this->set('count_length',$count_length);
 
@@ -89,13 +82,26 @@ class ZzzcsvsController extends AppController
 
       $this->set('countFactories', count($Factories));
       for($i=0; $i<count($Factories); $i++){
-
         $this->set('factory_id'.$i, $Factories[$i]["id"]);
-        echo "<pre>";
-        print_r($Factories[$i]["id"]);
-        echo "</pre>";
-
       }
+*/
+      $Product_name_list = $this->Products->find()
+      ->where(['delete_flag' => 0])->toArray();
+
+      $arrProduct_name_list = array();
+      for($j=0; $j<count($Product_name_list); $j++){
+        array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+      }
+      $arrProduct_name_list = array_unique($arrProduct_name_list);
+      $arrProduct_name_list = array_values($arrProduct_name_list);
+
+      $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+            /*
+      echo "<pre>";
+      print_r($arrLength_size1);
+      echo "</pre>";
+*/
 
     }
 

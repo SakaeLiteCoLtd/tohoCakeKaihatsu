@@ -16,7 +16,7 @@
      echo $htmluser;
 ?>
 
-<?= $this->Form->create($Staffs, ['url' => ['action' => 'index']]) ?>
+<?= $this->Form->create($Staffs, ['url' => ['action' => 'ichiran']]) ?>
 
 <br><br><br>
 
@@ -33,7 +33,7 @@
 
       <table>
           <tr>
-            <td width="280"><strong>工場・営業所</strong></td>
+            <td width="280"><strong>工場名</strong></td>
         	</tr>
           <tr>
             <td><?= h($factory_name) ?></td>
@@ -113,7 +113,7 @@
     <table>
       <tr>
         <tbody class='sample non-sample'>
-        <td style="border-style: none;"><div><?= $this->Form->submit('メンバーメニュートップへ戻る', array('name' => 'top')); ?></div></td>
+        <td style="border-style: none;"><div><?= $this->Form->submit('メンバー一覧へ戻る', array('name' => 'top')); ?></div></td>
       </tbody>
     </tr>
     </table>
