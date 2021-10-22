@@ -20,7 +20,7 @@ class htmlproductmenu extends AppController
                         "<br><br>\n".
                         "<font size='4'>　・</font><a href='/products/kensakupreform' /><font size='4' color=black>製品検索</font></a>\n".
                         "<br><br>\n".
-                        "<font size='4'>　・</font><a href='/products/kikakueditpreform' /><font size='4' color=black>長さ規格登録</font></a>\n".
+                        "<font size='4'>　・</font><a href='/products/kikakueditpreform' /><font size='4' color=black>製品長さ規格編集</font></a>\n".
                         "<br><br>\n";
 
                       }else{//製品の権限がある
@@ -42,7 +42,7 @@ class htmlproductmenu extends AppController
                         "<br><br>\n".
                         "<font size='4'>　・</font><a href='/products/kensakupreform' /><font size='4' color=black>製品検索</font></a>\n".
                         "<br><br>\n".
-                        "<font size='4'>　・</font><a href='/products/kikakueditpreform' /><font size='4' color=black>長さ規格編集</font></a>\n".
+                        "<font size='4'>　・</font><a href='/products/kikakueditpreform' /><font size='4' color=black>製品長さ規格編集</font></a>\n".
                         "<br><br>\n";
 
                       }

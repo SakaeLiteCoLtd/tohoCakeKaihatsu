@@ -16,13 +16,13 @@ echo $this->Html->css('kensahyou');
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/menu' /><font size='4' color=black>測定データ登録</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/addlogin' /><font size='4' color=black>新規登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/addformpre' /><font size='4' color=black>新規登録</font></a>
     </td>
   </tbody>
 </table>
 
 <br><br><br>
-<?= $this->Form->create($product, ['url' => ['action' => 'addlogin']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'addformpre']]) ?>
 
 <?php
       echo $htmlkensahyouheader;
@@ -63,7 +63,7 @@ echo $this->Html->css('kensahyou');
     <?php endfor;?>
 </tr>
 <tr>
-  <td style='width:130'>上限</td>
+  <td style='width:130'>公差上限</td>
 
   <?php for($i=1; $i<=9; $i++): ?>
     <td style='width:90'><?= h(${"upper_limit".$i}) ?></td>
@@ -71,7 +71,7 @@ echo $this->Html->css('kensahyou');
 
 </tr>
 <tr>
-  <td style='width:130'>下限</td>
+  <td style='width:130'>公差下限</td>
 
     <?php for($i=1; $i<=9; $i++): ?>
       <td style='width:90'><?= h(${"lower_limit".$i}) ?></td>

@@ -230,11 +230,8 @@ class ProductsController extends AppController
       $this->set('arrTanni', $arrTanni);
 
       $arrig_bank_modes = [
-        "" => "",
-        0 => 0,
-        1 => 1,
-        2 => 2,
-        3 => 3,
+        0 => "X-Y",
+        1 => "Y-Y"
       ];
       $this->set('arrig_bank_modes', $arrig_bank_modes);
 

@@ -67,7 +67,7 @@ echo $this->Html->css('kensahyou');
     <?php endfor;?>
 </tr>
 <tr>
-  <td>上限</td>
+  <td>公差上限</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
     <?php if (strlen(${"upper_limit".$i}) > 0 && substr(${"upper_limit".$i}, 0, 1) != "+"): ?>
@@ -79,7 +79,7 @@ echo $this->Html->css('kensahyou');
 
 </tr>
 <tr>
-  <td>下限</td>
+  <td>公差下限</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
       <td><?= h(${"lower_limit".$i}) ?></td>

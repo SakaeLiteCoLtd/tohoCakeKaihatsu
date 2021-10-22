@@ -76,9 +76,9 @@
       <td width="90"><strong>検査表に表示</strong></td>
       <td width="40"><strong>長さ<br>（mm）</strong></td>
       <td width="40"><strong style="font-size: 9pt">カット長さ（mm）</strong></td>
-        <td width="20"><strong style="font-size: 9pt">上限</strong></td>
-        <td width="20"><strong style="font-size: 9pt">下限</strong></td>
-        <td width="120"><strong>備考</strong></td>
+        <td width="20"><strong style="font-size: 9pt">※公差下限</strong></td>
+        <td width="20"><strong style="font-size: 9pt">※公差上限</strong></td>
+        <td width="120"><strong>※備考</strong></td>
       <td><strong>削除</strong></td>
       </tr>
       
@@ -94,9 +94,9 @@
       <td><?= $this->Form->control
       ('length_cut'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_cut"], 'pattern' => '^[0-9.-]+$','size'=>3,  'title'=>'半角数字で入力して下さい。', 'required' => 'true', 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
-      ('length_upper_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_upper_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
-      <td><?= $this->Form->control
       ('length_lower_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_lower_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
+      <td><?= $this->Form->control
+      ('length_upper_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_upper_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
       ('bik'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["bik"], 'size'=>15)) ?></td>
       <td><?= $this->Form->control('delete'.$i, array('type'=>'checkbox', 'label'=>false)) ?></td>
@@ -118,6 +118,13 @@
         </tr>
       </tbody>
     </table>
+    <table>
+          <tbody class='sample non-sample'>
+            <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 12pt">
+            <?= __('「※」のついている欄は空白のまま登録できます。') ?>
+          </strong></td></tr>
+          </tbody>
+        </table>
 
     </fieldset>
 

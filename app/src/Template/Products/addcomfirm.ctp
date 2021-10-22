@@ -27,7 +27,11 @@
 <br><br><br>
 
 <?php
-//<nav class="large-3 medium-4 columns">
+if($ig_bank_modes == 0){
+  $ig_bank_modes_name = "X-Y";
+}else{
+  $ig_bank_modes_name = "Y-Y";
+}
 ?>
 
 <nav class="sample non-sample">
@@ -56,13 +60,13 @@
         <td width="280"><strong>品名</strong></td>
         <td><strong>単位</strong></td>
         <td><strong>単重(g/m)</strong></td>
-        <td><strong>幅測定器モード番号</strong></td>
+        <td><strong>幅測定器検査モード</strong></td>
         </tr>
         <tr>
         <td><?= h($name) ?></td>
         <td><?= h($tanni) ?></td>
         <td><?= h($weight) ?></td>
-        <td><?= h($ig_bank_modes) ?></td>
+        <td><?= h($ig_bank_modes_name) ?></td>
         </tr>
       </table>
 
@@ -71,8 +75,8 @@
       <td><strong>検査表に表示</strong></td>
       <td><strong>長さ（mm）</strong></td>
         <td><strong>カット長さ（mm）</strong></td>
-        <td width="50"><strong>上限</strong></td>
-        <td width="50"><strong>下限</strong></td>
+        <td width="50"><strong>公差下限</strong></td>
+        <td width="50"><strong>公差上限</strong></td>
         <td width="200"><strong>備考</strong></td>
       </tr>
       
@@ -86,10 +90,10 @@
       <?= $this->Form->control('length'.$k, array('type'=>'hidden', 'value'=>${"length".$k}, 'label'=>false)) ?>
       <td><?= h(${"length_cut".$k}) ?></td>
       <?= $this->Form->control('length_cut'.$k, array('type'=>'hidden', 'value'=>${"length_cut".$k}, 'label'=>false)) ?>
-      <td><?= h(${"length_upper_limit".$k}) ?></td>
-      <?= $this->Form->control('length_upper_limit'.$k, array('type'=>'hidden', 'value'=>${"length_upper_limit".$k}, 'label'=>false)) ?>
       <td><?= h(${"length_lower_limit".$k}) ?></td>
       <?= $this->Form->control('length_lower_limit'.$k, array('type'=>'hidden', 'value'=>${"length_lower_limit".$k}, 'label'=>false)) ?>
+      <td><?= h(${"length_upper_limit".$k}) ?></td>
+      <?= $this->Form->control('length_upper_limit'.$k, array('type'=>'hidden', 'value'=>${"length_upper_limit".$k}, 'label'=>false)) ?>
       <td><?= h(${"bik".$k}) ?></td>
       <?= $this->Form->control('bik'.$k, array('type'=>'hidden', 'value'=>${"bik".$k}, 'label'=>false)) ?>
 

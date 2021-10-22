@@ -48,7 +48,7 @@ $arrProduct_name_list = json_encode($arrProduct_name_list);//jsに配列を受�
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/menu' /><font size='4' color=black>測定データ登録</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/addlogin' /><font size='4' color=black>新規登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/addformpre' /><font size='4' color=black>新規登録</font></a>
     </td>
   </tbody>
 </table>
@@ -77,7 +77,15 @@ $arrProduct_name_list = json_encode($arrProduct_name_list);//jsに配列を受�
       </td>
       <td style="border-left-style:none"><?= $this->Form->submit(('顧客絞込'), array('name' => 'customer')) ?></td>
       <td style="border: 1px solid black">
-        <?= $this->Form->control('product_name', array('type'=>'text', 'label'=>false, 'id'=>"product_name_list")) ?>
+      <?php if ($customer_check == 0): ?>
+
+<?= $this->Form->control('product_name', array('type'=>'text', 'label'=>false, 'id'=>"product_name_list")) ?>
+
+<?php else : ?>
+
+  <?= $this->Form->control('product_name', ['options' => $arrProduct_names, 'label'=>false, "empty"=>"選択してください"]) ?>
+
+  <?php endif; ?>
       </td>
     </tr>
   </tbody>

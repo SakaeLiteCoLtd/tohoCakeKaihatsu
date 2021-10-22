@@ -78,8 +78,8 @@ if($status_kensahyou == 0){
       <td><strong>長さ（mm）</strong></td>
       <td><strong>カット長さ（mm）</strong></td>
       <td><strong>規格長さ（mm）</strong></td>
-        <td width="50"><strong>上限</strong></td>
-        <td width="50"><strong>下限</strong></td>
+        <td width="50"><strong>公差下限</strong></td>
+        <td width="50"><strong>公差上限</strong></td>
         <td width="120"><strong>備考</strong></td>
       </tr>
       
@@ -91,8 +91,8 @@ if($status_kensahyou == 0){
       <td><?= h($ProductName[$i]["length"]) ?></td>
       <td><?= h($ProductName[$i]["length_cut"]) ?></td>
       <td><?= h($ProductName[$i]["length_size"]) ?></td>
-      <td><?= h($ProductName[$i]["length_upper_limit"]) ?></td>
       <td><?= h($ProductName[$i]["length_lower_limit"]) ?></td>
+      <td><?= h($ProductName[$i]["length_upper_limit"]) ?></td>
       <td><?= h($ProductName[$i]["bik"]) ?></td>
 
       <?php endfor;?>

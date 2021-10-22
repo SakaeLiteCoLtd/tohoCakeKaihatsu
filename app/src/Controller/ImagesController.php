@@ -181,6 +181,9 @@ class ImagesController extends AppController
       $mess = "";
       $this->set('mess', $mess);
 
+      $customer_check = 0;
+      $this->set('customer_check', $customer_check);
+
       $Customer_name_list = $this->Customers->find()
       ->where(['delete_flag' => 0])->toArray();
       $arrCustomer_name_list = array();
@@ -211,10 +214,17 @@ class ImagesController extends AppController
 
        }else{
 
-         $arrProduct_name_list = array();
+        $customer_check = 1;
+        $this->set('customer_check', $customer_check);
+  
+         $arrProduct_names = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
-         }
+   //       array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
+         $arrProduct_names[$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm"] = $Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm";
+        }
+         $this->set('arrProduct_names', $arrProduct_names);
+
+         $arrProduct_name_list = array();
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
        }

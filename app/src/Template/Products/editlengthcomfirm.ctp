@@ -56,8 +56,8 @@
         <td width="50"><strong>検査表に表示</strong></td>
         <td><strong>長さ（mm）</strong></td>
         <td width="80"><strong>カット長さ（mm）</strong></td>
-        <td width="50"><strong>上限</strong></td>
         <td width="50"><strong>下限</strong></td>
+        <td width="50"><strong>上限</strong></td>
         <td width="200"><strong>備考</strong></td>
       </tr>
       
@@ -79,8 +79,8 @@
 
       <td><?= h($ProductName[$i]["length"]) ?></td>
       <td><?= h($ProductName[$i]["length_cut"]) ?></td>
-      <td><?= h($ProductName[$i]["length_upper_limit"]) ?></td>
       <td><?= h($ProductName[$i]["length_lower_limit"]) ?></td>
+      <td><?= h($ProductName[$i]["length_upper_limit"]) ?></td>
       <td><?= h($ProductName[$i]["bik"]) ?></td>
       </tr>
 
@@ -101,8 +101,8 @@
         <td><strong>検査表に表示</strong></td>
         <td><strong>長さ（mm）</strong></td>
         <td width="80"><strong>カット長さ（mm）</strong></td>
-        <td width="50"><strong>上限</strong></td>
-        <td width="50"><strong>下限</strong></td>
+        <td width="50"><strong>公差下限</strong></td>
+        <td width="50"><strong>公差上限</strong></td>
         <td width="200"><strong>備考</strong></td>
       </tr>
       
@@ -117,10 +117,10 @@
       <?= $this->Form->control('length'.$k, array('type'=>'hidden', 'value'=>${"length".$k}, 'label'=>false)) ?>
       <td><?= h(${"length_cut".$k}) ?></td>
       <?= $this->Form->control('length_cut'.$k, array('type'=>'hidden', 'value'=>${"length_cut".$k}, 'label'=>false)) ?>
-      <td><?= h(${"length_upper_limit".$k}) ?></td>
-      <?= $this->Form->control('length_upper_limit'.$k, array('type'=>'hidden', 'value'=>${"length_upper_limit".$k}, 'label'=>false)) ?>
       <td><?= h(${"length_lower_limit".$k}) ?></td>
       <?= $this->Form->control('length_lower_limit'.$k, array('type'=>'hidden', 'value'=>${"length_lower_limit".$k}, 'label'=>false)) ?>
+      <td><?= h(${"length_upper_limit".$k}) ?></td>
+      <?= $this->Form->control('length_upper_limit'.$k, array('type'=>'hidden', 'value'=>${"length_upper_limit".$k}, 'label'=>false)) ?>
       <td><?= h(${"bik".$k}) ?></td>
       <?= $this->Form->control('bik'.$k, array('type'=>'hidden', 'value'=>${"bik".$k}, 'label'=>false)) ?>
 

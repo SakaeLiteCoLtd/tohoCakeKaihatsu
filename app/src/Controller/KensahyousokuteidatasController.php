@@ -105,6 +105,19 @@ class KensahyousokuteidatasController extends AppController
       $mess = "";
       $this->set('mess', $mess);
 
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+      $Users= $this->Users->find('all')->contain(["Staffs"])->where(['user_code' => $datasession['Auth']['User']['user_code'], 'Users.delete_flag' => 0])->toArray();
+      $user_code = $datasession['Auth']['User']['user_code'];
+      $this->set('user_code', $user_code);
+      $staff_id = $Users[0]["staff_id"];
+      $this->set('staff_id', $staff_id);
+      $staff_name= $Users[0]["staff"]["name"];
+      $this->set('staff_name', $staff_name);
+
+      $customer_check = 0;
+      $this->set('customer_check', $customer_check);
+
       $Customer_name_list = $this->Customers->find()
       ->where(['delete_flag' => 0])->toArray();
       $arrCustomer_name_list = array();
@@ -142,22 +155,22 @@ class KensahyousokuteidatasController extends AppController
 
        }else{
 
-         $arrProduct_name_list = array();
+        $customer_check = 1;
+        $this->set('customer_check', $customer_check);
+  
+         $arrProduct_names = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
-         }
+   //       array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
+         $arrProduct_names[$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm"] = $Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm";
+        }
+         $this->set('arrProduct_names', $arrProduct_names);
+
+         $arrProduct_name_list = array();
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
        }
 
      }elseif(isset($data["next"])){//「次へ」ボタンを押したとき
-
-       $staff_id = $data["staff_id"];
-       $this->set('staff_id', $staff_id);
-       $staff_name = $data["staff_name"];
-       $this->set('staff_name', $staff_name);
-       $user_code = $data["user_code"];
-       $this->set('user_code', $user_code);
 
        if(strlen($data["product_name"]) > 0){//product_nameの入力がある
 
@@ -226,57 +239,10 @@ class KensahyousokuteidatasController extends AppController
        if(isset($Data["mess"])){
          $mess = $Data["mess"];
          $this->set('mess',$mess);
-
-         $session = $this->request->getSession();
-         $_SESSION = $session->read();
-         $user_code = $_SESSION["user_code"];
-         $_SESSION['user_code'] = array();
-
-         $Users= $this->Users->find()->contain(["Staffs"])->where(['user_code' => $user_code, 'Users.delete_flag' => 0])->toArray();
-         $staff_id = $Users[0]["staff_id"];
-         $this->set('staff_id', $staff_id);
-         $staff_name= $Users[0]["staff"]["name"];
-         $this->set('staff_name', $staff_name);
-
        }else{
-
          $mess = "";
          $this->set('mess',$mess);
-         $user_code = $data["user_code"];
-
-         $userlogincheck = $user_code."_".$data["password"];
-
-         $htmlinputstaff = new htmlLogin();//クラスを使用
-     //    $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
-         $arraylogindate = $htmlinputstaff->inputstaffprogram($userlogincheck);//クラスを使用210608更新
-
-         if($arraylogindate[0] === "no_staff"){
-
-           return $this->redirect(['action' => 'addlogin',
-           's' => ['mess' => "社員コードまたはパスワードが間違っています。もう一度やり直してください。"]]);
-
-         }else{
-
-          $htmlkensahyoulogincheck = new htmlkensahyoulogincheck();//クラスを使用
-          $logincheck = $htmlkensahyoulogincheck->kensahyoulogincheckprogram($user_code);//クラスを使用
-    
-          if($logincheck === 1){
-  
-          return $this->redirect(['action' => 'addlogin',
-          's' => ['mess' => "データ登録の権限がありません。"]]);
-  
-          }
-  
-           $staff_id = $arraylogindate[0];
-           $staff_name = $arraylogindate[1];
-           $this->set('staff_id', $staff_id);
-           $this->set('staff_name', $staff_name);
-
-         }
-
        }
-
-       $this->set('user_code', $user_code);
 
      }
      echo "<pre>";
@@ -289,6 +255,13 @@ class KensahyousokuteidatasController extends AppController
     {
       $product = $this->Products->newEntity();
       $this->set('product', $product);
+
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      header('Expires:-1');
+      header('Cache-Control:');
+      header('Pragma:');
 
       $Data = $this->request->query('s');
 
@@ -656,6 +629,7 @@ class KensahyousokuteidatasController extends AppController
         's' => ['mess' => "「".$Products[0]["name"]."」は成形温度登録がされていません。"]]);
 
       }
+
 
       echo "<pre>";
       print_r("");
@@ -1223,11 +1197,11 @@ class KensahyousokuteidatasController extends AppController
         }
 
       }
-/*
+
       echo "<pre>";
       print_r($data);
       echo "</pre>";
-*/
+
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
       $inspection_data_conditon_parent_id = $data['inspection_data_conditon_parent_id'];
@@ -1430,7 +1404,7 @@ class KensahyousokuteidatasController extends AppController
         $Users = $this->Users->find()->contain(["Staffs"])->where(['user_code' => ${"user_code".$j}, 'Users.delete_flag' => 0])->toArray();
         if(!isset($Users[0])){
           $checknull = $checknull + 1;
-          $mess = $mess."※入力された社員コードは登録されていません。".'<br>';
+          $mess = $mess."※入力されたユーザーIDは登録されていません。".'<br>';
         }else{
           $checknull = 0;
         }
@@ -1515,11 +1489,22 @@ class KensahyousokuteidatasController extends AppController
               ${"gouhi".$j} = "";
             }
             $this->set('gouhi'.$j,${"gouhi".$j});
-
+            
+            if(${"gouhi".$j} == 1){
+              ${"gouhihyouji".$j} = "否";
+            } else {
+              ${"gouhihyouji".$j} = "合";
+            }
+            $this->set('gouhihyouji'.$j,${"gouhihyouji".$j});
+  
             for($i=1; $i<=10; $i++){
 
               if(isset($data['result_size'.$j.$i])){
-                ${"result_size".$j.$i} = sprintf("%.2f", $data['result_size'.$j.$i]);
+                if(strlen($data['result_size'.$j.$i]) > 0){
+                  ${"result_size".$j.$i} = sprintf("%.2f", $data['result_size'.$j.$i]);
+                }else{
+                  ${"result_size".$j.$i} = "";
+                }
               }else{
                 ${"result_size".$j.$i} = "";
               }
@@ -2018,7 +2003,7 @@ class KensahyousokuteidatasController extends AppController
         $Users = $this->Users->find()->contain(["Staffs"])->where(['user_code' => ${"user_code".$j}, 'Users.delete_flag' => 0])->toArray();
         if(!isset($Users[0])){
           $checknull = $checknull + 1;
-          $mess = $mess."※入力された社員コードは登録されていません。".'<br>';
+          $mess = $mess."※入力されたユーザーIDは登録されていません。".'<br>';
         }else{
           $checknull = 0;
         }
@@ -2109,12 +2094,14 @@ class KensahyousokuteidatasController extends AppController
             for($i=1; $i<=10; $i++){
 
               if(isset($data['result_size'.$j.$i])){
-                ${"result_size".$j.$i} = $data['result_size'.$j.$i];
+                if(strlen($data['result_size'.$j.$i]) > 0){
+                  ${"result_size".$j.$i} = sprintf("%.2f", $data['result_size'.$j.$i]);
+                }else{
+                  ${"result_size".$j.$i} = "";
+                }
               }else{
                 ${"result_size".$j.$i} = "";
               }
-              ${"result_size".$j.$i} = sprintf("%.2f", ${"result_size".$j.$i});
-
               $this->set('result_size'.$j.$i,${"result_size".$j.$i});
 
             }
@@ -2347,7 +2334,7 @@ class KensahyousokuteidatasController extends AppController
 
       $Users = $this->Users->find()->contain(["Staffs"])->where(['user_code' => $data["user_code_henkou"], 'Users.delete_flag' => 0])->toArray();
       if(!isset($Users[0])){
-        $mess = '<br>'."※入力された社員コードは登録されていません。";
+        $mess = '<br>'."※入力されたユーザーIDは登録されていません。";
         $this->set('mess', $mess);
 
         $count_seikeijouken = $data["count_seikeijouken"] - 1;
@@ -2823,6 +2810,9 @@ class KensahyousokuteidatasController extends AppController
         $this->set('mess',$mess);
       }
 
+      $customer_check = 0;
+      $this->set('customer_check', $customer_check);
+
       $Customer_name_list = $this->Customers->find()
       ->where(['delete_flag' => 0])->toArray();
       $arrCustomer_name_list = array();
@@ -2835,7 +2825,7 @@ class KensahyousokuteidatasController extends AppController
 
        $Product_name_list = $this->Products->find()
        ->contain(['Customers'])
-       ->where(['Customers.name' => $data["customer_name"], 'Products.delete_flag' => 0])->toArray();
+       ->where(['Customers.name' => $data["customer_name"], 'Products.status_kensahyou' => 0, 'Products.delete_flag' => 0])->toArray();
 
        if(count($Product_name_list) < 1){//顧客名にミスがある場合
 
@@ -2853,10 +2843,17 @@ class KensahyousokuteidatasController extends AppController
 
        }else{
 
-         $arrProduct_name_list = array();
+        $customer_check = 1;
+        $this->set('customer_check', $customer_check);
+  
+         $arrProduct_names = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
-         }
+   //       array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
+         $arrProduct_names[$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm"] = $Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm";
+        }
+         $this->set('arrProduct_names', $arrProduct_names);
+
+         $arrProduct_name_list = array();
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
        }
@@ -3288,7 +3285,7 @@ class KensahyousokuteidatasController extends AppController
       if($arraylogindate[0] === "no_staff"){
 
         return $this->redirect(['action' => 'kensakupre',
-        's' => ['mess' => "社員コードかパスワードに誤りがあります。もう一度やり直してください。"]]);
+        's' => ['mess' => "ユーザーIDかパスワードに誤りがあります。もう一度やり直してください。"]]);
 
       }else{
 
@@ -3622,7 +3619,7 @@ class KensahyousokuteidatasController extends AppController
           ${"user_code".$n} = $data['user_code'.$n];
           $Users = $this->Users->find()->contain(["Staffs"])->where(['user_code' => ${"user_code".$n}, 'Users.delete_flag' => 0])->toArray();
           if(!isset($Users[0])){
-            $mess = $n."行目に入力された社員コードは登録されていません。もう一度やり直してください。";
+            $mess = $n."行目に入力されたユーザーIDは登録されていません。もう一度やり直してください。";
 
             if(!isset($_SESSION)){
               session_start();
@@ -4093,6 +4090,9 @@ class KensahyousokuteidatasController extends AppController
         $this->set('mess',$mess);
       }
 
+      $customer_check = 0;
+      $this->set('customer_check', $customer_check);
+
       $Customer_name_list = $this->Customers->find()
       ->where(['delete_flag' => 0])->toArray();
       $arrCustomer_name_list = array();
@@ -4105,7 +4105,7 @@ class KensahyousokuteidatasController extends AppController
 
        $Product_name_list = $this->Products->find()
        ->contain(['Customers'])
-       ->where(['Customers.name' => $data["customer_name"], 'Products.delete_flag' => 0])->toArray();
+       ->where(['Customers.name' => $data["customer_name"], 'Products.status_kensahyou' => 0, 'Products.delete_flag' => 0])->toArray();
 
        if(count($Product_name_list) < 1){//顧客名にミスがある場合
 
@@ -4123,10 +4123,17 @@ class KensahyousokuteidatasController extends AppController
 
        }else{
 
-         $arrProduct_name_list = array();
+        $customer_check = 1;
+        $this->set('customer_check', $customer_check);
+  
+         $arrProduct_names = array();
          for($j=0; $j<count($Product_name_list); $j++){
-           array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
-         }
+   //       array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
+         $arrProduct_names[$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm"] = $Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm";
+        }
+         $this->set('arrProduct_names', $arrProduct_names);
+
+         $arrProduct_name_list = array();
          $this->set('arrProduct_name_list', $arrProduct_name_list);
 
        }

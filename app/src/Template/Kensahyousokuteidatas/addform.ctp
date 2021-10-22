@@ -2,6 +2,8 @@
 <?php
 use Cake\ORM\TableRegistry;//独立したテーブルを扱う
 $this->Products = TableRegistry::get('Products');
+$this->Users = TableRegistry::get('Users');
+$this->Staffs = TableRegistry::get('Staffs');
 ?>
 
 <?php
@@ -70,7 +72,6 @@ for($i=0; $i<$count_length; $i++){
           var nagasa = <?php echo $nagasa; ?>;
           var haihun = <?php echo $haihun; ?>;
 
-          $("#length<?php echo $num_length; ?>").text(nagasa);
           $("#size<?php echo $num_length; ?>").text(size_length);
           $("#upper<?php echo $num_length; ?>").text(upper_length);
           $("#lower<?php echo $num_length; ?>").text(lower_length);
@@ -92,7 +93,7 @@ for($i=0; $i<$count_length; $i++){
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/menu' /><font size='4' color=black>測定データ登録</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/addlogin' /><font size='4' color=black>新規登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/addformpre' /><font size='4' color=black>新規登録</font></a>
     </td>
   </tbody>
 </table>
@@ -119,17 +120,22 @@ for($i=0; $i<$count_length; $i++){
     <td width="50" rowspan='8'>No.</td>
   </tr>
   <tr>
-    <td width="100" rowspan='7'>時間</td>
+    <td width="90" rowspan='7'>時間</td>
   </tr>
   <tr>
-  <td width="72" rowspan='6'>長さ</td>
+  <td width="82" rowspan='6'><strong><font size="3">長さ</font></strong></td>
   </tr>
 
 <tr>
   <td style='width:130'>測定箇所</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
-    <td style='width:75'><div class="length"></div><?= h(${"size_name".$i}) ?></td>
+    <?php if ($i == $num_length + 1): ?>
+    <td style='width:75'><div class="length"></div><?= h("長さ") ?></td>
+    <?php else : ?>
+      <td style='width:75'><div class="length"></div><?= h(${"size_name".$i}) ?></td>
+      <?php endif; ?>
+
   <?php endfor;?>
 
   <td width="69" rowspan='3'>外観</td>
@@ -146,7 +152,7 @@ for($i=0; $i<$count_length; $i++){
     <?php endfor;?>
 </tr>
 <tr>
-  <td>上限</td>
+  <td>公差上限</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
     <?php if (strlen(${"upper_limit".$i}) > 0 && substr(${"upper_limit".$i}, 0, 1) != "+"): ?>
@@ -158,7 +164,7 @@ for($i=0; $i<$count_length; $i++){
 
 </tr>
 <tr>
-  <td>下限</td>
+  <td>公差下限</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
       <td><div class="lower"></div><?= h(${"lower_limit".$i}) ?></td>
@@ -243,13 +249,13 @@ var moji = "length"
 
   <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
-  <td style='width:100; border-top-style:none'>
+  <td style='width:90; border-top-style:none'>
   <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false)) ?>
   </td>
 
   <?php if ($j == 1): ?>
 
-  <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
+  <td style='width:82; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
   
   <?php else : ?>
 
@@ -257,7 +263,7 @@ var moji = "length"
     $h = $j - 1;
       ?>
 
-    <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'value'=>${"product_id".$h}, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
+    <td style='width:82; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'value'=>${"product_id".$h}, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
 
     <?php endif; ?>
 
@@ -279,9 +285,16 @@ var moji = "length"
   <table class="white">
 
     <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
-    <td style='width:100; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
-    <td style='width:72; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
-    <td style='width:130; border-top-style:none'><?= h(${"user_code".$j}) ?></td>
+    <td style='width:90; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
+    <td style='width:82; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
+
+    <?php
+
+    $Users= $this->Users->find('all')->contain(["Staffs"])->where(['user_code' => ${"user_code".$j}])->toArray();
+    ${"staff_name".$j} = $Users[0]["staff"]["name"];
+
+    ?>
+    <td style='width:130; border-top-style:none'><?= h(${"staff_name".$j}) ?></td>
 
     <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
     <?= $this->Form->control('datetime'.$j, array('type'=>'hidden', 'value'=>${"datetime".$j}, 'label'=>false)) ?>
@@ -353,10 +366,10 @@ var moji = "length"
 
   <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
-  <td style='width:100; border-top-style:none'>
+  <td style='width:90; border-top-style:none'>
   <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false)) ?>
   </td>
-  <td style='width:72; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
+  <td style='width:82; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
   <td style='width:130; border-top-style:none'><font size='1.8'><?= h("ユーザーID：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'required' => 'true')) ?></td>
 
   <?php for($i=1; $i<=10; $i++): ?>
@@ -375,8 +388,8 @@ var moji = "length"
     <table class="white">
 
       <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
-      <td style='width:100; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
-      <td style='width:72; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
+      <td style='width:90; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
+      <td style='width:82; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
       <td style='width:130; border-top-style:none'><?= h(${"user_code".$j}) ?></td>
 
       <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
