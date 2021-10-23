@@ -24,8 +24,8 @@ class KensahyougenryousController extends AppController
   		parent::beforeFilter($event);
 
   		// 認証なしでアクセスできるアクションの指定
-      $this->Auth->allow(["menu","addlogin","addformpre","addform","addcomfirm","adddo"
-      ,"kensakupre", "kensakuhyouji", "editlogin", "editform", "editcomfirm", "editdo"
+      $this->Auth->allow(["menu"
+      ,"kensakupre", "kensakuhyouji"
       , "kensakumenu", "kensakurirekipre"]);
       
 /*
@@ -1331,26 +1331,18 @@ class KensahyougenryousController extends AppController
       print_r($data);
       echo "</pre>";
 */
-      $user_code = $data["user_code"];
-
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
 
-      $htmlproductcheck = new htmlproductcheck();//クラスを使用
-      $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
-
-      if($arrayproductdate[0] === "no_product"){
-
-        if(!isset($_SESSION)){
-          session_start();
-        }
-        $_SESSION['user_code'] = array();
-        $_SESSION['user_code'] = $user_code;
-
-        return $this->redirect(['action' => 'addformpre',
-        's' => ['mess' => "管理No.「".$product_code."」の製品は存在しません。"]]);
-
-      }
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+      $Users= $this->Users->find('all')->contain(["Staffs"])->where(['user_code' => $datasession['Auth']['User']['user_code'], 'Users.delete_flag' => 0])->toArray();
+      $user_code = $datasession['Auth']['User']['user_code'];
+      $this->set('user_code', $user_code);
+      $staff_id = $Users[0]["staff_id"];
+      $this->set('staff_id', $staff_id);
+      $staff_name= $Users[0]["staff"]["name"];
+      $this->set('staff_name', $staff_name);
 
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
@@ -1378,11 +1370,6 @@ class KensahyougenryousController extends AppController
       $this->set('arrSeikeikis', $arrSeikeikis);
 
       if(isset($data["genryoutuika"])){//原料追加ボタン
-
-        $staff_id = $data["staff_id"];
-        $staff_name = $data["staff_name"];
-        $this->set('staff_id', $staff_id);
-        $this->set('staff_name', $staff_name);
 
         if(!isset($data["tuikaseikeiki"])){//成形機の追加前
 
@@ -1488,11 +1475,6 @@ class KensahyougenryousController extends AppController
 
       }elseif(isset($data["seikeikituika"])){//成形機追加ボタン
 
-        $staff_id = $data["staff_id"];
-        $staff_name = $data["staff_name"];
-        $this->set('staff_id', $staff_id);
-        $this->set('staff_name', $staff_name);
-
         $tuikaseikeiki = $data["tuikaseikeiki"] + 1;
         $this->set('tuikaseikeiki', $tuikaseikeiki);
 
@@ -1586,11 +1568,6 @@ class KensahyougenryousController extends AppController
         }
 
       }elseif(isset($data["kakuninn"])){//確認ボタン
-
-        $staff_id = $data["staff_id"];
-        $staff_name = $data["staff_name"];
-        $this->set('staff_id', $staff_id);
-        $this->set('staff_name', $staff_name);
 
         $materila_flag = 0;
         for($j=1; $j<=$data["tuikaseikeiki"]; $j++){//原料名にミスがないかチェック
@@ -1746,11 +1723,6 @@ class KensahyougenryousController extends AppController
 
       }elseif(isset($data["sakujo"])){//削除ボタン
 
-        $staff_id = $data["staff_id"];
-        $staff_name = $data["staff_name"];
-        $this->set('staff_id', $staff_id);
-        $this->set('staff_name', $staff_name);
-
         if(!isset($_SESSION)){
           session_start();
         }
@@ -1760,19 +1732,7 @@ class KensahyougenryousController extends AppController
 
         return $this->redirect(['action' => 'editcomfirm']);
 
-      }elseif(isset($data["password"])){//最初にこの画面に来た時
-
-        $userlogincheck = $user_code."_".$data["password"];
-
-        $htmlinputstaff = new htmlLogin();//クラスを使用
-        $arraylogindate = $htmlinputstaff->inputstaffprogram($userlogincheck);//クラスを使用
-
-        if($arraylogindate[0] === "no_staff"){
-
-          return $this->redirect(['action' => 'kensakupre',
-          's' => ['mess' => "ユーザーIDまたはパスワードが間違っています。もう一度やり直してください。"]]);
-
-        }else{
+      }elseif(isset($data["saisyo"])){//最初にこの画面に来た時
 
           $htmlkensahyoulogincheck = new htmlkensahyoulogincheck();//クラスを使用
           $logincheck = $htmlkensahyoulogincheck->kensahyoulogincheckprogram($user_code);//クラスを使用
@@ -1783,13 +1743,6 @@ class KensahyougenryousController extends AppController
           's' => ['mess' => "データ登録の権限がありません。"]]);
   
           }
-  
-          $staff_id = $arraylogindate[0];
-          $staff_name = $arraylogindate[1];
-          $this->set('staff_id', $staff_id);
-          $this->set('staff_name', $staff_name);
-
-        }
 
         $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
         ->where(['product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
@@ -1873,11 +1826,6 @@ class KensahyougenryousController extends AppController
         }
 
       }else{//原料の変更をするとき
-
-        $staff_id = $data["staff_id"];
-        $staff_name = $data["staff_name"];
-        $this->set('staff_id', $staff_id);
-        $this->set('staff_name', $staff_name);
   
         $tuikaseikeiki = $data["tuikaseikeiki"];
         $this->set('tuikaseikeiki', $tuikaseikeiki);

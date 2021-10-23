@@ -48,7 +48,7 @@ echo $this->Html->css('kensahyou');
 
 </tr>
 <tr>
-  <td>上限</td>
+  <td>公差上限</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
     <?php if (strlen($this->request->getData('upper_limit'.$i)) > 0 && substr($this->request->getData('upper_limit'.$i), 0, 1) != "+"): ?>
@@ -60,7 +60,7 @@ echo $this->Html->css('kensahyou');
 
 </tr>
 <tr>
-  <td>下限</td>
+  <td>公差下限</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
       <td><?= h($this->request->getData('lower_limit'.$i)) ?></td>
@@ -71,7 +71,7 @@ echo $this->Html->css('kensahyou');
   <td>検査器具</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= h($this->request->getData('measuring_instrument'.$i)) ?></td>
+      <td style='font-size: 8pt'><?= h($this->request->getData('measuring_instrument'.$i)) ?></td>
     <?php endfor;?>
 
 </tr>

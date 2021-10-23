@@ -31,14 +31,12 @@ echo $this->Html->css('kensahyou');
         <tr>
         <td style='width:200'>管理No.</td>
           <td style='width:200'>製品名</td>
-          <td style='width:100'>長さ(mm)</td>
         </tr>
 
           <?php for($i=0; $i<count($arrInspectionDataResultParents); $i++): ?>
             <tr>
               <td><?= h($arrInspectionDataResultParents[$i]["product_code"]) ? $this->Html->link($arrInspectionDataResultParents[$i]["product_code"], ['action' => 'kensatyuichiran', 's' => $arrInspectionDataResultParents[$i]["product_code"]]) : '' ?></td>
               <td><?= h($arrInspectionDataResultParents[$i]["name"]);?></td>
-              <td><?= h($arrInspectionDataResultParents[$i]["length"]);?></td>
             </tr>
           <?php endfor;?>
 

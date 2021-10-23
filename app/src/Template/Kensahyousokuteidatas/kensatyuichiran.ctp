@@ -27,6 +27,26 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
+<?= $this->Form->create($product, ['url' => ['action' => 'addform']]) ?>
+
+<?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
+<?= $this->Form->control('product_condition_parent_id', array('type'=>'hidden', 'value'=>$product_condition_parent_id, 'label'=>false)) ?>
+<?= $this->Form->control('countseikeiki', array('type'=>'hidden', 'value'=>$countseikeiki, 'label'=>false)) ?>
+<?= $this->Form->control('inspection_standard_size_parent_id', array('type'=>'hidden', 'value'=>$inspection_standard_size_parent_id, 'label'=>false)) ?>
+<?= $this->Form->control('count_seikeijouken', array('type'=>'hidden', 'value'=>$count_seikeijouken, 'label'=>false)) ?>
+<?= $this->Form->control('inspection_data_conditon_parent_id', array('type'=>'hidden', 'value'=>$inspection_data_conditon_parent_id, 'label'=>false)) ?>
+<?= $this->Form->control('gyou', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
+<?= $this->Form->control('tuika', array('type'=>'hidden', 'value'=>1, 'label'=>false)) ?>
+
+<?php if ($count_seikeijouken > 1): ?>
+  <?= $this->Form->control('inspection_data_conditon_parent_id_moto', array('type'=>'hidden', 'value'=>$inspection_data_conditon_parent_id_moto, 'label'=>false)) ?>
+<?php else : ?>
+<?php endif; ?>
+
+<?php for($j=1; $j<=$countseikeiki; $j++): ?>
+  <?= $this->Form->control('product_conditon_child_id'.$j, array('type'=>'hidden', 'value'=>${"product_conditon_child_id".$j}, 'label'=>false)) ?>
+<?php endfor;?>
+
   <table class="white">
 
   <tr>
@@ -79,7 +99,7 @@ echo $this->Html->css('kensahyou');
   <td>検査器具</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= h(${"measuring_instrument".$i}) ?></td>
+      <td style='font-size: 8pt'><?= h(${"measuring_instrument".$i}) ?></td>
     <?php endfor;?>
 
     <td width="75">目視</td>
@@ -91,17 +111,25 @@ echo $this->Html->css('kensahyou');
 
 <?php for($j=1; $j<=$gyou; $j++): ?>
 
+  <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
+  <?= $this->Form->control('datetime_h_i'.$j, array('type'=>'hidden', 'value'=>${"datetime_h_i".$j}, 'label'=>false)) ?>
+  <?= $this->Form->control('user_code'.$j, array('type'=>'hidden', 'value'=>${"user_code".$j}, 'label'=>false)) ?>
+
   <table class="form">
 
   <td style='width:40; border-top-style:none; font-size: 11pt'><?= h(${"lot_number".$j}) ?></td>
   <td style='width:150; border-top-style:none; font-size: 11pt'><?= h(${"datetime".$j}) ?></td></td>
 
-  <td style='width:75; border-top-style:none'><?= h($Length) ?></td>
+  <td style='width:75; border-top-style:none'><?= h(${"length".$j}) ?></td>
 
   <td style='width:110; border-top-style:none'><?= h(${"staff_hyouji".$j}) ?></td>
 
   <?php for($i=1; $i<=10; $i++): ?>
+
     <td style='width:80; border-top-style:none'><?= h(${"result_size".$j.$i}) ?></td>
+
+    <?= $this->Form->control('result_size'.$j.$i, array('type'=>'hidden', 'value'=>${"result_size".$j.$i}, 'label'=>false)) ?>
+
   <?php endfor;?>
 
   <?php
@@ -124,12 +152,19 @@ echo $this->Html->css('kensahyou');
 
 </table>
 
+<?= $this->Form->control('product_id'.$j, array('type'=>'hidden', 'value'=>${"product_id".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('gaikan'.$j, array('type'=>'hidden', 'value'=>${"appearance".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('weight'.$j, array('type'=>'hidden', 'value'=>${"result_weight".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('gouhi'.$j, array('type'=>'hidden', 'value'=>${"judge".$j}, 'label'=>false)) ?>
+
 <?php endfor;?>
 <br>
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>
       <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+      <td style="border-style: none;"><?= __("　") ?></td>
+      <td style="border:none"><?= $this->Form->submit(('続きから登録する'), array('name' => 'next')) ?></td>
     </tr>
   </tbody>
 </table>

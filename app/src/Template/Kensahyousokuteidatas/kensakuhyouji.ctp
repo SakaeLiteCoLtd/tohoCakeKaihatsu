@@ -27,7 +27,7 @@ echo $this->Html->css('kensahyou');
       echo $htmlkensahyouheader;
  ?>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'editlogin']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'editform']]) ?>
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('datetimesta', array('type'=>'hidden', 'value'=>$datetimesta, 'label'=>false)) ?>
 <?= $this->Form->control('datetimefin', array('type'=>'hidden', 'value'=>$datetimefin, 'label'=>false)) ?>
@@ -85,7 +85,7 @@ echo $this->Html->css('kensahyou');
   <td>検査器具</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= h(${"measuring_instrument".$i}) ?></td>
+      <td style='font-size: 8pt'><?= h(${"measuring_instrument".$i}) ?></td>
     <?php endfor;?>
 
     <td width="75">目視</td>

@@ -178,7 +178,7 @@ for($i=0; $i<$count_length; $i++){
   <td>検査器具</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><div class="measuring_instrument"></div><?= h(${"measuring_instrument".$i}) ?></td>
+      <td style='font-size: 8pt'><div class="measuring_instrument"></div><?= h(${"measuring_instrument".$i}) ?></td>
     <?php endfor;?>
 
     <td width="69">目視</td>
@@ -306,7 +306,7 @@ var moji = "length"
       if($i == $num_length + 1){//長さ列の場合
 
         $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
-        ${"size".$i} = $Products[0]["length"];
+        ${"size".$i} = $Products[0]["length_cut"];
         ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
         ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
   

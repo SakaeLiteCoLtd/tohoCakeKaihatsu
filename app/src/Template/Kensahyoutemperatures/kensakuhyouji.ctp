@@ -24,7 +24,7 @@ echo $this->Html->css('kensahyou');
 </table>
 
 <br><br><br>
-<?= $this->Form->create($product, ['url' => ['action' => 'editlogin']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'editform']]) ?>
 
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 

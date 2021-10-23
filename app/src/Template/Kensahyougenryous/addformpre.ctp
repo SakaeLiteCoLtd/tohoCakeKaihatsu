@@ -11,7 +11,6 @@ header("X-FRAME-OPTIONS: DENY");//クリックジャッキング対策
 $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
-
 <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>

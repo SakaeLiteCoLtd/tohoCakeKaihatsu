@@ -57,7 +57,7 @@ echo $this->Html->css('kensahyou');
 
 </tr>
 <tr>
-  <td>上限</td>
+  <td>公差上限</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
     <td><?= $this->Form->control('upper_limit'.$i, array('type'=>'text', 'value'=>${"upper_limit".$i}, 'label'=>false, 'autocomplete'=>"off")) ?></td>
@@ -65,7 +65,7 @@ echo $this->Html->css('kensahyou');
 
 </tr>
 <tr>
-  <td>下限</td>
+  <td>公差下限</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
       <td><?= $this->Form->control('lower_limit'.$i, array('type'=>'text', 'value'=>${"lower_limit".$i}, 'label'=>false, 'autocomplete'=>"off")) ?></td>
@@ -76,7 +76,7 @@ echo $this->Html->css('kensahyou');
   <td>検査器具</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= $this->Form->control('measuring_instrument'.$i, array('type'=>'text', 'value'=>${"measuring_instrument".$i}, 'label'=>false, 'autocomplete'=>"off")) ?></td>
+      <td><?= $this->Form->control('measuring_instrument'.$i, ['options' => $arrkensakigu, 'label'=>false, 'autocomplete'=>"off"]) ?></td>
     <?php endfor;?>
 
 </tr>

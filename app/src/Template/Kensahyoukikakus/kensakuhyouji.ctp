@@ -23,7 +23,7 @@ echo $this->Html->css('kensahyou');
 
 <br><br><br>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'editlogin']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'editform']]) ?>
 
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('inspection_standard_size_parent_id', array('type'=>'hidden', 'value'=>$inspection_standard_size_parent_id, 'label'=>false)) ?>
@@ -53,7 +53,7 @@ echo $this->Html->css('kensahyou');
 
 </tr>
 <tr>
-  <td>上限</td>
+  <td>公差上限</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
     <?php if (strlen(${"upper_limit".$i}) > 0 && substr(${"upper_limit".$i}, 0, 1) != "+"): ?>
@@ -66,7 +66,7 @@ echo $this->Html->css('kensahyou');
 
 </tr>
 <tr>
-  <td>下限</td>
+  <td>公差下限</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
       <td><?= h(${"lower_limit".$i}) ?></td>
@@ -78,7 +78,7 @@ echo $this->Html->css('kensahyou');
   <td>検査器具</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= h(${"measuring_instrument".$i}) ?></td>
+      <td style='font-size: 8pt'><?= h(${"measuring_instrument".$i}) ?></td>
       <?= $this->Form->control('measuring_instrument'.$i, array('type'=>'hidden', 'value'=>${"measuring_instrument".$i}, 'label'=>false)) ?>
     <?php endfor;?>
 

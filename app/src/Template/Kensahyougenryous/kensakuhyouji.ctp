@@ -21,9 +21,10 @@ echo $this->Html->css('kensahyou');
   </tbody>
 </table>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'editlogin']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'editform']]) ?>
 
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
+<?= $this->Form->control('saisyo', array('type'=>'hidden', 'value'=>1, 'label'=>false)) ?>
 <br> <br> <br>
 
 <?php
@@ -85,7 +86,7 @@ echo $this->Html->css('kensahyou');
     <tr>
       <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
       <td style="border: none;"><?= __("　") ?></td>
-      <td style="border:none"><?= $this->Form->submit(('編集・削除'), array('name' => 'kakuninn')) ?></td>
+      <td style="border:none"><?= $this->Form->submit(('編集・削除'), array('name' => 'next')) ?></td>
     </tr>
   </tbody>
 </table>

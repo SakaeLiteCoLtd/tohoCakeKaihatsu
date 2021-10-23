@@ -26,8 +26,8 @@ class KensahyoutemperaturesController extends AppController
   		parent::beforeFilter($event);
 
   		// 認証なしでアクセスできるアクションの指定
-  		$this->Auth->allow(["menu","addlogin","addformpre","addform","addcomfirm","adddo"
-      , "kensakupre", "kensakuhyouji", "editlogin", "editform", "editcomfirm", "editdo"
+  		$this->Auth->allow(["menu"
+      , "kensakupre", "kensakuhyouji"
       , "kensakumenu", "kensakurirekipre", "kensakurirekiichiran", "kensakurirekihyouji"]);
   	}
 
@@ -895,37 +895,16 @@ class KensahyoutemperaturesController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-      $user_code = $data["user_code"];
-
-      $userlogincheck = $user_code."_".$data["password"];
-
-      $htmlinputstaff = new htmlLogin();//クラスを使用
-  //    $arraylogindate = $htmlinputstaff->inputstaffprogram($user_code);//クラスを使用
-      $arraylogindate = $htmlinputstaff->inputstaffprogram($userlogincheck);//クラスを使用210608更新
-
-      if($arraylogindate[0] === "no_staff"){
-
-        return $this->redirect(['action' => 'kensakupre',
-        's' => ['mess' => "ユーザーIDかパスワードに誤りがあります。もう一度やり直してください。"]]);
-
-      }else{
-
-        $htmlkensahyoulogincheck = new htmlkensahyoulogincheck();//クラスを使用
-        $logincheck = $htmlkensahyoulogincheck->kensahyoulogincheckprogram($user_code);//クラスを使用
-  
-        if($logincheck === 1){
-
-        return $this->redirect(['action' => 'kensakupre',
-        's' => ['mess' => "データ登録の権限がありません。"]]);
-
-        }
-
-        $staff_id = $arraylogindate[0];
-        $staff_name = $arraylogindate[1];
-        $this->set('staff_id', $staff_id);
-        $this->set('staff_name', $staff_name);
-
-      }
+      
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+      $Users= $this->Users->find('all')->contain(["Staffs"])->where(['user_code' => $datasession['Auth']['User']['user_code'], 'Users.delete_flag' => 0])->toArray();
+      $user_code = $datasession['Auth']['User']['user_code'];
+      $this->set('user_code', $user_code);
+      $staff_id = $Users[0]["staff_id"];
+      $this->set('staff_id', $staff_id);
+      $staff_name= $Users[0]["staff"]["name"];
+      $this->set('staff_name', $staff_name);
 
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);

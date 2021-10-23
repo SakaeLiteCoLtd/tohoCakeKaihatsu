@@ -97,7 +97,7 @@ $mes = "";
   <td>検査器具</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= h(${"measuring_instrument".$i}) ?></td>
+      <td style='font-size: 8pt'><?= h(${"measuring_instrument".$i}) ?></td>
     <?php endfor;?>
 
     <td width="80">目視</td>
