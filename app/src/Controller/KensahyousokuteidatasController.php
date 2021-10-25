@@ -1341,9 +1341,11 @@ class KensahyousokuteidatasController extends AppController
       $this->set('product_code_ini', $product_code_ini);
 
       $ProductParent = $this->Products->find()
-      ->where(['product_code' => $product_code, 'status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
+      ->where(['product_code' => $product_code, 'status_kensahyou' => 0
+      , 'status_length' => 0, 'delete_flag' => 0])->toArray();
       $Products = $this->Products->find()
-      ->where(['product_code IS NOT' => $product_code, 'product_code like' => $product_code_ini.'%', 'status_kensahyou' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+      ->where(['product_code IS NOT' => $product_code, 'product_code like' => $product_code_ini.'%'
+      , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
 
       $Products = array_merge($ProductParent, $Products);
 
@@ -1365,11 +1367,41 @@ class KensahyousokuteidatasController extends AppController
         ];
   
         $this->set('arrLength_size'.$n,${"arrLength_size".$n});
-  
+        echo "<pre>";
+        print_r(${"arrLength_size".$n});
+        echo "</pre>";
+
       }
 
       $count_length = count($Products);
       $this->set('count_length',$count_length);
+
+      if(count($Products) < 1){
+
+        $count_length = 1;
+        $this->set('count_length',$count_length);
+  
+        $Productnolength = $this->Products->find()
+        ->where(['product_code' => $product_code, 'status_kensahyou' => 0
+      ,'delete_flag' => 0])->toArray();
+
+        $array = array($Productnolength[0]["id"] => "長さなし");
+        $arrLength = $arrLength + $array;
+        $this->set('arrLength', $arrLength);
+        $n = 0;
+
+        ${"arrLength_size".$n} = array();
+        ${"arrLength_size".$n} = [
+          "product_id" => $Productnolength[0]["id"],
+          "size" => "-",
+          "upper" => "-",
+          "lower" => "-"
+        ];
+  
+        $this->set('arrLength_size'.$n,${"arrLength_size".$n});
+  
+      }
+
       $nagasa = "長さ";
       $this->set('nagasa',$nagasa);
       $haihun = "-";
