@@ -102,7 +102,7 @@ echo $this->Html->css('kensahyou');
   <td style='width:40; border-top-style:none; font-size: 11pt'><?= h(${"lot_number".$j}) ?></td>
   <td style='width:150; border-top-style:none; font-size: 11pt'><?= h(${"datetime".$j}) ?></td></td>
 
-  <td style='width:75; border-top-style:none'><?= h($Length) ?></td>
+  <td style='width:75; border-top-style:none'><?= h(${"length".$j}) ?></td>
 
   <td style='width:110; border-top-style:none'><?= h(${"staff_hyouji".$j}) ?></td>
 

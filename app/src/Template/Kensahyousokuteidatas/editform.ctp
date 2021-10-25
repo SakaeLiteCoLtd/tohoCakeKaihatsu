@@ -116,9 +116,8 @@ echo $this->Html->css('kensahyou');
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
 
   <td style='width:100; border-top-style:none'><?= $this->Form->control('datetime'.$j, array('type'=>'time', 'value'=>${"datetime".$j}, 'label'=>false)) ?></td>
-  <td style='width:72; border-top-style:none'><?= h($product_length) ?></td>
-
-  <?= $this->Form->control('product_id'.$j, array('type'=>'hidden', 'value'=>$product_id, 'label'=>false)) ?>
+  <td style='width:72; border-top-style:none'><?= h(${"length".$j}) ?></td>
+  <?= $this->Form->control('product_id'.$j, array('type'=>'hidden', 'value'=>${"product_id".$j}, 'label'=>false)) ?>
 
   <td style='width:120; border-top-style:none'>
     <font size='1.8'><?= h("社員コード：") ?>

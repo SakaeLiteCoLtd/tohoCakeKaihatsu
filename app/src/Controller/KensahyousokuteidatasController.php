@@ -1367,9 +1367,6 @@ class KensahyousokuteidatasController extends AppController
         ];
   
         $this->set('arrLength_size'.$n,${"arrLength_size".$n});
-        echo "<pre>";
-        print_r(${"arrLength_size".$n});
-        echo "</pre>";
 
       }
 
@@ -1630,7 +1627,10 @@ class KensahyousokuteidatasController extends AppController
             }
             $this->set('result_size'.$j.$i,${"result_size".$j.$i});
             
-            if($i == $num_length + 1){//長さ列の場合
+            $Productlengthcheck = $this->Products->find()
+            ->where(['product_code like' => $product_code_ini.'%'
+            , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+            if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
               $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
               ${"size".$i} = $Products[0]["length"];
@@ -1890,7 +1890,10 @@ class KensahyousokuteidatasController extends AppController
             }
             $this->set('result_size'.$j.$i,${"result_size".$j.$i});
             
-            if($i == $num_length + 1){//長さ列の場合
+            $Productlengthcheck = $this->Products->find()
+            ->where(['product_code like' => $product_code_ini.'%'
+            , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+            if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
               $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
               ${"size".$i} = $Products[0]["length"];
@@ -2010,7 +2013,10 @@ class KensahyousokuteidatasController extends AppController
             }
             $this->set('result_size'.$j.$i,${"result_size".$j.$i});
             
-            if($i == $num_length + 1){//長さ列の場合
+            $Productlengthcheck = $this->Products->find()
+            ->where(['product_code like' => $product_code_ini.'%'
+            , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+            if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
               $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
               ${"size".$i} = $Products[0]["length"];
@@ -2343,7 +2349,10 @@ class KensahyousokuteidatasController extends AppController
           }
           $this->set('result_size'.$j.$i,${"result_size".$j.$i});
           
-          if($i == $num_length + 1){//長さ列の場合
+          $Productlengthcheck = $this->Products->find()
+          ->where(['product_code like' => $product_code_ini.'%'
+          , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+          if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
             $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
             ${"size".$i} = $Products[0]["length"];
@@ -2559,7 +2568,10 @@ class KensahyousokuteidatasController extends AppController
           }
           $this->set('result_size'.$j.$i,${"result_size".$j.$i});
           
-          if($i == $num_length + 1){//長さ列の場合
+          $Productlengthcheck = $this->Products->find()
+          ->where(['product_code like' => $product_code_ini.'%'
+          , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+          if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
             $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
             ${"size".$i} = $Products[0]["length"];
@@ -3190,7 +3202,7 @@ class KensahyousokuteidatasController extends AppController
 
       $InspectionDataResultParents = $this->InspectionDataResultParents->find()
       ->contain(['InspectionStandardSizeParents', 'Products'])
-      ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.delete_flag' => 0,
+      ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.delete_flag' => 0,
        'InspectionDataResultParents.delete_flag' => 0,
       'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin])
       ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
@@ -3204,7 +3216,7 @@ class KensahyousokuteidatasController extends AppController
 
       $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
       ->contain(['InspectionDataResultParents' => ['Products']])//測定データのうち、管理ナンバーが一致するものを検索
-      ->where(['product_code' => $product_code, 'InspectionDataResultChildren.delete_flag' => 0,
+      ->where(['product_code like' => $product_code_ini.'%', 'InspectionDataResultChildren.delete_flag' => 0,
       'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin])
       ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
 /*
@@ -3221,6 +3233,9 @@ class KensahyousokuteidatasController extends AppController
         ->where(['inspection_data_result_parent_id' => $InspectionDataResultParents[$j]["id"],
          'InspectionDataResultChildren.delete_flag' => 0])
         ->toArray();
+
+        ${"length".$n} = $InspectionDataResultParents[$j]["product"]['length'];
+        $this->set('length'.$n,${"length".$n});
 
         ${"lot_number".$n} = $InspectionDataResultParents[$j]['lot_number'];
         $this->set('lot_number'.$n,${"lot_number".$n});
@@ -3331,6 +3346,8 @@ class KensahyousokuteidatasController extends AppController
 
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
+      $product_code_ini = substr($product_code, 0, 11);
+
       $datekensaku = $data["datekensaku"];
       $datetimesta = $data["datetimesta"];
       $datetimefin = $data["datetimefin"];
@@ -3427,7 +3444,7 @@ class KensahyousokuteidatasController extends AppController
 
       $InspectionDataResultParents = $this->InspectionDataResultParents->find()
       ->contain(['InspectionStandardSizeParents', 'Products'])
-      ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.delete_flag' => 0,
+      ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.delete_flag' => 0,
       'InspectionDataResultParents.delete_flag' => 0,
       'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin])
       ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
@@ -3441,7 +3458,7 @@ class KensahyousokuteidatasController extends AppController
 
       $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
       ->contain(['InspectionDataResultParents' => ['Products']])//測定データのうち、管理ナンバーが一致するものを検索
-      ->where(['product_code' => $product_code, 'InspectionDataResultChildren.delete_flag' => 0,
+      ->where(['product_code like' => $product_code_ini.'%', 'InspectionDataResultChildren.delete_flag' => 0,
       'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin])
       ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
 /*
@@ -3458,6 +3475,12 @@ class KensahyousokuteidatasController extends AppController
         ->where(['inspection_data_result_parent_id' => $InspectionDataResultParents[$j]["id"],
          'InspectionDataResultChildren.delete_flag' => 0])
         ->toArray();
+
+        ${"product_id".$n} = $InspectionDataResultParents[$j]["product"]['id'];
+        $this->set('product_id'.$n,${"product_id".$n});
+
+        ${"length".$n} = $InspectionDataResultParents[$j]["product"]['length'];
+        $this->set('length'.$n,${"length".$n});
 
         ${"lot_number".$n} = $InspectionDataResultParents[$j]['lot_number'];
         $this->set('lot_number'.$n,${"lot_number".$n});
@@ -3526,6 +3549,7 @@ class KensahyousokuteidatasController extends AppController
 
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
+      $product_code_ini = substr($product_code, 0, 11);
 
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
@@ -3694,7 +3718,10 @@ class KensahyousokuteidatasController extends AppController
             }
             $this->set('result_size'.$m.$i,${"result_size".$n.$i});
 
-            if($i == $num_length + 1){//長さ列の場合
+            $Productlengthcheck = $this->Products->find()
+            ->where(['product_code like' => $product_code_ini.'%'
+            , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+            if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
               ${"size".$i} = ${"lengthhyouji".$n};
               ${"upper_limit".$i} = $ProductParent[0]["length_upper_limit"];
@@ -3757,6 +3784,8 @@ class KensahyousokuteidatasController extends AppController
 
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
+      $product_code_ini = substr($product_code, 0, 11);
+
       $datetimesta = $data["datetimesta"];
       $datetimefin = $data["datetimefin"];
 
@@ -3980,10 +4009,10 @@ class KensahyousokuteidatasController extends AppController
                 [ 'delete_flag' => 1,
                   'updated_at' => date('Y-m-d H:i:s'),
                   'updated_staff' => $staff_id],
-                ['product_id' => $product_id, 'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin]);
+                ['product_id' => $data['product_id'.$j], 'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin]);
 
                 $InspectionDataResultParentsDATA = $this->InspectionDataResultParents->find()
-                ->where(['product_id' => $product_id, 'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin])
+                ->where(['product_id' => $data['product_id'.$j], 'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin])
                 ->order(["id"=>"DESC"])->toArray();
 
                 for($i=0; $i<count($InspectionDataResultParentsDATA); $i++){
@@ -4320,6 +4349,7 @@ class KensahyousokuteidatasController extends AppController
       $data = $this->request->getData();
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
+      $product_code_ini = substr($product_code, 0, 11);
 
       $ProductParent = $this->Products->find()
       ->where(['product_code' => $product_code, 'delete_flag' => 0])->toArray();
@@ -4431,7 +4461,7 @@ class KensahyousokuteidatasController extends AppController
 
       $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
       ->contain(['InspectionDataResultParents' => ['Products']])//測定データのうち、管理ナンバーが一致するものを検索
-      ->where(['product_code' => $product_code, 'InspectionDataResultChildren.delete_flag' => 0,
+      ->where(['product_code like' => $product_code_ini.'%', 'InspectionDataResultChildren.delete_flag' => 0,
       'datetime >=' => $startYMD, 'datetime <=' => $endYMD])
       ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
 
@@ -4460,7 +4490,7 @@ class KensahyousokuteidatasController extends AppController
 
       $InspectionDataResultParents = $this->InspectionDataResultParents->find()
       ->contain(['InspectionStandardSizeParents', 'Products', 'ProductConditionParents' => ["ProductMaterialMachines"]])
-      ->where(['product_code' => $product_code, 'InspectionStandardSizeParents.delete_flag' => 0,
+      ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.delete_flag' => 0,
        'InspectionDataResultParents.delete_flag' => 0,
       'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin])
       ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
@@ -4486,6 +4516,9 @@ class KensahyousokuteidatasController extends AppController
         ->where(['inspection_data_result_parent_id' => $InspectionDataResultParents[$j]["id"],
          'InspectionDataResultChildren.delete_flag' => 0])
         ->toArray();
+
+        ${"length".$n} = $InspectionDataResultParents[$j]["product"]['length'];
+        $this->set('length'.$n,${"length".$n});
 
         ${"product_condition_code".$n} = $InspectionDataResultParents[$j]["product_condition_parent"]['product_condition_code'];
         $this->set('product_condition_code'.$n,${"product_condition_code".$n});

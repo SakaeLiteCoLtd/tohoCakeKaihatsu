@@ -415,7 +415,7 @@ var moji = "length"
           echo '</td>';
         } else {
           echo '<td style="width:75; border-top-style:none"><font color="red">';
-          echo "A".${"result_size".$j.$i};
+          echo ${"result_size".$j.$i};
           echo '</td>';
         }
         ?>

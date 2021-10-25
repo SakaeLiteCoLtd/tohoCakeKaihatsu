@@ -160,7 +160,7 @@ $numtoujitucount = $numtoujitucount + 1;
 
 <td style='width:80; border-top-style:none; font-size: 10pt'><?= h(${"datetime".$j}) ?></td></td>
 
-<td style='width:110; border-top-style:none'><?= h(${"staff_hyouji".$j}) ?></td>
+<td style='width:110; border-top-style:none; font-size: 8pt'><?= h("長さ：".${"length".$j}) ?><br><?= h(${"staff_hyouji".$j}) ?></td>
 
 <?php for($i=1; $i<=10; $i++): ?>
   <td style='width:80; border-top-style:none'><?= h(${"result_size".$j.$i}) ?></td>
