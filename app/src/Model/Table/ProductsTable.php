@@ -112,6 +112,11 @@ class ProductsTable extends Table
             ->allowEmpty('length_lower_limit');
 
         $validator
+            ->integer('status_length')
+            ->requirePresence('status_length', 'create')
+            ->notEmpty('status_length');
+
+        $validator
             ->integer('status_kensahyou')
             ->requirePresence('status_kensahyou', 'create')
             ->notEmpty('status_kensahyou');

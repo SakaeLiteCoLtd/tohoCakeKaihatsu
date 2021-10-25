@@ -58,12 +58,12 @@
           <tr>
           <td width="90"><strong>単位</strong></td>
             <td width="90"><strong>単重(g/m)</strong></td>
-            <td width="50"><strong>幅測定器モード番号</strong></td>
+            <td><strong>幅測定器検査モード</strong></td>
         	</tr>
           <tr>
           <td><?= h($ProductName[$i]["tanni"]) ?></td>
           <td><?= h($ProductName[$i]["weight"]) ?></td>
-            <td><?= $this->Form->control('ig_bank_modes', ['options' => $arrig_bank_modes, 'value'=>$ig_bank_modes, 'label'=>false]) ?></td>
+          <td><?= $this->Form->control('ig_bank_modes', ['options' => $arrig_bank_modes, 'value'=>$ig_bank_modes, 'label'=>false]) ?></td>
             <?= $this->Form->control('tanni', array('type'=>'hidden', 'value'=>$ProductName[$i]["tanni"], 'label'=>false)) ?>
       <?= $this->Form->control('weight', array('type'=>'hidden', 'value'=>$ProductName[$i]["weight"], 'label'=>false)) ?>
         	</tr>
@@ -78,9 +78,10 @@
       <td width="90"><strong>検査表に表示</strong></td>
       <td width="90"><strong>長さ<br>（mm）</strong></td>
       <td width="90"><strong style="font-size: 11pt">カット長さ<br>（mm）</strong></td>
-        <td width="50"><strong style="font-size: 11pt">公差下限</strong></td>
-        <td width="50"><strong style="font-size: 11pt">公差上限</strong></td>
-        <td width="120"><strong>備考</strong></td>
+      <td width="40"><strong>長さ<br>測定<br>有無</strong></td>
+       <td width="20"><strong style="font-size: 10pt">※公差<br>下限</strong></td>
+        <td width="20"><strong style="font-size: 10pt">※公差<br>上限</strong></td>
+        <td width="80"><strong>※備考</strong></td>
       </tr>
       
       <?php for($i=0; $i<count($ProductName); $i++): ?>
@@ -92,7 +93,8 @@
       <td><?= h($ProductName[$i]["length"]) ?></td>
       <td><?= $this->Form->control
       ('length_cut'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_cut"], 'pattern' => '^[0-9.-]+$','size'=>3,  'title'=>'半角数字で入力して下さい。', 'required' => 'true', 'autocomplete'=>"off")) ?></td>
-      <td><?= $this->Form->control
+       <td><?= $this->Form->control('status_length'.$i, ['options' => $arrStatusLength, 'value'=>$ProductName[$i]["status_length"], 'label'=>false]) ?></td>
+     <td><?= $this->Form->control
       ('length_lower_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_lower_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
       ('length_upper_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_upper_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>

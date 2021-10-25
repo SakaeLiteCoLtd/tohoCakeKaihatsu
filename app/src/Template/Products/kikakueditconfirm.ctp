@@ -56,12 +56,20 @@
           <tr>
           <td width="90"><strong>単位</strong></td>
             <td width="90"><strong>単重(g/m)</strong></td>
-            <td width="50"><strong>幅測定器モード番号</strong></td>
+            <td><strong>幅測定器検査モード</strong></td>
         	</tr>
           <tr>
             <td><?= h($this->request->getData('tanni')) ?></td>
             <td><?= h($this->request->getData('weight')) ?></td>
-            <td><?= h($this->request->getData('ig_bank_modes')) ?></td>
+            <?php
+                  if($this->request->getData('ig_bank_modes') == 0){
+                    $ig_bank_modes_name = "X-Y";
+                  }else{
+                    $ig_bank_modes_name = "Y-Y";
+                  }
+            ?>
+
+          <td><?= h($ig_bank_modes_name) ?></td>
         	</tr>
         </table>
 
@@ -73,9 +81,10 @@
       <td width="200"><strong>品名</strong></td>
       <td width="50"><strong>検査表に表示</strong></td>
       <td><strong>長さ（mm）</strong></td>
-      <td><strong>カット長さ（mm）</strong></td>
-        <td width="50"><strong>公差下限</strong></td>
-        <td width="50"><strong>公差上限</strong></td>
+      <td><strong>カット長さ<br>（mm）</strong></td>
+      <td width="40"><strong>長さ<br>測定<br>有無</strong></td>
+        <td width="50"><strong>公差<br>下限</strong></td>
+        <td width="50"><strong>公差<br>上限</strong></td>
         <td width="120"><strong>備考</strong></td>
       </tr>
       
@@ -87,6 +96,7 @@
       <td><?= h($arrKoushinproduct[$i]["status_kensahyou_name"]) ?></td>
       <td><?= h($arrKoushinproduct[$i]["length"]) ?></td>
       <td><?= h($arrKoushinproduct[$i]["length_cut"]) ?></td>
+      <td><?= h($arrKoushinproduct[$i]["status_length_name"]) ?></td>
       <td><?= h($arrKoushinproduct[$i]["length_lower_limit"]) ?></td>
       <td><?= h($arrKoushinproduct[$i]["length_upper_limit"]) ?></td>
       <td><?= h($arrKoushinproduct[$i]["bik"]) ?></td>
@@ -96,6 +106,8 @@
       <?= $this->Form->control('name'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["name"], 'label'=>false)) ?>
       <?= $this->Form->control('status_kensahyou'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["status_kensahyou"], 'label'=>false)) ?>
       <?= $this->Form->control('status_kensahyou_name'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["status_kensahyou_name"], 'label'=>false)) ?>
+      <?= $this->Form->control('status_length'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["status_length"], 'label'=>false)) ?>
+      <?= $this->Form->control('status_length_name'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["status_length_name"], 'label'=>false)) ?>
       <?= $this->Form->control('length'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["length"], 'label'=>false)) ?>
       <?= $this->Form->control('length_cut'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["length_cut"], 'label'=>false)) ?>
       <?= $this->Form->control('length_upper_limit'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["length_upper_limit"], 'label'=>false)) ?>

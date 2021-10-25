@@ -14,7 +14,7 @@
      echo $htmlproduct;
 ?>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'index']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'kikakueditpreform']]) ?>
 <br><br><br>
 
 <?php
@@ -55,12 +55,20 @@ if($this->request->getData('status_kensahyou') == 0){
           <tr>
             <td width="90"><strong>単位</strong></td>
             <td width="90"><strong>単重(g/m)</strong></td>
-            <td width="50"><strong>幅測定器モード番号</strong></td>
+            <td><strong>幅測定器検査モード</strong></td>
         	</tr>
           <tr>
             <td><?= h($this->request->getData('tanni')) ?></td>
             <td><?= h($this->request->getData('weight')) ?></td>
-            <td><?= h($this->request->getData('ig_bank_modes')) ?></td>
+            <?php
+                  if($this->request->getData('ig_bank_modes') == 0){
+                    $ig_bank_modes_name = "X-Y";
+                  }else{
+                    $ig_bank_modes_name = "Y-Y";
+                  }
+            ?>
+
+          <td><?= h($ig_bank_modes_name) ?></td>
        	</tr>
         </table>
 
@@ -72,9 +80,10 @@ if($this->request->getData('status_kensahyou') == 0){
       <td width="200"><strong>品名</strong></td>
       <td width="50"><strong>検査表に表示</strong></td>
       <td><strong>長さ（mm）</strong></td>
-      <td><strong>カット長さ（mm）</strong></td>
-        <td width="50"><strong>公差下限</strong></td>
-        <td width="50"><strong>公差上限</strong></td>
+      <td><strong>カット長さ<br>（mm）</strong></td>
+      <td width="40"><strong>長さ<br>測定<br>有無</strong></td>
+        <td width="50"><strong>公差<br>下限</strong></td>
+        <td width="50"><strong>公差<br>上限</strong></td>
         <td width="120"><strong>備考</strong></td>
       </tr>
       
@@ -86,6 +95,7 @@ if($this->request->getData('status_kensahyou') == 0){
       <td><?= h($arrupdateproduct[$i]["status_kensahyou_name"]) ?></td>
       <td><?= h($arrupdateproduct[$i]["length"]) ?></td>
       <td><?= h($arrupdateproduct[$i]["length_cut"]) ?></td>
+      <td><?= h($arrupdateproduct[$i]["status_length_name"]) ?></td>
       <td><?= h($arrupdateproduct[$i]["length_lower_limit"]) ?></td>
       <td><?= h($arrupdateproduct[$i]["length_upper_limit"]) ?></td>
       <td><?= h($arrupdateproduct[$i]["bik"]) ?></td>
@@ -136,7 +146,7 @@ if($this->request->getData('status_kensahyou') == 0){
     <table align="center">
       <tbody class='sample non-sample'>
         <tr>
-          <td style="border-style: none;"><div align="center"><?= $this->Form->submit('製品メニュートップへ戻る', array('name' => 'top')); ?></div></td>
+          <td style="border-style: none;"><div align="center"><?= $this->Form->submit('製品長さ規格登録トップへ戻る', array('name' => 'top')); ?></div></td>
         </tr>
       </tbody>
     </table>

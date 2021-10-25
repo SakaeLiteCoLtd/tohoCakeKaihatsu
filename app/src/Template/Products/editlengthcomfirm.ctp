@@ -56,8 +56,9 @@
         <td width="50"><strong>検査表に表示</strong></td>
         <td><strong>長さ（mm）</strong></td>
         <td width="80"><strong>カット長さ（mm）</strong></td>
-        <td width="50"><strong>下限</strong></td>
-        <td width="50"><strong>上限</strong></td>
+        <td width="50"><strong>長さ<br>測定<br>有無</strong></td>
+        <td width="50"><strong>公差<br>下限</strong></td>
+        <td width="50"><strong>公差<br>上限</strong></td>
         <td width="200"><strong>備考</strong></td>
       </tr>
       
@@ -76,6 +77,16 @@
 ?>
 
       <td><?= h($status_kensahyou_name) ?></td>
+
+      <?php
+      if($ProductName[$i]["status_length"] == 0){
+        $status_length_name = "有";
+      }else{
+        $status_length_name = "無";
+      }
+?>
+
+      <td><?= h($status_length_name) ?></td>
 
       <td><?= h($ProductName[$i]["length"]) ?></td>
       <td><?= h($ProductName[$i]["length_cut"]) ?></td>
@@ -101,8 +112,9 @@
         <td><strong>検査表に表示</strong></td>
         <td><strong>長さ（mm）</strong></td>
         <td width="80"><strong>カット長さ（mm）</strong></td>
-        <td width="50"><strong>公差下限</strong></td>
-        <td width="50"><strong>公差上限</strong></td>
+        <td width="80"><strong>長さ測定<br>有無</strong></td>
+        <td width="50"><strong>公差<br>下限</strong></td>
+        <td width="50"><strong>公差<br>上限</strong></td>
         <td width="200"><strong>備考</strong></td>
       </tr>
       
@@ -117,6 +129,9 @@
       <?= $this->Form->control('length'.$k, array('type'=>'hidden', 'value'=>${"length".$k}, 'label'=>false)) ?>
       <td><?= h(${"length_cut".$k}) ?></td>
       <?= $this->Form->control('length_cut'.$k, array('type'=>'hidden', 'value'=>${"length_cut".$k}, 'label'=>false)) ?>
+      <td><?= h(${"status_length_name".$k}) ?></td>
+      <?= $this->Form->control('status_length'.$k, array('type'=>'hidden', 'value'=>${"status_length".$k}, 'label'=>false)) ?>
+      <?= $this->Form->control('status_length_name'.$k, array('type'=>'hidden', 'value'=>${"status_length_name".$k}, 'label'=>false)) ?>
       <td><?= h(${"length_lower_limit".$k}) ?></td>
       <?= $this->Form->control('length_lower_limit'.$k, array('type'=>'hidden', 'value'=>${"length_lower_limit".$k}, 'label'=>false)) ?>
       <td><?= h(${"length_upper_limit".$k}) ?></td>

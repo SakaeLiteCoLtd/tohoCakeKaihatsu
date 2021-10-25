@@ -91,6 +91,7 @@ if($this->request->getData('ig_bank_modes') == 0){
       <td width="50"><strong>検査表に表示</strong></td>
         <td width="50"><strong>長さ（mm）</strong></td>
         <td width="50"><strong>カット長さ（mm）</strong></td>
+        <td width="50"><strong>長さ測定有無</strong></td>
         <td width="50"><strong>※公差下限</strong></td>
         <td width="50"><strong>※公差上限</strong></td>
         <td width="200"><strong>※備考</strong></td>
@@ -104,6 +105,7 @@ if($this->request->getData('ig_bank_modes') == 0){
       ('length'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true', 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
       ('length_cut'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true', 'autocomplete'=>"off")) ?></td>
+      <td><?= $this->Form->control('status_length'.$k, ['options' => $arrStatusLength, 'label'=>false]) ?></td>
       <td><?= $this->Form->control
       ('length_lower_limit'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
