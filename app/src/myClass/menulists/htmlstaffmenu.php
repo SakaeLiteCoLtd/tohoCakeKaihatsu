@@ -65,7 +65,7 @@ class htmlstaffmenu extends AppController
             }else{
                 $check_customers = 0;
             }
-
+/*
             $Groups_products = $this->Groups->find()->contain(["Menus"])
             ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "製品", 'Groups.delete_flag' => 0])
             ->toArray();
@@ -74,7 +74,7 @@ class htmlstaffmenu extends AppController
             }else{
                 $check_products = 0;
             }
-
+*/
             $Groups_materialTypes = $this->Groups->find()->contain(["Menus"])
             ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "仕入品種類", 'Groups.delete_flag' => 0])
             ->toArray();
@@ -145,13 +145,13 @@ class htmlstaffmenu extends AppController
                                 "<font size='4'>　・</font><a href='/customers/index' /><font size='4' color=black>得意先・仕入先メニュー</font></a>\n".
                                 "<br><br>\n";
                             }
-
+/*
                             if($check_products == 1){
                                 $html = $html.
                                 "<font size='4'>　・</font><a href='/products/ichiran' /><font size='4' color=black>製品メニュー</font></a>\n".
                                 "<br><br>\n";
                             }
-
+*/
                             if($check_materialTypes == 1){
                                 $html = $html.
                                 "<font size='4'>　・</font><a href='/materialTypes/index' /><font size='4' color=black>仕入品種類メニュー</font></a>\n".

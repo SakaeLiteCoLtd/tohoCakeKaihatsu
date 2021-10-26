@@ -24,9 +24,13 @@ echo $this->Html->css('index');
 <br>
 <div class="products index large-9 medium-8 columns content">
   
+<?php if ($check_gyoumu == 1) : ?>
+
 <div style="text-align: right;">
 <a style="text-decoration: none" alien="center" href='/products/addform' class="buttonlayout"/><font size='4' color=black><?= __('▷新規登録') ?></font></a>
 </div>
+<?php else : ?>
+  <?php endif; ?>
 
   <h2><font color=red><?= __('製品一覧') ?></font></h2>
 
@@ -47,7 +51,14 @@ echo $this->Html->css('index');
                 <th scope="col" style='width:200'><?= $this->Paginator->sort('product_code', ['label'=>"製品コード"]) ?></th>
                 <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"品名"]) ?></th>
                 <th scope="col" style='width:200'><?= $this->Paginator->sort('custmoer_id', ['label'=>"得意先"]) ?></th>
+
+                <?php if ($check_gyoumu == 1) : ?>
+
                 <th scope="col" style='width:100'><?= __('') ?></th>
+
+                <?php else : ?>
+  <?php endif; ?>
+
             </tr>
         </thead>
 
@@ -58,9 +69,16 @@ echo $this->Html->css('index');
                 <td><?= h($product->product_code) ?></td>
                 <td><?= h($product->name) ?></td>
                 <td><?= h($product->customer->name) ?></td>
+
+                <?php if ($check_gyoumu == 1) : ?>
+
                 <td class="actions">
                   <?= $this->Html->link(__('編集'), ['action' => 'detail', $product->id]) ?>
                 </td>
+
+                <?php else : ?>
+  <?php endif; ?>
+
             </tr>
 
           <?php

@@ -769,7 +769,7 @@ var moji = "length"
                 echo "</td>\n";
                 }
             echo "<td>\n";
-            echo "$num.${"screw_mesh_3".$j}\n";
+            echo "${"screw_mesh_3".$j}\n";
             echo "</td>\n";
             echo "<td>\n";
             echo "${"screw_number_3".$j}\n";

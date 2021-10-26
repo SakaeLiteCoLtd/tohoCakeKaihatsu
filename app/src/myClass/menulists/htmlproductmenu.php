@@ -16,7 +16,13 @@ class htmlproductmenu extends AppController
                       if($check_gyoumu == 0){//成形条件のみの権限
 
                         $html = $html.
-                        "<font size='4'>　・</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>成形メニュートップ</font></a>\n".
+                        "<font size='4'>　・</font><a href='/Startmenus/menu' /><font size='4' color=black>総合メニュー</font></a>\n".
+                        "<br><br>\n".
+                        "<font size='4'>　・</font><a href='/images/index' /><font size='4' color=black>製造メニュー</font></a>\n".
+                        "<br><br>\n".
+                        "<font size='5'>　製品メニュー</font>\n".
+                        "<br><br>\n".
+                        "<font size='4'>　・</font><a href='/products/ichiran' /><font size='4' color=black>製品一覧</font></a>\n".
                         "<br><br>\n".
                         "<font size='4'>　・</font><a href='/products/kensakupreform' /><font size='4' color=black>製品検索</font></a>\n".
                         "<br><br>\n".
@@ -28,10 +34,13 @@ class htmlproductmenu extends AppController
                         $html = $html.
                         "<font size='4'>　・</font><a href='/Startmenus/menu' /><font size='4' color=black>総合メニュー</font></a>\n".
                         "<br><br>\n".
+/*
                         "<font size='4'>　・</font><a href='/staffs/index' /><font size='4' color=black>業務メニュー</font></a>\n".
                         "<br><br>\n".
+*/
                         "<font size='4'>　・</font><a href='/images/index' /><font size='4' color=black>製造メニュー</font></a>\n".
                         "<br><br>\n".
+
                         "<font size='5'>　製品メニュー</font>\n".
                         "<br><br>\n".
                         "<font size='4'>　・</font><a href='/products/ichiran' /><font size='4' color=black>製品一覧</font></a>\n".
@@ -41,8 +50,6 @@ class htmlproductmenu extends AppController
                         "<font size='4'>　・</font><a href='/products/editpreform' /><font size='4' color=black>製品編集</font></a>\n".
                         "<br><br>\n".
                         "<font size='4'>　・</font><a href='/products/kensakupreform' /><font size='4' color=black>製品検索</font></a>\n".
-                        "<br><br>\n".
-                        "<font size='4'>　・</font><a href='/products/kikakueditpreform' /><font size='4' color=black>製品長さ規格編集</font></a>\n".
                         "<br><br>\n";
 
                       }

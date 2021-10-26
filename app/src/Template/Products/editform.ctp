@@ -61,8 +61,8 @@
             <td><strong>幅測定器検査モード</strong></td>
         	</tr>
           <tr>
-          <td><?= $this->Form->control('tanni', ['options' => $arrTanni, 'label'=>false]) ?></td>
-            <td><?= $this->Form->control('weight', array('type'=>'text', 'pattern'=>'^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'size'=>6, 'autocomplete'=>"off")) ?></td>
+          <td><?= $this->Form->control('tanni', ['options' => $arrTanni, 'value'=>$tanni, 'label'=>false]) ?></td>
+            <td><?= $this->Form->control('weight', array('type'=>'text', 'value'=>$weight, 'pattern'=>'^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'size'=>6, 'autocomplete'=>"off")) ?></td>
             <td><?= $this->Form->control('ig_bank_modes', ['options' => $arrig_bank_modes, 'value'=>$ig_bank_modes, 'label'=>false]) ?></td>
         	</tr>
         </table>
