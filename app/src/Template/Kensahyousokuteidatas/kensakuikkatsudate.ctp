@@ -31,6 +31,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
 <?= $this->Form->create($product, ['url' => ['action' => 'kensakuikkatsuichiran']]) ?>
 
 <?=$this->Form->hidden("product_code", array('type' => 'value', 'value' => $product_code)); ?>
+<?=$this->Form->hidden("machine_num", array('type' => 'value', 'value' => $machine_num)); ?>
 <br>
 <div align="center"><strong><font color="blue"><?php echo "測定日絞り込み";?></font></strong></div>
 <table>

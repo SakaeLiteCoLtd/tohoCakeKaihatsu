@@ -1506,7 +1506,7 @@ class KensahyoutemperaturesController extends AppController
 
            $product_code = $Products[0]["product_code"];
 
-           return $this->redirect(['action' => 'kensakurirekiichiran',
+           return $this->redirect(['action' => 'kensakurirekigouki',
            's' => ['product_code' => $product_code]]);
 
          }else{
@@ -1559,6 +1559,48 @@ class KensahyoutemperaturesController extends AppController
 
     }
 
+    public function kensakurirekigouki()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $Data = $this->request->query('s');
+      $product_code = $Data["product_code"];
+      $this->set('product_code', $product_code);
+
+      $data = $this->request->getData();
+
+      $product_code_ini = substr($product_code, 0, 11);
+      $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
+      ->where(['product_code like' => $product_code_ini.'%', 
+      'ProductConditionParents.is_active' => 0,
+      'ProductConditionParents.delete_flag' => 0])
+      ->order(["machine_num"=>"ASC"])->toArray();
+/*
+      echo "<pre>";
+      print_r("data");
+      print_r($data);
+      echo "</pre>";
+*/
+      $arrGouki = array();
+      for($k=0; $k<count($ProductConditionParents); $k++){
+        $array = array($ProductConditionParents[$k]["machine_num"] => $ProductConditionParents[$k]["machine_num"]);
+        $arrGouki = $arrGouki + $array;
+      }
+      $this->set('arrGouki', $arrGouki);
+
+      if(isset($data["next"])){//「次へ」ボタンを押したとき
+
+        $product_code = $data["product_code"];
+        $machine_num = $data["machine_num"];
+
+        return $this->redirect(['action' => 'kensakurirekiichiran',
+        's' => ['product_code' => $product_code, 'machine_num' => $machine_num]]);
+
+      }
+   
+    }
+
     public function kensakurirekiichiran()
     {
       $product = $this->Products->newEntity();
@@ -1568,11 +1610,15 @@ class KensahyoutemperaturesController extends AppController
       if(isset($Data["product_code"])){
         $product_code = $Data["product_code"];
         $this->set('product_code', $product_code);
-        }else{
+        $machine_num = $Data["machine_num"];
+        $this->set('machine_num', $machine_num);
+          }else{
           $data = $this->request->getData();
           $product_code = $data["product_code"];
           $this->set('product_code', $product_code);
-          }
+          $machine_num = $data["machine_num"];
+          $this->set('machine_num', $machine_num);
+              }
 
       $Products = $this->Products->find()
       ->where(['product_code' => $product_code])->toArray();
@@ -1581,7 +1627,7 @@ class KensahyoutemperaturesController extends AppController
 
       $product_code_ini = substr($product_code, 0, 11);
       $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
-      ->where(['product_code like' => $product_code_ini.'%'])
+      ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%'])
       ->order(["version"=>"DESC"])->toArray();
 
       if(isset($ProductConditionParents[0])){
@@ -1756,7 +1802,9 @@ class KensahyoutemperaturesController extends AppController
       $arrdata = explode("_",$data);
 
       $created_at = $arrdata[0];
-      $product_code = $arrdata[1];
+      $machine_num = $arrdata[1];
+      $this->set('machine_num', $machine_num);
+      $product_code = $arrdata[2];
       $this->set('product_code', $product_code);
       $product_code_ini = substr($product_code, 0, 11);
 
@@ -1810,8 +1858,9 @@ class KensahyoutemperaturesController extends AppController
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
       $this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
+      $arrcreated_at_machine_num = $created_at."_".$machine_num;
       $htmlkensahyougenryouheader = new htmlkensahyouprogram();//その時の原料情報を取得
-      $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderrireki($created_at);
+      $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderrireki($arrcreated_at_machine_num);
       $this->set('htmlgenryouheader',$htmlgenryouheader);
 
       echo "<pre>";

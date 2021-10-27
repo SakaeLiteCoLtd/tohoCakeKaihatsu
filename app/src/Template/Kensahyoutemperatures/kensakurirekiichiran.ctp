@@ -32,6 +32,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
 <?= $this->Form->create($product, ['url' => ['action' => 'kensakurirekiichiran']]) ?>
 
 <?=$this->Form->hidden("product_code", array('type' => 'value', 'value' => $product_code)); ?>
+<?=$this->Form->hidden("machine_num", array('type' => 'value', 'value' => $machine_num)); ?>
 <br>
 <div align="center"><strong><font color="blue"><?php echo "改定日絞り込み";?></font></strong></div>
 <table>
@@ -63,10 +64,12 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
 
 <table>
       <tr>
-        <td width="280" style='background-color: #FFFFCC'><strong>製品名</strong></td>
+      <td width="180" style='background-color: #FFFFCC'><strong>号機番号</strong></td>
+      <td width="280" style='background-color: #FFFFCC'><strong>製品名</strong></td>
       </tr>
       <tr>
-        <td style='background-color: #FFFFCC'><?= h($product_name) ?></td>
+      <td style='background-color: #FFFFCC'><?= h($machine_num) ?></td>
+      <td style='background-color: #FFFFCC'><?= h($product_name) ?></td>
       </tr>
     </table>
     <br>
@@ -98,7 +101,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
           <tr>
             <td style='background-color: #FFFFCC'><?= h($created_at);?></td>
             <td style='background-color: #FFFFCC'><?= h($updated_at);?></td>
-            <td style='background-color: #FFFFCC'><?= h("詳細表示") ? $this->Html->link($syousai, ['action' => 'kensakurirekihyouji', 's' => $created_at."_".$product_code]) : '' ?></td>
+            <td style='background-color: #FFFFCC'><?= h("詳細表示") ? $this->Html->link($syousai, ['action' => 'kensakurirekihyouji', 's' => $created_at."_".$machine_num."_".$product_code]) : '' ?></td>
           </tr>
         <?php endfor;?>
 

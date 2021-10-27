@@ -240,6 +240,8 @@ class htmlkensahyouprogram extends AppController
          $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
          ${"recycled_mixing_ratio".$j.$i} = $ProductMachineMaterials[$i - 1]["recycled_mixing_ratio"];
          $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
+         ${"recycled_mixing_ratio".$j} = $ProductMachineMaterials[$i - 1]["recycled_mixing_ratio"];
+         $this->set('recycled_mixing_ratio'.$j,${"recycled_mixing_ratio".$j});
 
        }
 
@@ -304,10 +306,19 @@ class htmlkensahyouprogram extends AppController
                "<td style='background-color: #FFFFCC'>\n".
                "${"dry_hour".$j.$i}\n".
                " h以上\n".
-               "</td>\n".
-               "<td style='background-color: #FFFFCC'>\n".
-               "${"recycled_mixing_ratio".$j.$i}\n".
-               "</td>\n".
+               "</td>\n";
+
+               if($i==1){
+
+                $html = $html.
+
+                "<td style='background-color: #FFFFCC' rowspan=${"tuikagenryou".$j}>\n".
+                "${"recycled_mixing_ratio".$j}\n".
+                "</td>\n";
+              }
+
+              $html = $html.
+               
                "</tr>\n";
 
              }
@@ -322,8 +333,12 @@ class htmlkensahyouprogram extends AppController
        $this->html = $html;
    }
 
-   public function genryouheaderrireki($created_at)
+   public function genryouheaderrireki($created_at_machine_num)
    {
+    $arrcreated_at_machine_num = explode("_",$created_at_machine_num);
+    $created_at = $arrcreated_at_machine_num[0];
+    $machine_num = $arrcreated_at_machine_num[1];
+
      $ProductConditonChildren = $this->ProductConditonChildren->find()
      ->where(['created_at' => $created_at])
      ->order(["cylinder_number"=>"ASC"])->toArray();
@@ -378,8 +393,8 @@ class htmlkensahyouprogram extends AppController
          $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
          ${"dry_hour".$j.$i} = $ProductMachineMaterials[$i - 1]["dry_hour"];
          $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
-         ${"recycled_mixing_ratio".$j.$i} = $ProductMachineMaterials[$i - 1]["recycled_mixing_ratio"];
-         $this->set('recycled_mixing_ratio'.$j.$i,${"recycled_mixing_ratio".$j.$i});
+         ${"recycled_mixing_ratio".$j} = $ProductMachineMaterials[$i - 1]["recycled_mixing_ratio"];
+         $this->set('recycled_mixing_ratio'.$j,${"recycled_mixing_ratio".$j});
 
        }
 
@@ -390,6 +405,20 @@ class htmlkensahyouprogram extends AppController
        "\n";
 
        for($j=1; $j<=$tuikaseikeiki; $j++){
+
+        if($j == 1){
+
+          $html = $html.
+          "<table align='left'>\n".
+          "<tbody class='sample non-sample'>\n".
+          "<tr><td style='border:none'>　　　　　　　　　</td>\n".
+          "<td style='border:none'><font size='4'><strong>\n".
+          "$machine_num\n".
+          "号機\n".
+          "</strong></font></td>\n".
+          "</tr></tbody></table><br><br>\n";
+ 
+         }
 
          $html = $html.
 
@@ -430,11 +459,19 @@ class htmlkensahyouprogram extends AppController
                "</td>\n".
                "<td style='background-color: #FFFFCC'>\n".
                "${"dry_hour".$j.$i}\n".
-               " h以上\n".
-               "</td>\n".
-               "<td style='background-color: #FFFFCC'>\n".
-               "${"recycled_mixing_ratio".$j.$i}\n".
-               "</td>\n".
+               " h以上\n";
+
+               if($i==1){
+
+                $html = $html.
+
+                "<td style='background-color: #FFFFCC' rowspan=${"tuikagenryou".$j}>\n".
+                "${"recycled_mixing_ratio".$j}\n".
+                "</td>\n";
+              }
+
+              $html = $html.
+               
                "</tr>\n";
 
              }

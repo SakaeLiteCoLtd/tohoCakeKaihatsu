@@ -29,13 +29,15 @@ echo $this->Html->css('kensahyou');
 <table class="white">
       <tbody class='sample non-sample'>
         <tr>
+        <td style='width:100'>号機</td>
         <td style='width:200'>管理No.</td>
           <td style='width:200'>製品名</td>
         </tr>
 
           <?php for($i=0; $i<count($arrInspectionDataResultParents); $i++): ?>
             <tr>
-              <td><?= h($arrInspectionDataResultParents[$i]["product_code"]) ? $this->Html->link($arrInspectionDataResultParents[$i]["product_code"], ['action' => 'kensatyuichiran', 's' => $arrInspectionDataResultParents[$i]["product_code"]]) : '' ?></td>
+            <td><?= h($arrInspectionDataResultParents[$i]["machine_num"]);?></td>
+              <td><?= h($arrInspectionDataResultParents[$i]["product_code"]) ? $this->Html->link($arrInspectionDataResultParents[$i]["product_code"], ['action' => 'kensatyuichiran', 's' => $arrInspectionDataResultParents[$i]["machine_num"]."_".$arrInspectionDataResultParents[$i]["product_code"]]) : '' ?></td>
               <td><?= h($arrInspectionDataResultParents[$i]["name"]);?></td>
             </tr>
           <?php endfor;?>

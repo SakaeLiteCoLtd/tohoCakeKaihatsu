@@ -180,7 +180,7 @@ echo $this->Html->css('kensahyou');
           echo "</td>\n";
         }elseif($i == 2){
           echo "<td>\n";
-          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=inspection_temp_1".$j.">\n";
+          echo "<input type='tel' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=inspection_temp_1".$j.">\n";
           echo "</td>\n";
           echo "<td>\n";
           echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=inspection_temp_2".$j.">\n";
