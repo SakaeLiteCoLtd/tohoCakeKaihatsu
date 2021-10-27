@@ -16,14 +16,14 @@ echo $this->Html->css('kensahyou');
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukikakus/menu' /><font size='4' color=black>検査規格登録</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyougenryous/addlogin' /><font size='4' color=black>新規登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyougenryous/addformpre' /><font size='4' color=black>新規登録</font></a>
     </td>
   </tbody>
 </table>
 
 <br><br><br>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'addlogin']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'addformpre']]) ?>
 
 <?php
       echo $htmlkensahyouheader;
@@ -87,7 +87,7 @@ echo $this->Html->css('kensahyou');
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>
-      <td style="border-style: none;"><div><?= $this->Form->submit('続けて登録', array('name' => 'kettei')); ?></div></td>
+      <td style="border-style: none;"><div><?= $this->Form->submit('TOPへ戻る', array('name' => 'kettei')); ?></div></td>
     </tr>
   </tbody>
 </table>

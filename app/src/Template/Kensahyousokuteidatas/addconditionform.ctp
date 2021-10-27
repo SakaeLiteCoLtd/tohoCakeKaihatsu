@@ -32,11 +32,24 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('product_condition_parent_id', array('type'=>'hidden', 'value'=>$product_condition_parent_id, 'label'=>false)) ?>
 <?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>
 <?= $this->Form->control('user_code', array('type'=>'hidden', 'value'=>$user_code, 'label'=>false)) ?>
+<?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
 
 <?php
       echo $htmlkensahyouheader;
  ?>
+ <?php
+    //   echo $htmlgenryouheader;
+  ?>
+
  <?php for($j=1; $j<=$tuikaseikeiki; $j++): ?>
+
+  <?php if ($j == 1): ?>
+
+    <table align='left'><tbody class='sample non-sample'><tr><td style='border:none'>　　　　　　　　　</td>
+    <td style='border:none'><font size='4'><strong><?= h($machine_num."号機") ?></strong></font></td></tr></tbody></table><br><br>
+
+    <?php else : ?>
+      <?php endif; ?>
 
  <table>
    <tr class="parents">

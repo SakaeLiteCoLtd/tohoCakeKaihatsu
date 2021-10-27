@@ -20,7 +20,7 @@ echo $this->Html->css('kensahyou');
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoutemperatures/menu' /><font size='4' color=black>成形温度登録</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyoutemperatures/addlogin' /><font size='4' color=black>新規登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoutemperatures/addformpre' /><font size='4' color=black>新規登録</font></a>
     </a></td>
   </tbody>
 </table>

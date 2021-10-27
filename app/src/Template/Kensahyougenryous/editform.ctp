@@ -49,15 +49,17 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
 
 <?= $this->Form->control('user_code', array('type'=>'hidden', 'value'=>$user_code, 'label'=>false)) ?>
 <?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>
-<?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>
 <?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$staff_name, 'label'=>false)) ?>
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('tuikaseikeiki', array('type'=>'hidden', 'value'=>$tuikaseikeiki, 'label'=>false)) ?>
+<?= $this->Form->control('machine_num_moto', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
 <br> <br> <br>
 
 <?php
       echo $htmlkensahyouheader;
  ?>
+
+
 <br>
  <table class="top_big">
   <tbody>
@@ -85,6 +87,16 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
   </tbody>
 </table>
 
+<br><br>
+<table align="left">
+  <tbody>
+    <tr style="background-color: #FFFFCC">
+    <td style="border:none; background-color:#E6FFFF">　　　　　　　　　　</td>
+      <td width="100">号機番号</td>
+      <td width="50"><?= $this->Form->control('machine_num', ['options' => $arrGouki, 'value'=>$machine_num, 'label'=>false]) ?></td>
+    </tr>
+  </tbody>
+</table>
 <br><br>
 
 <?php for($j=1; $j<=$tuikaseikeiki; $j++): ?>

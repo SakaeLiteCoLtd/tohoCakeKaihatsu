@@ -48,7 +48,7 @@ $arrProduct_name_list = json_encode($arrProduct_name_list);//jsに配列を受�
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukikakus/menu' /><font size='4' color=black>検査規格登録</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyougenryous/addlogin' /><font size='4' color=black>新規登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyougenryous/addformpre' /><font size='4' color=black>新規登録</font></a>
     </td>
   </tbody>
 </table>

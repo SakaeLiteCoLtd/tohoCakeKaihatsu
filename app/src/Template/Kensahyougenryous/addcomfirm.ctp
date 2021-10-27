@@ -18,7 +18,7 @@ echo $this->Html->css('kensahyou');
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
     <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
     <font size='4'>　>>　</font><a href='/Kensahyougenryous/menu' /><font size='4' color=black>原料登録</font></a>
-    <font size='4'>　>>　</font><a href='/Kensahyougenryous/addlogin' /><font size='4' color=black>新規登録</font></a>
+    <font size='4'>　>>　</font><a href='/Kensahyougenryous/addformpre' /><font size='4' color=black>新規登録</font></a>
     </a></td>
   </tbody>
 </table>
@@ -38,21 +38,33 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>
 <?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$staff_name, 'label'=>false)) ?>
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
+<?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
 <?= $this->Form->control('tuikaseikeiki', array('type'=>'hidden', 'value'=>$tuikaseikeiki, 'label'=>false)) ?>
 
 <?php
       echo $htmlkensahyouheader;
  ?>
-
+<br>
  <table class="top">
   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('以下の内容で登録します。よろしければ「決定」ボタンを押してください。') ?></strong></td></tr>
 </table>
+
+<table align="left">
+  <tbody class='sample non-sample'>
+    <tr>
+    <td style="border:none">　　　　　　　　　</td>
+    <td style="border:none"><font size="4"><strong><?= __($machine_num." 号機") ?></strong></font></td>
+    </tr>
+  </tbody>
+</table>
+<br>
 
 <?php for($j=1; $j<=$tuikaseikeiki; $j++): ?>
 <br>
 
 <?= $this->Form->control('tuikagenryou'.$j, array('type'=>'hidden', 'value'=>${"tuikagenryou".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('cylinder_name'.$j, array('type'=>'hidden', 'value'=>${"cylinder_name".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('recycled_mixing_ratio'.$j, array('type'=>'hidden', 'value'=>${"recycled_mixing_ratio".$j}, 'label'=>false)) ?>
 
 <table>
   <tr class="parents">
@@ -87,10 +99,13 @@ echo $this->Html->css('kensahyou');
         echo "<td>\n";
         echo ${"dry_hour".$j.$i}." h以上";
         echo "</td>\n";
-        echo "<td>\n";
-        echo ${"recycled_mixing_ratio".$j.$i};
-        echo "</td>\n";
-        echo "</tr>\n";
+
+        if($i==1){
+          echo "<td rowspan=${"tuikagenryou".$j}>\n";
+          echo ${"recycled_mixing_ratio".$j};
+          echo "</td>\n";
+        }
+      echo "</tr>\n";
 
       }
 
@@ -102,7 +117,6 @@ echo $this->Html->css('kensahyou');
         <?= $this->Form->control('mixing_ratio'.$j.$i, array('type'=>'hidden', 'value'=>${"mixing_ratio".$j.$i}, 'label'=>false)) ?>
         <?= $this->Form->control('dry_temp'.$j.$i, array('type'=>'hidden', 'value'=>${"dry_temp".$j.$i}, 'label'=>false)) ?>
         <?= $this->Form->control('dry_hour'.$j.$i, array('type'=>'hidden', 'value'=>${"dry_hour".$j.$i}, 'label'=>false)) ?>
-        <?= $this->Form->control('recycled_mixing_ratio'.$j.$i, array('type'=>'hidden', 'value'=>${"recycled_mixing_ratio".$j.$i}, 'label'=>false)) ?>
       <?php endfor;?>
 
 </table>

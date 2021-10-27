@@ -31,6 +31,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
 <?= $this->Form->create($product, ['url' => ['action' => 'kensakudate']]) ?>
 
 <?=$this->Form->hidden("product_code", array('type' => 'value', 'value' => $product_code)); ?>
+<?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
 <br>
 <div align="center"><strong><font color="blue"><?php echo "測定日絞り込み";?></font></strong></div>
 <table>
@@ -81,7 +82,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
           ?>
 
           <tr>
-            <td><?= h($date) ? $this->Html->link($date, ['action' => 'kensakuhyouji', 's' => $date."_".$product_code]) : '' ?></td>
+            <td><?= h($date) ? $this->Html->link($date, ['action' => 'kensakuhyouji', 's' => $date."_".$machine_num."_".$product_code]) : '' ?></td>
             <td><?= h("　".$product_name."　");?></td>
           </tr>
         <?php endfor;?>
@@ -112,7 +113,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
             ?>
 
             <tr>
-            <td><?= h($date) ? $this->Html->link($date, ['action' => 'kensakuhyouji', 's' => $date."_".$product_code]) : '' ?></td>
+            <td><?= h($date) ? $this->Html->link($date, ['action' => 'kensakuhyouji', 's' => $date."_".$machine_num."_".$product_code]) : '' ?></td>
             <td><?= h("　".$product_name."　");?></td>
             </tr>
           <?php endfor;?>

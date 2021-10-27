@@ -40,7 +40,7 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
     <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
     <font size='4'>　>>　</font><a href='/Kensahyougenryous/menu' /><font size='4' color=black>原料登録</font></a>
-    <font size='4'>　>>　</font><a href='/Kensahyougenryous/addlogin' /><font size='4' color=black>新規登録</font></a>
+    <font size='4'>　>>　</font><a href='/Kensahyougenryous/addformpre' /><font size='4' color=black>新規登録</font></a>
     </a></td>
   </tbody>
 </table>
@@ -58,7 +58,7 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
 
 <?= $this->Form->control('user_code', array('type'=>'hidden', 'value'=>$user_code, 'label'=>false)) ?>
 <?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>
-<?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>
+<?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
 <?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$staff_name, 'label'=>false)) ?>
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('tuikaseikeiki', array('type'=>'hidden', 'value'=>$tuikaseikeiki, 'label'=>false)) ?>
@@ -71,10 +71,17 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></td></tr>
 </table>
 
+<table align="left">
+  <tbody class='sample non-sample'>
+    <tr>
+    <td style="border:none">　　　　　　　　　</td>
+    <td style="border:none"><font size="4"><strong><?= __($machine_num." 号機") ?></strong></font></td>
+    </tr>
+  </tbody>
+</table>
 <table align="right">
   <tbody class='sample non-sample'>
     <tr>
-      <td style="border:none">　　</td>
       <td style="border:none"><?= $this->Form->submit(('成形機内原料追加'), array('name' => 'genryoutuika')) ?></td>
       <td style="border:none">　　</td>
       <td style="border:none"><?= $this->Form->submit(('成形機追加'), array('name' => 'seikeikituika')) ?></td>
@@ -146,9 +153,13 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
           echo "<td>\n";
           echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' name=dry_hour".$j.$i." autocomplete='off' required value=${"dry_hour".$j.$i}> h以上\n";
           echo "</td>\n";
-          echo "<td>\n";
-          echo "<input type='text' name=recycled_mixing_ratio".$j.$i." autocomplete='off' required value=${"recycled_mixing_ratio".$j.$i}>\n";
-          echo "</td>\n";
+
+          if($i==1){
+            echo "<td rowspan=${"tuikagenryou".$j}>\n";
+            echo "<input type='text' name=recycled_mixing_ratio".$j." autocomplete='off' required value=${"recycled_mixing_ratio".$j}>\n";
+            echo "</td>\n";
+            }
+
           echo "</tr>\n";
   
         }

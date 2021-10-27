@@ -27,6 +27,7 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->create($product, ['url' => ['action' => 'editform']]) ?>
 
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
+<?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
 
 <?php
       echo $htmlkensahyouheader;

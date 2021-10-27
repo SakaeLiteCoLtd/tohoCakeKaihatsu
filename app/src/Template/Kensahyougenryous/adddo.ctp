@@ -16,7 +16,7 @@ echo $this->Html->css('kensahyou');
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
     <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
     <font size='4'>　>>　</font><a href='/Kensahyougenryous/menu' /><font size='4' color=black>原料登録</font></a>
-    <font size='4'>　>>　</font><a href='/Kensahyougenryous/addlogin' /><font size='4' color=black>新規登録</font></a>
+    <font size='4'>　>>　</font><a href='/Kensahyougenryous/addformpre' /><font size='4' color=black>新規登録</font></a>
     </a></td>
   </tbody>
 </table>
@@ -30,7 +30,7 @@ echo $this->Html->css('kensahyou');
   //   echo $htmlkensahyoumenu;
 ?>
 
-<?= $this->Form->create($product, ['url' => ['controller' => 'Kensahyoutemperatures', 'action' => 'addform']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'addformpre']]) ?>
 
 <?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$this->request->getData('staff_id'), 'label'=>false)) ?>
 <?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$this->request->getData('staff_name'), 'label'=>false)) ?>
@@ -40,13 +40,23 @@ echo $this->Html->css('kensahyou');
 <?php
       echo $htmlkensahyouheader;
  ?>
-
+<br>
  <table class="top">
   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
 </table>
 
-<?php for($j=1; $j<=$tuikaseikeiki; $j++): ?>
+<table align="left">
+  <tbody class='sample non-sample'>
+    <tr>
+    <td style="border:none">　　　　　　　　　</td>
+    <td style="border:none"><font size="4"><strong><?= __($machine_num." 号機") ?></strong></font></td>
+    </tr>
+  </tbody>
+</table>
+<br>
 
+<?php for($j=1; $j<=$tuikaseikeiki; $j++): ?>
+  <br>
 <?= $this->Form->control('tuikagenryou'.$j, array('type'=>'hidden', 'value'=>${"tuikagenryou".$j}, 'label'=>false)) ?>
 
 <table>
@@ -82,9 +92,13 @@ echo $this->Html->css('kensahyou');
         echo "<td>\n";
         echo ${"dry_hour".$j.$i}." h以上";
         echo "</td>\n";
-        echo "<td>\n";
-        echo ${"recycled_mixing_ratio".$j.$i};
-        echo "</td>\n";
+
+        if($i==1){
+          echo "<td rowspan=${"tuikagenryou".$j}>\n";
+          echo ${"recycled_mixing_ratio".$j};
+          echo "</td>\n";
+          }
+
         echo "</tr>\n";
 
       }
@@ -97,7 +111,7 @@ echo $this->Html->css('kensahyou');
 <table>
   <tbody class='sample non-sample'>
     <tr>
-      <td style="border-style: none;"><div><?= $this->Form->submit('続けて成形温度登録へ', array('name' => 'kettei')); ?></div></td>
+      <td style="border-style: none;"><div><?= $this->Form->submit('TOPへ戻る', array('name' => 'kettei')); ?></div></td>
     </tr>
   </tbody>
 </table>

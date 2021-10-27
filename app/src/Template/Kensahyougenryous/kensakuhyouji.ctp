@@ -24,12 +24,25 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->create($product, ['url' => ['action' => 'editform']]) ?>
 
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
+<?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
 <?= $this->Form->control('saisyo', array('type'=>'hidden', 'value'=>1, 'label'=>false)) ?>
 <br> <br> <br>
 
 <?php
       echo $htmlkensahyouheader;
  ?>
+ 
+<br>
+
+<table align="left">
+  <tbody class='sample non-sample'>
+    <tr>
+    <td style="border:none">　　　　　　　　　</td>
+    <td style="border:none"><font size="4"><strong><?= __($machine_num." 号機") ?></strong></font></td>
+    </tr>
+  </tbody>
+</table>
+<br><br>
 
  <table class="top_big">
    <tr></tr>

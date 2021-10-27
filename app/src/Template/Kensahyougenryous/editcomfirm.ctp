@@ -28,6 +28,8 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('tuikaseikeiki', array('type'=>'hidden', 'value'=>$tuikaseikeiki, 'label'=>false)) ?>
 <?= $this->Form->control('delete_flag', array('type'=>'hidden', 'value'=>$delete_flag, 'label'=>false)) ?>
+<?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
+<?= $this->Form->control('machine_num_moto', array('type'=>'hidden', 'value'=>$machine_num_moto, 'label'=>false)) ?>
 <br> <br> <br>
 
 <?php
@@ -37,6 +39,16 @@ echo $this->Html->css('kensahyou');
  <table class="top_big">
   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
 </table>
+
+<table align="left">
+  <tbody class='sample non-sample'>
+    <tr>
+    <td style="border:none">　　　　　　　　　</td>
+    <td style="border:none"><font size="4"><strong><?= __($machine_num." 号機") ?></strong></font></td>
+    </tr>
+  </tbody>
+</table>
+<br>
 
 <?php for($j=1; $j<=$tuikaseikeiki; $j++): ?>
 <br>
