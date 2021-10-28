@@ -116,7 +116,8 @@
         <td width="80"><strong>長さ測定<br>有無</strong></td>
         <td width="50"><strong>公差<br>下限</strong></td>
         <td width="50"><strong>公差<br>上限</strong></td>
-        <td width="200"><strong>備考</strong></td>
+        <td><strong style="font-size: 10pt">測定器具</strong></td>
+        <td width="150"><strong>備考</strong></td>
       </tr>
       
       <?php for($k=1; $k<=$tuikalength; $k++): ?>
@@ -130,6 +131,7 @@
       <td><?= h(${"status_length_name".$k}) ?></td>
       <td><?= h(${"length_lower_limit".$k}) ?></td>
       <td><?= h(${"length_upper_limit".$k}) ?></td>
+      <td><?= h(${"length_measuring_instrument".$k}) ?></td>
       <td><?= h(${"bik".$k}) ?></td>
 
       <?php endfor;?>

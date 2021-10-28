@@ -212,7 +212,7 @@ class MaterialsController extends AppController
         $this->set('mess',$mess);
       }
       
-      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個"];
+      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個", "本" => "本"];
       $this->set('arrTanni', $arrTanni);
 
       $arrStatusKensahyou = ["0" => "表示", "1" => "非表示"];
@@ -434,7 +434,7 @@ class MaterialsController extends AppController
       $id = $_SESSION['materialdata'];
       $this->set('id', $id);
 
-      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個"];
+      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個", "本" => "本"];
       $this->set('arrTanni', $arrTanni);
 
       $arrStatusKensahyou = ["0" => "表示", "1" => "非表示"];

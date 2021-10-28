@@ -35,6 +35,7 @@ $mes = "";
 <?= $this->Form->control('datetimesta', array('type'=>'hidden', 'value'=>$this->request->getData('datetimesta'), 'label'=>false)) ?>
 <?= $this->Form->control('datetimefin', array('type'=>'hidden', 'value'=>$this->request->getData('datetimefin'), 'label'=>false)) ?>
 <?= $this->Form->control('delete_flag', array('type'=>'hidden', 'value'=>$delete_flag, 'label'=>false)) ?>
+<?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
 
 <?php
       echo $htmlkensahyouheader;

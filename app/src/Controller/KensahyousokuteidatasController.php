@@ -1429,12 +1429,18 @@ class KensahyousokuteidatasController extends AppController
 
       for($n=0; $n<count($Products); $n++){
 
+        if(strlen($Products[$n]["length_measuring_instrument"]) > 0){
+          $length_measuring_instrument = $Products[$n]["length_measuring_instrument"];
+        }else{
+          $length_measuring_instrument = "-";
+        }
         ${"arrLength_size".$n} = array();
         ${"arrLength_size".$n} = [
           "product_id" => $Products[$n]["id"],
           "size" => sprintf("%.1f", $Products[$n]["length_cut"]),
           "upper" => "+".sprintf("%.1f", $Products[$n]["length_upper_limit"]),
-          "lower" => sprintf("%.1f", $Products[$n]["length_lower_limit"])
+          "lower" => sprintf("%.1f", $Products[$n]["length_lower_limit"]),
+          "length_measuring_instrument" => $length_measuring_instrument
         ];
   
         $this->set('arrLength_size'.$n,${"arrLength_size".$n});
@@ -1463,7 +1469,8 @@ class KensahyousokuteidatasController extends AppController
           "product_id" => $Productnolength[0]["id"],
           "size" => "-",
           "upper" => "-",
-          "lower" => "-"
+          "lower" => "-",
+          "length_measuring_instrument" => "-"
         ];
   
         $this->set('arrLength_size'.$n,${"arrLength_size".$n});
@@ -3675,6 +3682,8 @@ class KensahyousokuteidatasController extends AppController
       $this->set('staff_id', $staff_id);
       $user_code = $data["user_code"];
       $this->set('user_code', $user_code);
+      $machine_num = $data["machine_num"];
+      $this->set('machine_num', $machine_num);
 
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
@@ -3910,6 +3919,8 @@ class KensahyousokuteidatasController extends AppController
       $this->set('staff_id', $staff_id);
       $user_code = $data["user_code"];
       $this->set('user_code', $user_code);
+      $machine_num = $data["machine_num"];
+      $this->set('machine_num', $machine_num);
 
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
@@ -4095,10 +4106,10 @@ class KensahyousokuteidatasController extends AppController
   
         $product_condition_parent_id = $ProductConditionParents[0]['id'];
 
-        $InspectionDataResultParentsmoto = $this->InspectionDataResultParents->find()
-        ->where(['delete_flag' => 0, 'product_id' => $product_id,
+        $InspectionDataResultParentsmoto = $this->InspectionDataResultParents->find()->contain(['ProductConditionParents',"Products"])
+        ->where(['InspectionDataResultParents.delete_flag' => 0, 'product_code like' => $product_code_ini.'%',
          'datetime' => $data['datekensaku']." ".$data['datetime'.$j].":00"])
-        ->order(["id"=>"DESC"])->toArray();
+        ->order(["InspectionDataResultParents.id"=>"DESC"])->toArray();
 
         $inspection_data_conditon_parent_id = $InspectionDataResultParentsmoto[0]["inspection_data_conditon_parent_id"];
 

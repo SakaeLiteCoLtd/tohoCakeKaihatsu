@@ -86,6 +86,7 @@ if($status_kensahyou == 0){
  <td width="50"><strong>長さ<br>測定<br>有無</strong></td>
    <td width="50"><strong>公差<br>下限</strong></td>
    <td width="50"><strong>公差<br>上限</strong></td>
+   <td width="50"><strong>測定<br>器具</strong></td>
    <td width="120"><strong>備考</strong></td>
  </tr>
  
@@ -120,6 +121,7 @@ if($status_kensahyou == 0){
 
  <td><?= h($ProductName[$i]["length_lower_limit"]) ?></td>
  <td><?= h($ProductName[$i]["length_upper_limit"]) ?></td>
+ <td><?= h($ProductName[$i]["length_measuring_instrument"]) ?></td>
  <td><?= h($ProductName[$i]["bik"]) ?></td>
 
  <?php endfor;?>

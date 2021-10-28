@@ -76,11 +76,12 @@
       <td><strong>製品コード</strong></td>
       <td width="150"><strong>品名</strong></td>
       <td width="90"><strong>検査表に表示</strong></td>
-      <td width="90"><strong>長さ<br>（mm）</strong></td>
-      <td width="90"><strong style="font-size: 11pt">カット長さ<br>（mm）</strong></td>
+      <td width="50"><strong style="font-size: 9pt">長さ<br>（mm）</strong></td>
+        <td width="20"><strong style="font-size: 9pt">カット<br>長さ<br>（mm）</strong></td>
       <td width="40"><strong>長さ<br>測定<br>有無</strong></td>
        <td width="20"><strong style="font-size: 10pt">※公差<br>下限</strong></td>
-        <td width="20"><strong style="font-size: 10pt">※公差<br>上限</strong></td>
+       <td width="20"><strong style="font-size: 10pt">※公差<br>上限</strong></td>
+       <td width="50"><strong style="font-size: 10pt">※測定<br>器具</strong></td>
         <td width="80"><strong>※備考</strong></td>
       </tr>
       
@@ -92,14 +93,15 @@
       <td><?= $this->Form->control('status_kensahyou'.$i, ['options' => $arrStatusKensahyou, 'value'=>$ProductName[$i]["status_kensahyou"], 'label'=>false]) ?></td>
       <td><?= h($ProductName[$i]["length"]) ?></td>
       <td><?= $this->Form->control
-      ('length_cut'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_cut"], 'pattern' => '^[0-9.-]+$','size'=>3,  'title'=>'半角数字で入力して下さい。', 'required' => 'true', 'autocomplete'=>"off")) ?></td>
+      ('length_cut'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_cut"], 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'required' => 'true', 'autocomplete'=>"off",'size'=>1)) ?></td>
        <td><?= $this->Form->control('status_length'.$i, ['options' => $arrStatusLength, 'value'=>$ProductName[$i]["status_length"], 'label'=>false]) ?></td>
      <td><?= $this->Form->control
-      ('length_lower_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_lower_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
+      ('length_lower_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_lower_limit"], 'pattern' => '^[0-9.-]+$',  'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off",'size'=>1)) ?></td>
       <td><?= $this->Form->control
-      ('length_upper_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_upper_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
+      ('length_upper_limit'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["length_upper_limit"], 'pattern' => '^[0-9.-]+$',  'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off",'size'=>1)) ?></td>
+       <td><?= $this->Form->control('length_measuring_instrument'.$i, ['options' => $arrkensakigu, 'value'=>$ProductName[$i]["length_measuring_instrument"], 'label'=>false]) ?></td>
       <td><?= $this->Form->control
-      ('bik'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["bik"], 'size'=>15, 'autocomplete'=>"off")) ?></td>
+      ('bik'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["bik"], 'size'=>7, 'autocomplete'=>"off")) ?></td>
       </tr>
 
       <?= $this->Form->control('product_code'.$i, array('type'=>'hidden', 'value'=>$ProductName[$i]["product_code"], 'label'=>false)) ?>

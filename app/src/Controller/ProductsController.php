@@ -226,7 +226,7 @@ class ProductsController extends AppController
       $arrStatusKensahyou = ["0" => "表示", "1" => "非表示"];
       $this->set('arrStatusKensahyou', $arrStatusKensahyou);
 
-      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個"];
+      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個", "本" => "本"];
       $this->set('arrTanni', $arrTanni);
 
       $arrig_bank_modes = [
@@ -267,6 +267,17 @@ class ProductsController extends AppController
 
       $arrStatusLength = ["0" => "有", "1" => "無"];
       $this->set('arrStatusLength', $arrStatusLength);
+
+      $arrkensakigu = [
+        "" => "",
+        "デジタルノギス" => "デジタルノギス",
+        "ルーペ" => "ルーペ",
+        "テーパーゲージ" => "テーパーゲージ",
+        "厚みゲージ" => "厚みゲージ",
+        "金尺" => "金尺",
+        "デジタル計り" => "デジタル計り"
+      ];
+      $this->set('arrkensakigu', $arrkensakigu);
 
       $ProductName = $this->Products->find()
       ->where(['factory_id' => $data['factory_id'], 'name' => $name])->toArray();
@@ -374,6 +385,8 @@ class ProductsController extends AppController
         $this->set('length_upper_limit'.$j, ${"length_upper_limit".$j});
         ${"length_lower_limit".$j} = $data["length_lower_limit".$j];
         $this->set('length_lower_limit'.$j, ${"length_lower_limit".$j});
+        ${"length_measuring_instrument".$j} = $data["length_measuring_instrument".$j];
+        $this->set('length_measuring_instrument'.$j, ${"length_measuring_instrument".$j});
         ${"bik".$j} = $data["bik".$j];
         $this->set('bik'.$j, ${"bik".$j});
 
@@ -465,6 +478,8 @@ class ProductsController extends AppController
         $this->set('length_upper_limit'.$j, ${"length_upper_limit".$j});
         ${"length_lower_limit".$j} = $data["length_lower_limit".$j];
         $this->set('length_lower_limit'.$j, ${"length_lower_limit".$j});
+        ${"length_measuring_instrument".$j} = $data["length_measuring_instrument".$j];
+        $this->set('length_measuring_instrument'.$j, ${"length_measuring_instrument".$j});
         ${"bik".$j} = $data["bik".$j];
         $this->set('bik'.$j, ${"bik".$j});
 
@@ -525,6 +540,7 @@ class ProductsController extends AppController
             'ig_bank_modes' => $data["ig_bank_modes"],
             'status_kensahyou' => ${"status_kensahyou".$j},
             'status_length' => ${"status_length".$j},
+            'length_measuring_instrument' => ${"length_measuring_instrument".$j},
             'length' => ${"length".$j},
             'length_cut' => ${"length_cut".$j},
             'length_upper_limit' => ${"length_upper_limit".$j},
@@ -640,6 +656,17 @@ class ProductsController extends AppController
       $arrStatusLength = ["0" => "有", "1" => "無"];
       $this->set('arrStatusLength', $arrStatusLength);
 
+      $arrkensakigu = [
+        "" => "",
+        "デジタルノギス" => "デジタルノギス",
+        "ルーペ" => "ルーペ",
+        "テーパーゲージ" => "テーパーゲージ",
+        "厚みゲージ" => "厚みゲージ",
+        "金尺" => "金尺",
+        "デジタル計り" => "デジタル計り"
+      ];
+      $this->set('arrkensakigu', $arrkensakigu);
+
       if(isset($data["tuika"])){//追加
 
         $tuikalength = $data["tuikalength"] + 1;
@@ -718,6 +745,8 @@ class ProductsController extends AppController
         $this->set('length_upper_limit'.$j, ${"length_upper_limit".$j});
         ${"length_lower_limit".$j} = $data["length_lower_limit".$j];
         $this->set('length_lower_limit'.$j, ${"length_lower_limit".$j});
+        ${"length_measuring_instrument".$j} = $data["length_measuring_instrument".$j];
+        $this->set('length_measuring_instrument'.$j, ${"length_measuring_instrument".$j});
         ${"bik".$j} = $data["bik".$j];
         $this->set('bik'.$j, ${"bik".$j});
 
@@ -807,6 +836,8 @@ class ProductsController extends AppController
         $this->set('length_upper_limit'.$j, ${"length_upper_limit".$j});
         ${"length_lower_limit".$j} = $data["length_lower_limit".$j];
         $this->set('length_lower_limit'.$j, ${"length_lower_limit".$j});
+        ${"length_measuring_instrument".$j} = $data["length_measuring_instrument".$j];
+        $this->set('length_measuring_instrument'.$j, ${"length_measuring_instrument".$j});
         ${"bik".$j} = $data["bik".$j];
         $this->set('bik'.$j, ${"bik".$j});
 
@@ -862,6 +893,7 @@ class ProductsController extends AppController
             'length_cut' => ${"length_cut".$j},
             'length_upper_limit' => ${"length_upper_limit".$j},
             'length_lower_limit' => ${"length_lower_limit".$j},
+            'length_measuring_instrument' => ${"length_measuring_instrument".$j},
             'bik' => ${"bik".$j},
             'customer_id' => $ProductName[0]["customer_id"],
             'status_kensahyou' => ${"status_kensahyou".$j},
@@ -1107,7 +1139,7 @@ class ProductsController extends AppController
       $ig_bank_modes = $ProductName[0]["ig_bank_modes"];
       $this->set('ig_bank_modes', $ig_bank_modes);
 
-      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個"];
+      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個", "本" => "本"];
       $this->set('arrTanni', $arrTanni);
 
       $arrig_bank_modes = [
@@ -1119,6 +1151,17 @@ class ProductsController extends AppController
       $arrStatusLength = ["0" => "有", "1" => "無"];
       $this->set('arrStatusLength', $arrStatusLength);
       
+      $arrkensakigu = [
+        "" => "",
+        "デジタルノギス" => "デジタルノギス",
+        "ルーペ" => "ルーペ",
+        "テーパーゲージ" => "テーパーゲージ",
+        "厚みゲージ" => "厚みゲージ",
+        "金尺" => "金尺",
+        "デジタル計り" => "デジタル計り"
+      ];
+      $this->set('arrkensakigu', $arrkensakigu);
+
       $Customers = $this->Customers->find()
       ->where(['id' => $ProductName[0]['customer_id']])->toArray();
       $customer_name = $Customers[0]["name"];
@@ -1196,8 +1239,9 @@ class ProductsController extends AppController
           "status_length" => $data["status_length".$i],
           "status_length_name" => ${"status_length_name".$i},
           "length_upper_limit" => $data["length_upper_limit".$i],
-            "length_lower_limit" => $data["length_lower_limit".$i],
-            "bik" => $data["bik".$i]
+          "length_lower_limit" => $data["length_lower_limit".$i],
+          "length_measuring_instrument" => $data["length_measuring_instrument".$i],
+          "bik" => $data["bik".$i]
           ];
 
             }else{
@@ -1272,6 +1316,7 @@ class ProductsController extends AppController
             'length_cut' => $Productsmoto[0]["length_cut"],
             'length_upper_limit' => $Productsmoto[0]["length_upper_limit"],
             'length_lower_limit' => $Productsmoto[0]["length_lower_limit"],
+            'length_measuring_instrument' => $Productsmoto[0]["length_measuring_instrument"],
             'ig_bank_modes' => $Productsmoto[0]["ig_bank_modes"],
             'bik' => $Productsmoto[0]["bik"],
             'name' => $Productsmoto[0]["name"],
@@ -1298,6 +1343,7 @@ class ProductsController extends AppController
             'length_cut' => $data["length_cut".$i],
             'length_upper_limit' => $data["length_upper_limit".$i],
             'length_lower_limit' => $data["length_lower_limit".$i],
+            'length_measuring_instrument' => $data["length_measuring_instrument".$i],
             'bik' => $data["bik".$i],
             'name' => $data["name".$i],
             'tanni' => $data["tanni"],
@@ -1360,6 +1406,7 @@ class ProductsController extends AppController
                 'status_length' => $data["status_length".$i],
                 'length_upper_limit' => $data["length_upper_limit".$i],
                 'length_lower_limit' => $data["length_lower_limit".$i],
+                'length_measuring_instrument' => $data["length_measuring_instrument".$i],
                 'bik' => $data["bik".$i],
                 'name' => $data["name".$i],
                 'tanni' => $data["tanni"],
@@ -1711,7 +1758,7 @@ class ProductsController extends AppController
       $ig_bank_modes = $ProductName[0]["ig_bank_modes"];
       $this->set('ig_bank_modes', $ig_bank_modes);
 
-      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個"];
+      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個", "本" => "本"];
       $this->set('arrTanni', $arrTanni);
 
       $arrig_bank_modes = [
@@ -1722,6 +1769,17 @@ class ProductsController extends AppController
 
       $arrStatusLength = ["0" => "有", "1" => "無"];
       $this->set('arrStatusLength', $arrStatusLength);
+
+      $arrkensakigu = [
+        "" => "",
+        "デジタルノギス" => "デジタルノギス",
+        "ルーペ" => "ルーペ",
+        "テーパーゲージ" => "テーパーゲージ",
+        "厚みゲージ" => "厚みゲージ",
+        "金尺" => "金尺",
+        "デジタル計り" => "デジタル計り"
+      ];
+      $this->set('arrkensakigu', $arrkensakigu);
 
       $Customers = $this->Customers->find()
       ->where(['id' => $ProductName[0]['customer_id']])->toArray();
@@ -1797,6 +1855,7 @@ class ProductsController extends AppController
             "length_cut" => $data["length_cut".$i],
             "length_upper_limit" => $data["length_upper_limit".$i],
             "length_lower_limit" => $data["length_lower_limit".$i],
+            "length_measuring_instrument" => $data["length_measuring_instrument".$i],
             "bik" => $data["bik".$i]
           ];
 
@@ -1872,6 +1931,7 @@ class ProductsController extends AppController
             'length_cut' => $Productsmoto[0]["length_cut"],
             'length_upper_limit' => $Productsmoto[0]["length_upper_limit"],
             'length_lower_limit' => $Productsmoto[0]["length_lower_limit"],
+            'length_measuring_instrument' => $Productsmoto[0]["length_measuring_instrument"],
             'ig_bank_modes' => $Productsmoto[0]["ig_bank_modes"],
             'bik' => $Productsmoto[0]["bik"],
             'name' => $Productsmoto[0]["name"],
@@ -1898,6 +1958,7 @@ class ProductsController extends AppController
             'length_cut' => $data["length_cut".$i],
             'length_upper_limit' => $data["length_upper_limit".$i],
             'length_lower_limit' => $data["length_lower_limit".$i],
+            'length_measuring_instrument' => $data["length_measuring_instrument".$i],
             'bik' => $data["bik".$i],
             'name' => $data["name".$i],
             'tanni' => $data["tanni"],
@@ -1956,6 +2017,7 @@ class ProductsController extends AppController
                 'status_length' => $data["status_length".$i],
                 'length_upper_limit' => $data["length_upper_limit".$i],
                 'length_lower_limit' => $data["length_lower_limit".$i],
+                'length_measuring_instrument' => $data["length_measuring_instrument".$i],
                 'bik' => $data["bik".$i],
                 'name' => $data["name".$i],
                 'tanni' => $data["tanni"],

@@ -85,6 +85,7 @@
       <td width="40"><strong>長さ<br>測定<br>有無</strong></td>
         <td width="50"><strong>公差<br>下限</strong></td>
         <td width="50"><strong>公差<br>上限</strong></td>
+        <td width="50"><strong>測定<br>器具</strong></td>
         <td width="120"><strong>備考</strong></td>
       </tr>
       
@@ -99,6 +100,7 @@
       <td><?= h($arrKoushinproduct[$i]["status_length_name"]) ?></td>
       <td><?= h($arrKoushinproduct[$i]["length_lower_limit"]) ?></td>
       <td><?= h($arrKoushinproduct[$i]["length_upper_limit"]) ?></td>
+      <td><?= h($arrKoushinproduct[$i]["length_measuring_instrument"]) ?></td>
       <td><?= h($arrKoushinproduct[$i]["bik"]) ?></td>
       </tr>
 
@@ -112,6 +114,7 @@
       <?= $this->Form->control('length_cut'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["length_cut"], 'label'=>false)) ?>
       <?= $this->Form->control('length_upper_limit'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["length_upper_limit"], 'label'=>false)) ?>
       <?= $this->Form->control('length_lower_limit'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["length_lower_limit"], 'label'=>false)) ?>
+      <?= $this->Form->control('length_measuring_instrument'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["length_measuring_instrument"], 'label'=>false)) ?>
       <?= $this->Form->control('bik'.$i, array('type'=>'hidden', 'value'=>$arrKoushinproduct[$i]["bik"], 'label'=>false)) ?>
       <?= $this->Form->control('num', array('type'=>'hidden', 'value'=>$i, 'label'=>false)) ?>
 

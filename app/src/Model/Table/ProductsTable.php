@@ -112,6 +112,11 @@ class ProductsTable extends Table
             ->allowEmpty('length_lower_limit');
 
         $validator
+            ->scalar('length_measuring_instrument')
+            ->maxLength('length_measuring_instrument', 255)
+            ->allowEmpty('length_measuring_instrument');
+
+        $validator
             ->integer('status_length')
             ->requirePresence('status_length', 'create')
             ->notEmpty('status_length');

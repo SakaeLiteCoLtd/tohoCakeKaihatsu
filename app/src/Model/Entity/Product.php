@@ -15,6 +15,7 @@ use Cake\ORM\Entity;
  * @property float $length_cut
  * @property float|null $length_upper_limit
  * @property float|null $length_lower_limit
+ * @property string|null $length_measuring_instrument
  * @property int $status_length
  * @property int $status_kensahyou
  * @property int|null $ig_bank_modes
@@ -57,6 +58,7 @@ class Product extends Entity
         'length_cut' => true,
         'length_upper_limit' => true,
         'length_lower_limit' => true,
+        'length_measuring_instrument' => true,
         'status_length' => true,
         'status_kensahyou' => true,
         'ig_bank_modes' => true,

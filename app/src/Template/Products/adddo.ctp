@@ -71,8 +71,9 @@ if($ig_bank_modes == 0){
       <td><strong>長さ（mm）</strong></td>
         <td><strong>カット長さ（mm）</strong></td>
         <td><strong>長さ測定有無</strong></td>
-        <td width="50"><strong>公差下限</strong></td>
-        <td width="50"><strong>公差上限</strong></td>
+        <td ><strong>公差下限</strong></td>
+        <td><strong>公差上限</strong></td>
+        <td><strong>測定器具</strong></td>
         <td width="200"><strong>備考</strong></td>
       </tr>
       
@@ -86,6 +87,7 @@ if($ig_bank_modes == 0){
       <td><?= h(${"status_length_name".$k}) ?></td>
       <td><?= h(${"length_lower_limit".$k}) ?></td>
       <td><?= h(${"length_upper_limit".$k}) ?></td>
+      <td><?= h(${"length_measuring_instrument".$k}) ?></td>
       <td><?= h(${"bik".$k}) ?></td>
 
       <?php endfor;?>

@@ -111,12 +111,13 @@
       <tr>
         <td><strong>品名</strong></td>
         <td width="50"><strong>検査表<br>に表示</strong></td>
-        <td width="50"><strong>長さ（mm）</strong></td>
-        <td width="80"><strong>カット長さ（mm）</strong></td>
+        <td width="20"><strong style="font-size: 9pt">長さ<br>（mm）</strong></td>
+        <td width="20"><strong style="font-size: 9pt">カット<br>長さ<br>（mm）</strong></td>
         <td width="80"><strong>長さ測定<br>有無</strong></td>
-        <td width="50"><strong>※公差下限</strong></td>
-        <td width="50"><strong>※公差上限</strong></td>
-        <td width="200"><strong>※備考</strong></td>
+        <td width="20"><strong style="font-size: 10pt">※公差<br>下限</strong></td>
+       <td width="20"><strong style="font-size: 10pt">※公差<br>上限</strong></td>
+        <td width="20"><strong style="font-size: 10pt">※測定器具</strong></td>
+        <td width="80"><strong>※備考</strong></td>
       </tr>
       
       <?php for($k=1; $k<=$tuikalength; $k++): ?>
@@ -125,15 +126,16 @@
       <td><?= h($name) ?></td>
       <td><?= $this->Form->control('status_kensahyou'.$k, ['options' => $arrStatusKensahyou, 'label'=>false]) ?></td>
       <td><?= $this->Form->control
-      ('length'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true', 'autocomplete'=>"off")) ?></td>
+      ('length'.$k, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true', 'autocomplete'=>"off",'size'=>1)) ?></td>
       <td><?= $this->Form->control
-      ('length_cut'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true', 'autocomplete'=>"off")) ?></td>
+      ('length_cut'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true', 'autocomplete'=>"off",'size'=>1)) ?></td>
       <td><?= $this->Form->control('status_length'.$k, ['options' => $arrStatusLength, 'label'=>false]) ?></td>
       <td><?= $this->Form->control
-      ('length_lower_limit'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'autocomplete'=>"off")) ?></td>
+      ('length_lower_limit'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'autocomplete'=>"off",'size'=>1)) ?></td>
       <td><?= $this->Form->control
-      ('length_upper_limit'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'autocomplete'=>"off")) ?></td>
-        <td><?= $this->Form->control('bik'.$k, array('type'=>'text', 'label'=>false)) ?></td>
+      ('length_upper_limit'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'autocomplete'=>"off",'size'=>1)) ?></td>
+      <td><?= $this->Form->control('length_measuring_instrument'.$k, ['options' => $arrkensakigu, 'label'=>false]) ?></td>
+        <td><?= $this->Form->control('bik'.$k, array('type'=>'text', 'label'=>false, 'size'=>7)) ?></td>
       </tr>
 
       <?php endfor;?>

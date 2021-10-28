@@ -52,6 +52,7 @@ for($i=0; $i<$count_length; $i++){
   ${"Length_size".$i} = json_encode(${"arrLength_size".$i}['size']);//jsに配列を受け渡すために変換
   ${"Length_upper".$i} = json_encode(${"arrLength_size".$i}['upper']);//jsに配列を受け渡すために変換
   ${"Length_lower".$i} = json_encode(${"arrLength_size".$i}['lower']);//jsに配列を受け渡すために変換
+  ${"Length_measuring_instrument".$i} = json_encode(${"arrLength_size".$i}['length_measuring_instrument']);//jsに配列を受け渡すために変換
 }
 
 ?>
@@ -69,13 +70,14 @@ for($i=0; $i<$count_length; $i++){
           var size_length = <?php echo ${"Length_size".$i}; ?>;
           var upper_length = <?php echo ${"Length_upper".$i}; ?>;
           var lower_length = <?php echo ${"Length_lower".$i}; ?>;
+          var length_measuring_instrument = <?php echo ${"Length_measuring_instrument".$i}; ?>;
           var nagasa = <?php echo $nagasa; ?>;
           var haihun = <?php echo $haihun; ?>;
 
           $("#size<?php echo $num_length; ?>").text(size_length);
           $("#upper<?php echo $num_length; ?>").text(upper_length);
           $("#lower<?php echo $num_length; ?>").text(lower_length);
-          $("#measuring_instrument<?php echo $num_length; ?>").text(haihun);
+          $("#measuring_instrument<?php echo $num_length; ?>").text(length_measuring_instrument);
 
         }
 

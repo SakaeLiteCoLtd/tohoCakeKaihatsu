@@ -26,6 +26,7 @@ class ProductsFixture extends TestFixture
         'length_cut' => ['type' => 'float', 'length' => null, 'precision' => null, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => ''],
         'length_upper_limit' => ['type' => 'float', 'length' => null, 'precision' => null, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '長さの上限'],
         'length_lower_limit' => ['type' => 'float', 'length' => null, 'precision' => null, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '長さの下限'],
+        'length_measuring_instrument' => ['type' => 'string', 'length' => 255, 'null' => true, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'status_length' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '長さ測定有無　0=有、1=無', 'precision' => null, 'autoIncrement' => null],
         'status_kensahyou' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '0=表示、1=非表示', 'precision' => null, 'autoIncrement' => null],
         'ig_bank_modes' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '幅測定器のモード番号', 'precision' => null, 'autoIncrement' => null],
@@ -67,6 +68,7 @@ class ProductsFixture extends TestFixture
                 'length_cut' => 1,
                 'length_upper_limit' => 1,
                 'length_lower_limit' => 1,
+                'length_measuring_instrument' => 'Lorem ipsum dolor sit amet',
                 'status_length' => 1,
                 'status_kensahyou' => 1,
                 'ig_bank_modes' => 1,
@@ -76,9 +78,9 @@ class ProductsFixture extends TestFixture
                 'customer_id' => 1,
                 'is_active' => 1,
                 'delete_flag' => 1,
-                'created_at' => '2021-10-23 03:04:49',
+                'created_at' => '2021-10-24 22:43:29',
                 'created_staff' => 1,
-                'updated_at' => '2021-10-23 03:04:49',
+                'updated_at' => '2021-10-24 22:43:29',
                 'updated_staff' => 1
             ],
         ];

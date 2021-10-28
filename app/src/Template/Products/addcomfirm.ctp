@@ -75,9 +75,10 @@ if($ig_bank_modes == 0){
       <td><strong>長さ（mm）</strong></td>
         <td><strong>カット長さ（mm）</strong></td>
         <td><strong>長さ測定有無</strong></td>
-        <td width="50"><strong>公差下限</strong></td>
-        <td width="50"><strong>公差上限</strong></td>
-        <td width="200"><strong>備考</strong></td>
+        <td ><strong>公差下限</strong></td>
+        <td><strong>公差上限</strong></td>
+        <td><strong>測定器具</strong></td>
+       <td width="200"><strong>備考</strong></td>
       </tr>
       
       <?php for($k=1; $k<=$tuikalength; $k++): ?>
@@ -97,6 +98,8 @@ if($ig_bank_modes == 0){
       <?= $this->Form->control('length_lower_limit'.$k, array('type'=>'hidden', 'value'=>${"length_lower_limit".$k}, 'label'=>false)) ?>
       <td><?= h(${"length_upper_limit".$k}) ?></td>
       <?= $this->Form->control('length_upper_limit'.$k, array('type'=>'hidden', 'value'=>${"length_upper_limit".$k}, 'label'=>false)) ?>
+      <td><?= h(${"length_measuring_instrument".$k}) ?></td>
+      <?= $this->Form->control('length_measuring_instrument'.$k, array('type'=>'hidden', 'value'=>${"length_measuring_instrument".$k}, 'label'=>false)) ?>
       <td><?= h(${"bik".$k}) ?></td>
       <?= $this->Form->control('bik'.$k, array('type'=>'hidden', 'value'=>${"bik".$k}, 'label'=>false)) ?>
 
