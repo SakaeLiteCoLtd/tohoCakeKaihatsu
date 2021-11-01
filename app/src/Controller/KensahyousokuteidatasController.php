@@ -28,8 +28,9 @@ class KensahyousokuteidatasController extends AppController
   		// 認証なしでアクセスできるアクションの指定
       $this->Auth->allow(["menu"
       , "addform"
-      , "kensakumenu", "kensakupre", "kensakuikkatsupre", "kensakudate"
+      , "kensakumenu", "kensakupre", "kensakuikkatsupre", "kensakudate", "kensakugouki"
       , "kensakuhyouji", "kensatyuproducts", "kensatyuichiran", "kensakuikkatsujouken"
+      , "kensakuikkatsugouki"
       , "kensakuikkatsudate", "kensakuikkatsuichiran"]);
   	}
 
@@ -1581,6 +1582,13 @@ class KensahyousokuteidatasController extends AppController
             }
             $this->set('gaikan'.$j,${"gaikan".$j});
 
+            if(isset($data['kangou'.$j])){
+              ${"kangou".$j} = $data['kangou'.$j];
+            }else{
+              ${"kangou".$j} = "";
+            }
+            $this->set('kangou'.$j,${"kangou".$j});
+  
             if(isset($data['weight'.$j])){
               ${"weight".$j} = $data['weight'.$j];
             }else{
@@ -1667,6 +1675,13 @@ class KensahyousokuteidatasController extends AppController
             ${"gaikan".$j} = "";
           }
           $this->set('gaikan'.$j,${"gaikan".$j});
+
+          if(isset($data['kangou'.$j])){
+            ${"kangou".$j} = $data['kangou'.$j];
+          }else{
+            ${"kangou".$j} = "";
+          }
+          $this->set('kangou'.$j,${"kangou".$j});
 
           if(isset($data['weight'.$j])){
             ${"weight".$j} = $data['weight'.$j];
@@ -1771,6 +1786,7 @@ class KensahyousokuteidatasController extends AppController
             'datetime' => date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00",
             'staff_id' => $Users[0]["staff_id"],
             'appearance' => $data['gaikan'.$j],
+            'kangou' => $data['kangou'.$j],
             'result_weight' => $data['weight'.$j],
             'judge' => ${"gouhi".$j},
             "delete_flag" => 0,
@@ -1931,6 +1947,13 @@ class KensahyousokuteidatasController extends AppController
           }
           $this->set('gaikan'.$j,${"gaikan".$j});
 
+          if(isset($data['kangou'.$j])){
+            ${"kangou".$j} = $data['kangou'.$j];
+          }else{
+            ${"kangou".$j} = "";
+          }
+          $this->set('kangou'.$j,${"kangou".$j});
+
           if(isset($data['weight'.$j])){
             ${"weight".$j} = $data['weight'.$j];
           }else{
@@ -2053,6 +2076,13 @@ class KensahyousokuteidatasController extends AppController
             ${"gaikan".$j} = "";
           }
           $this->set('gaikan'.$j,${"gaikan".$j});
+
+          if(isset($data['kangou'.$j])){
+            ${"kangou".$j} = $data['kangou'.$j];
+          }else{
+            ${"kangou".$j} = "";
+          }
+          $this->set('kangou'.$j,${"kangou".$j});
 
           if(isset($data['weight'.$j])){
             ${"weight".$j} = $data['weight'.$j];
@@ -2208,6 +2238,13 @@ class KensahyousokuteidatasController extends AppController
             }
             $this->set('gaikan'.$j,${"gaikan".$j});
 
+            if(isset($data['kangou'.$j])){
+              ${"kangou".$j} = $data['kangou'.$j];
+            }else{
+              ${"kangou".$j} = "";
+            }
+            $this->set('kangou'.$j,${"kangou".$j});
+  
             if(isset($data['weight'.$j])){
               ${"weight".$j} = $data['weight'.$j];
             }else{
@@ -2389,6 +2426,13 @@ class KensahyousokuteidatasController extends AppController
           ${"gaikan".$j} = "";
         }
         $this->set('gaikan'.$j,${"gaikan".$j});
+
+        if(isset($data['kangou'.$j])){
+          ${"kangou".$j} = $data['kangou'.$j];
+        }else{
+          ${"kangou".$j} = "";
+        }
+        $this->set('kangou'.$j,${"kangou".$j});
 
         if(isset($data['weight'.$j])){
           ${"weight".$j} = $data['weight'.$j];
@@ -2609,6 +2653,13 @@ class KensahyousokuteidatasController extends AppController
         }
         $this->set('gaikan'.$j,${"gaikan".$j});
 
+        if(isset($data['kangou'.$j])){
+          ${"kangou".$j} = $data['kangou'.$j];
+        }else{
+          ${"kangou".$j} = "";
+        }
+        $this->set('kangou'.$j,${"kangou".$j});
+
         if(isset($data['weight'.$j])){
           ${"weight".$j} = $data['weight'.$j];
         }else{
@@ -2694,6 +2745,8 @@ class KensahyousokuteidatasController extends AppController
       $this->set('user_code'.$j,${"user_code".$j});
       ${"gaikan".$j} = "";
       $this->set('gaikan'.$j,${"gaikan".$j});
+      ${"kangou".$j} = "";
+      $this->set('kangou'.$j,${"kangou".$j});
       ${"weight".$j} = "";
       $this->set('weight'.$j,${"weight".$j});
       ${"gouhi".$j} = "";
@@ -3380,6 +3433,8 @@ class KensahyousokuteidatasController extends AppController
         ${"staff_hyouji".$n} = $Staffs[0]['name'];
         $this->set('staff_hyouji'.$n,${"staff_hyouji".$n});
 
+        ${"kangou".$n} = $InspectionDataResultParents[$j]['kangou'];
+        $this->set('kangou'.$n,${"kangou".$n});
         ${"appearance".$n} = $InspectionDataResultParents[$j]['appearance'];
         $this->set('appearance'.$n,${"appearance".$n});
         ${"result_weight".$n} = $InspectionDataResultParents[$j]['result_weight'];
@@ -3632,6 +3687,8 @@ class KensahyousokuteidatasController extends AppController
         ${"user_code".$n} = $Users[0]["user_code"];
         $this->set('user_code'.$n,${"user_code".$n});
 
+        ${"kangou".$n} = $InspectionDataResultParents[$j]['kangou'];
+        $this->set('kangou'.$n,${"kangou".$n});
         ${"appearance".$n} = $InspectionDataResultParents[$j]['appearance'];
         $this->set('appearance'.$n,${"appearance".$n});
         ${"result_weight".$n} = $InspectionDataResultParents[$j]['result_weight'];
@@ -3832,6 +3889,8 @@ class KensahyousokuteidatasController extends AppController
           $this->set('product_id'.$m,${"product_id".$n});
           $this->set('lengthhyouji'.$m,${"lengthhyouji".$n});
 
+          ${"kangou".$n} = $data['kangou'.$n];
+          $this->set('kangou'.$m,${"kangou".$n});
           ${"appearance".$n} = $data['appearance'.$n];
           $this->set('appearance'.$m,${"appearance".$n});
           ${"result_weight".$n} = $data['result_weight'.$n];
@@ -4050,6 +4109,8 @@ class KensahyousokuteidatasController extends AppController
         $this->set('product_id'.$n,${"product_id".$n});
         $this->set('lengthhyouji'.$n,${"lengthhyouji".$n});
 
+        ${"kangou".$n} = $data['kangou'.$n];
+        $this->set('kangou'.$n,${"kangou".$n});
         ${"appearance".$n} = $data['appearance'.$n];
         $this->set('appearance'.$n,${"appearance".$n});
         ${"result_weight".$n} = $data['result_weight'.$n];
@@ -4126,6 +4187,7 @@ class KensahyousokuteidatasController extends AppController
             'datetime' => $data['datekensaku']." ".$data['datetime'.$j].":00",
             'staff_id' => $Users[0]["staff_id"],
             'product_id' => $data['product_id'.$j],
+            'kangou' => $data['kangou'.$j],
             'appearance' => $data['appearance'.$j],
             'result_weight' => $data['result_weight'.$j],
             'judge' => $data['judge'.$j],
@@ -4782,6 +4844,8 @@ class KensahyousokuteidatasController extends AppController
 
         ${"appearance".$n} = $InspectionDataResultParents[$j]['appearance'];
         $this->set('appearance'.$n,${"appearance".$n});
+        ${"kangou".$n} = $InspectionDataResultParents[$j]['kangou'];
+        $this->set('kangou'.$n,${"kangou".$n});
         ${"result_weight".$n} = $InspectionDataResultParents[$j]['result_weight'];
         $this->set('result_weight'.$n,${"result_weight".$n});
         ${"judge".$n} = $InspectionDataResultParents[$j]['judge'];
@@ -4843,9 +4907,14 @@ class KensahyousokuteidatasController extends AppController
       $idarr2 = explode("_",$idarr1[0]);
 
       $product_code = $data["product_code"];
+      $machine_num = $data["machine_num"];
       $datetime = $idarr2[1]." ".$idarr2[2];
       $product_code_datetime = $product_code."_".$idarr2[1]."_".$idarr2[2];
-
+/*
+      echo "<pre>";
+      print_r($machine_num);
+      echo "</pre>";
+*/
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheaderkensaku($product_code_datetime);
       $this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -4912,12 +4981,13 @@ class KensahyousokuteidatasController extends AppController
         }
 
       }elseif($idarr2[0] == "ondo" || $idarr2[0] == "toujitu"){
-
+        
         $hyouji_flag = 2;
         $this->set('hyouji_flag', $hyouji_flag);
+        $machine_datetime_product = $machine_num."_".$idarr2[1]."_".$idarr2[2]."_".$product_code;
 
         $htmlkensahyougenryouheader = new htmlkensahyouprogram();
-        $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderkensaku($product_code_datetime);
+        $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderkensaku($machine_datetime_product);
         $this->set('htmlgenryouheader',$htmlgenryouheader);
   
         $product_code_ini = substr($product_code, 0, 11);
@@ -5029,10 +5099,6 @@ class KensahyousokuteidatasController extends AppController
               }
   
           }
-  
-          echo "<pre>";
-          print_r($datetime);
-          echo "</pre>";
   /*
           echo "<pre>";
           print_r("toujitu");
@@ -5284,6 +5350,8 @@ class KensahyousokuteidatasController extends AppController
 
         ${"appearance".$n} = $InspectionDataResultParents[$j]['appearance'];
         $this->set('appearance'.$n,${"appearance".$n});
+        ${"kangou".$n} = $InspectionDataResultParents[$j]['kangou'];
+        $this->set('kangou'.$n,${"kangou".$n});
         ${"result_weight".$n} = $InspectionDataResultParents[$j]['result_weight'];
         $this->set('result_weight'.$n,${"result_weight".$n});
         ${"judge".$n} = $InspectionDataResultParents[$j]['judge'];

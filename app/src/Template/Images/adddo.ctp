@@ -14,7 +14,7 @@
      echo $htmlimgmenu;
 ?>
  <br><br><br>
- <?= $this->Form->create($inspectionStandardSizeParents, ['url' => ['action' => 'index']]) ?>
+ <?= $this->Form->create($inspectionStandardSizeParents, ['url' => ['action' => 'ichiran']]) ?>
   <br>
   <fieldset>
       <legend><strong style="font-size: 15pt; color:red"><?= __('検査表画像新規登録') ?></strong></legend>

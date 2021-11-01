@@ -26,6 +26,7 @@ class KensahyougenryousController extends AppController
   		// 認証なしでアクセスできるアクションの指定
       $this->Auth->allow(["menu"
       ,"kensakupre", "kensakuhyouji"
+      ,"kensakugouki"
       , "kensakumenu", "kensakurirekipre"]);
       
 /*

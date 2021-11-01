@@ -15,6 +15,7 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $datetime
  * @property int $staff_id
  * @property int $appearance
+ * @property int $kangou
  * @property float $result_weight
  * @property int $judge
  * @property int $delete_flag
@@ -25,7 +26,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\InspectionDataConditonParent $inspection_data_conditon_parent
  * @property \App\Model\Entity\InspectionStandardSizeParent $inspection_standard_size_parent
- * @property \App\Model\Entity\ProductConditonParent $product_condition_parent
+ * @property \App\Model\Entity\ProductConditionParent $product_condition_parent
  * @property \App\Model\Entity\Product $product
  * @property \App\Model\Entity\Staff $staff
  * @property \App\Model\Entity\InspectionDataResultChild[] $inspection_data_result_children
@@ -51,6 +52,7 @@ class InspectionDataResultParent extends Entity
         'datetime' => true,
         'staff_id' => true,
         'appearance' => true,
+        'kangou' => true,
         'result_weight' => true,
         'judge' => true,
         'delete_flag' => true,

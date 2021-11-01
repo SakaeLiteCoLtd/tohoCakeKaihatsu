@@ -58,7 +58,9 @@
   <tbody class='sample non-sample'>
     <tr>
     <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
-          <td style="border-style: none;"><?= __("　") ?></td>
+    <td style="border-style: none;"><?= __("　") ?></td>
+      <td style="border-style: none;"><div><?= $this->Form->submit('編集', array('name' => 'edit')); ?></div></td>
+      <td style="border-style: none;"><?= __("　") ?></td>
       <td style="border-style: none;"><div><?= $this->Form->submit('削除', array('name' => 'delete')); ?></div></td>
     </tr>
   </tbody>
@@ -68,7 +70,8 @@
 
 <table>
   <tbody class='sample non-sample'>
-    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('検査表画像を訂正する場合は、このデータを削除し、新規登録しなおしてください。') ?></strong></td></tr>
+  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('検査表画像を更新する場合は「編集」から進んでください　　　　　　　　　　　　　　　　') ?></strong></td></tr>
+  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('検査表画像を新たに登録しなおす場合は「削除」をして、新しい画像を新規登録してください') ?></strong></td></tr>
   </tbody>
 </table>
 

@@ -103,7 +103,19 @@ class ImagesController extends AppController
 
         return $this->redirect(['action' => 'deleteconfirm']);
 
-      }elseif(isset($data["name"])){
+      }elseif(isset($data["edit"])){
+
+          $id = $data["id"];
+  
+          if(!isset($_SESSION)){
+            session_start();
+          }
+          $_SESSION['inspectionStandardSizeParentdata'] = array();
+          $_SESSION['inspectionStandardSizeParentdata'] = $id;
+  
+          return $this->redirect(['action' => 'editform']);
+  
+        }elseif(isset($data["name"])){
 
         $product_name_length = explode(";",$data["name"]);
         $name = $product_name_length[0];
@@ -722,5 +734,284 @@ class ImagesController extends AppController
       }
       $this->set('arrProduct_name_list', $arrProduct_name_list);
  }
+
+    public function editform()
+    {
+      $inspectionStandardSizeParents = $this->InspectionStandardSizeParents->newEntity();
+      $this->set('inspectionStandardSizeParents', $inspectionStandardSizeParents);
+
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+/*
+      echo "<pre>";
+      print_r($_SESSION);
+      echo "</pre>";
+*/
+      $id = $_SESSION['inspectionStandardSizeParentdata'];
+      $this->set('id', $id);
+
+      $inspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+      ->where(['InspectionStandardSizeParents.id' => $id])
+      ->toArray();
+      $this->set(compact('inspectionStandardSizeParents'));
+
+      $product_code = $inspectionStandardSizeParents[0]["product"]["product_code"];
+      $this->set('product_code', $product_code);
+      $product_name = $inspectionStandardSizeParents[0]["product"]["name"];
+      $this->set('product_name', $product_name);
+      
+      $mes = "";
+      $this->set('mes',$mes);
+      $mess = "";
+      $this->set('mess',$mess);
+
+      $Data = $this->request->query('s');
+
+      if(isset($Data["product_code"])){
+
+        $product_code = $Data["product_code"];
+        $this->set('product_code', $product_code);
+
+      }elseif(isset($Data["mess"])){
+
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+
+        $session = $this->request->getSession();
+        $_SESSION = $session->read();
+        $product_code = $_SESSION["img_product_code_edit"];
+        $this->set('product_code', $product_code);
+        $id = $_SESSION["img_id_edit"];
+        $this->set('id', $id);
+
+      }else{
+
+        $session = $this->request->getSession();
+        $_SESSION = $session->read();
+        $product_code = $_SESSION["img_product_code_edit"];
+        $this->set('product_code', $product_code);
+        $id = $_SESSION["img_id_edit"];
+        $this->set('id', $id);
+
+      }
+
+      if(!isset($_SESSION)){
+        session_start();
+      }
+      header('Expires:-1');
+      header('Cache-Control:');
+      header('Pragma:');
+
+      print_r("");
+
+    }
+
+    public function editcomfirm()
+    {
+      $inspectionStandardSizeParents = $this->InspectionStandardSizeParents->newEntity();
+      $this->set('inspectionStandardSizeParents', $inspectionStandardSizeParents);
+
+      $session = $this->request->getSession();
+      $_SESSION = $session->read();
+/*
+      echo "<pre>";
+      print_r($_SESSION);
+      echo "</pre>";
+*/
+      $id = $_SESSION["inspectionStandardSizeParentdata"];
+      $this->set('id', $id);
+      $inspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+      ->where(['InspectionStandardSizeParents.id' => $id])
+      ->toArray();
+      $this->set(compact('inspectionStandardSizeParents'));
+
+      $product_code = $inspectionStandardSizeParents[0]["product"]["product_code"];
+      $this->set('product_code', $product_code);
+      $product_name = $inspectionStandardSizeParents[0]["product"]["name"];
+      $this->set('product_name', $product_name);
+
+      $ProductNs = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $product_name = $ProductNs[0]["name"];
+      $this->set('product_name',$product_name);
+
+      $data = $this->request->getData();
+
+      $fileName = $_FILES['upfile']['tmp_name'];
+
+      if(substr($_FILES['upfile']["name"], -4) !== ".JPG"
+      && substr($_FILES['upfile']["name"], -4) !== ".jpg"
+      && substr($_FILES['upfile']["name"], -5) !== ".JPEG"
+      && substr($_FILES['upfile']["name"], -5) !== ".jpeg"){
+
+        return $this->redirect(['action' => 'editform',
+        's' => ['mess' => "※拡張子が「.JPG」でないファイルが選択されました。"]]);
+
+      }
+/*
+      echo "<pre>";
+      print_r($_FILES);
+      echo "</pre>";
+*/
+      if($_FILES['upfile']['error'] == 0){
+
+        if($_FILES['upfile']['size']>2000000){
+
+          return $this->redirect(['action' => 'editform',
+          's' => ['mess' => "※画像サイズが大き過ぎます（アップロードできるサイズの上限は２MBです）"]]);
+
+        }else{
+
+          if(move_uploaded_file($_FILES['upfile']["tmp_name"],"img/kensahyouimg/".$_FILES['upfile']["name"])){
+
+          }else{
+      
+            return $this->redirect(['action' => 'editform',
+            's' => ['mess' => "※ファイルが読み込まれませんでした。"]]);
+      
+          }
+
+        }
+
+      }elseif($_FILES['upfile']['error'] == 1){
+
+        return $this->redirect(['action' => 'editform',
+        's' => ['mess' => "※画像サイズが大き過ぎます（アップロードできるサイズの上限は２MBです）"]]);
+        
+      }else{
+
+        return $this->redirect(['action' => 'editform',
+        's' => ['mess' => "※ファイルが読み込まれませんでした。"]]);
+
+      }
+
+      $selectfilename = $_FILES['upfile']["name"];
+      $filename = str_replace(' ', '_', $selectfilename);
+
+      if($selectfilename !== $filename){//半角スペースが含まれている場合はNG
+
+        return $this->redirect(['action' => 'editform',
+        's' => ['mess' => "※ファイル名に半角スペースが含まれています。ファイル名に半角スペースを使用しないでください。"]]);
+        }
+        
+			$gif = "kensahyouimg/".$selectfilename;//ローカル
+			$this->set('gif',$gif);
+
+    }
+
+    public function editdo()
+    {
+      $inspectionStandardSizeParents = $this->InspectionStandardSizeParents->newEntity();
+      $this->set('inspectionStandardSizeParents', $inspectionStandardSizeParents);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $data = $this->request->getData();
+
+      $id = $data['id'];
+      $this->set('product_code', $data['product_code']);
+      $this->set('gif', $data['gif']);
+
+      $Products = $this->Products->find()
+      ->where(['product_code' => $data['product_code']])->toArray();
+      $product_id = $Products[0]['id'];
+      $product_name = $Products[0]["name"];
+      $this->set('product_name',$product_name);
+
+      $InspectionStandardSizeParentversion = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+      ->where(['product_code' => $data['product_code'], 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
+      ->order(["version"=>"DESC"])->toArray();
+
+      if(isset($InspectionStandardSizeParentversion[0])){
+        $version = $InspectionStandardSizeParentversion[0]["version"] + 1;
+      }else{
+        $version = 1;
+      }
+
+      $InspectionStandardSizeParentsmoto = $this->InspectionStandardSizeParents->find()
+      ->where(['id' => $data['id']])->toArray();
+
+      $arrupdateInspectionStandardSizeParentsmoto = [
+        'product_id' => $InspectionStandardSizeParentsmoto[0]["product_id"],
+        'image_file_name_dir' => $InspectionStandardSizeParentsmoto[0]["image_file_name_dir"],
+        'inspection_standard_size_code' => $InspectionStandardSizeParentsmoto[0]["inspection_standard_size_code"],
+        'version' => $InspectionStandardSizeParentsmoto[0]["version"],
+        'is_active' => 1,
+        'delete_flag' => 1,
+        'created_at' => $InspectionStandardSizeParentsmoto[0]["created_at"]->format("Y-m-d H:i:s"),
+        'created_staff' => $InspectionStandardSizeParentsmoto[0]["created_staff"],
+        'updated_at' => date("Y-m-d H:i:s"),
+        'updated_staff' => $staff_id
+          ];
+
+      $code_date = date('y').date('m').date('d');
+      $InspectionStandardSizeParentcodes = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+      ->where(['product_code' => $data['product_code'], 'inspection_standard_size_code like' => $code_date."%"])
+      ->toArray();
+
+      $renban = count($InspectionStandardSizeParentcodes) + 1;
+      $inspection_standard_size_code = $code_date."-".$renban;
+
+      $arrtourokuinspectionStandardSizeParent = array();
+      $arrtourokuinspectionStandardSizeParent = [
+        'product_id' => $product_id,
+        'image_file_name_dir' => $data["gif"],
+        'inspection_standard_size_code' => $inspection_standard_size_code,
+        'version' => $version,
+        'is_active' => 0,
+        'delete_flag' => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        'created_staff' => $staff_id
+      ];
+
+      $connection = ConnectionManager::get('default');//トランザクション1
+      // トランザクション開始2
+      $connection->begin();//トランザクション3
+      try {//トランザクション4
+
+        if ($this->InspectionStandardSizeParents->updateAll(
+          [ 'image_file_name_dir' => $arrtourokuinspectionStandardSizeParent["image_file_name_dir"],
+          'inspection_standard_size_code' => $arrtourokuinspectionStandardSizeParent["inspection_standard_size_code"],
+          'version' => $arrtourokuinspectionStandardSizeParent["version"],
+          'updated_at' => date('Y-m-d H:i:s'),
+            'updated_staff' => $staff_id],
+          ['id'  => $id])){
+      
+          //新しいデータを登録
+          $InspectionStandardSizeParents = $this->InspectionStandardSizeParents
+          ->patchEntity($this->InspectionStandardSizeParents->newEntity(), $arrupdateInspectionStandardSizeParentsmoto);
+          if ($this->InspectionStandardSizeParents->save($InspectionStandardSizeParents)){
+        
+          $connection->commit();// コミット5
+          $mes = "以下のように更新されました。";
+          $this->set('mes',$mes);
+
+        } else {
+
+          $mes = "※更新されませんでした";
+          $this->set('mes',$mes);
+          $this->Flash->error(__('The data could not be saved. Please, try again.'));
+          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+        }
+
+        } else {
+
+          $mes = "※更新されませんでした";
+          $this->set('mes',$mes);
+          $this->Flash->error(__('The data could not be saved. Please, try again.'));
+          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+        }
+
+      } catch (Exception $e) {//トランザクション7
+      //ロールバック8
+        $connection->rollback();//トランザクション9
+      }//トランザクション10
+
+    }
 
 }

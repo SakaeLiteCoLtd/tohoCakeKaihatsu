@@ -11,7 +11,7 @@ use Cake\Validation\Validator;
  *
  * @property \App\Model\Table\InspectionDataConditonParentsTable|\Cake\ORM\Association\BelongsTo $InspectionDataConditonParents
  * @property \App\Model\Table\InspectionStandardSizeParentsTable|\Cake\ORM\Association\BelongsTo $InspectionStandardSizeParents
- * @property \App\Model\Table\ProductConditonParentsTable|\Cake\ORM\Association\BelongsTo $ProductConditonParents
+ * @property \App\Model\Table\ProductConditionParentsTable|\Cake\ORM\Association\BelongsTo $ProductConditionParents
  * @property \App\Model\Table\ProductsTable|\Cake\ORM\Association\BelongsTo $Products
  * @property \App\Model\Table\StaffsTable|\Cake\ORM\Association\BelongsTo $Staffs
  * @property \App\Model\Table\InspectionDataResultChildrenTable|\Cake\ORM\Association\HasMany $InspectionDataResultChildren
@@ -94,6 +94,11 @@ class InspectionDataResultParentsTable extends Table
             ->integer('appearance')
             ->requirePresence('appearance', 'create')
             ->notEmpty('appearance');
+
+        $validator
+            ->integer('kangou')
+            ->requirePresence('kangou', 'create')
+            ->notEmpty('kangou');
 
         $validator
             ->numeric('result_weight')

@@ -181,16 +181,20 @@ class htmlkensahyouprogram extends AppController
        $this->html = $html;
    }
 
-   public function genryouheaderkensaku($product_code_datetime)
+   public function genryouheaderkensaku($machine_datetime_product)
    {
 
-    $arrproduct_code_datetime = explode("_",$product_code_datetime);
-    $product_code = $arrproduct_code_datetime[0];
-    $datetime = $arrproduct_code_datetime[1]." ".$arrproduct_code_datetime[2];
+    $arrmachine_datetime_product = explode("_",$machine_datetime_product);
+    $machine_num = $arrmachine_datetime_product[0];
+    $datetime = $arrmachine_datetime_product[1]." ".$arrmachine_datetime_product[2];
+    $product_code = $arrmachine_datetime_product[3];
+    if(isset($arrmachine_datetime_product[4])){
+      $product_code = $arrmachine_datetime_product[3]."_".$arrmachine_datetime_product[4];
+    }
 
     $product_code_ini = substr($product_code, 0, 11);
     $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
-    ->where(['product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0
+    ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0
     , 'ProductConditionParents.created_at <=' => $datetime])
     ->order(["ProductConditionParents.created_at"=>"DESC"])->toArray();
 /*

@@ -95,9 +95,13 @@ echo $this->Html->css('kensahyou');
           echo "<td>\n";
           echo "</td>\n";
           }
-         echo "<td>\n";
-         echo ${"recycled_mixing_ratio".$j.$i};
-         echo "</td>\n";
+
+          if($i==1){
+            echo "<td rowspan=${"tuikagenryou".$j}>\n";
+            echo ${"recycled_mixing_ratio".$j.$i};
+            echo "</td>\n";
+             }
+ 
          echo "</tr>\n";
 
        }

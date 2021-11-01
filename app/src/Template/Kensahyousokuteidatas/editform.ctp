@@ -41,23 +41,24 @@ echo $this->Html->css('kensahyou');
     <td width="42" rowspan='8'>No.</td>
   </tr>
   <tr>
-    <td width="100" rowspan='7'><font size='2'><br></font><br><br>日付<br><font size='2'><?= h($datekensaku) ?></font><br><br><br>時間</td>
+    <td width="96" rowspan='7'><font size='2'><br></font><br><br>日付<br><font size='2'><?= h($datekensaku) ?></font><br><br><br>時間</td>
   </tr>
   <tr>
-  <td width="72" rowspan='6'>長さ</td>
+  <td width="65" rowspan='6'>長さ</td>
   </tr>
 
 <tr>
-  <td style='width:120'>測定箇所</td>
+  <td style='width:110'>測定箇所</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
     <td style='width:80'><?= h(${"size_name".$i}) ?></td>
   <?php endfor;?>
 
-  <td width="70" rowspan='3'>外観</td>
+  <td width="55" rowspan='3'>外観</td>
+  <td width="55" rowspan='3'>勘合</td>
   <td width="70" rowspan='3'>重量<br>（目安）</td>
-  <td width="60" rowspan='5'>合否<br>判定</td>
-  <td width="49" rowspan='5'><font size='2'>削<br>除<br>チ<br>ェ<br>ッ<br>ク</td>
+  <td width="45" rowspan='5' style="font-size: 10pt">合否<br>判定</td>
+  <td width="40" rowspan='5'><font size='2'>削<br>除<br>チ<br>ェ<br>ッ<br>ク</td>
 
 </tr>
 <tr>
@@ -86,7 +87,8 @@ echo $this->Html->css('kensahyou');
       <td><?= h(${"lower_limit".$i}) ?></td>
     <?php endfor;?>
 
-        <td width="70">良 ・ 不</td>
+    <td width="55" style="font-size: 10pt">良 ・ 不</td>
+    <td width="55" style="font-size: 10pt">良 ・ 不</td>
         <td width="70">g / 本</td>
 
 </tr>
@@ -97,8 +99,9 @@ echo $this->Html->css('kensahyou');
       <td style='font-size: 8pt'><?= h(${"measuring_instrument".$i}) ?></td>
     <?php endfor;?>
 
-    <td width="70">目視</td>
-    <td style='width:70; border-top-style:none; font-size: 11pt'>デジタル秤</td>
+    <td width="55">目視</td>
+    <td width="55">目視</td>
+    <td style='width:55; border-top-style:none; font-size: 9pt'>デジタル秤</td>
 
 </tr>
 
@@ -116,11 +119,11 @@ echo $this->Html->css('kensahyou');
 
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
 
-  <td style='width:100; border-top-style:none'><?= $this->Form->control('datetime'.$j, array('type'=>'time', 'value'=>${"datetime".$j}, 'label'=>false)) ?></td>
-  <td style='width:72; border-top-style:none'><?= h(${"length".$j}) ?></td>
+  <td style='width:96; border-top-style:none'><?= $this->Form->control('datetime'.$j, array('type'=>'time', 'value'=>${"datetime".$j}, 'label'=>false)) ?></td>
+  <td style='width:65; border-top-style:none'><?= h(${"length".$j}) ?></td>
   <?= $this->Form->control('product_id'.$j, array('type'=>'hidden', 'value'=>${"product_id".$j}, 'label'=>false)) ?>
 
-  <td style='width:120; border-top-style:none'>
+  <td style='width:110; border-top-style:none'>
     <font size='1.8'><?= h("社員コード：") ?>
     </font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'value'=>${"user_code".$j}, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'required' => 'true')) ?>
   </td>
@@ -131,10 +134,11 @@ echo $this->Html->css('kensahyou');
     </td>
   <?php endfor;?>
 
-  <td style='width:70; border-top-style:none'><?= $this->Form->control('appearance'.$j, ['options' => $arrGaikan, 'value'=>${"appearance".$j}, 'label'=>false]) ?></td>
+  <td style='width:55; border-top-style:none'><?= $this->Form->control('appearance'.$j, ['options' => $arrGaikan, 'value'=>${"appearance".$j}, 'label'=>false]) ?></td>
+  <td style='width:55; border-top-style:none'><?= $this->Form->control('kangou'.$j, ['options' => $arrGaikan, 'value'=>${"kangou".$j}, 'label'=>false]) ?></td>
   <td style='width:70; border-top-style:none'><?= $this->Form->control('result_weight'.$j, array('type'=>'text', 'value'=>${"result_weight".$j}, 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'required' => 'true')) ?></td>
-  <td style='width:60; border-top-style:none'>-</td>
-  <td style='width:49; border-top-style:none'><?= $this->Form->control('delete_sokutei'.$j, array('type'=>'checkbox', 'label'=>false)) ?></td>
+  <td style='width:45; border-top-style:none'>-</td>
+  <td style='width:40; border-top-style:none'><?= $this->Form->control('delete_sokutei'.$j, array('type'=>'checkbox', 'label'=>false)) ?></td>
 
 </table>
 

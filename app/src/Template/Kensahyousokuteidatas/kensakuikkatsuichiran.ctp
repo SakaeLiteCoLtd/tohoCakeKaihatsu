@@ -30,28 +30,30 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->create($product, ['url' => ['action' => 'kensakuikkatsujouken']]) ?>
 
 <?=$this->Form->hidden("product_code", array('type' => 'value', 'value' => $product_code)); ?>
+<?=$this->Form->hidden("machine_num", array('type' => 'value', 'value' => $machine_num)); ?>
 
   <table class="white">
 
   <tr>
-  <td width="61" rowspan='9' style='font-size: 10pt'>画像<br>・<br>規格<br>条件</td>
-  <td width="61" rowspan='8' style='font-size: 10pt'>原料<br>・<br>温度<br>条件</td>
-  <td width="61" rowspan='7' style='font-size: 10pt'>成形<br>条件</td>
+  <td width="52" rowspan='9' style='font-size: 10pt'>画像<br>・<br>規格<br>条件</td>
+  <td width="52" rowspan='8' style='font-size: 10pt'>原料<br>・<br>温度<br>条件</td>
+  <td width="52" rowspan='7' style='font-size: 10pt'>成形<br>条件</td>
   </tr>
   <tr>
     <td width="80" rowspan='6'>時間</td>
   </tr>
 
 <tr>
-  <td style='width:110'>測定箇所</td>
+  <td style='width:103'>測定箇所</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
     <td style='width:80'><?= h(${"size_name".$i}) ?></td>
   <?php endfor;?>
 
-  <td width="75" rowspan='3'>外観</td>
-  <td width="75" rowspan='3'>重量<br>（目安）</td>
-  <td width="59" rowspan='5'>合否<br>判定</td>
+  <td width="60" rowspan='3'>外観</td>
+  <td width="60" rowspan='3'>勘合</td>
+  <td width="65" rowspan='3'>重量<br>（目安）</td>
+  <td width="55" rowspan='5'>合否<br>判定</td>
 
 </tr>
 <tr>
@@ -76,8 +78,9 @@ echo $this->Html->css('kensahyou');
       <td><?= h(${"lower_limit".$i}) ?></td>
     <?php endfor;?>
 
-        <td width="75">良 ・ 不</td>
-        <td width="75">g / 本</td>
+    <td width="60" style="font-size: 10pt">良 ・ 不</td>
+    <td width="60" style="font-size: 10pt">良 ・ 不</td>
+        <td width="65">g / 本</td>
 
 </tr>
 <tr>
@@ -87,8 +90,9 @@ echo $this->Html->css('kensahyou');
       <td style='font-size: 8pt'><?= h(${"measuring_instrument".$i}) ?></td>
     <?php endfor;?>
 
-    <td width="75">目視</td>
-    <td style='width:75; border-top-style:none; font-size: 9pt'>デジタル秤</td>
+    <td width="60">目視</td>
+    <td width="60">目視</td>
+    <td style='width:65; border-top-style:none; font-size: 9pt'>デジタル秤</td>
 
 </tr>
 
@@ -115,7 +119,7 @@ echo $this->Html->css('kensahyou');
 <?php
 $numkikakucheck = $numkikakucheck + $arr_numnakama_kikaku[$numkikakucount];
 
-echo "<td style='width:61; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_kikaku[$numkikakucount]>";
+echo "<td style='width:52; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_kikaku[$numkikakucount]>";
 echo $this->Form->submit("表示" , ['action'=>'kensakusyousai', 'name' => "kikaku_".${"datetime".$j}]) ;
 //echo " ";
 echo "</td>";
@@ -131,7 +135,7 @@ $numkikakucount = $numkikakucount + 1;
   <?php
   $numondocheck = $numondocheck + $arr_numnakama_ondo[$numondocount];
 
-  echo "<td style='width:61; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_ondo[$numondocount]>";
+  echo "<td style='width:52; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_ondo[$numondocount]>";
   echo $this->Form->submit("表示" , ['action'=>'kensakusyousai', 'name' => "ondo_".${"datetime".$j}]) ;
   //echo " ";
   echo "</td>";
@@ -147,7 +151,7 @@ $numkikakucount = $numkikakucount + 1;
 <?php
 $numtoujitucheck = $numtoujitucheck + $arr_numnakama_toujitu[$numtoujitucount];
 
-echo "<td style='width:61; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_toujitu[$numtoujitucount]>";
+echo "<td style='width:52; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_toujitu[$numtoujitucount]>";
 echo $this->Form->submit("表示" , ['action'=>'kensakusyousai', 'name' => "toujitu_".${"datetime".$j}]) ;
 //echo " ";
 echo "</td>";
@@ -160,7 +164,7 @@ $numtoujitucount = $numtoujitucount + 1;
 
 <td style='width:80; border-top-style:none; font-size: 10pt'><?= h(${"datetime".$j}) ?></td></td>
 
-<td style='width:110; border-top-style:none; font-size: 8pt'><?= h("長さ：".${"length".$j}) ?><br><?= h(${"staff_hyouji".$j}) ?></td>
+<td style='width:103; border-top-style:none; font-size: 8pt'><?= h("長さ：".${"length".$j}) ?><br><?= h(${"staff_hyouji".$j}) ?></td>
 
 <?php for($i=1; $i<=10; $i++): ?>
   <td style='width:80; border-top-style:none'><?= h(${"result_size".$j.$i}) ?></td>
@@ -178,11 +182,18 @@ if(${"judge".$j} == 1){
 }else{
   ${"gouhihyouji".$j} = "合";
 }
+
+if(${"kangou".$j} == 1){
+  ${"kangouhyouji".$j} = "不";
+}else{
+  ${"kangouhyouji".$j} = "良";
+}
 ?>
 
-<td style='width:75; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
-<td style='width:75; border-top-style:none'><?= h(${"result_weight".$j}) ?></td>
-<td style='width:59; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+<td style='width:60; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
+<td style='width:60; border-top-style:none'><?= h(${"kangouhyouji".$j}) ?></td>
+<td style='width:65; border-top-style:none'><?= h(${"result_weight".$j}) ?></td>
+<td style='width:55; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
 
 </tr>
 

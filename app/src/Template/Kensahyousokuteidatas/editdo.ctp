@@ -32,12 +32,12 @@ echo $this->Html->css('kensahyou');
  <table class="white">
 
   <tr>
-    <td width="50" rowspan='8'>No.</td>
+    <td width="45" rowspan='8'>No.</td>
   </tr>
   <tr>
-    <td width="78" rowspan='7'>時間</td>
+    <td width="69" rowspan='7'>時間</td>
   </tr>
-  <td width="75" rowspan='6'>長さ</td>
+  <td width="67" rowspan='6'>長さ</td>
 
 <tr>
   <td style='width:120'>測定箇所</td>
@@ -46,9 +46,10 @@ echo $this->Html->css('kensahyou');
     <td style='width:84'><?= h(${"size_name".$i}) ?></td>
   <?php endfor;?>
 
-  <td width="80" rowspan='3'>外観</td>
-  <td width="80" rowspan='3'>重量<br>（目安）</td>
-  <td width="61" rowspan='5'>合否<br>判定</td>
+  <td width="65" rowspan='3'>外観</td>
+  <td width="65" rowspan='3'>勘合</td>
+  <td width="65" rowspan='3'>重量<br>（目安）</td>
+  <td width="45" rowspan='5' style="font-size: 10pt">合否<br>判定</td>
 
 </tr>
 <tr>
@@ -73,8 +74,9 @@ echo $this->Html->css('kensahyou');
       <td><?= h(${"lower_limit".$i}) ?></td>
     <?php endfor;?>
 
-        <td width="80">良 ・ 不</td>
-        <td width="80">g / 本</td>
+    <td width="65" style="font-size: 10pt">良 ・ 不</td>
+    <td width="65" style="font-size: 10pt">良 ・ 不</td>
+        <td width="65">g / 本</td>
 
 </tr>
 <tr>
@@ -84,8 +86,9 @@ echo $this->Html->css('kensahyou');
       <td style='font-size: 8pt'><?= h(${"measuring_instrument".$i}) ?></td>
     <?php endfor;?>
 
-    <td width="80">目視</td>
-    <td style='width:80; border-top-style:none; font-size: 11pt'>デジタル秤</td>
+    <td width="65">目視</td>
+    <td width="65">目視</td>
+    <td style='width:55; border-top-style:none; font-size: 9pt'>デジタル秤</td>
 
 </tr>
 
@@ -95,9 +98,9 @@ echo $this->Html->css('kensahyou');
 
   <table class="form">
 
-  <td style='width:50; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
-  <td style='width:78; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
-  <td style='width:75; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
+  <td style='width:45; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
+  <td style='width:69; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
+  <td style='width:67; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
 <td style='width:120; border-top-style:none'><font size='1.8'><?= h("社員コード：") ?></font><br><?= h(${"user_code".$j}) ?></td>
 
   <?php for($i=1; $i<=10; $i++): ?>
@@ -128,11 +131,19 @@ echo $this->Html->css('kensahyou');
   }else{
     ${"gouhihyouji".$j} = "合";
   }
+
+  if(${"kangou".$j} == 1){
+    ${"kangouhyouji".$j} = "不";
+  }else{
+    ${"kangouhyouji".$j} = "良";
+  }
+
   ?>
 
-  <td style='width:80; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
-  <td style='width:80; border-top-style:none'><?= h(${"result_weight".$j}) ?></td>
-  <td style='width:61; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+<td style='width:65; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
+<td style='width:65; border-top-style:none'><?= h(${"kangouhyouji".$j}) ?></td>
+  <td style='width:65; border-top-style:none'><?= h(${"result_weight".$j}) ?></td>
+  <td style='width:45; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
 
 </table>
 
