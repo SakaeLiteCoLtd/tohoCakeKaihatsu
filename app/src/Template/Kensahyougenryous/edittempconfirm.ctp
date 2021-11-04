@@ -120,11 +120,9 @@ echo $this->Html->css('kensahyou');
 
 <?php for($j=1; $j<=$countseikeiki; $j++): ?>
 
-<?= $this->Form->control('product_material_machine_id'.$j, array('type'=>'hidden', 'value'=>${"product_material_machine_id".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('cylinder_name'.$j, array('type'=>'hidden', 'value'=>${"cylinder_name".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('extrude_roatation'.$j, array('type'=>'hidden', 'value'=>${"extrude_roatation".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('extrusion_load'.$j, array('type'=>'hidden', 'value'=>${"extrusion_load".$j}, 'label'=>false)) ?>
-<?= $this->Form->control('product_material_machine_id'.$j, array('type'=>'hidden', 'value'=>${"product_material_machine_id".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('idmoto'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('idmoto'.$j), 'label'=>false)) ?>
 <?= $this->Form->control('screw'.$j, array('type'=>'hidden', 'value'=>${"screw".$j}, 'label'=>false)) ?>
 

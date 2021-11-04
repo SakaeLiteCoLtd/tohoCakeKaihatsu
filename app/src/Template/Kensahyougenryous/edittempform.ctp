@@ -27,6 +27,7 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$staff_name, 'label'=>false)) ?>
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('tuikaseikeiki', array('type'=>'hidden', 'value'=>$tuikaseikeiki, 'label'=>false)) ?>
+<?= $this->Form->control('tuikaseikeikimax', array('type'=>'hidden', 'value'=>$tuikaseikeikimax, 'label'=>false)) ?>
 <?= $this->Form->control('delete_flag', array('type'=>'hidden', 'value'=>$delete_flag, 'label'=>false)) ?>
 <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
 <?= $this->Form->control('machine_num_moto', array('type'=>'hidden', 'value'=>$machine_num_moto, 'label'=>false)) ?>
@@ -119,16 +120,19 @@ echo $this->Html->css('kensahyou');
 
 <br>
 
-<?php for($j=1; $j<=$countseikeiki; $j++): ?>
+<?php 
+$m = 0;
+ ?>
 
-  
-<?= $this->Form->control('product_material_machine_id'.$j, array('type'=>'hidden', 'value'=>${"product_material_machine_id".$j}, 'label'=>false)) ?>
-<?= $this->Form->control('cylinder_name'.$j, array('type'=>'hidden', 'value'=>${"cylinder_name".$j}, 'label'=>false)) ?>
-<?= $this->Form->control('idmoto'.$j, array('type'=>'hidden', 'value'=>${"idmoto".$j}, 'label'=>false)) ?>
+<?php for($j=1; $j<=$tuikaseikeikimax; $j++): ?>
 
 <?php if (${"delete_seikeiki".$j} > 0): ?>
 
 <?php else : ?>
+
+  <?php 
+$m = $m + 1;
+ ?>
 
 <table>
   <tr class="parents">
@@ -154,7 +158,7 @@ echo $this->Html->css('kensahyou');
 
         if($i==1){
           echo "<td rowspan=3>\n";
-          echo "${"cylinder_name".$j}\n";
+          echo "${"cylinder_name_tmp".$j}\n";
           echo "</td>\n";
         }
 
@@ -174,31 +178,31 @@ echo $this->Html->css('kensahyou');
 
         if($i == 1){
           echo "<td>\n";
-          echo "<input type='text' value=${"temp_1".$j} style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_1".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_1".$m." value=${"temp_1".$j}>\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' value=${"temp_2".$j} style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_2".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_2".$m." value=${"temp_2".$j}>\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' value=${"temp_3".$j} style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_3".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_3".$m." value=${"temp_3".$j}>\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' value=${"temp_4".$j} style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_4".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_4".$m." value=${"temp_4".$j}>\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' value=${"temp_5".$j} style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_5".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_5".$m." value=${"temp_5".$j}>\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' value=${"temp_6".$j} style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_6".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_6".$m." value=${"temp_6".$j}>\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' value=${"temp_7".$j} style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_7".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_7".$m." value=${"temp_7".$j}>\n";
           echo "</td>\n";
           echo "<td style='border-right-style:none; text-align:right'>\n";
-          echo "<input type='text' value=${"extrude_roatation".$j} style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=extrude_roatation".$j.">\n";
+          echo "<input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=extrude_roatation".$m." value=${"extrude_roatation".$j}>\n";
           echo "(rpm)/</td>\n";
           echo "<td style='border-left-style:none; text-align:left'>\n";
-          echo "<input type='text' value=${"extrusion_load".$j} style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=extrusion_load".$j.">\n";
+          echo "<input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=extrusion_load".$m." value=${"extrusion_load".$j}>\n";
           echo "(A)</td>\n";
         }elseif($i == 2){
           echo "<td>\n";
@@ -249,7 +253,7 @@ echo $this->Html->css('kensahyou');
               echo "<td>\n";
               echo "<input type='text' style='width:70px' required name=pickup_speed value=$pickup_speed>\n";
               echo "</td>\n";
-              echo "<td><div align='center'><select name=screw_mesh_1".$j.">\n";
+              echo "<td><div align='center'><select name=screw_mesh_1".$m.">\n";
               foreach ($arrScrewMesh as $key => $value){
                 if($key == ${"screw_mesh_1".$j}){
                   echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
@@ -258,7 +262,7 @@ echo $this->Html->css('kensahyou');
                 }
               }
               echo "</select></div></td>\n";
-              echo "<td><div align='center'><select name=screw_number_1".$j.">\n";
+              echo "<td><div align='center'><select name=screw_number_1".$m.">\n";
               foreach ($arrScrewNumber as $key => $value){
                 if($key == ${"screw_number_1".$j}){
                   echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
@@ -267,7 +271,7 @@ echo $this->Html->css('kensahyou');
                 }
               }
               echo "</select></div></td>\n";
-              echo "<td rowspan=3><div align='center'><select name=screw".$j.">\n";
+              echo "<td rowspan=3><div align='center'><select name=screw".$m.">\n";
               foreach ($arrScrew as $key => $value){
                 if($key == ${"screw".$j}){
                   echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
@@ -279,7 +283,7 @@ echo $this->Html->css('kensahyou');
             }elseif($i==2){
               echo "<td>\n";
               echo "</td>\n";
-              echo "<td><div align='center'><select name=screw_mesh_2".$j.">\n";
+              echo "<td><div align='center'><select name=screw_mesh_2".$m.">\n";
               foreach ($arrScrewMesh as $key => $value){
                 if($key == ${"screw_mesh_2".$j}){
                   echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
@@ -288,7 +292,7 @@ echo $this->Html->css('kensahyou');
                 }
               }
               echo "</select></div></td>\n";
-              echo "<td><div align='center'><select name=screw_number_2".$j.">\n";
+              echo "<td><div align='center'><select name=screw_number_2".$m.">\n";
               foreach ($arrScrewNumber as $key => $value){
                 if($key == ${"screw_number_2".$j}){
                   echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
@@ -301,7 +305,7 @@ echo $this->Html->css('kensahyou');
               echo "<td>\n";
               echo "± 1.0\n";
               echo "</td>\n";
-              echo "<td><div align='center'><select name=screw_mesh_3".$j.">\n";
+              echo "<td><div align='center'><select name=screw_mesh_3".$m.">\n";
               foreach ($arrScrewMesh as $key => $value){
                 if($key == ${"screw_mesh_3".$j}){
                   echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
@@ -310,7 +314,7 @@ echo $this->Html->css('kensahyou');
                 }
               }
               echo "</select></div></td>\n";
-              echo "<td><div align='center'><select name=screw_number_3".$j.">\n";
+              echo "<td><div align='center'><select name=screw_number_3".$m.">\n";
               foreach ($arrScrewNumber as $key => $value){
                 if($key == ${"screw_number_3".$j}){
                   echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
@@ -323,7 +327,7 @@ echo $this->Html->css('kensahyou');
         }elseif($i==1){
           echo "<td style='border-bottom-style:none;'>\n";
           echo "</td>\n";
-          echo "<td><div align='center'><select name=screw_mesh_1".$j.">\n";
+          echo "<td><div align='center'><select name=screw_mesh_1".$m.">\n";
           foreach ($arrScrewMesh as $key => $value){
             if($key == ${"screw_mesh_1".$j}){
               echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
@@ -332,7 +336,7 @@ echo $this->Html->css('kensahyou');
             }
           }
           echo "</select></div></td>\n";
-          echo "<td><div align='center'><select name=screw_number_1".$j.">\n";
+          echo "<td><div align='center'><select name=screw_number_1".$m.">\n";
           foreach ($arrScrewNumber as $key => $value){
             if($key == ${"screw_number_1".$j}){
               echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
@@ -341,7 +345,7 @@ echo $this->Html->css('kensahyou');
             }
           }
           echo "</select></div></td>\n";
-          echo "<td rowspan=3><div align='center'><select name=screw".$j.">\n";
+          echo "<td rowspan=3><div align='center'><select name=screw".$m.">\n";
           foreach ($arrScrew as $key => $value){
             if($key == ${"screw".$j}){
               echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
@@ -353,7 +357,7 @@ echo $this->Html->css('kensahyou');
         }elseif($i==2){
           echo "<td style='border-bottom-style:none; border-top-style:none;'>\n";
           echo "</td>\n";
-          echo "<td><div align='center'><select name=screw_mesh_2".$j.">\n";
+          echo "<td><div align='center'><select name=screw_mesh_2".$m.">\n";
           foreach ($arrScrewMesh as $key => $value){
             if($key == ${"screw_mesh_2".$j}){
               echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
@@ -362,7 +366,7 @@ echo $this->Html->css('kensahyou');
             }
           }
           echo "</select></div></td>\n";
-          echo "<td><div align='center'><select name=screw_number_2".$j.">\n";
+          echo "<td><div align='center'><select name=screw_number_2".$m.">\n";
           foreach ($arrScrewNumber as $key => $value){
             if($key == ${"screw_number_2".$j}){
               echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
@@ -374,7 +378,7 @@ echo $this->Html->css('kensahyou');
         }else{
           echo "<td style='border-top-style:none;'>\n";
           echo "</td>\n";
-          echo "<td><div align='center'><select name=screw_mesh_3".$j.">\n";
+          echo "<td><div align='center'><select name=screw_mesh_3".$m.">\n";
           foreach ($arrScrewMesh as $key => $value){
             if($key == ${"screw_mesh_3".$j}){
               echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
@@ -383,7 +387,7 @@ echo $this->Html->css('kensahyou');
             }
           }
           echo "</select></div></td>\n";
-          echo "<td><div align='center'><select name=screw_number_3".$j.">\n";
+          echo "<td><div align='center'><select name=screw_number_3".$m.">\n";
           foreach ($arrScrewNumber as $key => $value){
             if($key == ${"screw_number_3".$j}){
               echo "<option value=$key selected>$value</option>";//入力値を初期値に持ってくる
