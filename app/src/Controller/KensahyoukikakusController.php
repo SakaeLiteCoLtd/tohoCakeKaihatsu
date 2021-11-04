@@ -448,7 +448,6 @@ echo "</pre>";
 
         if(strlen($data['size_name'.$i]) > 0){
 
-          $num_max = $num_max + 1;
 
           $tourokuInspectionStandardSizeChildren[] = [
             "inspection_standard_size_parent_id" => $data['inspection_standard_size_parent_id'],
@@ -463,6 +462,8 @@ echo "</pre>";
             "created_staff" => $staff_id
           ];
 
+        }elseif($num_max == 0){
+          $num_max = $i;
         }
 
       }
@@ -471,7 +472,7 @@ echo "</pre>";
       $tourokuInspectionStandardSizeChildren[] = [
         "inspection_standard_size_parent_id" => $data['inspection_standard_size_parent_id'],
         "size_name" => "長さ",
-        "size_number" => $num_max + 1,
+        "size_number" => $num_max,
         "size" => 0,
         "upper_limit" => 0,
         "lower_limit" => 0,
@@ -1050,6 +1051,8 @@ echo "</pre>";
   
                 $updateInspectionStandardSizeChildren = array();
 
+                }elseif($num_max == 0){
+                  $num_max = $i;
                 }
   
                 if(strlen($data['id'.$i]) > 0){
@@ -1068,7 +1071,7 @@ echo "</pre>";
             $updateInspectionStandardSizeChildren = [
               "inspection_standard_size_parent_id" => $data['inspection_standard_size_parent_id'],
               "size_name" => "長さ",
-              "size_number" => $num_max + 1,
+              "size_number" => $num_max,
               "size" => 0,
               "upper_limit" => 0,
               "lower_limit" => 0,
@@ -1099,8 +1102,6 @@ echo "</pre>";
             //ロールバック8
               $connection->rollback();//トランザクション9
             }//トランザクション10
-
-
 
       }else{//削除の場合
 

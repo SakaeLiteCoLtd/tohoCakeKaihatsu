@@ -54,6 +54,7 @@ class KensahyougenryousController extends AppController
      $this->ProductConditionParents = TableRegistry::get('ProductConditionParents');
      $this->ProductMaterialMachines = TableRegistry::get('ProductMaterialMachines');
      $this->ProductMachineMaterials = TableRegistry::get('ProductMachineMaterials');
+     $this->ProductConditonChildren = TableRegistry::get('ProductConditonChildren');
 
      if(!isset($_SESSION)){//フォーム再送信の確認対策
        session_start();
@@ -318,11 +319,29 @@ class KensahyougenryousController extends AppController
         $this->set('product_code', $product_code);
         $machine_num = $data["machine_num"];
         $this->set('machine_num', $machine_num);
-
+/*
+        echo "<pre>";
+        print_r($data);
+        echo "</pre>";
+  */
       }
+
+      $product_code_ini = substr($product_code, 0, 11);
+      $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
+      ->where(['product_code like' => $product_code_ini.'%', 
+      'ProductConditionParents.is_active' => 0,
+      'ProductConditionParents.delete_flag' => 0])
+      ->order(["machine_num"=>"ASC"])->toArray();
+
+      $arrGouki = array();
+      for($k=0; $k<count($ProductConditionParents); $k++){
+        $array = array($ProductConditionParents[$k]["machine_num"] => $ProductConditionParents[$k]["machine_num"]);
+        $arrGouki = $arrGouki + $array;
+      }
+      $this->set('arrGouki', $arrGouki);
 /*
       echo "<pre>";
-      print_r($data);
+      print_r($arrGouki);
       echo "</pre>";
 */
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
@@ -681,8 +700,8 @@ class KensahyougenryousController extends AppController
           $_SESSION['kensahyougenryoudata'] = array();
           $_SESSION['kensahyougenryoudata'] = $data;
 
-          return $this->redirect(['action' => 'addcomfirm',
-          's' => ['data' => 'addcomfirm']]);
+          return $this->redirect(['action' => 'addtempform',
+          's' => ['data' => 'addtempform']]);
         }
 
       }else{//最初にこの画面に来た時
@@ -715,7 +734,7 @@ class KensahyougenryousController extends AppController
  
     }
 
-    public function addcomfirm()
+    public function addtempform()
     {
       $product = $this->Products->newEntity();
       $this->set('product', $product);
@@ -724,7 +743,7 @@ class KensahyougenryousController extends AppController
       $_SESSION = $session->read();
 
       $arrayKensahyougenryoudatas = $_SESSION['kensahyougenryoudata'];
-    //  $_SESSION['kensahyougenryoudata'] = array();
+   //   $_SESSION['kensahyougenryoudata'] = array();
 
       $data = $arrayKensahyougenryoudatas;
 /*
@@ -817,9 +836,182 @@ class KensahyougenryousController extends AppController
 
       }
 
+      $countseikeiki = $data["tuikaseikeiki"];
+      $this->set('countseikeiki', $countseikeiki);
+
+      $arrScrewMesh = [
+        '-' => '',
+        '#30' => '#30',
+        '#40' => '#40',
+        '#60' => '#60',
+        '#80' => '#80',
+        '#100' => '#100'
+              ];
+      $this->set('arrScrewMesh',$arrScrewMesh);
+
+      $arrScrewNumber = [
+        '-' => '',
+        '0枚(無し)' => '0枚(無し)',
+        '1枚' => '1枚',
+        '2枚' => '2枚',
+        '3枚' => '3枚'
+              ];
+      $this->set('arrScrewNumber',$arrScrewNumber);
+
+      $arrScrew = [
+        'フルフライト' => 'フルフライト',
+        'ミキシング' => 'ミキシング',
+        'ダルメージ' => 'ダルメージ'
+              ];
+      $this->set('arrScrew',$arrScrew);
+
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
+
     }
 
-    public function adddo()
+    public function addtempcomfirm()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->getData();
+      /*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $staff_id = $data["staff_id"];
+      $this->set('staff_id', $staff_id);
+      $staff_name = $data["staff_name"];
+      $this->set('staff_name', $staff_name);
+
+      $product_code = $data["product_code"];
+      $this->set('product_code', $product_code);
+      $machine_num = $data["machine_num"];
+      $this->set('machine_num', $machine_num);
+
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
+
+      $tuikaseikeiki = $data["tuikaseikeiki"];
+      $this->set('tuikaseikeiki', $tuikaseikeiki);
+
+      for($j=1; $j<=$tuikaseikeiki; $j++){
+
+        ${"tuikagenryou".$j} = $data["tuikagenryou".$j];
+        $this->set('tuikagenryou'.$j, ${"tuikagenryou".$j});
+
+        if(isset($data['cylinder_name'.$j])){
+          ${"cylinder_name".$j} = $data['cylinder_name'.$j];
+          $this->set('cylinder_name'.$j,${"cylinder_name".$j});
+        }else{
+          ${"cylinder_name".$j} = "";
+          $this->set('cylinder_name'.$j,${"cylinder_name".$j});
+        }
+
+        if(isset($data["recycled_mixing_ratio".$j])){
+          ${"recycled_mixing_ratio".$j} = $data["recycled_mixing_ratio".$j];
+          $this->set('recycled_mixing_ratio'.$j,${"recycled_mixing_ratio".$j});
+        }else{
+          ${"recycled_mixing_ratio".$j} = "";
+          $this->set('recycled_mixing_ratio'.$j,${"recycled_mixing_ratio".$j});
+        }
+
+        for($i=1; $i<=${"tuikagenryou".$j}; $i++){
+
+          if(isset($data["material_name".$j.$i])){
+            ${"material_name".$j.$i} = $data["material_name".$j.$i];
+            $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+
+            $Materials = $this->Materials->find()
+            ->where(['name' => $data["material_name".$j.$i]])->toArray();
+
+            ${"material_id".$j.$i} = $Materials[0]["id"];
+            $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+
+          }else{
+            ${"material_id".$j.$i} = "";
+            $this->set('material_id'.$j.$i,${"material_id".$j.$i});
+            ${"material_name".$j.$i} = "";
+            $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+          }
+
+          if(isset($data["mixing_ratio".$j.$i])){
+            ${"mixing_ratio".$j.$i} = $data["mixing_ratio".$j.$i];
+            $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
+          }else{
+            ${"mixing_ratio".$j.$i} = "";
+            $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
+          }
+
+          if(isset($data["dry_temp".$j.$i])){
+            ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
+            $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+          }else{
+            ${"dry_temp".$j.$i} = "";
+            $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+          }
+
+          if(isset($data["dry_hour".$j.$i])){
+            ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
+            $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
+          }else{
+            ${"dry_hour".$j.$i} = "";
+            $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
+          }
+
+        }
+
+      }
+
+      $countseikeiki = $data["countseikeiki"];
+      $this->set('countseikeiki', $countseikeiki);
+      $pickup_speed = $data["pickup_speed"];
+      $this->set('pickup_speed', $pickup_speed);
+
+      for($k=0; $k<$countseikeiki; $k++){
+
+        $j = $k + 1;
+        ${"cylinder_name".$j} = $data['cylinder_name'.$j];
+        $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
+
+        for($i=1; $i<=7; $i++){
+          ${"temp_".$i.$j} = $data['temp_'.$i.$j];
+          $this->set('temp_'.$i.$j, ${"temp_".$i.$j});
+        }
+
+        ${"extrude_roatation".$j} = $data['extrude_roatation'.$j];
+        $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
+        ${"extrusion_load".$j} = $data['extrusion_load'.$j];
+        $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
+
+        ${"screw_mesh_1".$j} = $data['screw_mesh_1'.$j];
+        $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
+        ${"screw_number_1".$j} = $data['screw_number_1'.$j];
+        $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
+        ${"screw_mesh_2".$j} = $data['screw_mesh_2'.$j];
+        $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
+        ${"screw_number_2".$j} = $data['screw_number_2'.$j];
+        $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
+        ${"screw_mesh_3".$j} = $data['screw_mesh_3'.$j];
+        $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
+        ${"screw_number_3".$j} = $data['screw_number_3'.$j];
+        $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
+        ${"screw".$j} = $data['screw'.$j];
+        $this->set('screw'.$j, ${"screw".$j});
+
+      }
+
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
+
+    }
+
+    public function addalldo()
     {
       $product = $this->Products->newEntity();
       $this->set('product', $product);
@@ -870,19 +1062,19 @@ class KensahyougenryousController extends AppController
 
         for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
-          if(isset($data["material_id".$j.$i])){
-            ${"material_id".$j.$i} = $data["material_id".$j.$i];
+          if(isset($data["material_name".$j.$i])){
+            ${"material_name".$j.$i} = $data["material_name".$j.$i];
+            $this->set('material_name'.$j.$i,${"material_name".$j.$i});
+
+            $Materials = $this->Materials->find()
+            ->where(['name' => $data["material_name".$j.$i]])->toArray();
+
+            ${"material_id".$j.$i} = $Materials[0]["id"];
             $this->set('material_id'.$j.$i,${"material_id".$j.$i});
 
           }else{
             ${"material_id".$j.$i} = "";
             $this->set('material_id'.$j.$i,${"material_id".$j.$i});
-          }
-
-          if(isset($data["material_name".$j.$i])){
-            ${"material_name".$j.$i} = $data["material_name".$j.$i];
-            $this->set('material_name'.$j.$i,${"material_name".$j.$i});
-          }else{
             ${"material_name".$j.$i} = "";
             $this->set('material_name'.$j.$i,${"material_name".$j.$i});
           }
@@ -915,6 +1107,48 @@ class KensahyougenryousController extends AppController
 
       }
 
+      $countseikeiki = $data["countseikeiki"];
+      $this->set('countseikeiki', $countseikeiki);
+      $pickup_speed = $data["pickup_speed"];
+      $this->set('pickup_speed', $pickup_speed);
+
+      for($k=0; $k<$countseikeiki; $k++){
+
+        $j = $k + 1;
+        ${"cylinder_name".$j} = $data['cylinder_name'.$j];
+        $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
+
+        for($i=1; $i<=7; $i++){
+          ${"temp_".$i.$j} = $data['temp_'.$i.$j];
+          $this->set('temp_'.$i.$j, ${"temp_".$i.$j});
+        }
+
+        ${"extrude_roatation".$j} = $data['extrude_roatation'.$j];
+        $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
+        ${"extrusion_load".$j} = $data['extrusion_load'.$j];
+        $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
+
+        ${"screw_mesh_1".$j} = $data['screw_mesh_1'.$j];
+        $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
+        ${"screw_number_1".$j} = $data['screw_number_1'.$j];
+        $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
+        ${"screw_mesh_2".$j} = $data['screw_mesh_2'.$j];
+        $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
+        ${"screw_number_2".$j} = $data['screw_number_2'.$j];
+        $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
+        ${"screw_mesh_3".$j} = $data['screw_mesh_3'.$j];
+        $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
+        ${"screw_number_3".$j} = $data['screw_number_3'.$j];
+        $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
+        ${"screw".$j} = $data['screw'.$j];
+        $this->set('screw'.$j, ${"screw".$j});
+
+      }
+
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
+
       $tourokuProductConditionParent = array();
 
       $Products = $this->Products->find()
@@ -922,11 +1156,14 @@ class KensahyougenryousController extends AppController
       $product_id = $Products[0]['id'];
 
       $ProductConditionParents = $this->ProductConditionParents->find()
-      ->where(['product_id' => $product_id, 'machine_num' => $machine_num, 'delete_flag' => 0])->order(["version"=>"DESC"])->toArray();
+      ->where(['product_id' => $product_id, 'machine_num' => $machine_num
+      , 'delete_flag' => 0])->order(["version"=>"DESC"])->toArray();
 
       if(isset($ProductConditionParents[0])){
+
         $version = $ProductConditionParents[0]["version"] + 1;
         $motoid = $ProductConditionParents[0]["id"];
+
       }else{
 
         $product_code_ini = substr($product_code, 0, 11);
@@ -952,7 +1189,8 @@ class KensahyougenryousController extends AppController
 
       $code_date = date('y').date('m').date('d');
       $ProductConditionParents = $this->ProductConditionParents->find()
-      ->where(['product_id' => $product_id, 'machine_num' => $machine_num, 'product_condition_code like' => $code_date."%"])
+      ->where(['product_id' => $product_id, 'machine_num' => $machine_num
+      , 'product_condition_code like' => $code_date."%"])
       ->toArray();
 
       $renban = count($ProductConditionParents) + 1;
@@ -971,6 +1209,7 @@ class KensahyougenryousController extends AppController
       ];
 /*
       echo "<pre>";
+      print_r("ProductConditionParents");
       print_r($tourokuProductConditionParent);
       echo "</pre>";
 */
@@ -995,7 +1234,8 @@ class KensahyougenryousController extends AppController
           }
 
           $ProductConditionParents = $this->ProductConditionParents->find()
-          ->where(['product_id' => $product_id, 'machine_num' => $machine_num, 'version' => $version, 'delete_flag' => 0])->toArray();
+          ->where(['product_id' => $product_id, 'machine_num' => $machine_num
+          , 'version' => $version, 'delete_flag' => 0])->order(["id"=>"DESC"])->toArray();
 
           for($j=1; $j<=$tuikaseikeiki; $j++){
 
@@ -1009,13 +1249,19 @@ class KensahyougenryousController extends AppController
               'created_at' => date("Y-m-d H:i:s"),
               "created_staff" => $staff_id
             ];
-
+/*
+            echo "<pre>";
+            print_r("ProductMaterialMachines");
+            print_r($tourokuProductMaterialMachine);
+            echo "</pre>";
+  */    
             $ProductMaterialMachines = $this->ProductMaterialMachines
             ->patchEntity($this->ProductMaterialMachines->newEntity(), $tourokuProductMaterialMachine);
             if ($this->ProductMaterialMachines->save($ProductMaterialMachines)) {
 
               $ProductMaterialMachines = $this->ProductMaterialMachines->find()
-              ->where(['product_condition_parent_id' => $ProductConditionParents[0]["id"], 'cylinder_number' => $j])->toArray();
+              ->where(['product_condition_parent_id' => $ProductConditionParents[0]["id"]
+              , 'cylinder_number' => $j, "delete_flag" => 0])->order(["id"=>"DESC"])->toArray();
 
               $tourokuProductMachineMaterial = array();
               ${"tuikagenryou".$j} = $data["tuikagenryou".$j];
@@ -1036,16 +1282,64 @@ class KensahyougenryousController extends AppController
                 ];
 
               }
-
+/*
+              echo "<pre>";
+              print_r("ProductMachineMaterial");
+              print_r($tourokuProductMachineMaterial);
+              echo "</pre>";
+  */
               $ProductMachineMaterials = $this->ProductMachineMaterials
               ->patchEntities($this->ProductMachineMaterials->newEntity(), $tourokuProductMachineMaterial);
               if ($this->ProductMachineMaterials->saveMany($ProductMachineMaterials)) {
 
+                $tourokuProductConditonChildren[] = [
+                  "product_material_machine_id" => $ProductMaterialMachines[0]['id'],
+                  "cylinder_number" => $j,
+                  "cylinder_name" => $data['cylinder_name'.$j],
+                  "temp_1" => $data['temp_1'.$j],
+                  "temp_2" => $data['temp_2'.$j],
+                  "temp_3" => $data['temp_3'.$j],
+                  "temp_4" => $data['temp_4'.$j],
+                  "temp_5" => $data['temp_5'.$j],
+                  "temp_6" => $data['temp_6'.$j],
+                  "temp_7" => $data['temp_7'.$j],
+                  "extrude_roatation" => $data['extrude_roatation'.$j],
+                  "extrusion_load" => $data['extrusion_load'.$j],
+                  "pickup_speed" => $data['pickup_speed'],
+                  "screw_mesh_1" => $data['screw_mesh_1'.$j],
+                  "screw_number_1" => $data['screw_number_1'.$j],
+                  "screw_mesh_2" => $data['screw_mesh_2'.$j],
+                  "screw_number_2" => $data['screw_number_2'.$j],
+                  "screw_mesh_3" => $data['screw_mesh_3'.$j],
+                  "screw_number_3" => $data['screw_number_3'.$j],
+                  "screw" => $data['screw'.$j],
+                  "delete_flag" => 0,
+                  'created_at' => date("Y-m-d H:i:s"),
+                  "created_staff" => $staff_id
+                ];
+        
                 if($j >= $tuikaseikeiki){
+/*
+                  echo "<pre>";
+                  print_r("ProductConditonChildren");
+                  print_r($tourokuProductConditonChildren);
+                  echo "</pre>";
+  */  
+                  $ProductConditonChildren = $this->ProductConditonChildren->patchEntities($this->ProductConditonChildren->newEntity(), $tourokuProductConditonChildren);
+                  if ($this->ProductConditonChildren->saveMany($ProductConditonChildren)) {
 
-                  $connection->commit();// コミット5
-                  $mes = "以下のように登録されました。";
-                  $this->set('mes',$mes);
+                    $connection->commit();// コミット5
+                    $mes = "以下のように登録されました。";
+                    $this->set('mes',$mes);
+          
+                  } else {
+          
+                    $this->Flash->error(__('The data could not be saved. Please, try again.'));
+                    throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+                    $mes = "※登録されませんでした";
+                    $this->set('mes',$mes);
+          
+                  }
 
                 }
 
@@ -1341,11 +1635,51 @@ class KensahyougenryousController extends AppController
           
         $tuikaseikeiki = count($ProductMaterialMachines);
         $this->set('tuikaseikeiki', $tuikaseikeiki);
+        $countseikeiki = count($ProductMaterialMachines);
+        $this->set('countseikeiki', $countseikeiki);
 
         for($j=1; $j<=$tuikaseikeiki; $j++){
 
+          ${"product_material_machine_id".$j} = $ProductMaterialMachines[$j - 1]["id"];
+          $this->set('product_material_machine_id'.$j, ${"product_material_machine_id".$j});
           ${"cylinder_name".$j} = $ProductMaterialMachines[$j - 1]["cylinder_name"];
           $this->set('cylinder_name'.$j,${"cylinder_name".$j});
+
+          $ProductConditonChildren = $this->ProductConditonChildren->find()
+          ->where(['product_material_machine_id' => ${"product_material_machine_id".$j}, 'cylinder_name' => ${"cylinder_name".$j}, 'delete_flag' => 0])
+          ->toArray();
+    
+          if(isset($ProductConditonChildren[0])){
+
+            ${"extrude_roatation".$j} = $ProductConditonChildren[0]["extrude_roatation"];
+            $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
+            ${"extrusion_load".$j} = $ProductConditonChildren[0]["extrusion_load"];
+            $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
+
+            for($n=1; $n<8; $n++){
+              ${"temp_".$n.$j} = $ProductConditonChildren[0]["temp_".$n];
+              $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
+            }
+
+            $pickup_speed = $ProductConditonChildren[0]["pickup_speed"];
+            $this->set('pickup_speed', $pickup_speed);
+
+            ${"screw_mesh_1".$j} = $ProductConditonChildren[0]['screw_mesh_1'];
+            $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
+            ${"screw_number_1".$j} = $ProductConditonChildren[0]['screw_number_1'];
+            $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
+            ${"screw_mesh_2".$j} = $ProductConditonChildren[0]['screw_mesh_2'];
+            $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
+            ${"screw_number_2".$j} = $ProductConditonChildren[0]['screw_number_2'];
+            $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
+            ${"screw_mesh_3".$j} = $ProductConditonChildren[0]['screw_mesh_3'];
+            $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
+            ${"screw_number_3".$j} = $ProductConditonChildren[0]['screw_number_3'];
+            $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
+            ${"screw".$j} = $ProductConditonChildren[0]['screw'];
+            $this->set('screw'.$j, ${"screw".$j});
+
+          }
 
           $ProductMachineMaterials = $this->ProductMachineMaterials->find()
           ->where(['product_material_machine_id' => $ProductMaterialMachines[$j - 1]["id"], 'delete_flag' => 0])
@@ -1725,7 +2059,7 @@ class KensahyougenryousController extends AppController
           $_SESSION['updatekensahyougenryoudata'] = array();
           $_SESSION['updatekensahyougenryoudata'] = $data + array("delete_flag" => 0);
 
-          return $this->redirect(['action' => 'editcomfirm']);
+          return $this->redirect(['action' => 'edittempform']);
 
         }else{
 
@@ -2067,7 +2401,7 @@ class KensahyougenryousController extends AppController
 
     }
 
-    public function editcomfirm()
+    public function edittempform()
     {
       $product = $this->Products->newEntity();
       $this->set('product', $product);
@@ -2079,6 +2413,268 @@ class KensahyougenryousController extends AppController
 //      $_SESSION['updatekensahyougenryoudata'] = array();
 
       $data = $arrayKensahyougenryoudatas;
+
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+
+      $staff_id = $data["staff_id"];
+      $this->set('staff_id', $staff_id);
+      $staff_name = $data["staff_name"];
+      $this->set('staff_name', $staff_name);
+
+      $product_code = $data["product_code"];
+      $this->set('product_code', $product_code);
+      $machine_num = $data["machine_num"];
+      $this->set('machine_num', $machine_num);
+      $machine_num_moto = $data["machine_num_moto"];
+      $this->set('machine_num_moto', $machine_num_moto);
+
+      $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+      $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
+    	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
+
+      $tuikaseikeiki = $data["tuikaseikeiki"];
+
+      $n = 0;//成形機の数
+
+      for($j=1; $j<=$tuikaseikeiki; $j++){
+
+        $m = 0;//原料の数
+
+        if(isset($data['cylinder_name'.$j])){
+          ${"cylinder_name".$j} = $data['cylinder_name'.$j];
+          $this->set('cylinder_name'.$n,${"cylinder_name".$j});
+        }else{
+          ${"cylinder_name".$j} = "";
+          $this->set('cylinder_name'.$n,${"cylinder_name".$j});
+        }
+
+        if(!isset($data["delete_seikeiki".$j])){
+
+          ${"delete_seikeiki".$j} = 0;
+          $this->set('delete_seikeiki'.$n,${"delete_seikeiki".$j});
+
+          $n = $n + 1;
+
+          $this->set('tuikaseikeiki', $n);//成形機の数をセット
+/*
+          echo "<pre>";
+          print_r("seikeiki".$j);
+          echo "</pre>";
+*/
+          ${"tuikagenryou".$j} = $data["tuikagenryou".$j];
+
+          for($i=1; $i<=${"tuikagenryou".$j}; $i++){
+
+            if(!isset($data["delete_genryou".$j.$i])){
+              $m = $m + 1;
+
+              $this->set('tuikagenryou'.$n, $m);//原料の数をセット
+
+                if(isset($data["material_name".$j.$i])){
+
+                  $Materials = $this->Materials->find()
+                  ->where(['name' => $data["material_name".$j.$i]])->toArray();
+    
+                  ${"material_name".$j.$i} = $Materials[0]["name"];
+                  $this->set('material_name'.$n.$m,${"material_name".$j.$i});
+                  ${"material_id".$j.$i} = $Materials[0]["id"];
+                  $this->set('material_id'.$n.$m,${"material_id".$j.$i});
+  
+              }else{
+                ${"material_name".$j.$i} = "";
+                $this->set('material_name'.$n.$i,${"material_name".$j.$i});
+                ${"material_id".$j.$i} = "";
+                $this->set('material_id'.$n.$m,${"material_id".$j.$i});
+              }
+
+              if(isset($data["mixing_ratio".$j.$i])){
+                ${"mixing_ratio".$j.$i} = $data["mixing_ratio".$j.$i];
+                $this->set('mixing_ratio'.$n.$m,${"mixing_ratio".$j.$i});
+              }else{
+                ${"mixing_ratio".$j.$i} = "";
+                $this->set('mixing_ratio'.$n.$m,${"mixing_ratio".$j.$i});
+              }
+
+              if(isset($data["dry_temp".$j.$i])){
+                ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
+                $this->set('dry_temp'.$n.$m,${"dry_temp".$j.$i});
+              }else{
+                ${"dry_temp".$j.$i} = "";
+                $this->set('dry_temp'.$n.$m,${"dry_temp".$j.$i});
+              }
+
+              if(isset($data["dry_hour".$j.$i])){
+                ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
+                $this->set('dry_hour'.$n.$m,${"dry_hour".$j.$i});
+              }else{
+                ${"dry_hour".$j.$i} = "";
+                $this->set('dry_hour'.$n.$m,${"dry_hour".$j.$i});
+              }
+
+              if(isset($data["recycled_mixing_ratio".$j.$i])){
+                ${"recycled_mixing_ratio".$j.$i} = $data["recycled_mixing_ratio".$j.$i];
+                $this->set('recycled_mixing_ratio'.$n.$m,${"recycled_mixing_ratio".$j.$i});
+              }else{
+                ${"recycled_mixing_ratio".$j.$i} = "";
+                $this->set('recycled_mixing_ratio'.$n.$m,${"recycled_mixing_ratio".$j.$i});
+              }
+
+            }
+
+          }
+
+          if($m < 1){//成形機削除をせずに成形機内の原料を全て削除していた場合
+            $n = $n - 1;
+            $this->set('tuikaseikeiki', $n);//成形機の数をセット
+          }
+
+        }else{//deleteの場合
+
+          ${"delete_seikeiki".$j} = 1;
+          $this->set('delete_seikeiki'.$n,${"delete_seikeiki".$j});
+
+        }
+
+      }
+
+      $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
+      ->where(['machine_num' => $machine_num, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
+      ->order(["version"=>"DESC"])->toArray();
+
+      if(!isset($ProductConditionParents[0])){//長さ違いのデータがあればそれを持ってくる
+
+        $product_code_ini = substr($product_code, 0, 11);
+        $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
+        ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
+        ->order(["version"=>"DESC"])->toArray();
+
+      }
+
+      if(isset($ProductConditionParents[0])){
+
+        $version = $ProductConditionParents[0]["version"];
+
+        $ProductMaterialMachines= $this->ProductMaterialMachines->find()
+        ->contain(['ProductConditionParents' => ["Products"]])
+        ->where(['Products.product_code' => $product_code,
+        'ProductConditionParents.delete_flag' => 0,
+        'ProductMaterialMachines.delete_flag' => 0,
+        'ProductConditionParents.machine_num' => $machine_num,
+        'ProductConditionParents.version' => $version])
+        ->order(["cylinder_number"=>"ASC"])->toArray();
+
+        if(!isset($ProductMaterialMachines[0])){//長さ違いのデータがあればそれを持ってくる
+
+          $product_code_ini = substr($product_code, 0, 11);
+          $ProductMaterialMachines= $this->ProductMaterialMachines->find()
+          ->contain(['ProductConditionParents' => ["Products"]])
+          ->where(['Products.product_code like' => $product_code_ini.'%',
+          'ProductConditionParents.delete_flag' => 0,
+          'ProductMaterialMachines.delete_flag' => 0,
+          'ProductConditionParents.machine_num' => $machine_num,
+          'ProductConditionParents.version' => $version])
+          ->order(["cylinder_number"=>"ASC"])->toArray();
+  
+        }
+        
+        $countseikeiki = count($ProductMaterialMachines);
+        $this->set('countseikeiki', $countseikeiki);
+
+        for($k=0; $k<$countseikeiki; $k++){
+
+          $j = $k + 1;
+          ${"product_material_machine_id".$j} = $ProductMaterialMachines[$k]["id"];
+          $this->set('product_material_machine_id'.$j, ${"product_material_machine_id".$j});
+
+          $ProductConditonChildren = $this->ProductConditonChildren->find()
+          ->where(['product_material_machine_id' => ${"product_material_machine_id".$j}, 'cylinder_name' => ${"cylinder_name".$j}, 'delete_flag' => 0])
+          ->toArray();
+
+          ${"idmoto".$j} = $ProductConditonChildren[0]["id"];
+          $this->set('idmoto'.$j, ${"idmoto".$j});
+
+          ${"extrude_roatation".$j} = $ProductConditonChildren[0]["extrude_roatation"];
+          $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
+          ${"extrusion_load".$j} = $ProductConditonChildren[0]["extrusion_load"];
+          $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
+
+          for($n=1; $n<8; $n++){
+            ${"temp_".$n.$j} = $ProductConditonChildren[0]["temp_".$n];
+            $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
+          }
+
+          $pickup_speed = $ProductConditonChildren[0]["pickup_speed"];
+          $this->set('pickup_speed', $pickup_speed);
+
+          ${"screw_mesh_1".$j} = $ProductConditonChildren[0]['screw_mesh_1'];
+          $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
+          ${"screw_number_1".$j} = $ProductConditonChildren[0]['screw_number_1'];
+          $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
+          ${"screw_mesh_2".$j} = $ProductConditonChildren[0]['screw_mesh_2'];
+          $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
+          ${"screw_number_2".$j} = $ProductConditonChildren[0]['screw_number_2'];
+          $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
+          ${"screw_mesh_3".$j} = $ProductConditonChildren[0]['screw_mesh_3'];
+          $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
+          ${"screw_number_3".$j} = $ProductConditonChildren[0]['screw_number_3'];
+          $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
+          ${"screw".$j} = $ProductConditonChildren[0]['screw'];
+          $this->set('screw'.$j, ${"screw".$j});
+
+        }
+
+      }else{
+
+        return $this->redirect(['action' => 'kensakupre',
+        's' => ['mess' => "管理No.「".$product_code."」の製品は成形温度登録がされていません。"]]);
+
+      }
+
+      $arrScrewMesh = [
+        '-' => '',
+        '#30' => '#30',
+        '#40' => '#40',
+        '#60' => '#60',
+        '#80' => '#80',
+        '#100' => '#100'
+              ];
+      $this->set('arrScrewMesh',$arrScrewMesh);
+
+      $arrScrewNumber = [
+        '-' => '',
+        '0枚(無し)' => '0枚(無し)',
+        '1枚' => '1枚',
+        '2枚' => '2枚',
+        '3枚' => '3枚'
+              ];
+      $this->set('arrScrewNumber',$arrScrewNumber);
+
+      $arrScrew = [
+        'フルフライト' => 'フルフライト',
+        'ミキシング' => 'ミキシング',
+        'ダルメージ' => 'ダルメージ'
+              ];
+      $this->set('arrScrew',$arrScrew);
+
+      if($data["delete_flag"] < 1){
+        $this->set('delete_flag', 0);
+        $mes = "成形条件を入力してください";
+      }else{
+        $this->set('delete_flag', 1);
+        $mes = "以下のデータを削除します。よろしければ決定ボタンを押してください。";
+      }
+      $this->set('mes', $mes);
+
+    }
+
+    public function edittempconfirm()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->getData();
 /*
       echo "<pre>";
       print_r($data);
@@ -2197,18 +2793,68 @@ class KensahyougenryousController extends AppController
 
       }
 
+      $countseikeiki = $data["countseikeiki"];
+      $this->set('countseikeiki', $countseikeiki);
+      $pickup_speed = $data["pickup_speed"];
+      $this->set('pickup_speed', $pickup_speed);
+
+      for($k=0; $k<$countseikeiki; $k++){
+
+        $j = $k + 1;
+        ${"product_material_machine_id".$j} = $data['product_material_machine_id'.$j];
+        $this->set('product_material_machine_id'.$j, ${"product_material_machine_id".$j});
+        ${"cylinder_name".$j} = $data['cylinder_name'.$j];
+        $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
+
+        for($i=1; $i<=7; $i++){
+          ${"temp_".$i.$j} = $data['temp_'.$i.$j];
+
+          $dotini = substr(${"temp_".$i.$j}, 0, 1);
+          $dotend = substr(${"temp_".$i.$j}, -1, 1);
+
+          if($dotini == "."){
+            ${"temp_".$i.$j} = "0".${"temp_".$i.$j};
+          }elseif($dotend == "."){
+            ${"temp_".$i.$j} = ${"temp_".$i.$j}."0";
+          }
+          $this->set('temp_'.$i.$j, ${"temp_".$i.$j});
+
+        }
+
+        ${"extrude_roatation".$j} = $data['extrude_roatation'.$j];
+        $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
+        ${"extrusion_load".$j} = $data['extrusion_load'.$j];
+        $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
+
+        ${"screw_mesh_1".$j} = $data['screw_mesh_1'.$j];
+        $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
+        ${"screw_number_1".$j} = $data['screw_number_1'.$j];
+        $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
+        ${"screw_mesh_2".$j} = $data['screw_mesh_2'.$j];
+        $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
+        ${"screw_number_2".$j} = $data['screw_number_2'.$j];
+        $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
+        ${"screw_mesh_3".$j} = $data['screw_mesh_3'.$j];
+        $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
+        ${"screw_number_3".$j} = $data['screw_number_3'.$j];
+        $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
+        ${"screw".$j} = $data['screw'.$j];
+        $this->set('screw'.$j, ${"screw".$j});
+
+      }
+
       if($data["delete_flag"] < 1){
         $this->set('delete_flag', 0);
-        $mes = "以下のように更新します。よろしければ決定ボタンを押してください。";
+        $mes = "下記のように更新します。よろしければ決定ボタンを押してください。";
       }else{
         $this->set('delete_flag', 1);
-        $mes = "以下のデータを削除します。よろしければ決定ボタンを押してください。";
+        $mes = "下記のデータを削除します。よろしければ決定ボタンを押してください。";
       }
       $this->set('mes', $mes);
 
     }
 
-    public function editdo()
+    public function editalldo()
     {
       $product = $this->Products->newEntity();
       $this->set('product', $product);
@@ -2362,6 +3008,7 @@ class KensahyougenryousController extends AppController
         $connection->begin();//トランザクション3
         try {//トランザクション4
 
+
           if($machine_num != $machine_num_moto){//号機の変更がある場合
 
             $ProductConditionParentmoto= $this->ProductConditionParents->find()
@@ -2473,7 +3120,7 @@ class KensahyougenryousController extends AppController
                   "mixing_ratio" => $data["mixing_ratio".$j.$i],
                   "dry_temp" => $data["dry_temp".$j.$i],
                   "dry_hour" => $data["dry_hour".$j.$i],
-                  "recycled_mixing_ratio" => $data["recycled_mixing_ratio".$j.$i],
+                  "recycled_mixing_ratio" => $data["recycled_mixing_ratio".$j."1"],
                   "delete_flag" => 0,
                   'created_at' => date("Y-m-d H:i:s"),
                   "created_staff" => $staff_id
@@ -2487,6 +3134,112 @@ class KensahyougenryousController extends AppController
 
                 if($j >= $tuikaseikeiki){
 
+                  $ProductMaterialMachines = $this->ProductMaterialMachines->find()
+                  ->contain(['ProductConditionParents' => ["Products"]])
+                  ->where(['product_condition_parent_id' => $product_condition_parent_id, 'product_code' => $product_code,
+                   'ProductMaterialMachines.delete_flag' => 0, 'ProductConditionParents.delete_flag' => 0])
+                  ->order(["cylinder_number"=>"ASC"])->toArray();
+            
+                  if(!isset($ProductMaterialMachines[0])){//長さ違いのデータがあればそれを持ってくる
+            
+                    $product_code_ini = substr($product_code, 0, 11);
+                    $ProductMaterialMachines = $this->ProductMaterialMachines->find()
+                    ->contain(['ProductConditionParents' => ["Products"]])
+                    ->where(['product_condition_parent_id' => $product_condition_parent_id, 'product_code like' => $product_code_ini.'%',
+                     'ProductMaterialMachines.delete_flag' => 0, 'ProductConditionParents.delete_flag' => 0])
+                    ->order(["cylinder_number"=>"ASC"])->toArray();
+                
+                  }
+            
+                  //ここから温度条件
+                  $countseikeiki = $data["countseikeiki"];
+                  $this->set('countseikeiki', $countseikeiki);
+                  $pickup_speed = $data["pickup_speed"];
+                  $this->set('pickup_speed', $pickup_speed);
+            
+                  $tourokuProductConditonChildren = array();
+            
+                  for($k=0; $k<$countseikeiki; $k++){
+            
+                    $j = $k + 1;
+                    ${"cylinder_name".$j} = $data['cylinder_name'.$j];
+                    $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
+            
+                    for($i=1; $i<=7; $i++){
+                      ${"temp_".$i.$j} = $data['temp_'.$i.$j];
+                      $this->set('temp_'.$i.$j, ${"temp_".$i.$j});
+                    }
+            
+                    ${"extrude_roatation".$j} = $data['extrude_roatation'.$j];
+                    $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
+                    ${"extrusion_load".$j} = $data['extrusion_load'.$j];
+                    $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
+            
+                    ${"screw_mesh_1".$j} = $data['screw_mesh_1'.$j];
+                    $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
+                    ${"screw_number_1".$j} = $data['screw_number_1'.$j];
+                    $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
+                    ${"screw_mesh_2".$j} = $data['screw_mesh_2'.$j];
+                    $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
+                    ${"screw_number_2".$j} = $data['screw_number_2'.$j];
+                    $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
+                    ${"screw_mesh_3".$j} = $data['screw_mesh_3'.$j];
+                    $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
+                    ${"screw_number_3".$j} = $data['screw_number_3'.$j];
+                    $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
+                    ${"screw".$j} = $data['screw'.$j];
+                    $this->set('screw'.$j, ${"screw".$j});
+            
+                    $updateProductConditonChildren[] = [
+                      "product_material_machine_id" => $ProductMaterialMachines[$k]["id"],
+                      "cylinder_number" => $j,
+                      "cylinder_name" => $data['cylinder_name'.$j],
+                      "temp_1" => $data['temp_1'.$j],
+                      "temp_2" => $data['temp_2'.$j],
+                      "temp_3" => $data['temp_3'.$j],
+                      "temp_4" => $data['temp_4'.$j],
+                      "temp_5" => $data['temp_5'.$j],
+                      "temp_6" => $data['temp_6'.$j],
+                      "temp_7" => $data['temp_7'.$j],
+                      "extrude_roatation" => $data['extrude_roatation'.$j],
+                      "extrusion_load" => $data['extrusion_load'.$j],
+                      "pickup_speed" => $data['pickup_speed'],
+                      "screw_mesh_1" => $data['screw_mesh_1'.$j],
+                      "screw_number_1" => $data['screw_number_1'.$j],
+                      "screw_mesh_2" => $data['screw_mesh_2'.$j],
+                      "screw_number_2" => $data['screw_number_2'.$j],
+                      "screw_mesh_3" => $data['screw_mesh_3'.$j],
+                      "screw_number_3" => $data['screw_number_3'.$j],
+                      "screw" => $data['screw'.$j],
+                      "delete_flag" => 0,
+                      'created_at' => date("Y-m-d H:i:s"),
+                      "created_staff" => $staff_id
+                    ];
+            
+                  }
+                              
+                  $ProductConditonChildren = $this->ProductConditonChildren->patchEntities($this->ProductConditonChildren->newEntity(), $updateProductConditonChildren);
+                  if ($this->ProductConditonChildren->saveMany($ProductConditonChildren)) {
+        
+                    for($i=1; $i<=$countseikeiki; $i++){
+        
+                      $this->ProductConditonChildren->updateAll(
+                        [ 'delete_flag' => 1,
+                          'updated_at' => date('Y-m-d H:i:s'),
+                          'updated_staff' => $staff_id],
+                        ['id'  => $data['idmoto'.$i]]);
+        
+                    }
+        
+                  } else {
+        
+                    $this->Flash->error(__('The data could not be saved. Please, try again.'));
+                    throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+                    $mes = "※更新されませんでした";
+                    $this->set('mes',$mes);
+        
+                  }
+        
                   $connection->commit();// コミット5
                   $mes = "以下のように更新されました。";
                   $this->set('mes',$mes);

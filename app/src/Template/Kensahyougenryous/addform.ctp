@@ -76,9 +76,28 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
     <tr>
     <td style="border:none">　　　　　　　　　</td>
     <td style="border:none"><font size="4"><strong><?= __($machine_num." 号機") ?></strong></font></td>
+    <td style="border:none">　　　　　　　　　</td>
     </tr>
   </tbody>
 </table>
+
+<?php if (count($arrGouki) > 1000):?>
+
+<table align="left">
+  <tbody>
+    <tr>
+    <td style="background-color: #FFFFCC" width="150">登録済み号機番号</td>
+    <td style="background-color: #FFFFCC" width="60"><?= $this->Form->control('saved_machine_num', ['options' => $arrGouki, 'label'=>false]) ?></td>
+    <td style="border:none">　　</td>
+    <td style="border:none"><?= $this->Form->submit(('登録済みデータ反映'), array('name' => 'hannei')) ?></td>
+      <td style="border:none">　　</td>
+    </tr>
+  </tbody>
+</table>
+
+<?php else : ?>
+<?php endif; ?>
+
 <table align="right">
   <tbody class='sample non-sample'>
     <tr>
@@ -86,7 +105,7 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
       <td style="border:none">　　</td>
       <td style="border:none"><?= $this->Form->submit(('成形機追加'), array('name' => 'seikeikituika')) ?></td>
       <td style="border:none">　　</td>
-      <td style="border:none"><?= $this->Form->submit(('登録確認へ'), array('name' => 'kakuninn')) ?></td>
+      <td style="border:none"><?= $this->Form->submit(('温度条件登録へ'), array('name' => 'kakuninn')) ?></td>
       <td style="border:none">　　　　　　　　　</td>
       <td style="border:none">　　　　　　　　　</td>
     </tr>
@@ -140,23 +159,23 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
             <?php
     
           }else{
-            echo "<input type='text' name=material_name".$j.$i." id='material_name_list' autocomplete='off' required value=${"material_name".$j.$i}>\n";
+            echo "<input type='text' name=material_name".$j.$i." id='material_name_list' value=${"material_name".$j.$i}>\n";
           }
           echo "</td>\n";
 
           echo "<td>\n";
-          echo "<input type='text' name=mixing_ratio".$j.$i." autocomplete='off' required value=${"mixing_ratio".$j.$i}>\n";
+          echo "<input type='text' name=mixing_ratio".$j.$i." value=${"mixing_ratio".$j.$i}>\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' name=dry_temp".$j.$i." autocomplete='off' required value=${"dry_temp".$j.$i}> ℃ \n";
+          echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' name=dry_temp".$j.$i." value=${"dry_temp".$j.$i}> ℃ \n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' name=dry_hour".$j.$i." autocomplete='off' required value=${"dry_hour".$j.$i}> h以上\n";
+          echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' name=dry_hour".$j.$i." value=${"dry_hour".$j.$i}> h以上\n";
           echo "</td>\n";
 
           if($i==1){
             echo "<td rowspan=${"tuikagenryou".$j}>\n";
-            echo "<input type='text' name=recycled_mixing_ratio".$j." autocomplete='off' required value=${"recycled_mixing_ratio".$j}>\n";
+            echo "<input type='text' name=recycled_mixing_ratio".$j." value=${"recycled_mixing_ratio".$j}>\n";
             echo "</td>\n";
             }
 

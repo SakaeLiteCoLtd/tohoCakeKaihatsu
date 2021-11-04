@@ -90,31 +90,31 @@ echo $this->Html->css('kensahyou');
 
         if($i == 1){
           echo "<td>\n";
-          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=temp_1".$j.">\n";
+          echo "<input type='tel' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_1".$j.">\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=temp_2".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_2".$j.">\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=temp_3".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_3".$j.">\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=temp_4".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_4".$j.">\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=temp_5".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_5".$j.">\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=temp_6".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_6".$j.">\n";
           echo "</td>\n";
           echo "<td>\n";
-          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=temp_7".$j.">\n";
+          echo "<input type='text' style='width:50px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=temp_7".$j.">\n";
           echo "</td>\n";
           echo "<td style='border-right-style:none'>\n";
-          echo "<input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=extrude_roatation".$j.">(rpm)\n";
+          echo "<input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=extrude_roatation".$j.">(rpm)\n";
           echo "</td>\n";
           echo "<td style='border-left-style:none'>\n";
-          echo "/ <input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' autocomplete='off' required name=extrusion_load".$j.">(A)\n";
+          echo "/ <input type='text' style='width:70px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=extrusion_load".$j.">(A)\n";
           echo "</td>\n";
         }elseif($i == 2){
           echo "<td>\n";
@@ -165,7 +165,7 @@ echo $this->Html->css('kensahyou');
         if($j==1){
             if($i==1){
               echo "<td>\n";
-              echo "<input type='text' style='width:70px' autocomplete='off' required name=pickup_speed>\n";
+              echo "<input type='text' style='width:70px' required name=pickup_speed>\n";
               echo "</td>\n";
               echo "<td><div align='center'><select name=screw_mesh_1".$j.">\n";
               foreach ($arrScrewMesh as $key => $value){
