@@ -28,15 +28,12 @@ echo $this->Html->css('kensahyou');
 
 <?= $this->Form->create($product, ['url' => ['action' => 'addcomfirm']]) ?>
 
-<?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>
-<?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$staff_name, 'label'=>false)) ?>
+<?= $this->Form->control('gif', array('type'=>'hidden', 'value'=>$gif, 'label'=>false)) ?>
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
-<?= $this->Form->control('inspection_standard_size_parent_id', array('type'=>'hidden', 'value'=>$inspection_standard_size_parent_id, 'label'=>false)) ?>
 
 <?php
       echo $htmlkensahyouheader;
  ?>
-
 
 <table class="form">
 
@@ -44,7 +41,7 @@ echo $this->Html->css('kensahyou');
   <td style='width:102'>測定箇所</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
-    <td style='width:130'><?= $this->Form->control('size_name'.$i, array('type'=>'text', 'label'=>false, 'autocomplete'=>"off")) ?></td>
+    <td style='width:130'><?= $this->Form->control('size_name'.$i, array('type'=>'text', 'label'=>false)) ?></td>
   <?php endfor;?>
 
 </tr>
@@ -52,7 +49,7 @@ echo $this->Html->css('kensahyou');
   <td>規格</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= $this->Form->control('size'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'autocomplete'=>"off")) ?></td>
+      <td><?= $this->Form->control('size'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
     <?php endfor;?>
 
 </tr>
@@ -60,7 +57,7 @@ echo $this->Html->css('kensahyou');
   <td>公差上限</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
-    <td><?= $this->Form->control('upper_limit'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'autocomplete'=>"off")) ?></td>
+    <td><?= $this->Form->control('upper_limit'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
   <?php endfor;?>
 
 </tr>
@@ -68,7 +65,7 @@ echo $this->Html->css('kensahyou');
   <td>公差下限</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= $this->Form->control('lower_limit'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false, 'autocomplete'=>"off")) ?></td>
+      <td><?= $this->Form->control('lower_limit'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
     <?php endfor;?>
 
 </tr>
@@ -76,7 +73,7 @@ echo $this->Html->css('kensahyou');
   <td>検査器具</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= $this->Form->control('measuring_instrument'.$i, ['options' => $arrkensakigu, 'label'=>false, 'autocomplete'=>"off"]) ?></td>
+      <td><?= $this->Form->control('measuring_instrument'.$i, ['options' => $arrkensakigu, 'label'=>false]) ?></td>
     <?php endfor;?>
 
 </tr>

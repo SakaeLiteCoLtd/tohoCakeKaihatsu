@@ -3297,11 +3297,11 @@ class KensahyougenryousController extends AppController
 //      $_SESSION['updatekensahyougenryoudata'] = array();
 
       $data = $arrayKensahyougenryoudatas;
-
+/*
       echo "<pre>";
       print_r($data);
       echo "</pre>";
-
+*/
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
       $machine_num = $data["machine_num"];
@@ -3482,11 +3482,11 @@ class KensahyougenryousController extends AppController
 //      $_SESSION['updatekensahyougenryoudata'] = array();
 
       $data = $arrayKensahyougenryoudatas;
-
+/*
       echo "<pre>";
       print_r($data);
       echo "</pre>";
-
+*/
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
       $machine_num = $data["machine_num"];

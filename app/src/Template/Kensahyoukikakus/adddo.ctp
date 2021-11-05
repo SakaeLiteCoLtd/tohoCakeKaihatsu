@@ -83,7 +83,6 @@ echo $this->Html->css('kensahyou');
 </table>
 <br>
 
-<br><br>
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>

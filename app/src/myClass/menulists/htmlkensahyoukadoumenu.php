@@ -117,6 +117,60 @@ class htmlkensahyoukadoumenu extends AppController
        $this->html = $html;
    }
 
+   public function kensahyouheaderpreadd($product_code_gif)
+   {
+    $arrproduct_code_gif = explode("_",$product_code_gif);
+    $product_code = $arrproduct_code_gif[0];
+    $image_file_name_dir = "/img/".$arrproduct_code_gif[1];
+
+     $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
+ 
+     if(isset($Products[0])){
+ 
+       $name = $Products[0]["name"];
+       $customer= $Products[0]["customer"]["name"];
+ 
+     }else{
+ 
+       $name = "no_product";
+       $customer= "no_product";
+ 
+     }
+ 
+       $html =
+   //    "<table bgcolor='white' width='1000' style='position: fixed;top: 85px; left:20%; z-index:9999;'>\n".//固定
+       "<table bgcolor='white' width='1436'>\n".
+           "<tr>\n".
+           "<td width='500' colspan='2' nowrap='nowrap' style='height: 40px'><strong>\n".
+           "検査成績書</strong><br>（兼　成形条件表・梱包仕様書・作業手順書）\n".
+           "</td>\n".
+           "<td width='100' nowrap='nowrap' style='height: 20px'><strong>製品名</td>\n".
+           "<td width='400' nowrap='nowrap' style='height: 20px'>$name</td>\n".
+           "</tr>\n".
+           "<tr>\n".
+           "<td width='200' nowrap='nowrap' style='height: 20px'><strong>\n".
+           "管理No\n".
+           "</td>\n".
+           "<td width='300' style='height: 30px'>$product_code</td>\n".
+           "<td width='200' rowspan='2' style='height: 20px'><strong>得意先名</td>\n".
+           "<td width='300' rowspan='2' style='height: 20px'>$customer</td>\n".
+           "</tr>\n".
+           "<tr>\n".
+           "<td width='200' nowrap='nowrap' style='height: 20px'><strong>\n".
+           "改訂日\n".
+           "</td>\n".
+           "<td width='300' style='height: 20px'></td>\n".
+           "</tr>\n".
+           "<tr>\n".
+           "<td width='1000' colspan='4' nowrap='nowrap' style='height: 350px;'>\n".
+           "<img src=$image_file_name_dir width=1400></td>\n".
+           "</tr>\n".
+           "</table>\n";
+ 
+       return $html;
+       $this->html = $html;
+   }
+ 
    public function kensahyouheader($product_code)
   {
 

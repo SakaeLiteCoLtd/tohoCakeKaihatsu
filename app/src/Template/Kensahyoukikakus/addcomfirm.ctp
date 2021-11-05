@@ -27,16 +27,13 @@ echo $this->Html->css('kensahyou');
 
 <?= $this->Form->create($product, ['url' => ['action' => 'adddo']]) ?>
 
-<?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>
-<?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$staff_name, 'label'=>false)) ?>
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
-<?= $this->Form->control('inspection_standard_size_parent_id', array('type'=>'hidden', 'value'=>$inspection_standard_size_parent_id, 'label'=>false)) ?>
+<?= $this->Form->control('gif', array('type'=>'hidden', 'value'=>$gif, 'label'=>false)) ?>
 
 <?php
       echo $htmlkensahyouheader;
  ?>
 
-<?php if ($formcheck < 1): ?>
 
 <table class="form">
 
@@ -93,11 +90,14 @@ echo $this->Html->css('kensahyou');
 
 </table>
 <br>
+
+<?php if ($formcheck < 1): ?>
+
   <table class="top">
     <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('上記の内容で登録します。よろしければ「登録確定」ボタンを押してください。') ?></strong></td></tr>
   </table>
 
-<br><br>
+<br>
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>
@@ -111,13 +111,7 @@ echo $this->Html->css('kensahyou');
 
 <?php else : ?>
 
-  <br>
-  <table class="top">
-    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('上記の内容で登録します。よろしければ「登録確定」ボタンを押してください。') ?></strong></td></tr>
-  </table>
-
-  <br><br>
-  <table align="center" style='margin-top:500px'>
+  <table align="center">
     <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($formcheckmess) ?></strong></td></tr>
   </table>
   <br><br>
@@ -128,5 +122,6 @@ echo $this->Html->css('kensahyou');
       </tr>
     </tbody>
   </table>
+  <br><br>
 
 <?php endif; ?>
