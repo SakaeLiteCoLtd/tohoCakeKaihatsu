@@ -23,7 +23,7 @@ echo $this->Html->css('kensahyou');
 
 <br><br><br>
 
-<?= $this->Form->create($product, ['url' => ['controller'=>'Kensahyoukadous', 'action' => 'kensahyoumenu']]) ?>
+<?= $this->Form->create($product, ['url' => ['controller'=>'Kensahyoukadous', 'action' => 'menu']]) ?>
 
 <?php
       echo $htmlkensahyouheader;
@@ -78,9 +78,8 @@ echo $this->Html->css('kensahyou');
 <table class="top">
   <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
 </table>
-<br>
 
-<br><br>
+<br>
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>

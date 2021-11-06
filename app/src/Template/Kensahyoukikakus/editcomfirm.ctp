@@ -29,7 +29,8 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$staff_name, 'label'=>false)) ?>
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('inspection_standard_size_parent_id', array('type'=>'hidden', 'value'=>$inspection_standard_size_parent_id, 'label'=>false)) ?>
-<?= $this->Form->control('check', array('type'=>'hidden', 'value'=>$this->request->getData('check'), 'label'=>false)) ?>
+<?= $this->Form->control('change_flag', array('type'=>'hidden', 'value'=>$change_flag, 'label'=>false)) ?>
+<?= $this->Form->control('gif', array('type'=>'hidden', 'value'=>$gif, 'label'=>false)) ?>
 
 <?php for($i=1; $i<=10; $i++): ?>
   <?= $this->Form->control('id'.$i, array('type'=>'hidden', 'value'=>$this->request->getData('id'.$i), 'label'=>false)) ?>

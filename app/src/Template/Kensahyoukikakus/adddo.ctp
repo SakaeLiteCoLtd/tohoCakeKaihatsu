@@ -23,7 +23,7 @@ echo $this->Html->css('kensahyou');
 
 <br><br><br>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'addformpre']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'menu']]) ?>
 
 <?php
       echo $htmlkensahyouheader;

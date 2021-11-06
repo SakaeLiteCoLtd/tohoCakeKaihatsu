@@ -921,8 +921,9 @@ class ImagesController extends AppController
       $product_name = $Products[0]["name"];
       $this->set('product_name',$product_name);
 
+      $product_code_ini = substr($product_code, 0, 11);
       $InspectionStandardSizeParentversion = $this->InspectionStandardSizeParents->find()->contain(["Products"])
-      ->where(['product_code' => $data['product_code'], 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
+      ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
 
       if(isset($InspectionStandardSizeParentversion[0])){
