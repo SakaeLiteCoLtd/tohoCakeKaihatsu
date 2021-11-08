@@ -71,24 +71,31 @@ class InspectionStandardSizeChildrenTable extends Table
             ->notEmpty('size_name');
 
         $validator
-            ->numeric('size')
-            ->requirePresence('size', 'create')
-            ->notEmpty('size');
+            ->scalar('input_type')
+            ->maxLength('input_type', 255)
+            ->requirePresence('input_type', 'create')
+            ->notEmpty('input_type');
 
         $validator
-            ->numeric('upper_limit')
-            ->requirePresence('upper_limit', 'create')
-            ->notEmpty('upper_limit');
+            ->scalar('size')
+            ->maxLength('size', 255)
+            ->allowEmpty('size');
 
         $validator
-            ->numeric('lower_limit')
-            ->requirePresence('lower_limit', 'create')
-            ->notEmpty('lower_limit');
+            ->scalar('upper_limit')
+            ->maxLength('upper_limit', 255)
+            ->allowEmpty('upper_limit');
+
+        $validator
+            ->scalar('lower_limit')
+            ->maxLength('lower_limit', 255)
+            ->allowEmpty('lower_limit');
 
         $validator
             ->scalar('measuring_instrument')
             ->maxLength('measuring_instrument', 255)
-            ->allowEmpty('measuring_instrument');
+            ->requirePresence('measuring_instrument', 'create')
+            ->notEmpty('measuring_instrument');
 
         $validator
             ->integer('delete_flag')

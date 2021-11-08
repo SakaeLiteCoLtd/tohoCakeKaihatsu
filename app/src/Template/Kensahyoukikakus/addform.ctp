@@ -19,7 +19,7 @@ echo $this->Html->css('kensahyou');
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukikakus/menu' /><font size='4' color=black>検査規格登録</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyougenryous/addformpre' /><font size='4' color=black>新規登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoukikakus/addformpre' /><font size='4' color=black>新規登録</font></a>
  </td>
   </tbody>
 </table>
@@ -38,6 +38,25 @@ echo $this->Html->css('kensahyou');
 <table class="form">
 
 <tr>
+  <td>入力型</td>
+
+    <?php for($i=1; $i<=10; $i++): ?>
+      <?= $this->Form->control('inputtype'.$i, array('type'=>'hidden', 'value'=>$this->request->getData('inputtype'.$i), 'label'=>false)) ?>
+
+      <?php
+      if($this->request->getData('inputtype'.$i) == "int"){
+        $inputtype = "数値";
+      }else{
+        $inputtype = "〇✕";
+      }
+      ?>
+
+      <td style='width:130'><?= h($inputtype) ?></td>
+    <?php endfor;?>
+
+</tr>
+
+<tr>
   <td style='width:102'>測定箇所</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
@@ -49,7 +68,11 @@ echo $this->Html->css('kensahyou');
   <td>規格</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= $this->Form->control('size'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
+      <?php if($this->request->getData('inputtype'.$i) == "int"): ?>
+        <td><?= $this->Form->control('size'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
+      <?php else : ?>
+        <td><?= $this->Form->control('size'.$i, array('type'=>'text', 'label'=>false)) ?></td>
+      <?php endif; ?>
     <?php endfor;?>
 
 </tr>
@@ -57,7 +80,11 @@ echo $this->Html->css('kensahyou');
   <td>公差上限</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
-    <td><?= $this->Form->control('upper_limit'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
+    <?php if($this->request->getData('inputtype'.$i) == "int"): ?>
+        <td><?= $this->Form->control('upper_limit'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
+      <?php else : ?>
+        <td><?= $this->Form->control('upper_limit'.$i, array('type'=>'text', 'label'=>false)) ?></td>
+      <?php endif; ?>
   <?php endfor;?>
 
 </tr>
@@ -65,7 +92,11 @@ echo $this->Html->css('kensahyou');
   <td>公差下限</td>
 
     <?php for($i=1; $i<=10; $i++): ?>
-      <td><?= $this->Form->control('lower_limit'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
+      <?php if($this->request->getData('inputtype'.$i) == "int"): ?>
+        <td><?= $this->Form->control('lower_limit'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
+      <?php else : ?>
+        <td><?= $this->Form->control('lower_limit'.$i, array('type'=>'text', 'label'=>false)) ?></td>
+      <?php endif; ?>
     <?php endfor;?>
 
 </tr>

@@ -10,10 +10,11 @@ use Cake\ORM\Entity;
  * @property int $inspection_standard_size_parent_id
  * @property int $size_number
  * @property string $size_name
- * @property float $size
- * @property float $upper_limit
- * @property float $lower_limit
- * @property string|null $measuring_instrument
+ * @property string $input_type
+ * @property string|null $size
+ * @property string|null $upper_limit
+ * @property string|null $lower_limit
+ * @property string $measuring_instrument
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at
  * @property int $created_staff
@@ -39,6 +40,7 @@ class InspectionStandardSizeChild extends Entity
         'inspection_standard_size_parent_id' => true,
         'size_number' => true,
         'size_name' => true,
+        'input_type' => true,
         'size' => true,
         'upper_limit' => true,
         'lower_limit' => true,

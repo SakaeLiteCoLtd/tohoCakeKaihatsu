@@ -15,8 +15,8 @@ echo $this->Html->css('kensahyou');
     <td style='border: none;'>
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyougenryous/menu' /><font size='4' color=black>検査規格登録</font></a>
-    <font size='4'>　>>　</font><a href='/Kensahyougenryous/kensakupre' /><font size='4' color=black>登録データ呼出</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoukikakus/menu' /><font size='4' color=black>検査規格登録</font></a>
+    <font size='4'>　>>　</font><a href='/Kensahyoukikakus/kensakupre' /><font size='4' color=black>登録データ呼出</font></a>
     </td>
   </tbody>
 </table>
@@ -51,7 +51,11 @@ echo $this->Html->css('kensahyou');
   <td>公差上限</td>
 
   <?php for($i=1; $i<=10; $i++): ?>
-    <td><?= h($this->request->getData('upper_limit'.$i)) ?></td>
+    <?php if (strlen($this->request->getData('upper_limit'.$i)) > 0 && substr($this->request->getData('upper_limit'.$i), 0, 1) != "+"): ?>
+    <td><?= h("+".$this->request->getData('upper_limit'.$i)) ?></td>
+    <?php else : ?>
+      <td><?= h($this->request->getData('upper_limit'.$i)) ?></td>
+      <?php endif; ?>
   <?php endfor;?>
 
 </tr>

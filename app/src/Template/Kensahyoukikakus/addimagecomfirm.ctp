@@ -19,14 +19,14 @@ echo $this->Html->css('kensahyou');
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukikakus/menu' /><font size='4' color=black>検査規格登録</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyougenryous/addformpre' /><font size='4' color=black>新規登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoukikakus/addformpre' /><font size='4' color=black>新規登録</font></a>
  </td>
   </tbody>
 </table>
 
 <br><br><br>
 
-<?= $this->Form->create($inspectionStandardSizeParents, ['url' => ['action' => 'addform']]) ?>
+<?= $this->Form->create($inspectionStandardSizeParents, ['url' => ['action' => 'addformselect']]) ?>
 <br>
     <div align="center"><strong style="font-size: 13pt; color:red"><?= __("以下の画像が選択されました。よろしければ規格登録へ進んでください。") ?></strong></div>
     <br>

@@ -16,7 +16,7 @@ class ZzzcsvsController extends AppController
     parent::beforeFilter($event);
 
     // 認証なしでアクセスできるアクションの指定
-    $this->Auth->allow(["jidoutest","torikomicustomer",
+    $this->Auth->allow(["jidoutest","torikomicustomer","tourokusuppliers","tourokucustomers",
     "torikomiproduct","torikomimaterialsuppliers","torikomiMaterials"]);
   }
 
@@ -102,6 +102,116 @@ class ZzzcsvsController extends AppController
       print_r($arrLength_size1);
       echo "</pre>";
 */
+
+    }
+
+    public function tourokucustomers()//http://localhost:5050/Zzzcsvs/tourokucustomers
+    {
+      $MaterialSuppliers = $this->MaterialSuppliers->find()
+      ->where(['delete_flag' => 0])->toArray();
+
+      $datetimenow = date('Y-m-d H:i:s');
+      $arrFp = array();//空の配列を作る
+      for($j=0; $j<count($MaterialSuppliers); $j++){
+
+        $Customers = $this->Customers->find()
+        ->where(['customer_code' => $MaterialSuppliers[$j]["material_supplier_code"]])
+        ->toArray();
+
+        if(!isset($Customers[0])){
+          $arrFp[] = [
+            'factory_id' => $MaterialSuppliers[$j]["factory_id"],
+            'customer_code' => $MaterialSuppliers[$j]["material_supplier_code"],
+            'name' => $MaterialSuppliers[$j]["name"],
+            'department' => $MaterialSuppliers[$j]["department"],
+            'ryakusyou' => $MaterialSuppliers[$j]["ryakusyou"],
+            'furigana' => $MaterialSuppliers[$j]["furigana"],
+            'yuubin' => $MaterialSuppliers[$j]["yuubin"],
+            'address' => $MaterialSuppliers[$j]["address"],
+            'tel' => $MaterialSuppliers[$j]["tel"],
+            'fax' => $MaterialSuppliers[$j]["fax"],
+            'is_active' => 0,
+            'delete_flag' => 0,
+            'created_at' => $datetimenow,
+            'created_staff' => $MaterialSuppliers[$j]["created_staff"]
+          ];
+        }
+
+
+
+      }
+/*
+      echo "<pre>";
+      print_r($arrFp);
+      echo "</pre>";
+*/
+/*
+        for($j=0; $j<count($arrFp); $j++){
+          $MaterialSuppliers = $this->MaterialSuppliers->patchEntity($this->MaterialSuppliers->newEntity(), $arrFp[$j]);
+          if ($this->MaterialSuppliers->save($MaterialSuppliers)) {
+            echo "<pre>";
+            print_r("ok");
+            print_r($arrFp[$j]);
+            echo "</pre>";
+          }
+        }
+*/
+      $Customers = $this->Customers->patchEntities($this->Customers->newEntity(), $arrFp);
+      $this->Customers->saveMany($Customers);
+
+    }
+  
+    public function tourokusuppliers()//http://localhost:5050/Zzzcsvs/tourokusuppliers
+    {
+      $Customers = $this->Customers->find()
+      ->where(['delete_flag' => 0])->toArray();
+
+      $datetimenow = date('Y-m-d H:i:s');
+      $arrFp = array();//空の配列を作る
+      for($j=0; $j<count($Customers); $j++){
+
+        $MaterialSuppliers = $this->MaterialSuppliers->find()
+        ->where(['material_supplier_code' => $Customers[$j]["customer_code"]])
+        ->toArray();
+
+        if(!isset($MaterialSuppliers[0])){
+          $arrFp[] = [
+            'factory_id' => $Customers[$j]["factory_id"],
+            'material_supplier_code' => $Customers[$j]["customer_code"],
+            'name' => $Customers[$j]["name"],
+            'department' => $Customers[$j]["department"],
+            'ryakusyou' => $Customers[$j]["ryakusyou"],
+            'furigana' => $Customers[$j]["furigana"],
+            'yuubin' => $Customers[$j]["yuubin"],
+            'address' => $Customers[$j]["address"],
+            'tel' => $Customers[$j]["tel"],
+            'fax' => $Customers[$j]["fax"],
+            'is_active' => 0,
+            'delete_flag' => 0,
+            'created_at' => $datetimenow,
+            'created_staff' => $Customers[$j]["created_staff"]
+          ];
+        }
+
+      }
+/*
+      echo "<pre>";
+      print_r($arrFp);
+      echo "</pre>";
+*/
+/*
+        for($j=0; $j<count($arrFp); $j++){
+          $MaterialSuppliers = $this->MaterialSuppliers->patchEntity($this->MaterialSuppliers->newEntity(), $arrFp[$j]);
+          if ($this->MaterialSuppliers->save($MaterialSuppliers)) {
+            echo "<pre>";
+            print_r("ok");
+            print_r($arrFp[$j]);
+            echo "</pre>";
+          }
+        }
+*/
+      $MaterialSuppliers = $this->MaterialSuppliers->patchEntities($this->MaterialSuppliers->newEntity(), $arrFp);
+      $this->MaterialSuppliers->saveMany($MaterialSuppliers);
 
     }
 

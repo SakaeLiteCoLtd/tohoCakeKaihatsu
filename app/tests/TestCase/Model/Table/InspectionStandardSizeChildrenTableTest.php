@@ -24,9 +24,9 @@ class InspectionStandardSizeChildrenTableTest extends TestCase
      * @var array
      */
     public $fixtures = [
-        'app.inspection_standard_size_children',
-        'app.inspection_standard_size_parents',
-        'app.inspection_data_result_children'
+        'app.InspectionStandardSizeChildren',
+        'app.InspectionStandardSizeParents',
+        'app.InspectionDataResultChildren'
     ];
 
     /**

@@ -44,6 +44,10 @@ echo $this->Html->css('kensahyou');
 
 <table class="form">
 
+<?php for($i=1; $i<=10; $i++): ?>
+  <?= $this->Form->control('inputtype'.$i, array('type'=>'hidden', 'value'=>$this->request->getData('inputtype'.$i), 'label'=>false)) ?>
+<?php endfor;?>
+
 <tr>
   <td style='width:102'>測定箇所</td>
 
