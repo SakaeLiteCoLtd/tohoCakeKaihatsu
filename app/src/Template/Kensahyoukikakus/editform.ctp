@@ -15,7 +15,7 @@ echo $this->Html->css('kensahyou');
     <td style='border: none;'>
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyoukikakus/menu' /><font size='4' color=black>検査規格登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoukikakus/menu' /><font size='4' color=black>検査規格</font></a>
     <font size='4'>　>>　</font><a href='/Kensahyoukikakus/kensakupre' /><font size='4' color=black>登録データ呼出</font></a>
     </td>
   </tbody>
@@ -32,7 +32,7 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('gif', array('type'=>'hidden', 'value'=>$gif, 'label'=>false)) ?>
 <?= $this->Form->control('change_flag', array('type'=>'hidden', 'value'=>$change_flag, 'label'=>false)) ?>
 
-<?php for($i=1; $i<=10; $i++): ?>
+<?php for($i=1; $i<=11; $i++): ?>
   <?= $this->Form->control('id'.$i, array('type'=>'hidden', 'value'=>${"id".$i}, 'label'=>false)) ?>
 <?php endfor;?>
 
@@ -45,7 +45,7 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>入力型</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
       <?= $this->Form->control('inputtype'.$i, array('type'=>'hidden', 'value'=>$this->request->getData('inputtype'.$i), 'label'=>false)) ?>
 
       <?php
@@ -56,23 +56,23 @@ echo $this->Html->css('kensahyou');
       }
       ?>
 
-      <td style='width:130'><?= h($inputtype) ?></td>
+      <td style='width:118'><?= h($inputtype) ?></td>
     <?php endfor;?>
 
 </tr>
 
 <tr>
-  <td style='width:102'>測定箇所</td>
+  <td style='width:99'>測定箇所</td>
 
-  <?php for($i=1; $i<=10; $i++): ?>
-    <td style='width:130'><?= $this->Form->control('size_name'.$i, array('type'=>'text', 'value'=>${"size_name".$i}, 'label'=>false)) ?></td>
+  <?php for($i=1; $i<=11; $i++): ?>
+    <td style='width:118'><?= $this->Form->control('size_name'.$i, array('type'=>'text', 'value'=>${"size_name".$i}, 'label'=>false)) ?></td>
   <?php endfor;?>
 
 </tr>
 <tr>
   <td>規格</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
       <td><?= $this->Form->control('size'.$i, array('type'=>'text', 'value'=>${"size".$i}, 'label'=>false)) ?></td>
     <?php endfor;?>
 
@@ -80,7 +80,7 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>公差上限</td>
 
-  <?php for($i=1; $i<=10; $i++): ?>
+  <?php for($i=1; $i<=11; $i++): ?>
     <td><?= $this->Form->control('upper_limit'.$i, array('type'=>'text', 'value'=>${"upper_limit".$i}, 'label'=>false)) ?></td>
   <?php endfor;?>
 
@@ -88,7 +88,7 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>公差下限</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
       <td><?= $this->Form->control('lower_limit'.$i, array('type'=>'text', 'value'=>${"lower_limit".$i}, 'label'=>false)) ?></td>
     <?php endfor;?>
 
@@ -96,7 +96,7 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>検査器具</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
       <td><?= $this->Form->control('measuring_instrument'.$i, ['options' => $arrkensakigu, 'value'=>${"measuring_instrument".$i}, 'label'=>false]) ?></td>
     <?php endfor;?>
 

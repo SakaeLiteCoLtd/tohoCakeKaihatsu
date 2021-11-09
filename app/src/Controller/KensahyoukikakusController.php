@@ -448,9 +448,6 @@ class KensahyoukikakusController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
 
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
@@ -505,11 +502,7 @@ class KensahyoukikakusController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
       $gif = $data["gif"];
@@ -523,7 +516,10 @@ class KensahyoukikakusController extends AppController
       $formcheck = 0;
       $formcheckmess = 0;
 
-      for($i=1; $i<=10; $i++){
+      for($i=1; $i<=11; $i++){
+
+        ${"inputtype".$i} = $data['inputtype'.$i];
+        $this->set('inputtype'.$i,${"inputtype".$i});
 
         if(strlen($data['size_name'.$i]) > 0 && $data['inputtype'.$i] == "int"){
           ${"size_name".$i} = $data['size_name'.$i];
@@ -693,7 +689,7 @@ class KensahyoukikakusController extends AppController
           $tourokuInspectionStandardSizeChildren = array();
           $num_max = 0;
     
-          for($i=1; $i<=10; $i++){
+          for($i=1; $i<=11; $i++){
     
             if(strlen($data['size_name'.$i]) > 0 && $data['inputtype'.$i] == "int"){
     
@@ -987,7 +983,7 @@ class KensahyoukikakusController extends AppController
 
       if(isset($InspectionStandardSizeChildren[0])){
 
-        for($i=1; $i<=10; $i++){
+        for($i=1; $i<=11; $i++){
 
           ${"size_name".$i} = "";
           $this->set('size_name'.$i,${"size_name".$i});
@@ -999,6 +995,8 @@ class KensahyoukikakusController extends AppController
           $this->set('size'.$i,${"size".$i});
           ${"measuring_instrument".$i} = "";
           $this->set('measuring_instrument'.$i,${"measuring_instrument".$i});
+          ${"input_type".$i} = "int";
+          $this->set('input_type'.$i,${"input_type".$i});
 
         }
 
@@ -1007,6 +1005,8 @@ class KensahyoukikakusController extends AppController
           $num = $InspectionStandardSizeChildren[$i]["size_number"];
           ${"size_name".$num} = $InspectionStandardSizeChildren[$i]["size_name"];
           $this->set('size_name'.$num,${"size_name".$num});
+          ${"input_type".$num} = $InspectionStandardSizeChildren[$i]["input_type"];
+          $this->set('input_type'.$num,${"input_type".$num});
           ${"upper_limit".$num} = $InspectionStandardSizeChildren[$i]["upper_limit"];
           $this->set('upper_limit'.$num,${"upper_limit".$num});
           ${"lower_limit".$num} = $InspectionStandardSizeChildren[$i]["lower_limit"];
@@ -1348,7 +1348,7 @@ class KensahyoukikakusController extends AppController
   
       }
 
-        for($i=1; $i<=10; $i++){
+        for($i=1; $i<=11; $i++){
 
           ${"id".$i} = "";
           $this->set('id'.$i,${"id".$i});
@@ -1364,6 +1364,8 @@ class KensahyoukikakusController extends AppController
           $this->set('size'.$i,${"size".$i});
           ${"measuring_instrument".$i} = "";
           $this->set('measuring_instrument'.$i,${"measuring_instrument".$i});
+          ${"input_type".$i} = "int";
+          $this->set('input_type'.$i,${"input_type".$i});
 
         }
 
@@ -1373,6 +1375,8 @@ class KensahyoukikakusController extends AppController
 
           ${"size_name".$num} = $InspectionStandardSizeChildren[$i]["size_name"];
           $this->set('size_name'.$num,${"size_name".$num});
+          ${"input_type".$num} = $InspectionStandardSizeChildren[$i]["input_type"];
+          $this->set('input_type'.$num,${"input_type".$num});
           ${"input_type".$num} = $InspectionStandardSizeChildren[$i]["input_type"];
           $this->set('input_type'.$num,${"input_type".$num});
           ${"upper_limit".$num} = $InspectionStandardSizeChildren[$i]["upper_limit"];
@@ -1409,6 +1413,9 @@ class KensahyoukikakusController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
 
       $change_flag = $data["change_flag"];
       $this->set('change_flag', $change_flag);
@@ -1466,7 +1473,7 @@ class KensahyoukikakusController extends AppController
   
       }
 
-        for($i=1; $i<=10; $i++){
+        for($i=1; $i<=11; $i++){
 
           ${"id".$i} = "";
           $this->set('id'.$i,${"id".$i});
@@ -1482,6 +1489,8 @@ class KensahyoukikakusController extends AppController
           $this->set('size'.$i,${"size".$i});
           ${"measuring_instrument".$i} = "";
           $this->set('measuring_instrument'.$i,${"measuring_instrument".$i});
+          ${"input_type".$i} = "";
+          $this->set('input_type'.$i,${"input_type".$i});
 
         }
 
@@ -1491,8 +1500,6 @@ class KensahyoukikakusController extends AppController
 
           ${"size_name".$num} = $InspectionStandardSizeChildren[$i]["size_name"];
           $this->set('size_name'.$num,${"size_name".$num});
-          ${"input_type".$num} = $InspectionStandardSizeChildren[$i]["input_type"];
-          $this->set('input_type'.$num,${"input_type".$num});
           ${"upper_limit".$num} = $InspectionStandardSizeChildren[$i]["upper_limit"];
           $this->set('upper_limit'.$num,${"upper_limit".$num});
           ${"lower_limit".$num} = $InspectionStandardSizeChildren[$i]["lower_limit"];
@@ -1514,6 +1521,11 @@ class KensahyoukikakusController extends AppController
         }
 
         $this->set('InspectionStandardSizeChildren', $InspectionStandardSizeChildren);
+
+        for($i=1; $i<=11; $i++){
+          ${"inputtype".$i} = $data['inputtype'.$i];
+          $this->set('inputtype'.$i,${"inputtype".$i});
+        }
 
         echo "<pre>";
         print_r("");
@@ -1554,7 +1566,7 @@ class KensahyoukikakusController extends AppController
       $formcheck = 0;
       $formcheckmess = 0;
 
-      for($i=1; $i<=10; $i++){
+      for($i=1; $i<=11; $i++){
 
         if(strlen($data['size_name'.$i]) > 0 && $data['inputtype'.$i] == "int"){
           ${"size_name".$i} = $data['size_name'.$i];
@@ -1667,7 +1679,7 @@ class KensahyoukikakusController extends AppController
 
               $num_max = 0;
 
-              for($i=1; $i<=10; $i++){
+              for($i=1; $i<=11; $i++){
 
                 $updateInspectionStandardSizeChildren = array();
       
@@ -1870,15 +1882,13 @@ class KensahyoukikakusController extends AppController
           
               $num_max = 0;
 
-              for($i=1; $i<=10; $i++){
-    
-                $updateInspectionStandardSizeChildren = array();
+              for($i=1; $i<=11; $i++){
 
                 $updateInspectionStandardSizeChildren = array();
       
                 if(strlen($data['size_name'.$i]) > 0 && $data['inputtype'.$i] == "int"){
     
-                  $num_max = $num_max + 1;
+        //          $num_max = $num_max + 1;
 
                   $updateInspectionStandardSizeChildren = [
                     "inspection_standard_size_parent_id" => $InspectionStandardSizeParentversion[0]['id'],
@@ -1902,7 +1912,7 @@ class KensahyoukikakusController extends AppController
   
                 }elseif(strlen($data['size_name'.$i]) > 0 && $data['inputtype'.$i] == "judge"){
         
-                  $num_max = $num_max + 1;
+        //          $num_max = $num_max + 1;
 
                   $updateInspectionStandardSizeChildren = [
                     "inspection_standard_size_parent_id" => $InspectionStandardSizeParentversion[0]['id'],
@@ -1928,34 +1938,6 @@ class KensahyoukikakusController extends AppController
                   $num_max = $i;
                 }
 
-      /*
-                if(strlen($data['size_name'.$i]) > 0){
-    
-                  $num_max = $num_max + 1;
-    
-                  $updateInspectionStandardSizeChildren = [
-                    "inspection_standard_size_parent_id" => $data['inspection_standard_size_parent_id'],
-                    "size_name" => $data['size_name'.$i],
-                    "size_number" => $i,
-                    "size" => $data['size'.$i],
-                    "upper_limit" => $data['upper_limit'.$i],
-                    "lower_limit" => $data['lower_limit'.$i],
-                    "measuring_instrument" => $data['measuring_instrument'.$i],
-                    "delete_flag" => 0,
-                    'created_at' => $datetimenow,
-                    "created_staff" => $staff_id
-                  ];
-      
-                $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren
-                ->patchEntity($this->InspectionStandardSizeChildren->newEntity(), $updateInspectionStandardSizeChildren);
-                $this->InspectionStandardSizeChildren->save($InspectionStandardSizeChildren);
-    
-                $updateInspectionStandardSizeChildren = array();
-    
-                }elseif($num_max == 0){
-                  $num_max = $i;
-                }
-    */
                 if(strlen($data['id'.$i]) > 0){
     
                   $this->InspectionStandardSizeChildren->updateAll(
@@ -2025,7 +2007,7 @@ class KensahyoukikakusController extends AppController
 
       }else{////削除
 
-        for($i=1; $i<=10; $i++){
+        for($i=1; $i<=11; $i++){
 
           if(strlen($data['id'.$i]) > 0){
 

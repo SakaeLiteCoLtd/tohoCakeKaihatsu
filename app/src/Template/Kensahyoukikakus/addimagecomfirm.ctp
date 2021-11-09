@@ -18,7 +18,7 @@ echo $this->Html->css('kensahyou');
     <td style='border: none;'>
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyoukikakus/menu' /><font size='4' color=black>検査規格登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoukikakus/menu' /><font size='4' color=black>検査規格</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukikakus/addformpre' /><font size='4' color=black>新規登録</font></a>
  </td>
   </tbody>
@@ -60,5 +60,5 @@ echo $this->Html->css('kensahyou');
       </tr>
     </tbody>
   </table>
-
+  <br> <br> <br> <br>
   <?= $this->Form->end() ?>

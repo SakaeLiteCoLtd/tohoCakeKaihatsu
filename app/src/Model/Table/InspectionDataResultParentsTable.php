@@ -96,11 +96,6 @@ class InspectionDataResultParentsTable extends Table
             ->notEmpty('appearance');
 
         $validator
-            ->integer('kangou')
-            ->requirePresence('kangou', 'create')
-            ->notEmpty('kangou');
-
-        $validator
             ->numeric('result_weight')
             ->requirePresence('result_weight', 'create')
             ->notEmpty('result_weight');
@@ -109,6 +104,18 @@ class InspectionDataResultParentsTable extends Table
             ->integer('judge')
             ->requirePresence('judge', 'create')
             ->notEmpty('judge');
+
+        $validator
+            ->integer('kanryou_flag')
+            ->allowEmpty('kanryou_flag');
+
+        $validator
+            ->integer('total_amount')
+            ->allowEmpty('total_amount');
+
+        $validator
+            ->scalar('bik')
+            ->allowEmpty('bik');
 
         $validator
             ->integer('delete_flag')

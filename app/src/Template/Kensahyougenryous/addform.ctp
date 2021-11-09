@@ -39,7 +39,7 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
     <td style='border: none;align: left'>
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
     <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
-    <font size='4'>　>>　</font><a href='/Kensahyougenryous/menu' /><font size='4' color=black>原料登録</font></a>
+    <font size='4'>　>>　</font><a href='/Kensahyougenryous/menu' /><font size='4' color=black>成形条件</font></a>
     <font size='4'>　>>　</font><a href='/Kensahyougenryous/addformpre' /><font size='4' color=black>新規登録</font></a>
     </a></td>
   </tbody>

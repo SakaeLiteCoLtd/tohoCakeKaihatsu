@@ -18,7 +18,7 @@ echo $this->Html->css('kensahyou');
     <td style='border: none;'>
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyoukikakus/menu' /><font size='4' color=black>検査規格登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoukikakus/menu' /><font size='4' color=black>検査規格</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukikakus/addformpre' /><font size='4' color=black>新規登録</font></a>
  </td>
   </tbody>
@@ -40,8 +40,8 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>入力型</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
-      <td style='width:130'><?= $this->Form->control('inputtype'.$i, ['options' => $arrTypes, 'label'=>false]) ?></td>
+    <?php for($i=1; $i<=11; $i++): ?>
+      <td style='width:118'><?= $this->Form->control('inputtype'.$i, ['options' => $arrTypes, 'label'=>false]) ?></td>
     <?php endfor;?>
 
 </tr>
@@ -49,7 +49,7 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td style='width:102'>測定箇所</td>
 
-  <?php for($i=1; $i<=10; $i++): ?>
+  <?php for($i=1; $i<=11; $i++): ?>
     <td></td>
   <?php endfor;?>
 
@@ -57,7 +57,7 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>規格</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
       <td></td>
     <?php endfor;?>
 
@@ -65,7 +65,7 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>公差上限</td>
 
-  <?php for($i=1; $i<=10; $i++): ?>
+  <?php for($i=1; $i<=11; $i++): ?>
     <td></td>
   <?php endfor;?>
 
@@ -73,7 +73,7 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>公差下限</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
       <td></td>
     <?php endfor;?>
 
@@ -81,7 +81,7 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>検査器具</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
       <td></td>
     <?php endfor;?>
 

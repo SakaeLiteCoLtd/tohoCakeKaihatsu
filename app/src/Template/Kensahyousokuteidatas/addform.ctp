@@ -57,7 +57,7 @@ for($i=0; $i<$count_length; $i++){
 
 ?>
 
-<?php for($i=0; $i<=10; $i++): ?>
+<?php for($i=0; $i<=11; $i++): ?>
 
 <script>
 
@@ -94,7 +94,7 @@ for($i=0; $i<$count_length; $i++){
     <td style='border: none;'>
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/menu' /><font size='4' color=black>測定データ登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/menu' /><font size='4' color=black>測定データ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/addformpre' /><font size='4' color=black>新規登録</font></a>
     </td>
   </tbody>
@@ -130,9 +130,9 @@ for($i=0; $i<$count_length; $i++){
   </tr>
 
 <tr>
-  <td style='width:116'>測定箇所</td>
+  <td style='width:107'>測定箇所</td>
 
-  <?php for($i=1; $i<=10; $i++): ?>
+  <?php for($i=1; $i<=11; $i++): ?>
     <?php if ($i == $num_length + 1): ?>
     <td style='width:75'><div class="length"></div><?= h("長さ") ?></td>
     <?php else : ?>
@@ -142,25 +142,31 @@ for($i=0; $i<$count_length; $i++){
   <?php endfor;?>
 
   <td width="55" rowspan='3'>外観</td>
-  <td width="55" rowspan='3'>勘合</td>
-  <td width="80" rowspan='3'>重量<br>（目安）</td>
-  <td width="55" rowspan='5'>合否<br>判定</td>
+  <td width="75" rowspan='3'>重量<br>（目安）</td>
+  <td style='font-size: 9pt' width="50" rowspan='5'>合否<br>判定</td>
   <td width="55" rowspan='5'></td>
 
 </tr>
 <tr>
   <td>規格</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
+      <?php if (${"input_type".$i} == "judge"): ?>
+        <td style='font-size: 8pt'><div class="size"></div><?= h(${"size".$i}) ?></td>
+    <?php else : ?>
       <td><div class="size"></div><?= h(${"size".$i}) ?></td>
+      <?php endif; ?>
     <?php endfor;?>
+
 </tr>
 <tr>
   <td>公差上限</td>
 
-  <?php for($i=1; $i<=10; $i++): ?>
-    <?php if (strlen(${"upper_limit".$i}) > 0 && substr(${"upper_limit".$i}, 0, 1) != "+"): ?>
+  <?php for($i=1; $i<=11; $i++): ?>
+    <?php if (strlen(${"upper_limit".$i}) > 0 && substr(${"upper_limit".$i}, 0, 1) != "+" && ${"input_type".$i} !== "judge"): ?>
     <td><div class="upper"></div><?= h("+".${"upper_limit".$i}) ?></td>
+    <?php elseif (${"input_type".$i} == "judge"): ?>
+        <td style='font-size: 8pt'><div class="upper"></div><?= h(${"upper_limit".$i}) ?></td>
     <?php else : ?>
       <td><div class="upper"></div><?= h(${"upper_limit".$i}) ?></td>
       <?php endif; ?>
@@ -170,25 +176,27 @@ for($i=0; $i<$count_length; $i++){
 <tr>
   <td>公差下限</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
+      <?php if (${"input_type".$i} == "judge"): ?>
+        <td style='font-size: 8pt'><div class="lower"></div><?= h(${"lower_limit".$i}) ?></td>
+    <?php else : ?>
       <td><div class="lower"></div><?= h(${"lower_limit".$i}) ?></td>
+      <?php endif; ?>
     <?php endfor;?>
 
-    <td width="55" style="font-size: 10pt">良 ・ 不</td>
-    <td width="55" style="font-size: 10pt">良 ・ 不</td>
-        <td width="80">g / 本</td>
+    <td width="55" style="font-size: 10pt">〇・✕</td>
+        <td width="75">g / 本</td>
 
 </tr>
 <tr>
   <td>検査器具</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
       <td style='font-size: 8pt'><div class="measuring_instrument"></div><?= h(${"measuring_instrument".$i}) ?></td>
     <?php endfor;?>
 
     <td width="55">目視</td>
-    <td width="55">目視</td>
-    <td width="80" style="font-size: 10pt">デジタル秤</td>
+    <td width="75" style="font-size: 9pt">デジタル秤</td>
 
 </tr>
 
@@ -273,16 +281,22 @@ var moji = "length"
 
     <?php endif; ?>
 
-  <td style='width:116; border-top-style:none'><font size='1.8'><?= h("ユーザーID：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
+  <td style='width:107; border-top-style:none'><font size='1.8'><?= h("ユーザーID：") ?></font>
+  <?= $this->Form->control('user_code'.$j, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
 
-  <?php for($i=1; $i<=10; $i++): ?>
-    <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off", "step"=>"0.01")) ?></td>
+  <?php for($i=1; $i<=11; $i++): ?>
+
+    <?php if (${"input_type".$i} == "judge"): ?>
+      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, ['options' => $arrJudge, 'label'=>false]) ?></td>
+    <?php else : ?>
+      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off", "step"=>"0.01")) ?></td>
+      <?php endif; ?>
+
   <?php endfor;?>
 
   <td style='width:55; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ['options' => $arrGaikan, 'label'=>false]) ?></td>
-  <td style='width:55; border-top-style:none'><?= $this->Form->control('kangou'.$j, ['options' => $arrGaikan, 'label'=>false]) ?></td>
-  <td style='width:80; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
-  <td style='width:55; border-top-style:none'>-</td>
+  <td style='width:75; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
+  <td style='width:50; border-top-style:none'>-</td>
   <td style='width:55; border-top-style:none'></td>
 
 </table>
@@ -301,13 +315,13 @@ var moji = "length"
     ${"staff_name".$j} = $Users[0]["staff"]["name"];
 
     ?>
-    <td style='width:116; border-top-style:none'><?= h(${"staff_name".$j}) ?></td>
+    <td style='width:107; border-top-style:none; font-size: 9pt'><?= h(${"staff_name".$j}) ?></td>
 
     <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
     <?= $this->Form->control('datetime'.$j, array('type'=>'hidden', 'value'=>${"datetime".$j}, 'label'=>false)) ?>
     <?= $this->Form->control('user_code'.$j, array('type'=>'hidden', 'value'=>${"user_code".$j}, 'label'=>false)) ?>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
       <?php
 
       if($i == $num_length + 1){//長さ列の場合
@@ -319,11 +333,25 @@ var moji = "length"
   
       }
 
-      if(${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+      if(${"input_type".$i} !== "judge" && ${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
       && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
         echo '<td style="width:75; border-top-style:none">';
         echo ${"result_size".$j.$i};
         echo '</td>';
+      } elseif(${"input_type".$i} == "judge") {
+
+        if(${"result_size".$j.$i} < 1){
+          ${"judge".$j.$i} = "〇";
+          echo '<td style="width:75; border-top-style:none">';
+          echo ${"judge".$j.$i};
+          echo '</td>';
+        }else{
+          ${"judge".$j.$i} = "✕";
+          echo '<td style="width:75; border-top-style:none"><font color="red">';
+          echo ${"judge".$j.$i};
+          echo '</td>';
+          }
+
       } else {
         echo '<td style="width:75; border-top-style:none"><font color="red">';
         echo ${"result_size".$j.$i};
@@ -337,23 +365,16 @@ var moji = "length"
     <?php
 
     if(${"gaikan".$j} == 1){
-      ${"gaikanhyouji".$j} = "不";
+      ${"gaikanhyouji".$j} = "✕";
     }else{
-      ${"gaikanhyouji".$j} = "良";
-    }
-
-    if(${"kangou".$j} == 1){
-      ${"kangouhyouji".$j} = "不";
-    }else{
-      ${"kangouhyouji".$j} = "良";
+      ${"gaikanhyouji".$j} = "〇";
     }
 
     ?>
 
     <td style='width:55; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
-    <td style='width:55; border-top-style:none'><?= h(${"kangouhyouji".$j}) ?></td>
-    <td style='width:80; border-top-style:none'><?= h(${"weight".$j}) ?></td>
-    <td style='width:55; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+    <td style='width:75; border-top-style:none'><?= h(${"weight".$j}) ?></td>
+    <td style='width:50; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
 
     <?php if ($check_seikeijouken == 0)://成形条件調整中ではないとき ?>
 
@@ -367,7 +388,6 @@ var moji = "length"
 
     <?= $this->Form->control('product_id'.$j, array('type'=>'hidden', 'value'=>${"product_id".$j}, 'label'=>false)) ?>
     <?= $this->Form->control('gaikan'.$j, array('type'=>'hidden', 'value'=>${"gaikan".$j}, 'label'=>false)) ?>
-    <?= $this->Form->control('kangou'.$j, array('type'=>'hidden', 'value'=>${"kangou".$j}, 'label'=>false)) ?>
     <?= $this->Form->control('weight'.$j, array('type'=>'hidden', 'value'=>${"weight".$j}, 'label'=>false)) ?>
     <?= $this->Form->control('gouhi'.$j, array('type'=>'hidden', 'value'=>${"gouhi".$j}, 'label'=>false)) ?>
 
@@ -385,16 +405,22 @@ var moji = "length"
   <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false)) ?>
   </td>
   <td style='width:82; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
-  <td style='width:116; border-top-style:none'><font size='1.8'><?= h("ユーザーID：") ?></font><?= $this->Form->control('user_code'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'required' => 'true')) ?></td>
+  <td style='width:107; border-top-style:none'><font size='1.8'><?= h("ユーザーID：") ?></font>
+  <?= $this->Form->control('user_code'.$j, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'required' => 'true')) ?></td>
 
-  <?php for($i=1; $i<=10; $i++): ?>
-    <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
-  <?php endfor;?>
+  <?php for($i=1; $i<=11; $i++): ?>
+
+    <?php if (${"input_type".$i} == "judge"): ?>
+      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, ['options' => $arrJudge, 'label'=>false]) ?></td>
+    <?php else : ?>
+      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off", "step"=>"0.01")) ?></td>
+      <?php endif; ?>
+
+      <?php endfor;?>
 
   <td style='width:55; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ['options' => $arrGaikan, 'label'=>false]) ?></td>
-  <td style='width:55; border-top-style:none'><?= $this->Form->control('kangou'.$j, ['options' => $arrGaikan, 'label'=>false]) ?></td>
-  <td style='width:80; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'required' => 'true')) ?></td>
-  <td style='width:55; border-top-style:none'>-</td>
+  <td style='width:75; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'required' => 'true')) ?></td>
+  <td style='width:50; border-top-style:none'>-</td>
   <td style='width:55; border-top-style:none'><?= h("修正中") ?></td>
 
 </table>
@@ -406,13 +432,13 @@ var moji = "length"
       <td style='width:45; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
       <td style='width:85; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
       <td style='width:82; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
-      <td style='width:116; border-top-style:none'><?= h(${"user_code".$j}) ?></td>
+      <td style='width:107; border-top-style:none'><?= h(${"user_code".$j}) ?></td>
 
       <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
       <?= $this->Form->control('datetime'.$j, array('type'=>'hidden', 'value'=>${"datetime".$j}, 'label'=>false)) ?>
       <?= $this->Form->control('user_code'.$j, array('type'=>'hidden', 'value'=>${"user_code".$j}, 'label'=>false)) ?>
 
-      <?php for($i=1; $i<=10; $i++): ?>
+      <?php for($i=1; $i<=11; $i++): ?>
         <?php
 
         if($i == $num_length + 1){//長さ列の場合
@@ -424,17 +450,31 @@ var moji = "length"
 
         }
 
-        if(${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+        if(${"input_type".$i} !== "judge" && ${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
         && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
           echo '<td style="width:75; border-top-style:none">';
           echo ${"result_size".$j.$i};
           echo '</td>';
+        } elseif(${"input_type".$i} == "judge") {
+  
+          if(${"result_size".$j.$i} < 1){
+            ${"judge".$j.$i} = "〇";
+            echo '<td style="width:75; border-top-style:none">';
+            echo ${"judge".$j.$i};
+            echo '</td>';
+          }else{
+            ${"judge".$j.$i} = "✕";
+            echo '<td style="width:75; border-top-style:none"><font color="red">';
+            echo ${"judge".$j.$i};
+            echo '</td>';
+            }
+  
         } else {
           echo '<td style="width:75; border-top-style:none"><font color="red">';
           echo ${"result_size".$j.$i};
           echo '</td>';
         }
-        ?>
+          ?>
         <?= $this->Form->control('result_size'.$j.$i, array('type'=>'hidden', 'value'=>${"result_size".$j.$i}, 'label'=>false)) ?>
 
       <?php endfor;?>
@@ -442,28 +482,19 @@ var moji = "length"
       <?php
 
       if(${"gaikan".$j} == 1){
-        ${"gaikanhyouji".$j} = "不";
+        ${"gaikanhyouji".$j} = "✕";
       }else{
-        ${"gaikanhyouji".$j} = "良";
+        ${"gaikanhyouji".$j} = "〇";
       }
-
-      if(${"kangou".$j} == 1){
-        ${"kangouhyouji".$j} = "不";
-      }else{
-        ${"kangouhyouji".$j} = "良";
-      }
-
         ?>
 
       <td style='width:55; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
-      <td style='width:55; border-top-style:none'><?= h(${"kangouhyouji".$j}) ?></td>
-      <td style='width:80; border-top-style:none'><?= h(${"weight".$j}) ?></td>
-      <td style='width:55; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+      <td style='width:75; border-top-style:none'><?= h(${"weight".$j}) ?></td>
+      <td style='width:50; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
       <td style='width:55; border-top-style:none'></td>
 
       <?= $this->Form->control('product_id'.$j, array('type'=>'hidden', 'value'=>${"product_id".$j}, 'label'=>false)) ?>
       <?= $this->Form->control('gaikan'.$j, array('type'=>'hidden', 'value'=>${"gaikan".$j}, 'label'=>false)) ?>
-      <?= $this->Form->control('kangou'.$j, array('type'=>'hidden', 'value'=>${"kangou".$j}, 'label'=>false)) ?>
       <?= $this->Form->control('weight'.$j, array('type'=>'hidden', 'value'=>${"weight".$j}, 'label'=>false)) ?>
       <?= $this->Form->control('gouhi'.$j, array('type'=>'hidden', 'value'=>${"gouhi".$j}, 'label'=>false)) ?>
 
@@ -487,7 +518,9 @@ var moji = "length"
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>
-      <td style="border:none"><?= $this->Form->submit(('登録'), array('name' => 'tuika')) ?></td>
+    <td style="border:none"><?= $this->Form->submit(('登録'), array('name' => 'tuika')) ?></td>
+    <td style="border: none;"><?= __("　　　") ?></td>
+    <td style="border:none"><?= $this->Form->submit(('完了'), array('name' => 'finish')) ?></td>
     </tr>
   </tbody>
 </table>

@@ -15,9 +15,11 @@ use Cake\ORM\Entity;
  * @property \Cake\I18n\FrozenTime $datetime
  * @property int $staff_id
  * @property int $appearance
- * @property int $kangou
  * @property float $result_weight
  * @property int $judge
+ * @property int|null $kanryou_flag
+ * @property int|null $total_amount
+ * @property string|null $bik
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at
  * @property int $created_staff
@@ -52,9 +54,11 @@ class InspectionDataResultParent extends Entity
         'datetime' => true,
         'staff_id' => true,
         'appearance' => true,
-        'kangou' => true,
         'result_weight' => true,
         'judge' => true,
+        'kanryou_flag' => true,
+        'total_amount' => true,
+        'bik' => true,
         'delete_flag' => true,
         'created_at' => true,
         'created_staff' => true,

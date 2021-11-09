@@ -20,7 +20,7 @@ $mes = "";
     <td style='border: none;'>
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/menu' /><font size='4' color=black>測定データ登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/menu' /><font size='4' color=black>測定データ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/addformpre' /><font size='4' color=black>新規登録</font></a>
     </td>
   </tbody>
@@ -132,11 +132,11 @@ $mes = "";
             if(${"inspection_temp_".$n.$j} <= (int)${"temp_".$n.$j} + (int)${"temp_".$n."_upper_limit".$j}
             && ${"inspection_temp_".$n.$j} >= (int)${"temp_".$n.$j} + (int)${"temp_".$n."_lower_limit".$j}){
               echo '<td>';
-              echo ${"inspection_temp_".$n.$j} ;
+              echo sprintf("%.1f", ${"inspection_temp_".$n.$j}) ;
               echo '</td>';
             } else {
               echo '<td><font color="red">';
-              echo ${"inspection_temp_".$n.$j};
+              echo sprintf("%.1f", ${"inspection_temp_".$n.$j}) ;
               echo '</td>';
               $mes = "規格から外れたデータがあります。入力間違いがないか確認し、正しければそのまま登録してください。".'<br>';
             }

@@ -15,7 +15,7 @@ echo $this->Html->css('kensahyou');
     <td style='border: none;'>
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyoukikakus/menu' /><font size='4' color=black>検査規格登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoukikakus/menu' /><font size='4' color=black>検査規格</font></a>
     <font size='4'>　>>　</font><a href='/Kensahyoukikakus/kensakupre' /><font size='4' color=black>登録データ呼出</font></a>
     </td>
   </tbody>
@@ -23,7 +23,7 @@ echo $this->Html->css('kensahyou');
 
 <br><br><br>
 
-<?= $this->Form->create($product, ['url' => ['controller'=>'Kensahyoukadous', 'action' => 'menu']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'menu']]) ?>
 
 <?php
       echo $htmlkensahyouheader;
@@ -34,15 +34,15 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td style='width:102'>測定箇所</td>
 
-  <?php for($i=1; $i<=10; $i++): ?>
-    <td style='width:130'><?= h($this->request->getData('size_name'.$i)) ?></td>
+  <?php for($i=1; $i<=11; $i++): ?>
+    <td style='width:118'><?= h($this->request->getData('size_name'.$i)) ?></td>
   <?php endfor;?>
 
 </tr>
 <tr>
   <td>規格</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
       <td><?= h($this->request->getData('size'.$i)) ?></td>
     <?php endfor;?>
 
@@ -50,8 +50,8 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>公差上限</td>
 
-  <?php for($i=1; $i<=10; $i++): ?>
-    <?php if (strlen($this->request->getData('upper_limit'.$i)) > 0 && substr($this->request->getData('upper_limit'.$i), 0, 1) != "+"): ?>
+  <?php for($i=1; $i<=11; $i++): ?>
+    <?php if ($this->request->getData('inputtype'.$i) == "int" && strlen($this->request->getData('upper_limit'.$i)) > 0 && substr($this->request->getData('upper_limit'.$i), 0, 1) != "+"): ?>
     <td><?= h("+".$this->request->getData('upper_limit'.$i)) ?></td>
     <?php else : ?>
       <td><?= h($this->request->getData('upper_limit'.$i)) ?></td>
@@ -62,7 +62,7 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>公差下限</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
       <td><?= h($this->request->getData('lower_limit'.$i)) ?></td>
     <?php endfor;?>
 
@@ -70,7 +70,7 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>検査器具</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
       <td style='font-size: 8pt'><?= h($this->request->getData('measuring_instrument'.$i)) ?></td>
     <?php endfor;?>
 

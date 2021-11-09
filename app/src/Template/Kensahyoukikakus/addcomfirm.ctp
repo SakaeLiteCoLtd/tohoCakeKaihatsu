@@ -17,7 +17,7 @@ echo $this->Html->css('kensahyou');
     <td style='border: none;'>
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyoukikakus/menu' /><font size='4' color=black>検査規格登録</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoukikakus/menu' /><font size='4' color=black>検査規格</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukikakus/addformpre' /><font size='4' color=black>新規登録</font></a>
     </td>
   </tbody>
@@ -36,15 +36,15 @@ echo $this->Html->css('kensahyou');
 
 <table class="form">
 
-<?php for($i=1; $i<=10; $i++): ?>
+<?php for($i=1; $i<=11; $i++): ?>
   <?= $this->Form->control('inputtype'.$i, array('type'=>'hidden', 'value'=>$this->request->getData('inputtype'.$i), 'label'=>false)) ?>
 <?php endfor;?>
 
   <tr>
   <td style='width:102'>測定箇所</td>
 
-  <?php for($i=1; $i<=10; $i++): ?>
-    <td style='width:130'><?= h(${"size_name".$i}) ?></td>
+  <?php for($i=1; $i<=11; $i++): ?>
+    <td style='width:118'><?= h(${"size_name".$i}) ?></td>
     <?= $this->Form->control('size_name'.$i, array('type'=>'hidden', 'value'=>${"size_name".$i}, 'label'=>false)) ?>
   <?php endfor;?>
 
@@ -52,7 +52,7 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>規格</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
       <td><?= h(${"size".$i}) ?></td>
       <?= $this->Form->control('size'.$i, array('type'=>'hidden', 'value'=>${"size".$i}, 'label'=>false)) ?>
     <?php endfor;?>
@@ -61,8 +61,8 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>公差上限</td>
 
-  <?php for($i=1; $i<=10; $i++): ?>
-    <?php if (strlen(${"upper_limit".$i}) > 0 && substr(${"upper_limit".$i}, 0, 1) != "+"): ?>
+  <?php for($i=1; $i<=11; $i++): ?>
+    <?php if (${"inputtype".$i} == "int" && strlen(${"upper_limit".$i}) > 0 && substr(${"upper_limit".$i}, 0, 1) != "+"): ?>
     <td><?= h("+".${"upper_limit".$i}) ?></td>
     <?php else : ?>
       <td><?= h(${"upper_limit".$i}) ?></td>
@@ -75,7 +75,7 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>公差下限</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
       <td><?= h(${"lower_limit".$i}) ?></td>
       <?= $this->Form->control('lower_limit'.$i, array('type'=>'hidden', 'value'=>${"lower_limit".$i}, 'label'=>false)) ?>
     <?php endfor;?>
@@ -84,7 +84,7 @@ echo $this->Html->css('kensahyou');
 <tr>
   <td>検査器具</td>
 
-    <?php for($i=1; $i<=10; $i++): ?>
+    <?php for($i=1; $i<=11; $i++): ?>
       <td style='font-size: 8pt'><?= h(${"measuring_instrument".$i}) ?></td>
       <?= $this->Form->control('measuring_instrument'.$i, array('type'=>'hidden', 'value'=>${"measuring_instrument".$i}, 'label'=>false)) ?>
     <?php endfor;?>
