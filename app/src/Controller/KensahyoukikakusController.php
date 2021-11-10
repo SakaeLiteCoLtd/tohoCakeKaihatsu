@@ -662,12 +662,15 @@ class KensahyoukikakusController extends AppController
          'InspectionStandardSizeParents.delete_flag' => 0])
         ->toArray();
   
-        $this->InspectionStandardSizeParents->updateAll(
-          [ 'is_active' => 1,
-            'delete_flag' => 1,
-            'updated_at' => date('Y-m-d H:i:s'),
-            'updated_staff' => $staff_id],
-          ['id'  => $InspectionStandardSizeParentversion[0]["id"]]);
+        if(isset($InspectionStandardSizeParentversion[0])){
+          $this->InspectionStandardSizeParents->updateAll(
+            [ 'is_active' => 1,
+              'delete_flag' => 1,
+              'updated_at' => date('Y-m-d H:i:s'),
+              'updated_staff' => $staff_id],
+            ['id'  => $InspectionStandardSizeParentversion[0]["id"]]);
+  
+          }
 
         //新しいデータを登録
         $InspectionStandardSizeParents = $this->InspectionStandardSizeParents
@@ -675,11 +678,13 @@ class KensahyoukikakusController extends AppController
 
         if ($this->InspectionStandardSizeParents->save($InspectionStandardSizeParents)) {
 
-          $this->InspectionStandardSizeChildren->updateAll(
-            [ 'delete_flag' => 1,
-              'updated_at' => date('Y-m-d H:i:s'),
-              'updated_staff' => $staff_id],
-            ['inspection_standard_size_parent_id' => $InspectionStandardSizeParentversion[0]["id"]]);
+          if(isset($InspectionStandardSizeParentversion[0])){
+            $this->InspectionStandardSizeChildren->updateAll(
+              [ 'delete_flag' => 1,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_staff' => $staff_id],
+              ['inspection_standard_size_parent_id' => $InspectionStandardSizeParentversion[0]["id"]]);
+            }
     
             $InspectionStandardSizeParentversion = $this->InspectionStandardSizeParents->find()->contain(["Products"])
             ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.is_active' => 0,

@@ -1599,7 +1599,8 @@ class KensahyougenryousController extends AppController
 
       $ProductMachineMaterials = $this->ProductMachineMaterials->find()
       ->contain(['ProductMaterialMachines' => ['ProductConditionParents' => ["Products"]]])
-      ->where(['machine_num' => $machine_num, 'version' => $version, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
+      ->where(['machine_num' => $machine_num, 'version' => $version, 'product_code' => $product_code
+      , 'ProductConditionParents.delete_flag' => 0, 'ProductMachineMaterials.delete_flag' => 0])
       ->order(["ProductMaterialMachines.id"=>"ASC"])->toArray();
 
       if(!isset($ProductMachineMaterials[0])){//長さ違いのデータがあればそれを持ってくる

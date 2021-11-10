@@ -51,10 +51,16 @@ class htmlkensahyoukadoumenu extends AppController
            "<img src='/img/menus/seihinntop.gif' width=145 height=50>\n".
            "</a></td><td style='border: none'>　</td>\n".
 */
-           "<td style='border: none'>\n".
-           "<a href='/Kensahyoukikakus/menu'>\n".
-           "<img src='/img/menus/topKikaku.gif' width=145 height=50>\n".
-           "</a></td><td style='border: none'>　</td>\n".
+
+            "<td style='border: none'>\n".
+            "<a href='/Kensahyouyobidashies/index'>\n".
+            "<img src='/img/menus/topYobidashi.gif' width=145 height=50>\n".
+            "</a></td><td style='border: none'>　</td>\n".
+
+            "<td style='border: none'>\n".
+            "<a href='/Kensahyoukikakus/menu'>\n".
+            "<img src='/img/menus/topKikaku.gif' width=145 height=50>\n".
+            "</a></td><td style='border: none'>　</td>\n".
 
            "<td style='border: none'>\n".
            "<a href='/Kensahyougenryous/menu'>\n".
@@ -105,15 +111,22 @@ class htmlkensahyoukadoumenu extends AppController
    public function seihinyobidashimenus()
    {
        $html =
-           "<table>\n".
-           "<td style='border: none'>\n".
-           "<a href='/Kensahyoukadous/seihinyobidashiichiran'>\n".
-           "<img src='/img/menus/seihinichiran.gif' width=145 height=50>\n".
+       "<table>\n".
+       "<td style='border: none'>\n".
+       "<a href='/Kensahyouyobidashies/kensakuform'>\n".
+       "<img src='/img/menus/seihinkensaku.gif' width=145 height=50>\n".
+/*
+
+       "<table>\n".
+       "<td style='border: none'>\n".
+       "<a href='/Kensahyoukadous/seihinyobidashiichiran'>\n".
+       "<img src='/img/menus/seihinichiran.gif' width=145 height=50>\n".
            "</a></td><td style='border: none'>　　　</td>\n".
            "<td style='border: none'>\n".
            "<a href='/Kensahyoukadous/seihinkensakuform'>\n".
            "<img src='/img/menus/seihinkensaku.gif' width=145 height=50>\n".
-           "</a></td>\n".
+           */
+          "</a></td>\n".
            "</table>\n";
 
        return $html;

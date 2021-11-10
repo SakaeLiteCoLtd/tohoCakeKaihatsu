@@ -50,7 +50,7 @@ $arrProduct_name_list = json_encode($arrProduct_name_list);//javaに配列を受
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoutemperatures/menu' /><font size='4' color=black>成形温度登録</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoutemperatures/kensakumenu' /><font size='4' color=black>登録データ呼出</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyougenryous/kensakurirekipre' /><font size='4' color=black>登録履歴呼出</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyoutemperatures/kensakurirekipre' /><font size='4' color=black>登録履歴呼出</font></a>
     </td>
   </tbody>
 </table>
