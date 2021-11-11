@@ -243,23 +243,22 @@ class KensahyougenryousController extends AppController
       $this->set('product', $product);
 
       $Data = $this->request->query('s');
-      $product_code = $Data["product_code"];
-      $this->set('product_code', $product_code);
-      $user_code = $Data["user_code"];
-      $this->set('user_code', $user_code);
+      if(isset($Data["product_code"])){
+        $product_code = $Data["product_code"];
+        $this->set('product_code', $product_code);
+        $user_code = $Data["user_code"];
+        $this->set('user_code', $user_code);
+      }else{
+        $data = $this->request->getData();
+    
+        $product_code = $data["product_code"];
+        $this->set('product_code', $product_code);
+        $user_code = $data["user_code"];
+        $this->set('user_code', $user_code);
+      }
 
       $data = $this->request->getData();
-      /*
-      echo "<pre>";
-      print_r("data");
-      print_r($data);
-      echo "</pre>";
 
-      echo "<pre>";
-      print_r("Data");
-      print_r($Data);
-      echo "</pre>";
-*/
       $arrGouki = [
         1 => 1,
         2 => 2,
@@ -2423,6 +2422,8 @@ class KensahyougenryousController extends AppController
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
       $this->set('staff_name', $staff_name);
+      $delete_flag = 0;
+      $this->set('delete_flag', $delete_flag);
 
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
@@ -2732,6 +2733,8 @@ class KensahyougenryousController extends AppController
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
       $this->set('staff_name', $staff_name);
+      $delete_flag = 0;
+      $this->set('delete_flag', $delete_flag);
 
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);

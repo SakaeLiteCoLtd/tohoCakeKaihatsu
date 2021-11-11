@@ -23,7 +23,10 @@ echo $this->Html->css('kensahyou');
 
 <br><br><br>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'menu']]) ?>
+<?= $this->Form->create($product, ['url' => ['controller' => 'kensahyougenryous', 'action' => 'addformpregouki']]) ?>
+
+<?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
+<?= $this->Form->control('user_code', array('type'=>'hidden', 'value'=>$user_code, 'label'=>false)) ?>
 
 <?php
       echo $htmlkensahyouheader;
@@ -86,7 +89,7 @@ echo $this->Html->css('kensahyou');
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>
-      <td style="border-style: none;"><div><?= $this->Form->submit('TOPへ戻る', array('name' => 'kettei')); ?></div></td>
+      <td style="border-style: none;"><div><?= $this->Form->submit('原料・温度条件登録へ', array('name' => 'kettei')); ?></div></td>
     </tr>
   </tbody>
 </table>

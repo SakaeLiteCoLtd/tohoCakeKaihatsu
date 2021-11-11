@@ -27,20 +27,64 @@ echo $this->Html->css('kensahyou');
 
 <br><br>
 
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <?php
-     echo $htmlkensahyouseihinyobidashimenus;
+$arrProduct_name_list = json_encode($arrProduct_name_list);//javaに配列を受け渡すために変換
 ?>
 
-<br>
+<script>
 
+  $(function() {
+      // 入力補完候補の単語リスト
+      let wordlist = <?php echo $arrProduct_name_list; ?>
+      // 入力補完を実施する要素に単語リストを設定
+      $("#product_name_list").autocomplete({
+        source: wordlist
+      });
+  });
+
+</script>
+
+<?= $this->Form->create($product, ['url' => ['action' => 'index']]) ?>
+
+<br><br><br>
+
+<table>
+  <tbody style="background-color: #FFFFCC">
+    <tr class="parents">
+    <td width="400"><strong>製品名（一部のみ入力可）</strong></td>
+      <td width="150"><strong>ライン番号</strong></td>
+    </tr>
+    <tr>
+      <td style="border: 1px solid black">
+        <?= $this->Form->control('product_name', array('type'=>'text', 'label'=>false, 'id'=>"product_name_list")) ?>
+      </td>
+      <td><?= $this->Form->control('machine_num', ['options' => $arrGouki, 'label'=>false]) ?></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+  <table align="center">
+    <tbody class='sample non-sample'>
+      <tr>
+        <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+        <td style="border-style: none;"><?= __("　") ?></td>
+      <td style="border:none"><?= $this->Form->submit(('検索'), array('name' => 'next')) ?></td>
+      </tr>
+    </tbody>
+  </table>
+  <br><br>
 <table>
         <thead>
             <tr class="parents">
-              <th style='width:100; height:60; borderr-width: 1px;'><font color=black><?= __('No.') ?></font></th>
-              <th style='width:200; borderr-width: 1px;'><?= __('製品名') ?></th>
-              <th style='width:200; borderr-width: 1px;'><?= __('ライン番号') ?></th>
-              <th style='width:200; borderr-width: 1px;'><?= __('検査表画像・規格') ?></th>
-              <th style='width:200; borderr-width: 1px;'><?= __('原料・温度条件') ?></th>
+            <td style='width:60; height:60; border-width: 1px solid black;'><?= __('No.') ?></td>
+            <td style='height:60; border-width: 1px solid black;'><?= __('製品名') ?></td>
+            <td style='width:100; height:60; border-width: 1px solid black;'><?= __('ライン番号') ?></td>
+            <td style='width:150; height:60; border-width: 1px solid black;'><?= __('検査表画像・規格') ?></td>
+            <td style='width:150; height:60; border-width: 1px solid black;'><?= __('原料・温度条件') ?></td>
             </tr>
         </thead>
 
@@ -50,8 +94,27 @@ echo $this->Html->css('kensahyou');
               <td><?= h($i) ?></td>
                 <td><?= h($arrKensahyous[$j]["product_name"]) ?></td>
                 <td><?= h($arrKensahyous[$j]["machine_num"]) ?></td>
-                <td><?= h($arrKensahyous[$j]["kikaku"]) ?></td>
-                <td><?= h($arrKensahyous[$j]["seikeijouken"]) ?></td>
+
+                <?php if ($arrKensahyous[$j]["kikaku"] !== "登録済み"): ?>
+                 <td>
+                 <?php
+                  echo $this->Form->submit("登録" , ['name' => "kikaku_".$arrKensahyous[$j]["product_code"]]) ;
+                 ?>
+                  </td>
+                <?php else : ?>
+                  <td><?= h($arrKensahyous[$j]["kikaku"]) ?></td>
+                <?php endif; ?>
+
+                <?php if ($arrKensahyous[$j]["seikeijouken"] !== "登録済み"): ?>
+                 <td>
+                 <?php
+                  echo $this->Form->submit("登録" , ['name' => $arrKensahyous[$j]["product_code"]]) ;
+                 ?>
+                  </td>
+                <?php else : ?>
+                  <td><?= h($arrKensahyous[$j]["seikeijouken"]) ?></td>
+                <?php endif; ?>
+
             </tr>
 
           <?php
@@ -62,3 +125,4 @@ echo $this->Html->css('kensahyou');
 
         </tbody>
     </table>
+    <br><br>

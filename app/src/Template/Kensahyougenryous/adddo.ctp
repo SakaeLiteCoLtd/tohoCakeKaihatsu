@@ -30,7 +30,7 @@ echo $this->Html->css('kensahyou');
   //   echo $htmlkensahyoumenu;
 ?>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'addformpre']]) ?>
+<?= $this->Form->create($product, ['url' => ['controller' => 'kensahyougenryous', 'action' => 'addformpregouki']]) ?>
 
 <?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$this->request->getData('staff_id'), 'label'=>false)) ?>
 <?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$this->request->getData('staff_name'), 'label'=>false)) ?>

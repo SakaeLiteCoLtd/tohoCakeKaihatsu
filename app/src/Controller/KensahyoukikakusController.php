@@ -592,6 +592,8 @@ class KensahyoukikakusController extends AppController
       $Users= $this->Users->find('all')->contain(["Staffs"])->where(['user_code' => $datasession['Auth']['User']['user_code'], 'Users.delete_flag' => 0])->toArray();
       $staff_id = $Users[0]["staff_id"];
       $this->set('staff_id', $staff_id);
+      $user_code = $datasession['Auth']['User']['user_code'];
+      $this->set('user_code', $user_code);
 
       $data = $this->request->getData();
 /*

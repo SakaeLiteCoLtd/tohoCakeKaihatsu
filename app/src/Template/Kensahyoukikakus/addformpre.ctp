@@ -61,6 +61,12 @@ $arrProduct_name_list = json_encode($arrProduct_name_list);//jsに配列を受�
 <?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$staff_id, 'label'=>false)) ?>
 <?= $this->Form->control('staff_name', array('type'=>'hidden', 'value'=>$staff_name, 'label'=>false)) ?>
 
+<table>
+  <tbody class='sample non-sample'>
+  <tr><td style="border:none"><strong style="font-size: 15pt; color:red"><?= __('検査表画像　新規登録') ?></strong></td></tr>
+  </tbody>
+</table>
+
 <br>
 <div align="center"><font size="3"><?= __("製品名を入力して「次へ」ボタンを押してください。") ?></font></div>
 <div align="center"><font color="red" size="3"><?= __($mess) ?></font></div>

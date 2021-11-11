@@ -28,7 +28,7 @@ echo $this->Html->css('kensahyou');
 
 <table>
   <tbody class='sample non-sample'>
-  <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('長さのみ異なる製品には同じ検査表画像が使用されます。') ?></strong></td></tr>
+  <tr><td style="border:none"><strong style="font-size: 15pt; color:red"><?= __('検査表画像　新規登録') ?></strong></td></tr>
   </tbody>
 </table>
 
@@ -36,6 +36,9 @@ echo $this->Html->css('kensahyou');
     <div align="center"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></div>
     <div align="center"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></div>
     <br>
+    <br>
+      <div align="center"><font size="4"><?= __($product_name." の検査表に使用する画像ファイルを選択してください。") ?></font></div>
+      <br>
 
   <?= $this->Form->create($inspectionStandardSizeParents,['action'=>'addimagecomfirm', 'type'=>'file']) ?>
         <table width="300">
@@ -57,8 +60,8 @@ echo $this->Html->css('kensahyou');
       </table>
 
       <br>
-      <div align="center"><font size="4"><?= __($product_name." の検査表に使用する画像ファイルを選択してください。") ?></font></div>
-      <div align="center"><strong style="font-size: 13pt; color:red"><?= __("※画像ファイルの拡張子は「.JPG」にしてください。") ?></strong></div>
+      <div align="center"><strong style="font-size: 13pt; color:red"><?= __("※画像ファイルの拡張子は「.JPG」にしてください。　　　") ?></strong></div>
+      <div align="center"><strong style="font-size: 13pt; color:red"><?= __("※長さのみ異なる製品には同じ検査表画像が使用されます。") ?></strong></div>
       <br>
 
       <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
