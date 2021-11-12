@@ -1552,7 +1552,7 @@ class KensahyousokuteidatasController extends AppController
         'InspectionStandardSizeParents.delete_flag' => 0,
         'InspectionDataResultParents.delete_flag' => 0])
         ->order(["InspectionDataResultParents.datetime"=>"DESC"])->limit('1')->toArray();
-  
+
         $InspectionDataResultParents = $this->InspectionDataResultParents->patchEntity
         ($this->InspectionDataResultParents->newEntity(), $data);
         $connection = ConnectionManager::get('default');//トランザクション1
@@ -1563,6 +1563,47 @@ class KensahyousokuteidatasController extends AppController
             ['kanryou_flag' => ""],
             ['id' => $InspectionDataResultParentData[0]['id']])){
   
+              $InspectionDataResultParentData2 = $this->InspectionDataResultParents->find()
+              ->contain(['InspectionStandardSizeParents', 'ProductConditionParents', 'Products'])
+              ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 
+              'InspectionStandardSizeParents.delete_flag' => 0,
+              'InspectionDataResultParents.kanryou_flag' => 1,
+              'InspectionDataResultParents.delete_flag' => 0])
+              ->order(["InspectionDataResultParents.datetime"=>"DESC"])->limit('1')->toArray();
+        
+              if(isset($InspectionDataResultParentData2[0])){
+
+                $InspectionDataResultParentData3 = $this->InspectionDataResultParents->find()
+                ->contain(['InspectionStandardSizeParents', 'ProductConditionParents', 'Products'])
+                ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 
+                'InspectionStandardSizeParents.delete_flag' => 0,
+                'InspectionDataResultParents.datetime >' => $InspectionDataResultParentData2[0]["datetime"]->format("Y-m-d H:i:s"),
+                'InspectionDataResultParents.delete_flag' => 0])
+                ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
+  
+                for($j=0; $j<count($InspectionDataResultParentData3); $j++){
+                  $this->InspectionDataResultParents->updateAll(
+                    ['kanryou_flag' => ""],
+                    ['id' => $InspectionDataResultParentData3[$j]['id']]);
+                }
+  
+              }else{
+               
+                $InspectionDataResultParentData3 = $this->InspectionDataResultParents->find()
+                ->contain(['InspectionStandardSizeParents', 'ProductConditionParents', 'Products'])
+                ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 
+                'InspectionStandardSizeParents.delete_flag' => 0,
+                'InspectionDataResultParents.delete_flag' => 0])
+                ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
+  
+                for($j=0; $j<count($InspectionDataResultParentData3); $j++){
+                  $this->InspectionDataResultParents->updateAll(
+                    ['kanryou_flag' => ""],
+                    ['id' => $InspectionDataResultParentData3[$j]['id']]);
+                }
+
+              }
+
            $connection->commit();// コミット5
   
          } else {
