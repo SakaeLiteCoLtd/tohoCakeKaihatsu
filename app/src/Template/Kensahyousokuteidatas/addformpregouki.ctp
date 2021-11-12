@@ -17,7 +17,7 @@ echo $this->Html->css('kensahyou');
     <td style='border: none;align: left'>
     <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/menu' /><font size='4' color=black>測定データ</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/menu' /><font size='4' color=black>データ測定</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/addformpre' /><font size='4' color=black>新規登録</font></a>
     </a></td>
   </tbody>
@@ -31,13 +31,13 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 
 <br>
-<div align="center"><font size="3"><?= __("号機番号を選択して「次へ」ボタンを押してください。") ?></font></div>
+<div align="center"><font size="3"><?= __("ライン番号を選択して「次へ」ボタンを押してください。") ?></font></div>
 <br>
 
 <table>
   <tbody style="background-color: #FFFFCC">
     <tr>
-      <td width="100">号機番号</td>
+      <td width="100">ライン番号</td>
     </tr>
     <tr>
     <td><?= $this->Form->control('machine_num', ['options' => $arrGouki, 'label'=>false]) ?></td>

@@ -215,31 +215,56 @@ class KensahyouyobidashiesController extends AppController
           ->order(["version"=>"DESC"])->toArray();
   
           if(isset($ProductConditionParents[0])){
-            $machine_num = $ProductConditionParents[0]["machine_num"];;
-            $seikeijouken_created_at = $ProductConditionParents[0]["created_at"]->format("Y-m-d H:i:s");
+
+            for($k=0; $k<count($ProductConditionParents); $k++){
+
+              $machine_num = $ProductConditionParents[$k]["machine_num"];;
+              $seikeijouken_created_at = $ProductConditionParents[$k]["created_at"]->format("Y-m-d H:i:s");
+  
+              if(strtotime($kikaku_created_at) > strtotime($seikeijouken_created_at)){
+                $datetime = $kikaku_created_at;
+              }else{
+                $datetime = $seikeijouken_created_at;
+              }
+      
+              $arrKensahyous[] = [
+                "product_code_ini" => $product_code_ini,
+                "product_code" => $arrProducts[$i],
+                "product_name" => $Products[0]["name"],
+                "machine_num" => $machine_num,
+                "kikaku" => $kikaku,
+                "seikeijouken" => $seikeijouken,
+                "kikaku_created_at" => $kikaku_created_at,
+                "seikeijouken_created_at" => $seikeijouken_created_at,
+                "datetime" => $datetime
+              ];
+  
+            }
+    
           }
 
         }else{
           $seikeijouken = 0;
-        }
 
-        if(strtotime($kikaku_created_at) > strtotime($seikeijouken_created_at)){
-          $datetime = $kikaku_created_at;
-        }else{
-          $datetime = $seikeijouken_created_at;
+          if(strtotime($kikaku_created_at) > strtotime($seikeijouken_created_at)){
+            $datetime = $kikaku_created_at;
+          }else{
+            $datetime = $seikeijouken_created_at;
+          }
+  
+          $arrKensahyous[] = [
+            "product_code_ini" => $product_code_ini,
+            "product_code" => $arrProducts[$i],
+            "product_name" => $Products[0]["name"],
+            "machine_num" => $machine_num,
+            "kikaku" => $kikaku,
+            "seikeijouken" => $seikeijouken,
+            "kikaku_created_at" => $kikaku_created_at,
+            "seikeijouken_created_at" => $seikeijouken_created_at,
+            "datetime" => $datetime
+          ];
+  
         }
-
-        $arrKensahyous[] = [
-          "product_code_ini" => $product_code_ini,
-          "product_code" => $arrProducts[$i],
-          "product_name" => $Products[0]["name"],
-          "machine_num" => $machine_num,
-          "kikaku" => $kikaku,
-          "seikeijouken" => $seikeijouken,
-          "kikaku_created_at" => $kikaku_created_at,
-          "seikeijouken_created_at" => $seikeijouken_created_at,
-          "datetime" => $datetime
-        ];
 
       }
 
@@ -483,36 +508,43 @@ class KensahyouyobidashiesController extends AppController
           ->order(["version"=>"DESC"])->toArray();
   
           if(isset($ProductConditionParents[0])){
-            $machine_num = $ProductConditionParents[0]["machine_num"];;
-            $seikeijouken_created_at = $ProductConditionParents[0]["created_at"]->format("Y-m-d H:i:s");
+
+            for($k=0; $k<count($ProductConditionParents); $k++){
+
+              $machine_num = $ProductConditionParents[$k]["machine_num"];;
+              $seikeijouken_created_at = $ProductConditionParents[$k]["created_at"]->format("Y-m-d H:i:s");
+  
+              if(strtotime($kikaku_created_at) > strtotime($seikeijouken_created_at)){
+                $datetime = $kikaku_created_at;
+              }else{
+                $datetime = $seikeijouken_created_at;
+              }
+      
+              $arrKensahyous[] = [
+                "product_code_ini" => $product_code_ini,
+                "product_code" => $arrProducts[$i],
+                "product_name" => $Products[0]["name"],
+                "machine_num" => $machine_num,
+                "kikaku" => $kikaku,
+                "seikeijouken" => $seikeijouken,
+                "kikaku_created_at" => $kikaku_created_at,
+                "seikeijouken_created_at" => $seikeijouken_created_at,
+                "datetime" => $datetime
+              ];
+  
+            }
+    
           }
 
         }else{
           $seikeijouken = 0;
-        }
 
-        if(strtotime($kikaku_created_at) > strtotime($seikeijouken_created_at)){
-          $datetime = $kikaku_created_at;
-        }else{
-          $datetime = $seikeijouken_created_at;
-        }
-
-        if($data["machine_num"] === "選択なし"){
-
-          $arrKensahyous[] = [
-            "product_code_ini" => $product_code_ini,
-            "product_code" => $arrProducts[$i],
-            "product_name" => $Products[0]["name"],
-            "machine_num" => $machine_num,
-            "kikaku" => $kikaku,
-            "seikeijouken" => $seikeijouken,
-            "kikaku_created_at" => $kikaku_created_at,
-            "seikeijouken_created_at" => $seikeijouken_created_at,
-            "datetime" => $datetime
-          ];
+          if(strtotime($kikaku_created_at) > strtotime($seikeijouken_created_at)){
+            $datetime = $kikaku_created_at;
+          }else{
+            $datetime = $seikeijouken_created_at;
+          }
   
-        }elseif($data["machine_num"] == $machine_num){
-
           $arrKensahyous[] = [
             "product_code_ini" => $product_code_ini,
             "product_code" => $arrProducts[$i],

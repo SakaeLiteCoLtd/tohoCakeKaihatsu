@@ -39,7 +39,7 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
     <td style='border: none;align: left'>
     <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyouyobidashies/index' /><font size='4' color=black>検査表呼出</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyouyobidashies/index' /><font size='4' color=black>検査規格</font></a>
     </a></td>
   </tbody>
 </table>
@@ -90,7 +90,7 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
   <tbody>
     <tr style="background-color: #FFFFCC">
     <td style="border:none; background-color:#E6FFFF">　　　　　　　　　　</td>
-    <td width="100"><?= __($machine_num) ?>号ライン</td>
+    <td width="100"><strong><?= __($machine_num) ?>号ライン</strong></td>
     </tr>
   </tbody>
 </table>

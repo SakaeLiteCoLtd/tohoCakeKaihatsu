@@ -17,7 +17,7 @@ echo $this->Html->css('kensahyou');
     <td style='border: none;'>
       <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/menu' /><font size='4' color=black>測定データ</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/menu' /><font size='4' color=black>データ測定</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyousokuteidatas/addformpre' /><font size='4' color=black>新規登録</font></a>
     </td>
   </tbody>
@@ -45,8 +45,16 @@ echo $this->Html->css('kensahyou');
 
   <?php if ($j == 1): ?>
 
-    <table align='left'><tbody class='sample non-sample'><tr><td style='border:none'>　　　　　　　　　</td>
-    <td style='border:none'><font size='4'><strong><?= h($machine_num."号機") ?></strong></font></td></tr></tbody></table><br><br>
+    <br>
+    <table align="left">
+  <tbody>
+    <tr style="background-color: #FFFFCC">
+    <td style="border:none; background-color:#E6FFFF">　　　　　　　　　　</td>
+    <td width="100"><strong><?= __($machine_num) ?>号ライン</strong></td>
+    </tr>
+  </tbody>
+</table>
+<br><br>
 
     <?php else : ?>
       <?php endif; ?>

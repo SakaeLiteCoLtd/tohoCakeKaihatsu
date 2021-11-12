@@ -40,7 +40,21 @@ class htmlkensahyoukadoumenu extends AppController
    {
        $html =
            "<table>\n".
-/*
+
+           "<td style='border: none'>\n".
+           "<a href='/Kensahyouyobidashies/index'>\n".
+           "<img src='/img/menus/topKikaku.gif' width=145 height=50>\n".
+           "</a></td><td style='border: none'>　　　</td>\n".
+           "<td style='border: none'>\n".
+           "<a href='/Kensahyousokuteidatas/menu'>\n".
+            "<img src='/img/menus/TopDatasokutei.gif' width=145 height=50>\n".
+            "</a></td>\n".
+            "</table>\n";
+ 
+
+
+/*211112更新　以下からはもともとのメニューにいける
+
            "<td style='border: none'>\n".
            "<a href='/Kensahyoukadous/login'>\n".
            "<img src='/img/menus/imgkensahyou.gif' width=145 height=50>\n".
@@ -50,7 +64,6 @@ class htmlkensahyoukadoumenu extends AppController
            "<a href='/Kensahyoukadous/kensahyouseihinmenu'>\n".
            "<img src='/img/menus/seihinntop.gif' width=145 height=50>\n".
            "</a></td><td style='border: none'>　</td>\n".
-*/
 
             "<td style='border: none'>\n".
             "<a href='/Kensahyouyobidashies/index'>\n".
@@ -67,24 +80,24 @@ class htmlkensahyoukadoumenu extends AppController
            "<img src='/img/menus/topSeikeijouken.gif' width=145 height=50>\n".
            "</a></td><td style='border: none'>　</td>\n".
 
-           /*
            "<td style='border: none'>\n".
           "<td style='border: none'>\n".
            "<a href='/Kensahyoutemperatures/menu'>\n".
            "<img src='/img/menus/seikeiondomenu.gif' width=145 height=50>\n".
            "</a></td><td style='border: none'>　</td>\n".
-           /*
+
            "<a href='/Kensahyoukikakus/kensakupre'>\n".
            "<img src='/img/menus/kikakukensaku.gif' width=145 height=50>\n".
            "</a></td><td style='border: none'>　</td>\n".
            "<td style='border: none'>\n".
-           */
 
           "<td style='border: none'>\n".
           "<a href='/Kensahyousokuteidatas/menu'>\n".
            "<img src='/img/menus/topSokutei.gif' width=145 height=50>\n".
            "</a></td>\n".
            "</table>\n";
+
+           */
 
        return $html;
        $this->html = $html;

@@ -44,10 +44,9 @@ $arrProduct_name_list = json_encode($arrProduct_name_list);//javaに配列を受
 <table class='sample hesdermenu'>
   <tbody>
     <td style='border: none;'>
-      <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
+    <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyoukikakus/menu' /><font size='4' color=black>検査規格</font></a>
-    <font size='4'>　>>　</font><a href='/Kensahyoukikakus/kensakupre' /><font size='4' color=black>登録データ呼出</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyouyobidashies/index' /><font size='4' color=black>検査規格</font></a>
     </td>
   </tbody>
 </table>

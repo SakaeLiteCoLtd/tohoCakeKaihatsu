@@ -20,7 +20,7 @@ echo $this->Html->css('kensahyou');
     <td style='border: none;'>
     <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
       <font size='4'>　>>　</font><a href='/Kensahyoukadous/kensahyoumenu' /><font size='4' color=black>検査表関係</font></a>
-      <font size='4'>　>>　</font><a href='/Kensahyouyobidashies/index' /><font size='4' color=black>検査表呼出</font></a>
+      <font size='4'>　>>　</font><a href='/Kensahyouyobidashies/index' /><font size='4' color=black>検査規格</font></a>
     </td>
   </tbody>
 </table>
@@ -92,7 +92,7 @@ $arrProduct_name_list = json_encode($arrProduct_name_list);//javaに配列を受
         <?php for($j=0; $j<count($arrKensahyous); $j++): ?>
             <tr class='children'>
               <td><?= h($i) ?></td>
-                <td><?= h($arrKensahyous[$j]["product_name"]) ?></td>
+                <td><?= h("　".$arrKensahyous[$j]["product_name"]."　") ?></td>
                 <td><?= h($arrKensahyous[$j]["machine_num"]) ?></td>
 
                 <?php if ($arrKensahyous[$j]["kikaku"] !== "登録済み"): ?>

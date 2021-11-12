@@ -22,10 +22,10 @@ class KensahyoukadousController extends AppController
     parent::beforeFilter($event);
 
     // 認証なしでアクセスできるアクションの指定
-    $this->Auth->allow(["login","kikakunagasalogin",
-    "seihinkensakuform","seihinkensakusyousai",
-    "seihinyobidashimenu","seihinyobidashiichiran",
-    "kensahyouseihinmenu","index","kensahyoumenu"]);
+  //  $this->Auth->allow(["login","kikakunagasalogin",
+   // "seihinkensakuform","seihinkensakusyousai",
+    //"seihinyobidashimenu","seihinyobidashiichiran",
+    //"kensahyouseihinmenu","index","kensahyoumenu"]);
   }
 
     public function index()

@@ -103,13 +103,14 @@ class htmlkensahyouprogram extends AppController
         if($j == 1){
 
           $html = $html.
-          "<table align='left'>\n".
-          "<tbody class='sample non-sample'>\n".
-          "<tr><td style='border:none'>　　　　　　　　　</td>\n".
-          "<td style='border:none'><font size='4'><strong>\n".
+          "<br><table align='left'>\n".
+          "<tbody>\n".
+          "<tr style='background-color: #FFFFCC'>\n".
+          "<td style='border:none; background-color:#E6FFFF'>　　　　　　　　　　</td>\n".
+          "<td width='100'><strong>\n".
           "$machine_num\n".
-          "号機\n".
-          "</strong></font></td>\n".
+          "号ライン\n".
+          "</strong></td>\n".
           "</tr></tbody></table><br><br>\n";
  
          }
@@ -260,13 +261,14 @@ class htmlkensahyouprogram extends AppController
          if($j == 1){
 
           $html = $html.
-          "<table align='left'>\n".
-          "<tbody class='sample non-sample'>\n".
-          "<tr><td style='border:none'>　　　　　　　　　</td>\n".
-          "<td style='border:none'><font size='4'><strong>\n".
+          "<br><table align='left'>\n".
+          "<tbody>\n".
+          "<tr style='background-color: #FFFFCC'>\n".
+          "<td style='border:none; background-color:#E6FFFF'>　　　　　　　　　　</td>\n".
+          "<td width='100'><strong>\n".
           "$machine_num\n".
-          "号機\n".
-          "</strong></font></td>\n".
+          "号ライン\n".
+          "</strong></td>\n".
           "</tr></tbody></table><br><br>\n";
  
          }
@@ -413,13 +415,14 @@ class htmlkensahyouprogram extends AppController
         if($j == 1){
 
           $html = $html.
-          "<table align='left'>\n".
-          "<tbody class='sample non-sample'>\n".
-          "<tr><td style='border:none'>　　　　　　　　　</td>\n".
-          "<td style='border:none'><font size='4'><strong>\n".
+          "<br><table align='left'>\n".
+          "<tbody>\n".
+          "<tr style='background-color: #FFFFCC'>\n".
+          "<td style='border:none; background-color:#E6FFFF'>　　　　　　　　　　</td>\n".
+          "<td width='100'><strong>\n".
           "$machine_num\n".
-          "号機\n".
-          "</strong></font></td>\n".
+          "号ライン\n".
+          "</strong></td>\n".
           "</tr></tbody></table><br><br>\n";
  
          }
