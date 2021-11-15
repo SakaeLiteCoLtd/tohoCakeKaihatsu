@@ -34,14 +34,15 @@ echo $this->Html->css('kensahyou');
 <br>
 
 <table align="left">
-  <tbody class='sample non-sample'>
-    <tr>
-    <td style="border:none">　　　　　　　　　</td>
-    <td style="border:none"><font size="4"><strong><?= __($machine_num." 号機") ?></strong></font></td>
+  <tbody>
+    <tr style="background-color: #FFFFCC">
+    <td style="border:none; background-color:#E6FFFF">　　　　　　　　　　</td>
+    <td width="100"><strong><?= __($machine_num) ?>号ライン</strong></td>
     </tr>
   </tbody>
 </table>
-<br><br>
+<br>
+<br>
 
  <table class="top_big">
    <tr></tr>
@@ -316,7 +317,7 @@ echo $this->Html->css('kensahyou');
     <tr>
       <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
       <td style="border: none;"><?= __("　") ?></td>
-      <td style="border:none"><?= $this->Form->submit(('編集・削除'), array('name' => 'next')) ?></td>
+      <td style="border:none"><?= $this->Form->submit(('編集'), array('name' => 'next')) ?></td>
     </tr>
   </tbody>
 </table>

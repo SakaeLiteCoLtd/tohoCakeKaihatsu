@@ -33,14 +33,15 @@ echo $this->Html->css('kensahyou');
 </table>
 
 <table align="left">
-  <tbody class='sample non-sample'>
-    <tr>
-    <td style="border:none">　　　　　　　　　</td>
-    <td style="border:none"><font size="4"><strong><?= __($machine_num." 号機") ?></strong></font></td>
+  <tbody>
+    <tr style="background-color: #FFFFCC">
+    <td style="border:none; background-color:#E6FFFF">　　　　　　　　　　</td>
+    <td width="100"><strong><?= __($machine_num) ?>号ライン</strong></td>
     </tr>
   </tbody>
 </table>
-<br><br>
+<br>
+<br>
 
  <table class="top_big">
    <tr></tr>

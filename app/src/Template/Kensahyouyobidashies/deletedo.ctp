@@ -22,7 +22,7 @@ echo $this->Html->css('kensahyou');
   </tbody>
 </table>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'index']]) ?>
+<?= $this->Form->create($product, ['url' => ['controller'=>'Kensahyouyobidashies', 'action' => 'index']]) ?>
 
 <br><br><br>
 

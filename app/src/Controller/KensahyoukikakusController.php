@@ -26,7 +26,8 @@ class KensahyoukikakusController extends AppController
 
   		// 認証なしでアクセスできるアクションの指定
   		$this->Auth->allow(["menu"
-      ,"kensakupre", "kensakuhyouji"]);
+    //  ,"kensakupre", "kensakuhyouji"
+    ]);
   	}
 
       public function initialize()
@@ -1420,10 +1421,11 @@ class KensahyoukikakusController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
+      /*
       echo "<pre>";
       print_r($data);
       echo "</pre>";
-
+*/
       $change_flag = $data["change_flag"];
       $this->set('change_flag', $change_flag);
       $product_code = $data["product_code"];

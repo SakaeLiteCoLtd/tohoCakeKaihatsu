@@ -19,7 +19,7 @@ class htmlkensahyoukadoumenu extends AppController
         $html =
             "<table>\n".
             "<td style='border: none'>\n".
-            "<a href='/startmenus/login'>\n".
+            "<a href='/startmenus/menu'>\n".
             "<img src='/img/menus/kanrimenutop.gif' width=145 height=50>\n".
             "</a></td><td style='border: none'>　　　</td>\n".
             "<td style='border: none'>\n".
@@ -41,6 +41,7 @@ class htmlkensahyoukadoumenu extends AppController
        $html =
            "<table>\n".
 
+           
            "<td style='border: none'>\n".
            "<a href='/Kensahyouyobidashies/index'>\n".
            "<img src='/img/menus/topKikaku.gif' width=145 height=50>\n".
@@ -52,8 +53,8 @@ class htmlkensahyoukadoumenu extends AppController
             "</table>\n";
  
 
-
-/*211112更新　以下からはもともとのメニューにいける
+/*
+//211112更新　以下からはもともとのメニューにいける
 
            "<td style='border: none'>\n".
            "<a href='/Kensahyoukadous/login'>\n".

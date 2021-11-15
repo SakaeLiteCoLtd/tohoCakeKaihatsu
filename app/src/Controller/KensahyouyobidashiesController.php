@@ -327,6 +327,38 @@ class KensahyouyobidashiesController extends AppController
       $arrtouroku = array_keys($getdata, '登録');
       $arrfukusei = array_keys($getdata, '複製');
       $arrdelete = array_keys($getdata, '削除');
+      $arrhyouji = array_keys($getdata, '表示');
+
+      if(isset($arrhyouji[0])){//表示の場合
+
+        $arrcheck = explode("_",$arrhyouji[0]);
+        $check_what = $arrcheck[0];
+
+        if($check_what === "kikaku"){//規格の表示
+
+          if(isset($arrcheck[2])){
+            $product_code = $arrcheck[1]."_".$arrcheck[2];
+          }else{
+            $product_code = $arrcheck[1];
+          }
+
+          return $this->redirect(['controller' => 'kensahyoukikakus',  'action' => 'kensakuhyouji',
+          's' => ['product_code' => $product_code]]);
+  
+        }else{//成形条件の表示
+
+          $machine_num = $arrcheck[0];
+          if(isset($arrcheck[2])){
+            $product_code = $arrcheck[1]."_".$arrcheck[2];
+          }else{
+            $product_code = $arrcheck[1];
+          }
+          return $this->redirect(['controller' => 'kensahyougenryous',  'action' => 'kensakuhyouji',
+          's' => ['product_code' => $product_code, 'machine_num' => $machine_num]]);
+    
+        }
+
+      }
 
       if(isset($arrtouroku[0])){//登録の場合
 

@@ -56,8 +56,8 @@ echo $this->Html->css('kensahyou');
             <td style='width:60; height:60; border-width: 1px solid black;'><?= __('No.') ?></td>
             <td style='height:60; border-width: 1px solid black;'><?= __('製品名') ?></td>
             <td style='width:100; height:60; border-width: 1px solid black;'><?= __('ライン番号') ?></td>
-            <td style='width:150; height:60; border-width: 1px solid black;'><?= __('検査表画像・規格') ?></td>
-            <td style='width:150; height:60; border-width: 1px solid black;'><?= __('原料・温度条件') ?></td>
+            <td style='width:150; height:60; border-width: 1px solid black;' colspan='2'><?= __('検査表画像・規格') ?></td>
+            <td style='width:150; height:60; border-width: 1px solid black;' colspan='2'><?= __('原料・温度条件') ?></td>
             <td style='width:100; height:60; border-width: 1px solid black;'><?= __('複製') ?></td>
             <td style='width:100; height:60; border-width: 1px solid black;'><?= __('削除') ?></td>
             </tr>
@@ -71,23 +71,33 @@ echo $this->Html->css('kensahyou');
                 <td><?= h($arrKensahyous[$j]["machine_num"]) ?></td>
 
                 <?php if ($arrKensahyous[$j]["kikaku"] !== "登録済み"): ?>
-                 <td>
+                 <td colspan='2'>
                  <?php
                   echo $this->Form->submit("登録" , ['name' => "kikaku_".$arrKensahyous[$j]["product_code"]]) ;
                  ?>
                   </td>
                 <?php else : ?>
-                  <td><?= h($arrKensahyous[$j]["kikaku"]) ?></td>
+                  <td style='border-right-style:none'><?= h($arrKensahyous[$j]["kikaku"]) ?></td>
+                  <td style='border-left-style:none'>
+                  <?php
+                  echo $this->Form->submit("表示" , ['name' => "kikaku_".$arrKensahyous[$j]["product_code"]]) ;
+                  ?>
+                </td>
                 <?php endif; ?>
 
                 <?php if ($arrKensahyous[$j]["seikeijouken"] !== "登録済み"): ?>
-                 <td>
+                 <td colspan='2'>
                  <?php
                   echo $this->Form->submit("登録" , ['name' => $arrKensahyous[$j]["product_code"]]) ;
                  ?>
                   </td>
                 <?php else : ?>
-                  <td><?= h($arrKensahyous[$j]["seikeijouken"]) ?></td>
+                  <td style='border-right-style:none'><?= h($arrKensahyous[$j]["seikeijouken"]) ?></td>
+                  <td style='border-left-style:none'>
+                  <?php
+                  echo $this->Form->submit("表示" , ['name' => $arrKensahyous[$j]["machine_num"]."_".$arrKensahyous[$j]["product_code"]]) ;
+                  ?>
+                </td>
                 <?php endif; ?>
 
                 <?php if ($arrKensahyous[$j]["kikaku"] === "登録済み" && $arrKensahyous[$j]["seikeijouken"] === "登録済み"): ?>

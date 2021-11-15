@@ -72,13 +72,13 @@ class htmlimgmenutop extends AppController
                         "<font size='4'>　・</font><a href='/products/ichiran' /><font size='4' color=black>製品メニュー</font></a>\n".
                         "<br><br>\n";
                         }
-
+/*
                         if($check_images == 1){
                             $html = $html.
                             "<font size='4'>　・</font><a href='/images/ichiran' /><font size='4' color=black>検査表画像メニュー</font></a>\n".
                             "<br><br>\n";
                                 }
-
+*/
                             if($check_seikeikis == 1){
                                 $html = $html.
                                 "<font size='4'>　・</font><a href='/seikeikis/index' /><font size='4' color=black>成形機メニュー</font></a>\n".

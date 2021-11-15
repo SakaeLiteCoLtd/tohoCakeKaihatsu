@@ -27,10 +27,11 @@ class KensahyoutemperaturesController extends AppController
 
   		// 認証なしでアクセスできるアクションの指定
   		$this->Auth->allow(["menu"
-      , "kensakupre", "kensakuhyouji"
-      , "kensakumenu", "kensakurirekipre"
-      , "kensakugouki", "kensakurirekigouki"
-      , "kensakurirekiichiran", "kensakurirekihyouji"]);
+ //     , "kensakupre", "kensakuhyouji"
+ //     , "kensakumenu", "kensakurirekipre"
+ //     , "kensakugouki", "kensakurirekigouki"
+ //     , "kensakurirekiichiran", "kensakurirekihyouji"
+    ]);
   	}
 
       public function initialize()
