@@ -98,7 +98,7 @@ echo $this->Html->css('kensahyou');
     <tr>
     <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
       <td style="border-style: none;"><?= __("　") ?></td>
-      <td style="border:none"><?= $this->Form->submit(('登録確認へ'), array('name' => 'kakuninn')) ?></td>
+      <td style="border:none"><?= $this->Form->submit(('規格登録へ'), array('name' => 'kakuninn')) ?></td>
     </tr>
   </tbody>
 </table>

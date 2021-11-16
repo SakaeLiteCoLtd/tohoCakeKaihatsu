@@ -149,7 +149,12 @@ class htmlkensahyoukadoumenu extends AppController
 
    public function kensahyouheaderpreadd($product_code_gif)
    {
-    $arrproduct_code_gif = explode("_",$product_code_gif);
+    $arrproduct_code_gif = explode("~",$product_code_gif);
+/*
+    echo "<pre>";
+    print_r($arrproduct_code_gif);
+    echo "</pre>";
+*/
     $product_code = $arrproduct_code_gif[0];
     $image_file_name_dir = "/img/".$arrproduct_code_gif[1];
 

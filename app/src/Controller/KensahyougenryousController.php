@@ -350,8 +350,8 @@ class KensahyougenryousController extends AppController
       $this->set('user_code', $user_code);
 
       $Material_name_list = $this->Materials->find()
- //     ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
-      ->where(['delete_flag' => 0])->toArray();
+      ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
+ //     ->where(['delete_flag' => 0])->toArray();
       $arrMaterial_name_list = array();
       for($j=0; $j<count($Material_name_list); $j++){
         array_push($arrMaterial_name_list,$Material_name_list[$j]["name"]);
@@ -1791,7 +1791,8 @@ class KensahyougenryousController extends AppController
       $this->set('user_code', $user_code);
 
       $Material_name_list = $this->Materials->find()
-      ->where(['delete_flag' => 0])->toArray();
+      ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
+ //     ->where(['delete_flag' => 0])->toArray();
       $arrMaterial_name_list = array();
       for($j=0; $j<count($Material_name_list); $j++){
         array_push($arrMaterial_name_list,$Material_name_list[$j]["name"]);

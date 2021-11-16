@@ -377,6 +377,22 @@ class KensahyoukikakusController extends AppController
         's' => ['mess' => "※ファイル名に半角スペースが含まれています。ファイル名に半角スペースを使用しないでください。"]]);
         }
         
+
+        $selectfilename = $_FILES['upfile']["name"];
+        $filename = str_replace('~', '_', $selectfilename);
+  
+        if($selectfilename !== $filename){//「~」が含まれている場合はNG
+  
+          if(!isset($_SESSION)){
+            session_start();
+          }
+          $_SESSION['img_product_code'] = array();
+          $_SESSION['img_product_code'] = $product_code;
+  
+          return $this->redirect(['action' => 'addimageform',
+          's' => ['mess' => "※ファイル名に「~」が含まれています。ファイル名に「~」を使用しないでください。"]]);
+          }
+  
 			$gif = "kensahyouimg/".$selectfilename;//ローカル
 			$this->set('gif',$gif);
 
@@ -425,7 +441,7 @@ class KensahyoukikakusController extends AppController
    
       }
 
-      $product_code_gif = $product_code."_".$gif;
+      $product_code_gif = $product_code."~".$gif;
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheaderpreadd($product_code_gif);
       $this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -479,7 +495,7 @@ class KensahyoukikakusController extends AppController
    
       }
 
-      $product_code_gif = $product_code."_".$gif;
+      $product_code_gif = $product_code."~".$gif;
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheaderpreadd($product_code_gif);
       $this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -509,7 +525,7 @@ class KensahyoukikakusController extends AppController
       $gif = $data["gif"];
       $this->set('gif', $gif);
 
-      $product_code_gif = $product_code."_".$gif;
+      $product_code_gif = $product_code."~".$gif;
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheaderpreadd($product_code_gif);
       $this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -607,7 +623,7 @@ class KensahyoukikakusController extends AppController
       $gif = $data["gif"];
       $this->set('gif', $gif);
 
-      $product_code_gif = $product_code."_".$gif;
+      $product_code_gif = $product_code."~".$gif;
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheaderpreadd($product_code_gif);
       $this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -1330,7 +1346,7 @@ class KensahyoukikakusController extends AppController
       ];
       $this->set('arrTypes', $arrTypes);
 
-      $product_code_gif = $product_code."_".$gif;
+      $product_code_gif = $product_code."~".$gif;
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheaderpreadd($product_code_gif);
       $this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -1456,7 +1472,7 @@ class KensahyoukikakusController extends AppController
       ];
       $this->set('arrkensakigu', $arrkensakigu);
 
-      $product_code_gif = $product_code."_".$gif;
+      $product_code_gif = $product_code."~".$gif;
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheaderpreadd($product_code_gif);
       $this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -1567,7 +1583,7 @@ class KensahyoukikakusController extends AppController
       $inspection_standard_size_parent_id = $data["inspection_standard_size_parent_id"];
       $this->set('inspection_standard_size_parent_id', $inspection_standard_size_parent_id);
 
-      $product_code_gif = $product_code."_".$gif;
+      $product_code_gif = $product_code."~".$gif;
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheaderpreadd($product_code_gif);
       $this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -1667,7 +1683,7 @@ class KensahyoukikakusController extends AppController
       $Products= $this->Products->find()->contain(["Customers"])->where(['product_code' => $product_code])->toArray();
       $product_id = $Products[0]["id"];
 
-      $product_code_gif = $product_code."_".$gif;
+      $product_code_gif = $product_code."~".$gif;
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheaderpreadd($product_code_gif);
       $this->set('htmlkensahyouheader',$htmlkensahyouheader);

@@ -41,7 +41,7 @@ echo $this->Html->css('kensahyou');
 <table align="center">
   <tbody class="login">
     <tr height="45">
-      <td width="150"><strong>生産数量</strong></td>
+      <td width="150"><strong>生産重量</strong></td>
     </tr>
     <tr height="45">
     <td><?= h($this->request->getData('total_amount')) ?></td>
