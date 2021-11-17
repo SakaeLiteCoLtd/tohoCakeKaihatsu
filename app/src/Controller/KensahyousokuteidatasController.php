@@ -1654,6 +1654,13 @@ class KensahyousokuteidatasController extends AppController
             $mess = "※重量データに入力漏れがあります。".'<br>';
           }
 
+          if($data['gaikan'.$j] == "-"){//入力漏れがある場合
+            $checknull = $checknull + 1;
+            $mess = "※外観を選択してください。".'<br>';
+          }else{//入力漏れがある場合
+            $checknull = $checknull;
+          }
+
         }
         $this->set('mess', $mess);
 
@@ -2276,6 +2283,13 @@ class KensahyousokuteidatasController extends AppController
           }else{//入力漏れがある場合
             $checknull = $checknull + 1;
             $mess = "※重量データに入力漏れがあります。".'<br>';
+          }
+
+          if($data['gaikan'.$j] == "-"){//入力漏れがある場合
+            $checknull = $checknull + 1;
+            $mess = "※外観を選択してください。".'<br>';
+          }else{
+            $checknull = $checknull;
           }
 
         }
@@ -3126,9 +3140,7 @@ class KensahyousokuteidatasController extends AppController
   
         for($j=0; $j<count($InspectionDataResultParentData); $j++){
           $this->InspectionDataResultParents->updateAll(
-            ['kanryou_flag' => 0,
-             'total_amount' => $data["total_amount"],
-             'bik' => $data["bik"]],
+            ['kanryou_flag' => 0],
             ['id' => $InspectionDataResultParentData[$j]['id']]);
         }
 

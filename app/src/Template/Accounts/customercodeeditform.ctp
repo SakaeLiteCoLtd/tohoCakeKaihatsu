@@ -38,7 +38,7 @@
       </tr>
       <tr>
       <td><?= h($name) ?></td>
-      <td><?= $this->Form->control('customer_code', array('type'=>'text', 'value'=>$customer_code, 'label'=>false, 'required' => 'true', 'autocomplete'=>"off")) ?></td>
+      <td><?= $this->Form->control('customer_code', array('type'=>'tel', 'value'=>$customer_code, 'label'=>false, 'required' => 'true', 'autocomplete'=>"off")) ?></td>
     </tr>
     </table>
     <table>

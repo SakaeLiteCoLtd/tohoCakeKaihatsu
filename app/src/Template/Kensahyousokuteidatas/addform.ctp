@@ -287,17 +287,17 @@ var moji = "length"
   <?php for($i=1; $i<=11; $i++): ?>
 
     <?php if (${"input_type".$i} == "judge"): ?>
-      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, ['options' => $arrJudge, 'label'=>false]) ?></td>
+      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, ["empty"=>"-", 'options' => $arrJudge, 'label'=>false]) ?></td>
     <?php else : ?>
-      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off", "step"=>"0.01")) ?></td>
+      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off", "step"=>"0.01")) ?></td>
       <?php endif; ?>
 
   <?php endfor;?>
 
-  <td style='width:55; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ['options' => $arrGaikan, 'label'=>false]) ?></td>
-  <td style='width:75; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
+  <td style='width:55; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ["empty"=>"-", 'options' => $arrGaikan, 'label'=>false]) ?></td>
+  <td style='width:75; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
   <td style='width:50; border-top-style:none'>-</td>
-  <td style='width:55; border-top-style:none'></td>
+  <td style='width:55; border-top-style:none'><?= $this->Form->submit(('登録'), array('name' => 'tuika')) ?></td>
 
 </table>
 
@@ -411,15 +411,15 @@ var moji = "length"
   <?php for($i=1; $i<=11; $i++): ?>
 
     <?php if (${"input_type".$i} == "judge"): ?>
-      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, ['options' => $arrJudge, 'label'=>false]) ?></td>
+      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, ["empty"=>"-", 'options' => $arrJudge, 'label'=>false]) ?></td>
     <?php else : ?>
-      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off", "step"=>"0.01")) ?></td>
+      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off", "step"=>"0.01")) ?></td>
       <?php endif; ?>
 
       <?php endfor;?>
 
-  <td style='width:55; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ['options' => $arrGaikan, 'label'=>false]) ?></td>
-  <td style='width:75; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'required' => 'true')) ?></td>
+  <td style='width:55; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ["empty"=>"-", 'options' => $arrGaikan, 'label'=>false, 'required'=>true]) ?></td>
+  <td style='width:75; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'required' => 'true')) ?></td>
   <td style='width:50; border-top-style:none'>-</td>
   <td style='width:55; border-top-style:none'><?= h("修正中") ?></td>
 
@@ -513,19 +513,7 @@ var moji = "length"
    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
 </table>
 
-<?php if ($checkedit == 0 && $check_seikeijouken == 0)://修正ではなくて成形条件調整でもないとき ?>
-
-<table align="center">
-  <tbody class='sample non-sample'>
-    <tr>
-    <td style="border:none"><?= $this->Form->submit(('登録'), array('name' => 'tuika')) ?></td>
-    <td style="border: none;"><?= __("　　　") ?></td>
-    <td style="border:none"><?= $this->Form->submit(('完了'), array('name' => 'finish')) ?></td>
-    </tr>
-  </tbody>
-</table>
-
-<?php elseif($check_seikeijouken == 0) ://修正の時 ?>
+<?php if($check_seikeijouken == 0) ://修正の時 ?>
 
   <table align="center">
   <tbody class='sample non-sample'>
@@ -1127,6 +1115,16 @@ var moji = "length"
   <tbody class='sample non-sample'>
     <tr>
       <td style="border:none"><?= $this->Form->submit(('成形条件調整'), array('name' => 'seikei')) ?></td>
+    </tr>
+  </tbody>
+</table>
+
+<br><br>
+
+<table align="center">
+  <tbody class='sample non-sample'>
+    <tr>
+    <td style="border:none"><?= $this->Form->submit(('検査完了'), array('name' => 'finish')) ?></td>
     </tr>
   </tbody>
 </table>

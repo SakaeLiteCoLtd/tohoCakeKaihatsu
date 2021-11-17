@@ -36,7 +36,7 @@
           <td width="200"><strong>製品コード</strong></td>
         </tr>
         <tr>
-        <td><?= $this->Form->control('product_code', array('type'=>'text', 'value'=>$product_code, 'label'=>false, 'required' => 'true', 'autocomplete'=>"off")) ?></td>
+        <td><?= $this->Form->control('product_code', array('type'=>'tel', 'value'=>$product_code, 'label'=>false, 'required' => 'true', 'autocomplete'=>"off")) ?></td>
         </tr>
       </table>
 

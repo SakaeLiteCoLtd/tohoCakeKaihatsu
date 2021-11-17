@@ -58,8 +58,8 @@
         </table>
         <table>
           <tr>
-          <td width="280"><strong>部署</strong></td>
-            <td width="280"><strong>職種</strong></td>
+          <td width="280"><strong>※部署</strong></td>
+            <td width="280"><strong>※職種</strong></td>
         	</tr>
           <tr>
           <td><?= $this->Form->control('department_id', ['options' => $departments, 'label'=>false, 'empty' => true]) ?></td>
@@ -68,17 +68,17 @@
         </table>
         <table>
           <tr>
-            <td width="280"><strong>電話番号</strong></td>
-            <td width="280"><strong>メール</strong></td>
+          <td width="280"><strong>※電話番号</strong></td>
+            <td width="280"><strong>※メール</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->control('tel', array('type'=>'text', 'label'=>false, 'autocomplete'=>"off")) ?></td>
-            <td><?= $this->Form->control('mail', array('type'=>'text', 'label'=>false, 'autocomplete'=>"off")) ?></td>
+            <td><?= $this->Form->control('tel', array('type'=>'tel', 'label'=>false, 'autocomplete'=>"off")) ?></td>
+            <td><?= $this->Form->control('mail', array('type'=>'tel', 'label'=>false, 'autocomplete'=>"off")) ?></td>
         	</tr>
         </table>
         <table>
           <tr>
-            <td width="560"><strong>住所</strong></td>
+          <td width="560"><strong>※住所</strong></td>
         	</tr>
           <tr>
             <td><?= $this->Form->control('address', array('type'=>'text', 'label'=>false, 'size'=>50, 'autocomplete'=>"off")) ?></td>
@@ -102,8 +102,8 @@
             <td width="280"><strong>メンバーコード</strong></td>
         	</tr>
           <tr>
-          <td><?= $this->Form->control('user_code', array('type'=>'text', 'value'=>$user_code, 'label'=>false, 'required'=>true, 'autocomplete'=>"off")) ?></td>
-          <td><?= $this->Form->control('staff_code', array('type'=>'text', 'label'=>false, 'required'=>true, 'autocomplete'=>"off")) ?></td>
+          <td><?= $this->Form->control('user_code', array('type'=>'tel', 'value'=>$user_code, 'label'=>false, 'required'=>true, 'autocomplete'=>"off")) ?></td>
+          <td><?= $this->Form->control('staff_code', array('type'=>'tel', 'label'=>false, 'required'=>true, 'autocomplete'=>"off")) ?></td>
         	</tr>
         </table>
         <table>
@@ -117,6 +117,14 @@
         	</tr>
         </table>
         
+        <table>
+          <tbody class='sample non-sample'>
+            <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 12pt">
+            <?= __('「※」のついている欄は空白のまま登録できます。') ?>
+          </strong></td></tr>
+          </tbody>
+        </table>
+
     </fieldset>
 
     <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$id, 'label'=>false)) ?>

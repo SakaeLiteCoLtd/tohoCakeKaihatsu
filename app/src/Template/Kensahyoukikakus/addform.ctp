@@ -68,7 +68,7 @@ echo $this->Html->css('kensahyou');
 
     <?php for($i=1; $i<=11; $i++): ?>
       <?php if($this->request->getData('inputtype'.$i) == "int"): ?>
-        <td><?= $this->Form->control('size'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
+        <td><?= $this->Form->control('size'.$i, array('type'=>'tel', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
       <?php else : ?>
         <td><?= $this->Form->control('size'.$i, array('type'=>'text', 'label'=>false)) ?></td>
       <?php endif; ?>
@@ -80,7 +80,7 @@ echo $this->Html->css('kensahyou');
 
   <?php for($i=1; $i<=11; $i++): ?>
     <?php if($this->request->getData('inputtype'.$i) == "int"): ?>
-        <td><?= $this->Form->control('upper_limit'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
+        <td><?= $this->Form->control('upper_limit'.$i, array('type'=>'tel', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
       <?php else : ?>
         <td><?= $this->Form->control('upper_limit'.$i, array('type'=>'text', 'label'=>false)) ?></td>
       <?php endif; ?>
@@ -92,7 +92,7 @@ echo $this->Html->css('kensahyou');
 
     <?php for($i=1; $i<=11; $i++): ?>
       <?php if($this->request->getData('inputtype'.$i) == "int"): ?>
-        <td><?= $this->Form->control('lower_limit'.$i, array('type'=>'text', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
+        <td><?= $this->Form->control('lower_limit'.$i, array('type'=>'tel', 'pattern' => '^[0-9.-+]+$', 'title'=>'半角数字で入力して下さい。', 'label'=>false)) ?></td>
       <?php else : ?>
         <td><?= $this->Form->control('lower_limit'.$i, array('type'=>'text', 'label'=>false)) ?></td>
       <?php endif; ?>

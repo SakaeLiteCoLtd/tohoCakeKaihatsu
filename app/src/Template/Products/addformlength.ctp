@@ -105,12 +105,12 @@ if($this->request->getData('ig_bank_modes') == 0){
       <td><?= $this->Form->control
       ('length'.$k, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true', 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
-      ('length_cut'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true', 'autocomplete'=>"off")) ?></td>
+      ('length_cut'.$k, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true', 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control('status_length'.$k, ['options' => $arrStatusLength, 'label'=>false]) ?></td>
       <td><?= $this->Form->control
-      ('length_lower_limit'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'autocomplete'=>"off")) ?></td>
+      ('length_lower_limit'.$k, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control
-      ('length_upper_limit'.$k, array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'autocomplete'=>"off")) ?></td>
+      ('length_upper_limit'.$k, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control('length_measuring_instrument'.$k, ['options' => $arrkensakigu, 'label'=>false]) ?></td>
         <td><?= $this->Form->control('bik'.$k, array('type'=>'text', 'label'=>false, 'autocomplete'=>"off")) ?></td>
       </tr>

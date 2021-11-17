@@ -50,7 +50,7 @@ echo $this->Html->css('kensahyou');
     <table align="center">
     <tbody class="login">
     <tr height="45">
-    <td width="150"><strong>備考</strong></td>
+    <td width="500"><strong>備考</strong></td>
     </tr>
     <tr>
     <td><?= h($this->request->getData('bik')) ?></td>
