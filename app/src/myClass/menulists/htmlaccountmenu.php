@@ -16,6 +16,8 @@ class htmlaccountmenu extends AppController
                       "<br><br>\n".
                       "<font size='5'>　管理者用メニュー</font>\n".
                       "<br><br>\n".
+                      "<font size='4'>　・</font><a href='/tanis/index' /><font size='4' color=black>単位登録</font></a>\n".
+                      "<br><br>\n".
                       "<font size='4'>　・</font><a href='/accounts/customercodeselect' /><font size='4' color=black>得意先・仕入先コード変更</font></a>\n".
                       "<br><br>\n".
                       "<font size='4'>　・</font><a href='/accounts/productcodeselect' /><font size='4' color=black>製品コード変更</font></a>\n".

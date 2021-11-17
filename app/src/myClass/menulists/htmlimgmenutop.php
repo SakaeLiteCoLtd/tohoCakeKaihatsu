@@ -40,14 +40,13 @@ class htmlimgmenutop extends AppController
             }
 
             $Groups_seikeikis = $this->Groups->find()->contain(["Menus"])
-            ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "成形機", 'Groups.delete_flag' => 0])
+            ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "成形条件表", 'Groups.delete_flag' => 0])
             ->toArray();
             if(isset($Groups_seikeikis[0])){
                 $check_seikeikis = 1;
             }else{
                 $check_seikeikis = 0;
             }
-
 
         }else{//スーパーユーザーの場合
 
@@ -81,10 +80,26 @@ class htmlimgmenutop extends AppController
 */
                             if($check_seikeikis == 1){
                                 $html = $html.
+                                "<font size='4'>　・</font><a href='/linenames/index' /><font size='4' color=black>ラインメニュー</font></a>\n".
+                                "<br><br>\n";
+                                }
+                            if($check_seikeikis == 1){
+                                $html = $html.
                                 "<font size='4'>　・</font><a href='/seikeikis/index' /><font size='4' color=black>成形機メニュー</font></a>\n".
                                 "<br><br>\n";
                                 }
-
+                                    if($check_seikeikis == 1){
+                                        $html = $html.
+                                        "<font size='4'>　・</font><a href='/kensakigus/index' /><font size='4' color=black>検査器具メニュー</font></a>\n".
+                                        "<br><br>\n";
+                                        }
+                                        /*
+                                        if($check_seikeikis == 1){
+                                            $html = $html.
+                                            "<font size='4'>　・</font><a href='/tanis/index' /><font size='4' color=black>単位メニュー</font></a>\n".
+                                            "<br><br>\n";
+                                            }
+                */
 /*
                           "<font size='5'>　検査表画像メニュー</font>\n".
                           "<br><br>\n".
