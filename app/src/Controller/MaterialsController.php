@@ -18,6 +18,8 @@ class MaterialsController extends AppController
      $this->MaterialSuppliers = TableRegistry::get('MaterialSuppliers');
      $this->MaterialTypes = TableRegistry::get('MaterialTypes');
      $this->Factories = TableRegistry::get('Factories');
+     $this->Tanis = TableRegistry::get('Tanis');
+     
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
 
@@ -212,7 +214,15 @@ class MaterialsController extends AppController
         $this->set('mess',$mess);
       }
       
-      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個", "本" => "本"];
+     // $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個", "本" => "本"];
+      $Tanis = $this->Tanis->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrTanni = array();
+      for($j=0; $j<count($Tanis); $j++){
+        $arrTanni[$Tanis[$j]["name"]] = $Tanis[$j]["name"];
+      }
+      $this->set('arrTanni', $arrTanni);
+
       $this->set('arrTanni', $arrTanni);
 
       $arrStatusKensahyou = ["0" => "表示", "1" => "非表示"];
@@ -434,7 +444,13 @@ class MaterialsController extends AppController
       $id = $_SESSION['materialdata'];
       $this->set('id', $id);
 
-      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個", "本" => "本"];
+  //    $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個", "本" => "本"];
+      $Tanis = $this->Tanis->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrTanni = array();
+      for($j=0; $j<count($Tanis); $j++){
+        $arrTanni[$Tanis[$j]["name"]] = $Tanis[$j]["name"];
+      }
       $this->set('arrTanni', $arrTanni);
 
       $arrStatusKensahyou = ["0" => "表示", "1" => "非表示"];

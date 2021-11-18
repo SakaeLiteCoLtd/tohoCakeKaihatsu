@@ -23,7 +23,19 @@ $(function() {
 
 </script>
 
+<?php
+$this->layout = false;
+echo $this->Html->css('kensahyou');
+?>
+
+<script>
+  
+let target = document.getElementById('scroll-inner');
+target.scrollIntoView(false);
+</script>
+
 <br><br><br>
+
 <table>
       <tr>
         <td width="320"><strong>製品名（一部のみも可）</strong></td>
@@ -34,6 +46,168 @@ $(function() {
         </td>
       </tr>
     </table>
+
+    <table>
+      <tr>
+        <td width="320"><strong>製品名1</strong></td>
+      </tr>
+      <tr>
+        <td>
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="320"><strong>製品名2</strong></td>
+      </tr>
+      <tr>
+        <td id="screenshot">
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="320"><strong>製品名3</strong></td>
+      </tr>
+      <tr>
+        <td>
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="320"><strong>製品名</strong></td>
+      </tr>
+      <tr>
+        <td>
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
+        </td>
+      </tr>
+    </table>
+    <table class="scroll">
+      <tr id="scroll-inner">
+        <td width="320"><strong>製品名a</strong></td>
+      </tr>
+      <tr>
+        <td>
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="320"><strong>製品名</strong></td>
+      </tr>
+      <tr>
+        <td>
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="320"><strong>製品名</strong></td>
+      </tr>
+      <tr>
+        <td>
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="320"><strong>製品名</strong></td>
+      </tr>
+      <tr>
+        <td>
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="320"><strong>製品名</strong></td>
+      </tr>
+      <tr>
+        <td>
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="320"><strong>製品名</strong></td>
+      </tr>
+      <tr>
+        <td>
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="320"><strong>製品名</strong></td>
+      </tr>
+      <tr>
+        <td>
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="320"><strong>製品名</strong></td>
+      </tr>
+      <tr>
+        <td>
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="320"><strong>製品名</strong></td>
+      </tr>
+      <tr>
+        <td>
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="320"><strong>製品名</strong></td>
+      </tr>
+      <tr>
+        <td>
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="320"><strong>製品名</strong></td>
+      </tr>
+      <tr>
+        <td>
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
+        </td>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <td width="320"><strong>製品名</strong></td>
+      </tr>
+      <tr>
+        <td>
+        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
+        </td>
+      </tr>
+    </table>
+
 
     <?php
 /*

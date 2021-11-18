@@ -45,6 +45,7 @@ class KensahyougenryousController extends AppController
       public function initialize()
     {
      parent::initialize();
+     $this->Linenames = TableRegistry::get('Linenames');
      $this->Seikeikis = TableRegistry::get('Seikeikis');
      $this->Users = TableRegistry::get('Users');
      $this->Staffs = TableRegistry::get('Staffs');
@@ -258,7 +259,7 @@ class KensahyougenryousController extends AppController
       }
 
       $data = $this->request->getData();
-
+/*
       $arrGouki = [
         1 => 1,
         2 => 2,
@@ -268,6 +269,24 @@ class KensahyougenryousController extends AppController
         6 => 6,
         7 => 7
       ];
+      $this->set('arrGouki', $arrGouki);
+*/
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $staff_id])
+      ->toArray();
+      $factory_id = $Staffs[0]["factory_id"];
+
+      $Linenames = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+      $arrGouki = array();
+      for($j=0; $j<count($Linenames); $j++){
+        $arrGouki[$Linenames[$j]["name"]] = $Linenames[$j]["name"];
+      }
       $this->set('arrGouki', $arrGouki);
  
       if(isset($data["next"])){//「次へ」ボタンを押したとき
@@ -358,8 +377,13 @@ class KensahyougenryousController extends AppController
       }
       $this->set('arrMaterial_name_list', $arrMaterial_name_list);
 
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $staff_id])
+      ->toArray();
+      $factory_id = $Staffs[0]["factory_id"];
+
       $Seikeikis = $this->Seikeikis->find()
-      ->where(['delete_flag' => 0])->toArray();
+      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
       $arrSeikeikis = array();
       for($j=0; $j<count($Seikeikis); $j++){
         $arrSeikeikis[$Seikeikis[$j]["name"]] = $Seikeikis[$j]["name"];
@@ -1802,8 +1826,15 @@ class KensahyougenryousController extends AppController
       $Materials = $this->Materials->find()
       ->where(['delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
 
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $staff_id])
+      ->toArray();
+      $factory_id = $Staffs[0]["factory_id"];
+
       $Seikeikis = $this->Seikeikis->find()
-      ->where(['delete_flag' => 0])->toArray();
+      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
       $arrSeikeikis = array();
       for($j=0; $j<count($Seikeikis); $j++){
         $arrSeikeikis[$Seikeikis[$j]["name"]] = $Seikeikis[$j]["name"];
@@ -2385,15 +2416,22 @@ class KensahyougenryousController extends AppController
 
       }
 
-      $arrGouki = [
-        1 => 1,
-        2 => 2,
-        3 => 3,
-        4 => 4,
-        5 => 5,
-        6 => 6,
-        7 => 7
-      ];
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $staff_id])
+      ->toArray();
+      $factory_id = $Staffs[0]["factory_id"];
+
+      $Linenames = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+      $arrGouki = array();
+      for($j=0; $j<count($Linenames); $j++){
+        $arrGouki[$Linenames[$j]["name"]] = $Linenames[$j]["name"];
+      }
       $this->set('arrGouki', $arrGouki);
 
       echo "<pre>";

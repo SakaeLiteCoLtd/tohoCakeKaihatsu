@@ -37,6 +37,7 @@ class KensahyoukikakusController extends AppController
      $this->Staffs = TableRegistry::get('Staffs');
      $this->Products = TableRegistry::get('Products');
      $this->Customers = TableRegistry::get('Customers');
+     $this->Kensakigus = TableRegistry::get('Kensakigus');
      $this->InspectionStandardSizeChildren = TableRegistry::get('InspectionStandardSizeChildren');
      $this->InspectionStandardSizeParents = TableRegistry::get('InspectionStandardSizeParents');
 
@@ -470,7 +471,7 @@ class KensahyoukikakusController extends AppController
       $this->set('product_code', $product_code);
       $gif = $data["gif"];
       $this->set('gif', $gif);
-
+/*
       $arrkensakigu = [
         "" => "",
         "デジタルノギス" => "デジタルノギス",
@@ -480,6 +481,25 @@ class KensahyoukikakusController extends AppController
         "金尺" => "金尺",
         "デジタル計り" => "デジタル計り"
       ];
+*/
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $staff_id])
+      ->toArray();
+      $factory_id = $Staffs[0]["factory_id"];
+
+      $Kensakigus = $this->Kensakigus->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+      $arrkensakigu = array();
+      $arrkensakigu[""] = "";
+      for($j=0; $j<count($Kensakigus); $j++){
+        $arrkensakigu[$Kensakigus[$j]["name"]] = $Kensakigus[$j]["name"];
+      }
       $this->set('arrkensakigu', $arrkensakigu);
 
       $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
@@ -1329,15 +1349,23 @@ class KensahyoukikakusController extends AppController
       $staff_name= $Users[0]["staff"]["name"];
       $this->set('staff_name', $staff_name);
 
-      $arrkensakigu = [
-        "" => "",
-        "デジタルノギス" => "デジタルノギス",
-        "ルーペ" => "ルーペ",
-        "テーパーゲージ" => "テーパーゲージ",
-        "厚みゲージ" => "厚みゲージ",
-        "金尺" => "金尺",
-        "デジタル計り" => "デジタル計り"
-      ];
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $staff_id])
+      ->toArray();
+      $factory_id = $Staffs[0]["factory_id"];
+
+      $Kensakigus = $this->Kensakigus->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+      $arrkensakigu = array();
+      $arrkensakigu[""] = "";
+      for($j=0; $j<count($Kensakigus); $j++){
+        $arrkensakigu[$Kensakigus[$j]["name"]] = $Kensakigus[$j]["name"];
+      }
       $this->set('arrkensakigu', $arrkensakigu);
 
       $arrTypes = [
@@ -1461,15 +1489,23 @@ class KensahyoukikakusController extends AppController
       $staff_name= $Users[0]["staff"]["name"];
       $this->set('staff_name', $staff_name);
 
-      $arrkensakigu = [
-        "" => "",
-        "デジタルノギス" => "デジタルノギス",
-        "ルーペ" => "ルーペ",
-        "テーパーゲージ" => "テーパーゲージ",
-        "厚みゲージ" => "厚みゲージ",
-        "金尺" => "金尺",
-        "デジタル計り" => "デジタル計り"
-      ];
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $staff_id])
+      ->toArray();
+      $factory_id = $Staffs[0]["factory_id"];
+
+      $Kensakigus = $this->Kensakigus->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+      $arrkensakigu = array();
+      $arrkensakigu[""] = "";
+      for($j=0; $j<count($Kensakigus); $j++){
+        $arrkensakigu[$Kensakigus[$j]["name"]] = $Kensakigus[$j]["name"];
+      }
       $this->set('arrkensakigu', $arrkensakigu);
 
       $product_code_gif = $product_code."~".$gif;

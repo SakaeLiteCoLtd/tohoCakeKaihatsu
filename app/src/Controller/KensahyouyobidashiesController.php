@@ -35,6 +35,14 @@ class KensahyouyobidashiesController extends AppController
    $this->InspectionDataResultChildren = TableRegistry::get('InspectionDataResultChildren');
    $this->InspectionDataConditonChildren = TableRegistry::get('InspectionDataConditonChildren');
    $this->InspectionDataConditonParents = TableRegistry::get('InspectionDataConditonParents');
+
+   if(!isset($_SESSION)){//フォーム再送信の確認対策//戻りたい画面でわざとwarningを出しておけば戻れる
+    session_start();
+  }
+  header('Expires:');
+  header('Cache-Control:');
+  header('Pragma:');
+
   }
 
   public function beforeFilter(Event $event){
@@ -292,14 +300,11 @@ class KensahyouyobidashiesController extends AppController
         7 => 7
       ];
       $this->set('arrGouki', $arrGouki);
-/*
+
       echo "<pre>";
-      print_r($arrProduct_created_at);
+      print_r("");
       echo "</pre>";
-      echo "<pre>";
-      print_r($arrKensahyous);
-      echo "</pre>";
-*/
+
     }
 
     public function kensakuichiran()
@@ -605,6 +610,10 @@ class KensahyouyobidashiesController extends AppController
         $this->set('mes',$mes);
         $this->set('check',1);
       }
+
+      echo "<pre>";
+      print_r("");
+      echo "</pre>";
 
     }
 

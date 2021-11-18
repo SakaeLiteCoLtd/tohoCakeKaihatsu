@@ -18,7 +18,7 @@ use Cake\ORM\Entity;
  * @property float $result_weight
  * @property int $judge
  * @property int|null $kanryou_flag
- * @property int|null $total_amount
+ * @property float|null $total_amount
  * @property string|null $bik
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at

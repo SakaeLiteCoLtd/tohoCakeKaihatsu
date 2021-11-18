@@ -395,7 +395,7 @@ var moji = "length"
 
 <?php elseif ($j < $gyou) ://入力する行ではないとき ?>
 
-  <?php if ($j == $checkedit) ://修正する行ではないとき ?>
+  <?php if ($j == $checkedit) ://修正する行 ?>
 
   <table class="form">
 
@@ -411,21 +411,22 @@ var moji = "length"
   <?php for($i=1; $i<=11; $i++): ?>
 
     <?php if (${"input_type".$i} == "judge"): ?>
-      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, ["empty"=>"-", 'options' => $arrJudge, 'label'=>false]) ?></td>
+      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, ['options' => $arrJudge, 'value'=>${"result_size".$j.$i}, 'label'=>false]) ?></td>
     <?php else : ?>
       <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off", "step"=>"0.01")) ?></td>
       <?php endif; ?>
 
       <?php endfor;?>
 
-  <td style='width:55; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ["empty"=>"-", 'options' => $arrGaikan, 'label'=>false, 'required'=>true]) ?></td>
+  <td style='width:55; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ['options' => $arrGaikan, 'value'=>${"gaikan".$j}, 'label'=>false, 'required'=>true]) ?></td>
   <td style='width:75; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'required' => 'true')) ?></td>
   <td style='width:50; border-top-style:none'>-</td>
-  <td style='width:55; border-top-style:none'><?= h("修正中") ?></td>
+
+  <td style='width:55; border-top-style:none'><?= $this->Form->submit(('確定'), array('name' => 'edittouroku')) ?></td>
 
 </table>
 
-  <?php else : //修正する行の時?>
+  <?php else : //修正でない行の時?>
 
     <table class="white">
 
@@ -444,7 +445,7 @@ var moji = "length"
         if($i == $num_length + 1){//長さ列の場合
 
           $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
-          ${"size".$i} = $Products[0]["length"];
+          ${"size".$i} = $Products[0]["length_cut"];
           ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
           ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
 
@@ -513,15 +514,9 @@ var moji = "length"
    <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mes) ?></strong></td></tr>
 </table>
 
-<?php if($check_seikeijouken == 0) ://修正の時 ?>
+<?php if ($checkedit == 0 && $check_seikeijouken == 0)://修正ではなくて成形条件調整でもないとき ?>
 
-  <table align="center">
-  <tbody class='sample non-sample'>
-    <tr>
-      <td style="border:none"><?= $this->Form->submit(('修正確定'), array('name' => 'edittouroku')) ?></td>
-    </tr>
-  </tbody>
-</table>
+<?php elseif($check_seikeijouken == 0) ://修正の時 ?>
 
 <?= $this->Form->control('checkedit', array('type'=>'hidden', 'value'=>$checkedit, 'label'=>false)) ?>
 

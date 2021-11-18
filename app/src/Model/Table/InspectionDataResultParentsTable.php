@@ -110,7 +110,7 @@ class InspectionDataResultParentsTable extends Table
             ->allowEmpty('kanryou_flag');
 
         $validator
-            ->integer('total_amount')
+            ->numeric('total_amount')
             ->allowEmpty('total_amount');
 
         $validator

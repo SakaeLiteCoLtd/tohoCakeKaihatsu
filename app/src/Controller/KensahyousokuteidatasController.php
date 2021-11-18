@@ -707,7 +707,16 @@ class KensahyousokuteidatasController extends AppController
       $this->set('staff_id', $staff_id);
       $machine_num = $data["machine_num"];
       $this->set('machine_num', $machine_num);
-
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $staff_id])
+      ->toArray();
+      $factory_id = $Staffs[0]["factory_id"];
+      $this->set('factory_id', $factory_id);
+/*
+      echo "<pre>";
+      print_r($factory_id."_".$machine_num);
+      echo "</pre>";
+*/
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -936,6 +945,8 @@ class KensahyousokuteidatasController extends AppController
       $this->set('staff_id', $staff_id);
       $machine_num = $data["machine_num"];
       $this->set('machine_num', $machine_num);
+      $factory_id = $data["factory_id"];
+      $this->set('factory_id', $factory_id);
 
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
@@ -1197,8 +1208,18 @@ class KensahyousokuteidatasController extends AppController
             }
             $session = $this->request->getSession();
     
-            $_SESSION['InspectionDataConditons'] = array(
+            $hanbetu_code = $product_code.$machine_num.$factory_id;
+            $_SESSION['productmachinefactory'] = array();
+            $_SESSION['InspectionDataConditons'.$hanbetu_code] = array();
+
+            $_SESSION['productmachinefactory'] = array(
               'chenk' => 1,
+              'hanbetu_code' => $hanbetu_code,
+            );
+
+            $_SESSION['InspectionDataConditons'.$hanbetu_code] = array(
+              'chenk' => 1,
+              'hanbetu_code' => $hanbetu_code,
               'product_code' => $product_code,
               'machine_num' => $machine_num,
               'inspection_standard_size_parent_id' => $inspection_standard_size_parent_id,
@@ -1209,11 +1230,11 @@ class KensahyousokuteidatasController extends AppController
 
             for($j=1; $j<=$countseikeiki; $j++){
               
-              $_SESSION['InspectionDataConditons'] = $_SESSION['InspectionDataConditons'] + array('inspection_extrude_roatation'.$j => ${"inspection_extrude_roatation".$j});
-              $_SESSION['InspectionDataConditons'] = $_SESSION['InspectionDataConditons'] + array('inspection_extrusion_load'.$j => ${"inspection_extrusion_load".$j});
+              $_SESSION['InspectionDataConditons'.$hanbetu_code] = $_SESSION['InspectionDataConditons'.$hanbetu_code] + array('inspection_extrude_roatation'.$j => ${"inspection_extrude_roatation".$j});
+              $_SESSION['InspectionDataConditons'.$hanbetu_code] = $_SESSION['InspectionDataConditons'.$hanbetu_code] + array('inspection_extrusion_load'.$j => ${"inspection_extrusion_load".$j});
 
               for($n=1; $n<=7; $n++){
-                $_SESSION['InspectionDataConditons'] = $_SESSION['InspectionDataConditons'] + array('inspection_temp_'.$n.$j => ${"inspection_temp_".$n.$j});
+                $_SESSION['InspectionDataConditons'.$hanbetu_code] = $_SESSION['InspectionDataConditons'.$hanbetu_code] + array('inspection_temp_'.$n.$j => ${"inspection_temp_".$n.$j});
               }
 
               }
@@ -1252,10 +1273,13 @@ class KensahyousokuteidatasController extends AppController
         $session = $this->request->getSession();
         $sessiondata = $session->read();
   
-      if(isset($_SESSION['InspectionDataConditons']["chenk"])){//最初
+      if(isset($_SESSION['productmachinefactory']["chenk"])){//最初
 
-        $data = $_SESSION['InspectionDataConditons'];
-        $_SESSION['InspectionDataConditons'] = array();
+        $hanbetu_code = $_SESSION['productmachinefactory']["hanbetu_code"];
+        
+        $data = $_SESSION['InspectionDataConditons'.$hanbetu_code];
+        $_SESSION['productmachinefactory'] = array();
+        $_SESSION['InspectionDataConditons'.$hanbetu_code] = array();
   
       }else{
 
@@ -1269,7 +1293,7 @@ class KensahyousokuteidatasController extends AppController
         }
 
       }
-/*
+      /*
       echo "<pre>";
       print_r($data);
       echo "</pre>";
@@ -1301,8 +1325,8 @@ class KensahyousokuteidatasController extends AppController
       $this->set('mess', $mess);
 
       $arrJudge = [
-        "0" => "〇",
-        "1" => "✕"
+        "0.0" => "〇",
+        "1.0" => "✕"
       ];
       $this->set('arrJudge', $arrJudge);
 
@@ -1890,7 +1914,29 @@ class KensahyousokuteidatasController extends AppController
 
           }
 
-        if(!isset($InspectionDataResultParents[0]) && isset($data['datetime'.$j]["hour"])){//再読み込みで同じデータが登録されないようにチェック
+          
+          if($data["gyou"] > 1){
+            $jm = $j - 1;
+
+            echo "<pre>";
+            print_r(date("Y-m-d ").$data['datetime'.$jm]);
+            print_r(date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00");
+            echo "</pre>";
+      
+            if(date("Y-m-d ").$data['datetime'.$jm] < date("Y-m-d ")."06:00:00" && date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00" > date("Y-m-d ")."06:00:00"){
+              $check_over = 1;
+            }else{
+              $check_over = 0;
+            }
+          }else{
+            $check_over = 0;
+          }
+
+          echo "<pre>";
+          print_r($check_over);
+          echo "</pre>";
+    
+        if($check_over == 0 && !isset($InspectionDataResultParents[0]) && isset($data['datetime'.$j]["hour"])){//再読み込みで同じデータが登録されないようにチェック
 
           $tourokuInspectionDataResultParents = array();
           $tourokuInspectionDataResultParents = [
@@ -1966,6 +2012,9 @@ class KensahyousokuteidatasController extends AppController
 
             } else {
 
+              $gyou = $data["gyou"];
+              $this->set('gyou', $gyou);
+      
               $mes = "※登録されませんでした。管理者に報告してください。";
               $this->set('mes',$mes);
               $this->Flash->error(__('The data could not be saved. Please, try again.'));
@@ -1980,24 +2029,35 @@ class KensahyousokuteidatasController extends AppController
 
         }else{
 
-          if(isset($data['datetime'.$j]["hour"])){
+          if($check_over == 1){
+
+            $mes = "※午前6時をまたぐ登録はできません。検査完了へ進んでください。";
+            $this->set('mes',$mes);
+
+            $gyou = $data["gyou"];
+            $this->set('gyou', $gyou);
+
+          }elseif(isset($data['datetime'.$j]["hour"])){
 
             $mes = "※検査時間が同じデータは登録できません。";
             $this->set('mes',$mes);
-  
+
+            $gyou = $data["gyou"];
+            $this->set('gyou', $gyou);
+
           }else{
 
             $mes = "※続きから登録できます。";
             $this->set('mes',$mes);
   
+            if($data["gyou"] == 1){
+              $gyou = $data["gyou"];
+            }else{
+              $gyou = $data["gyou"] + 1;
+            }
+            $this->set('gyou', $gyou);
+  
           }
-
-          if($data["gyou"] == 1){
-            $gyou = $data["gyou"];
-          }else{
-            $gyou = $data["gyou"] + 1;
-          }
-          $this->set('gyou', $gyou);
   
         }
 
@@ -2078,7 +2138,11 @@ class KensahyousokuteidatasController extends AppController
 
             if(strlen($data['result_size'.$j.$i]) > 0){
               ${"result_size".$j.$i} = $data['result_size'.$j.$i];
-  
+              /*
+              echo "<pre>";
+              print_r(${"result_size".$j.$i});
+              echo "</pre>";
+        */
               $dotini = substr(${"result_size".$j.$i}, 0, 1);
               $dotend = substr(${"result_size".$j.$i}, -1, 1);
   
@@ -2087,7 +2151,9 @@ class KensahyousokuteidatasController extends AppController
               }elseif($dotend == "."){
                 ${"result_size".$j.$i} = ${"result_size".$j.$i}."0";
               }
-              ${"result_size".$j.$i} = sprintf("%.1f", ${"result_size".$j.$i});
+              if(${"result_size".$j.$i} !== "〇" && ${"result_size".$j.$i} !== "✕"){
+                ${"result_size".$j.$i} = sprintf("%.1f", ${"result_size".$j.$i});
+              }
 
             }else{
               ${"result_size".$j.$i} = "";

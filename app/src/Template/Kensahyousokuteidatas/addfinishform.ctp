@@ -42,7 +42,7 @@ echo $this->Html->css('kensahyou');
       <td width="150"><strong>生産重量</strong></td>
     </tr>
     <tr height="45">
-    <td class="login" width="200"><?= $this->Form->control('total_amount', array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
+    <td class="login" width="200"><?= $this->Form->control('total_amount', array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9A-Za-z.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
     </tr>
     </tbody>
 </table>
