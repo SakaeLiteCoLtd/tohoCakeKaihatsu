@@ -28,12 +28,6 @@ $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
 
-<script>
-  
-let target = document.getElementById('scroll-inner');
-target.scrollIntoView(false);
-</script>
-
 <br><br><br>
 
 <table>

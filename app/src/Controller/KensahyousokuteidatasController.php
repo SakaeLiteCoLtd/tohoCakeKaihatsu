@@ -1789,6 +1789,8 @@ class KensahyousokuteidatasController extends AppController
             ${"datetime".$j} = $data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"];
           }elseif(isset($data['datetime'.$j])){
             ${"datetime".$j} = $data['datetime'.$j];
+          }elseif(isset($data['datetime_h_i'.$j])){
+            ${"datetime".$j} = $data['datetime_h_i'.$j];
           }else{
             ${"datetime".$j} = date('H:i');
           }
@@ -1915,14 +1917,14 @@ class KensahyousokuteidatasController extends AppController
           }
 
           
-          if($data["gyou"] > 1){
+          if(!isset($data['tuzukikara']) && $data["gyou"] > 1){
             $jm = $j - 1;
-
+/*
             echo "<pre>";
             print_r(date("Y-m-d ").$data['datetime'.$jm]);
             print_r(date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00");
             echo "</pre>";
-      
+  */    
             if(date("Y-m-d ").$data['datetime'.$jm] < date("Y-m-d ")."06:00:00" && date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00" > date("Y-m-d ")."06:00:00"){
               $check_over = 1;
             }else{
@@ -1931,11 +1933,11 @@ class KensahyousokuteidatasController extends AppController
           }else{
             $check_over = 0;
           }
-
+/*
           echo "<pre>";
           print_r($check_over);
           echo "</pre>";
-    
+  */  
         if($check_over == 0 && !isset($InspectionDataResultParents[0]) && isset($data['datetime'.$j]["hour"])){//再読み込みで同じデータが登録されないようにチェック
 
           $tourokuInspectionDataResultParents = array();
@@ -5838,7 +5840,8 @@ class KensahyousokuteidatasController extends AppController
 
         ${"appearance".$n} = $InspectionDataResultParents[$j]['appearance'];
         $this->set('appearance'.$n,${"appearance".$n});
-        ${"result_weight".$n} = $InspectionDataResultParents[$j]['result_weight'];
+   //     ${"result_weight".$n} = $InspectionDataResultParents[$j]['result_weight'];
+        ${"result_weight".$n} = sprintf("%.1f", $InspectionDataResultParents[$j]['result_weight']);
         $this->set('result_weight'.$n,${"result_weight".$n});
         ${"judge".$n} = $InspectionDataResultParents[$j]['judge'];
         $this->set('judge'.$n,${"judge".$n});
@@ -5854,7 +5857,8 @@ class KensahyousokuteidatasController extends AppController
 
           $size_number = $InspectionDataResultChildren[$i]['inspection_standard_size_child']['size_number'];
     
-          ${"result_size".$n.$size_number} = $InspectionDataResultChildren[$i]['result_size'];
+    //      ${"result_size".$n.$size_number} = $InspectionDataResultChildren[$i]['result_size'];
+          ${"result_size".$n.$size_number} = sprintf("%.1f", $InspectionDataResultChildren[$i]['result_size']);
           $this->set('result_size'.$n.$size_number,${"result_size".$n.$size_number});
 
         }

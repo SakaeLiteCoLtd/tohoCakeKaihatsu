@@ -494,7 +494,8 @@ class KensahyoukikakusController extends AppController
       $factory_id = $Staffs[0]["factory_id"];
 
       $Kensakigus = $this->Kensakigus->find()
-      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+  //    ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+      ->where(['delete_flag' => 0])->toArray();
       $arrkensakigu = array();
       $arrkensakigu[""] = "";
       for($j=0; $j<count($Kensakigus); $j++){
@@ -1360,7 +1361,8 @@ class KensahyoukikakusController extends AppController
       $factory_id = $Staffs[0]["factory_id"];
 
       $Kensakigus = $this->Kensakigus->find()
-      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+   //   ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+      ->where(['delete_flag' => 0])->toArray();
       $arrkensakigu = array();
       $arrkensakigu[""] = "";
       for($j=0; $j<count($Kensakigus); $j++){
@@ -1500,7 +1502,8 @@ class KensahyoukikakusController extends AppController
       $factory_id = $Staffs[0]["factory_id"];
 
       $Kensakigus = $this->Kensakigus->find()
-      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+   //   ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+      ->where(['delete_flag' => 0])->toArray();
       $arrkensakigu = array();
       $arrkensakigu[""] = "";
       for($j=0; $j<count($Kensakigus); $j++){

@@ -16,6 +16,7 @@ class KensahyoukadousController extends AppController
    $this->Factories = TableRegistry::get('Factories');
    $this->Products = TableRegistry::get('Products');
    $this->Customers = TableRegistry::get('Customers');
+
   }
 
   public function beforeFilter(Event $event){

@@ -105,7 +105,7 @@ echo $this->Html->css('kensahyou');
   <table class="form">
 
   <td style='width:36; border-top-style:none; font-size: 11pt'><?= h(${"lot_number".$j}) ?></td>
-  <td style='width:130; border-top-style:none; font-size: 11pt'><?= h(${"datetime".$j}) ?></td></td>
+  <td style='width:130; border-top-style:none; font-size: 10pt'><?= h(${"datetime".$j}) ?></td></td>
 
   <td style='width:60; border-top-style:none'><?= h(${"length".$j}) ?></td>
 

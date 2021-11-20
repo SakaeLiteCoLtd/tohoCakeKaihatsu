@@ -17,6 +17,7 @@ class LinenamesController extends AppController
      $this->Staffs = TableRegistry::get('Staffs');
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
+     $this->Users = TableRegistry::get('Users');
 
      $session = $this->request->getSession();
      $datasession = $session->read();
@@ -44,12 +45,46 @@ class LinenamesController extends AppController
 
     public function index()
     {
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $Users = $this->Users->find()->contain(["Staffs"])
+      ->where(['Staffs.id' => $datasession['Auth']['User']['staff_id'], 'Users.delete_flag' => 0])
+      ->toArray();
+
+      $this->paginate = [
+        'limit' => 13,
+        'contain' => ['Factories']
+    ];
+
+    if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
+      $linenames = $this->paginate($this->Linenames->find()
+      ->where(['Linenames.delete_flag' => 0])
+      ->order(["factory_id"=>"ASC"]));
+
+      $this->set('usercheck', 1);
+
+      }else{
+        $linenames = $this->paginate($this->Linenames->find()
+        ->where(['Linenames.factory_id' => $Users[0]["staff"]["factory_id"], 'Linenames.delete_flag' => 0])
+        ->order(["factory_id"=>"ASC"]));
+
+        $this->set('usercheck', 0);
+
+        }
+
+    $this->set(compact('linenames'));
+
+/*
         $this->paginate = [
             'contain' => ['Factories']
         ];
         $linenames = $this->paginate($this->Linenames->find()->where(['Linenames.delete_flag' => 0]));
 
         $this->set(compact('linenames'));
+
+      */
+    
     }
 
     public function addform()

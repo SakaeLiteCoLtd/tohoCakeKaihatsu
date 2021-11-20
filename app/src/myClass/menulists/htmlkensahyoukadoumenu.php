@@ -238,7 +238,7 @@ class htmlkensahyoukadoumenu extends AppController
 
     if(isset($inspectionStandardSizeParents[0])){
       $date_kaitei = $inspectionStandardSizeParents[0]["created_at"]->format('Y-n-j');
-      $image_file_name_dir = "/img/".$inspectionStandardSizeParents[0]["image_file_name_dir"];
+      $image_file_name_dir = "/img/".$inspectionStandardSizeParents[0]["image_file_name_dir"]."?abc123";//「?abc123」をつけて画像のキャッシュを無視する
       }else{
         $date_kaitei = "";
         $image_file_name_dir = "/img/kensahyouimg/noimag.png";
@@ -297,7 +297,7 @@ class htmlkensahyoukadoumenu extends AppController
 
     if(isset($inspectionStandardSizeParents[0])){
       $date_kaitei = $inspectionStandardSizeParents[0]["created_at"]->format('Y-n-j');
-      $image_file_name_dir = "/img/".$inspectionStandardSizeParents[0]["image_file_name_dir"];
+      $image_file_name_dir = "/img/".$inspectionStandardSizeParents[0]["image_file_name_dir"]."?abc123";//「?abc123」をつけて画像のキャッシュを無視する
     }else{
       $date_kaitei = "";
       $image_file_name_dir = "/img/kensahyouimg/noimag.png";

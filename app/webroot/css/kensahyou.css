@@ -2,14 +2,6 @@
 	display: none;
 }
 
-.scroll{
-  overflow-y: scroll;
-  height: 300px;
-}
-#scroll-inner{
-  height: 600px;
-}
-
 table {
   margin-left: auto;
   margin-right: auto;

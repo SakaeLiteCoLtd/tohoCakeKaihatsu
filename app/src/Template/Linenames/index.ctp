@@ -22,16 +22,25 @@ echo $this->Html->css('index');
 ?>
 <br>
 <div class="linenames index large-9 medium-8 columns content">
-  
+
+<?php if ($usercheck == 1): ?>
+  <?php else : ?>
 <div style="text-align: right;">
 <a style="text-decoration: none" alien="center" href='/linenames/addform' class="buttonlayout"/><font size='4' color=black><?= __('▷新規登録') ?></font></a>
 </div>
+<?php endif; ?>
 
   <h2><font color=red><?= __('ライン一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
               <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
+
+              <?php if ($usercheck == 1): ?>
+                <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"工場名"]) ?></th>
+                <?php else : ?>
+                  <?php endif; ?>
+
                 <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"ライン"]) ?></th>
                 <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>
@@ -40,6 +49,12 @@ echo $this->Html->css('index');
             <?php foreach ($linenames as $linename): ?>
             <tr>
               <td><?= h($i) ?></td>
+
+              <?php if ($usercheck == 1): ?>
+                <td><?= h($linename->factory->name) ?></td>
+                <?php else : ?>
+                  <?php endif; ?>
+
                <td><?= h($linename->name) ?></td>
                 <td class="actions">
                   <?= $this->Html->link(__('編集'), ['action' => 'detail', $linename->id]) ?>
