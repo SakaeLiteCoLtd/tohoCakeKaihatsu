@@ -169,6 +169,30 @@ echo $this->Html->css('kensahyou');
 
 <?= $this->Form->control('gyou', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
 
+<br>
+<table align="center">
+  <tbody class="login">
+    <tr height="45">
+      <td width="150"><strong>生産重量（kg）</strong></td>
+    </tr>
+    <tr height="45">
+    <td><?= h($this->request->getData('total_amount')) ?></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+    <table align="center">
+    <tbody class="login">
+    <tr height="45">
+    <td width="500"><strong>備考</strong></td>
+    </tr>
+    <tr>
+    <td><?= h($this->request->getData('bik')) ?></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+
  <table class="top">
    <tr><td style="border:none"><strong style="font-size: 12pt; color:red"><?= __($mes) ?></strong></td></tr>
  </table>

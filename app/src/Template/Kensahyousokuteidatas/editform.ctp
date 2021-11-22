@@ -110,6 +110,7 @@ echo $this->Html->css('kensahyou');
 
   <?= $this->Form->control('gyoumax', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
   <?= $this->Form->control('datekensaku', array('type'=>'hidden', 'value'=>$datekensaku, 'label'=>false)) ?>
+  <?= $this->Form->control('datekensaku', array('type'=>'hidden', 'value'=>$datekensaku, 'label'=>false)) ?>
 
   <table class="form">
 
@@ -146,7 +147,32 @@ echo $this->Html->css('kensahyou');
 </table>
 
 <?php endfor;?>
-<br><br>
+<br>
+<table align="center">
+  <tbody class="login">
+    <tr height="45">
+      <td width="150"><strong>生産重量（kg）</strong></td>
+    </tr>
+    <tr height="45">
+    <td class="login" width="200"><?= $this->Form->control('total_amount', array('type'=>'tel', 'label'=>false, 'value'=>$total_amount, 'pattern' => '^[0-9A-Za-z.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+
+    <table align="center">
+    <tbody class="login">
+    <tr height="45">
+    <td width="150"><strong>備考</strong></td>
+    </tr>
+    <tr height="45">
+    <td height="120" colspan="28" style="vertical-align: top; border-bottom: solid;border-width: 1px;text-align: left">
+              <textarea name="bik"  cols="120" rows="10"><?php echo $bik;?></textarea>
+          </td>
+    </tr>
+    </tbody>
+</table>
+<br>
 <table>
   <tbody>
     <tr>

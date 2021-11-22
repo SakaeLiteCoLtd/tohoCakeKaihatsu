@@ -152,7 +152,24 @@ echo $this->Html->css('kensahyou');
 </table>
 
 <?php endfor;?>
-<br><br>
+
+<br>
+
+<table>
+  <tbody style="background-color: #FFFFCC">
+    <tr>
+    <td width="150">生産重量（kg）</td>
+    <td width="400">備考</td>
+    </tr>
+    <tr>
+    <td><?= h($total_amount) ?></td>
+    <td><?= h($bik) ?></td>
+    </tr>
+  </tbody>
+</table>
+
+<br>
+
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>

@@ -36,11 +36,12 @@ $mes = "";
 <?= $this->Form->control('datetimefin', array('type'=>'hidden', 'value'=>$this->request->getData('datetimefin'), 'label'=>false)) ?>
 <?= $this->Form->control('delete_flag', array('type'=>'hidden', 'value'=>$delete_flag, 'label'=>false)) ?>
 <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
+<?= $this->Form->control('total_amount', array('type'=>'hidden', 'value'=>$this->request->getData('total_amount'), 'label'=>false)) ?>
+<?= $this->Form->control('bik', array('type'=>'hidden', 'value'=>$this->request->getData('bik'), 'label'=>false)) ?>
 
 <?php
       echo $htmlkensahyouheader;
  ?>
-
 
  <table class="white">
 
@@ -200,6 +201,30 @@ $mes = "";
 
 <?php endif; ?>
 
+<br>
+
+<table align="center">
+  <tbody class="login">
+    <tr height="45">
+      <td width="150"><strong>生産重量（kg）</strong></td>
+    </tr>
+    <tr height="45">
+    <td><?= h($this->request->getData('total_amount')) ?></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+    <table align="center">
+    <tbody class="login">
+    <tr height="45">
+    <td width="500"><strong>備考</strong></td>
+    </tr>
+    <tr>
+    <td><?= h($this->request->getData('bik')) ?></td>
+    </tr>
+    </tbody>
+</table>
+<br>
 <table class="top">
   <tr><td style="border:none"><strong style="font-size: 12pt; color:red"><?= __($mess) ?></strong></td></tr>
 </table>
