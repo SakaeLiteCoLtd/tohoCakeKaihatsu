@@ -4540,7 +4540,7 @@ class KensahyousokuteidatasController extends AppController
     
         }
   
-        $product_condition_parent_id = $ProductConditionParents[0]['id'];
+   //     $product_condition_parent_id = $ProductConditionParents[0]['id'];
 
         if(substr($data['datetime'.$j], 0, 2) < 6){//前日の測定
           $date1 = strtotime($data['datekensaku']);
@@ -4554,6 +4554,7 @@ class KensahyousokuteidatasController extends AppController
         ->order(["InspectionDataResultParents.id"=>"DESC"])->toArray();
 
         $inspection_data_conditon_parent_id = $InspectionDataResultParentsmoto[0]["inspection_data_conditon_parent_id"];
+        $product_condition_parent_id = $InspectionDataResultParentsmoto[0]["product_condition_parent_id"];
 
         for($j=1; $j<=$gyou; $j++){
 
@@ -4569,12 +4570,14 @@ class KensahyousokuteidatasController extends AppController
             $bik = "";
             $kanryou_flag = 0;
           }
+
+
           $updateInspectionDataResultParents = [
             "inspection_data_conditon_parent_id" => $inspection_data_conditon_parent_id,
             "inspection_standard_size_parent_id" => $inspection_standard_size_parent_id,
             "product_condition_parent_id" => $product_condition_parent_id,
             'lot_number' => $data['lot_number'.$j],
-            'datetime' => $data['datekensaku']." ".$data['datetime'.$j].":00",
+            'datetime' => $datekensaku." ".$data['datetime'.$j].":00",
             'staff_id' => $Users[0]["staff_id"],
             'product_id' => $data['product_id'.$j],
             'appearance' => $data['appearance'.$j],
@@ -4584,7 +4587,7 @@ class KensahyousokuteidatasController extends AppController
             'total_amount' => $total_amount,
             'bik' => $bik,
             "delete_flag" => 0,
-            'created_at' => date("Y-m-d H:i:s"),
+            'created_at' => $InspectionDataResultParentsmoto[0]["created_at"],
             "created_staff" => $staff_id
           ];
 /*
@@ -4624,9 +4627,16 @@ class KensahyousokuteidatasController extends AppController
               $InspectionDataResultParents = $this->InspectionDataResultParents->patchEntity($this->InspectionDataResultParents->newEntity(), $updateInspectionDataResultParents);
               if ($this->InspectionDataResultParents->save($InspectionDataResultParents)) {
 
+                if(substr($data['datetime'.$j], 0, 2) < 6){//前日の測定
+                  $date1 = strtotime($data['datekensaku']);
+                  $datekensaku = date('Y-m-d', strtotime('+1 day', $date1));
+                    }else{
+                  $datekensaku = $data['datekensaku'];
+                }
+        
                 $InspectionDataResultParentsId = $this->InspectionDataResultParents->find()
                 ->where(['delete_flag' => 0, 'inspection_standard_size_parent_id' => $inspection_standard_size_parent_id,
-                 'datetime' => $data['datekensaku']." ".$data['datetime'.$j].":00"])
+                 'datetime' => $datekensaku." ".$data['datetime'.$j].":00"])
                 ->order(["id"=>"DESC"])->toArray();
 
                 $tourokuInspectionDataResultChildren = array();
