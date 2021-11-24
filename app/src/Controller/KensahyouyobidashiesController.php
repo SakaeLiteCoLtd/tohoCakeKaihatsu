@@ -36,6 +36,9 @@ class KensahyouyobidashiesController extends AppController
    $this->InspectionDataConditonChildren = TableRegistry::get('InspectionDataConditonChildren');
    $this->InspectionDataConditonParents = TableRegistry::get('InspectionDataConditonParents');
 
+   $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
+   $this->Groups = TableRegistry::get('Groups');
+
    if(!isset($_SESSION)){//フォーム再送信の確認対策//戻りたい画面でわざとwarningを出しておけば戻れる
     session_start();
   }
@@ -65,17 +68,35 @@ class KensahyouyobidashiesController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
+      $mess = "";
+      $this->set('mess',$mess);
+
       $session = $this->request->getSession();
       $datasession = $session->read();
-      $Users= $this->Users->find('all')->contain(["Staffs"])->where(['user_code' => $datasession['Auth']['User']['user_code'], 'Users.delete_flag' => 0])->toArray();
+
+      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
+
+        $Groups = $this->Groups->find()->contain(["Menus"])
+        ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "成形条件表", 'Groups.delete_flag' => 0])
+        ->toArray();
+ 
+        if(!isset($Groups[0])){//権限がない場合
+          $account_check = 0;
+        }else{
+          $account_check = 1;
+        }
+        $this->set('account_check', $account_check);
+
+      }
+
+      $Users = $this->Users->find('all')->contain(["Staffs"])->where(['user_code' => $datasession['Auth']['User']['user_code'], 'Users.delete_flag' => 0])->toArray();
       $user_code = $datasession['Auth']['User']['user_code'];
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+      $Staffs = $this->Staffs->find()->where(['id' => $staff_id])->toArray();
+      $factory_id = $Staffs[0]["factory_id"];
 
       $data = $this->request->getData();
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-  */
+
       $arrkensaku = array_keys($data, '検索');
       $arrtouroku = array_keys($data, '登録');
 
@@ -87,6 +108,13 @@ class KensahyouyobidashiesController extends AppController
       }
 
       if(isset($arrtouroku[0])){//登録の場合
+
+        if($account_check == 0){//権限がない時
+
+          $mess = "成形条件を登録する権限がありません。責任者に報告してください。";
+          $this->set('mess',$mess);
+ 
+        }else{
 
         $arrcheck = explode("_",$arrtouroku[0]);
         $check_what = $arrcheck[0];
@@ -110,14 +138,30 @@ class KensahyouyobidashiesController extends AppController
     
         }
 
+      }        
+
       }
 
-      $InspectionStandardSizeChildren= $this->InspectionStandardSizeChildren->find()
-      ->contain(['InspectionStandardSizeParents' => ["Products"]])
-      ->where(['InspectionStandardSizeParents.is_active' => 0,
-      'InspectionStandardSizeParents.delete_flag' => 0,
-      'InspectionStandardSizeChildren.delete_flag' => 0])
-      ->order(["inspection_standard_size_parent_id"=>"ASC"])->toArray();
+      if($factory_id == 5){//本部の人がログインしている場合
+
+        $InspectionStandardSizeChildren= $this->InspectionStandardSizeChildren->find()
+        ->contain(['InspectionStandardSizeParents' => ["Products"]])
+        ->where(['InspectionStandardSizeParents.is_active' => 0,
+        'InspectionStandardSizeParents.delete_flag' => 0,
+        'InspectionStandardSizeChildren.delete_flag' => 0])
+        ->order(["inspection_standard_size_parent_id"=>"ASC"])->toArray();
+
+      }else{
+
+        $InspectionStandardSizeChildren= $this->InspectionStandardSizeChildren->find()
+        ->contain(['InspectionStandardSizeParents' => ["Products"]])
+        ->where(['InspectionStandardSizeParents.is_active' => 0,
+        'InspectionStandardSizeParents.delete_flag' => 0,
+        'InspectionStandardSizeChildren.delete_flag' => 0,
+        'OR' => [['Products.factory_id' => $factory_id], ['Products.factory_id' => 5]]])
+        ->order(["inspection_standard_size_parent_id"=>"ASC"])->toArray();
+  
+      }
 
       $arrProducts1 = array();
       $arrProduct_created_at = array();
@@ -157,10 +201,22 @@ class KensahyouyobidashiesController extends AppController
 
       }
       
-      $ProductMachineMaterials = $this->ProductMachineMaterials->find()
-      ->contain(['ProductMaterialMachines' => ['ProductConditionParents' => ["Products"]]])
-      ->where(['ProductConditionParents.delete_flag' => 0,'ProductMachineMaterials.delete_flag' => 0])
-      ->order(["ProductMaterialMachines.id"=>"ASC"])->toArray();
+      if($factory_id == 5){//本部の人がログインしている場合
+
+        $ProductMachineMaterials = $this->ProductMachineMaterials->find()
+        ->contain(['ProductMaterialMachines' => ['ProductConditionParents' => ["Products"]]])
+        ->where(['ProductConditionParents.delete_flag' => 0,'ProductMachineMaterials.delete_flag' => 0])
+        ->order(["ProductMaterialMachines.id"=>"ASC"])->toArray();
+
+        }else{
+
+        $ProductMachineMaterials = $this->ProductMachineMaterials->find()
+        ->contain(['ProductMaterialMachines' => ['ProductConditionParents' => ["Products"]]])
+        ->where(['ProductConditionParents.delete_flag' => 0,'ProductMachineMaterials.delete_flag' => 0,
+        'OR' => [['Products.factory_id' => $factory_id], ['Products.factory_id' => 5]]])
+        ->order(["ProductMaterialMachines.id"=>"ASC"])->toArray();
+
+        }
 
       $arrProducts2 = array();
       for($j=0; $j<count($ProductMachineMaterials); $j++){
@@ -218,9 +274,20 @@ class KensahyouyobidashiesController extends AppController
         if(strlen($seikeijoukencheck) > 0){
           $seikeijouken = "登録済み";
 
-          $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
-          ->where(['product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
-          ->order(["version"=>"DESC"])->toArray();
+          if($factory_id == 5){//本部の人がログインしている場合
+
+            $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
+            ->where(['product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
+            ->order(["version"=>"DESC"])->toArray();
+  
+          }else{
+
+            $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
+            ->where(['product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0,
+            'OR' => [['Products.factory_id' => $factory_id], ['Products.factory_id' => 5]]])
+            ->order(["version"=>"DESC"])->toArray();
+
+            }
   
           if(isset($ProductConditionParents[0])){
 
@@ -276,11 +343,23 @@ class KensahyouyobidashiesController extends AppController
 
       }
 
-      array_multisort( array_map( "strtotime", array_column( $arrKensahyous, "datetime" ) ), SORT_DESC, $arrKensahyous ) ;
+      array_multisort( array_map( "strtotime", array_column( $arrKensahyous, "datetime" ) ), SORT_DESC, $arrKensahyous);
       $this->set('arrKensahyous', $arrKensahyous);
 
-      $Product_name_list = $this->Products->find()
-      ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
+      if($factory_id == 5){//本部の人がログインしている場合
+
+        $Product_name_list = $this->Products->find()
+        ->where(['status_kensahyou' => 0, 'delete_flag' => 0])
+        ->toArray();
+
+      }else{
+
+        $Product_name_list = $this->Products->find()
+        ->where(['status_kensahyou' => 0, 'delete_flag' => 0,
+        'OR' => [['factory_id' => $factory_id], ['factory_id' => 5]]])
+        ->toArray();
+
+      }
       $arrProduct_name_list = array();
       for($j=0; $j<count($Product_name_list); $j++){
         array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
@@ -314,8 +393,27 @@ class KensahyouyobidashiesController extends AppController
 
       $session = $this->request->getSession();
       $datasession = $session->read();
+
+      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
+
+        $Groups = $this->Groups->find()->contain(["Menus"])
+        ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "成形条件表", 'Groups.delete_flag' => 0])
+        ->toArray();
+ 
+        if(!isset($Groups[0])){//権限がない場合
+          $account_check = 0;
+        }else{
+          $account_check = 1;
+        }
+        $this->set('account_check', $account_check);
+
+      }
+
       $Users= $this->Users->find('all')->contain(["Staffs"])->where(['user_code' => $datasession['Auth']['User']['user_code'], 'Users.delete_flag' => 0])->toArray();
       $user_code = $datasession['Auth']['User']['user_code'];
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+      $Staffs = $this->Staffs->find()->where(['id' => $staff_id])->toArray();
+      $factory_id = $Staffs[0]["factory_id"];
 
       $getdata = $this->request->getData();
 
@@ -432,13 +530,29 @@ class KensahyouyobidashiesController extends AppController
       $machine_num = $data["machine_num"];
       $this->set('machine_num', $machine_num);
 
-      $InspectionStandardSizeChildren= $this->InspectionStandardSizeChildren->find()
-      ->contain(['InspectionStandardSizeParents' => ["Products"]])
-      ->where(['Products.name like' => '%'.$data["product_name"].'%',
-      'InspectionStandardSizeParents.is_active' => 0,
-      'InspectionStandardSizeParents.delete_flag' => 0,
-      'InspectionStandardSizeChildren.delete_flag' => 0])
-      ->order(["inspection_standard_size_parent_id"=>"ASC"])->toArray();
+      if($factory_id == 5){//本部の人がログインしている場合
+
+        $InspectionStandardSizeChildren= $this->InspectionStandardSizeChildren->find()
+        ->contain(['InspectionStandardSizeParents' => ["Products"]])
+        ->where(['Products.name like' => '%'.$data["product_name"].'%',
+        'InspectionStandardSizeParents.is_active' => 0,
+        'InspectionStandardSizeParents.delete_flag' => 0,
+        'InspectionStandardSizeChildren.delete_flag' => 0])
+        ->order(["inspection_standard_size_parent_id"=>"ASC"])->toArray();
+  
+      }else{
+
+        $InspectionStandardSizeChildren= $this->InspectionStandardSizeChildren->find()
+        ->contain(['InspectionStandardSizeParents' => ["Products"]])
+        ->where(['Products.name like' => '%'.$data["product_name"].'%',
+        'InspectionStandardSizeParents.is_active' => 0,
+        'InspectionStandardSizeParents.delete_flag' => 0,
+        'InspectionStandardSizeChildren.delete_flag' => 0,
+        'OR' => [['Products.factory_id' => $factory_id], ['Products.factory_id' => 5]]])
+        ->order(["inspection_standard_size_parent_id"=>"ASC"])->toArray();
+  
+      }
+
 
       $arrProducts1 = array();
       $arrProduct_created_at = array();
@@ -478,11 +592,24 @@ class KensahyouyobidashiesController extends AppController
 
       }
       
-      $ProductMachineMaterials = $this->ProductMachineMaterials->find()
-      ->contain(['ProductMaterialMachines' => ['ProductConditionParents' => ["Products"]]])
-      ->where(['Products.name like' => '%'.$data["product_name"].'%',
-       'ProductConditionParents.delete_flag' => 0,'ProductMachineMaterials.delete_flag' => 0])
-      ->order(["ProductMaterialMachines.id"=>"ASC"])->toArray();
+      if($factory_id == 5){//本部の人がログインしている場合
+
+        $ProductMachineMaterials = $this->ProductMachineMaterials->find()
+        ->contain(['ProductMaterialMachines' => ['ProductConditionParents' => ["Products"]]])
+        ->where(['Products.name like' => '%'.$data["product_name"].'%',
+         'ProductConditionParents.delete_flag' => 0,'ProductMachineMaterials.delete_flag' => 0])
+        ->order(["ProductMaterialMachines.id"=>"ASC"])->toArray();
+
+        }else{
+
+        $ProductMachineMaterials = $this->ProductMachineMaterials->find()
+        ->contain(['ProductMaterialMachines' => ['ProductConditionParents' => ["Products"]]])
+        ->where(['Products.name like' => '%'.$data["product_name"].'%',
+         'ProductConditionParents.delete_flag' => 0,'ProductMachineMaterials.delete_flag' => 0,
+         'OR' => [['Products.factory_id' => $factory_id], ['Products.factory_id' => 5]]])
+         ->order(["ProductMaterialMachines.id"=>"ASC"])->toArray();
+
+      }
 
       $arrProducts2 = array();
       for($j=0; $j<count($ProductMachineMaterials); $j++){

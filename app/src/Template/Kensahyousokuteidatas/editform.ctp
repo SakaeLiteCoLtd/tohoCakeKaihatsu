@@ -111,6 +111,9 @@ echo $this->Html->css('kensahyou');
   <?= $this->Form->control('gyoumax', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
   <?= $this->Form->control('datekensaku', array('type'=>'hidden', 'value'=>$datekensaku, 'label'=>false)) ?>
   <?= $this->Form->control('datekensaku', array('type'=>'hidden', 'value'=>$datekensaku, 'label'=>false)) ?>
+  <?= $this->Form->control('inspection_data_conditon_parent_id'.$j, array('type'=>'hidden', 'value'=>${"inspection_data_conditon_parent_id".$j}, 'label'=>false)) ?>
+  <?= $this->Form->control('inspection_standard_size_parent_id'.$j, array('type'=>'hidden', 'value'=>${"inspection_standard_size_parent_id".$j}, 'label'=>false)) ?>
+  <?= $this->Form->control('product_condition_parent_id'.$j, array('type'=>'hidden', 'value'=>${"product_condition_parent_id".$j}, 'label'=>false)) ?>
 
   <table class="form">
 

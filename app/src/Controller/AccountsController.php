@@ -19,6 +19,7 @@ class AccountsController extends AppController
      $this->Factories = TableRegistry::get('Factories');
      $this->Users = TableRegistry::get('Users');
      $this->Staffs = TableRegistry::get('Staffs');
+     $this->Materials = TableRegistry::get('Materials');
      $this->MaterialSuppliers = TableRegistry::get('MaterialSuppliers');
      $this->Menus = TableRegistry::get('Menus');
      $this->Groups = TableRegistry::get('Groups');
@@ -702,7 +703,6 @@ class AccountsController extends AppController
     {
       $product = $this->Products->newEntity();
       $this->set('product', $product);
-      
 
       $Data=$this->request->query('s');
       if(isset($Data["mess"])){
@@ -813,6 +813,165 @@ class AccountsController extends AppController
        $connection->begin();//トランザクション3
        try {//トランザクション4
          if ($this->Products->updateAll(
+           [ 'is_active' => 0,
+             'delete_flag' => 0,
+             'updated_at' => date('Y-m-d H:i:s'),
+             'updated_staff' => $staff_id],
+           ['id'  => $data['id']]
+         )){
+
+         $mes = "※以下のデータが復元されました。";
+         $this->set('mes',$mes);
+         $connection->commit();// コミット5
+
+       } else {
+
+         $mes = "※復元されませんでした";
+         $this->set('mes',$mes);
+         $this->Flash->error(__('The data could not be saved. Please, try again.'));
+         throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+       }
+
+     } catch (Exception $e) {//トランザクション7
+     //ロールバック8
+       $connection->rollback();//トランザクション9
+     }//トランザクション10
+
+    }
+
+    public function materialdeletedselect()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
+      $Factories = $this->Factories->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrFactories = array();
+      foreach ($Factories as $value) {
+        $arrFactories[] = array($value->id=>$value->name);
+      }
+      $this->set('arrFactories', $arrFactories);
+
+      $this->set('countFactories', count($Factories));
+      for($i=0; $i<count($Factories); $i++){
+
+        $this->set('factory_id'.$i, $Factories[$i]["id"]);
+
+        ${"Material_name_list".$i} = $this->Materials->find()
+        ->where(['factory_id' => $Factories[$i]["id"], 'delete_flag' => 1])->toArray();
+  
+        ${"arrMaterial_name_list".$i} = array();
+        for($j=0; $j<count(${"Material_name_list".$i}); $j++){
+
+          ${"Material_check".$j} = $this->Materials->find()
+          ->where(['material_code' => ${"Material_name_list".$i}[$j]["material_code"], 'delete_flag' => 0])->toArray();
+          if(!isset(${"Material_check".$j}[0])){
+            array_push(${"arrMaterial_name_list".$i},${"Material_name_list".$i}[$j]["name"]);
+          }
+
+        }
+        ${"arrMaterial_name_list".$i} = array_unique(${"arrMaterial_name_list".$i});
+        ${"arrMaterial_name_list".$i} = array_values(${"arrMaterial_name_list".$i});
+  
+        $this->set('arrMaterial_name_list'.$i, ${"arrMaterial_name_list".$i});
+  
+      }
+
+    }
+
+    public function materialdeletedconfirm()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+        $data = $Data;
+
+      }else{
+
+        $data = $this->request->getData();
+        $mess = "";
+        $this->set('mess',$mess);
+
+      }
+
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+      $name = $data["name"];
+
+      $MaterialName1 = $this->Materials->find()
+      ->where(['factory_id' => $data['factory_id'], 'name' => $name, 'delete_flag' => 1])->toArray();
+
+      if(!isset($MaterialName1[0])){
+
+        return $this->redirect(['action' => 'materialdeletedselect',
+        's' => ['mess' => "入力された削除済み仕入品は存在しません"]]);
+
+      }
+
+      $factory_id = $data["factory_id"];
+      $this->set('factory_id', $factory_id);
+      $material_code = $MaterialName1[0]["material_code"];
+      $this->set('material_code', $material_code);
+      $name = $MaterialName1[0]["name"];
+      $this->set('name', $name);
+      $id = $MaterialName1[0]["id"];
+      $this->set('id', $id);
+
+    }
+
+    public function materialdeleteddo()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+      
+      $data = $this->request->getData();
+      /*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $Factories = $this->Factories->find()
+      ->where(['id' => $data['factory_id']])->toArray();
+      $factory_name = $Factories[0]['name'];
+      $this->set('factory_name', $factory_name);
+
+      $MaterialName1 = $this->Materials->find()
+      ->where(['id' => $data['id']])->toArray();
+
+      $factory_id = $data["factory_id"];
+      $this->set('factory_id', $factory_id);
+      $material_code = $MaterialName1[0]["material_code"];
+      $this->set('material_code', $material_code);
+      $name = $MaterialName1[0]["name"];
+      $this->set('name', $name);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $connection = ConnectionManager::get('default');//トランザクション1
+       // トランザクション開始2
+       $connection->begin();//トランザクション3
+       try {//トランザクション4
+         if ($this->Materials->updateAll(
            [ 'is_active' => 0,
              'delete_flag' => 0,
              'updated_at' => date('Y-m-d H:i:s'),

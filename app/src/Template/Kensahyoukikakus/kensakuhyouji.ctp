@@ -86,13 +86,29 @@ echo $this->Html->css('kensahyou');
 </table>
 
 <br><br>
+
+<?php if ($account_check == 0): ?>
+
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>
       <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
-      <td style="border: none;"><?= __("　") ?></td>
-      <td style="border:none"><?= $this->Form->submit(('編集'), array('name' => 'kakuninn')) ?></td>
     </tr>
   </tbody>
 </table>
 <br>
+
+<?php else : ?>
+
+  <table align="center">
+  <tbody class='sample non-sample'>
+    <tr>
+      <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+      <td style="border: none;"><?= __("　") ?></td>
+      <td style="border:none"><?= $this->Form->submit(('編集・削除'), array('name' => 'kakuninn')) ?></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+
+<?php endif; ?>

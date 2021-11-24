@@ -41,6 +41,9 @@ class KensahyoukikakusController extends AppController
      $this->InspectionStandardSizeChildren = TableRegistry::get('InspectionStandardSizeChildren');
      $this->InspectionStandardSizeParents = TableRegistry::get('InspectionStandardSizeParents');
 
+     $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
+     $this->Groups = TableRegistry::get('Groups');
+
      if(!isset($_SESSION)){//フォーム再送信の確認対策//戻りたい画面でわざとwarningを出しておけば戻れる
        session_start();
      }
@@ -966,6 +969,23 @@ class KensahyoukikakusController extends AppController
     {
       $product = $this->Products->newEntity();
       $this->set('product', $product);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
+
+        $Groups = $this->Groups->find()->contain(["Menus"])
+        ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "成形条件表", 'Groups.delete_flag' => 0])
+        ->toArray();
+ 
+        if(!isset($Groups[0])){//権限がない場合
+          $account_check = 0;
+        }else{
+          $account_check = 1;
+        }
+        $this->set('account_check', $account_check);
+
+      }
 
       $Data = $this->request->query('s');
       $product_code = $Data["product_code"];

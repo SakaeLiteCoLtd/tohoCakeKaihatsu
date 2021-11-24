@@ -50,7 +50,9 @@ $arrProduct_name_list = json_encode($arrProduct_name_list);//javaに配列を受
 
 <?= $this->Form->create($product, ['url' => ['action' => 'index']]) ?>
 
-<br><br><br>
+<br><br>
+<div align="center"><font color="red" size="3"><?= __($mess) ?></font></div>
+<br>
 
 <table>
   <tbody style="background-color: #FFFFCC">

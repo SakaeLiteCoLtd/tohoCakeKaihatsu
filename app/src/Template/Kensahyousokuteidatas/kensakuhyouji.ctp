@@ -170,7 +170,20 @@ echo $this->Html->css('kensahyou');
 
 <br>
 
+<?php if ($account_check == 0): ?>
+
 <table align="center">
+  <tbody class='sample non-sample'>
+    <tr>
+      <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+
+<?php else : ?>
+
+  <table align="center">
   <tbody class='sample non-sample'>
     <tr>
       <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
@@ -180,3 +193,5 @@ echo $this->Html->css('kensahyou');
   </tbody>
 </table>
 <br>
+
+<?php endif; ?>

@@ -29,3 +29,7 @@ echo $this->Html->css('kensahyou');
     <td style='border: none'><?php echo $this->Html->image('/img/menus/subyobidashi.gif',array('width'=>'145','height'=>'50','url'=>array('action'=>'kensakumenu')));?></td>
   </tr>
 </table>
+
+<br><br>
+ <div align="center"><font color="red" size="3"><?= __($mess) ?></font></div>
+<br>

@@ -58,8 +58,15 @@ echo $this->Html->css('kensahyou');
             <td style='width:100; height:60; border-width: 1px solid black;'><?= __('ライン番号') ?></td>
             <td style='width:150; height:60; border-width: 1px solid black;' colspan='2'><?= __('検査表画像・規格') ?></td>
             <td style='width:150; height:60; border-width: 1px solid black;' colspan='2'><?= __('原料・温度条件') ?></td>
+
+            <?php if ($account_check == 0): ?>
+              <?php else : ?>
+
             <td style='width:100; height:60; border-width: 1px solid black;'><?= __('複製') ?></td>
             <td style='width:100; height:60; border-width: 1px solid black;'><?= __('削除') ?></td>
+
+            <?php endif; ?>
+
             </tr>
         </thead>
 
@@ -72,9 +79,16 @@ echo $this->Html->css('kensahyou');
 
                 <?php if ($arrKensahyous[$j]["kikaku"] !== "登録済み"): ?>
                  <td colspan='2'>
-                 <?php
+
+                 <?php if ($account_check == 0): ?>
+                  <?= h("未登録") ?>
+                  <?php else : ?>
+                    <?php
                   echo $this->Form->submit("登録" , ['name' => "kikaku_".$arrKensahyous[$j]["product_code"]]) ;
                  ?>
+                    <?php endif; ?>
+
+
                   </td>
                 <?php else : ?>
                   <td style='border-right-style:none'><?= h($arrKensahyous[$j]["kikaku"]) ?></td>
@@ -87,10 +101,18 @@ echo $this->Html->css('kensahyou');
 
                 <?php if ($arrKensahyous[$j]["seikeijouken"] !== "登録済み"): ?>
                  <td colspan='2'>
+
+                 <?php if ($account_check == 0): ?>
+                  <?= h("未登録") ?>
+                  <?php else : ?>
+
                  <?php
                   echo $this->Form->submit("登録" , ['name' => $arrKensahyous[$j]["product_code"]]) ;
                  ?>
                   </td>
+
+                  <?php endif; ?>
+
                 <?php else : ?>
                   <td style='border-right-style:none'><?= h($arrKensahyous[$j]["seikeijouken"]) ?></td>
                   <td style='border-left-style:none'>
@@ -99,6 +121,9 @@ echo $this->Html->css('kensahyou');
                   ?>
                 </td>
                 <?php endif; ?>
+
+                <?php if ($account_check == 0): ?>
+              <?php else : ?>
 
                 <?php if ($arrKensahyous[$j]["kikaku"] === "登録済み" && $arrKensahyous[$j]["seikeijouken"] === "登録済み"): ?>
                  <td>
@@ -116,6 +141,8 @@ echo $this->Html->css('kensahyou');
                  ?>
                   </td>
 
+                  <?php endif; ?>
+
             </tr>
 
           <?php
@@ -130,7 +157,21 @@ echo $this->Html->css('kensahyou');
     <?php else : ?>
     <?php endif; ?>
 
+    <?php if ($account_check == 0): ?>
+
     <br><br>
+    <table>
+        <tbody class='sample non-sample'>
+          <tr>
+          <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+          </tr>
+        </tbody>
+      </table>
+    <br><br>
+
+    <?php else : ?>
+
+      <br><br>
     <table>
         <tbody class='sample non-sample'>
           <tr>
@@ -141,3 +182,5 @@ echo $this->Html->css('kensahyou');
         </tbody>
       </table>
     <br><br>
+
+      <?php endif; ?>
