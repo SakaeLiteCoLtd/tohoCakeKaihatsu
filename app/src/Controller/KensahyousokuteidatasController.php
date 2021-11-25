@@ -2211,9 +2211,26 @@ class KensahyousokuteidatasController extends AppController
             $mes = "※検査時間が同じデータは登録できません。";
             $this->set('mes',$mes);
 
-            if($data["gyou"] = 1){
+            if($data["gyou"] == 1){//再読み込みのときと同じ時間で登録しようとした時でgyouがちがう
               $gyou = 2;
+            }else{
+
+              $InspectionDataResultParentDatas = $this->InspectionDataResultParents->find()
+              ->contain(['InspectionStandardSizeParents', 'ProductConditionParents', 'Products'])
+              ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 
+              'InspectionDataResultParents.datetime >=' => date("Y-m-d ").$data['datetime1'],
+              'InspectionDataResultParents.datetime <' => date("Y-m-d H:i:s"),
+              'InspectionStandardSizeParents.delete_flag' => 0,
+              'InspectionDataResultParents.delete_flag' => 0])
+              ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
+
+              $gyou = count($InspectionDataResultParentDatas) + 1;
             }
+/*
+            echo "<pre>";
+            print_r($gyou);
+            echo "</pre>";
+  */
             $this->set('gyou', $gyou);
 
           }else{

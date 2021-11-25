@@ -164,6 +164,7 @@ $disp_data = array_slice($arrKensahyous, $start_no, MAX, true);
             <td style='width:100; height:60; border-width: 1px solid black;'><?= __('ライン番号') ?></td>
             <td style='width:150; height:60; border-width: 1px solid black;'><?= __('検査表画像・規格') ?></td>
             <td style='width:150; height:60; border-width: 1px solid black;'><?= __('原料・温度条件') ?></td>
+            <td style='width:200; height:60; border-width: 1px solid black;'><?= __('データ作成日') ?></td>
             </tr>
         </thead>
 
@@ -199,6 +200,8 @@ foreach($disp_data as $val){ // データ表示
     <?php else : ?>
       <td><?= h($val["seikeijouken"]) ?></td>
     <?php endif; ?>
+
+    <td><?= h($val["datetime"]) ?></td>
 
 </tr>
 
