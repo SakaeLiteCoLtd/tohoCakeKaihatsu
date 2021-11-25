@@ -87,6 +87,22 @@ class KensahyoukikakusController extends AppController
 
       $session = $this->request->getSession();
       $datasession = $session->read();
+
+      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
+
+        $Groups = $this->Groups->find()->contain(["Menus"])
+        ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "成形条件表", 'Groups.delete_flag' => 0])
+        ->toArray();
+ 
+        if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
+ 
+          return $this->redirect(['action' => 'menu',
+          's' => ['mess' => "成形条件を登録する権限がありません。責任者に報告してください。"]]);
+
+        }
+ 
+      }
+
       $Users= $this->Users->find('all')->contain(["Staffs"])->where(['user_code' => $datasession['Auth']['User']['user_code'], 'Users.delete_flag' => 0])->toArray();
       $user_code = $datasession['Auth']['User']['user_code'];
       $this->set('user_code', $user_code);
@@ -94,6 +110,8 @@ class KensahyoukikakusController extends AppController
       $this->set('staff_id', $staff_id);
       $staff_name= $Users[0]["staff"]["name"];
       $this->set('staff_name', $staff_name);
+      $Staffs = $this->Staffs->find()->where(['id' => $staff_id])->toArray();
+      $factory_id = $Staffs[0]["factory_id"];
 
       $customer_check = 0;
       $this->set('customer_check', $customer_check);
@@ -108,17 +126,42 @@ class KensahyoukikakusController extends AppController
 
      if(isset($data["customer"])){//顧客絞り込みをしたとき
 
-       $Product_name_list = $this->Products->find()
-       ->contain(['Customers'])
-       ->where(['Customers.name' => $data["customer_name"], 'Products.status_kensahyou' => 0, 'Products.delete_flag' => 0])->toArray();
+       if($factory_id == 5){//本部の人がログインしている場合
+
+        $Product_name_list = $this->Products->find()
+        ->contain(['Customers'])
+        ->where(['Customers.name' => $data["customer_name"], 'Products.status_kensahyou' => 0, 'Products.delete_flag' => 0])
+        ->toArray();
+ 
+      }else{
+
+        $Product_name_list = $this->Products->find()
+        ->contain(['Customers'])
+        ->where(['Customers.name' => $data["customer_name"], 'Products.status_kensahyou' => 0, 'Products.delete_flag' => 0,
+        'OR' => [['Products.factory_id' => $factory_id], ['Products.factory_id' => 5]]])
+        ->toArray();
+
+      }
 
        if(count($Product_name_list) < 1){//顧客名にミスがある場合
 
          $mess = "入力された顧客の製品は登録されていません。確認してください。";
          $this->set('mess',$mess);
 
-         $Product_name_list = $this->Products->find()
-         ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
+         if($factory_id == 5){//本部の人がログインしている場合
+
+          $Product_name_list = $this->Products->find()
+          ->where(['status_kensahyou' => 0, 'delete_flag' => 0])
+          ->toArray();
+  
+        }else{
+  
+          $Product_name_list = $this->Products->find()
+          ->where(['status_kensahyou' => 0, 'delete_flag' => 0,
+          'OR' => [['factory_id' => $factory_id], ['factory_id' => 5]]])
+          ->toArray();
+  
+        }
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
@@ -151,13 +194,41 @@ class KensahyoukikakusController extends AppController
         $name = $product_name_length[0];
         if(isset($product_name_length[1])){
           $length = str_replace('mm', '', $product_name_length[1]);
-          $Products = $this->Products->find()
-          ->where(['status_kensahyou' => 0, 'name' => $name, 'length' => $length, 'delete_flag' => 0])->toArray();
+
+          if($factory_id == 5){//本部の人がログインしている場合
+
+            $Products = $this->Products->find()
+            ->where(['status_kensahyou' => 0, 'name' => $name, 'length' => $length, 'delete_flag' => 0])
+            ->toArray();
+    
+          }else{
+    
+            $Products = $this->Products->find()
+            ->where(['status_kensahyou' => 0, 'name' => $name, 'length' => $length, 'delete_flag' => 0,
+            'OR' => [['factory_id' => $factory_id], ['factory_id' => 5]]])
+            ->toArray();
+    
+          }
+
          }else{
           $length = "";
-          $Products = $this->Products->find()
-          ->where(['status_kensahyou' => 0, 'name' => $name, 'delete_flag' => 0])->toArray();
-         }
+
+          if($factory_id == 5){//本部の人がログインしている場合
+
+            $Products = $this->Products->find()
+            ->where(['status_kensahyou' => 0, 'name' => $name, 'delete_flag' => 0])
+            ->toArray();
+    
+          }else{
+    
+            $Products = $this->Products->find()
+            ->where(['status_kensahyou' => 0, 'name' => $name, 'delete_flag' => 0,
+            'OR' => [['factory_id' => $factory_id], ['factory_id' => 5]]])
+            ->toArray();
+    
+          }
+
+        }
 
          if(isset($Products[0])){
 
@@ -171,8 +242,20 @@ class KensahyoukikakusController extends AppController
           $mess = "入力された製品名は登録されていないか、検査表非表示の製品です。確認してください。";
           $this->set('mess',$mess);
 
-           $Product_name_list = $this->Products->find()
-           ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
+          if($factory_id == 5){//本部の人がログインしている場合
+
+            $Product_name_list = $this->Products->find()
+            ->where(['status_kensahyou' => 0, 'delete_flag' => 0])
+            ->toArray();
+    
+          }else{
+    
+            $Product_name_list = $this->Products->find()
+            ->where(['status_kensahyou' => 0, 'delete_flag' => 0,
+            'OR' => [['factory_id' => $factory_id], ['factory_id' => 5]]])
+            ->toArray();
+    
+          }
 
            $arrProduct_name_list = array();
            for($j=0; $j<count($Product_name_list); $j++){
@@ -187,8 +270,20 @@ class KensahyoukikakusController extends AppController
          $mess = "製品名が入力されていません。";
          $this->set('mess',$mess);
 
-         $Product_name_list = $this->Products->find()
-         ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
+         if($factory_id == 5){//本部の人がログインしている場合
+
+          $Product_name_list = $this->Products->find()
+          ->where(['status_kensahyou' => 0, 'delete_flag' => 0])
+          ->toArray();
+  
+        }else{
+  
+          $Product_name_list = $this->Products->find()
+          ->where(['status_kensahyou' => 0, 'delete_flag' => 0,
+          'OR' => [['factory_id' => $factory_id], ['factory_id' => 5]]])
+          ->toArray();
+  
+        }
 
          $arrProduct_name_list = array();
          for($j=0; $j<count($Product_name_list); $j++){
@@ -200,9 +295,22 @@ class KensahyoukikakusController extends AppController
 
      }else{//はじめ
 
-       $Product_name_list = $this->Products->find()
-       ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
-       $arrProduct_name_list = array();
+      if($factory_id == 5){//本部の人がログインしている場合
+
+        $Product_name_list = $this->Products->find()
+        ->where(['status_kensahyou' => 0, 'delete_flag' => 0])
+        ->toArray();
+
+      }else{
+
+        $Product_name_list = $this->Products->find()
+        ->where(['status_kensahyou' => 0, 'delete_flag' => 0,
+        'OR' => [['factory_id' => $factory_id], ['factory_id' => 5]]])
+        ->toArray();
+
+      }
+
+      $arrProduct_name_list = array();
        for($j=0; $j<count($Product_name_list); $j++){
          array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
        }

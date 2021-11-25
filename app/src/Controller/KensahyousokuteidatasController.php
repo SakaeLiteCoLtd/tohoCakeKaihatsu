@@ -2211,7 +2211,9 @@ class KensahyousokuteidatasController extends AppController
             $mes = "※検査時間が同じデータは登録できません。";
             $this->set('mes',$mes);
 
-            $gyou = $data["gyou"];
+            if($data["gyou"] = 1){
+              $gyou = 2;
+            }
             $this->set('gyou', $gyou);
 
           }else{

@@ -30,6 +30,7 @@ echo $this->Html->css('kensahyou');
 
 <br><br><br>
 
+
 <table>
       <tr>
         <td width="320"><strong>製品名（一部のみも可）</strong></td>
@@ -71,18 +72,12 @@ echo $this->Html->css('kensahyou');
         </td>
       </tr>
     </table>
+
+    <div id="position">here!</div>
+    <div style="height:800px;background-Color:white;">dummy</div>
+    
     <table>
       <tr>
-        <td width="320"><strong>製品名</strong></td>
-      </tr>
-      <tr>
-        <td>
-        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30)) ?>
-        </td>
-      </tr>
-    </table>
-    <table class="scroll">
-      <tr id="scroll-inner">
         <td width="320"><strong>製品名a</strong></td>
       </tr>
       <tr>
@@ -183,7 +178,7 @@ echo $this->Html->css('kensahyou');
     </table>
     <table>
       <tr>
-        <td width="320"><strong>製品名</strong></td>
+        <td width="320"><strong>製品名aaa</strong></td>
       </tr>
       <tr>
         <td>
@@ -202,6 +197,15 @@ echo $this->Html->css('kensahyou');
       </tr>
     </table>
 
+<script type="text/javascript">
+
+var adjust = 600;
+
+$(function() {
+//  $('html,body').animate({scrollTop:$('#position').offset().top }, 0, 'swing');
+  $('html,body').animate({scrollTop:$('#position').offset().top - adjust }, 0, 'swing');
+});
+</script>
 
     <?php
 /*

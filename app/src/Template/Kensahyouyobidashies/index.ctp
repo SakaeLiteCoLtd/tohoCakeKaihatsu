@@ -79,6 +79,9 @@ $arrProduct_name_list = json_encode($arrProduct_name_list);//javaに配列を受
     </tbody>
   </table>
   <br><br>
+
+  <?php
+/*
 <table>
         <thead>
             <tr class="parents">
@@ -123,8 +126,143 @@ $arrProduct_name_list = json_encode($arrProduct_name_list);//javaに配列を受
           $i = $i + 1;
           ?>
 
-<?php endfor;?>
+        <?php endfor;?>
 
         </tbody>
     </table>
     <br><br>
+
+*/
+    ?>
+
+    <?php
+
+define('MAX','20'); // 1ページの記事の表示数
+
+$arrKensahyous_num = count($arrKensahyous); // トータルデータ件数
+ 
+$max_page = ceil($arrKensahyous_num / MAX); // トータルページ数※ceilは小数点を切り捨てる関数
+
+if(!isset($_GET['page_id'])){ // $_GET['page_id'] はURLに渡された現在のページ数
+    $now = 1; // 設定されてない場合は1ページ目にする
+}else{
+    $now = $_GET['page_id'];
+}
+
+$start_no = ($now - 1) * MAX; // 配列の何番目から取得すればよいか
+ 
+// array_sliceは、配列の何番目($start_no)から何番目(MAX)まで切り取る関数
+$disp_data = array_slice($arrKensahyous, $start_no, MAX, true);
+ 
+?>
+
+<table>
+        <thead>
+            <tr class="parents">
+            <td style='width:60; height:60; border-width: 1px solid black;'><?= __('No.') ?></td>
+            <td style='height:60; border-width: 1px solid black;'><?= __('製品名') ?></td>
+            <td style='width:100; height:60; border-width: 1px solid black;'><?= __('ライン番号') ?></td>
+            <td style='width:150; height:60; border-width: 1px solid black;'><?= __('検査表画像・規格') ?></td>
+            <td style='width:150; height:60; border-width: 1px solid black;'><?= __('原料・温度条件') ?></td>
+            </tr>
+        </thead>
+
+        <tbody>
+
+    <?php
+
+foreach($disp_data as $val){ // データ表示
+
+  ?>
+
+  <tr class='children'>
+  <td><?= h($i) ?></td>
+    <td><?= h("　".$val["product_name"]."　") ?></td>
+    <td><?= h($val["machine_num"]) ?></td>
+
+    <?php if ($val["kikaku"] !== "登録済み"): ?>
+     <td>
+     <?php
+      echo $this->Form->submit("登録" , ['name' => "kikaku_".$val["product_code"]]) ;
+     ?>
+      </td>
+    <?php else : ?>
+      <td><?= h($val["kikaku"]) ?></td>
+    <?php endif; ?>
+
+    <?php if ($val["seikeijouken"] !== "登録済み"): ?>
+     <td>
+     <?php
+      echo $this->Form->submit("登録" , ['name' => $val["product_code"]]) ;
+     ?>
+      </td>
+    <?php else : ?>
+      <td><?= h($val["seikeijouken"]) ?></td>
+    <?php endif; ?>
+
+</tr>
+
+<?php
+$i = $i + 1;
+?>
+
+<?php
+}
+
+?>
+
+</tbody>
+    </table>
+
+<br><br>
+
+<table>
+<div align="center">
+
+<?php
+/*
+for($i = 1; $i <= $max_page; $i++){ // 最大ページ数分リンクを作成
+    if ($i == $now) { // 現在表示中のページ数の場合はリンクを貼らない
+
+        echo $now. '　'; 
+
+    } else {
+
+        echo '<a href="index?page_id='. $i. '">'.$i.'</a>';
+
+    }
+}
+*/
+
+if($max_page > 7){
+  $max_page_max = 7;
+}else{
+  $max_page_max = $max_page;
+}
+
+echo '全件数'. $arrKensahyous_num. '件'. '　'; // 全データ数の表示です。
+ 
+if($now > 1){ // リンクをつけるかの判定
+  echo '<a href="index?page_id='.($now - 1). '">前へ</a>　';
+} else {
+    echo '前へ'. '　';
+}
+ 
+for($i = 1; $i <= $max_page_max; $i++){
+    if ($i == $now) {
+        echo $now. '　'; 
+    } else {
+      echo '<a href="index?page_id='. $i. '">'.$i.'</a>　';
+    }
+}
+ 
+if($now < $max_page){ // リンクをつけるかの判定
+    echo '<a href="index?page_id='.($now + 1). '">次へ</a>';
+  } else {
+    echo '次へ';
+}
+
+?>
+
+</div>
+</table>

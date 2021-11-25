@@ -259,7 +259,7 @@ var moji = "length"
 
   <?php if ($checkedit == 0 && $j == $gyou && $check_seikeijouken == 0)://測定データ入力部分 ?>
 
-    <table class="form">
+    <table class="form" id="position">
 
   <td style='width:45; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
@@ -397,7 +397,7 @@ var moji = "length"
 
   <?php if ($j == $checkedit) ://修正する行 ?>
 
-  <table class="form">
+  <table class="form" id="position">
 
   <td style='width:45; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
@@ -1148,3 +1148,10 @@ var moji = "length"
 <?php endif; ?>
 
 <br><br>
+
+<script type="text/javascript">
+var adjust = 730;//初期表示位置の微調整
+$(function() {
+  $('html,body').animate({scrollTop:$('#position').offset().top - adjust }, 0, 'swing');
+});
+</script>
