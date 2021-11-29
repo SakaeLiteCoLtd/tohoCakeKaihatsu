@@ -319,6 +319,7 @@ class KensahyouyobidashiesController extends AppController
           }
 
         }else{
+          
           $seikeijouken = 0;
 
           if(strtotime($kikaku_created_at) > strtotime($seikeijouken_created_at)){

@@ -29,7 +29,7 @@ echo $this->Html->css('kensahyou');
 <table class="white">
       <tbody class='sample non-sample'>
         <tr>
-        <td style='width:100'>号機</td>
+        <td style='width:100'>ライン番号</td>
         <td style='width:200'>管理No.</td>
           <td style='width:200'>製品名</td>
         </tr>

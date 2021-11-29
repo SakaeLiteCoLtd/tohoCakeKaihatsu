@@ -1460,11 +1460,18 @@ class KensahyousokuteidatasController extends AppController
         }
 
       }
-      /*
+      
+      if(!isset($data["mikan_check"])){
+        $mikan_check = 0;
+      }else{
+        $mikan_check = $data["mikan_check"];
+      }
+      $this->set('mikan_check',$mikan_check);
+
       echo "<pre>";
       print_r($data);
       echo "</pre>";
-*/
+
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
       $machine_num = $data["machine_num"];
@@ -2097,6 +2104,8 @@ class KensahyousokuteidatasController extends AppController
             }else{
               $check_over = 0;
             }
+          }elseif($data["mikan_check"] == 1){
+            $check_over = 1;
           }else{
             $check_over = 0;
           }
@@ -2105,7 +2114,7 @@ class KensahyousokuteidatasController extends AppController
           print_r($check_over);
           echo "</pre>";
   */  
-        if($check_over == 0 && !isset($InspectionDataResultParents[0]) && isset($data['datetime'.$j]["hour"])){//再読み込みで同じデータが登録されないようにチェック
+        if($data["mikan_check"] == 0 && $check_over == 0 && !isset($InspectionDataResultParents[0]) && isset($data['datetime'.$j]["hour"])){//再読み込みで同じデータが登録されないようにチェック
 
           $tourokuInspectionDataResultParents = array();
           $tourokuInspectionDataResultParents = [
@@ -2198,12 +2207,16 @@ class KensahyousokuteidatasController extends AppController
 
         }else{
 
-          if($check_over == 1){
+          if($data["mikan_check"] == 1 || $check_over == 1){
 
             $mes = "※午前6時をまたぐ登録はできません。検査完了へ進んでください。";
             $this->set('mes',$mes);
 
-            $gyou = $data["gyou"];
+            if($data["mikan_check"] == 1 && isset($data["tuzukikara"])){
+              $gyou = $data["gyou"] + 1;
+            }else{
+              $gyou = $data["gyou"];
+            }
             $this->set('gyou', $gyou);
 
           }elseif(isset($data['datetime'.$j]["hour"])){
@@ -6082,9 +6095,14 @@ class KensahyousokuteidatasController extends AppController
       $mikan_check = $arrdata[0];
       $machine_num = $arrdata[1];
       $product_code = $arrdata[2];
-
+/*
+      echo "<pre>";
+      print_r($mikan_check);
+      echo "</pre>";
+*/
       $this->set('machine_num', $machine_num);
       $this->set('product_code', $product_code);
+      $this->set('mikan_check', $mikan_check);
 
       $ProductParent = $this->Products->find()
       ->where(['product_code' => $product_code, 'delete_flag' => 0])->toArray();

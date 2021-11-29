@@ -38,6 +38,7 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('inspection_data_conditon_parent_id', array('type'=>'hidden', 'value'=>$inspection_data_conditon_parent_id, 'label'=>false)) ?>
 <?= $this->Form->control('gyou', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
 <?= $this->Form->control('tuika', array('type'=>'hidden', 'value'=>1, 'label'=>false)) ?>
+<?= $this->Form->control('mikan_check', array('type'=>'hidden', 'value'=>$mikan_check, 'label'=>false)) ?>
 
 <?php if ($count_seikeijouken > 1): ?>
   <?= $this->Form->control('inspection_data_conditon_parent_id_moto', array('type'=>'hidden', 'value'=>$inspection_data_conditon_parent_id_moto, 'label'=>false)) ?>

@@ -112,6 +112,7 @@ for($i=0; $i<$count_length; $i++){
 <?= $this->Form->control('count_seikeijouken', array('type'=>'hidden', 'value'=>$count_seikeijouken, 'label'=>false)) ?>
 <?= $this->Form->control('countseikeiki', array('type'=>'hidden', 'value'=>$countseikeiki, 'label'=>false)) ?>
 <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
+<?= $this->Form->control('mikan_check', array('type'=>'hidden', 'value'=>$mikan_check, 'label'=>false)) ?>
 
 <?php
       echo $htmlkensahyouheader;
@@ -120,7 +121,7 @@ for($i=0; $i<$count_length; $i++){
 <table class="white">
 
   <tr>
-    <td width="45" rowspan='8'>No.</td>
+    <td style='font-size: 11pt' width="37" rowspan='8'>No.</td>
   </tr>
   <tr>
     <td width="85" rowspan='7'>時間</td>
@@ -143,8 +144,9 @@ for($i=0; $i<$count_length; $i++){
 
   <td width="55" rowspan='3'>外観</td>
   <td width="75" rowspan='3'>重量<br>（目安）</td>
-  <td style='font-size: 9pt' width="50" rowspan='5'>合否<br>判定</td>
-  <td width="55" rowspan='5'></td>
+  <td style='font-size: 11pt' width="35" rowspan='5'>合<br>否<br>判<br>定</td>
+  <td style='font-size: 11pt' width="37" rowspan='5'>登<br>録<br>・<br>修<br>正</td>
+  <td style='font-size: 11pt' width="37" rowspan='5'>異<br>常<br>登<br>録</td>
 
 </tr>
 <tr>
@@ -261,7 +263,7 @@ var moji = "length"
 
     <table class="form" id="position">
 
-  <td style='width:45; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
+  <td style='width:37; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
   <td style='width:85; border-top-style:none'>
   <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false)) ?>
@@ -296,8 +298,9 @@ var moji = "length"
 
   <td style='width:55; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ["empty"=>"-", 'options' => $arrGaikan, 'label'=>false]) ?></td>
   <td style='width:75; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
-  <td style='width:50; border-top-style:none'>-</td>
-  <td style='width:55; border-top-style:none'><?= $this->Form->submit(('登録'), array('name' => 'tuika')) ?></td>
+  <td style='width:35; border-top-style:none'>-</td>
+  <td style='width:37; border-top-style:none'><?= $this->Form->submit(('登'), array('name' => 'tuika')) ?></td>
+  <td style='width:37; border-top-style:none'>-</td>
 
 </table>
 
@@ -305,7 +308,7 @@ var moji = "length"
 
   <table class="white">
 
-    <td style='width:45; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
+    <td style='width:37; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
     <td style='width:85; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
     <td style='width:82; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
 
@@ -374,15 +377,17 @@ var moji = "length"
 
     <td style='width:55; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
     <td style='width:75; border-top-style:none'><?= h(${"weight".$j}) ?></td>
-    <td style='width:50; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+    <td style='width:35; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
 
     <?php if ($check_seikeijouken == 0)://成形条件調整中ではないとき ?>
 
-      <td style='width:55; border-top-style:none'><?= $this->Form->submit(('修正'), array('name' => 'edit'.$j)) ?></td>
+      <td style='width:37; border-top-style:none'><?= $this->Form->submit(('修'), array('name' => 'edit'.$j)) ?></td>
+      <td style='width:37; border-top-style:none'><?= $this->Form->submit(('異'), array('name' => 'loss'.$j)) ?></td>
 
     <?php else ://成形条件調整中 ?>
 
-      <td style='width:55; border-top-style:none'>-</td>
+      <td style='width:37; border-top-style:none'>-</td>
+      <td style='width:37; border-top-style:none'>-</td>
 
     <?php endif; ?>
 
@@ -399,7 +404,7 @@ var moji = "length"
 
   <table class="form" id="position">
 
-  <td style='width:45; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
+  <td style='width:37; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
   <td style='width:85; border-top-style:none'>
   <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false)) ?>
@@ -420,9 +425,10 @@ var moji = "length"
 
   <td style='width:55; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ['options' => $arrGaikan, 'value'=>${"gaikan".$j}, 'label'=>false, 'required'=>true]) ?></td>
   <td style='width:75; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'required' => 'true')) ?></td>
-  <td style='width:50; border-top-style:none'>-</td>
+  <td style='width:35; border-top-style:none'>-</td>
 
-  <td style='width:55; border-top-style:none'><?= $this->Form->submit(('確定'), array('name' => 'edittouroku')) ?></td>
+  <td style='width:37; border-top-style:none'><?= $this->Form->submit(('決'), array('name' => 'edittouroku')) ?></td>
+  <td style='width:37; border-top-style:none'>-</td>
 
 </table>
 
@@ -430,7 +436,7 @@ var moji = "length"
 
     <table class="white">
 
-      <td style='width:45; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
+      <td style='width:37; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
       <td style='width:85; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
       <td style='width:82; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
       <td style='width:107; border-top-style:none'><?= h(${"user_code".$j}) ?></td>
@@ -491,8 +497,8 @@ var moji = "length"
 
       <td style='width:55; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
       <td style='width:75; border-top-style:none'><?= h(${"weight".$j}) ?></td>
-      <td style='width:50; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
-      <td style='width:55; border-top-style:none'></td>
+      <td style='width:35; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+      <td style='width:37; border-top-style:none'></td>
 
       <?= $this->Form->control('product_id'.$j, array('type'=>'hidden', 'value'=>${"product_id".$j}, 'label'=>false)) ?>
       <?= $this->Form->control('gaikan'.$j, array('type'=>'hidden', 'value'=>${"gaikan".$j}, 'label'=>false)) ?>

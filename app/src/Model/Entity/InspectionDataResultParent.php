@@ -7,6 +7,7 @@ use Cake\ORM\Entity;
  * InspectionDataResultParent Entity
  *
  * @property int $id
+ * @property int|null $daily_report_id
  * @property int $inspection_data_conditon_parent_id
  * @property int $inspection_standard_size_parent_id
  * @property int $product_condition_parent_id
@@ -18,7 +19,7 @@ use Cake\ORM\Entity;
  * @property float $result_weight
  * @property int $judge
  * @property int|null $kanryou_flag
- * @property float|null $total_amount
+ * @property float|null $loss_amount
  * @property string|null $bik
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at
@@ -46,6 +47,7 @@ class InspectionDataResultParent extends Entity
      * @var array
      */
     protected $_accessible = [
+        'daily_report_id' => true,
         'inspection_data_conditon_parent_id' => true,
         'inspection_standard_size_parent_id' => true,
         'product_condition_parent_id' => true,
@@ -57,7 +59,7 @@ class InspectionDataResultParent extends Entity
         'result_weight' => true,
         'judge' => true,
         'kanryou_flag' => true,
-        'total_amount' => true,
+        'loss_amount' => true,
         'bik' => true,
         'delete_flag' => true,
         'created_at' => true,

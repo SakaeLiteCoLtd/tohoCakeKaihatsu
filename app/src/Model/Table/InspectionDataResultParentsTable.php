@@ -9,6 +9,7 @@ use Cake\Validation\Validator;
 /**
  * InspectionDataResultParents Model
  *
+ * @property |\Cake\ORM\Association\BelongsTo $DailyReports
  * @property \App\Model\Table\InspectionDataConditonParentsTable|\Cake\ORM\Association\BelongsTo $InspectionDataConditonParents
  * @property \App\Model\Table\InspectionStandardSizeParentsTable|\Cake\ORM\Association\BelongsTo $InspectionStandardSizeParents
  * @property \App\Model\Table\ProductConditionParentsTable|\Cake\ORM\Association\BelongsTo $ProductConditionParents
@@ -42,6 +43,9 @@ class InspectionDataResultParentsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->belongsTo('DailyReports', [
+            'foreignKey' => 'daily_report_id'
+        ]);
         $this->belongsTo('InspectionDataConditonParents', [
             'foreignKey' => 'inspection_data_conditon_parent_id',
             'joinType' => 'INNER'
@@ -110,8 +114,8 @@ class InspectionDataResultParentsTable extends Table
             ->allowEmpty('kanryou_flag');
 
         $validator
-            ->numeric('total_amount')
-            ->allowEmpty('total_amount');
+            ->numeric('loss_amount')
+            ->allowEmpty('loss_amount');
 
         $validator
             ->scalar('bik')
@@ -152,6 +156,7 @@ class InspectionDataResultParentsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->existsIn(['daily_report_id'], 'DailyReports'));
         $rules->add($rules->existsIn(['inspection_data_conditon_parent_id'], 'InspectionDataConditonParents'));
         $rules->add($rules->existsIn(['inspection_standard_size_parent_id'], 'InspectionStandardSizeParents'));
         $rules->add($rules->existsIn(['product_condition_parent_id'], 'ProductConditionParents'));
