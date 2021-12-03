@@ -19,7 +19,7 @@ class DailyReportsFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'product_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'machine_num' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'machine_num' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'start_datetime' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'finish_datetime' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'amount' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
@@ -52,17 +52,17 @@ class DailyReportsFixture extends TestFixture
             [
                 'id' => 1,
                 'product_id' => 1,
-                'machine_num' => 1,
-                'start_datetime' => '2021-11-29 15:06:43',
-                'finish_datetime' => '2021-11-29 15:06:43',
+                'machine_num' => 'Lorem ipsum dolor sit amet',
+                'start_datetime' => '2021-12-02 11:51:06',
+                'finish_datetime' => '2021-12-02 11:51:06',
                 'amount' => 1,
                 'sum_weight' => 1,
                 'total_loss_weight' => 1,
                 'bik' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
                 'delete_flag' => 1,
-                'created_at' => '2021-11-29 15:06:43',
+                'created_at' => '2021-12-02 11:51:06',
                 'created_staff' => 1,
-                'updated_at' => '2021-11-29 15:06:43',
+                'updated_at' => '2021-12-02 11:51:06',
                 'updated_staff' => 1
             ],
         ];

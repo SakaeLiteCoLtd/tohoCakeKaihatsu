@@ -19,7 +19,7 @@ class ProductConditionParentsFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'product_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
-        'machine_num' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'machine_num' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'product_condition_code' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'version' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'start_datetime' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
@@ -51,16 +51,16 @@ class ProductConditionParentsFixture extends TestFixture
             [
                 'id' => 1,
                 'product_id' => 1,
-                'machine_num' => 1,
+                'machine_num' => 'Lorem ipsum dolor sit amet',
                 'product_condition_code' => 'Lorem ipsum dolor sit amet',
                 'version' => 1,
-                'start_datetime' => '2021-10-23 18:05:35',
-                'finish_datetime' => '2021-10-23 18:05:35',
+                'start_datetime' => '2021-12-02 11:50:32',
+                'finish_datetime' => '2021-12-02 11:50:32',
                 'is_active' => 1,
                 'delete_flag' => 1,
-                'created_at' => '2021-10-23 18:05:35',
+                'created_at' => '2021-12-02 11:50:32',
                 'created_staff' => 1,
-                'updated_at' => '2021-10-23 18:05:35',
+                'updated_at' => '2021-12-02 11:50:32',
                 'updated_staff' => 1
             ],
         ];

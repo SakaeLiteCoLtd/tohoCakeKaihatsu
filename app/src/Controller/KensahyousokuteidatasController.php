@@ -590,7 +590,7 @@ class KensahyousokuteidatasController extends AppController
 
           $ProductMachineMaterials = $this->ProductMachineMaterials->find()
           ->where(['product_material_machine_id' => $ProductMaterialMachines[$j - 1]["id"], 'delete_flag' => 0])
-          ->order(["material_number"=>"DESC"])->toArray();
+          ->order(["material_number"=>"ASC"])->toArray();
 
           ${"tuikagenryou".$j} = count($ProductMachineMaterials);
           $this->set('tuikagenryou'.$j, ${"tuikagenryou".$j});
@@ -4150,6 +4150,7 @@ class KensahyousokuteidatasController extends AppController
         $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
         ->contain(['InspectionDataResultParents' => ['ProductConditionParents','Products']])//測定データのうち、長さ違いも含め呼出
         ->where(['product_code like' => $product_code_ini.'%', 'machine_num' => $machine_num,
+        'InspectionDataResultParents.daily_report_id >' => 0,
          'InspectionDataResultChildren.delete_flag' => 0,
         'datetime >=' => $startYMD, 'datetime <=' => $endYMD])
         ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
@@ -4201,6 +4202,7 @@ class KensahyousokuteidatasController extends AppController
         $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
         ->contain(['InspectionDataResultParents' => ['ProductConditionParents','Products']])//測定データのうち、長さ違いも含め呼出
         ->where(['product_code like' => $product_code_ini.'%', 'machine_num' => $machine_num,
+        'InspectionDataResultParents.daily_report_id >' => 0,
          'InspectionDataResultChildren.delete_flag' => 0])
         ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
 

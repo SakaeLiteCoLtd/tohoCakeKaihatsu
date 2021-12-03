@@ -10,7 +10,7 @@ use Cake\Validation\Validator;
  * ProductConditionParents Model
  *
  * @property \App\Model\Table\ProductsTable|\Cake\ORM\Association\BelongsTo $Products
- * @property |\Cake\ORM\Association\HasMany $InspectionDataResultParents
+ * @property \App\Model\Table\InspectionDataResultParentsTable|\Cake\ORM\Association\HasMany $InspectionDataResultParents
  * @property \App\Model\Table\ProductMaterialMachinesTable|\Cake\ORM\Association\HasMany $ProductMaterialMachines
  * @property \App\Model\Table\ShotWorksTable|\Cake\ORM\Association\HasMany $ShotWorks
  * @property \App\Model\Table\ShotdataBasesTable|\Cake\ORM\Association\HasMany $ShotdataBases
@@ -72,7 +72,8 @@ class ProductConditionParentsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->integer('machine_num')
+            ->scalar('machine_num')
+            ->maxLength('machine_num', 255)
             ->requirePresence('machine_num', 'create')
             ->notEmpty('machine_num');
 

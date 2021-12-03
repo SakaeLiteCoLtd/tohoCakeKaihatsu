@@ -8,7 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $product_id
- * @property int $machine_num
+ * @property string $machine_num
  * @property string $product_condition_code
  * @property int $version
  * @property \Cake\I18n\FrozenTime $start_datetime
@@ -21,6 +21,7 @@ use Cake\ORM\Entity;
  * @property int|null $updated_staff
  *
  * @property \App\Model\Entity\Product $product
+ * @property \App\Model\Entity\InspectionDataResultParent[] $inspection_data_result_parents
  * @property \App\Model\Entity\ProductMaterialMachine[] $product_material_machines
  * @property \App\Model\Entity\ShotWork[] $shot_works
  * @property \App\Model\Entity\ShotdataBase[] $shotdata_bases
@@ -51,6 +52,7 @@ class ProductConditionParent extends Entity
         'updated_at' => true,
         'updated_staff' => true,
         'product' => true,
+        'inspection_data_result_parents' => true,
         'product_material_machines' => true,
         'shot_works' => true,
         'shotdata_bases' => true

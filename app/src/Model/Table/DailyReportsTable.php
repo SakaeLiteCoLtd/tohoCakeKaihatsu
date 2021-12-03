@@ -60,7 +60,8 @@ class DailyReportsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->integer('machine_num')
+            ->scalar('machine_num')
+            ->maxLength('machine_num', 255)
             ->requirePresence('machine_num', 'create')
             ->notEmpty('machine_num');
 

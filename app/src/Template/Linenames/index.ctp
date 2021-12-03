@@ -23,12 +23,9 @@ echo $this->Html->css('index');
 <br>
 <div class="linenames index large-9 medium-8 columns content">
 
-<?php if ($usercheck == 1): ?>
-  <?php else : ?>
 <div style="text-align: right;">
 <a style="text-decoration: none" alien="center" href='/linenames/addform' class="buttonlayout"/><font size='4' color=black><?= __('▷新規登録') ?></font></a>
 </div>
-<?php endif; ?>
 
   <h2><font color=red><?= __('ライン一覧') ?></font></h2>
     <table cellpadding="0" cellspacing="0">

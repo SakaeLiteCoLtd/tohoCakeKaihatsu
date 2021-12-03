@@ -18,6 +18,7 @@ class LinenamesController extends AppController
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
      $this->Users = TableRegistry::get('Users');
+     $this->Factories = TableRegistry::get('Factories');
 
      $session = $this->request->getSession();
      $datasession = $session->read();
@@ -91,18 +92,56 @@ class LinenamesController extends AppController
     {
       $linenames = $this->Linenames->newEntity();
       $this->set('linenames', $linenames);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $Users = $this->Users->find()->contain(["Staffs"])
+      ->where(['Staffs.id' => $datasession['Auth']['User']['staff_id'], 'Users.delete_flag' => 0])
+      ->toArray();
+
+      if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
+  
+        $this->set('usercheck', 1);
+  
+        }else{
+  
+          $this->set('usercheck', 0);
+  
+          }
+  
+          $Factories = $this->Factories->find('list');
+          $this->set(compact('Factories'));
+    
     }
 
     public function addcomfirm()
     {
         $linenames = $this->Linenames->newEntity();
         $this->set('linenames', $linenames);
+
+        $data = $this->request->getData();
+
+        $this->set('usercheck', 0);
+
+        if(isset($data["factory_id"])){
+          $factory_id = $data["factory_id"];
+
+          $this->set('usercheck', 1);
+
+          $Factories = $this->Factories->find()
+          ->where(['id' => $factory_id])
+          ->toArray();
+          $factory_name = $Factories[0]["name"];
+          $this->set('factory_name', $factory_name);
+        }
+  
     }
 
     public function adddo()
     {
-        $linenames = $this->Linenames->newEntity();
-        $this->set('linenames', $linenames);
+      $linenames = $this->Linenames->newEntity();
+      $this->set('linenames', $linenames);
 
       $data = $this->request->getData();
 
@@ -110,11 +149,19 @@ class LinenamesController extends AppController
       $datasession = $session->read();
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
+      $this->set('usercheck', 0);
 
-      $Staffs = $this->Staffs->find()
-      ->where(['id' => $staff_id])
-      ->toArray();
-      $factory_id = $Staffs[0]["factory_id"];
+      if(isset($data["factory_id"])){
+        $this->set('usercheck', 1);
+        $factory_id = $data["factory_id"];
+        $factory_name = $data["factory_name"];
+        $this->set('factory_name', $factory_name);
+      }else{
+        $Staffs = $this->Staffs->find()
+        ->where(['id' => $staff_id])
+        ->toArray();
+        $factory_id = $Staffs[0]["factory_id"];
+      }
 
       $arrtourokuLinenames = array();
       $arrtourokuLinenames = [
