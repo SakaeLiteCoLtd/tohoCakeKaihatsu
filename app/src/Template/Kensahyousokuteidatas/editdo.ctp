@@ -99,11 +99,24 @@ echo $this->Html->css('kensahyou');
 
 </table>
 
+<?php
+  $lot_hyouji = 0;
+  ?>
+
 <?php for($j=1; $j<=$gyou; $j++): ?>
 
   <table class="form">
 
-  <td style='width:43; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
+  <?php if ($j == 1): ?>
+    <td style='width:43; border-top-style:none'>S</td>
+<?php else : ?>
+  <td style='width:43; border-top-style:none'><?= h($lot_hyouji) ?></td>
+<?php endif; ?>
+
+<?php
+  $lot_hyouji = $lot_hyouji + 1;
+  ?>
+  
   <td style='width:65; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
   <td style='width:67; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
   <td style='width:110; border-top-style:none'><?= h(${"staff_hyouji".$j}) ?></td>
@@ -166,30 +179,39 @@ echo $this->Html->css('kensahyou');
 </table>
 
 <?php endfor;?>
-
-<?= $this->Form->control('gyou', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
-
 <br>
-<table align="center">
-  <tbody class="login">
-    <tr height="45">
-      <td width="150"><strong>生産重量（kg）</strong></td>
+
+<table>
+  <tbody style="background-color: #FFFFCC">
+    <tr>
+    <td width="150">長さ（mm）</td>
+    <td width="150">生産数量（本）</td>
+    <td width="150">総重量（kg）</td>
+    <td width="150">総ロス重量（kg）</td>
+    <td width="150">達成率（％）</td>
     </tr>
-    <tr height="45">
-    <td><?= h($this->request->getData('total_amount')) ?></td>
+    <?php for($k=0; $k<$this->request->getData('countlength'); $k++): ?>
+    <tr>
+    <td><?= h($this->request->getData('length'.$k)) ?></td>
+    <td><?= h($this->request->getData('amount'.$k)) ?></td>
+    <td><?= h($this->request->getData('sum_weight'.$k)) ?></td>
+    <td><?= h($this->request->getData('total_loss_weight'.$k)) ?></td>
+    <td><?= h($this->request->getData('tasseiritsu'.$k)) ?></td>
+
     </tr>
-    </tbody>
+    <?php endfor;?>
+  </tbody>
 </table>
 <br>
-    <table align="center">
-    <tbody class="login">
-    <tr height="45">
-    <td width="500"><strong>備考</strong></td>
+<table>
+  <tbody style="background-color: #FFFFCC">
+    <tr>
+    <td width="400">備考</td>
     </tr>
     <tr>
-    <td><?= h($this->request->getData('bik')) ?></td>
+   <td><?= h($this->request->getData('bik')) ?></td>
     </tr>
-    </tbody>
+  </tbody>
 </table>
 <br>
 

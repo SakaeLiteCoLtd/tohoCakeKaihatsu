@@ -113,6 +113,90 @@ for($i=0; $i<$count_length; $i++){
 <?= $this->Form->control('countseikeiki', array('type'=>'hidden', 'value'=>$countseikeiki, 'label'=>false)) ?>
 <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
 <?= $this->Form->control('mikan_check', array('type'=>'hidden', 'value'=>$mikan_check, 'label'=>false)) ?>
+<?= $this->Form->control('date_sta', array('type'=>'hidden', 'value'=>$date_sta, 'label'=>false)) ?>
+<?= $this->Form->control('date_fin', array('type'=>'hidden', 'value'=>$date_fin, 'label'=>false)) ?>
+
+<?php for($j=1; $j<$gyou; $j++): ?>
+
+<?= $this->Form->control('lossflag'.$j, array('type'=>'hidden', 'value'=>${"lossflag".$j}, 'label'=>false)) ?>
+
+<?php endfor;?>
+
+<?php if ($checkloss > 0)://ロス入力の場合 ?>
+
+  <?= $this->Form->control('gyou', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
+
+<br>
+ <div align="center"><font size="3"><?= __("ロス重量と備考を入力してください。") ?></font></div>
+<br>
+<table align="center">
+  <tbody class="login">
+    <tr height="45">
+      <td width="150"><strong>ロス重量（kg）</strong></td>
+    </tr>
+    <tr height="45">
+    <td class="login" width="200"><?= $this->Form->control('loss_amount', array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9A-Za-z.-]+$', 'title'=>'半角数字で入力して下さい。', 'value'=>$loss_amount_moto)) ?></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+
+    <table align="center">
+    <tbody class="login">
+    <tr height="45">
+    <td width="150"><strong>備考（※任意入力）</strong></td>
+    </tr>
+    <tr height="45">
+    <td height="120" colspan="28" style="vertical-align: top; border-bottom: solid;border-width: 1px;text-align: left">
+              <textarea name="bik"  cols="120" rows="10"><?php echo $bik_moto;?></textarea>
+          </td>
+    </tr>
+    </tbody>
+</table>
+<br>
+
+<table>
+  <tbody class='sample non-sample'>
+    <tr>
+    <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+          <td style="border-style: none;"><?= __("　") ?></td>
+      <td style="border:none"><?= $this->Form->submit(('登録'), array('name' => 'losstouroku')) ?></td>
+    </tr>
+  </tbody>
+</table>
+
+<?= $this->Form->control('checkloss', array('type'=>'hidden', 'value'=>$checkloss, 'label'=>false)) ?>
+
+<?php for($k=1; $k<=$gyou; $k++): ?>
+
+<?php
+   $j = $gyou + 1 - $k;
+?>
+
+<?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('datetime'.$j, array('type'=>'hidden', 'value'=>${"datetime".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('user_code'.$j, array('type'=>'hidden', 'value'=>${"user_code".$j}, 'label'=>false)) ?>
+
+<?= $this->Form->control('product_id'.$j, array('type'=>'hidden', 'value'=>${"product_id".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('gaikan'.$j, array('type'=>'hidden', 'value'=>${"gaikan".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('weight'.$j, array('type'=>'hidden', 'value'=>${"weight".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('gouhi'.$j, array('type'=>'hidden', 'value'=>${"gouhi".$j}, 'label'=>false)) ?>
+
+  <?php for($i=1; $i<=11; $i++): ?>
+
+    <?= $this->Form->control('result_size'.$j.$i, array('type'=>'hidden', 'value'=>${"result_size".$j.$i}, 'label'=>false)) ?>
+
+  <?php endfor;?>
+
+<?php endfor;?>
+
+<?php for($j=1; $j<=$countseikeiki; $j++): ?>
+
+<?= $this->Form->control('product_conditon_child_id'.$j, array('type'=>'hidden', 'value'=>${"product_conditon_child_id".$j}, 'label'=>false)) ?>
+
+<?php endfor;?>
+
+<?php else ://ロスでない場合ここから ?>
 
 <?php
       echo $htmlkensahyouheader;
@@ -382,7 +466,12 @@ var moji = "length"
     <?php if ($check_seikeijouken == 0)://成形条件調整中ではないとき ?>
 
       <td style='width:37; border-top-style:none'><?= $this->Form->submit(('修'), array('name' => 'edit'.$j)) ?></td>
-      <td style='width:37; border-top-style:none'><?= $this->Form->submit(('異'), array('name' => 'loss'.$j)) ?></td>
+
+      <?php if (${"lossflag".$j} > 0)://異常登録されている場合 ?>
+        <td style='width:37; border-top-style:none; background-color:gold'><?= $this->Form->submit(('異'), array('name' => 'loss'.$j)) ?></td>
+      <?php else : ?>
+        <td style='width:37; border-top-style:none'><?= $this->Form->submit(('異'), array('name' => 'loss'.$j)) ?></td>
+      <?php endif; ?>
 
     <?php else ://成形条件調整中 ?>
 
@@ -498,6 +587,7 @@ var moji = "length"
       <td style='width:55; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
       <td style='width:75; border-top-style:none'><?= h(${"weight".$j}) ?></td>
       <td style='width:35; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+      <td style='width:37; border-top-style:none'></td>
       <td style='width:37; border-top-style:none'></td>
 
       <?= $this->Form->control('product_id'.$j, array('type'=>'hidden', 'value'=>${"product_id".$j}, 'label'=>false)) ?>
@@ -1161,3 +1251,6 @@ $(function() {
   $('html,body').animate({scrollTop:$('#position').offset().top - adjust }, 0, 'swing');
 });
 </script>
+
+
+<?php endif;//ロスでない場合ここまで ?>

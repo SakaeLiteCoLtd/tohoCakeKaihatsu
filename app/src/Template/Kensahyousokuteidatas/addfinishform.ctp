@@ -32,6 +32,9 @@ echo $this->Html->css('kensahyou');
 
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
+<?= $this->Form->control('date_sta', array('type'=>'hidden', 'value'=>$date_sta, 'label'=>false)) ?>
+<?= $this->Form->control('date_fin', array('type'=>'hidden', 'value'=>$date_fin, 'label'=>false)) ?>
+<?= $this->Form->control('num', array('type'=>'hidden', 'value'=>count($arrProducts), 'label'=>false)) ?>
 
 <br>
  <div align="center"><font size="3"><?= __("生産数量と備考を入力してください。") ?></font></div>
@@ -39,11 +42,21 @@ echo $this->Html->css('kensahyou');
 <table align="center">
   <tbody class="login">
     <tr height="45">
-      <td width="150"><strong>生産重量（kg）</strong></td>
+    <td width="150"><strong>長さ（mm）</strong></td>
+    <td width="150"><strong>生産数量（本）</strong></td>
     </tr>
+
+    <?php for($k=0; $k<count($arrProducts); $k++): ?>
+
+      <?= $this->Form->control('length'.$k, array('type'=>'hidden', 'value'=>$arrProducts[$k], 'label'=>false)) ?>
+
     <tr height="45">
-    <td class="login" width="200"><?= $this->Form->control('total_amount', array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9A-Za-z.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
+    <td><?= h($arrProducts[$k]) ?></td>
+    <td class="login" width="200"><?= $this->Form->control('amount'.$k, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9A-Za-z.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
     </tr>
+    
+    <?php endfor;?>
+
     </tbody>
 </table>
 <br>

@@ -38,11 +38,25 @@ echo $this->Html->css('kensahyou');
 <table align="center">
   <tbody class="login">
     <tr height="45">
-      <td width="150"><strong>生産重量（kg）</strong></td>
+    <td width="150"><strong>長さ（mm）</strong></td>
+    <td width="150"><strong>生産数量（本）</strong></td>
+    <td width="150"><strong>総重量（kg）</strong></td>
+    <td width="150"><strong>総ロス重量（kg）</strong></td>
+    <td width="150"><strong>達成率（％）</strong></td>
     </tr>
+
+    <?php for($k=0; $k<$this->request->getData('num'); $k++): ?>
+
     <tr height="45">
-    <td><?= h($this->request->getData('total_amount')) ?></td>
+    <td><?= h($this->request->getData('length'.$k)) ?></td>
+    <td><?= h($this->request->getData('amount'.$k)) ?></td>
+    <td><?= h($this->request->getData('sum_weight'.$k)) ?></td>
+    <td><?= h($this->request->getData('total_loss_weight'.$k)) ?></td>
+    <td><?= h($this->request->getData('tasseiritsu'.$k)) ?></td>
     </tr>
+    
+    <?php endfor;?>
+
     </tbody>
 </table>
 <br>

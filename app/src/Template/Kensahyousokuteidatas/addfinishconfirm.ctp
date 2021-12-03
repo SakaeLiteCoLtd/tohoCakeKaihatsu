@@ -34,18 +34,42 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
 <?= $this->Form->control('total_amount', array('type'=>'hidden', 'value'=>$this->request->getData('total_amount'), 'label'=>false)) ?>
 <?= $this->Form->control('bik', array('type'=>'hidden', 'value'=>$this->request->getData('bik'), 'label'=>false)) ?>
+<?= $this->Form->control('date_sta', array('type'=>'hidden', 'value'=>$date_sta, 'label'=>false)) ?>
+<?= $this->Form->control('date_fin', array('type'=>'hidden', 'value'=>$date_fin, 'label'=>false)) ?>
+<?= $this->Form->control('num', array('type'=>'hidden', 'value'=>$this->request->getData('num'), 'label'=>false)) ?>
 
 <br>
  <div align="center"><font size="3"><?= __("以下のように登録します。よろしければ決定ボタンを押してください。") ?></font></div>
 <br>
+
 <table align="center">
   <tbody class="login">
     <tr height="45">
-      <td width="150"><strong>生産重量（kg）</strong></td>
+    <td width="150"><strong>長さ（mm）</strong></td>
+    <td width="150"><strong>生産数量（本）</strong></td>
+    <td width="150"><strong>総重量（kg）</strong></td>
+    <td width="150"><strong>総ロス重量（kg）</strong></td>
+    <td width="150"><strong>達成率（％）</strong></td>
     </tr>
+
+    <?php for($k=0; $k<$this->request->getData('num'); $k++): ?>
+
+      <?= $this->Form->control('length'.$k, array('type'=>'hidden', 'value'=>$this->request->getData('length'.$k), 'label'=>false)) ?>
+      <?= $this->Form->control('amount'.$k, array('type'=>'hidden', 'value'=>$this->request->getData('amount'.$k), 'label'=>false)) ?>
+      <?= $this->Form->control('sum_weight'.$k, array('type'=>'hidden', 'value'=>${"sum_weight".$k}, 'label'=>false)) ?>
+      <?= $this->Form->control('total_loss_weight'.$k, array('type'=>'hidden', 'value'=>${"total_loss_weight".$k}, 'label'=>false)) ?>
+      <?= $this->Form->control('tasseiritsu'.$k, array('type'=>'hidden', 'value'=>${"tasseiritsu".$k}, 'label'=>false)) ?>
+
     <tr height="45">
-    <td><?= h($this->request->getData('total_amount')) ?></td>
+    <td><?= h($this->request->getData('length'.$k)) ?></td>
+    <td><?= h($this->request->getData('amount'.$k)) ?></td>
+    <td><?= h(${"sum_weight".$k}) ?></td>
+    <td><?= h(${"total_loss_weight".$k}) ?></td>
+    <td><?= h(${"tasseiritsu".$k}) ?></td>
     </tr>
+    
+    <?php endfor;?>
+
     </tbody>
 </table>
 <br>

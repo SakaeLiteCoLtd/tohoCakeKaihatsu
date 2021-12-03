@@ -70,6 +70,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
       <tr>
         <td style='width:130'>測定日</td>
         <td>製品名</td>
+        <td>　ライン番号　</td>
       </tr>
 
         <?php for($i=0; $i<=2; $i++): ?>
@@ -84,6 +85,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
           <tr>
             <td><?= h($date) ? $this->Html->link($date, ['action' => 'kensakuhyouji', 's' => $date."_".$machine_num."_".$product_code]) : '' ?></td>
             <td><?= h("　".$product_name."　");?></td>
+            <td><?= h("　".$machine_num."　");?></td>
           </tr>
         <?php endfor;?>
 
@@ -101,6 +103,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
         <tr>
           <td style='width:130'>測定日</td>
           <td>製品名</td>
+          <td>　ライン番号　</td>
         </tr>
 
           <?php for($i=0; $i<count($arrDates); $i++): ?>
@@ -115,6 +118,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
             <tr>
             <td><?= h($date) ? $this->Html->link($date, ['action' => 'kensakuhyouji', 's' => $date."_".$machine_num."_".$product_code]) : '' ?></td>
             <td><?= h("　".$product_name."　");?></td>
+            <td><?= h("　".$machine_num."　");?></td>
             </tr>
           <?php endfor;?>
 

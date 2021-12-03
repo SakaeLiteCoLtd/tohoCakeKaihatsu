@@ -42,7 +42,7 @@ echo $this->Html->css('kensahyou');
   <tr>
     <td width="130" rowspan='7'>時間</td>
   </tr>
-  <td width="60" rowspan='6'>長さ</td>
+  <td width="60" rowspan='6'>長さ<br>（mm）</td>
 
 <tr>
   <td style='width:105'>測定箇所</td>
@@ -158,16 +158,33 @@ echo $this->Html->css('kensahyou');
 <table>
   <tbody style="background-color: #FFFFCC">
     <tr>
-    <td width="150">生産重量（kg）</td>
-    <td width="400">備考</td>
+    <td width="150">長さ（mm）</td>
+    <td width="150">生産数量（本）</td>
+    <td width="150">総重量（kg）</td>
+    <td width="150">総ロス重量（kg）</td>
     </tr>
+    <?php for($k=0; $k<count($arrProducts); $k++): ?>
     <tr>
-    <td><?= h($total_amount) ?></td>
-    <td><?= h($bik) ?></td>
+    <td><?= h($arrProducts[$k]["length"]) ?></td>
+    <td><?= h($arrProducts[$k]["amount"]) ?></td>
+    <td><?= h($arrProducts[$k]["sum_weight"]) ?></td>
+    <td><?= h($arrProducts[$k]["total_loss_weight"]) ?></td>
     </tr>
+    <?php endfor;?>
   </tbody>
 </table>
 
+<br>
+<table>
+  <tbody style="background-color: #FFFFCC">
+    <tr>
+    <td width="400">備考</td>
+    </tr>
+    <tr>
+   <td><?= h($arrProducts[0]["bik"]) ?></td>
+    </tr>
+  </tbody>
+</table>
 <br>
 
 <?php if ($account_check == 0): ?>
@@ -188,7 +205,7 @@ echo $this->Html->css('kensahyou');
     <tr>
       <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
       <td style="border: none;"><?= __("　") ?></td>
-      <td style="border:none"><?= $this->Form->submit(('編集・削除'), array('name' => 'kakuninn')) ?></td>
+      <td style="border:none"><?= $this->Form->submit(('編集・削除'), array('name' => 'hensyuu')) ?></td>
     </tr>
   </tbody>
 </table>

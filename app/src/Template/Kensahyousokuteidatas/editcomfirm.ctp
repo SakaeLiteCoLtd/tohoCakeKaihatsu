@@ -32,12 +32,10 @@ $mes = "";
 <?= $this->Form->control('user_code', array('type'=>'hidden', 'value'=>$user_code, 'label'=>false)) ?>
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('datekensaku', array('type'=>'hidden', 'value'=>$datekensaku, 'label'=>false)) ?>
-<?= $this->Form->control('datetimesta', array('type'=>'hidden', 'value'=>$this->request->getData('datetimesta'), 'label'=>false)) ?>
-<?= $this->Form->control('datetimefin', array('type'=>'hidden', 'value'=>$this->request->getData('datetimefin'), 'label'=>false)) ?>
+<?= $this->Form->control('datetimesta', array('type'=>'hidden', 'value'=>$datetimesta, 'label'=>false)) ?>
+<?= $this->Form->control('datetimefin', array('type'=>'hidden', 'value'=>$datetimefin, 'label'=>false)) ?>
 <?= $this->Form->control('delete_flag', array('type'=>'hidden', 'value'=>$delete_flag, 'label'=>false)) ?>
 <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
-<?= $this->Form->control('total_amount', array('type'=>'hidden', 'value'=>$this->request->getData('total_amount'), 'label'=>false)) ?>
-<?= $this->Form->control('bik', array('type'=>'hidden', 'value'=>$this->request->getData('bik'), 'label'=>false)) ?>
 
 <?php
       echo $htmlkensahyouheader;
@@ -113,11 +111,24 @@ $mes = "";
 
 </table>
 
+<?php
+  $lot_hyouji = 0;
+  ?>
+
 <?php for($j=1; $j<=$gyou; $j++): ?>
 
   <table class="form">
 
-  <td style='width:43; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
+<?php if ($j == 1): ?>
+    <td style='width:43; border-top-style:none'>S</td>
+<?php else : ?>
+  <td style='width:43; border-top-style:none'><?= h($lot_hyouji) ?></td>
+<?php endif; ?>
+
+<?php
+  $lot_hyouji = $lot_hyouji + 1;
+  ?>
+
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
   <td style='width:65; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
   <td style='width:65; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
@@ -207,27 +218,50 @@ $mes = "";
 
 <br>
 
-<table align="center">
-  <tbody class="login">
-    <tr height="45">
-      <td width="150"><strong>生産重量（kg）</strong></td>
+<?= $this->Form->control('countlength', array('type'=>'hidden', 'value'=>$countlength, 'label'=>false)) ?>
+
+<table>
+  <tbody style="background-color: #FFFFCC">
+    <tr>
+    <td width="150">長さ（mm）</td>
+    <td width="150">生産数量（本）</td>
+    <td width="150">総重量（kg）</td>
+    <td width="150">総ロス重量（kg）</td>
+    <td width="150">達成率（％）</td>
     </tr>
-    <tr height="45">
-    <td><?= h($this->request->getData('total_amount')) ?></td>
+    <?php for($k=0; $k<$countlength; $k++): ?>
+    <tr>
+    <td><?= h(${"length".$k}) ?></td>
+    <td><?= h(${"amount".$k}) ?></td>
+    <td><?= h(${"sum_weight".$k}) ?></td>
+    <td><?= h(${"total_loss_weight".$k}) ?></td>
+    <td><?= h(${"tasseiritsu".$k}) ?></td>
+
+    <?= $this->Form->control('length'.$k, array('type'=>'hidden', 'value'=>${"length".$k}, 'label'=>false)) ?>
+    <?= $this->Form->control('amount'.$k, array('type'=>'hidden', 'value'=>${"amount".$k}, 'label'=>false)) ?>
+    <?= $this->Form->control('sum_weight'.$k, array('type'=>'hidden', 'value'=>${"sum_weight".$k}, 'label'=>false)) ?>
+    <?= $this->Form->control('total_loss_weight'.$k, array('type'=>'hidden', 'value'=>${"total_loss_weight".$k}, 'label'=>false)) ?>
+    <?= $this->Form->control('tasseiritsu'.$k, array('type'=>'hidden', 'value'=>${"tasseiritsu".$k}, 'label'=>false)) ?>
+
     </tr>
-    </tbody>
+    <?php endfor;?>
+  </tbody>
 </table>
+
 <br>
-    <table align="center">
-    <tbody class="login">
-    <tr height="45">
-    <td width="500"><strong>備考</strong></td>
+<table>
+  <tbody style="background-color: #FFFFCC">
+    <tr>
+    <td width="400">備考</td>
     </tr>
     <tr>
-    <td><?= h($this->request->getData('bik')) ?></td>
+   <td><?= h($bik) ?></td>
     </tr>
-    </tbody>
+  </tbody>
 </table>
+<br>
+<?= $this->Form->control('bik', array('type'=>'hidden', 'value'=>$bik, 'label'=>false)) ?>
+
 <br>
 <table class="top">
   <tr><td style="border:none"><strong style="font-size: 12pt; color:red"><?= __($mess) ?></strong></td></tr>

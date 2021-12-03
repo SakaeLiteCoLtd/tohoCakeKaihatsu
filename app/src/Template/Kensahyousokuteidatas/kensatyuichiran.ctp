@@ -23,11 +23,13 @@ echo $this->Html->css('kensahyou');
 
 <br><br><br>
 
+<?php if ($check_num == 0): ?>
+
 <?php
       echo $htmlkensahyouheader;
  ?>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'addform']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'kensatyuichiran']]) ?>
 
 <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
@@ -39,6 +41,8 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('gyou', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
 <?= $this->Form->control('tuika', array('type'=>'hidden', 'value'=>1, 'label'=>false)) ?>
 <?= $this->Form->control('mikan_check', array('type'=>'hidden', 'value'=>$mikan_check, 'label'=>false)) ?>
+<?= $this->Form->control('date_sta', array('type'=>'hidden', 'value'=>$date_sta, 'label'=>false)) ?>
+<?= $this->Form->control('date_fin', array('type'=>'hidden', 'value'=>$date_fin, 'label'=>false)) ?>
 
 <?php if ($count_seikeijouken > 1): ?>
   <?= $this->Form->control('inspection_data_conditon_parent_id_moto', array('type'=>'hidden', 'value'=>$inspection_data_conditon_parent_id_moto, 'label'=>false)) ?>
@@ -52,7 +56,7 @@ echo $this->Html->css('kensahyou');
   <table class="white">
 
   <tr>
-    <td width="40" rowspan='8'>No.</td>
+    <td width="36" rowspan='8' style='font-size: 10pt'>No.</td>
   </tr>
   <tr>
     <td width="130" rowspan='7'>時間</td>
@@ -60,15 +64,16 @@ echo $this->Html->css('kensahyou');
   <td width="60" rowspan='6'>長さ</td>
 
 <tr>
-  <td style='width:110'>測定箇所</td>
+  <td style='width:98'>測定箇所</td>
 
   <?php for($i=1; $i<=11; $i++): ?>
     <td style='width:78'><?= h(${"size_name".$i}) ?></td>
   <?php endfor;?>
 
-  <td width="60" rowspan='3'>外観</td>
+  <td width="56" rowspan='3'>外観</td>
   <td width="70" rowspan='3'>重量<br>（目安）</td>
-  <td width="53" rowspan='5'>合否<br>判定</td>
+  <td width="35" rowspan='5' style='font-size: 10pt'>合<br>否<br>判<br>定</td>
+  <td width="35" rowspan='5' style='font-size: 10pt'>異<br>常<br>登<br>録<br>済</td>
 
 </tr>
 <tr>
@@ -97,7 +102,7 @@ echo $this->Html->css('kensahyou');
       <td><?= h(${"lower_limit".$i}) ?></td>
     <?php endfor;?>
 
-    <td width="60" style="font-size: 10pt">〇・✕</td>
+    <td width="56" style="font-size: 10pt">〇・✕</td>
         <td width="60">g / 本</td>
 
 </tr>
@@ -108,7 +113,7 @@ echo $this->Html->css('kensahyou');
       <td style='font-size: 8pt'><?= h(${"measuring_instrument".$i}) ?></td>
     <?php endfor;?>
 
-    <td width="60">目視</td>
+    <td width="56" style='font-size: 10pt'>目視</td>
     <td style='width:60; border-top-style:none; font-size: 9pt'>デジタル秤</td>
 
 </tr>
@@ -117,18 +122,19 @@ echo $this->Html->css('kensahyou');
 
 <?php for($j=1; $j<=$gyou; $j++): ?>
 
+  <?= $this->Form->control('InspectionDataResultParent_id'.$j, array('type'=>'hidden', 'value'=>${"InspectionDataResultParent_id".$j}, 'label'=>false)) ?>
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
   <?= $this->Form->control('datetime_h_i'.$j, array('type'=>'hidden', 'value'=>${"datetime_h_i".$j}, 'label'=>false)) ?>
   <?= $this->Form->control('user_code'.$j, array('type'=>'hidden', 'value'=>${"user_code".$j}, 'label'=>false)) ?>
 
   <table class="form">
 
-  <td style='width:40; border-top-style:none; font-size: 11pt'><?= h(${"lot_number".$j}) ?></td>
+  <td style='width:36; border-top-style:none; font-size: 11pt'><?= h(${"lot_number".$j}) ?></td>
   <td style='width:130; border-top-style:none; font-size: 10pt'><?= h(${"datetime".$j}) ?></td></td>
 
   <td style='width:60; border-top-style:none'><?= h(${"length".$j}) ?></td>
 
-  <td style='width:110; border-top-style:none'><?= h(${"staff_hyouji".$j}) ?></td>
+  <td style='width:98; border-top-style:none; font-size: 10pt'><?= h(${"staff_hyouji".$j}) ?></td>
 
   <?php for($i=1; $i<=11; $i++): ?>
 
@@ -153,9 +159,9 @@ ${"judge".$j.$i} = "✕";
 
   <?php
   if(${"appearance".$j} == 1){
-    ${"gaikanhyouji".$j} = "不";
+    ${"gaikanhyouji".$j} = "✕";
   }else{
-    ${"gaikanhyouji".$j} = "良";
+    ${"gaikanhyouji".$j} = "〇";
   }
 
   if(${"judge".$j} == 1){
@@ -166,9 +172,17 @@ ${"judge".$j.$i} = "✕";
 
   ?>
 
-<td style='width:60; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
+<td style='width:56; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
   <td style='width:70; border-top-style:none'><?= h(${"result_weight".$j}) ?></td>
-  <td style='width:53; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+  <td style='width:35; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+
+  <?php if (${"loss_check".$j} == 0): ?>
+    <td style='width:35; border-top-style:none'>-</td>
+  <?php else : ?>
+    <td style='width:35; border-top-style:none'><?= $this->Form->submit(('異'), array('name' => $j)) ?></td>
+    <?= $this->Form->control('loss'.$j, array('type'=>'hidden', 'value'=>${"loss".$j}, 'label'=>false)) ?>
+    <?= $this->Form->control('loss_flag', array('type'=>'hidden', 'value'=>1, 'label'=>false)) ?>
+    <?php endif; ?>
 
 </table>
 
@@ -189,3 +203,39 @@ ${"judge".$j.$i} = "✕";
   </tbody>
 </table>
 <br>
+
+<?php else : ?>
+
+  <table align="center">
+  <tbody class="login">
+    <tr height="45">
+      <td width="150"><strong>ロス重量（kg）</strong></td>
+    </tr>
+    <tr height="45">
+    <td style='width:78; border-top-style:none'><?= h($loss_amount) ?></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+
+<table align="center">
+    <tbody class="login">
+    <tr height="45">
+    <td width="500"><strong>備考</strong></td>
+    </tr>
+    <tr>
+    <td><?= h($bik) ?></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+
+  <table align="center">
+  <tbody class='sample non-sample'>
+    <tr>
+      <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<?php endif; ?>
