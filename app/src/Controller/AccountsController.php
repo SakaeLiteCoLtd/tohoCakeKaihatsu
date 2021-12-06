@@ -692,10 +692,33 @@ class AccountsController extends AppController
         }
         ${"arrProduct_name_list".$i} = array_unique(${"arrProduct_name_list".$i});
         ${"arrProduct_name_list".$i} = array_values(${"arrProduct_name_list".$i});
-  
+
         $this->set('arrProduct_name_list'.$i, ${"arrProduct_name_list".$i});
   
       }
+
+    $Product_name_delete = $this->Products->find()->contain(["Factories"])
+    ->where(['Products.delete_flag' => 1])
+    ->order(["product_code"=>"ASC"])->toArray();
+
+    $Product_name_lists = array();
+    for($j=0; $j<count($Product_name_delete); $j++){
+      $Product_check = $this->Products->find()
+      ->where(['product_code' => $Product_name_delete[$j]["product_code"], 'delete_flag' => 0])->toArray();
+      if(!isset($Product_check[0])){
+        $Product_name_lists[] = [
+          "factory" => $Product_name_delete[$j]["factory"]["name"],
+          "product_code" => $Product_name_delete[$j]["product_code"],
+          "name" => $Product_name_delete[$j]["name"],
+          "length" => $Product_name_delete[$j]["length"],
+        ];
+      }
+    }
+
+    $Product_name_lists = array_unique($Product_name_lists, SORT_REGULAR);
+    $Product_name_lists = array_values($Product_name_lists);
+
+    $this->set(compact('Product_name_lists'));
 
     }
 
@@ -887,6 +910,29 @@ class AccountsController extends AppController
   
       }
 
+
+      $Material_name_delete = $this->Materials->find()->contain(["Factories"])
+      ->where(['Materials.delete_flag' => 1])
+      ->order(["material_code"=>"ASC"])->toArray();
+  
+      $Material_name_lists = array();
+      for($j=0; $j<count($Material_name_delete); $j++){
+        $Material_check = $this->Materials->find()
+        ->where(['material_code' => $Material_name_delete[$j]["material_code"], 'delete_flag' => 0])->toArray();
+        if(!isset($Material_check[0])){
+          $Material_name_lists[] = [
+            "factory" => $Material_name_delete[$j]["factory"]["name"],
+            "name" => $Material_name_delete[$j]["name"],
+            "material_code" => $Material_name_delete[$j]["material_code"],
+          ];
+        }
+      }
+  
+      $Material_name_lists = array_unique($Material_name_lists, SORT_REGULAR);
+      $Material_name_lists = array_values($Material_name_lists);
+  
+      $this->set(compact('Material_name_lists'));
+  
     }
 
     public function materialdeletedconfirm()

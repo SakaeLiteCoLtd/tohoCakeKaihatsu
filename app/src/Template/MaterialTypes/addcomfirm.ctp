@@ -19,7 +19,6 @@
 <?= $this->Form->create($materialType, ['url' => ['action' => 'adddo']]) ?>
 
 <?= $this->Form->control('type', array('type'=>'hidden', 'value'=>$this->request->getData('type'), 'label'=>false)) ?>
-<?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 <br><br><br>
 
 <nav class="sample non-sample">
@@ -32,6 +31,21 @@
           </tbody>
         </table>
         <br>
+        <?php if ($usercheck == 1): ?>
+
+<table>
+<tr>
+<td width="280"><strong>工場名</strong></td>
+</tr>
+<tr>
+<td><?= h($factory_name) ?></td>
+</tr>
+</table>
+
+<?= $this->Form->control('factory_name', array('type'=>'hidden', 'value'=>$factory_name, 'label'=>false)) ?>
+<?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
+<?php else : ?>
+  <?php endif; ?>
 
         <table>
         <tr>

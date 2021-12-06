@@ -386,8 +386,8 @@ class KensahyougenryousController extends AppController
       $factory_id = $Staffs[0]["factory_id"];
 
       $Seikeikis = $this->Seikeikis->find()
-    //  ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
-      ->where(['delete_flag' => 0])->toArray();
+      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+    //  ->where(['delete_flag' => 0])->toArray();
       $arrSeikeikis = array();
       for($j=0; $j<count($Seikeikis); $j++){
         $arrSeikeikis[$Seikeikis[$j]["name"]] = $Seikeikis[$j]["name"];
@@ -1855,8 +1855,8 @@ class KensahyougenryousController extends AppController
       $factory_id = $Staffs[0]["factory_id"];
 
       $Seikeikis = $this->Seikeikis->find()
-   //   ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
-      ->where(['delete_flag' => 0])->toArray();
+      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+   //   ->where(['delete_flag' => 0])->toArray();
       $arrSeikeikis = array();
       for($j=0; $j<count($Seikeikis); $j++){
         $arrSeikeikis[$Seikeikis[$j]["name"]] = $Seikeikis[$j]["name"];

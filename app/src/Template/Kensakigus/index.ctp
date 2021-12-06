@@ -32,6 +32,10 @@ echo $this->Html->css('index');
         <thead>
             <tr>
               <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
+              <?php if ($usercheck == 1): ?>
+                <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"工場名"]) ?></th>
+                <?php else : ?>
+                  <?php endif; ?>
                 <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"検査器具"]) ?></th>
                 <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>
@@ -40,6 +44,10 @@ echo $this->Html->css('index');
             <?php foreach ($kensakigus as $kensakigu): ?>
             <tr>
               <td><?= h($i) ?></td>
+              <?php if ($usercheck == 1): ?>
+                <td><?= h($kensakigu->factory->name) ?></td>
+                <?php else : ?>
+                  <?php endif; ?>
                <td><?= h($kensakigu->name) ?></td>
                 <td class="actions">
                   <?= $this->Html->link(__('編集'), ['action' => 'detail', $kensakigu->id]) ?>

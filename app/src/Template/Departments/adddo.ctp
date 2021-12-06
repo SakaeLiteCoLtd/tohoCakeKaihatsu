@@ -30,6 +30,20 @@
         </table>
         <br>
 
+        <?php if ($usercheck == 1): ?>
+
+<table>
+<tr>
+<td width="280"><strong>工場名</strong></td>
+</tr>
+<tr>
+<td><?= h($factory_name) ?></td>
+</tr>
+</table>
+
+<?php else : ?>
+  <?php endif; ?>
+
         <table>
           <tr>
             <td width="280"><strong>部署名</strong></td>

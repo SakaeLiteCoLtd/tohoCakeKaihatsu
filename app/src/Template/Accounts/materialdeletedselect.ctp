@@ -105,5 +105,105 @@ $(document).ready(function() {
       </tbody>
     </table>
 
+    <br>
+    <?php
+
+define('MAX','20'); // 1ページの記事の表示数
+
+$Material_name_lists_num = count($Material_name_lists); // トータルデータ件数
+ 
+$max_page = ceil($Material_name_lists_num / MAX); // トータルページ数※ceilは小数点を切り捨てる関数
+
+if(!isset($_GET['page_id'])){ // $_GET['page_id'] はURLに渡された現在のページ数
+    $now = 1; // 設定されてない場合は1ページ目にする
+}else{
+    $now = $_GET['page_id'];
+}
+
+$start_no = ($now - 1) * MAX; // 配列の何番目から取得すればよいか
+ 
+// array_sliceは、配列の何番目($start_no)から何番目(MAX)まで切り取る関数
+$disp_data = array_slice($Material_name_lists, $start_no, MAX, true);
+ 
+?>
+
+<table>
+        <thead>
+            <tr class="parents">
+            <td style='background-color: #f0e68c; border-width: 1px solid black;'><?= __('No.') ?></td>
+            <td style='background-color: #f0e68c; border-width: 1px solid black;'><?= __('工場名') ?></td>
+            <td style='background-color: #f0e68c; border-width: 1px solid black;'><?= __('仕入品名') ?></td>
+            <td style='background-color: #f0e68c; border-width: 1px solid black;'><?= __('仕入品コード') ?></td>
+            </tr>
+        </thead>
+
+        <tbody>
+
+        <?php
+$h = 1;
+?>
+
+<?php
+foreach($disp_data as $val){ // データ表示
+?>
+
+  <tr class='children'>
+  <td><?= h($h) ?></td>
+    <td><?= h($val["factory"]) ?></td>
+    <td><?= h($val["name"]) ?></td>
+    <td><?= h($val["material_code"]) ?></td>
+</tr>
+
+<?php
+$h = $h + 1;
+?>
+
+<?php
+}
+?>
+
+</tbody>
+    </table>
+
+<br><br>
+
+<table>
+<div align="center">
+
+<?php
+
+if($max_page > 7){
+  $max_page_max = 7;
+}else{
+  $max_page_max = $max_page;
+}
+
+echo '全件数'. $Material_name_lists_num. '件'. '　'; // 全データ数の表示です。
+ 
+if($now > 1){ // リンクをつけるかの判定
+  echo '<a href="index?page_id='.($now - 1). '">前へ</a>　';
+} else {
+    echo '前へ'. '　';
+}
+ 
+for($i = 1; $i <= $max_page_max; $i++){
+    if ($i == $now) {
+        echo $now. '　'; 
+    } else {
+      echo '<a href="index?page_id='. $i. '">'.$i.'</a>　';
+    }
+}
+ 
+if($now < $max_page){ // リンクをつけるかの判定
+    echo '<a href="index?page_id='.($now + 1). '">次へ</a>';
+  } else {
+    echo '次へ';
+}
+
+?>
+
+</div>
+</table>
+<br><br>
     <?= $this->Form->end() ?>
   </nav>

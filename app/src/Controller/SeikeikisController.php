@@ -15,6 +15,8 @@ class SeikeikisController extends AppController
     {
      parent::initialize();
      $this->Staffs = TableRegistry::get('Staffs');
+     $this->Factories = TableRegistry::get('Factories');
+     $this->Users = TableRegistry::get('Users');
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
 
@@ -44,30 +46,101 @@ class SeikeikisController extends AppController
 
     public function index()
     {
+      /*
         $this->paginate = [
             'contain' => ['Factories']
         ];
         $seikeikis = $this->paginate($this->Seikeikis->find()->where(['Seikeikis.delete_flag' => 0]));
 
         $this->set(compact('seikeikis'));
+*/
+
+        $session = $this->request->getSession();
+        $datasession = $session->read();
+  
+        $Users = $this->Users->find()->contain(["Staffs"])
+        ->where(['Staffs.id' => $datasession['Auth']['User']['staff_id'], 'Users.delete_flag' => 0])
+        ->toArray();
+  
+        $this->paginate = [
+          'limit' => 13,
+          'contain' => ['Factories']
+      ];
+  
+        if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
+          $seikeikis = $this->paginate($this->Seikeikis->find()
+          ->where(['Seikeikis.delete_flag' => 0])
+          ->order(["factory_id"=>"ASC"]));
+    
+          $this->set('usercheck', 1);
+    
+          }else{
+            $seikeikis = $this->paginate($this->Seikeikis->find()
+            ->where(['Seikeikis.factory_id' => $Users[0]["staff"]["factory_id"], 'Seikeikis.delete_flag' => 0])
+            ->order(["factory_id"=>"ASC"]));
+    
+            $this->set('usercheck', 0);
+    
+            }
+    
+        $this->set(compact('seikeikis'));
+    
     }
 
     public function addform()
     {
       $seikeikis = $this->Seikeikis->newEntity();
       $this->set('seikeikis', $seikeikis);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $Users = $this->Users->find()->contain(["Staffs"])
+      ->where(['Staffs.id' => $datasession['Auth']['User']['staff_id'], 'Users.delete_flag' => 0])
+      ->toArray();
+
+      if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
+  
+        $this->set('usercheck', 1);
+  
+        }else{
+  
+          $this->set('usercheck', 0);
+  
+          }
+  
+          $Factories = $this->Factories->find('list');
+          $this->set(compact('Factories'));
+
     }
 
     public function addcomfirm()
     {
-        $seikeikis = $this->Seikeikis->newEntity();
-        $this->set('seikeikis', $seikeikis);
+      $seikeikis = $this->Seikeikis->newEntity();
+      $this->set('seikeikis', $seikeikis);
+
+      $data = $this->request->getData();
+
+      $this->set('usercheck', 0);
+
+      if(isset($data["factory_id"])){
+        $factory_id = $data["factory_id"];
+
+        $this->set('usercheck', 1);
+
+        $Factories = $this->Factories->find()
+        ->where(['id' => $factory_id])
+        ->toArray();
+        $factory_name = $Factories[0]["name"];
+        $this->set('factory_name', $factory_name);
+      }
+
     }
 
     public function adddo()
     {
-        $seikeikis = $this->Seikeikis->newEntity();
-        $this->set('seikeikis', $seikeikis);
+      $seikeikis = $this->Seikeikis->newEntity();
+      $this->set('seikeikis', $seikeikis);
 
       $data = $this->request->getData();
 
@@ -75,11 +148,19 @@ class SeikeikisController extends AppController
       $datasession = $session->read();
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
+      $this->set('usercheck', 0);
 
-      $Staffs = $this->Staffs->find()
-      ->where(['id' => $staff_id])
-      ->toArray();
-      $factory_id = $Staffs[0]["factory_id"];
+      if(isset($data["factory_id"])){
+        $this->set('usercheck', 1);
+        $factory_id = $data["factory_id"];
+        $factory_name = $data["factory_name"];
+        $this->set('factory_name', $factory_name);
+      }else{
+        $Staffs = $this->Staffs->find()
+        ->where(['id' => $staff_id])
+        ->toArray();
+        $factory_id = $Staffs[0]["factory_id"];
+      }
 
       $arrtourokuSeikeikis = array();
       $arrtourokuSeikeikis = [

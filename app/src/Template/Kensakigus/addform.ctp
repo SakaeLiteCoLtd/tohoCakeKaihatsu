@@ -31,6 +31,17 @@
           </tbody>
         </table>
         <br>
+        <?php if ($usercheck == 1): ?>
+          <table>
+          <tr>
+            <td width="280"><strong>工場名</strong></td>
+        	</tr>
+          <tr>
+            <td><?= $this->Form->control('factory_id', ['options' => $Factories, 'label'=>false]) ?></td>
+        	</tr>
+        </table>
+ <?php else : ?>
+<?php endif; ?>
 
         <table>
         <tr>

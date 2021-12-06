@@ -18,6 +18,7 @@ class MaterialTypesController extends AppController
      $this->Factories = TableRegistry::get('Factories');
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
+     $this->Users = TableRegistry::get('Users');
 
      $session = $this->request->getSession();
      $datasession = $session->read();
@@ -166,12 +167,50 @@ class MaterialTypesController extends AppController
     {
       $materialType = $this->MaterialTypes->newEntity();
       $this->set('materialType', $materialType);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+
+      $Users = $this->Users->find()->contain(["Staffs"])
+      ->where(['Staffs.id' => $datasession['Auth']['User']['staff_id'], 'Users.delete_flag' => 0])
+      ->toArray();
+
+      if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
+  
+        $this->set('usercheck', 1);
+  
+        }else{
+  
+          $this->set('usercheck', 0);
+  
+          }
+  
+          $Factories = $this->Factories->find('list');
+          $this->set(compact('Factories'));
+
     }
 
     public function addcomfirm()
     {
       $materialType = $this->MaterialTypes->newEntity();
       $this->set('materialType', $materialType);
+
+      $data = $this->request->getData();
+
+      $this->set('usercheck', 0);
+
+      if(isset($data["factory_id"])){
+        $factory_id = $data["factory_id"];
+
+        $this->set('usercheck', 1);
+
+        $Factories = $this->Factories->find()
+        ->where(['id' => $factory_id])
+        ->toArray();
+        $factory_name = $Factories[0]["name"];
+        $this->set('factory_name', $factory_name);
+      }
+
     }
 
     public function adddo()
@@ -185,9 +224,19 @@ class MaterialTypesController extends AppController
       $datasession = $session->read();
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
+      $this->set('usercheck', 0);
 
-      $Staffs = $this->Staffs->find()->where(['id' => $staff_id])->toArray();//工場を取得
-      $factory_id = $Staffs[0]["factory_id"];
+      if(isset($data["factory_id"])){
+        $this->set('usercheck', 1);
+        $factory_id = $data["factory_id"];
+        $factory_name = $data["factory_name"];
+        $this->set('factory_name', $factory_name);
+      }else{
+        $Staffs = $this->Staffs->find()
+        ->where(['id' => $staff_id])
+        ->toArray();
+        $factory_id = $Staffs[0]["factory_id"];
+      }
 
       $arrtourokumaterialType = array();
       $arrtourokumaterialType = [

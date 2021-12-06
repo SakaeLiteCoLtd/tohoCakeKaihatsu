@@ -32,7 +32,12 @@ echo $this->Html->css('index');
         <thead>
             <tr>
               <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
-                <th scope="col" style='width:400'><?= $this->Paginator->sort('name', ['label'=>"成形機"]) ?></th>
+              <?php if ($usercheck == 1): ?>
+                <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"工場名"]) ?></th>
+                <?php else : ?>
+                  <?php endif; ?>
+
+                <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"成形機"]) ?></th>
                 <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>
         </thead>
@@ -40,7 +45,11 @@ echo $this->Html->css('index');
             <?php foreach ($seikeikis as $seikeiki): ?>
             <tr>
               <td><?= h($i) ?></td>
-               <td><?= h($seikeiki->name) ?></td>
+              <?php if ($usercheck == 1): ?>
+                <td><?= h($seikeiki->factory->name) ?></td>
+                <?php else : ?>
+                  <?php endif; ?>
+              <td><?= h($seikeiki->name) ?></td>
                 <td class="actions">
                   <?= $this->Html->link(__('編集'), ['action' => 'detail', $seikeiki->id]) ?>
                 </td>

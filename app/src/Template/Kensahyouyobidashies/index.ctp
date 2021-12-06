@@ -201,7 +201,12 @@ foreach($disp_data as $val){ // データ表示
       <td><?= h($val["seikeijouken"]) ?></td>
     <?php endif; ?>
 
-    <td><?= h($val["datetime"]) ?></td>
+    <?php if ($val["seikeijouken"] !== "登録済み" || $val["kikaku"] !== "登録済み"): ?>
+      <td>-</td>
+    <?php else : ?>
+        <td><?= h($val["datetime"]) ?></td>
+    <?php endif; ?>
+
 
 </tr>
 
