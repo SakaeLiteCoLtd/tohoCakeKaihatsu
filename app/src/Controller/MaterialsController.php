@@ -341,26 +341,46 @@ class MaterialsController extends AppController
         $code_factory = "H";
       }
 
-      $Materialsnow = $this->Materials->find()
-      ->where(['material_code like' => "S".$material_supplier_code.$code_factory.'%'])
+      //最初の8桁が同じものがある
+      //typeチェック
+      $Materialstypecheck = $this->Materials->find()
+      ->where(['material_code like' => "S".$material_supplier_code.$code_factory.'%', 'material_type_id' => $data["type_id"]])
       ->order(["material_code"=>"DESC"])->toArray();
 
-      if(isset($Materialsnow[0])){
-        $material_code_renban = substr($Materialsnow[0]["material_code"], -5, 3) + 1;
-        $material_code_renban = sprintf('%03d', $material_code_renban);//0埋め
-      }else{
-        $material_code_renban = "001";
-      }
+      if(isset($Materialstypecheck[0])){//typeが同じものがある
 
-      $Materialsnow2 = $this->Materials->find()
-      ->where(['material_code like' => "S".$material_supplier_code.$code_factory.$material_code_renban.'%'])
-      ->order(["material_code"=>"DESC"])->toArray();
-
-      if(isset($Materialsnow2[0])){
-        $material_code_renban2 = substr($Materialsnow2[0]["material_code"], -1, 2) + 1;
+        $material_code_renban = substr($Materialstypecheck[0]["material_code"], -5, 3);
+        $Materialsnow2 = $this->Materials->find()
+        ->where(['material_code like' => "S".$material_supplier_code.$code_factory.$material_code_renban.'%'])
+        ->order(["material_code"=>"DESC"])->toArray();
+  
+        $material_code_renban2 = substr($Materialstypecheck[0]["material_code"], -1, 2) + 1;
         $material_code_renban2 = sprintf('%02d', $material_code_renban2);//0埋め
-      }else{
-        $material_code_renban2 = "01";
+
+      }else{//typeが同じものがない
+
+        $Materialsnow = $this->Materials->find()
+        ->where(['material_code like' => "S".$material_supplier_code.$code_factory.'%'])
+        ->order(["material_code"=>"DESC"])->toArray();
+  
+        if(isset($Materialsnow[0])){
+          $material_code_renban = substr($Materialsnow[0]["material_code"], -5, 3) + 1;
+          $material_code_renban = sprintf('%03d', $material_code_renban);//0埋め
+        }else{
+          $material_code_renban = "001";
+        }
+  
+        $Materialsnow2 = $this->Materials->find()
+        ->where(['material_code like' => "S".$material_supplier_code.$code_factory.$material_code_renban.'%'])
+        ->order(["material_code"=>"DESC"])->toArray();
+  
+        if(isset($Materialsnow2[0])){
+          $material_code_renban2 = substr($Materialsnow2[0]["material_code"], -1, 2) + 1;
+          $material_code_renban2 = sprintf('%02d', $material_code_renban2);//0埋め
+        }else{
+          $material_code_renban2 = "01";
+        }
+  
       }
 
       $material_code = "S".$material_supplier_code.$code_factory.$material_code_renban.$material_code_renban2;

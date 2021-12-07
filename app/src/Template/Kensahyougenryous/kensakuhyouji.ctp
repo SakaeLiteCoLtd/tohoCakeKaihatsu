@@ -24,6 +24,7 @@ echo $this->Html->css('kensahyou');
 
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
+<?= $this->Form->control('tuikaseikeiki', array('type'=>'hidden', 'value'=>$tuikaseikeiki, 'label'=>false)) ?>
 <?= $this->Form->control('saisyo', array('type'=>'hidden', 'value'=>1, 'label'=>false)) ?>
 <br> <br> <br>
 
@@ -329,7 +330,7 @@ echo $this->Html->css('kensahyou');
     <tr>
       <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
       <td style="border: none;"><?= __("　") ?></td>
-      <td style="border:none"><?= $this->Form->submit(('編集'), array('name' => 'kakuninn')) ?></td>
+      <td style="border:none"><?= $this->Form->submit(('編集'), array('name' => 'saisyo')) ?></td>
     </tr>
   </tbody>
 </table>

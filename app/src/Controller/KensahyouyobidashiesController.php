@@ -35,6 +35,7 @@ class KensahyouyobidashiesController extends AppController
    $this->InspectionDataResultChildren = TableRegistry::get('InspectionDataResultChildren');
    $this->InspectionDataConditonChildren = TableRegistry::get('InspectionDataConditonChildren');
    $this->InspectionDataConditonParents = TableRegistry::get('InspectionDataConditonParents');
+   $this->Linenames = TableRegistry::get('Linenames');
 
    $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
    $this->Groups = TableRegistry::get('Groups');
@@ -938,15 +939,40 @@ class KensahyouyobidashiesController extends AppController
       $machine_num_moto = $Data["machine_num"];
       $this->set('machine_num_moto', $machine_num_moto);
 
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $staff_id])
+      ->toArray();
+      $factory_id = $Staffs[0]["factory_id"];
+
+      if($factory_id == 5){
+        $Linenames = $this->Linenames->find()
+        ->where(['delete_flag' => 0])->toArray();
+          }else{
+            $Linenames = $this->Linenames->find()
+            ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+              }
+
+      $arrGouki = array();
+      for($j=0; $j<count($Linenames); $j++){
+        if($Linenames[$j]["name"] != $machine_num_moto){
+          $i = $Linenames[$j]["name"];
+          $array = array($i => $i);
+          $arrGouki = $arrGouki + $array;
+        }
+      }
+      $this->set('arrGouki', $arrGouki);
+/*
       $arrGouki = array();
       for($i=1; $i<8; $i++){
         if($i != $machine_num_moto){
           $array = array($i => $i);
-          $arrGouki = $arrGouki + $array;//array_merge_recursiveは添え字も保持する
+          $arrGouki = $arrGouki + $array;
         }
       }
       $this->set('arrGouki', $arrGouki);
-
+*/
     }
 
     public function fukuseiform()
@@ -998,8 +1024,22 @@ class KensahyouyobidashiesController extends AppController
       $Materials = $this->Materials->find()
       ->where(['delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
 
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $staff_id])
+      ->toArray();
+      $factory_id = $Staffs[0]["factory_id"];
+
+      if($factory_id == 5){
+        $Seikeikis = $this->Seikeikis->find()
+        ->where(['delete_flag' => 0])->toArray();
+          }else{
+            $Seikeikis = $this->Seikeikis->find()
+            ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+              }
+/*
       $Seikeikis = $this->Seikeikis->find()
       ->where(['delete_flag' => 0])->toArray();
+      */
       $arrSeikeikis = array();
       for($j=0; $j<count($Seikeikis); $j++){
         $arrSeikeikis[$Seikeikis[$j]["name"]] = $Seikeikis[$j]["name"];

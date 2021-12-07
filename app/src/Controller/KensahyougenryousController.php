@@ -284,8 +284,13 @@ class KensahyougenryousController extends AppController
       ->toArray();
       $factory_id = $Staffs[0]["factory_id"];
 
-      $Linenames = $this->Linenames->find()
-      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+      if($factory_id == 5){
+        $Linenames = $this->Linenames->find()
+        ->where(['delete_flag' => 0])->toArray();
+          }else{
+            $Linenames = $this->Linenames->find()
+            ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+              }
       $arrGouki = array();
       for($j=0; $j<count($Linenames); $j++){
         $arrGouki[$Linenames[$j]["name"]] = $Linenames[$j]["name"];
@@ -385,9 +390,14 @@ class KensahyougenryousController extends AppController
       ->toArray();
       $factory_id = $Staffs[0]["factory_id"];
 
-      $Seikeikis = $this->Seikeikis->find()
-      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
-    //  ->where(['delete_flag' => 0])->toArray();
+      if($factory_id == 5){
+        $Seikeikis = $this->Seikeikis->find()
+        ->where(['delete_flag' => 0])->toArray();
+          }else{
+            $Seikeikis = $this->Seikeikis->find()
+            ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+              }
+
       $arrSeikeikis = array();
       for($j=0; $j<count($Seikeikis); $j++){
         $arrSeikeikis[$Seikeikis[$j]["name"]] = $Seikeikis[$j]["name"];
@@ -1854,9 +1864,13 @@ class KensahyougenryousController extends AppController
       ->toArray();
       $factory_id = $Staffs[0]["factory_id"];
 
-      $Seikeikis = $this->Seikeikis->find()
-      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
-   //   ->where(['delete_flag' => 0])->toArray();
+      if($factory_id == 5){
+        $Seikeikis = $this->Seikeikis->find()
+        ->where(['delete_flag' => 0])->toArray();
+          }else{
+            $Seikeikis = $this->Seikeikis->find()
+            ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+              }
       $arrSeikeikis = array();
       for($j=0; $j<count($Seikeikis); $j++){
         $arrSeikeikis[$Seikeikis[$j]["name"]] = $Seikeikis[$j]["name"];
@@ -2448,8 +2462,14 @@ class KensahyougenryousController extends AppController
       ->toArray();
       $factory_id = $Staffs[0]["factory_id"];
 
-      $Linenames = $this->Linenames->find()
-      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+      if($factory_id == 5){
+        $Linenames = $this->Linenames->find()
+        ->where(['delete_flag' => 0])->toArray();
+          }else{
+            $Linenames = $this->Linenames->find()
+            ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+              }
+
       $arrGouki = array();
       for($j=0; $j<count($Linenames); $j++){
         $arrGouki[$Linenames[$j]["name"]] = $Linenames[$j]["name"];
