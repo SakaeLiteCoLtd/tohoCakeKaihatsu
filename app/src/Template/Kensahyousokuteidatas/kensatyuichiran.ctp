@@ -56,14 +56,7 @@ echo $this->Html->css('kensahyou');
   <table class="white">
 
   <tr>
-    <td width="36" rowspan='8' style='font-size: 10pt'>No.</td>
-  </tr>
-  <tr>
-    <td width="130" rowspan='7'>時間</td>
-  </tr>
-  <td width="60" rowspan='6'>長さ</td>
-
-<tr>
+    <td colspan='3'>バンク：<?= h($mode) ?></td>
   <td style='width:98'>測定箇所</td>
 
   <?php for($i=1; $i<=11; $i++): ?>
@@ -73,10 +66,15 @@ echo $this->Html->css('kensahyou');
   <td width="56" rowspan='3'>外観</td>
   <td width="70" rowspan='3'>重量<br>（目安）</td>
   <td width="35" rowspan='5' style='font-size: 10pt'>合<br>否<br>判<br>定</td>
-  <td width="35" rowspan='5' style='font-size: 10pt'>異<br>常<br>登<br>録<br>済</td>
+  <td width="35" rowspan='5' style='font-size: 10pt'>工<br>程<br>異<br>常<br>登<br>録<br>済</td>
 
 </tr>
 <tr>
+
+<td width="36" rowspan='8' style='font-size: 10pt'>No.</td>
+<td width="130" rowspan='7'>時間</td>
+<td width="60" rowspan='6'>長さ<br>(mm)</td>
+
   <td>規格</td>
 
     <?php for($i=1; $i<=11; $i++): ?>
@@ -129,7 +127,14 @@ echo $this->Html->css('kensahyou');
 
   <table class="form">
 
-  <td style='width:36; border-top-style:none; font-size: 11pt'><?= h(${"lot_number".$j}) ?></td>
+  <?php if ($j == 1): ?>
+  <td style='width:36; border-top-style:none; font-size: 11pt'>S</td>
+  <?php elseif ($j == $gyou) : ?>
+    <td style='width:36; border-top-style:none; font-size: 11pt'>E</td>
+  <?php else : ?>
+    <td style='width:36; border-top-style:none; font-size: 11pt'><?= h(${"lot_number".$j}) ?></td>
+  <?php endif; ?>
+
   <td style='width:130; border-top-style:none; font-size: 10pt'><?= h(${"datetime".$j}) ?></td></td>
 
   <td style='width:60; border-top-style:none'><?= h(${"length".$j}) ?></td>

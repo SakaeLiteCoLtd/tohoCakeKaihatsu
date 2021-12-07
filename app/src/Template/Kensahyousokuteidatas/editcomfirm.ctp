@@ -43,19 +43,10 @@ $mes = "";
 
  <table class="white">
 
-  <tr>
-    <td width="43" rowspan='8'>No.</td>
-  </tr>
-  <tr>
-  <td width="65" rowspan='7'><font size='2'><br></font>日付<br><font size='2'>
-  <br><?= h(substr($datekensaku, 0, 4)) ?><br>
-  <?= h("/".substr($datekensaku, 5, 2)) ?><br>
-  <?= h("/".substr($datekensaku, 8, 2)) ?><br>
-  </font><br>時間</td>
-  </tr>
-  <td width="65" rowspan='6'>長さ</td>
-
 <tr>
+
+<td colspan='3'>バンク：<?= h($mode) ?></td>
+
   <td style='width:110'>測定箇所</td>
 
   <?php for($i=1; $i<=11; $i++): ?>
@@ -68,6 +59,15 @@ $mes = "";
 
 </tr>
 <tr>
+
+<td width="43" rowspan='8'>No.</td>
+  <td width="65" rowspan='7'><font size='2'><br></font>日付<br><font size='2'>
+  <br><?= h(substr($datekensaku, 0, 4)) ?><br>
+  <?= h("/".substr($datekensaku, 5, 2)) ?><br>
+  <?= h("/".substr($datekensaku, 8, 2)) ?><br>
+  </font><br>時間</td>
+  <td width="65" rowspan='6'>長さ<br>(mm)</td>
+
   <td>規格</td>
 
     <?php for($i=1; $i<=11; $i++): ?>

@@ -37,14 +37,8 @@ echo $this->Html->css('kensahyou');
   <table class="white">
 
   <tr>
-    <td style='font-size: 9pt' width="36" rowspan='8'>No.</td>
-  </tr>
-  <tr>
-    <td width="130" rowspan='7'>時間</td>
-  </tr>
-  <td width="60" rowspan='6'>長さ<br>（mm）</td>
+  <td colspan='3'>バンク：<?= h($mode) ?></td>
 
-<tr>
   <td style='width:105'>測定箇所</td>
 
   <?php for($i=1; $i<=11; $i++): ?>
@@ -57,6 +51,10 @@ echo $this->Html->css('kensahyou');
 
 </tr>
 <tr>
+<td style='font-size: 9pt' width="36" rowspan='8'>No.</td>
+<td width="130" rowspan='7'>時間</td>
+<td width="60" rowspan='6'>長さ<br>(mm)</td>
+
   <td>規格</td>
 
     <?php for($i=1; $i<=11; $i++): ?>
@@ -104,7 +102,15 @@ echo $this->Html->css('kensahyou');
 
   <table class="form">
 
-  <td style='width:36; border-top-style:none; font-size: 11pt'><?= h(${"lot_number".$j}) ?></td>
+  <?php if ($j == 1): ?>
+  <td style='width:36; border-top-style:none; font-size: 11pt'>S</td>
+  <?php elseif ($j == $gyou) : ?>
+    <td style='width:36; border-top-style:none; font-size: 11pt'>E</td>
+  <?php else : ?>
+    <td style='width:36; border-top-style:none; font-size: 11pt'><?= h(${"lot_number".$j}) ?></td>
+  <?php endif; ?>
+
+
   <td style='width:130; border-top-style:none; font-size: 10pt'><?= h(${"datetime".$j}) ?></td></td>
 
   <td style='width:60; border-top-style:none'><?= h(${"length".$j}) ?></td>
@@ -205,7 +211,7 @@ echo $this->Html->css('kensahyou');
     <tr>
       <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
       <td style="border: none;"><?= __("　") ?></td>
-      <td style="border:none"><?= $this->Form->submit(('編集・削除'), array('name' => 'hensyuu')) ?></td>
+      <td style="border:none"><?= $this->Form->submit(('編集'), array('name' => 'hensyuu')) ?></td>
     </tr>
   </tbody>
 </table>

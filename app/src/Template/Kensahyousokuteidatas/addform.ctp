@@ -204,17 +204,8 @@ for($i=0; $i<$count_length; $i++){
 
 <table class="white">
 
-  <tr>
-    <td style='font-size: 11pt' width="37" rowspan='8'>No.</td>
-  </tr>
-  <tr>
-    <td width="85" rowspan='7'>時間</td>
-  </tr>
-  <tr>
-  <td width="82" rowspan='6'><strong><font size="3">長さ</font></strong></td>
-  </tr>
-
 <tr>
+    <td colspan='3'>バンク：<?= h($mode) ?></td>
   <td style='width:107'>測定箇所</td>
 
   <?php for($i=1; $i<=11; $i++): ?>
@@ -234,6 +225,11 @@ for($i=0; $i<$count_length; $i++){
 
 </tr>
 <tr>
+
+    <td style='font-size: 11pt' width="37" rowspan='8'>No.</td>
+    <td width="85" rowspan='7'>時間</td>
+  <td width="82" rowspan='6'><strong><font size="3">長さ<br>(mm)</font></strong></td>
+
   <td>規格</td>
 
     <?php for($i=1; $i<=11; $i++): ?>

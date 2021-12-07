@@ -32,18 +32,8 @@ echo $this->Html->css('kensahyou');
  <table class="white">
 
   <tr>
-    <td width="43" rowspan='8'>No.</td>
-  </tr>
-  <tr>
-  <td width="65" rowspan='7'><font size='2'><br></font>日付<br><font size='2'>
-  <br><?= h(substr($datekensaku, 0, 4)) ?><br>
-  <?= h("/".substr($datekensaku, 5, 2)) ?><br>
-  <?= h("/".substr($datekensaku, 8, 2)) ?><br>
-  </font><br>時間</td>
-  </tr>
-  <td width="67" rowspan='6'>長さ</td>
+  <td colspan='3'>バンク：<?= h($mode) ?></td>
 
-<tr>
   <td style='width:110'>測定箇所</td>
 
   <?php for($i=1; $i<=11; $i++): ?>
@@ -52,10 +42,19 @@ echo $this->Html->css('kensahyou');
 
   <td width="65" rowspan='3'>外観</td>
   <td width="65" rowspan='3'>重量<br>（目安）</td>
-  <td width="45" rowspan='5' style="font-size: 10pt">合否<br>判定</td>
+  <td width="43" rowspan='5' style="font-size: 10pt">合否<br>判定</td>
 
 </tr>
 <tr>
+
+<td width="43" rowspan='8'>No.</td>
+<td width="65" rowspan='7'><font size='2'><br></font>日付<br><font size='2'>
+  <br><?= h(substr($datekensaku, 0, 4)) ?><br>
+  <?= h("/".substr($datekensaku, 5, 2)) ?><br>
+  <?= h("/".substr($datekensaku, 8, 2)) ?><br>
+  </font><br>時間</td>
+  <td width="67" rowspan='6'>長さ<br>(mm)</td>
+
   <td>規格</td>
 
     <?php for($i=1; $i<=11; $i++): ?>
@@ -174,7 +173,7 @@ echo $this->Html->css('kensahyou');
 
 <td style='width:65; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
   <td style='width:65; border-top-style:none'><?= h(${"result_weight".$j}) ?></td>
-  <td style='width:45; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+  <td style='width:43; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
 
 </table>
 

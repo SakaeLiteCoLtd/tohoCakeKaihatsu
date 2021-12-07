@@ -1706,6 +1706,14 @@ class KensahyousokuteidatasController extends AppController
       }
       $this->set('arrLength', $arrLength);
 
+      $ig_bank_modes = $ProductParent[0]['ig_bank_modes'];
+      if($ig_bank_modes == 0){
+        $mode = "0（X-Y）";
+      }else{
+        $mode = "0（Y-Y）";
+      }
+      $this->set('mode',$mode);
+      
       for($n=0; $n<count($Products); $n++){
 
         if(strlen($Products[$n]["length_measuring_instrument"]) > 0){
@@ -4318,6 +4326,14 @@ class KensahyousokuteidatasController extends AppController
       $Length = $ProductLength[0]['length'];
       $this->set('Length',$Length);
 
+      $ig_bank_modes = $ProductParent[0]['ig_bank_modes'];
+      if($ig_bank_modes == 0){
+        $mode = "0（X-Y）";
+      }else{
+        $mode = "0（Y-Y）";
+      }
+      $this->set('mode',$mode);
+
       $htmlproductcheck = new htmlproductcheck();//クラスを使用
       $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
 
@@ -4968,6 +4984,14 @@ class KensahyousokuteidatasController extends AppController
       $product_id = $ProductParent[0]["id"];
       $this->set('product_id', $product_id);
 
+      $ig_bank_modes = $ProductParent[0]['ig_bank_modes'];
+      if($ig_bank_modes == 0){
+        $mode = "0（X-Y）";
+      }else{
+        $mode = "0（Y-Y）";
+      }
+      $this->set('mode',$mode);
+
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -5209,6 +5233,17 @@ class KensahyousokuteidatasController extends AppController
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
       $product_code_ini = substr($product_code, 0, 11);
+
+      $ProductParent = $this->Products->find()
+      ->where(['product_code' => $product_code, 'delete_flag' => 0])->toArray();
+
+      $ig_bank_modes = $ProductParent[0]['ig_bank_modes'];
+      if($ig_bank_modes == 0){
+        $mode = "0（X-Y）";
+      }else{
+        $mode = "0（Y-Y）";
+      }
+      $this->set('mode',$mode);
 
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
@@ -5554,6 +5589,17 @@ class KensahyousokuteidatasController extends AppController
       $ProductID = $this->Products->find()
       ->where(['product_code' => $product_code])->toArray();
       $product_id = $ProductID[0]["id"];
+
+      $ProductParent = $this->Products->find()
+      ->where(['product_code' => $product_code, 'delete_flag' => 0])->toArray();
+
+      $ig_bank_modes = $ProductParent[0]['ig_bank_modes'];
+      if($ig_bank_modes == 0){
+        $mode = "0（X-Y）";
+      }else{
+        $mode = "0（Y-Y）";
+      }
+      $this->set('mode',$mode);
 
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
@@ -6279,6 +6325,14 @@ class KensahyousokuteidatasController extends AppController
       $Length = $ProductLength[0]['length'];
       $this->set('Length',$Length);
 
+      $ig_bank_modes = $ProductParent[0]['ig_bank_modes'];
+      if($ig_bank_modes == 0){
+        $mode = "0（X-Y）";
+      }else{
+        $mode = "0（Y-Y）";
+      }
+      $this->set('mode',$mode);
+
       $htmlproductcheck = new htmlproductcheck();//クラスを使用
       $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
 
@@ -6955,6 +7009,7 @@ class KensahyousokuteidatasController extends AppController
             "product_code" => $InspectionDataResultParentsnotfin[$i]["product"]["product_code"],
             "product_code_ini_machine_num" => $product_code_ini."_".$InspectionDataResultParentsnotfin[$i]["product_condition_parent"]["machine_num"],
             "name" => $InspectionDataResultParentsnotfin[$i]["product"]["name"],
+            "datetime" => $InspectionDataResultParentsnotfin[$i]["datetime"]->format('Y-m-d'),
           ];
   
           }
@@ -7048,6 +7103,13 @@ class KensahyousokuteidatasController extends AppController
       ->where(['product_code' => $product_code, 'delete_flag' => 0])->toArray();
       $Length = $ProductLength[0]['length'];
       $this->set('Length',$Length);
+      $ig_bank_modes = $ProductParent[0]['ig_bank_modes'];
+      if($ig_bank_modes == 0){
+        $mode = "0（X-Y）";
+      }else{
+        $mode = "0（Y-Y）";
+      }
+      $this->set('mode',$mode);
 
       $datetimesta = date('Y-m-d 06:00:00');
 

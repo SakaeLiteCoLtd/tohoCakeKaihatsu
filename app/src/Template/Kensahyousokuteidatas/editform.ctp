@@ -41,16 +41,8 @@ echo $this->Html->css('kensahyou');
 <table class="white">
 
   <tr>
-    <td width="40" rowspan='8'>No.</td>
-  </tr>
-  <tr>
-    <td width="96" rowspan='7'><font size='2'><br></font><br><br>日付<br><font size='2'><?= h($datekensaku) ?></font><br><br><br>時間</td>
-  </tr>
-  <tr>
-  <td width="65" rowspan='6'>長さ</td>
-  </tr>
+  <td colspan='3'>バンク：<?= h($mode) ?></td>
 
-<tr>
   <td style='width:110'>測定箇所</td>
 
   <?php for($i=1; $i<=11; $i++): ?>
@@ -64,6 +56,10 @@ echo $this->Html->css('kensahyou');
 
 </tr>
 <tr>
+<td width="40" rowspan='8'>No.</td>
+<td width="96" rowspan='7'><font size='2'><br></font><br><br>日付<br><font size='2'><?= h($datekensaku) ?></font><br><br><br>時間</td>
+<td width="65" rowspan='6'>長さ<br>(mm)</td>
+
   <td>規格</td>
 
     <?php for($i=1; $i<=11; $i++): ?>
@@ -217,6 +213,8 @@ echo $this->Html->css('kensahyou');
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>
+    <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+      <td style="border: none;"><?= __("　") ?></td>
       <td style="border:none"><?= $this->Form->submit(('登録確認へ'), array('name' => 'kakuninn')) ?></td>
     </tr>
   </tbody>

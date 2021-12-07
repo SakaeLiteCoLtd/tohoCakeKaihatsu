@@ -36,27 +36,29 @@ echo $this->Html->css('kensahyou');
   <table class="white">
 
   <tr>
-  <td width="52" rowspan='9' style='font-size: 10pt'>画像<br>・<br>規格<br>条件</td>
-  <td width="52" rowspan='8' style='font-size: 10pt'>原料<br>・<br>温度<br>条件</td>
-  <td width="52" rowspan='7' style='font-size: 10pt'>当日<br>成形<br>条件</td>
-  </tr>
-  <tr>
-    <td width="82" rowspan='6'>時間</td>
-  </tr>
 
-<tr>
+  <td colspan='4'>バンク：<?= h($mode) ?></td>
+
   <td style='width:103'>測定箇所</td>
 
   <?php for($i=1; $i<=11; $i++): ?>
     <td style='width:78'><?= h(${"size_name".$i}) ?></td>
   <?php endfor;?>
 
-  <td width="60" rowspan='3'>外観</td>
-  <td width="65" rowspan='3'>重量<br>（目安）</td>
-  <td width="55" rowspan='5'>合否<br>判定</td>
+  <td width="60" rowspan='4'>外観</td>
+  <td width="65" rowspan='4'>重量<br>（目安）</td>
+  <td width="55" rowspan='6'>合否<br>判定</td>
 
 </tr>
 <tr>
+
+<td width="52" rowspan='9' style='font-size: 10pt'>画像<br>・<br>規格<br>条件</td>
+  <td width="52" rowspan='8' style='font-size: 10pt'>原料<br>・<br>温度<br>条件</td>
+  <td width="52" rowspan='7' style='font-size: 10pt'>当日<br>成形<br>条件</td>
+    <td width="82" rowspan='6'>時間</td>
+
+<tr>
+
   <td>規格</td>
 
     <?php for($i=1; $i<=11; $i++): ?>

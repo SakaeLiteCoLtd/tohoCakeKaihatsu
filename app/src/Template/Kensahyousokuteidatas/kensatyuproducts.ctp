@@ -56,7 +56,8 @@ echo $this->Html->css('kensahyou');
         <tr>
         <td style='width:100'>号機</td>
         <td style='width:200'>管理No.</td>
-          <td style='width:200'>製品名</td>
+        <td style='width:200'>製品名</td>
+        <td style='width:150'>検査日</td>
         </tr>
 
           <?php for($i=0; $i<count($arrInspectionDataResultParentnotfin); $i++): ?>
@@ -64,6 +65,7 @@ echo $this->Html->css('kensahyou');
             <td><?= h($arrInspectionDataResultParentnotfin[$i]["machine_num"]);?></td>
               <td><?= h($arrInspectionDataResultParentnotfin[$i]["product_code"]) ? $this->Html->link($arrInspectionDataResultParentnotfin[$i]["product_code"], ['action' => 'kensatyuichiran', 's' => "1_".$arrInspectionDataResultParentnotfin[$i]["machine_num"]."_".$arrInspectionDataResultParentnotfin[$i]["product_code"]]) : '' ?></td>
               <td><?= h($arrInspectionDataResultParentnotfin[$i]["name"]);?></td>
+              <td><?= h($arrInspectionDataResultParentnotfin[$i]["datetime"]);?></td>
             </tr>
           <?php endfor;?>
 

@@ -20,8 +20,10 @@ class htmlaccountmenu extends AppController
                       "<br><br>\n".
                       "<font size='4'>　・</font><a href='/accounts/customercodeselect' /><font size='4' color=black>得意先・仕入先コード変更</font></a>\n".
                       "<br><br>\n".
+                      /*
                       "<font size='4'>　・</font><a href='/accounts/productcodeselect' /><font size='4' color=black>製品コード変更</font></a>\n".
                       "<br><br>\n".
+                      */
                       "<font size='4'>　・</font><a href='/accounts/productdeletedselect' /><font size='4' color=black>削除済み製品復元</font></a>\n".
                       "<br><br>\n".
                       "<font size='4'>　・</font><a href='/accounts/materialdeletedselect' /><font size='4' color=black>削除済み仕入品復元</font></a>\n".

@@ -25,10 +25,10 @@ class htmlkensahyoukadoumenu extends AppController
             "<td style='border: none'>\n".
             "<a href='/Kensahyoukadous/kensahyoumenu'>\n".
             "<img src='/img/menus/kensahyoumenu.gif' width=145 height=50>\n".
-   //         "</a></td><td style='border: none'>　　　</td>\n".
-     //       "<td style='border: none'>\n".
-       //     "<a href='/Kensahyoukadous/kadoumenu'>\n".
-         //   "<img src='/img/menus/kadoumenu.gif' width=145 height=50>\n".
+            "</a></td><td style='border: none'>　　　</td>\n".
+            "<td style='border: none'>\n".
+            "<a href='/kadous/yobidashidate'>\n".
+            "<img src='/img/menus/kadoumenu.gif' width=145 height=50>\n".
             "</a></td>\n".
             "</table>\n";
 

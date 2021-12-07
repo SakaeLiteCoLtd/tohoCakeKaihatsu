@@ -320,7 +320,7 @@ class AccountsController extends AppController
      }//トランザクション10
 
     }
-
+/*
     public function productcodeselect()
     {
       $product = $this->Products->newEntity();
@@ -361,7 +361,7 @@ class AccountsController extends AppController
         $this->set('arrProduct_name_list'.$i, ${"arrProduct_name_list".$i});
       }
     }
-  
+  */
     public function productcodeeditform()
     {
       $product = $this->Products->newEntity();
