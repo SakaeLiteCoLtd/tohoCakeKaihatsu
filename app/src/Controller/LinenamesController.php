@@ -307,6 +307,9 @@ class LinenamesController extends AppController
       $_SESSION = $session->read();
 
       $id = $_SESSION['materiallinename'];
+      $Linenames = $this->Linenames->find()->where(['id' => $id])->toArray();
+      $machine_num = $Linenames[0]["machine_num"];
+      $this->set('machine_num',$machine_num);
 
       $linename = $this->Linenames->get($id, [
         'contain' => []

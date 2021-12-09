@@ -37,17 +37,17 @@
 
         <table>
         <tr>
-        <td width="200"><strong>ライン番号</strong></td>
+        <td width="200"><strong>ライン番号（変更不可）</strong></td>
         <td width="200"><strong>ライン名</strong></td>
         </tr>
         <tr>
-        <td><?= $this->Form->control('machine_num', array('type'=>'text', 'label'=>false, 'autofocus'=>true, 'autocomplete'=>"off")) ?></td>
+        <td><?= h($machine_num) ?></td>
         <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'autocomplete'=>"off")) ?></td>
         </tr>
       </table>
 
       <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$id, 'label'=>false)) ?>
-      <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$id, 'label'=>false)) ?>
+      <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
 
     </fieldset>
 
