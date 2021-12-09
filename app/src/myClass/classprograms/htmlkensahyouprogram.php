@@ -18,7 +18,8 @@ class htmlkensahyouprogram extends AppController
         $this->ProductMaterialMachines = TableRegistry::get('ProductMaterialMachines');
         $this->ProductMachineMaterials = TableRegistry::get('ProductMachineMaterials');
         $this->ProductConditonChildren = TableRegistry::get('ProductConditonChildren');
-    }
+        $this->Linenames = TableRegistry::get('Linenames');
+      }
 
     public function genryouheader($product_code_machine_num)
    {
@@ -93,6 +94,11 @@ class htmlkensahyouprogram extends AppController
 
      }
 
+     $ProductDatas = $this->Products->find()
+     ->where(['product_code' => $product_code])->toArray();
+     $LinenameDatas = $this->Linenames->find()
+     ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+     $linename = $LinenameDatas[0]["name"];
 
        $html =
 
@@ -108,7 +114,7 @@ class htmlkensahyouprogram extends AppController
           "<tr style='background-color: #FFFFCC'>\n".
           "<td style='border:none; background-color:#E6FFFF'>　　　　　　　　　　</td>\n".
           "<td width='100'><strong>\n".
-          "$machine_num\n".
+          "$linename\n".
           "号ライン\n".
           "</strong></td>\n".
           "</tr></tbody></table><br><br>\n";
@@ -252,6 +258,12 @@ class htmlkensahyouprogram extends AppController
 
      }
 
+     $ProductDatas = $this->Products->find()
+     ->where(['product_code' => $product_code])->toArray();
+     $LinenameDatas = $this->Linenames->find()
+     ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+     $linename = $LinenameDatas[0]["name"];
+
        $html =
 
        "\n";
@@ -266,7 +278,7 @@ class htmlkensahyouprogram extends AppController
           "<tr style='background-color: #FFFFCC'>\n".
           "<td style='border:none; background-color:#E6FFFF'>　　　　　　　　　　</td>\n".
           "<td width='100'><strong>\n".
-          "$machine_num\n".
+          "$linename\n".
           "号ライン\n".
           "</strong></td>\n".
           "</tr></tbody></table><br><br>\n";

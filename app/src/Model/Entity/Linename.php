@@ -8,6 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $factory_id
+ * @property int $machine_num
  * @property string $name
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at
@@ -31,6 +32,7 @@ class Linename extends Entity
      */
     protected $_accessible = [
         'factory_id' => true,
+        'machine_num' => true,
         'name' => true,
         'delete_flag' => true,
         'created_at' => true,

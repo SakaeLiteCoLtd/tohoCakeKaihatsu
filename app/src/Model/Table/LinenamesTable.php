@@ -56,6 +56,11 @@ class LinenamesTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
+            ->integer('machine_num')
+            ->requirePresence('machine_num', 'create')
+            ->notEmpty('machine_num');
+
+        $validator
             ->scalar('name')
             ->maxLength('name', 255)
             ->requirePresence('name', 'create')

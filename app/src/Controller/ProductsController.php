@@ -1562,7 +1562,8 @@ class ProductsController extends AppController
       $data = $this->request->getData();
 
       $Products = $this->Products->find()->contain(["Factories"])
-      ->where(['Products.name like' => "%".$data["name"]."%", 'Products.delete_flag' => 0])->toArray();
+      ->where(['Products.name like' => "%".$data["name"]."%", 'Products.delete_flag' => 0])
+      ->order(["product_code"=>"ASC"])->toArray();
       $this->set('Products', $Products);
 
     }

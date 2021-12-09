@@ -4,6 +4,11 @@
  $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
+
+ use Cake\ORM\TableRegistry;//独立したテーブルを扱う
+ $this->Products = TableRegistry::get('Products');
+ $this->Linenames = TableRegistry::get('Linenames');
+
 ?>
 <?php
 $this->layout = false;
@@ -29,14 +34,22 @@ echo $this->Html->css('kensahyou');
 <table class="white">
       <tbody class='sample non-sample'>
         <tr>
-        <td style='width:100'>ライン番号</td>
+        <td style='width:100'>ライン</td>
         <td style='width:200'>管理No.</td>
           <td style='width:200'>製品名</td>
         </tr>
 
           <?php for($i=0; $i<count($arrInspectionDataResultParents); $i++): ?>
+
+            <?php
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $arrInspectionDataResultParents[$i]["product_code"]])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $arrInspectionDataResultParents[$i]["machine_num"]])->toArray();
+            ?>
+
             <tr>
-            <td><?= h($arrInspectionDataResultParents[$i]["machine_num"]);?></td>
+            <td><?= h($LinenameDatas[0]["name"]);?></td>
               <td><?= h($arrInspectionDataResultParents[$i]["product_code"]) ? $this->Html->link($arrInspectionDataResultParents[$i]["product_code"], ['action' => 'kensatyuichiran', 's' => "0_".$arrInspectionDataResultParents[$i]["machine_num"]."_".$arrInspectionDataResultParents[$i]["product_code"]]) : '' ?></td>
               <td><?= h($arrInspectionDataResultParents[$i]["name"]);?></td>
             </tr>
@@ -54,15 +67,23 @@ echo $this->Html->css('kensahyou');
 <table class="white">
       <tbody class='sample non-sample'>
         <tr>
-        <td style='width:100'>号機</td>
+        <td style='width:100'>ライン</td>
         <td style='width:200'>管理No.</td>
         <td style='width:200'>製品名</td>
         <td style='width:150'>検査日</td>
         </tr>
 
           <?php for($i=0; $i<count($arrInspectionDataResultParentnotfin); $i++): ?>
+
+            <?php
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $arrInspectionDataResultParentnotfin[$i]["product_code"]])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $arrInspectionDataResultParentnotfin[$i]["machine_num"]])->toArray();
+            ?>
+
             <tr>
-            <td><?= h($arrInspectionDataResultParentnotfin[$i]["machine_num"]);?></td>
+            <td><?= h($LinenameDatas[0]["name"]);?></td>
               <td><?= h($arrInspectionDataResultParentnotfin[$i]["product_code"]) ? $this->Html->link($arrInspectionDataResultParentnotfin[$i]["product_code"], ['action' => 'kensatyuichiran', 's' => "1_".$arrInspectionDataResultParentnotfin[$i]["machine_num"]."_".$arrInspectionDataResultParentnotfin[$i]["product_code"]]) : '' ?></td>
               <td><?= h($arrInspectionDataResultParentnotfin[$i]["name"]);?></td>
               <td><?= h($arrInspectionDataResultParentnotfin[$i]["datetime"]);?></td>

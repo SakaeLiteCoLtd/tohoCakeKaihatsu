@@ -18,6 +18,7 @@
 
 <?= $this->Form->create($linenames, ['url' => ['action' => 'adddo']]) ?>
 
+<?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$this->request->getData('machine_num'), 'label'=>false)) ?>
 <?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$this->request->getData('name'), 'label'=>false)) ?>
 <br><br><br>
 
@@ -36,7 +37,7 @@
 
           <table>
         <tr>
-          <td width="280"><strong>工場名</strong></td>
+        <td width="280"><strong>工場名</strong></td>
         </tr>
         <tr>
           <td><?= h($factory_name) ?></td>
@@ -50,10 +51,12 @@
 
         <table>
         <tr>
-          <td width="280"><strong>ライン</strong></td>
+        <td width="200"><strong>ライン番号</strong></td>
+        <td width="200"><strong>ライン名</strong></td>
         </tr>
         <tr>
-          <td><?= h($this->request->getData('name')) ?></td>
+        <td><?= h($this->request->getData('machine_num')) ?></td>
+        <td><?= h($this->request->getData('name')) ?></td>
         </tr>
       </table>
 

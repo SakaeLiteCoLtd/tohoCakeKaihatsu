@@ -44,11 +44,11 @@ if($status_kensahyou == 0){
         <table>
         <tr>
           <td width="240"><strong>工場名（変更不可）</strong></td>
-          <td width="240"><strong>仕入品コード（変更不可）</strong></td>
+          <td width="240"><strong>仕入品コード</strong></td>
         </tr>
         <tr>
         <td><?= h($factory_name) ?></td>
-        <td><?= h($this->request->getData('material_code')) ?></td>
+        <td><?= h($material_code) ?></td>
         </tr>
       </table>
         <table>

@@ -4,6 +4,11 @@
  $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
+
+ use Cake\ORM\TableRegistry;//独立したテーブルを扱う
+ $this->Products = TableRegistry::get('Products');
+ $this->Linenames = TableRegistry::get('Linenames');
+
 ?>
 <?php
 $this->layout = false;
@@ -70,7 +75,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
       <tr>
         <td style='width:130'>測定日</td>
         <td>製品名</td>
-        <td>　ライン番号　</td>
+        <td>　ライン　</td>
       </tr>
 
         <?php for($i=0; $i<=2; $i++): ?>
@@ -85,7 +90,14 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
           <tr>
             <td><?= h($date) ? $this->Html->link($date, ['action' => 'kensakuhyouji', 's' => $date."_".$machine_num."_".$product_code]) : '' ?></td>
             <td><?= h("　".$product_name."　");?></td>
-            <td><?= h("　".$machine_num."　");?></td>
+            <?php
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+            ?>
+
+<td><?= h($LinenameDatas[0]["name"]);?></td>
           </tr>
         <?php endfor;?>
 
@@ -103,7 +115,7 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
         <tr>
           <td style='width:130'>測定日</td>
           <td>製品名</td>
-          <td>　ライン番号　</td>
+          <td>　ライン　</td>
         </tr>
 
           <?php for($i=0; $i<count($arrDates); $i++): ?>
@@ -118,7 +130,15 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
             <tr>
             <td><?= h($date) ? $this->Html->link($date, ['action' => 'kensakuhyouji', 's' => $date."_".$machine_num."_".$product_code]) : '' ?></td>
             <td><?= h("　".$product_name."　");?></td>
-            <td><?= h("　".$machine_num."　");?></td>
+
+            <?php
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+            ?>
+
+<td><?= h($LinenameDatas[0]["name"]);?></td>
             </tr>
           <?php endfor;?>
 

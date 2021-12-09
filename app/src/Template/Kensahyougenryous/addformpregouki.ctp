@@ -30,13 +30,13 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
 
 <br>
-<div align="center"><font size="3"><?= __("ライン番号を選択して「次へ」ボタンを押してください。") ?></font></div>
+<div align="center"><font size="3"><?= __("ラインを選択して「次へ」ボタンを押してください。") ?></font></div>
 <br>
 
 <table>
   <tbody style="background-color: #FFFFCC">
     <tr>
-      <td width="100">ライン番号</td>
+      <td width="100">ライン</td>
     </tr>
     <tr>
     <td><?= $this->Form->control('machine_num', ['options' => $arrGouki, 'label'=>false]) ?></td>

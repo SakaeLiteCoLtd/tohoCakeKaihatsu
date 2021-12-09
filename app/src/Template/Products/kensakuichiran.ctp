@@ -29,19 +29,19 @@
 
     <table>
           <tr>
-          <td width="280"><strong>製品名</strong></td>
-          <td width="100"><strong>長さ</strong></td>
-          <td width="180"><strong>製品コード</strong></td>
-          <td width="180"><strong>使用工場</strong></td>
+          <td><strong>使用工場</strong></td>
+          <td><strong>製品コード</strong></td>
+          <td><strong>製品名</strong></td>
+          <td><strong>長さ(mm)</strong></td>
         	</tr>
 
         <?php for($i=0; $i<count($Products); $i++): ?>
 
           <tr>
+          <td><?= h($Products[$i]["factory"]["name"]) ?></td>
+          <td><?= h($Products[$i]["product_code"]) ?></td>
           <td><?= h($Products[$i]["name"]) ?></td>
           <td><?= h($Products[$i]["length"]) ?></td>
-          <td><?= h($Products[$i]["product_code"]) ?></td>
-          <td><?= h($Products[$i]["factory"]["name"]) ?></td>
           </tr>
 
       <?php endfor;?>

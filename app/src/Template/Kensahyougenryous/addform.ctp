@@ -74,27 +74,11 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
   <tbody>
     <tr style="background-color: #FFFFCC">
     <td style="border:none; background-color:#E6FFFF">　　　　　　　　　　</td>
-    <td width="100"><strong><?= __($machine_num) ?>号ライン</strong></td>
+    <td width="100"><strong><?= __($linename) ?>号ライン</strong></td>
     </tr>
   </tbody>
 </table>
 
-<?php if (count($arrGouki) > 1000):?>
-
-<table align="left">
-  <tbody>
-    <tr>
-    <td style="background-color: #FFFFCC" width="150">登録済み号機番号</td>
-    <td style="background-color: #FFFFCC" width="60"><?= $this->Form->control('saved_machine_num', ['options' => $arrGouki, 'label'=>false]) ?></td>
-    <td style="border:none">　　</td>
-    <td style="border:none"><?= $this->Form->submit(('登録済みデータ反映'), array('name' => 'hannei')) ?></td>
-      <td style="border:none">　　</td>
-    </tr>
-  </tbody>
-</table>
-
-<?php else : ?>
-<?php endif; ?>
 
 <table align="right">
   <tbody class='sample non-sample'>

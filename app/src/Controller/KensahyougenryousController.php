@@ -56,6 +56,7 @@ class KensahyougenryousController extends AppController
      $this->ProductMaterialMachines = TableRegistry::get('ProductMaterialMachines');
      $this->ProductMachineMaterials = TableRegistry::get('ProductMachineMaterials');
      $this->ProductConditonChildren = TableRegistry::get('ProductConditonChildren');
+     $this->Linenames = TableRegistry::get('Linenames');
 
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
@@ -262,18 +263,7 @@ class KensahyougenryousController extends AppController
       }
 
       $data = $this->request->getData();
-/*
-      $arrGouki = [
-        1 => 1,
-        2 => 2,
-        3 => 3,
-        4 => 4,
-        5 => 5,
-        6 => 6,
-        7 => 7
-      ];
-      $this->set('arrGouki', $arrGouki);
-*/
+
       $session = $this->request->getSession();
       $datasession = $session->read();
 
@@ -291,11 +281,6 @@ class KensahyougenryousController extends AppController
             $Linenames = $this->Linenames->find()
             ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
               }
-      $arrGouki = array();
-      for($j=0; $j<count($Linenames); $j++){
-        $arrGouki[$Linenames[$j]["name"]] = $Linenames[$j]["name"];
-      }
-      $this->set('arrGouki', $arrGouki);
  
       if(isset($data["next"])){//「次へ」ボタンを押したとき
 
@@ -308,6 +293,18 @@ class KensahyougenryousController extends AppController
 
       }
    
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"]])->toArray();
+
+      $arrGouki = array();
+      for($k=0; $k<count($LinenameDatas); $k++){
+        $array = array($LinenameDatas[$k]["machine_num"] => $LinenameDatas[$k]["name"]);
+        $arrGouki = $arrGouki + $array;
+      }
+      $this->set('arrGouki', $arrGouki);
+
     }
 
     public function addform()
@@ -352,6 +349,12 @@ class KensahyougenryousController extends AppController
   */
       }
 
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+      $this->set('linename', $LinenameDatas[0]["name"]);
+
       $product_code_ini = substr($product_code, 0, 11);
       $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
       ->where(['product_code like' => $product_code_ini.'%', 
@@ -359,17 +362,6 @@ class KensahyougenryousController extends AppController
       'ProductConditionParents.delete_flag' => 0])
       ->order(["machine_num"=>"ASC"])->toArray();
 
-      $arrGouki = array();
-      for($k=0; $k<count($ProductConditionParents); $k++){
-        $array = array($ProductConditionParents[$k]["machine_num"] => $ProductConditionParents[$k]["machine_num"]);
-        $arrGouki = $arrGouki + $array;
-      }
-      $this->set('arrGouki', $arrGouki);
-/*
-      echo "<pre>";
-      print_r($arrGouki);
-      echo "</pre>";
-*/
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -798,6 +790,12 @@ class KensahyougenryousController extends AppController
       $machine_num = $data["machine_num"];
       $this->set('machine_num', $machine_num);
 
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+      $this->set('linename', $LinenameDatas[0]["name"]);
+
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -928,6 +926,12 @@ class KensahyougenryousController extends AppController
       $this->set('product_code', $product_code);
       $machine_num = $data["machine_num"];
       $this->set('machine_num', $machine_num);
+
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+      $this->set('linename', $LinenameDatas[0]["name"]);
 
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
@@ -1068,6 +1072,12 @@ class KensahyougenryousController extends AppController
       $this->set('product_code', $product_code);
       $machine_num = $data["machine_num"];
       $this->set('machine_num', $machine_num);
+
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+      $this->set('linename', $LinenameDatas[0]["name"]);
 
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
@@ -1622,6 +1632,12 @@ class KensahyougenryousController extends AppController
       $machine_num = $Data["machine_num"];
       $this->set('machine_num', $machine_num);
 
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+      $this->set('linename', $LinenameDatas[0]["name"]);
+      
       $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
       ->where(['machine_num' => $machine_num, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
@@ -1827,6 +1843,12 @@ class KensahyougenryousController extends AppController
       $this->set('product_code', $product_code);
       $machine_num = $data["machine_num"];
       $this->set('machine_num', $machine_num);
+
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+      $this->set('linename', $LinenameDatas[0]["name"]);
 
       $session = $this->request->getSession();
       $datasession = $session->read();
@@ -2472,9 +2494,10 @@ class KensahyougenryousController extends AppController
 
       $arrGouki = array();
       for($j=0; $j<count($Linenames); $j++){
-        $arrGouki[$Linenames[$j]["name"]] = $Linenames[$j]["name"];
+        $arrGouki[$Linenames[$j]["machine_num"]] = $Linenames[$j]["name"];
       }
       $this->set('arrGouki', $arrGouki);
+
 
       echo "<pre>";
       print_r("");
@@ -2512,6 +2535,12 @@ class KensahyougenryousController extends AppController
       $this->set('machine_num', $machine_num);
       $machine_num_moto = $data["machine_num_moto"];
       $this->set('machine_num_moto', $machine_num_moto);
+
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+      $this->set('linename', $LinenameDatas[0]["name"]);
 
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
@@ -2824,6 +2853,12 @@ class KensahyougenryousController extends AppController
       $machine_num_moto = $data["machine_num_moto"];
       $this->set('machine_num_moto', $machine_num_moto);
 
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+      $this->set('linename', $LinenameDatas[0]["name"]);
+
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -2944,6 +2979,12 @@ class KensahyougenryousController extends AppController
       $this->set('machine_num', $machine_num);
       $machine_num_moto = $data["machine_num_moto"];
       $this->set('machine_num_moto', $machine_num_moto);
+
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+      $this->set('linename', $LinenameDatas[0]["name"]);
 
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);

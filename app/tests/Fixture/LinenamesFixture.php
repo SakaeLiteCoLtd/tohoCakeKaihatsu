@@ -19,6 +19,7 @@ class LinenamesFixture extends TestFixture
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
         'factory_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'machine_num' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'name' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'delete_flag' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'created_at' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
@@ -46,11 +47,12 @@ class LinenamesFixture extends TestFixture
             [
                 'id' => 1,
                 'factory_id' => 1,
+                'machine_num' => 1,
                 'name' => 'Lorem ipsum dolor sit amet',
                 'delete_flag' => 1,
-                'created_at' => '2021-11-17 14:12:42',
+                'created_at' => '2021-12-09 13:40:30',
                 'created_staff' => 1,
-                'updated_at' => '2021-11-17 14:12:42',
+                'updated_at' => '2021-12-09 13:40:30',
                 'updated_staff' => 1
             ],
         ];

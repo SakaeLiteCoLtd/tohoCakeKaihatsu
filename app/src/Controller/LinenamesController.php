@@ -93,6 +93,15 @@ class LinenamesController extends AppController
       $linenames = $this->Linenames->newEntity();
       $this->set('linenames', $linenames);
 
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
       $session = $this->request->getSession();
       $datasession = $session->read();
 
@@ -135,6 +144,29 @@ class LinenamesController extends AppController
           $factory_name = $Factories[0]["name"];
           $this->set('factory_name', $factory_name);
         }
+
+        if(isset($data["factory_id"])){
+          $factory_id = $data["factory_id"];
+        }else{
+          $session = $this->request->getSession();
+          $datasession = $session->read();
+          $staff_id = $datasession['Auth']['User']['staff_id'];
+
+          $Staffs = $this->Staffs->find()
+          ->where(['id' => $staff_id])
+          ->toArray();
+          $factory_id = $Staffs[0]["factory_id"];
+        }
+  
+        $Linenames = $this->Linenames->find()->where(['factory_id' => $factory_id
+        , 'machine_num' => $data["machine_num"], 'delete_flag' => 0])->toArray();
+
+        if(isset($Linenames[0])){
+
+          return $this->redirect(['action' => 'addform',
+          's' => ['mess' => "ライン番号".$data["machine_num"]."は既に存在します。"]]);
+
+        }
   
     }
 
@@ -166,6 +198,7 @@ class LinenamesController extends AppController
       $arrtourokuLinenames = array();
       $arrtourokuLinenames = [
         'factory_id' => $factory_id,
+        'machine_num' => $data["machine_num"],
         'name' => $data["name"],
         'delete_flag' => 0,
         'created_at' => date("Y-m-d H:i:s"),
@@ -254,11 +287,22 @@ class LinenamesController extends AppController
       ->where(['id' => $id])->toArray();
       $name = $linenames[0]["name"];
       $this->set('name', $name);
+      $machine_num = $linenames[0]["machine_num"];
+      $this->set('machine_num', $machine_num);
 
     }
 
     public function editform($id = null)
     {
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
       $session = $this->request->getSession();
       $_SESSION = $session->read();
 
@@ -273,9 +317,33 @@ class LinenamesController extends AppController
 
     public function editconfirm()
     {
-        $linenames = $this->Linenames->newEntity();
-        $this->set('linenames', $linenames);
-    }
+      $linenames = $this->Linenames->newEntity();
+      $this->set('linenames', $linenames);
+
+      $data = $this->request->getData();
+
+      $Linenames = $this->Linenames->find()->where(['id' => $data['id']])->toArray();
+      $factory_id = $Linenames[0]["factory_id"];
+
+      $Linenames = $this->Linenames->find()->where(['id IS NOT' => $data['id'], 'factory_id' => $factory_id
+      , 'machine_num' => $data["machine_num"], 'delete_flag' => 0])->toArray();
+
+      if(isset($Linenames[0])){
+
+        $id = $data["id"];
+
+        if(!isset($_SESSION)){
+          session_start();
+        }
+        $_SESSION['materiallinename'] = array();
+        $_SESSION['materiallinename'] = $id;
+
+        return $this->redirect(['action' => 'editform',
+        's' => ['mess' => "ライン番号".$data["machine_num"]."は既に存在します。"]]);
+
+      }
+
+  }
 
     public function editdo()
     {
@@ -295,6 +363,7 @@ class LinenamesController extends AppController
       $arrupdateLinenames = array();
       $arrupdateLinenames = [
         'factory_id' => $linenamesmoto[0]["factory_id"],
+        'machine_num' => $linenamesmoto[0]["machine_num"],
         'name' => $linenamesmoto[0]["name"],
         'delete_flag' => 1,
         'created_at' => $linenamesmoto[0]["created_at"]->format("Y-m-d H:i:s"),
@@ -316,8 +385,9 @@ class LinenamesController extends AppController
 
          $this->Linenames->updateAll(
            [
-           'name' => $data["name"],
-           'updated_at' => date('Y-m-d H:i:s'),
+            'machine_num' => $data["machine_num"],
+            'name' => $data["name"],
+            'updated_at' => date('Y-m-d H:i:s'),
            'updated_staff' => $staff_id],
            ['id'  => $data['id']]);
 

@@ -28,15 +28,19 @@
 
     <table>
           <tr>
-          <td width="280"><strong>仕入品名</strong></td>
-          <td width="180"><strong>使用工場</strong></td>
+          <td><strong>使用工場</strong></td>
+          <td><strong>仕入品コード</strong></td>
+          <td><strong>仕入品名</strong></td>
+          <td><strong>仕入先</strong></td>
         	</tr>
 
         <?php for($i=0; $i<count($Materials); $i++): ?>
 
           <tr>
-          <td><?= h($Materials[$i]["name"]) ?></td>
           <td><?= h($Materials[$i]["factory"]["name"]) ?></td>
+          <td><?= h($Materials[$i]["material_code"]) ?></td>
+          <td><?= h($Materials[$i]["name"]) ?></td>
+          <td><?= h($Materials[$i]["material_supplier"]["name"]) ?></td>
           </tr>
 
       <?php endfor;?>

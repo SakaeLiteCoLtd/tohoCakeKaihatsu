@@ -22,6 +22,7 @@
 
 <?php
 $arrMaterials_name_list = json_encode($arrMaterials_name_list);//jsに配列を受け渡すために変換
+$arrMaterialSuppliers_name_list = json_encode($arrMaterialSuppliers_name_list);//jsに配列を受け渡すために変換
 ?>
 
 <script>
@@ -31,6 +32,15 @@ $(function() {
       let wordlist = <?php echo $arrMaterials_name_list; ?>
       // 入力補完を実施する要素に単語リストを設定
       $("#Materials_name_list").autocomplete({
+        source: wordlist
+      });
+  });
+
+  $(function() {
+      // 入力補完候補の単語リスト
+      let wordlist = <?php echo $arrMaterialSuppliers_name_list; ?>
+      // 入力補完を実施する要素に単語リストを設定
+      $("#MaterialSuppliers_name_list").autocomplete({
         source: wordlist
       });
   });
@@ -48,19 +58,26 @@ $(function() {
         <br>
         <table>
           <tbody class='sample non-sample'>
-          <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt"><?= __('検索するデータを入力してください（製品名の一部で検索できます）') ?></strong></td></tr>
+          <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt"><?= __('検索するデータを入力してください（仕入品名の一部で検索できます）') ?></strong></td></tr>
+          <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></td></tr>
           </tbody>
         </table>
         <br>
 
       <table>
       <tr>
-        <td width="320"><strong>仕入品名（一部のみも可）</strong></td>
+        <td width="220"><strong>仕入品名（一部のみも可）</strong></td>
+        <td width="220"><strong>仕入先（任意入力）</strong></td>
+        <td width="120"><strong>表示順</strong></td>
       </tr>
       <tr>
         <td>
-        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30, 'id'=>"Materials_name_list")) ?>
+        <?= $this->Form->control('material_name', array('type'=>'text', 'label'=>false, 'size'=>20, 'id'=>"Materials_name_list")) ?>
         </td>
+        <td>
+        <?= $this->Form->control('material_supplier_name', array('type'=>'text', 'label'=>false, 'size'=>20, 'id'=>"MaterialSuppliers_name_list")) ?>
+        </td>
+        <td><?= $this->Form->control('sort', ['options' => $arrSorts, 'label'=>false]) ?></td>
       </tr>
     </table>
 

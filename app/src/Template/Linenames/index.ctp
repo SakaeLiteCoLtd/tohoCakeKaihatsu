@@ -31,14 +31,15 @@ echo $this->Html->css('index');
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-              <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
+              <th scope="col" style='width:50'><font color=black><?= __('No.') ?></font></th>
 
               <?php if ($usercheck == 1): ?>
-                <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"工場名"]) ?></th>
+                <th scope="col" style='width:130'><?= $this->Paginator->sort('name', ['label'=>"工場名"]) ?></th>
                 <?php else : ?>
                   <?php endif; ?>
 
-                <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"ライン"]) ?></th>
+                  <th scope="col" style='width:130'><?= $this->Paginator->sort('name', ['label'=>"ライン番号"]) ?></th>
+                  <th scope="col" style='width:130'><?= $this->Paginator->sort('name', ['label'=>"ライン名"]) ?></th>
                 <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>
         </thead>
@@ -52,7 +53,8 @@ echo $this->Html->css('index');
                 <?php else : ?>
                   <?php endif; ?>
 
-               <td><?= h($linename->name) ?></td>
+                  <td><?= h($linename->machine_num) ?></td>
+                  <td><?= h($linename->name) ?></td>
                 <td class="actions">
                   <?= $this->Html->link(__('編集'), ['action' => 'detail', $linename->id]) ?>
                 </td>

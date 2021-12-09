@@ -27,7 +27,8 @@
         <br>
         <table>
           <tbody class='sample non-sample'>
-            <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('登録するデータを入力してください') ?></strong></td></tr>
+            <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt; color:blue"><?= __('登録するデータを入力してください') ?></strong></td></tr>
+            <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></td></tr>
           </tbody>
         </table>
         <br>
@@ -41,15 +42,18 @@
             <td><?= $this->Form->control('factory_id', ['options' => $Factories, 'label'=>false]) ?></td>
         	</tr>
         </table>
+        
  <?php else : ?>
 <?php endif; ?>
 
         <table>
         <tr>
-          <td width="280"><strong>ライン</strong></td>
+        <td width="200"><strong>ライン番号</strong></td>
+        <td width="200"><strong>ライン名</strong></td>
         </tr>
         <tr>
-          <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'autofocus'=>true, 'autocomplete'=>"off")) ?></td>
+        <td><?= $this->Form->control('machine_num', array('type'=>'text', 'label'=>false, 'autofocus'=>true, 'autocomplete'=>"off")) ?></td>
+        <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'autocomplete'=>"off")) ?></td>
         </tr>
       </table>
 

@@ -31,10 +31,12 @@
 
     <table>
       <tr>
-        <td width="280"><strong>ライン</strong></td>
+      <td width="200"><strong>ライン番号</strong></td>
+        <td width="200"><strong>ライン名</strong></td>
       </tr>
       <tr>
-        <td><?= h($name) ?></td>
+      <td><?= h($machine_num) ?></td>
+      <td><?= h($name) ?></td>
       </tr>
     </table>
 

@@ -54,7 +54,7 @@ if($status_kensahyou == 0){
         <table>
         <tr>
           <td width="240"><strong>工場名（変更不可）</strong></td>
-          <td width="240"><strong>仕入品コード（変更不可）</strong></td>
+          <td width="240"><strong>元仕入品コード（自動更新）</strong></td>
         </tr>
         <tr>
         <td><?= h($factory_name) ?></td>

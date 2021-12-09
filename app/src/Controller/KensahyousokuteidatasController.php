@@ -54,6 +54,7 @@ class KensahyousokuteidatasController extends AppController
      $this->InspectionDataConditonChildren = TableRegistry::get('InspectionDataConditonChildren');
      $this->InspectionDataConditonParents = TableRegistry::get('InspectionDataConditonParents');
      $this->DailyReports = TableRegistry::get('DailyReports');
+     $this->Linenames = TableRegistry::get('Linenames');
 
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
@@ -447,13 +448,6 @@ class KensahyousokuteidatasController extends AppController
       'ProductConditionParents.delete_flag' => 0])
       ->order(["machine_num"=>"ASC"])->toArray();
 
-      $arrGouki = array();
-      for($k=0; $k<count($ProductConditionParents); $k++){
-        $array = array($ProductConditionParents[$k]["machine_num"] => $ProductConditionParents[$k]["machine_num"]);
-        $arrGouki = $arrGouki + $array;
-      }
-      $this->set('arrGouki', $arrGouki);
-
       if(isset($data["next"])){//「次へ」ボタンを押したとき
 
         $product_code = $data["product_code"];
@@ -465,6 +459,19 @@ class KensahyousokuteidatasController extends AppController
 
       }
    
+      $arrGouki = array();
+      for($k=0; $k<count($ProductConditionParents); $k++){
+
+        $ProductDatas = $this->Products->find()
+        ->where(['product_code' => $product_code])->toArray();
+        $LinenameDatas = $this->Linenames->find()
+        ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $ProductConditionParents[$k]["machine_num"]])->toArray();
+
+        $array = array($ProductConditionParents[$k]["machine_num"] => $LinenameDatas[0]["name"]);
+        $arrGouki = $arrGouki + $array;
+      }
+      $this->set('arrGouki', $arrGouki);
+
     }
 
     public function addconditionform()
@@ -856,6 +863,13 @@ class KensahyousokuteidatasController extends AppController
         's' => ['mess' => "「".$Products[0]["name"]."」は成形温度登録がされていません"]]);
 
       }
+
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+      $this->set('linename', $LinenameDatas[0]["name"]);
+
       echo "<pre>";
       print_r("");
       echo "</pre>";
@@ -3847,9 +3861,11 @@ class KensahyousokuteidatasController extends AppController
             ->where(['product_id' => $InspectionDataResultParentData[$j]["product_id"], 'delete_flag' => 0])
             ->order(["id"=>"DESC"])->toArray();
   
-            $this->InspectionDataResultParents->updateAll(
-              ['daily_report_id' => $DailyReportId[0]['id'], 'kanryou_flag' => 1],
-              ['id' => $InspectionDataResultParentData[$j]['id']]);
+            if(isset($DailyReportId[0]['id'])){
+              $this->InspectionDataResultParents->updateAll(
+                ['daily_report_id' => $DailyReportId[0]['id'], 'kanryou_flag' => 1],
+                ['id' => $InspectionDataResultParentData[$j]['id']]);
+            }
 
           }
 
@@ -4099,12 +4115,6 @@ class KensahyousokuteidatasController extends AppController
       print_r($data);
       echo "</pre>";
 */
-      $arrGouki = array();
-      for($k=0; $k<count($ProductConditionParents); $k++){
-        $array = array($ProductConditionParents[$k]["machine_num"] => $ProductConditionParents[$k]["machine_num"]);
-        $arrGouki = $arrGouki + $array;
-      }
-      $this->set('arrGouki', $arrGouki);
 
       if(isset($data["next"])){//「次へ」ボタンを押したとき
 
@@ -4116,6 +4126,18 @@ class KensahyousokuteidatasController extends AppController
 
       }
    
+      $arrGouki = array();
+      for($k=0; $k<count($ProductConditionParents); $k++){
+        $ProductDatas = $this->Products->find()
+        ->where(['product_code' => $product_code])->toArray();
+        $LinenameDatas = $this->Linenames->find()
+        ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $ProductConditionParents[$k]["machine_num"]])->toArray();
+
+        $array = array($ProductConditionParents[$k]["machine_num"] => $LinenameDatas[0]["name"]);
+        $arrGouki = $arrGouki + $array;
+      }
+      $this->set('arrGouki', $arrGouki);
+
     }
 
     public function kensakudate()
@@ -6198,12 +6220,6 @@ class KensahyousokuteidatasController extends AppController
       print_r($data);
       echo "</pre>";
 */
-      $arrGouki = array();
-      for($k=0; $k<count($ProductConditionParents); $k++){
-        $array = array($ProductConditionParents[$k]["machine_num"] => $ProductConditionParents[$k]["machine_num"]);
-        $arrGouki = $arrGouki + $array;
-      }
-      $this->set('arrGouki', $arrGouki);
 
       if(isset($data["next"])){//「次へ」ボタンを押したとき
 
@@ -6215,6 +6231,18 @@ class KensahyousokuteidatasController extends AppController
 
       }
    
+      $arrGouki = array();
+      for($k=0; $k<count($ProductConditionParents); $k++){
+        $ProductDatas = $this->Products->find()
+        ->where(['product_code' => $product_code])->toArray();
+        $LinenameDatas = $this->Linenames->find()
+        ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $ProductConditionParents[$k]["machine_num"]])->toArray();
+
+        $array = array($ProductConditionParents[$k]["machine_num"] => $LinenameDatas[0]["name"]);
+        $arrGouki = $arrGouki + $array;
+      }
+      $this->set('arrGouki', $arrGouki);
+
     }
 
     public function kensakuikkatsudate()

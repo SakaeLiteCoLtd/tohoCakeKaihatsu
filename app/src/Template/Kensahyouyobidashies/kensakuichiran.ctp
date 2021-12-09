@@ -33,11 +33,11 @@ echo $this->Html->css('kensahyou');
   <tbody style="background-color: #FFFFCC">
     <tr class="parents">
       <td width="400"><strong>製品名（一部のみ入力可）</strong></td>
-      <td width="150"><strong>ライン番号</strong></td>
+      <td width="150"><strong>ライン</strong></td>
     </tr>
     <tr>
       <td><?= h($product_name) ?></td>
-      <td><?= h($machine_num) ?></td>
+      <td><?= h($linename) ?></td>
       <td style="border: none; background-color: #E6FFFF"><strong><?= h("　で検索しています。　") ?></strong></td>
     </tr>
   </tbody>
@@ -55,7 +55,7 @@ echo $this->Html->css('kensahyou');
             <tr class="parents">
             <td style='width:60; height:60; border-width: 1px solid black;'><?= __('No.') ?></td>
             <td style='height:60; border-width: 1px solid black;'><?= __('製品名') ?></td>
-            <td style='width:100; height:60; border-width: 1px solid black;'><?= __('ライン番号') ?></td>
+            <td style='width:100; height:60; border-width: 1px solid black;'><?= __('ライン') ?></td>
             <td style='width:150; height:60; border-width: 1px solid black;' colspan='2'><?= __('検査表画像・規格') ?></td>
             <td style='width:150; height:60; border-width: 1px solid black;' colspan='2'><?= __('原料・温度条件') ?></td>
 
@@ -75,7 +75,7 @@ echo $this->Html->css('kensahyou');
             <tr class='children'>
               <td><?= h($i) ?></td>
               <td><?= h("　".$arrKensahyous[$j]["product_name"]."　") ?></td>
-                <td><?= h($arrKensahyous[$j]["machine_num"]) ?></td>
+                <td><?= h($arrKensahyous[$j]["Linename"]) ?></td>
 
                 <?php if ($arrKensahyous[$j]["kikaku"] !== "登録済み"): ?>
                  <td colspan='2'>

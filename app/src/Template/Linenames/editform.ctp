@@ -29,20 +29,24 @@
         <br>
         <table>
           <tbody class='sample non-sample'>
-            <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('データを編集してください') ?></strong></td></tr>
+            <tr><td style="border:none"><strong style="font-size: 13pt; color:blue"><?= __('データを編集してください') ?></strong></td></tr>
+            <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></td></tr>
           </tbody>
         </table>
         <br>
 
         <table>
         <tr>
-          <td width="280"><strong>ライン</strong></td>
+        <td width="200"><strong>ライン番号</strong></td>
+        <td width="200"><strong>ライン名</strong></td>
         </tr>
         <tr>
-          <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'autofocus'=>true, 'autocomplete'=>"off")) ?></td>
+        <td><?= $this->Form->control('machine_num', array('type'=>'text', 'label'=>false, 'autofocus'=>true, 'autocomplete'=>"off")) ?></td>
+        <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'autocomplete'=>"off")) ?></td>
         </tr>
       </table>
 
+      <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$id, 'label'=>false)) ?>
       <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$id, 'label'=>false)) ?>
 
     </fieldset>

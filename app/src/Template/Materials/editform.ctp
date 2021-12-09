@@ -29,7 +29,8 @@
         <br>
         <table>
           <tbody class='sample non-sample'>
-            <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('データを編集してください') ?></strong></td></tr>
+            <tr><td style="border:none"><strong style="font-size: 13pt; color:blue"><?= __('データを編集してください') ?></strong></td></tr>
+            <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></td></tr>
           </tbody>
         </table>
         <br>
@@ -37,7 +38,7 @@
         <table>
         <tr>
           <td width="240"><strong>工場名（変更不可）</strong></td>
-          <td width="240"><strong>仕入品コード（変更不可）</strong></td>
+          <td width="240"><strong>元仕入品コード（自動更新）</strong></td>
         </tr>
         <tr>
         <td><?= h($factory_name) ?></td>

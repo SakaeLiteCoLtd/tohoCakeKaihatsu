@@ -103,8 +103,14 @@ class KensahyouyobidashiesController extends AppController
 
       if(isset($arrkensaku[0])){//検索の場合
 
+        $data["machine_num"];
+
+        $arrmachine_num = explode("_",$data["machine_num"]);
+        $line_factory_id = $arrmachine_num[0];
+        $machine_num = $arrmachine_num[1];
+
         return $this->redirect(['action' => 'kensakuichiran',
-        's' => ['product_name' => $data["product_name"], 'machine_num' => $data["machine_num"]]]);
+        's' => ['product_name' => $data["product_name"], 'machine_num' => $machine_num, 'line_factory_id' => $line_factory_id]]);
 
       }
 
@@ -303,11 +309,19 @@ class KensahyouyobidashiesController extends AppController
                 $datetime = $seikeijouken_created_at;
               }
       
+              if($machine_num == "-"){
+                $Linename = "-";
+              }else{
+                $LinenameDatas = $this->Linenames->find()
+                ->where(['delete_flag' => 0, 'factory_id' => $Products[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+                $Linename = $LinenameDatas[0]["name"];
+                }
+        
               $arrKensahyous[] = [
                 "product_code_ini" => $product_code_ini,
                 "product_code" => $arrProducts[$i],
                 "product_name" => $Products[0]["name"],
-                "machine_num" => $machine_num,
+                "machine_num" => $Linename,
                 "kikaku" => $kikaku,
                 "seikeijouken" => $seikeijouken,
                 "kikaku_created_at" => $kikaku_created_at,
@@ -329,11 +343,19 @@ class KensahyouyobidashiesController extends AppController
             $datetime = $seikeijouken_created_at;
           }
   
+          if($machine_num == "-"){
+            $Linename = "-";
+          }else{
+            $LinenameDatas = $this->Linenames->find()
+            ->where(['delete_flag' => 0, 'factory_id' => $Products[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+            $Linename = $LinenameDatas[0]["name"];
+            }
+
           $arrKensahyous[] = [
             "product_code_ini" => $product_code_ini,
             "product_code" => $arrProducts[$i],
             "product_name" => $Products[0]["name"],
-            "machine_num" => $machine_num,
+            "machine_num" => $Linename,
             "kikaku" => $kikaku,
             "seikeijouken" => $seikeijouken,
             "kikaku_created_at" => $kikaku_created_at,
@@ -370,16 +392,30 @@ class KensahyouyobidashiesController extends AppController
       $arrProduct_name_list = array_values($arrProduct_name_list);
       $this->set('arrProduct_name_list', $arrProduct_name_list);
 
-      $arrGouki = [
-        "選択なし" => "選択なし",
-        1 => 1,
-        2 => 2,
-        3 => 3,
-        4 => 4,
-        5 => 5,
-        6 => 6,
-        7 => 7
-      ];
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $staff_id])
+      ->toArray();
+      $factory_id = $Staffs[0]["factory_id"];
+
+      if($factory_id == 5){
+        $Linenames = $this->Linenames->find()
+        ->where(['delete_flag' => 0])->toArray();
+          }else{
+            $Linenames = $this->Linenames->find()
+            ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+              }
+
+      $arrGouki = array();
+      for($j=0; $j<count($Linenames); $j++){
+        if($j == 0){
+          $array = array("a_選択なし" => "選択なし");
+          $arrGouki = $arrGouki + $array;
+        }
+        $array = array($Linenames[$j]["factory_id"]."_".$Linenames[$j]["machine_num"] => $Linenames[$j]["name"]);
+        $arrGouki = $arrGouki + $array;
+    }
       $this->set('arrGouki', $arrGouki);
 
       echo "<pre>";
@@ -522,15 +558,24 @@ class KensahyouyobidashiesController extends AppController
       }
     
       $data = $this->request->query('s');
-      /*
+     /* 
       echo "<pre>";
       print_r($data);
       echo "</pre>";
 */
       $product_name = $data["product_name"];
       $this->set('product_name', $product_name);
-      $machine_num = $data["machine_num"];
-      $this->set('machine_num', $machine_num);
+      $line_machine_num = $data["machine_num"];
+      $this->set('machine_num', $line_machine_num);
+      $line_factory_id = $data["line_factory_id"];
+
+      if($line_factory_id !== "a"){
+        $LinenameDatas = $this->Linenames->find()
+        ->where(['delete_flag' => 0, 'factory_id' => $line_factory_id, 'machine_num' => $line_machine_num])->toArray();
+        $this->set('linename', $LinenameDatas[0]["name"]);
+        }else{
+          $this->set('linename', "選択なし");
+        }
 
       if($factory_id == 5){//本部の人がログインしている場合
 
@@ -686,17 +731,45 @@ class KensahyouyobidashiesController extends AppController
                 $datetime = $seikeijouken_created_at;
               }
       
-              $arrKensahyous[] = [
-                "product_code_ini" => $product_code_ini,
-                "product_code" => $arrProducts[$i],
-                "product_name" => $Products[0]["name"],
-                "machine_num" => $machine_num,
-                "kikaku" => $kikaku,
-                "seikeijouken" => $seikeijouken,
-                "kikaku_created_at" => $kikaku_created_at,
-                "seikeijouken_created_at" => $seikeijouken_created_at,
-                "datetime" => $datetime
-              ];
+              if($machine_num == "-"){
+                $Linename = "-";
+              }else{
+                $LinenameDatas = $this->Linenames->find()
+                ->where(['delete_flag' => 0, 'factory_id' => $Products[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+                $Linename = $LinenameDatas[0]["name"];
+                }
+    
+                if($line_factory_id == "a"){
+
+                  $arrKensahyous[] = [
+                    "product_code_ini" => $product_code_ini,
+                    "product_code" => $arrProducts[$i],
+                    "product_name" => $Products[0]["name"],
+                    "machine_num" => $machine_num,
+                    "Linename" => $Linename,
+                    "kikaku" => $kikaku,
+                    "seikeijouken" => $seikeijouken,
+                    "kikaku_created_at" => $kikaku_created_at,
+                    "seikeijouken_created_at" => $seikeijouken_created_at,
+                    "datetime" => $datetime
+                  ];
+
+                }elseif($line_machine_num == $machine_num){
+
+                  $arrKensahyous[] = [
+                    "product_code_ini" => $product_code_ini,
+                    "product_code" => $arrProducts[$i],
+                    "product_name" => $Products[0]["name"],
+                    "machine_num" => $machine_num,
+                    "Linename" => $Linename,
+                    "kikaku" => $kikaku,
+                    "seikeijouken" => $seikeijouken,
+                    "kikaku_created_at" => $kikaku_created_at,
+                    "seikeijouken_created_at" => $seikeijouken_created_at,
+                    "datetime" => $datetime
+                  ];
+    
+                }
   
             }
     
@@ -711,18 +784,46 @@ class KensahyouyobidashiesController extends AppController
             $datetime = $seikeijouken_created_at;
           }
   
-          $arrKensahyous[] = [
-            "product_code_ini" => $product_code_ini,
-            "product_code" => $arrProducts[$i],
-            "product_name" => $Products[0]["name"],
-            "machine_num" => $machine_num,
-            "kikaku" => $kikaku,
-            "seikeijouken" => $seikeijouken,
-            "kikaku_created_at" => $kikaku_created_at,
-            "seikeijouken_created_at" => $seikeijouken_created_at,
-            "datetime" => $datetime
-          ];
-  
+          if($machine_num == "-"){
+            $Linename = "-";
+          }else{
+            $LinenameDatas = $this->Linenames->find()
+            ->where(['delete_flag' => 0, 'factory_id' => $Products[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+            $Linename = $LinenameDatas[0]["name"];
+            }
+
+            if($line_factory_id == "a"){
+
+              $arrKensahyous[] = [
+                "product_code_ini" => $product_code_ini,
+                "product_code" => $arrProducts[$i],
+                "product_name" => $Products[0]["name"],
+                "machine_num" => $machine_num,
+                "Linename" => $Linename,
+                "kikaku" => $kikaku,
+                "seikeijouken" => $seikeijouken,
+                "kikaku_created_at" => $kikaku_created_at,
+                "seikeijouken_created_at" => $seikeijouken_created_at,
+                "datetime" => $datetime
+              ];
+
+            }elseif($line_machine_num == $machine_num){
+
+              $arrKensahyous[] = [
+                "product_code_ini" => $product_code_ini,
+                "product_code" => $arrProducts[$i],
+                "product_name" => $Products[0]["name"],
+                "machine_num" => $machine_num,
+                "Linename" => $Linename,
+                "kikaku" => $kikaku,
+                "seikeijouken" => $seikeijouken,
+                "kikaku_created_at" => $kikaku_created_at,
+                "seikeijouken_created_at" => $seikeijouken_created_at,
+                "datetime" => $datetime
+              ];
+
+            }
+
         }
 
       }
@@ -739,6 +840,7 @@ class KensahyouyobidashiesController extends AppController
         $this->set('mes',$mes);
         $this->set('check',1);
       }
+
 
       echo "<pre>";
       print_r("");
@@ -762,6 +864,11 @@ class KensahyouyobidashiesController extends AppController
       $machine_num = $Data["machine_num"];
       $this->set('machine_num', $machine_num);
 
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'machine_num' => $machine_num, 'factory_id' => $ProductDatas[0]["factory_id"]])->toArray();
+
       $Products = $this->Products->find()
       ->where(['product_code' => $product_code])->toArray();
       $product_name = $Products[0]['name'];
@@ -770,7 +877,7 @@ class KensahyouyobidashiesController extends AppController
       if($machine_num == "-"){
         $mes = "製品名：".$product_name."　の検査表画像・規格データを削除します。";
       }else{
-        $mes = "製品名：".$product_name."　ライン番号：".$machine_num."　の原料・温度条件表を削除します。";
+        $mes = "製品名：".$product_name."　ライン：".$LinenameDatas[0]["name"]."　の原料・温度条件表を削除します。";
       }
       $this->set('mes',$mes);
 
@@ -794,6 +901,11 @@ class KensahyouyobidashiesController extends AppController
       $this->set('product_name', $product_name);
       $machine_num = $data["machine_num"];
       $this->set('machine_num', $machine_num);
+
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'machine_num' => $machine_num, 'factory_id' => $ProductDatas[0]["factory_id"]])->toArray();
 
       $product_code_ini = substr($product_code, 0, 11);
 /*
@@ -895,7 +1007,7 @@ class KensahyouyobidashiesController extends AppController
   
               }
 
-              $mes = "製品名：".$product_name."　ライン番号：".$machine_num."　の原料・温度条件表が削除されました。";
+              $mes = "製品名：".$product_name."　ライン：".$LinenameDatas[0]["name"]."　の原料・温度条件表が削除されました。";
               $this->set('mes',$mes);
               $connection->commit();// コミット5
      
@@ -956,23 +1068,13 @@ class KensahyouyobidashiesController extends AppController
 
       $arrGouki = array();
       for($j=0; $j<count($Linenames); $j++){
-        if($Linenames[$j]["name"] != $machine_num_moto){
-          $i = $Linenames[$j]["name"];
-          $array = array($i => $i);
+        if($Linenames[$j]["machine_num"] != $machine_num_moto){
+          $array = array($Linenames[$j]["machine_num"] => $Linenames[$j]["name"]);
           $arrGouki = $arrGouki + $array;
         }
       }
       $this->set('arrGouki', $arrGouki);
-/*
-      $arrGouki = array();
-      for($i=1; $i<8; $i++){
-        if($i != $machine_num_moto){
-          $array = array($i => $i);
-          $arrGouki = $arrGouki + $array;
-        }
-      }
-      $this->set('arrGouki', $arrGouki);
-*/
+
     }
 
     public function fukuseiform()
@@ -995,6 +1097,12 @@ class KensahyouyobidashiesController extends AppController
       $this->set('machine_num', $machine_num);
       $machine_num_moto = $data["machine_num_moto"];
       $this->set('machine_num_moto', $machine_num_moto);
+
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+      $this->set('linename', $LinenameDatas[0]["name"]);
 
       $session = $this->request->getSession();
       $datasession = $session->read();
@@ -1642,6 +1750,12 @@ class KensahyouyobidashiesController extends AppController
       $machine_num_moto = $data["machine_num_moto"];
       $this->set('machine_num_moto', $machine_num_moto);
 
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+      $this->set('linename', $LinenameDatas[0]["name"]);
+
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -1942,6 +2056,12 @@ class KensahyouyobidashiesController extends AppController
       $machine_num_moto = $data["machine_num_moto"];
       $this->set('machine_num_moto', $machine_num_moto);
 
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+      $this->set('linename', $LinenameDatas[0]["name"]);
+
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -2060,6 +2180,12 @@ class KensahyouyobidashiesController extends AppController
       $this->set('product_code', $product_code);
       $machine_num = $data["machine_num"];
       $this->set('machine_num', $machine_num);
+
+      $ProductDatas = $this->Products->find()
+      ->where(['product_code' => $product_code])->toArray();
+      $LinenameDatas = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+      $this->set('linename', $LinenameDatas[0]["name"]);
 
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);

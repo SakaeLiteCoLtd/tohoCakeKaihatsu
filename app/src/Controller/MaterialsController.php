@@ -347,14 +347,19 @@ class MaterialsController extends AppController
       ->where(['material_code like' => "S".$material_supplier_code.$code_factory.'%', 'material_type_id' => $data["type_id"]])
       ->order(["material_code"=>"DESC"])->toArray();
 
-      if(isset($Materialstypecheck[0])){//typeが同じものがある
+      if(isset($Materialstypecheck[0])){//typeが同じものがある・・・それと同じ３桁を取り、最後の２桁で連番
 
         $material_code_renban = substr($Materialstypecheck[0]["material_code"], -5, 3);
-        $Materialsnow2 = $this->Materials->find()
-        ->where(['material_code like' => "S".$material_supplier_code.$code_factory.$material_code_renban.'%'])
-        ->order(["material_code"=>"DESC"])->toArray();
+
+        if(substr($Materialstypecheck[0]["material_code"], -2, 2) == 99){
+
+          return $this->redirect(['action' => 'addform',
+          's' => ['mess' => "※仕入品コードが取得できません。別の仕入品種類で登録しなおしてください。"]]);
   
-        $material_code_renban2 = substr($Materialstypecheck[0]["material_code"], -1, 2) + 1;
+        }else{
+          $material_code_renban2 = substr($Materialstypecheck[0]["material_code"], -2, 2) + 1;
+        }
+
         $material_code_renban2 = sprintf('%02d', $material_code_renban2);//0埋め
 
       }else{//typeが同じものがない
@@ -364,8 +369,17 @@ class MaterialsController extends AppController
         ->order(["material_code"=>"DESC"])->toArray();
   
         if(isset($Materialsnow[0])){
-          $material_code_renban = substr($Materialsnow[0]["material_code"], -5, 3) + 1;
-          $material_code_renban = sprintf('%03d', $material_code_renban);//0埋め
+
+          if(substr($Materialsnow[0]["material_code"], -5, 3) == 999){
+
+            return $this->redirect(['action' => 'addform',
+            's' => ['mess' => "※仕入品コードが取得できません。別の仕入先名で登録しなおしてください。"]]);
+    
+          }else{
+            $material_code_renban = substr($Materialsnow[0]["material_code"], -5, 3) + 1;
+            $material_code_renban = sprintf('%03d', $material_code_renban);//0埋め
+            }
+  
         }else{
           $material_code_renban = "001";
         }
@@ -375,7 +389,7 @@ class MaterialsController extends AppController
         ->order(["material_code"=>"DESC"])->toArray();
   
         if(isset($Materialsnow2[0])){
-          $material_code_renban2 = substr($Materialsnow2[0]["material_code"], -1, 2) + 1;
+          $material_code_renban2 = substr($Materialsnow2[0]["material_code"], -2, 2) + 1;
           $material_code_renban2 = sprintf('%02d', $material_code_renban2);//0埋め
         }else{
           $material_code_renban2 = "01";
@@ -457,6 +471,15 @@ class MaterialsController extends AppController
     {
       $material = $this->Materials->newEntity();
       $this->set('material', $material);
+
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
 
       $session = $this->request->getSession();
       $_SESSION = $session->read();
@@ -565,6 +588,104 @@ class MaterialsController extends AppController
       $Materialsmoto = $this->Materials->find()
       ->where(['id' => $data['id']])->toArray();
 
+      if($data["material_type_id"] == $Materialsmoto[0]["material_type_id"]){
+        $material_code = $data["material_code"];
+      }else{
+
+        $MaterialSuppliers = $this->MaterialSuppliers->find()
+        ->where(['id' => $data['material_supplier_id']])->toArray();
+        $material_supplier_code = $MaterialSuppliers[0]['material_supplier_code'];
+  
+        if($data['factory_id'] == 1){
+          $code_factory = "D";
+        }elseif($data['factory_id'] == 2){
+          $code_factory = "I";
+        }elseif($data['factory_id'] == 3){
+          $code_factory = "B";
+        }elseif($data['factory_id'] == 4){
+          $code_factory = "K";
+        }else{
+          $code_factory = "H";
+        }
+  
+        $Materialstypecheck = $this->Materials->find()
+        ->where(['material_code like' => "S".$material_supplier_code.$code_factory.'%', 'material_type_id' => $data["material_type_id"], 'delete_flag' => 0])
+        ->order(["material_code"=>"DESC"])->toArray();
+  
+        if(isset($Materialstypecheck[0])){//typeが同じものがある・・・それと同じ３桁を取り、最後の２桁で連番
+
+          $material_code_renban = substr($Materialstypecheck[0]["material_code"], -5, 3);
+  
+          if(substr($Materialstypecheck[0]["material_code"], -2, 2) == 99){
+  
+            $id = $data["id"];
+
+            if(!isset($_SESSION)){
+              session_start();
+            }
+            $_SESSION['materialdata'] = array();
+            $_SESSION['materialdata'] = $id;
+    
+            return $this->redirect(['action' => 'editform',
+            's' => ['mess' => "※仕入品コードが取得できません。別の仕入品種類で登録しなおしてください。"]]);
+    
+          }else{
+            $material_code_renban2 = substr($Materialstypecheck[0]["material_code"], -2, 2) + 1;
+          }
+  
+          $material_code_renban2 = sprintf('%02d', $material_code_renban2);//0埋め
+  
+        }else{//typeが同じものがない
+  
+          $Materialsnow = $this->Materials->find()
+          ->where(['material_code like' => "S".$material_supplier_code.$code_factory.'%'])
+          ->order(["material_code"=>"DESC"])->toArray();
+    
+          if(isset($Materialsnow[0])){
+  
+            if(substr($Materialsnow[0]["material_code"], -5, 3) == 999){
+  
+              $id = $data["id"];
+
+              if(!isset($_SESSION)){
+                session_start();
+              }
+              $_SESSION['materialdata'] = array();
+              $_SESSION['materialdata'] = $id;
+  
+              return $this->redirect(['action' => 'editform',
+              's' => ['mess' => "※仕入品コードが取得できません。別の仕入先名で登録しなおしてください。"]]);
+      
+            }else{
+              $material_code_renban = substr($Materialsnow[0]["material_code"], -5, 3) + 1;
+              $material_code_renban = sprintf('%03d', $material_code_renban);//0埋め
+              }
+    
+          }else{
+            $material_code_renban = "001";
+          }
+    
+          $Materialsnow2 = $this->Materials->find()
+          ->where(['material_code like' => "S".$material_supplier_code.$code_factory.$material_code_renban.'%'])
+          ->order(["material_code"=>"DESC"])->toArray();
+    
+          if(isset($Materialsnow2[0])){
+            $material_code_renban2 = substr($Materialsnow2[0]["material_code"], -2, 2) + 1;
+            $material_code_renban2 = sprintf('%02d', $material_code_renban2);//0埋め
+          }else{
+            $material_code_renban2 = "01";
+          }
+    
+        }
+  
+      $material_code = "S".$material_supplier_code.$code_factory.$material_code_renban.$material_code_renban2;
+      }
+      $this->set('material_code', $material_code);
+/*
+      echo "<pre>";
+      print_r($material_code);
+      echo "</pre>";
+*/
       $arrMaterialmoto = array();
       $arrMaterialmoto = [
         'factory_id' => $Materialsmoto[0]["factory_id"],
@@ -586,6 +707,7 @@ class MaterialsController extends AppController
       print_r($arrupdatematerial);
       echo "</pre>";
 */
+
       $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $data);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -593,7 +715,7 @@ class MaterialsController extends AppController
        try {//トランザクション4
         if ($this->Materials->updateAll(
           ['factory_id' => $data["factory_id"],
-           'material_code' => $data["material_code"],
+           'material_code' => $material_code,
            'name' => $data["name"],
            'material_supplier_id' => $data["material_supplier_id"],
            'material_type_id' => $data["material_type_id"],
@@ -625,7 +747,6 @@ class MaterialsController extends AppController
      }//トランザクション10
 
     }
-
 
     public function edit($id = null)
     {
@@ -747,6 +868,20 @@ class MaterialsController extends AppController
       $arrMaterials_name_list = array_unique($arrMaterials_name_list);
       $arrMaterials_name_list = array_values($arrMaterials_name_list);
       $this->set('arrMaterials_name_list', $arrMaterials_name_list);
+
+      $MaterialSuppliers_name_list = $this->MaterialSuppliers->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrMaterialSuppliers_name_list = array();
+      for($j=0; $j<count($MaterialSuppliers_name_list); $j++){
+        array_push($arrMaterialSuppliers_name_list,$MaterialSuppliers_name_list[$j]["name"]);
+      }
+      $arrMaterialSuppliers_name_list = array_unique($arrMaterialSuppliers_name_list);
+      $arrMaterialSuppliers_name_list = array_values($arrMaterialSuppliers_name_list);
+      $this->set('arrMaterialSuppliers_name_list', $arrMaterialSuppliers_name_list);
+
+      $arrSorts = ["0" => "コード昇順", "1" => "コード降順", "2" => "登録日最新順"];
+      $this->set('arrSorts', $arrSorts);
+
     }
 
     public function kensakuichiran()
@@ -755,11 +890,97 @@ class MaterialsController extends AppController
       $this->set('material', $material);
 
       $data = $this->request->getData();
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      if(strlen($data['material_supplier_name']) > 0 && strlen($data['material_name']) > 0){
 
-      $Materials = $this->Materials->find()->contain(["Factories"])
-      ->where(['Materials.name like' => "%".$data["name"]."%", 'Materials.delete_flag' => 0])->toArray();
+        $MaterialSuppliers = $this->MaterialSuppliers->find()
+        ->where(['name' => $data['material_supplier_name']])->toArray();
+        if(isset($MaterialSuppliers[0])){
+  
+          $material_supplier_id = $MaterialSuppliers[0]['id'];
+          $this->set('material_supplier_id', $material_supplier_id);
+          $supplier_name = $MaterialSuppliers[0]['name'];
+          $this->set('supplier_name', $supplier_name);
+  
+          $Materials = $this->Materials->find()->contain(["Factories" ,"MaterialSuppliers"])
+          ->where(['Materials.name like' => "%".$data["material_name"]."%"
+          , 'MaterialSuppliers.name' => $supplier_name, 'Materials.delete_flag' => 0])->toArray();
+  
+          }else{
+  
+          return $this->redirect(['action' => 'kensakupreform',
+          's' => ['mess' => "入力された仕入先名は存在しません。"]]);
+  
+        }
+  
+      }elseif(strlen($data['material_name']) > 0){
+
+        $Materials = $this->Materials->find()->contain(["Factories" ,"MaterialSuppliers"])
+        ->where(['Materials.name like' => "%".$data["material_name"]."%", 'Materials.delete_flag' => 0])->toArray();
+  
+      }elseif(strlen($data['material_supplier_name']) > 0){
+
+        $MaterialSuppliers = $this->MaterialSuppliers->find()
+        ->where(['name' => $data['material_supplier_name']])->toArray();
+        if(isset($MaterialSuppliers[0])){
+  
+          $material_supplier_id = $MaterialSuppliers[0]['id'];
+          $this->set('material_supplier_id', $material_supplier_id);
+          $supplier_name = $MaterialSuppliers[0]['name'];
+          $this->set('supplier_name', $supplier_name);
+  
+          $Materials = $this->Materials->find()->contain(["Factories" ,"MaterialSuppliers"])
+          ->where(['MaterialSuppliers.name' => $supplier_name, 'Materials.delete_flag' => 0])->toArray();
+    
+          }else{
+  
+          return $this->redirect(['action' => 'kensakupreform',
+          's' => ['mess' => "入力された仕入先名は存在しません。"]]);
+  
+        }
+
+      }else{
+
+        return $this->redirect(['action' => 'kensakupreform',
+        's' => ['mess' => "仕入品名または仕入先名を入力してください"]]);
+
+      }
+
+      if($data["sort"] == 0){
+
+        foreach($Materials as $key => $value)
+        {
+          $sort_keys[$key] = $value['material_code'];
+        }
+       
+        array_multisort($sort_keys, SORT_ASC, $Materials);
+      
+      }elseif($data["sort"] == 1){
+
+        foreach($Materials as $key => $value)
+        {
+          $sort_keys[$key] = $value['material_code'];
+        }
+       
+        array_multisort($sort_keys, SORT_DESC, $Materials);
+
+      }else{
+
+        array_multisort(array_map("strtotime", array_column($Materials, "created_at" )), SORT_DESC, $Materials);
+
+      }
+
       $this->set('Materials', $Materials);
 
+/*
+      echo "<pre>";
+      print_r($Materials);
+      echo "</pre>";
+*/
     }
 
 }

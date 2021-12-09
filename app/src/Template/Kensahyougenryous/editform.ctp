@@ -87,6 +87,19 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
 </table>
 
 <br><br>
+
+<table align="left">
+  <tbody>
+    <tr style="background-color: #FFFFCC">
+    <td style="border:none; background-color:#E6FFFF">　　　　　　　　　　</td>
+    <td width="100"><strong><?= __($linename) ?>号ライン</strong></td>
+    </tr>
+  </tbody>
+</table>
+<?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
+
+<?php
+/*
 <table align="left">
   <tbody>
     <tr style="background-color: #FFFFCC">
@@ -96,6 +109,8 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
     </tr>
   </tbody>
 </table>
+*/
+?>
 <br><br>
 
 <?php for($j=1; $j<=$tuikaseikeiki; $j++): ?>

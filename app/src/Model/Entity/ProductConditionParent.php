@@ -8,7 +8,7 @@ use Cake\ORM\Entity;
  *
  * @property int $id
  * @property int $product_id
- * @property string $machine_num
+ * @property int $machine_num
  * @property string $product_condition_code
  * @property int $version
  * @property \Cake\I18n\FrozenTime $start_datetime

@@ -45,7 +45,7 @@ echo $this->Html->css('kensahyou');
   <tbody>
     <tr style="background-color: #FFFFCC">
     <td style="border:none; background-color:#E6FFFF">　　　　　　　　　　</td>
-    <td width="100"><strong><?= __($machine_num) ?>号ライン</strong></td>
+    <td width="100"><strong><?= __($linename) ?>号ライン</strong></td>
     </tr>
   </tbody>
 </table>

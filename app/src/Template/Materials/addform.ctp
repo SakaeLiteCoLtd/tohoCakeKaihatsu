@@ -48,7 +48,7 @@ $(function() {
         <br>
         <table>
           <tbody class='sample non-sample'>
-            <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('登録するデータを入力してください') ?></strong></td></tr>
+            <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt; color:blue"><?= __('登録するデータを入力してください') ?></strong></td></tr>
             <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></td></tr>
          </tbody>
         </table>
