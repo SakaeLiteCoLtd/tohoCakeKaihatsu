@@ -25,9 +25,9 @@ class KadousController extends AppController
     parent::beforeFilter($event);
 
     // 認証なしでアクセスできるアクションの指定
-    $this->Auth->allow([
-      "index", "yobidashidate", "view"
-    ]);
+//    $this->Auth->allow([
+//      "index", "yobidashidate", "view"
+//    ]);
   }
 
     public function index()
@@ -60,6 +60,28 @@ class KadousController extends AppController
           $arrDays[$k] =$k;
         }
       $this->set('arrDays',$arrDays);
+
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+
+      $Staffs = $this->Staffs->find()
+      ->where(['id' => $staff_id])
+      ->toArray();
+      $factory_id = $Staffs[0]["factory_id"];
+
+      if($factory_id == 5){
+  
+        $this->set('usercheck', 1);
+        $Factories = $this->Factories->find('list');
+        $this->set(compact('Factories'));
+
+      }else{
+  
+        $this->set('usercheck', 0);
+
+      }
+
     }
 
     public function view()
@@ -68,11 +90,11 @@ class KadousController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-      /*
+      
       echo "<pre>";
-      print_r($date_sta);
+      print_r($data);
       echo "</pre>";
-*/
+
       $dateselect = $data["date_sta_year"]."-".$data["date_sta_month"]."-".$data["date_sta_date"];
       $date1 = strtotime($dateselect);
       $date_sta = $dateselect." 06:00:00";
@@ -87,17 +109,19 @@ class KadousController extends AppController
       ->toArray();
       $factory_id = $Staffs[0]["factory_id"];
 
-      if($factory_id == 5){
+      if(isset($data["factory_id"])){
+
         $Linenames = $this->Linenames->find()
-        ->where(['delete_flag' => 0])->toArray();
+        ->where(['delete_flag' => 0, 'factory_id' => $data["factory_id"]])->toArray();
 
         $DailyReportsData = $this->DailyReports->find()
         ->contain(['Products'])
         ->where(['start_datetime >=' => $date_sta, 'start_datetime <' => $date_fin,
-        'DailyReports.delete_flag' => 0])
+        'DailyReports.delete_flag' => 0, 'factory_id' => $data["factory_id"]])
         ->order(["machine_num"=>"ASC"])->toArray();
   
       }else{
+
         $Linenames = $this->Linenames->find()
         ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
 

@@ -31,6 +31,20 @@ echo $this->Html->css('kensahyou');
 <br><br><br>
 
 <?= $this->Form->create($product, ['url' => ['action' => 'view']]) ?>
+        <?php if ($usercheck == 1): ?>
+          <table>
+          <tr class="parents">
+            <td width="200"><strong>工場名</strong></td>
+        	</tr>
+          <tr style="background-color: #FFFFCC">
+            <td><?= $this->Form->control('factory_id', ['options' => $Factories, 'label'=>false]) ?></td>
+        	</tr>
+        </table>
+        <br>
+        <br>
+
+ <?php else : ?>
+<?php endif; ?>
 
     <table>
   <tbody style="background-color: #FFFFCC">

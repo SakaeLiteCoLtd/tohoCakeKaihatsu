@@ -52,7 +52,7 @@
         <td width="200"><strong>ライン名</strong></td>
         </tr>
         <tr>
-        <td><?= $this->Form->control('machine_num', array('type'=>'text', 'label'=>false, 'autofocus'=>true, 'autocomplete'=>"off")) ?></td>
+        <td><?= $this->Form->control('machine_num', array('type'=>'text', 'label'=>false, 'pattern' => '^[0-9]+$', 'title'=>'半角数字で入力して下さい。', 'autofocus'=>true, 'autocomplete'=>"off")) ?></td>
         <td><?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'autocomplete'=>"off")) ?></td>
         </tr>
       </table>
