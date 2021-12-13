@@ -19,6 +19,13 @@ class KadousController extends AppController
    $this->DailyReports = TableRegistry::get('DailyReports');
    $this->Linenames = TableRegistry::get('Linenames');
 
+   if(!isset($_SESSION)){//フォーム再送信の確認対策
+    session_start();
+  }
+  header('Expires:');
+  header('Cache-Control:');
+  header('Pragma:');
+
   }
 
   public function beforeFilter(Event $event){
@@ -90,15 +97,17 @@ class KadousController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-      
+      /*
       echo "<pre>";
       print_r($data);
       echo "</pre>";
-
+*/
       $dateselect = $data["date_sta_year"]."-".$data["date_sta_month"]."-".$data["date_sta_date"];
       $date1 = strtotime($dateselect);
       $date_sta = $dateselect." 06:00:00";
       $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 06:00:00";
+      $this->set('date_sta', $date_sta);
+      $this->set('date_fin', $date_fin);
 
       $session = $this->request->getSession();
       $datasession = $session->read();
@@ -108,8 +117,11 @@ class KadousController extends AppController
       ->where(['id' => $staff_id])
       ->toArray();
       $factory_id = $Staffs[0]["factory_id"];
+      $this->set('factory_id', $factory_id);
 
       if(isset($data["factory_id"])){
+
+        $this->set('factory_id', $data["factory_id"]);
 
         $Linenames = $this->Linenames->find()
         ->where(['delete_flag' => 0, 'factory_id' => $data["factory_id"]])->toArray();
@@ -136,7 +148,7 @@ class KadousController extends AppController
       $arrlines_all = array();
       for($i=0; $i<count($Linenames); $i++){
 
-        $arrlines_all[] = $Linenames[$i]["name"];
+        $arrlines_all[] = $Linenames[$i]["machine_num"];
 
       }
 
@@ -189,11 +201,40 @@ class KadousController extends AppController
       array_multisort($sort_keys, SORT_ASC, $arrAll);
 
       $this->set('arrAll', $arrAll);
+
+      echo "<pre>";
+      print_r("");
+      echo "</pre>";
+
 /*
       echo "<pre>";
       print_r($arrAll);
       echo "</pre>";
 */
+    }
+
+    public function details()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      $data = $this->request->getData();
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+
+      $arrsyousai = array_keys($data, '詳細');
+      $arrmachine_products = $arrsyousai[0];
+      $machine_products = explode("_",$arrmachine_products);
+
+      echo "<pre>";
+      print_r($machine_products);
+      echo "</pre>";
+
+      echo "<pre>";
+      print_r("");
+      echo "</pre>";
+
     }
 
 }

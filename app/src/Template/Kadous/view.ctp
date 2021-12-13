@@ -7,6 +7,10 @@
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
  $htmlloginmenu = new htmlloginmenu();
  $htmllogin = $htmlloginmenu->Loginmenu();
+
+ use Cake\ORM\TableRegistry;//独立したテーブルを扱う
+ $this->Linenames = TableRegistry::get('Linenames');
+
 ?>
 <br>
 <table class='sample hesdermenu'>
@@ -30,7 +34,7 @@ echo $this->Html->css('kensahyou');
 
 <br><br><br>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'view']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'details']]) ?>
 
 <table>
         <thead>
@@ -49,18 +53,25 @@ echo $this->Html->css('kensahyou');
         </thead>
 
 <tbody>
-        <?php for($j=0; $j<count($arrAll); $j++): ?>
-            <tr class='children'>
-            <td><?= h($arrAll[$j]["machine_num"]) ?></td>
-            <td style='font-size: 11pt'><?= h(substr($arrAll[$j]["start_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["start_datetime"], 11, 8)) ?></td>
-            <td style='font-size: 11pt'><?= h(substr($arrAll[$j]["start_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["start_datetime"], 11, 8)) ?></td>
-            <td style='font-size: 11pt'><?= h(substr($arrAll[$j]["finish_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["finish_datetime"], 11, 8)) ?></td>
-            <td style='font-size: 11pt'><?= h(substr($arrAll[$j]["finish_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["finish_datetime"], 11, 8)) ?></td>
-            <td style='font-size: 10pt'><?= h($arrAll[$j]["name"]) ?></td>
-            <td style='font-size: 10pt'><?= h($arrAll[$j]["length"]) ?></td>
-            <td style='font-size: 10pt'><?= h($arrAll[$j]["amount"]) ?></td>
-            <td style='font-size: 10pt'><?= h($arrAll[$j]["sum_weight"]) ?></td>
-              <td>
+<?php for($j=0; $j<count($arrAll); $j++): ?>
+  <tr class='children'>
+
+  <?php
+        $Linenames = $this->Linenames->find()
+        ->where(['delete_flag' => 0, 'factory_id' => $factory_id, 'machine_num' => $arrAll[$j]["machine_num"]])->toArray();
+      $name_machine = $Linenames[0]["name"];
+?>
+
+  <td><?= h($name_machine) ?></td>
+  <td style='font-size: 11pt'><?= h(substr($arrAll[$j]["start_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["start_datetime"], 11, 8)) ?></td>
+  <td style='font-size: 11pt'></td>
+  <td style='font-size: 11pt'><?= h(substr($arrAll[$j]["finish_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["finish_datetime"], 11, 8)) ?></td>
+  <td style='font-size: 11pt'></td>
+  <td style='font-size: 10pt'><?= h($arrAll[$j]["name"]) ?></td>
+  <td style='font-size: 10pt'><?= h($arrAll[$j]["length"]) ?></td>
+  <td style='font-size: 10pt'><?= h($arrAll[$j]["amount"]) ?></td>
+  <td style='font-size: 10pt'><?= h($arrAll[$j]["sum_weight"]) ?></td>
+  <td>
               <?php if ($arrAll[$j]["product_code"] !== "-"): ?>
               <?php
               echo $this->Form->submit("詳細" , ['name' => $arrAll[$j]["machine_num"]."_".$arrAll[$j]["product_code"]]) ;
@@ -74,3 +85,6 @@ echo $this->Html->css('kensahyou');
 
         </tbody>
     </table>
+    <?= $this->Form->control('date_sta', array('type'=>'hidden', 'value'=>$date_sta, 'label'=>false)) ?>
+    <?= $this->Form->control('date_fin', array('type'=>'hidden', 'value'=>$date_fin, 'label'=>false)) ?>
+    <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$factory_id, 'label'=>false)) ?>
