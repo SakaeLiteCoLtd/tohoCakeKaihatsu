@@ -3810,7 +3810,7 @@ class KensahyousokuteidatasController extends AppController
       for($j=0; $j<$data["num"]; $j++){
 
         $Products = $this->Products->find()
-        ->where(['length' => $data["length".$j], 'status_kensahyou' => 0, 'delete_flag' => 0])
+        ->where(['product_code like' => $product_code_ini.'%', 'length' => $data["length".$j], 'status_kensahyou' => 0, 'delete_flag' => 0])
         ->toArray();
 
         $tourokuDailyreport[] = [
@@ -4299,7 +4299,11 @@ class KensahyousokuteidatasController extends AppController
       $data = $this->request->query('s');
 
       $arrdata = explode("_",$data);
-
+      /*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
       $datekensaku = $arrdata[0];
       $datetimesta = $arrdata[0]." 06:00";
 			$date1 = strtotime($arrdata[0]);
@@ -5399,6 +5403,13 @@ class KensahyousokuteidatasController extends AppController
           ${"datetime".$n} = $data['datetime'.$n]['hour'].":".$data['datetime'.$n]['minute'];
           $this->set('datetime'.$m,${"datetime".$n});
 
+          ${"product_id".$n} = $data['product_id'.$n];
+          $Products = $this->Products->find()
+          ->where(['id' => ${"product_id".$n}])->toArray();
+          ${"lengthhyouji".$n} = $Products[0]["length"];
+          $this->set('product_id'.$m,${"product_id".$n});
+          $this->set('lengthhyouji'.$m,${"lengthhyouji".$n});
+
           ${"user_code".$n} = $data['user_code'.$n];
           $Users = $this->Users->find()->contain(["Staffs"])->where(['user_code' => ${"user_code".$n}, 'Users.delete_flag' => 0])->toArray();
           if(!isset($Users[0])){
@@ -5436,13 +5447,6 @@ class KensahyousokuteidatasController extends AppController
           ${"lot_number".$m} = $data['lot_number'.$n];
           $this->set('lot_number'.$m,${"lot_number".$m});
 
-          ${"product_id".$n} = $data['product_id'.$m];
-          $Products = $this->Products->find()
-          ->where(['id' => ${"product_id".$n}])->toArray();
-          ${"lengthhyouji".$n} = $Products[0]["length"];
-          $this->set('product_id'.$m,${"product_id".$n});
-          $this->set('lengthhyouji'.$m,${"lengthhyouji".$n});
-
           ${"appearance".$n} = $data['appearance'.$n];
           $this->set('appearance'.$m,${"appearance".$n});
           ${"result_weight".$n} = $data['result_weight'.$n];
@@ -5473,7 +5477,7 @@ class KensahyousokuteidatasController extends AppController
             , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
             if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
-              ${"size".$i} = ${"lengthhyouji".$n};
+              ${"size".$i} = $Products[0]["length_cut"];
               ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
               ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
         
@@ -5819,15 +5823,82 @@ class KensahyousokuteidatasController extends AppController
     
         }
   
-   //     $product_condition_parent_id = $ProductConditionParents[0]['id'];
+        $DailyReportsData = $this->DailyReports->find()
+        ->contain(['Products'])
+        ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%',
+        'start_datetime >=' => $data["datetimesta"], 'start_datetime <' => $data["datetimefin"],
+        'DailyReports.delete_flag' => 0])->toArray();
 
-        if(substr($data['datetime'.$j], 0, 2) < 6){//前日の測定
-          $date1 = strtotime($data['datekensaku']);
-          $datekensaku = date('Y-m-d', strtotime('+1 day', $date1));
-            }else{
-          $datekensaku = $data['datekensaku'];
+        $updateDailyreportmoto = array();
+        for($i=0; $i<count($DailyReportsData); $i++){
+
+          $updateDailyreportmoto[] = [
+            'product_id' => $DailyReportsData[$i]["product_id"],
+            'machine_num' => $DailyReportsData[$i]["machine_num"],
+            'start_datetime' => $DailyReportsData[$i]["start_datetime"],
+            'finish_datetime' => $DailyReportsData[$i]["finish_datetime"],
+            'amount' => $DailyReportsData[$i]["amount"],
+            'sum_weight' => $DailyReportsData[$i]["sum_weight"],
+            'total_loss_weight' => $DailyReportsData[$i]["total_loss_weight"],
+            'bik' => $DailyReportsData[$i]["bik"],
+            'created_at' => $DailyReportsData[$i]["created_at"],
+            'created_staff' => $DailyReportsData[$i]["created_staff"],
+            "delete_flag" => 1,
+            'updated_at' => date('Y-m-d H:i:s'),
+            'updated_staff' => $staff_id,
+          ];
+  
         }
 
+        $updateDailyreport = array();
+        for($i=0; $i<$data["countlength"]; $i++){
+        
+          $ProductDaily = $this->Products->find()
+          ->where(['length' => $data['length'.$i], 'delete_flag' => 0])->toArray();
+  
+          $DailyReportsMoto = $this->DailyReports->find()
+          ->contain(['Products'])
+          ->where(['machine_num' => $machine_num, 'product_id' => $ProductDaily[0]["id"], 
+          'start_datetime >=' => $datetimesta, 'start_datetime <' => $datetimefin,
+          'DailyReports.delete_flag' => 0])->toArray();
+    
+          if(substr($data["datetime1"], 0, 2) < 6){
+            $start_datetime = substr($data["datetimefin"], 0, 10)." ".$data["datetime1"].":00";
+          }else{
+            $start_datetime = substr($data["datetimesta"], 0, 10)." ".$data["datetime1"].":00";
+          }
+    
+          if(substr($data["datetime".$data["gyou"]], 0, 2) < 6){
+            $finish_datetime = substr($data["datetimefin"], 0, 10)." ".$data["datetime".$data["gyou"]].":00";
+          }else{
+            $finish_datetime = substr($data["datetimesta"], 0, 10)." ".$data["datetime".$data["gyou"]].":00";
+          }
+
+          $updateDailyreport[] = [
+              'product_id' => $ProductDaily[0]["id"],
+              "delete_flag" => 0,
+              'machine_num' => $machine_num,
+              'start_datetime' => $start_datetime,
+              'finish_datetime' => $finish_datetime,
+              'amount' => $data["amount".$i],
+              'sum_weight' => $data["sum_weight".$i],
+              'total_loss_weight' => $data["total_loss_weight".$i],
+              'bik' => $data["bik"],
+              'created_at' => $DailyReportsMoto[0]["created_at"]->format("Y-m-d H:i:s"),
+              "created_staff" => $DailyReportsMoto[0]["created_staff"],
+              'updated_at' => date('Y-m-d H:i:s'),
+              'updated_staff' => $staff_id,
+            ];
+  
+        }
+/*
+        echo "<pre>";
+        print_r($updateDailyreportmoto);
+        echo "</pre>";
+        echo "<pre>";
+        print_r($updateDailyreport);
+        echo "</pre>";
+  */
         for($j=1; $j<=$gyou; $j++){
 
           $InspectionDataResultParentsmoto = $this->InspectionDataResultParents->find()->contain(['ProductConditionParents',"Products"])
@@ -5838,12 +5909,18 @@ class KensahyousokuteidatasController extends AppController
           ${"user_code".$j} = $data['user_code'.$j];
           $Users = $this->Users->find()->contain(["Staffs"])->where(['user_code' => ${"user_code".$j}, 'Users.delete_flag' => 0])->toArray();
 
+          if(substr($data['datetime'.$j], 0, 2) < 6){
+            $datetime = substr($data["datetimefin"], 0, 10)." ".$data['datetime'.$j].":00";
+          }else{
+            $datetime = substr($data["datetimesta"], 0, 10)." ".$data['datetime'.$j].":00";
+          }
+
           $updateInspectionDataResultParents = [
             "inspection_data_conditon_parent_id" => $data['inspection_data_conditon_parent_id'.$j],
             "inspection_standard_size_parent_id" => $data['inspection_standard_size_parent_id'.$j],
             "product_condition_parent_id" => $data['product_condition_parent_id'.$j],
             'lot_number' => $data['lot_number'.$j],
-            'datetime' => $datekensaku." ".$data['datetime'.$j].":00",
+            'datetime' => $datetime,
             'staff_id' => $Users[0]["staff_id"],
             'product_id' => $data['product_id'.$j],
             'appearance' => $data['appearance'.$j],
@@ -5857,12 +5934,13 @@ class KensahyousokuteidatasController extends AppController
             'created_at' => $InspectionDataResultParentsmoto[0]["created_at"],
             "created_staff" => $staff_id
           ];
-/*
-          echo "<pre>";
-          print_r($updateInspectionDataResultParents);
-          echo "</pre>";
-  */      
-    //      $InspectionDataResultParents = $this->InspectionDataResultParents->patchEntity($this->InspectionDataResultParents->newEntity(), $tourokuInspectionDataResultParents);
+    
+      //    echo "<pre>";
+      //    print_r($updateInspectionDataResultParents);
+      //    echo "</pre>";
+
+      $product_code_ini = substr($product_code, 0, 11);
+
           $connection = ConnectionManager::get('default');//トランザクション1
           // トランザクション開始2
           $connection->begin();//トランザクション3
@@ -5884,6 +5962,35 @@ class KensahyousokuteidatasController extends AppController
   
               }
 
+              $DailyReportsMoto = $this->DailyReports->find()
+              ->contain(['Products'])
+              ->where(['machine_num' => $machine_num, 'product_id' => $ProductDaily[0]["id"], 
+              'start_datetime >=' => $datetimesta, 'start_datetime <' => $datetimefin,
+              'DailyReports.delete_flag' => 0])->toArray();
+  
+              for($k=0; $k<count($updateDailyreport); $k++){
+
+                $this->DailyReports->updateAll(
+                  [
+                    'product_id' => $updateDailyreport[$k]["product_id"],
+                    'machine_num' => $updateDailyreport[$k]["machine_num"],
+                    'start_datetime' => $updateDailyreport[$k]["start_datetime"],
+                    'finish_datetime' => $updateDailyreport[$k]["finish_datetime"],
+                    'amount' => $updateDailyreport[$k]["amount"],
+                    'sum_weight' => $updateDailyreport[$k]["sum_weight"],
+                    'total_loss_weight' => $updateDailyreport[$k]["total_loss_weight"],
+                    'bik' => $updateDailyreport[$k]["bik"],
+                    'delete_flag' => 0,
+                    'created_at' => $updateDailyreport[$k]["created_at"],
+                    'created_staff' => $updateDailyreport[$k]["created_staff"],
+                    'updated_at' => date('Y-m-d H:i:s'),
+                  'updated_staff' => $staff_id],
+                  ['id' => $DailyReportsData[$k]["id"]]);
+              }
+
+              $DailyReports = $this->DailyReports->patchEntities($this->DailyReports->newEntity(), $updateDailyreportmoto);
+              $this->DailyReports->saveMany($DailyReports);
+
               }
 
               $InspectionDataResultParents = $this->InspectionDataResultParents->patchEntity($this->InspectionDataResultParents->newEntity(), $updateInspectionDataResultParents);
@@ -5896,13 +6003,12 @@ class KensahyousokuteidatasController extends AppController
                   $datekensaku = $data['datekensaku'];
                 }
         
-                $InspectionDataResultParentsId = $this->InspectionDataResultParents->find()->contain(['ProductConditionParents'])
-                ->where(['machine_num' => $machine_num, 'InspectionDataResultParents.delete_flag' => 0, 'inspection_standard_size_parent_id' => $inspection_standard_size_parent_id,
-                 'datetime' => $datekensaku." ".$data['datetime'.$j].":00"])
-                ->order(["InspectionDataResultParents.id"=>"DESC"])->toArray();
+                $InspectionDataResultParentsId = $this->InspectionDataResultParents->find()->contain(['ProductConditionParents','Products'])
+                ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 
+                'datetime >=' => $datetimesta, 'datetime <' => $datetimefin, 'lot_number' => $data['lot_number'.$j]])
+                ->order(["InspectionDataResultParents.updated_at"=>"DESC"])->toArray();
 
                 $tourokuInspectionDataResultChildren = array();
-
                 for($i=1; $i<=11; $i++){
 
                   if(strlen($data['result_size'.$j.$i]) > 0){
@@ -5932,6 +6038,13 @@ class KensahyousokuteidatasController extends AppController
                       $this->set('mes',$mes);
                       $connection->commit();// コミット5
 
+                    }else {
+
+                      $mes = "※更新されませんでした";
+                      $this->set('mes',$mes);
+                      $this->Flash->error(__('The data could not be saved. Please, try again.'));
+                      throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+      
                     }
 
                   }
@@ -5967,6 +6080,20 @@ class KensahyousokuteidatasController extends AppController
               'updated_staff' => $staff_id],
             ['product_id' => $product_id, 'datetime >=' => $datetimesta, 'datetime <=' => $datetimefin])
           ) {
+
+            $product_code_ini = substr($product_code, 0, 11);
+            $DailyReportsData = $this->DailyReports->find()
+            ->contain(['Products'])
+            ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 
+            'start_datetime >=' => $data["datetimesta"], 'start_datetime <' => $data["datetimefin"],
+            'DailyReports.delete_flag' => 0])->toArray();
+                for($i=0; $i<count($DailyReportsData); $i++){
+                  $this->InspectionDataResultParents->updateAll(
+                    [ 'delete_flag' => 1,
+                      'updated_at' => date('Y-m-d H:i:s'),
+                      'updated_staff' => $staff_id],
+                    ['id' => $DailyReportsData[$i]["id"]]);
+                }
 
             $connection->commit();// コミット5
             $mes = "※削除されました";

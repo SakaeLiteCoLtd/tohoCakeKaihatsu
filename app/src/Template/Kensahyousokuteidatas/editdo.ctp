@@ -196,7 +196,6 @@ echo $this->Html->css('kensahyou');
     <td><?= h($this->request->getData('sum_weight'.$k)) ?></td>
     <td><?= h($this->request->getData('total_loss_weight'.$k)) ?></td>
     <td><?= h($this->request->getData('tasseiritsu'.$k)) ?></td>
-
     </tr>
     <?php endfor;?>
   </tbody>
