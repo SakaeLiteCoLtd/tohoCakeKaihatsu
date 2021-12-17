@@ -3161,21 +3161,28 @@ class KensahyougenryousController extends AppController
         $connection->begin();//トランザクション3
         try {//トランザクション4
 
-          if($machine_num != $machine_num_moto){//号機の変更がある場合
-
-            $ProductConditionParentmoto= $this->ProductConditionParents->find()
+            $ProductConditionParentmoto = $this->ProductConditionParents->find()
             ->where(['id' => $product_condition_parent_id])->toArray();
     
+            $code_date = date('y').date('m').date('d');
+            $ProductConditionParents = $this->ProductConditionParents->find()
+            ->where(['product_id' => $ProductConditionParentmoto[0]["product_id"], 'machine_num' => $machine_num
+            , 'product_condition_code like' => $code_date."%"])
+            ->order(["version"=>"DESC"])->toArray();
+      
+            $version = $ProductConditionParents[0]["version"] + 1;
+            $renban = count($ProductConditionParents) + 1;
+            $product_condition_code = $code_date."-".$renban;
+      
             $arrProductConditionParents_moto = array();
             $arrProductConditionParents_moto = [
               'product_id' => $ProductConditionParentmoto[0]["product_id"],
-              'machine_num' => $ProductConditionParentmoto[0]["machine_num"],
-              'product_condition_code' => $ProductConditionParentmoto[0]["product_condition_code"],
-              'version' => $ProductConditionParentmoto[0]["version"],
+              'machine_num' => $machine_num,
+              'product_condition_code' => $product_condition_code,
+              'version' => $version,
               'start_datetime' => $ProductConditionParentmoto[0]["start_datetime"]->format("Y-m-d H:i:s"),
-              'finish_datetime' => date("Y-m-d H:i:s"),
-              'is_active' => 1,
-              'delete_flag' => 1,
+              'is_active' => 0,
+              'delete_flag' => 0,
               'created_at' => $ProductConditionParentmoto[0]["created_at"]->format("Y-m-d H:i:s"),
               'created_staff' => $ProductConditionParentmoto[0]["created_staff"],
               'updated_at' => date("Y-m-d H:i:s"),
@@ -3187,12 +3194,11 @@ class KensahyougenryousController extends AppController
  
             $this->ProductConditionParents->updateAll(
               [ 
-               'machine_num' => $machine_num,
+               'is_active' => 1,
+               'finish_datetime' => date("Y-m-d H:i:s"),
                'updated_at' => date('Y-m-d H:i:s'),
                'updated_staff' => $staff_id],
               ['id'  => $product_condition_parent_id]);
-              
-          }
 
           //元データを削除
           for($j=1; $j<=count($ProductMaterialMachines); $j++){
@@ -3242,9 +3248,14 @@ class KensahyougenryousController extends AppController
             //データ新規登録
           for($j=1; $j<=$tuikaseikeiki; $j++){
 
+            $ProductConditionParents = $this->ProductConditionParents->find()
+            ->where(['product_id' => $ProductConditionParentmoto[0]["product_id"], 'machine_num' => $machine_num
+            , 'product_condition_code like' => $code_date."%"])
+            ->order(["version"=>"DESC"])->toArray();
+
             $updateProductMaterialMachine = array();
             $updateProductMaterialMachine = [
-              "product_condition_parent_id" => $product_condition_parent_id,
+              "product_condition_parent_id" => $ProductConditionParents[0]["id"],
               "cylinder_number" => $j,
               "cylinder_name" => $data['cylinder_name'.$j],
               "delete_flag" => 0,
@@ -3258,7 +3269,7 @@ class KensahyougenryousController extends AppController
             if ($this->ProductMaterialMachines->saveMany($ProductMaterialMachines)) {
 
               $ProductMaterialMachines = $this->ProductMaterialMachines->find()
-              ->where(['product_condition_parent_id' => $product_condition_parent_id, 'cylinder_number' => $j, 'delete_flag' => 0])->toArray();
+              ->where(['product_condition_parent_id' => $ProductConditionParents[0]["id"], 'cylinder_number' => $j, 'delete_flag' => 0])->toArray();
 
               $updateProductMachineMaterial = array();
               ${"tuikagenryou".$j} = $data["tuikagenryou".$j];
@@ -3294,7 +3305,7 @@ class KensahyougenryousController extends AppController
                   $version = $ProductConditionParents[0]["version"];
           
                   $product_code_ini = substr($product_code, 0, 11);
-                  $ProductMaterialMachines= $this->ProductMaterialMachines->find()
+                  $ProductMaterialMachines = $this->ProductMaterialMachines->find()
                   ->contain(['ProductConditionParents' => ["Products"]])
                   ->where(['Products.product_code like' => $product_code_ini.'%',
                   'ProductConditionParents.delete_flag' => 0,
@@ -3323,7 +3334,7 @@ class KensahyougenryousController extends AppController
                   }
 
                   $tourokuProductConditonChildren = array();
-            
+
                   for($k=0; $k<$countProductMaterialMachines; $k++){
             
                     $j = $k + 1;
@@ -3354,7 +3365,7 @@ class KensahyougenryousController extends AppController
                     ];
             
                   }
-                              
+                     
                   $ProductConditonChildren = $this->ProductConditonChildren->patchEntities($this->ProductConditonChildren->newEntity(), $updateProductConditonChildren);
                   if ($this->ProductConditonChildren->saveMany($ProductConditonChildren)) {
         

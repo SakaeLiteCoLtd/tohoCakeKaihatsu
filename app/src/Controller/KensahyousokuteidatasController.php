@@ -6799,18 +6799,16 @@ class KensahyousokuteidatasController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-      $idarr1 = array_keys($data, '表示');
-      $idarr2 = explode("_",$idarr1[0]);
+      $keys = array_keys($data);
+      $idarr2 = explode("_",$keys[2]);
+ //     $idarr1 = array_keys($data, '表示');
+ //     $idarr2 = explode("_",$idarr1[0]);
 
       $product_code = $data["product_code"];
       $machine_num = $data["machine_num"];
       $datetime = $idarr2[1]." ".$idarr2[2];
       $product_code_datetime = $product_code."_".$idarr2[1]."_".$idarr2[2];
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheaderkensaku($product_code_datetime);
       $this->set('htmlkensahyouheader',$htmlkensahyouheader);

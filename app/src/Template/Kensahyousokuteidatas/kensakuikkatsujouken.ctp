@@ -84,6 +84,8 @@ echo $this->Html->css('kensahyou');
 
 <?php elseif($hyouji_flag > 1): ?>
 
+  <?php if($hyouji_flag == 3): ?>
+
   <table class="form">
 
   <tr>
@@ -136,6 +138,9 @@ echo $this->Html->css('kensahyou');
 </tr>
 
 </table>
+
+<?php else: ?>
+<?php endif; ?>
 
   <?php
        echo $htmlgenryouheader;

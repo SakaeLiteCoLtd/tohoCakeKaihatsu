@@ -1862,154 +1862,7 @@ class KensahyoukikakusController extends AppController
 
       $datetimenow = date('Y-m-d H:i:s');
 
-      if($change_flag == 100){//画像を変更しないない場合//このときも更新した方が履歴をおいやすい
-/*
-        echo "<pre>";
-        print_r("no");
-        echo "</pre>";
-  */
-        //新しいデータを登録
-            $connection = ConnectionManager::get('default');//トランザクション1
-            // トランザクション開始2
-            $connection->begin();//トランザクション3
-            try {//トランザクション4
-
-              $num_max = 0;
-
-              for($i=1; $i<=11; $i++){
-
-                $updateInspectionStandardSizeChildren = array();
-      
-                if(strlen($data['size_name'.$i]) > 0 && $data['inputtype'.$i] == "int"){
-    
-                  $num_max = $num_max + 1;
-
-                  $updateInspectionStandardSizeChildren = [
-                    "inspection_standard_size_parent_id" => $InspectionStandardSizeParentversion[0]['id'],
-                    "input_type" => $data['inputtype'.$i],
-                    "size_name" => $data['size_name'.$i],
-                    "size_number" => $i,
-                    "size" => sprintf("%.1f", $data['size'.$i]),
-                    "upper_limit" => sprintf("%.1f", $data['upper_limit'.$i]),
-                    "lower_limit" => sprintf("%.1f", $data['lower_limit'.$i]),
-                    "measuring_instrument" => $data['measuring_instrument'.$i],
-                    "delete_flag" => 0,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    "created_staff" => $staff_id
-                  ];
-        
-                  $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren
-                  ->patchEntity($this->InspectionStandardSizeChildren->newEntity(), $updateInspectionStandardSizeChildren);
-                  $this->InspectionStandardSizeChildren->save($InspectionStandardSizeChildren);
-    
-                  $updateInspectionStandardSizeChildren = array();
-  
-                }elseif(strlen($data['size_name'.$i]) > 0 && $data['inputtype'.$i] == "judge"){
-        
-                  $num_max = $num_max + 1;
-
-                  $updateInspectionStandardSizeChildren = [
-                    "inspection_standard_size_parent_id" => $InspectionStandardSizeParentversion[0]['id'],
-                    "input_type" => $data['inputtype'.$i],
-                    "size_name" => $data['size_name'.$i],
-                    "size_number" => $i,
-                    "size" => $data['size'.$i],
-                    "upper_limit" => $data['upper_limit'.$i],
-                    "lower_limit" => $data['lower_limit'.$i],
-                    "measuring_instrument" => $data['measuring_instrument'.$i],
-                    "delete_flag" => 0,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    "created_staff" => $staff_id
-                  ];
-        
-                  $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren
-                  ->patchEntity($this->InspectionStandardSizeChildren->newEntity(), $updateInspectionStandardSizeChildren);
-                  $this->InspectionStandardSizeChildren->save($InspectionStandardSizeChildren);
-    
-                  $updateInspectionStandardSizeChildren = array();
-  
-                }elseif($num_max == 0){
-                  $num_max = $i;
-                }
-/*                
-                if(strlen($data['size_name'.$i]) > 0){
-
-                  $num_max = $num_max + 1;
-
-                  $updateInspectionStandardSizeChildren = [
-                    "inspection_standard_size_parent_id" => $data['inspection_standard_size_parent_id'],
-                    "input_type" => $data['inputtype'.$i],
-                    "size_name" => $data['size_name'.$i],
-                    "size_number" => $i,
-                    "size" => $data['size'.$i],
-                    "upper_limit" => $data['upper_limit'.$i],
-                    "lower_limit" => $data['lower_limit'.$i],
-                    "measuring_instrument" => $data['measuring_instrument'.$i],
-                    "delete_flag" => 0,
-                    'created_at' => $datetimenow,
-                    "created_staff" => $staff_id
-                  ];
-      
-                $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren
-                ->patchEntity($this->InspectionStandardSizeChildren->newEntity(), $updateInspectionStandardSizeChildren);
-                $this->InspectionStandardSizeChildren->save($InspectionStandardSizeChildren);
-  
-                $updateInspectionStandardSizeChildren = array();
-
-                }elseif($num_max == 0){
-                  $num_max = $i;
-                }
-  */
-                if(strlen($data['id'.$i]) > 0){
-
-                  $this->InspectionStandardSizeChildren->updateAll(
-                    [ 'delete_flag' => 1,
-                      'updated_at' => $datetimenow,
-                      'updated_staff' => $staff_id],
-                    ['id'  => $data['id'.$i]]);
-
-                  }
-
-            }
-
-            //長さの登録
-            $updateInspectionStandardSizeChildren = [
-              "inspection_standard_size_parent_id" => $data['inspection_standard_size_parent_id'],
-              "input_type" => "int",
-              "size_name" => "長さ",
-              "size_number" => $num_max,
-              "size" => 0,
-              "upper_limit" => 0,
-              "lower_limit" => 0,
-              "measuring_instrument" => "-",
-              "delete_flag" => 0,
-              'created_at' => $datetimenow,
-              "created_staff" => $staff_id
-            ];
-
-          $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren
-          ->patchEntity($this->InspectionStandardSizeChildren->newEntity(), $updateInspectionStandardSizeChildren);
-          if($this->InspectionStandardSizeChildren->save($InspectionStandardSizeChildren)){
-
-                $connection->commit();// コミット5
-                $mes = "更新されました。";
-                $this->set('mes',$mes);
-
-              } else {
-
-                $this->Flash->error(__('The data could not be saved. Please, try again.'));
-                throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
-                $mes = "※更新されませんでした";
-                $this->set('mes',$mes);
-
-              }
-
-            } catch (Exception $e) {//トランザクション7
-            //ロールバック8
-              $connection->rollback();//トランザクション9
-            }//トランザクション10
-
-      }elseif($change_flag < 2){////画像変更の場合
+      if($change_flag < 2){//更新の場合
 
         //新しいデータを登録
         $connection = ConnectionManager::get('default');//トランザクション1
@@ -2027,23 +1880,7 @@ class KensahyoukikakusController extends AppController
           }else{
             $version = 1;
           }
-    
-          $InspectionStandardSizeParentsmoto = $this->InspectionStandardSizeParents->find()
-          ->where(['id' => $data['inspection_standard_size_parent_id']])->toArray();
-    
-          $arrupdateInspectionStandardSizeParentsmoto = [
-            'product_id' => $InspectionStandardSizeParentsmoto[0]["product_id"],
-            'image_file_name_dir' => $InspectionStandardSizeParentsmoto[0]["image_file_name_dir"],
-            'inspection_standard_size_code' => $InspectionStandardSizeParentsmoto[0]["inspection_standard_size_code"],
-            'version' => $InspectionStandardSizeParentsmoto[0]["version"],
-            'is_active' => 1,
-            'delete_flag' => 1,
-            'created_at' => $InspectionStandardSizeParentsmoto[0]["created_at"]->format("Y-m-d H:i:s"),
-            'created_staff' => $InspectionStandardSizeParentsmoto[0]["created_staff"],
-            'updated_at' => $datetimenow,
-            'updated_staff' => $staff_id
-              ];
-    
+
           $code_date = date('y').date('m').date('d');
           $InspectionStandardSizeParentcodes = $this->InspectionStandardSizeParents->find()->contain(["Products"])
           ->where(['product_code like' => $product_code_ini.'%', 'inspection_standard_size_code like' => $code_date."%"])
@@ -2063,20 +1900,22 @@ class KensahyoukikakusController extends AppController
             'created_at' => $datetimenow,
             'created_staff' => $staff_id
           ];
-              
+
           if ($this->InspectionStandardSizeParents->updateAll(
-            [ 'image_file_name_dir' => $arrtourokuinspectionStandardSizeParent["image_file_name_dir"],
-            'inspection_standard_size_code' => $arrtourokuinspectionStandardSizeParent["inspection_standard_size_code"],
-            'version' => $arrtourokuinspectionStandardSizeParent["version"],
+            ['is_active' => 1,
             'updated_at' => $datetimenow,
             'updated_staff' => $staff_id],
             ['id'  => $inspection_standard_size_parent_id])){
         
             //新しいデータを登録
             $InspectionStandardSizeParents = $this->InspectionStandardSizeParents
-            ->patchEntity($this->InspectionStandardSizeParents->newEntity(), $arrupdateInspectionStandardSizeParentsmoto);
+            ->patchEntity($this->InspectionStandardSizeParents->newEntity(), $arrtourokuinspectionStandardSizeParent);
             if ($this->InspectionStandardSizeParents->save($InspectionStandardSizeParents)){
           
+              $InspectionStandardSizeParentnew = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+              ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
+              ->order(["version"=>"DESC"])->toArray();
+    
               $num_max = 0;
 
               for($i=1; $i<=11; $i++){
@@ -2084,11 +1923,9 @@ class KensahyoukikakusController extends AppController
                 $updateInspectionStandardSizeChildren = array();
       
                 if(strlen($data['size_name'.$i]) > 0 && $data['inputtype'.$i] == "int"){
-    
-        //          $num_max = $num_max + 1;
 
                   $updateInspectionStandardSizeChildren = [
-                    "inspection_standard_size_parent_id" => $InspectionStandardSizeParentversion[0]['id'],
+                    "inspection_standard_size_parent_id" => $InspectionStandardSizeParentnew[0]['id'],
                     "input_type" => $data['inputtype'.$i],
                     "size_name" => $data['size_name'.$i],
                     "size_number" => $i,
@@ -2108,11 +1945,9 @@ class KensahyoukikakusController extends AppController
                   $updateInspectionStandardSizeChildren = array();
   
                 }elseif(strlen($data['size_name'.$i]) > 0 && $data['inputtype'.$i] == "judge"){
-        
-        //          $num_max = $num_max + 1;
 
                   $updateInspectionStandardSizeChildren = [
-                    "inspection_standard_size_parent_id" => $InspectionStandardSizeParentversion[0]['id'],
+                    "inspection_standard_size_parent_id" => $InspectionStandardSizeParentnew[0]['id'],
                     "input_type" => $data['inputtype'.$i],
                     "size_name" => $data['size_name'.$i],
                     "size_number" => $i,
@@ -2149,7 +1984,7 @@ class KensahyoukikakusController extends AppController
     
             //長さの登録
             $updateInspectionStandardSizeChildren = [
-              "inspection_standard_size_parent_id" => $data['inspection_standard_size_parent_id'],
+              "inspection_standard_size_parent_id" => $InspectionStandardSizeParentnew[0]['id'],
               "input_type" => "int",
               "size_name" => "長さ",
               "size_number" => $num_max,
@@ -2202,7 +2037,7 @@ class KensahyoukikakusController extends AppController
             $connection->rollback();//トランザクション9
           }//トランザクション10
 
-      }else{////削除
+      }else{////削除（編集画面から削除することはない）
 
         for($i=1; $i<=11; $i++){
 
