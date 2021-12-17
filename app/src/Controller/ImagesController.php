@@ -40,7 +40,7 @@ class ImagesController extends AppController
      }
 
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
-
+/*
        $Groups = $this->Groups->find()->contain(["Menus"])
        ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "検査表画像", 'Groups.delete_flag' => 0])
        ->toArray();
@@ -50,7 +50,7 @@ class ImagesController extends AppController
          return $this->redirect($this->Auth->logout());
 
        }
-
+*/
      }
      
     }

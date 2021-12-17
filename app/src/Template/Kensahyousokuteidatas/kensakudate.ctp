@@ -37,6 +37,14 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
 
 <?=$this->Form->hidden("product_code", array('type' => 'value', 'value' => $product_code)); ?>
 <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
+
+<?php if (count($arrDates) < 1): ?>
+  <br><br>
+<div align="center"><strong><font color="red"><?php echo "測定データが存在しません";?></font></strong></div>
+<br>
+
+  <?php else : ?>
+
 <br>
 <div align="center"><strong><font color="blue"><?php echo "測定日絞り込み";?></font></strong></div>
 <table>
@@ -148,6 +156,9 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
     <br><br>
 
 <?php endif; ?>
+
+<?php endif; ?>
+
 <table>
   <tbody class='sample non-sample'>
     <tr>

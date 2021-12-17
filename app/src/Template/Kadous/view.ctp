@@ -53,15 +53,16 @@ echo $this->Html->css('kensahyou');
             <tr class="parents">
             <td style='font-size: 10pt; width:50; height:60; border-width: 1px solid black;'><?= __('ライン') ?></td>
             <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('検査表開始時間') ?></td>
-            <td style='font-size: 9pt; width:125; border-width: 1px solid black;'><?= __('リレーログ開始時間') ?></td>
+            <td style='font-size: 9pt; width:125; border-width: 1px solid black;'><?= __('稼働開始時間') ?></td>
             <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('検査表終了時間') ?></td>
-            <td style='font-size: 9pt; width:125; border-width: 1px solid black;'><?= __('リレーログ終了時間') ?></td>
+            <td style='font-size: 9pt; width:125; border-width: 1px solid black;'><?= __('稼働終了時間') ?></td>
             <td style='font-size: 10pt; width:200; border-width: 1px solid black;'><?= __('製品名') ?></td>
+            <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('開始ロス') ?><br><?= __('(kg)') ?></td>
+            <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('中間ロス') ?><br><?= __('(kg)') ?></td>
+            <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('終了ロス') ?><br><?= __('(kg)') ?></td>
             <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('長さ(mm)') ?></td>
-            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('数量(本)') ?></td>
-            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('予定数量(本)') ?></td>
-            <td style='font-size: 9pt; width:80; border-width: 1px solid black;'><?= __('検査表') ?><br><?= __('使用重量(kg)') ?></td>
-            <td style='font-size: 9pt; width:80; border-width: 1px solid black;'><?= __('理論') ?><br><?= __('使用重量(kg)') ?></td>
+            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('当日数量(本)') ?></td>
+            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('理論数量(本)') ?></td>
             <td style='font-size: 10pt; width:60; border-width: 1px solid black;'></td>
             </tr>
         </thead>
@@ -113,14 +114,31 @@ echo $this->Html->css('kensahyou');
   ?>
   <?= h(substr($arrAll[$j]["relay_finish_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["relay_finish_datetime"], 11, 8)) ?></td>
 
+  <?php
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
+  ?>
+  <?= h($arrAll[$j]["name"]) ?></td>
+
+  <?php
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
+  ?>
+  </td>
+
+  <?php
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
+  ?>
+ </td>
+
+ <?php
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
+  ?>
+ </td>
+
   <?php else : ?>
   <?php endif; ?>
 
-  <td style='font-size: 10pt'><?= h($arrAll[$j]["name"]) ?></td>
   <td style='font-size: 10pt'><?= h($arrAll[$j]["length"]) ?></td>
   <td style='font-size: 10pt'><?= h($arrAll[$j]["amount"]) ?></td>
-  <td style='font-size: 10pt'><?= h($arrAll[$j]["riron_amount"]) ?></td>
-  <td style='font-size: 10pt'><?= h($arrAll[$j]["sum_weight"]) ?></td>
   <td style='font-size: 11pt'></td>
 
   <?php if ($arrAll[$j]["countproduct_code_ini"] == 1): ?>

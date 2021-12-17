@@ -193,7 +193,7 @@ class KadousController extends AppController
           "name" => $DailyReportsData[$i]["product"]["name"],
           "length" => $DailyReportsData[$i]["product"]["length"],
           "amount" => $DailyReportsData[$i]["amount"],
-          "riron_amount" => $riron_amount,
+          "riron_amount" => "",
           "sum_weight" => sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]),
           "count" => $count,
           "countproduct_code_ini" => $countproduct_code_ini,
@@ -269,11 +269,7 @@ class KadousController extends AppController
 
       }
       $this->set('arrCountProducts', $arrCountProducts);
-/*
-      echo "<pre>";
-      print_r($arrAll);
-      echo "</pre>";
-*/
+
       echo "<pre>";
       print_r("");
       echo "</pre>";
@@ -344,9 +340,8 @@ class KadousController extends AppController
       $this->set('arrProdcts', $arrProdcts);
 
       $InspectionDataResultParentDatas = $this->InspectionDataResultParents->find()
-      ->contain(['InspectionStandardSizeParents', 'ProductConditionParents', 'Products', 'Staffs'])
+      ->contain(['ProductConditionParents', 'Products'])
       ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%',
-      'InspectionStandardSizeParents.delete_flag' => 0,
       'InspectionDataResultParents.delete_flag' => 0,
       'datetime >=' => $date_sta, 'datetime <=' => $date_fin])
       ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();

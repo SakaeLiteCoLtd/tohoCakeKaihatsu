@@ -345,7 +345,7 @@ class htmlkensahyoukadoumenu extends AppController
           "</tr>\n".
           "<tr>\n".
           "<td width='1000' colspan='4' nowrap='nowrap' style='height: 350px;'>\n".
-          "<img src=$image_file_name_dir width=800></td>\n".
+          "<img src=$image_file_name_dir width=1400></td>\n".
           "</tr>\n".
           "</table>\n";
 

@@ -36,7 +36,7 @@ echo $this->Html->css('kensahyou');
         <tr>
         <td style='width:100'>ライン</td>
         <td style='width:200'>管理No.</td>
-          <td style='width:200'>製品名</td>
+          <td>　製品名　</td>
         </tr>
 
           <?php for($i=0; $i<count($arrInspectionDataResultParents); $i++): ?>
@@ -51,7 +51,7 @@ echo $this->Html->css('kensahyou');
             <tr>
             <td><?= h($LinenameDatas[0]["name"]);?></td>
               <td><?= h($arrInspectionDataResultParents[$i]["product_code"]) ? $this->Html->link($arrInspectionDataResultParents[$i]["product_code"], ['action' => 'kensatyuichiran', 's' => "0_".$arrInspectionDataResultParents[$i]["machine_num"]."_".$arrInspectionDataResultParents[$i]["product_code"]]) : '' ?></td>
-              <td><?= h($arrInspectionDataResultParents[$i]["name"]);?></td>
+              <td><?= h("　".$arrInspectionDataResultParents[$i]["name"]."　");?></td>
             </tr>
           <?php endfor;?>
 
@@ -69,7 +69,7 @@ echo $this->Html->css('kensahyou');
         <tr>
         <td style='width:100'>ライン</td>
         <td style='width:200'>管理No.</td>
-        <td style='width:200'>製品名</td>
+        <td style='width:200'>　製品名　</td>
         <td style='width:150'>検査日</td>
         </tr>
 
@@ -85,7 +85,7 @@ echo $this->Html->css('kensahyou');
             <tr>
             <td><?= h($LinenameDatas[0]["name"]);?></td>
               <td><?= h($arrInspectionDataResultParentnotfin[$i]["product_code"]) ? $this->Html->link($arrInspectionDataResultParentnotfin[$i]["product_code"], ['action' => 'kensatyuichiran', 's' => "1_".$arrInspectionDataResultParentnotfin[$i]["machine_num"]."_".$arrInspectionDataResultParentnotfin[$i]["product_code"]]) : '' ?></td>
-              <td><?= h($arrInspectionDataResultParentnotfin[$i]["name"]);?></td>
+              <td><?= h("　".$arrInspectionDataResultParentnotfin[$i]["name"]."　");?></td>
               <td><?= h($arrInspectionDataResultParentnotfin[$i]["datetime"]);?></td>
             </tr>
           <?php endfor;?>

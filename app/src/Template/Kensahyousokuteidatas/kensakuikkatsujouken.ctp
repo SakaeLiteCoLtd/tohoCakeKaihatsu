@@ -84,6 +84,59 @@ echo $this->Html->css('kensahyou');
 
 <?php elseif($hyouji_flag > 1): ?>
 
+  <table class="form">
+
+  <tr>
+  <td style='width:101'>測定箇所</td>
+
+  <?php for($i=1; $i<=11; $i++): ?>
+    <td style='width:118'><?= h(${"size_name".$i}) ?></td>
+    <?= $this->Form->control('size_name'.$i, array('type'=>'hidden', 'value'=>${"size_name".$i}, 'label'=>false)) ?>
+  <?php endfor;?>
+
+</tr>
+<tr>
+  <td>規格</td>
+
+    <?php for($i=1; $i<=11; $i++): ?>
+      <td><?= h(${"size".$i}) ?></td>
+      <?= $this->Form->control('size'.$i, array('type'=>'hidden', 'value'=>${"size".$i}, 'label'=>false)) ?>
+    <?php endfor;?>
+
+</tr>
+<tr>
+  <td>公差上限</td>
+
+  <?php for($i=1; $i<=11; $i++): ?>
+    <?php if (${"input_type".$i} == "int" && strlen(${"upper_limit".$i}) > 0 && substr(${"upper_limit".$i}, 0, 1) != "+" && substr(${"upper_limit".$i}, 0, 1) != "-"): ?>
+    <td><?= h("+".${"upper_limit".$i}) ?></td>
+    <?php else : ?>
+      <td><?= h(${"upper_limit".$i}) ?></td>
+      <?php endif; ?>
+  <?php endfor;?>
+
+</tr>
+<tr>
+  <td>公差下限</td>
+
+    <?php for($i=1; $i<=11; $i++): ?>
+      <td><?= h(${"lower_limit".$i}) ?></td>
+      <?= $this->Form->control('lower_limit'.$i, array('type'=>'hidden', 'value'=>${"lower_limit".$i}, 'label'=>false)) ?>
+    <?php endfor;?>
+
+</tr>
+<tr>
+  <td>検査器具</td>
+
+    <?php for($i=1; $i<=11; $i++): ?>
+      <td style='font-size: 8pt'><?= h(${"measuring_instrument".$i}) ?></td>
+      <?= $this->Form->control('measuring_instrument'.$i, array('type'=>'hidden', 'value'=>${"measuring_instrument".$i}, 'label'=>false)) ?>
+    <?php endfor;?>
+
+</tr>
+
+</table>
+
   <?php
        echo $htmlgenryouheader;
   ?>

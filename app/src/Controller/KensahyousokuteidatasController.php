@@ -6672,7 +6672,7 @@ class KensahyousokuteidatasController extends AppController
         $this->set('product_condition_code'.$n,${"product_condition_code".$n});
         ${"lot_number".$n} = $InspectionDataResultParents[$j]['lot_number'];
         $this->set('lot_number'.$n,${"lot_number".$n});
-        ${"datetime".$n} = $InspectionDataResultParents[$j]['datetime']->format('Y-n-j G:i');
+        ${"datetime".$n} = $InspectionDataResultParents[$j]['datetime']->format('Y-m-d G:i');
         $this->set('datetime'.$n,${"datetime".$n});
 
 //datetimeのときの温度条件を取得する
@@ -6808,7 +6808,7 @@ class KensahyousokuteidatasController extends AppController
       $product_code_datetime = $product_code."_".$idarr2[1]."_".$idarr2[2];
 /*
       echo "<pre>";
-      print_r($machine_num);
+      print_r($data);
       echo "</pre>";
 */
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
@@ -6999,6 +6999,98 @@ class KensahyousokuteidatasController extends AppController
           $hyouji_flag = 3;
           $this->set('hyouji_flag', $hyouji_flag);
 
+          $product_code_ini = substr($product_code, 0, 11);
+          $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+          ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.is_active' => 0
+          , 'InspectionStandardSizeParents.delete_flag' => 0, 'InspectionStandardSizeParents.created_at <=' => $datetime])
+          ->order(["version"=>"DESC"])->toArray();
+        
+          $inspection_standard_size_parent_id = $InspectionStandardSizeParents[0]['id'];
+          $this->set('inspection_standard_size_parent_id', $inspection_standard_size_parent_id);
+    
+          $product_code_ini = substr($product_code, 0, 11);
+          $InspectionStandardSizeChildren= $this->InspectionStandardSizeChildren->find()
+          ->contain(['InspectionStandardSizeParents' => ["Products"]])
+          ->where(['product_code like' => $product_code_ini.'%',
+          'InspectionStandardSizeParents.is_active' => 0,
+          'InspectionStandardSizeParents.delete_flag' => 0,
+          'InspectionStandardSizeChildren.delete_flag' => 0,
+          'InspectionStandardSizeParents.created_at <=' => $datetime])
+          ->order(["InspectionStandardSizeParents.created_at"=>"DESC"])->toArray();
+  
+          if(isset($InspectionStandardSizeChildren[0])){
+  
+            for($i=1; $i<=11; $i++){
+    
+              ${"size_name".$i} = "";
+              $this->set('size_name'.$i,${"size_name".$i});
+              ${"upper_limit".$i} = "";
+              $this->set('upper_limit'.$i,${"upper_limit".$i});
+              ${"lower_limit".$i} = "";
+              $this->set('lower_limit'.$i,${"lower_limit".$i});
+              ${"size".$i} = "";
+              $this->set('size'.$i,${"size".$i});
+              ${"measuring_instrument".$i} = "";
+              $this->set('measuring_instrument'.$i,${"measuring_instrument".$i});
+              ${"input_type".$i} = "int";
+              $this->set('input_type'.$i,${"input_type".$i});
+    
+            }
+    
+            for($i=0; $i<count($InspectionStandardSizeChildren); $i++){
+    
+              $num = $InspectionStandardSizeChildren[$i]["size_number"];
+              ${"size_name".$num} = $InspectionStandardSizeChildren[$i]["size_name"];
+              ${"input_type".$num} = $InspectionStandardSizeChildren[$i]["input_type"];
+              $this->set('input_type'.$num,${"input_type".$num});
+    
+              if(${"size_name".$num} === "長さ"){
+    
+                ${"size_name".$num} = $InspectionStandardSizeChildren[$i]["size_name"];
+                $this->set('size_name'.$num,${"size_name".$num});
+                ${"upper_limit".$num} = "-";
+                $this->set('upper_limit'.$num,${"upper_limit".$num});
+                ${"lower_limit".$num} = "-";
+                $this->set('lower_limit'.$num,${"lower_limit".$num});
+                ${"size".$num} = "-";
+                $this->set('size'.$num,${"size".$num});
+                ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+                $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
+        
+              }elseif($InspectionStandardSizeChildren[$i]["input_type"] === "judge"){
+    
+                ${"size_name".$num} = $InspectionStandardSizeChildren[$i]["size_name"];
+                $this->set('size_name'.$num,${"size_name".$num});
+                ${"upper_limit".$num} = $InspectionStandardSizeChildren[$i]["upper_limit"];
+                $this->set('upper_limit'.$num,${"upper_limit".$num});
+                ${"lower_limit".$num} = $InspectionStandardSizeChildren[$i]["lower_limit"];
+                $this->set('lower_limit'.$num,${"lower_limit".$num});
+                ${"size".$num} = $InspectionStandardSizeChildren[$i]["size"];
+                $this->set('size'.$num,${"size".$num});
+                ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+                $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
+      
+              }else{
+    
+                ${"size_name".$num} = $InspectionStandardSizeChildren[$i]["size_name"];
+                $this->set('size_name'.$num,${"size_name".$num});
+                ${"upper_limit".$num} = sprintf("%.1f", $InspectionStandardSizeChildren[$i]["upper_limit"]);
+                $this->set('upper_limit'.$num,${"upper_limit".$num});
+                ${"lower_limit".$num} = sprintf("%.1f", $InspectionStandardSizeChildren[$i]["lower_limit"]);
+                $this->set('lower_limit'.$num,${"lower_limit".$num});
+                ${"size".$num} = sprintf("%.1f", $InspectionStandardSizeChildren[$i]["size"]);
+                $this->set('size'.$num,${"size".$num});
+                ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+                $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
+      
+              }
+        
+            }
+            
+            $this->set('InspectionStandardSizeChildren', $InspectionStandardSizeChildren);
+    
+          }
+  
           for($k=0; $k<$countseikeiki; $k++){//各成型機の基準値の呼び出し
         
             $cylinder_name = $ProductMaterialMachines[$k]["cylinder_name"];

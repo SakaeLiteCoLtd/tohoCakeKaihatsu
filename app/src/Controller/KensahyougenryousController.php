@@ -16,6 +16,7 @@ use App\myClass\menulists\htmlkensahyoukadoumenu;//myClassフォルダに配置�
 $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
 use App\myClass\classprograms\htmlkensahyoulogincheck;//myClassフォルダに配置したクラスを使用
 $htmlkensahyoulogincheck = new htmlkensahyoulogincheck();
+use App\myClass\classprograms\htmlautolists;
 
 class KensahyougenryousController extends AppController
 {
@@ -115,12 +116,8 @@ class KensahyougenryousController extends AppController
       $customer_check = 0;
       $this->set('customer_check', $customer_check);
 
-      $Customer_name_list = $this->Customers->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrCustomer_name_list = array();
-      for($j=0; $j<count($Customer_name_list); $j++){
-        array_push($arrCustomer_name_list,$Customer_name_list[$j]["name"]);
-      }
+      $htmlautolistscustomerlist = new htmlautolists();
+      $arrCustomer_name_list = $htmlautolistscustomerlist->customerlist();
       $this->set('arrCustomer_name_list', $arrCustomer_name_list);
 
      if(isset($data["customer"])){//顧客絞り込みをしたとき
@@ -1449,12 +1446,8 @@ class KensahyougenryousController extends AppController
       $customer_check = 0;
       $this->set('customer_check', $customer_check);
 
-      $Customer_name_list = $this->Customers->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrCustomer_name_list = array();
-      for($j=0; $j<count($Customer_name_list); $j++){
-        array_push($arrCustomer_name_list,$Customer_name_list[$j]["name"]);
-      }
+      $htmlautolistscustomerlist = new htmlautolists();
+      $arrCustomer_name_list = $htmlautolistscustomerlist->customerlist();
       $this->set('arrCustomer_name_list', $arrCustomer_name_list);
 
      if(isset($data["customer"])){//顧客絞り込みをしたとき

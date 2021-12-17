@@ -9,14 +9,15 @@ use Cake\Core\Configure;//トランザクション
 use Cake\ORM\TableRegistry;//独立したテーブルを扱う
 use Cake\Event\Event;
 
-use App\myClass\classprograms\htmlLogin;//myClassフォルダに配置したクラスを使用
-$htmlinputstaffctp = new htmlLogin();
-use App\myClass\classprograms\htmlproductcheck;//myClassフォルダに配置したクラスを使用
-$htmlproductcheck = new htmlproductcheck();
-use App\myClass\menulists\htmlkensahyoukadoumenu;//myClassフォルダに配置したクラスを使用
-$htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
-use App\myClass\classprograms\htmlkensahyoulogincheck;//myClassフォルダに配置したクラスを使用
-$htmlkensahyoulogincheck = new htmlkensahyoulogincheck();
+use App\myClass\classprograms\htmlLogin;
+//$htmlinputstaffctp = new htmlLogin();
+use App\myClass\classprograms\htmlproductcheck;
+//$htmlproductcheck = new htmlproductcheck();
+use App\myClass\menulists\htmlkensahyoukadoumenu;
+//$htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
+use App\myClass\classprograms\htmlkensahyoulogincheck;
+//$htmlkensahyoulogincheck = new htmlkensahyoulogincheck();
+use App\myClass\classprograms\htmlautolists;
 
 class KensahyoukikakusController extends AppController
 {
@@ -116,12 +117,8 @@ class KensahyoukikakusController extends AppController
       $customer_check = 0;
       $this->set('customer_check', $customer_check);
 
-      $Customer_name_list = $this->Customers->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrCustomer_name_list = array();
-      for($j=0; $j<count($Customer_name_list); $j++){
-        array_push($arrCustomer_name_list,$Customer_name_list[$j]["name"]);
-      }
+      $htmlautolistscustomerlist = new htmlautolists();
+      $arrCustomer_name_list = $htmlautolistscustomerlist->customerlist();
       $this->set('arrCustomer_name_list', $arrCustomer_name_list);
 
      if(isset($data["customer"])){//顧客絞り込みをしたとき
@@ -176,7 +173,6 @@ class KensahyoukikakusController extends AppController
   
          $arrProduct_names = array();
          for($j=0; $j<count($Product_name_list); $j++){
-   //       array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          $arrProduct_names[$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm"] = $Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm";
         }
          $this->set('arrProduct_names', $arrProduct_names);
@@ -965,12 +961,8 @@ class KensahyoukikakusController extends AppController
       $customer_check = 0;
       $this->set('customer_check', $customer_check);
 
-      $Customer_name_list = $this->Customers->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrCustomer_name_list = array();
-      for($j=0; $j<count($Customer_name_list); $j++){
-        array_push($arrCustomer_name_list,$Customer_name_list[$j]["name"]);
-      }
+      $htmlautolistscustomerlist = new htmlautolists();
+      $arrCustomer_name_list = $htmlautolistscustomerlist->customerlist();
       $this->set('arrCustomer_name_list', $arrCustomer_name_list);
 
      if(isset($data["customer"])){//顧客絞り込みをしたとき

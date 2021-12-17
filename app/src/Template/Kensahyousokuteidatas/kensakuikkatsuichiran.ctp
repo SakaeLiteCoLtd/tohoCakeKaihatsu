@@ -39,22 +39,22 @@ echo $this->Html->css('kensahyou');
 
   <td colspan='4'>バンク：<?= h($mode) ?></td>
 
-  <td style='width:103'>測定箇所</td>
+  <td style='width:96'>測定箇所</td>
 
   <?php for($i=1; $i<=11; $i++): ?>
     <td style='width:78'><?= h(${"size_name".$i}) ?></td>
   <?php endfor;?>
 
-  <td width="60" rowspan='4'>外観</td>
-  <td width="65" rowspan='4'>重量<br>（目安）</td>
-  <td width="55" rowspan='6'>合否<br>判定</td>
+  <td width="48" rowspan='4'>外観</td>
+  <td width="62" rowspan='4'>重量<br>（目安）</td>
+  <td width="46" rowspan='6'>合否<br>判定</td>
 
 </tr>
 <tr>
 
-<td width="52" rowspan='9' style='font-size: 10pt'>画像<br>・<br>規格<br>条件</td>
-  <td width="52" rowspan='8' style='font-size: 10pt'>原料<br>・<br>温度<br>条件</td>
-  <td width="52" rowspan='7' style='font-size: 10pt'>当日<br>成形<br>条件</td>
+<td width="62" rowspan='9' style='font-size: 10pt'>画像<br>・<br>規格<br>条件</td>
+  <td width="62" rowspan='8' style='font-size: 10pt'>原料<br>・<br>温度<br>条件</td>
+  <td width="62" rowspan='7' style='font-size: 10pt'>当日<br>成形<br>条件</td>
     <td width="82" rowspan='6'>時間</td>
 
 <tr>
@@ -84,8 +84,8 @@ echo $this->Html->css('kensahyou');
       <td><?= h(${"lower_limit".$i}) ?></td>
     <?php endfor;?>
 
-    <td width="60" style="font-size: 10pt">〇・✕</td>
-        <td width="65">g / 本</td>
+    <td width="48" style="font-size: 9pt">〇・✕</td>
+        <td width="62">g / 本</td>
 
 </tr>
 <tr>
@@ -95,8 +95,8 @@ echo $this->Html->css('kensahyou');
       <td style='font-size: 8pt'><?= h(${"measuring_instrument".$i}) ?></td>
     <?php endfor;?>
 
-    <td width="60">目視</td>
-    <td style='width:65; border-top-style:none; font-size: 9pt'>デジタル秤</td>
+    <td width="48">目視</td>
+    <td style='width:62; border-top-style:none; font-size: 8pt'>デジタル秤</td>
 
 </tr>
 
@@ -123,9 +123,8 @@ echo $this->Html->css('kensahyou');
 <?php
 $numkikakucheck = $numkikakucheck + $arr_numnakama_kikaku[$numkikakucount];
 
-echo "<td style='width:52; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_kikaku[$numkikakucount]>";
-echo $this->Form->submit("表示" , ['action'=>'kensakusyousai', 'name' => "kikaku_".${"datetime".$j}]) ;
-//echo " ";
+echo "<td valign='top' style='padding-top: 8px; width:62; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_kikaku[$numkikakucount]>";
+echo $this->Form->submit("211222" , ['action'=>'kensakusyousai', 'name' => "kikaku_".${"datetime".$j}]) ;
 echo "</td>";
 
 $numkikakucount = $numkikakucount + 1;
@@ -138,10 +137,10 @@ $numkikakucount = $numkikakucount + 1;
 
   <?php
   $numondocheck = $numondocheck + $arr_numnakama_ondo[$numondocount];
+  $ondo_created_at = substr(${"ondo_created_at".$j}, 2, 2).substr(${"ondo_created_at".$j}, 5, 2).substr(${"ondo_created_at".$j}, 8, 2);
 
-  echo "<td style='width:52; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_ondo[$numondocount]>";
-  echo $this->Form->submit("表示" , ['action'=>'kensakusyousai', 'name' => "ondo_".${"datetime".$j}]) ;
-  //echo " ";
+  echo "<td valign='top' style='padding-top: 8px; width:62; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_ondo[$numondocount]>";
+  echo $this->Form->submit($ondo_created_at , ['action'=>'kensakusyousai', 'name' => "ondo_".${"datetime".$j}]) ;
   echo "</td>";
 
   $numondocount = $numondocount + 1;
@@ -154,10 +153,10 @@ $numkikakucount = $numkikakucount + 1;
 
 <?php
 $numtoujitucheck = $numtoujitucheck + $arr_numnakama_toujitu[$numtoujitucount];
+$toujitu_created_at = substr(${"datetime".$j}, 2, 2).substr(${"datetime".$j}, 5, 2).substr(${"datetime".$j}, 8, 2);
 
-echo "<td style='width:52; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_toujitu[$numtoujitucount]>";
-echo $this->Form->submit("表示" , ['action'=>'kensakusyousai', 'name' => "toujitu_".${"datetime".$j}]) ;
-//echo " ";
+echo "<td valign='top' style='padding-top: 8px; width:62; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_toujitu[$numtoujitucount]>";
+echo $this->Form->submit($toujitu_created_at , ['action'=>'kensakusyousai', 'name' => "toujitu_".${"datetime".$j}]) ;
 echo "</td>";
 
 $numtoujitucount = $numtoujitucount + 1;
@@ -168,7 +167,7 @@ $numtoujitucount = $numtoujitucount + 1;
 
 <td style='width:82; border-top-style:none; font-size: 10pt'><?= h(${"datetime".$j}) ?></td></td>
 
-<td style='width:103; border-top-style:none; font-size: 8pt'><?= h("長さ：".${"length".$j}) ?><br><?= h(${"staff_hyouji".$j}) ?></td>
+<td style='width:96; border-top-style:none; font-size: 8pt'><?= h("長さ：".${"length".$j}) ?><br><?= h(${"staff_hyouji".$j}) ?></td>
 
 <?php for($i=1; $i<=11; $i++): ?>
 
@@ -206,9 +205,9 @@ if(${"judge".$j} == 1){
 
 ?>
 
-<td style='width:60; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
-<td style='width:65; border-top-style:none'><?= h(${"result_weight".$j}) ?></td>
-<td style='width:55; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+<td style='width:48; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
+<td style='width:62; border-top-style:none'><?= h(${"result_weight".$j}) ?></td>
+<td style='width:46; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
 
 </tr>
 
