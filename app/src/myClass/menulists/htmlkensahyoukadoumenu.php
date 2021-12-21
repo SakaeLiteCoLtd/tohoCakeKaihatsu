@@ -282,7 +282,7 @@ class htmlkensahyoukadoumenu extends AppController
 
   public function kensahyouheaderkensaku($product_code_datetime)
   {
-    /*
+/*
     echo "<pre>";
     print_r($product_code_datetime);
     echo "</pre>";
@@ -293,8 +293,7 @@ class htmlkensahyoukadoumenu extends AppController
 
     $product_code_ini = substr($product_code, 0, 11);
     $inspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
-    ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.is_active' => 0
-    , 'InspectionStandardSizeParents.delete_flag' => 0, 'InspectionStandardSizeParents.created_at <=' => $datetime])
+    ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.created_at <=' => $datetime])
     ->order(["InspectionStandardSizeParents.created_at"=>"DESC"])->toArray();
 
     if(isset($inspectionStandardSizeParents[0])){

@@ -6675,6 +6675,43 @@ class KensahyousokuteidatasController extends AppController
         ${"datetime".$n} = $InspectionDataResultParents[$j]['datetime']->format('Y-m-d G:i');
         $this->set('datetime'.$n,${"datetime".$n});
 
+        //datetimeのときの規格条件を取得する
+        ${"kikaku_created_at".$n} = $InspectionDataResultParents[$j]["inspection_standard_size_parent"]["created_at"]->format('Y-m-d H:i:s');
+        $this->set('kikaku_created_at'.$n,${"kikaku_created_at".$n});
+
+        if(count($InspectionDataResultParents) == 1){
+
+          ${"numnakama_kikau".$n} = $numnakama_kikau;
+          $this->set('numnakama_kikau'.$n,$numnakama_kikau);
+
+        }else{
+
+          if($j > 0){
+
+            $m = $n-1;
+            if(${"kikaku_created_at".$m} == ${"kikaku_created_at".$n}){
+  
+              $numnakama_kikau = $numnakama_kikau;
+              ${"numnakama_kikau".$n} = $numnakama_kikau;
+              $this->set('numnakama_kikau'.$n,${"numnakama_kikau".$n});
+
+            }else{
+  
+              $numnakama_kikau = $numnakama_kikau + 1;
+              ${"numnakama_kikau".$n} = $numnakama_kikau;
+              $this->set('numnakama_kikau'.$n,${"numnakama_kikau".$n});
+
+            }
+  
+          }else{
+            
+            ${"numnakama_kikau".$n} = $numnakama_kikau;
+            $this->set('numnakama_kikau'.$n,$numnakama_kikau);
+  
+          }
+  
+        }
+
 //datetimeのときの温度条件を取得する
         $ProductConditonChildren = $this->ProductConditonChildren->find()
         ->where(['created_at <' => ${"datetime".$n}, 'cylinder_name' => $InspectionDataResultParents[$j]["product_condition_parent"]["product_material_machines"][0]["cylinder_name"]])
@@ -6687,8 +6724,6 @@ class KensahyousokuteidatasController extends AppController
 
           ${"numnakama_ondo".$n} = $numnakama_ondo;
           $this->set('numnakama_ondo'.$n,${"numnakama_ondo".$n});
-          ${"numnakama_kikau".$n} = $numnakama_kikau;
-          $this->set('numnakama_kikau'.$n,$numnakama_kikau);
 
         }else{
 
@@ -6709,27 +6744,10 @@ class KensahyousokuteidatasController extends AppController
 
             }
   
-            if(${"product_condition_code".$m} == ${"product_condition_code".$n}){
-  
-              $numnakama_kikau = $numnakama_kikau;
-              ${"numnakama_kikau".$n} = $numnakama_kikau;
-              $this->set('numnakama_kikau'.$n,${"numnakama_kikau".$n});
-  
-            }else{
-  
-              $numnakama_kikau = $numnakama_kikau + 1;
-              ${"numnakama_kikau".$n} = $numnakama_kikau;
-              $this->set('numnakama_kikau'.$n,${"numnakama_kikau".$n});
-  
-            }
-  
           }else{
   
             ${"numnakama_ondo".$n} = $numnakama_ondo;
             $this->set('numnakama_ondo'.$n,${"numnakama_ondo".$n});
-            
-            ${"numnakama_kikau".$n} = $numnakama_kikau;
-            $this->set('numnakama_kikau'.$n,$numnakama_kikau);
   
           }
   
@@ -6808,7 +6826,11 @@ class KensahyousokuteidatasController extends AppController
       $machine_num = $data["machine_num"];
       $datetime = $idarr2[1]." ".$idarr2[2];
       $product_code_datetime = $product_code."_".$idarr2[1]."_".$idarr2[2];
-
+      /*
+      echo "<pre>";
+      print_r($datetime);
+      echo "</pre>";
+*/
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheaderkensaku($product_code_datetime);
       $this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -6820,8 +6842,7 @@ class KensahyousokuteidatasController extends AppController
   
         $product_code_ini = substr($product_code, 0, 11);
         $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
-        ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.is_active' => 0
-        , 'InspectionStandardSizeParents.delete_flag' => 0, 'InspectionStandardSizeParents.created_at <=' => $datetime])
+        ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.created_at <=' => $datetime])
         ->order(["version"=>"DESC"])->toArray();
       
         $inspection_standard_size_parent_id = $InspectionStandardSizeParents[0]['id'];
@@ -6829,13 +6850,8 @@ class KensahyousokuteidatasController extends AppController
   
         $product_code_ini = substr($product_code, 0, 11);
         $InspectionStandardSizeChildren= $this->InspectionStandardSizeChildren->find()
-        ->contain(['InspectionStandardSizeParents' => ["Products"]])
-        ->where(['product_code like' => $product_code_ini.'%',
-        'InspectionStandardSizeParents.is_active' => 0,
-        'InspectionStandardSizeParents.delete_flag' => 0,
-        'InspectionStandardSizeChildren.delete_flag' => 0,
-        'InspectionStandardSizeParents.created_at <=' => $datetime])
-        ->order(["InspectionStandardSizeParents.created_at"=>"DESC"])->toArray();
+        ->where(['inspection_standard_size_parent_id' => $inspection_standard_size_parent_id])
+        ->order(["InspectionStandardSizeChildren.size_number"=>"ASC"])->toArray();
 
         if(isset($InspectionStandardSizeChildren[0])){
 
@@ -6931,12 +6947,7 @@ class KensahyousokuteidatasController extends AppController
   
           $product_code_ini = substr($product_code, 0, 11);
           $ProductMaterialMachines= $this->ProductMaterialMachines->find()
-          ->contain(['ProductConditionParents' => ["Products"]])
-          ->where(['Products.product_code like' => $product_code_ini.'%',
-          'ProductConditionParents.delete_flag' => 0,
-          'ProductMaterialMachines.delete_flag' => 0,
-          'ProductConditionParents.machine_num' => $machine_num,
-          'ProductConditionParents.version' => $version])
+          ->where(['product_condition_parent_id' => $ProductConditionParents[0]["id"]])
           ->order(["cylinder_number"=>"ASC"])->toArray();
   
           $countseikeiki = count($ProductMaterialMachines);
@@ -6999,22 +7010,15 @@ class KensahyousokuteidatasController extends AppController
 
           $product_code_ini = substr($product_code, 0, 11);
           $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
-          ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.is_active' => 0
-          , 'InspectionStandardSizeParents.delete_flag' => 0, 'InspectionStandardSizeParents.created_at <=' => $datetime])
+          ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.created_at <=' => $datetime])
           ->order(["version"=>"DESC"])->toArray();
         
           $inspection_standard_size_parent_id = $InspectionStandardSizeParents[0]['id'];
           $this->set('inspection_standard_size_parent_id', $inspection_standard_size_parent_id);
     
-          $product_code_ini = substr($product_code, 0, 11);
           $InspectionStandardSizeChildren= $this->InspectionStandardSizeChildren->find()
-          ->contain(['InspectionStandardSizeParents' => ["Products"]])
-          ->where(['product_code like' => $product_code_ini.'%',
-          'InspectionStandardSizeParents.is_active' => 0,
-          'InspectionStandardSizeParents.delete_flag' => 0,
-          'InspectionStandardSizeChildren.delete_flag' => 0,
-          'InspectionStandardSizeParents.created_at <=' => $datetime])
-          ->order(["InspectionStandardSizeParents.created_at"=>"DESC"])->toArray();
+          ->where(['inspection_standard_size_parent_id' => $inspection_standard_size_parent_id])
+          ->order(["created_at"=>"DESC"])->toArray();
   
           if(isset($InspectionStandardSizeChildren[0])){
   

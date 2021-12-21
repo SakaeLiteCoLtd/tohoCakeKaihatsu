@@ -364,36 +364,13 @@ class MaterialsController extends AppController
 
       }else{//typeが同じものがない
 
-        $Materialsnow = $this->Materials->find()
-        ->where(['material_code like' => "S".$material_supplier_code.$code_factory.'%'])
-        ->order(["material_code"=>"DESC"])->toArray();
-  
-        if(isset($Materialsnow[0])){
-
-          if(substr($Materialsnow[0]["material_code"], -5, 3) == 999){
-
-            return $this->redirect(['action' => 'addform',
-            's' => ['mess' => "※仕入品コードが取得できません。別の仕入先名で登録しなおしてください。"]]);
-    
-          }else{
-            $material_code_renban = substr($Materialsnow[0]["material_code"], -5, 3) + 1;
-            $material_code_renban = sprintf('%03d', $material_code_renban);//0埋め
-            }
-  
-        }else{
-          $material_code_renban = "001";
-        }
+        $material_code_renban = $type_name;
   
         $Materialsnow2 = $this->Materials->find()
         ->where(['material_code like' => "S".$material_supplier_code.$code_factory.$material_code_renban.'%'])
         ->order(["material_code"=>"DESC"])->toArray();
   
-        if(isset($Materialsnow2[0])){
-          $material_code_renban2 = substr($Materialsnow2[0]["material_code"], -2, 2) + 1;
-          $material_code_renban2 = sprintf('%02d', $material_code_renban2);//0埋め
-        }else{
-          $material_code_renban2 = "01";
-        }
+        $material_code_renban2 = "01";
   
       }
 
@@ -423,6 +400,7 @@ class MaterialsController extends AppController
       print_r($arrtourokumaterial);
       echo "</pre>";
 */
+
       //新しいデータを登録
       $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $arrtourokumaterial);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -507,6 +485,11 @@ class MaterialsController extends AppController
       $this->set('material_supplier_id', $Materials[0]["material_supplier_id"]);
       $this->set('status_kensahyou', $Materials[0]["status_kensahyou"]);
 
+      $MaterialTypes = $this->MaterialTypes->find()
+      ->where(['id' => $Materials[0]["material_type_id"]])->toArray();
+      $material_type = $MaterialTypes[0]["type"];
+      $this->set('material_type', $material_type);
+
       $MaterialSuppliers = $this->MaterialSuppliers->find()
       ->where(['id' => $Materials[0]["material_supplier_id"]])->toArray();
       $this->set('supplier_name', $MaterialSuppliers[0]["name"]);
@@ -516,7 +499,7 @@ class MaterialsController extends AppController
       $factory_name = $Factories[0]['name'];
       $this->set('factory_id', $Materials[0]['factory_id']);
       $this->set('factory_name', $factory_name);
-
+/*
       $MaterialTypes = $this->MaterialTypes->find()
       ->where(['delete_flag' => 0])->toArray();
 
@@ -525,7 +508,7 @@ class MaterialsController extends AppController
         $arrMaterialTypes[] = array($value->id=>$value->type);
       }
       $this->set('arrMaterialTypes', $arrMaterialTypes);
-
+*/
     }
 
     public function editconfirm()
@@ -588,100 +571,9 @@ class MaterialsController extends AppController
       $Materialsmoto = $this->Materials->find()
       ->where(['id' => $data['id']])->toArray();
 
-      if($data["material_type_id"] == $Materialsmoto[0]["material_type_id"]){
         $material_code = $data["material_code"];
-      }else{
-
-        $MaterialSuppliers = $this->MaterialSuppliers->find()
-        ->where(['id' => $data['material_supplier_id']])->toArray();
-        $material_supplier_code = $MaterialSuppliers[0]['material_supplier_code'];
-  
-        if($data['factory_id'] == 1){
-          $code_factory = "D";
-        }elseif($data['factory_id'] == 2){
-          $code_factory = "I";
-        }elseif($data['factory_id'] == 3){
-          $code_factory = "B";
-        }elseif($data['factory_id'] == 4){
-          $code_factory = "K";
-        }else{
-          $code_factory = "H";
-        }
-  
-        $Materialstypecheck = $this->Materials->find()
-        ->where(['material_code like' => "S".$material_supplier_code.$code_factory.'%', 'material_type_id' => $data["material_type_id"], 'delete_flag' => 0])
-        ->order(["material_code"=>"DESC"])->toArray();
-  
-        if(isset($Materialstypecheck[0])){//typeが同じものがある・・・それと同じ３桁を取り、最後の２桁で連番
-
-          $material_code_renban = substr($Materialstypecheck[0]["material_code"], -5, 3);
-  
-          if(substr($Materialstypecheck[0]["material_code"], -2, 2) == 99){
-  
-            $id = $data["id"];
-
-            if(!isset($_SESSION)){
-              session_start();
-            }
-            $_SESSION['materialdata'] = array();
-            $_SESSION['materialdata'] = $id;
-    
-            return $this->redirect(['action' => 'editform',
-            's' => ['mess' => "※仕入品コードが取得できません。別の仕入品種類で登録しなおしてください。"]]);
-    
-          }else{
-            $material_code_renban2 = substr($Materialstypecheck[0]["material_code"], -2, 2) + 1;
-          }
-  
-          $material_code_renban2 = sprintf('%02d', $material_code_renban2);//0埋め
-  
-        }else{//typeが同じものがない
-  
-          $Materialsnow = $this->Materials->find()
-          ->where(['material_code like' => "S".$material_supplier_code.$code_factory.'%'])
-          ->order(["material_code"=>"DESC"])->toArray();
-    
-          if(isset($Materialsnow[0])){
-  
-            if(substr($Materialsnow[0]["material_code"], -5, 3) == 999){
-  
-              $id = $data["id"];
-
-              if(!isset($_SESSION)){
-                session_start();
-              }
-              $_SESSION['materialdata'] = array();
-              $_SESSION['materialdata'] = $id;
-  
-              return $this->redirect(['action' => 'editform',
-              's' => ['mess' => "※仕入品コードが取得できません。別の仕入先名で登録しなおしてください。"]]);
-      
-            }else{
-              $material_code_renban = substr($Materialsnow[0]["material_code"], -5, 3) + 1;
-              $material_code_renban = sprintf('%03d', $material_code_renban);//0埋め
-              }
-    
-          }else{
-            $material_code_renban = "001";
-          }
-    
-          $Materialsnow2 = $this->Materials->find()
-          ->where(['material_code like' => "S".$material_supplier_code.$code_factory.$material_code_renban.'%'])
-          ->order(["material_code"=>"DESC"])->toArray();
-    
-          if(isset($Materialsnow2[0])){
-            $material_code_renban2 = substr($Materialsnow2[0]["material_code"], -2, 2) + 1;
-            $material_code_renban2 = sprintf('%02d', $material_code_renban2);//0埋め
-          }else{
-            $material_code_renban2 = "01";
-          }
-    
-        }
-  
-      $material_code = "S".$material_supplier_code.$code_factory.$material_code_renban.$material_code_renban2;
-      }
-      $this->set('material_code', $material_code);
-/*
+        $this->set('material_code', $material_code);
+        /*
       echo "<pre>";
       print_r($material_code);
       echo "</pre>";
@@ -707,7 +599,6 @@ class MaterialsController extends AppController
       print_r($arrupdatematerial);
       echo "</pre>";
 */
-
       $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $data);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -715,10 +606,7 @@ class MaterialsController extends AppController
        try {//トランザクション4
         if ($this->Materials->updateAll(
           ['factory_id' => $data["factory_id"],
-           'material_code' => $material_code,
            'name' => $data["name"],
-           'material_supplier_id' => $data["material_supplier_id"],
-           'material_type_id' => $data["material_type_id"],
            'tanni' => $data["tanni"],
            'status_kensahyou' => $data["status_kensahyou"],
            'updated_at' => date('Y-m-d H:i:s'),

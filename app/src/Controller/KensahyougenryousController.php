@@ -3170,7 +3170,11 @@ class KensahyougenryousController extends AppController
             , 'product_condition_code like' => $code_date."%"])
             ->order(["version"=>"DESC"])->toArray();
       
-            $version = $ProductConditionParents[0]["version"] + 1;
+            if(isset($ProductConditionParents[0])){
+              $version = $ProductConditionParents[0]["version"] + 1;
+            }else{
+              $version = 1;
+            }
             $renban = count($ProductConditionParents) + 1;
             $product_condition_code = $code_date."-".$renban;
       

@@ -68,9 +68,16 @@ class StaffsController extends AppController
       ->where(['Staffs.id' => $datasession['Auth']['User']['staff_id'], 'Users.delete_flag' => 0])
       ->toArray();
 
-        $this->paginate = [
-            'contain' => ['Factories', 'Departments', 'Positions']
+      $this->paginate = [
+        'limit' => 10,
+          'contain' => ['Factories', 'Departments', 'Positions'],
+          'order' => [//'Materials.updated_at' => 'desc',
+          'Staffs.created_at' => 'desc']
         ];
+
+  //      $this->paginate = [
+  //          'contain' => ['Factories', 'Departments', 'Positions']
+  //      ];
         if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
           $staffs = $this->paginate($this->Staffs->find()
           ->where(['Staffs.delete_flag' => 0]));

@@ -69,6 +69,12 @@ echo $this->Html->css('kensahyou');
 
 <tbody>
 <?php for($j=0; $j<count($arrAll); $j++): ?>
+
+  <?= $this->Form->control('machine_num'.$j, array('type'=>'hidden', 'value'=>$arrAll[$j]["machine_num"], 'label'=>false)) ?>
+  <?= $this->Form->control('product_code'.$j, array('type'=>'hidden', 'value'=>$arrAll[$j]["product_code"], 'label'=>false)) ?>
+  <?= $this->Form->control('num'.$j, array('type'=>'hidden', 'value'=>$j, 'label'=>false)) ?>
+  <?= $this->Form->control('num_max', array('type'=>'hidden', 'value'=>$j, 'label'=>false)) ?>
+
   <tr class='children'>
 
   <?php

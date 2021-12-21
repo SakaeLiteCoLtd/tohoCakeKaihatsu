@@ -122,9 +122,10 @@ echo $this->Html->css('kensahyou');
 
 <?php
 $numkikakucheck = $numkikakucheck + $arr_numnakama_kikaku[$numkikakucount];
+$kikaku_created_at = substr(${"kikaku_created_at".$j}, 2, 2).substr(${"kikaku_created_at".$j}, 5, 2).substr(${"kikaku_created_at".$j}, 8, 2);
 
 echo "<td valign='top' style='padding-top: 8px; width:62; border-top-style:none; font-size: 10pt' rowspan=$arr_numnakama_kikaku[$numkikakucount]>";
-echo $this->Form->submit("211222" , ['action'=>'kensakusyousai', 'name' => "kikaku_".${"datetime".$j}]) ;
+echo $this->Form->submit($kikaku_created_at , ['action'=>'kensakusyousai', 'name' => "kikaku_".${"datetime".$j}]) ;
 echo "</td>";
 
 $numkikakucount = $numkikakucount + 1;

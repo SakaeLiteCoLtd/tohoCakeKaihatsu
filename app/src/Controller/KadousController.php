@@ -282,6 +282,11 @@ class KadousController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
+
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+
       if(isset($data["kensahyou"])){
 
         return $this->redirect(['controller' => 'Kensahyousokuteidatas', 'action' => 'kensakuhyouji',
@@ -290,8 +295,38 @@ class KadousController extends AppController
       }else{
 
       $arrsyousai = array_keys($data, '詳細');
-      $arrmachine_products = $arrsyousai[0];
-      $machine_products = explode("_",$arrmachine_products);
+
+      if(isset($arrsyousai[0])){
+        $arrmachine_products = $arrsyousai[0];
+        $machine_products = explode("_",$arrmachine_products);
+        $machine_num = $machine_products[0];
+        $this->set('machine_num', $machine_num);
+        $product_code = $machine_products[1];
+        $this->set('product_code', $product_code);
+
+        $target_num = 0;
+        $this->set('target_num', $target_num);
+
+        echo "<pre>";
+        print_r("if");
+        echo "</pre>";
+  
+      }else{
+
+        $machine_num = $data["machine_num"];
+        $this->set('machine_num', $machine_num);
+        $product_code = $data["product_code"];
+        $this->set('product_code', $product_code);
+
+        echo "<pre>";
+        print_r("else");
+        echo "</pre>";
+
+      }
+
+      echo "<pre>";
+      print_r($machine_num);
+      echo "</pre>";
 
       $factory_id = $data["factory_id"];
       $this->set('factory_id', $factory_id);
@@ -299,10 +334,6 @@ class KadousController extends AppController
       $date_fin = $data["date_fin"];
       $this->set('date_sta', $date_sta);
       $this->set('date_fin', $date_fin);
-      $machine_num = $machine_products[0];
-      $this->set('machine_num', $machine_num);
-      $product_code = $machine_products[1];
-      $this->set('product_code', $product_code);
       $date_fin_hyouji = substr($date_fin, 0, 10)." 05:59:59";
       $this->set('date_fin_hyouji', $date_fin_hyouji);
 

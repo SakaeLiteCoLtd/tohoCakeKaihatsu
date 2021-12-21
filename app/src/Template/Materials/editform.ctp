@@ -38,7 +38,7 @@
         <table>
         <tr>
           <td width="240"><strong>工場名（変更不可）</strong></td>
-          <td width="240"><strong>元仕入品コード（自動更新）</strong></td>
+          <td width="240"><strong>仕入品コード（変更不可）</strong></td>
         </tr>
         <tr>
         <td><?= h($factory_name) ?></td>
@@ -67,11 +67,11 @@
 
       <table>
         <tr>
-          <td width="480"><strong>仕入品種類</strong></td>
+          <td width="480"><strong>仕入品種類（変更不可）</strong></td>
         </tr>
         <tr>
-        <td><?= $this->Form->control('material_type_id', ['options' => $arrMaterialTypes, 'value'=>$material_type_id, 'label'=>false]) ?></td>
-        </tr>
+        <td><?= h($material_type) ?></td>
+       </tr>
       </table>
 
       <table>
@@ -86,6 +86,7 @@
   <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$id, 'label'=>false)) ?>
   <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$factory_id, 'label'=>false)) ?>
   <?= $this->Form->control('material_code', array('type'=>'hidden', 'value'=>$material_code, 'label'=>false)) ?>
+  <?= $this->Form->control('material_type_id', array('type'=>'hidden', 'value'=>$material_type_id, 'label'=>false)) ?>
   <?= $this->Form->control('material_supplier_id', array('type'=>'hidden', 'value'=>$material_supplier_id, 'label'=>false)) ?>
 
     </fieldset>

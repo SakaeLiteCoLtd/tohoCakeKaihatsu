@@ -217,9 +217,29 @@ class ZzzcsvsController extends AppController
 
     public function torikomimaterials()//http://localhost:5050/Zzzcsvs/torikomimaterials
     {
+/*typeの修正
+      $Materials = $this->Materials->find()
+      ->where(['delete_flag' => 0])
+      ->toArray();
 
-      $fp = fopen("torikomicsvs/Materials210921.csv", "r");//csvファイルはwebrootに入れる
-    	$fpcount = fopen("torikomicsvs/Materials210921.csv", 'r' );
+      for($j=0; $j<count($Materials); $j++){
+
+        $type = substr($Materials[$j]["material_code"], 8, 3);
+   
+        $MaterialTypes = $this->MaterialTypes->find()
+        ->where(['type' => $type])
+        ->toArray();
+
+        $this->Materials->updateAll(
+            ['material_type_id' => $MaterialTypes[0]["id"]],
+            ['id'  => $Materials[$j]['id']]
+          );
+  
+        }
+*/
+/*
+      $fp = fopen("torikomicsvs/materials2112181.csv", "r");//csvファイルはwebrootに入れる
+    	$fpcount = fopen("torikomicsvs/materials2112181.csv", 'r' );
     	for( $count = 0; fgets( $fpcount ); $count++ );
     	$this->set('count',$count);
 
@@ -232,53 +252,75 @@ class ZzzcsvsController extends AppController
     		$keys=array_keys($sample);
     		$keys[array_search('0',$keys)]='material_code';//名前の変更
     		$keys[array_search('1',$keys)]='name';
-    		$keys[array_search('2',$keys)]='sakuin';
-    		$keys[array_search('3',$keys)]='tanni';
-    		$keys[array_search('4',$keys)]='tanni_kosu';
-        $keys[array_search('5',$keys)]='material_supplier_id';
+    		$keys[array_search('2',$keys)]='tanni';
+    		$keys[array_search('3',$keys)]='syubetsu';
+        $keys[array_search('4',$keys)]='material_supplier_id';
+        $keys[array_search('5',$keys)]='damy';
     		$sample = array_combine($keys, $sample);
 
-        $sample = array_merge($sample,array('created_at' => date("Y-m-d H:i:s")));
+        $sample = array_merge($sample,array('created_at' => "2021-12-20 08:00:00"));
         $sample = array_merge($sample,array('created_staff' => 1));
         $sample = array_merge($sample,array('factory_id' => 1));
         $sample = array_merge($sample,array('is_active' => 0));
         $sample = array_merge($sample,array('delete_flag' => 0));
-/*
-        unset($sample['office']);
-        unset($sample['customercode_local']);
-        unset($sample['department']);
-*/
-    		$arrFp[] = $sample;//配列に追加する
+
+        unset($sample['damy']);
+
+        $arrFp[] = $sample;//配列に追加する
     	}
     	$this->set('arrFp',$arrFp);//$arrFpをctpで使用できるようセット
 
+      $arrFpcodeng = array();//空の配列を作る
       for($j=0; $j<count($arrFp); $j++){
 
+        $code = substr($arrFp[$j]["material_code"], 1, 6);
+
         $MaterialSuppliers = $this->MaterialSuppliers->find()
-        ->where(['material_supplier_code' => (int)$arrFp[$j]["material_supplier_id"]])
+  //      ->where(['material_supplier_code' => (int)$arrFp[$j]["material_supplier_id"]])
+        ->where(['material_supplier_code' => $code])
         ->toArray();
 
         if(isset($MaterialSuppliers[0])){
+
           $arrFp[$j] = array_merge($arrFp[$j],array('material_supplier_id'=>$MaterialSuppliers[0]['id']));
+
         }else{
-          $arrFp[$j] = array_merge($arrFp[$j],array('material_supplier_id'=>1));
+
+          echo "<pre>";
+          print_r("ng ".$j);
+          print_r($arrFp[$j]);
+          echo "</pre>";
+
+          $arrFpcodeng[] = $arrFp[$j];
+
         }
 
       }
 
+      echo "<pre>";
+      print_r($arrFpcodeng);
+      echo "</pre>";
 
+      $fp = fopen('torikomicsvs/仕入品ng211220.csv', 'w');
+      foreach ($arrFpcodeng as $line) {
+        $line = mb_convert_encoding($line, 'SJIS-win', 'UTF-8');//UTF-8の文字列をSJIS-winに変更する※文字列に使用、ファイルごとはできない
+        fputcsv($fp, $line);
+      }
+      fclose($fp);
+*/
+/*
       for($j=0; $j<count($arrFp); $j++){
 
         $tourokuarr = $arrFp[$j];
 
    //     $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $tourokuarr);
         if ($this->Materials->save($Materials)) {
-/*
+
           echo "<pre>";
           print_r("ok");
           print_r($arrFp[$j]);
           echo "</pre>";
-*/
+
         }else{
 
           echo "<pre>";
@@ -289,9 +331,9 @@ class ZzzcsvsController extends AppController
         }
 
       }
-/*
+
     	echo "<pre>";
-     	print_r($arrFp);
+     	print_r(count($arrFp));
       echo "</pre>";
 */
   //    $Materials = $this->Materials->patchEntities($this->Materials->newEntity(), $arrFp);
@@ -302,8 +344,8 @@ class ZzzcsvsController extends AppController
     public function torikomimaterialsuppliers()//http://localhost:5050/Zzzcsvs/torikomimaterialsuppliers
     {
 
-      $fp = fopen("torikomicsvs/MaterialSuppliers210921.csv", "r");//csvファイルはwebrootに入れる
-    	$fpcount = fopen("torikomicsvs/MaterialSuppliers210921.csv", 'r' );
+      $fp = fopen("torikomicsvs/materialsuplires2112211.csv", "r");//csvファイルはwebrootに入れる
+    	$fpcount = fopen("torikomicsvs/materialsuplires2112211.csv", 'r' );
     	for( $count = 0; fgets( $fpcount ); $count++ );
     	$this->set('count',$count);
 
@@ -314,7 +356,7 @@ class ZzzcsvsController extends AppController
     		$sample = explode(',',$line);//$lineを","毎に配列に入れる
 
     		$keys=array_keys($sample);
-    		$keys[array_search('0',$keys)]='material_supplier_code';//名前の変更
+    		$keys[array_search('0',$keys)]='material_supplier_code';//コードの最後が1,5は大東、2,6は石狩
     		$keys[array_search('1',$keys)]='name';
     		$keys[array_search('2',$keys)]='department';
     		$keys[array_search('3',$keys)]='ryakusyou';
@@ -325,7 +367,7 @@ class ZzzcsvsController extends AppController
         $keys[array_search('8',$keys)]='fax';
     		$sample = array_combine($keys, $sample);
 
-        $sample = array_merge($sample,array('created_at' => date("Y-m-d H:i:s")));
+        $sample = array_merge($sample,array('created_at' => "2021-12-21 08:00:00"));
         $sample = array_merge($sample,array('created_staff' => 1));
         $sample = array_merge($sample,array('factory_id' => 1));
         $sample = array_merge($sample,array('is_active' => 0));
@@ -355,15 +397,15 @@ class ZzzcsvsController extends AppController
 
       echo "<pre>";
       print_r($arrFp);
-     echo "</pre>";
-/*
+      echo "</pre>";
+      /*
       $MaterialSuppliers = $this->MaterialSuppliers->patchEntity($this->MaterialSuppliers->newEntity(), $arrFp[0]);
       $this->MaterialSuppliers->save($MaterialSuppliers);
 */
-    /*  
+/*
       $MaterialSuppliers = $this->MaterialSuppliers->patchEntities($this->MaterialSuppliers->newEntity(), $arrFp);
       $this->MaterialSuppliers->saveMany($MaterialSuppliers);
-*/
+      */
     }
 
     public function torikomicustomer()//http://localhost:5050/Zzzcsvs/torikomicustomer

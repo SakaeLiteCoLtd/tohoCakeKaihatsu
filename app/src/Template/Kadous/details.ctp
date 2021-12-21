@@ -121,14 +121,28 @@ echo $this->Html->css('kensahyou');
 <table align="center">
     <tbody class='sample non-sample'>
       <tr>
+      <td style="border-style: none;"><div><?= $this->Form->submit('前のラインへ', array('name' => 'mae')); ?></div></td>
+          <td style="border-style: none;"><?= __("　　　　　　　　　　　　　　　　　　　") ?></td>
         <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
         <td style="border-style: none;"><?= __("　") ?></td>
           <td style="border-style: none;"><div><?= $this->Form->submit('検査表表示', array('name' => 'kensahyou')); ?></div></td>
+          <td style="border-style: none;"><?= __("　　　　　　　　　　　　　　　　　　　") ?></td>
+          <td style="border-style: none;"><div><?= $this->Form->submit('次のラインへ', array('name' => 'tugi')); ?></div></td>
       </tr>
     </tbody>
   </table>
   <br><br>
 
+  <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$factory_id, 'label'=>false)) ?>
   <?= $this->Form->control('date_sta', array('type'=>'hidden', 'value'=>$date_sta, 'label'=>false)) ?>
-    <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
-    <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
+  <?= $this->Form->control('date_fin', array('type'=>'hidden', 'value'=>$date_fin, 'label'=>false)) ?>
+  <?= $this->Form->control('product_code', array('type'=>'hidden', 'value'=>$product_code, 'label'=>false)) ?>
+  <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
+  <?= $this->Form->control('target_num', array('type'=>'hidden', 'value'=>$target_num, 'label'=>false)) ?>
+
+<?php for($j=0; $j<=$this->request->getData('num_max'); $j++): ?>
+  <?= $this->Form->control('machine_num'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('machine_num'.$j), 'label'=>false)) ?>
+  <?= $this->Form->control('product_code'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('product_code'.$j), 'label'=>false)) ?>
+  <?= $this->Form->control('num'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('num'.$j), 'label'=>false)) ?>
+  <?= $this->Form->control('num_max', array('type'=>'hidden', 'value'=>$j, 'label'=>false)) ?>
+<?php endfor;?>
