@@ -217,7 +217,7 @@ class ZzzcsvsController extends AppController
 
     public function torikomimaterials()//http://localhost:5050/Zzzcsvs/torikomimaterials
     {
-/*typeの修正
+/*typeの修正materials登録後に更新
       $Materials = $this->Materials->find()
       ->where(['delete_flag' => 0])
       ->toArray();
@@ -238,8 +238,8 @@ class ZzzcsvsController extends AppController
         }
 */
 /*
-      $fp = fopen("torikomicsvs/materials2112181.csv", "r");//csvファイルはwebrootに入れる
-    	$fpcount = fopen("torikomicsvs/materials2112181.csv", 'r' );
+      $fp = fopen("torikomicsvs/materials220111.csv", "r");//csvファイルはwebrootに入れる
+    	$fpcount = fopen("torikomicsvs/materials220111.csv", 'r' );
     	for( $count = 0; fgets( $fpcount ); $count++ );
     	$this->set('count',$count);
 
@@ -258,7 +258,7 @@ class ZzzcsvsController extends AppController
         $keys[array_search('5',$keys)]='damy';
     		$sample = array_combine($keys, $sample);
 
-        $sample = array_merge($sample,array('created_at' => "2021-12-20 08:00:00"));
+        $sample = array_merge($sample,array('created_at' => "2022-01-11 13:00:00"));
         $sample = array_merge($sample,array('created_staff' => 1));
         $sample = array_merge($sample,array('factory_id' => 1));
         $sample = array_merge($sample,array('is_active' => 0));
@@ -301,7 +301,7 @@ class ZzzcsvsController extends AppController
       print_r($arrFpcodeng);
       echo "</pre>";
 
-      $fp = fopen('torikomicsvs/仕入品ng211220.csv', 'w');
+      $fp = fopen('torikomicsvs/仕入品ng220111.csv', 'w');
       foreach ($arrFpcodeng as $line) {
         $line = mb_convert_encoding($line, 'SJIS-win', 'UTF-8');//UTF-8の文字列をSJIS-winに変更する※文字列に使用、ファイルごとはできない
         fputcsv($fp, $line);
@@ -313,7 +313,7 @@ class ZzzcsvsController extends AppController
 
         $tourokuarr = $arrFp[$j];
 
-   //     $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $tourokuarr);
+        $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $tourokuarr);
         if ($this->Materials->save($Materials)) {
 
           echo "<pre>";
@@ -344,8 +344,8 @@ class ZzzcsvsController extends AppController
     public function torikomimaterialsuppliers()//http://localhost:5050/Zzzcsvs/torikomimaterialsuppliers
     {
 
-      $fp = fopen("torikomicsvs/materialsuplires2112211.csv", "r");//csvファイルはwebrootに入れる
-    	$fpcount = fopen("torikomicsvs/materialsuplires2112211.csv", 'r' );
+      $fp = fopen("torikomicsvs/materialsuplires220111.csv", "r");//csvファイルはwebrootに入れる
+    	$fpcount = fopen("torikomicsvs/materialsuplires220111.csv", 'r' );
     	for( $count = 0; fgets( $fpcount ); $count++ );
     	$this->set('count',$count);
 
@@ -405,7 +405,7 @@ class ZzzcsvsController extends AppController
 /*
       $MaterialSuppliers = $this->MaterialSuppliers->patchEntities($this->MaterialSuppliers->newEntity(), $arrFp);
       $this->MaterialSuppliers->saveMany($MaterialSuppliers);
-      */
+  */    
     }
 
     public function torikomicustomer()//http://localhost:5050/Zzzcsvs/torikomicustomer
@@ -462,8 +462,8 @@ class ZzzcsvsController extends AppController
 
     public function torikomiproduct()//http://localhost:5050/Zzzcsvs/torikomiproduct
     {
-      $fp = fopen("torikomicsvs/products210908.csv", "r");//csvファイルはwebrootに入れる
-    	$fpcount = fopen("torikomicsvs/products210908.csv", 'r' );
+      $fp = fopen("torikomicsvs/products220111.csv", "r");//csvファイルはwebrootに入れる
+    	$fpcount = fopen("torikomicsvs/products220111.csv", 'r' );
     	for( $count = 0; fgets( $fpcount ); $count++ );
     	$this->set('count',$count);
 
@@ -502,7 +502,6 @@ class ZzzcsvsController extends AppController
         if(isset($Products[0])){
 
           $arrFptourokuzumi[] = $sample;//配列に追加する
-
 /*
           echo "<pre>";
           print_r("登録済み　".$sample["product_code"]);
@@ -518,11 +517,11 @@ class ZzzcsvsController extends AppController
     	$this->set('arrFp',$arrFp);//$arrFpをctpで使用できるようセット
 
       $count = 0;
-
+/*
       echo "<pre>";
-      print_r(count($arrFptourokuzumi));
+      print_r($arrFp);
       echo "</pre>";
-
+*/
       $arrFpok = array();//問題なしのデータ
       $arrFpng = array();//顧客コードがないデータ
       for($j=0; $j<count($arrFp); $j++){
@@ -530,18 +529,22 @@ class ZzzcsvsController extends AppController
         if(strpos($arrFp[$j]["product_code"],'D') !== false){//'D'が含まれている場合大東工場
 
           $arrFp[$j] = array_merge($arrFp[$j],array('factory_id'=>1));
+          $arrFp[$j] = array_merge($arrFp[$j],array('status_length'=>0));
 
         }elseif(strpos($arrFp[$j]["product_code"],'I') !== false){//石狩工場
 
           $arrFp[$j] = array_merge($arrFp[$j],array('factory_id'=>2));
+          $arrFp[$j] = array_merge($arrFp[$j],array('status_length'=>0));
 
         }elseif(strpos($arrFp[$j]["product_code"],'B') !== false){//美唄工場
 
           $arrFp[$j] = array_merge($arrFp[$j],array('factory_id'=>3));
+          $arrFp[$j] = array_merge($arrFp[$j],array('status_length'=>0));
 
         }else{//門真工場
 
           $arrFp[$j] = array_merge($arrFp[$j],array('factory_id'=>4));
+          $arrFp[$j] = array_merge($arrFp[$j],array('status_length'=>0));
 
         }
 
@@ -551,6 +554,10 @@ class ZzzcsvsController extends AppController
 
         if(isset($Customers[0])){
           $arrFp[$j] = array_merge($arrFp[$j],array('customer_id'=>$Customers[0]['id']));
+
+          echo "<pre>";
+          print_r($arrFp[$j]);
+          echo "</pre>";
 
           $Products = $this->Products->patchEntity($this->Products->newEntity(), $arrFp[$j]);
           $this->Products->save($Products);
@@ -596,20 +603,20 @@ class ZzzcsvsController extends AppController
       echo "<pre>";
       print_r("ok ".count($arrFpok));
       echo "</pre>";
-      /*
+      
       echo "<pre>";
       print_r($arrFpok);
       echo "</pre>";
-       */
+       
       echo "<pre>";
       print_r("ng ".count($arrFpng));
       echo "</pre>";
-      /*
+      
       echo "<pre>";
       print_r($arrFpng);
       echo "</pre>";
-*/
-      $fp = fopen('torikomicsvs/製品データng210914.csv', 'w');
+
+      $fp = fopen('torikomicsvs/製品データng220111.csv', 'w');
         foreach ($arrFpng as $line) {
     //      $line = mb_convert_encoding($line, 'SJIS-win', 'UTF-8');//UTF-8の文字列をSJIS-winに変更する※文字列に使用、ファイルごとはできない
           fputcsv($fp, $line);

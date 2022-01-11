@@ -313,6 +313,11 @@ class KadousController extends AppController
   
       }else{
 
+        if(isset($data["machine_num"])){
+
+        }elseif(){
+
+        }
         $machine_num = $data["machine_num"];
         $this->set('machine_num', $machine_num);
         $product_code = $data["product_code"];
