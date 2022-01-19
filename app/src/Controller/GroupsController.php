@@ -29,7 +29,7 @@ class GroupsController extends AppController
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
        $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "権限グループ", 'Groups.delete_flag' => 0])
+       ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Menus.id' => 32, 'Groups.delete_flag' => 0])
        ->toArray();
 
        if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
@@ -280,6 +280,7 @@ class GroupsController extends AppController
 
         $arrtourokugroup[] = [
           'name_group' => $data["name_group"],
+          'group_code' => 9999,
           'menu_id' => 9999,
           'delete_flag' => 0,
           'created_at' => date("Y-m-d H:i:s"),
@@ -293,8 +294,12 @@ class GroupsController extends AppController
           $Menus = $this->Menus->find()
           ->where(['name_menu' => $data['menu_name'.$k]])->toArray();
   
+          $Groupcodes = $this->Groups->find()
+          ->where(['delete_flag' => 0])->order(["group_code"=>"DESC"])->toArray();
+          $group_code = $Groupcodes[0]["group_code"]+1;
             $arrtourokugroup[] = [
               'name_group' => $data["name_group"],
+              'group_code' => $group_code,
               'menu_id' => $Menus[0]['id'],
               'delete_flag' => 0,
               'created_at' => date("Y-m-d H:i:s"),

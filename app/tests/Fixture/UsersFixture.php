@@ -23,6 +23,7 @@ class UsersFixture extends TestFixture
         'staff_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'super_user' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'group_name' => ['type' => 'string', 'length' => 40, 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
+        'group_code' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'delete_flag' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'created_at' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
         'created_staff' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
@@ -53,10 +54,11 @@ class UsersFixture extends TestFixture
                 'staff_id' => 1,
                 'super_user' => 1,
                 'group_name' => 'Lorem ipsum dolor sit amet',
+                'group_code' => 1,
                 'delete_flag' => 1,
-                'created_at' => '2021-04-14 11:18:50',
+                'created_at' => '2022-01-18 15:27:27',
                 'created_staff' => 1,
-                'updated_at' => '2021-04-14 11:18:50',
+                'updated_at' => '2022-01-18 15:27:27',
                 'updated_staff' => 1
             ],
         ];

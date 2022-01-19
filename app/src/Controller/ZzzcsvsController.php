@@ -17,7 +17,8 @@ class ZzzcsvsController extends AppController
 
     // 認証なしでアクセスできるアクションの指定
     $this->Auth->allow(["jidoutest","torikomicustomer","tourokusuppliers","tourokucustomers",
-    "torikomiproduct","torikomimaterialsuppliers","torikomiMaterials"]);
+    "torikomiproduct","torikomimaterialsuppliers","torikomiMaterials","torikomimaterialtypes",
+    "torikomimaterialnamecheck"]);
   }
 
   public function initialize()
@@ -215,31 +216,10 @@ class ZzzcsvsController extends AppController
 
     }
 
-    public function torikomimaterials()//http://localhost:5050/Zzzcsvs/torikomimaterials
-    {
-/*typeの修正materials登録後に更新
-      $Materials = $this->Materials->find()
-      ->where(['delete_flag' => 0])
-      ->toArray();
-
-      for($j=0; $j<count($Materials); $j++){
-
-        $type = substr($Materials[$j]["material_code"], 8, 3);
-   
-        $MaterialTypes = $this->MaterialTypes->find()
-        ->where(['type' => $type])
-        ->toArray();
-
-        $this->Materials->updateAll(
-            ['material_type_id' => $MaterialTypes[0]["id"]],
-            ['id'  => $Materials[$j]['id']]
-          );
-  
-        }
-*/
-/*
-      $fp = fopen("torikomicsvs/materials220111.csv", "r");//csvファイルはwebrootに入れる
-    	$fpcount = fopen("torikomicsvs/materials220111.csv", 'r' );
+    public function torikomimaterialnamecheck()//http://localhost:5050/Zzzcsvs/torikomimaterialnamecheck
+    {//仕入品名がDBとスマイルで違うもの
+      $fp = fopen("torikomicsvs/materials220112.csv", "r");//csvファイルはwebrootに入れる
+    	$fpcount = fopen("torikomicsvs/materials220112.csv", 'r' );
     	for( $count = 0; fgets( $fpcount ); $count++ );
     	$this->set('count',$count);
 
@@ -258,9 +238,8 @@ class ZzzcsvsController extends AppController
         $keys[array_search('5',$keys)]='damy';
     		$sample = array_combine($keys, $sample);
 
-        $sample = array_merge($sample,array('created_at' => "2022-01-11 13:00:00"));
+        $sample = array_merge($sample,array('created_at' => "2022-01-18 10:00:00"));
         $sample = array_merge($sample,array('created_staff' => 1));
-        $sample = array_merge($sample,array('factory_id' => 1));
         $sample = array_merge($sample,array('is_active' => 0));
         $sample = array_merge($sample,array('delete_flag' => 0));
 
@@ -272,6 +251,179 @@ class ZzzcsvsController extends AppController
 
       $arrFpcodeng = array();//空の配列を作る
       for($j=0; $j<count($arrFp); $j++){
+
+        if(strpos($arrFp[$j]["material_code"],'D') !== false){//'D'が含まれている場合大東工場
+
+          $arrFp[$j] = array_merge($arrFp[$j],array('factory_id'=>1));
+          $arrFp[$j] = array_merge($arrFp[$j],array('status_kensahyou'=>1));
+
+        }elseif(strpos($arrFp[$j]["material_code"],'I') !== false){//石狩工場
+
+          $arrFp[$j] = array_merge($arrFp[$j],array('factory_id'=>2));
+          $arrFp[$j] = array_merge($arrFp[$j],array('status_kensahyou'=>1));
+
+        }elseif(strpos($arrFp[$j]["material_code"],'B') !== false){//美唄工場
+
+          $arrFp[$j] = array_merge($arrFp[$j],array('factory_id'=>3));
+          $arrFp[$j] = array_merge($arrFp[$j],array('status_kensahyou'=>1));
+
+        }else{//門真工場
+
+          $arrFp[$j] = array_merge($arrFp[$j],array('factory_id'=>4));
+          $arrFp[$j] = array_merge($arrFp[$j],array('status_kensahyou'=>1));
+
+        }
+
+        $code = substr($arrFp[$j]["material_code"], 1, 6);
+
+        $MaterialSuppliers = $this->MaterialSuppliers->find()
+        ->where(['material_supplier_code' => $code])
+        ->toArray();
+
+        if(isset($MaterialSuppliers[0])){
+
+          $arrFp[$j] = array_merge($arrFp[$j],array('material_supplier_id'=>$MaterialSuppliers[0]['id']));
+
+        }else{
+
+          $arrFpcodeng[] = $arrFp[$j];
+
+        }
+
+      }
+
+      $count = 0;
+      $arrFpname = array();//空の配列を作る
+      $arrFpname[] = [
+        "material_code" => "仕入品コード",
+        "nameDB" => "仕入品名DB",
+        "namesmile" => "仕入品名スマイル",
+      ];
+      for($j=0; $j<count($arrFp); $j++){
+
+        $tourokuarr = $arrFp[$j];
+
+        $Materials = $this->Materials->find()
+        ->where(['material_code' => $arrFp[$j]["material_code"]])
+        ->toArray();
+
+        if(isset($Materials[0])){
+  
+          if($Materials[0]["name"] !== $arrFp[$j]["name"]){//DBとスマイルで名前が違うもの
+  
+            $count = $count + 1;
+/*
+            echo "<pre>";
+            print_r($arrFp[$j]["material_code"]." DB=「".$Materials[0]["name"]."」　スマイル=「".$arrFp[$j]["name"]."」");
+            echo "</pre>";
+*/
+            $arrFpname[] = [
+              "material_code" => $arrFp[$j]["material_code"],
+              "nameDB" => $Materials[0]["name"],
+              "namesmile" => $arrFp[$j]["name"],
+            ];
+
+          }
+
+          }
+
+      }
+
+      $fp = fopen('torikomicsvs/仕入品名前220118.csv', 'w');
+      foreach ($arrFpname as $line) {
+        $line = mb_convert_encoding($line, 'SJIS-win', 'UTF-8');//UTF-8の文字列をSJIS-winに変更する※文字列に使用、ファイルごとはできない
+        fputcsv($fp, $line);
+      }
+      fclose($fp);
+/*
+      echo "<pre>";
+      print_r($count);
+      echo "</pre>";
+*/
+      $this->render('/Zzzcsvs/torikomimaterialtypes');
+    }
+
+    public function torikomimaterialtypes()//http://localhost:5050/Zzzcsvs/torikomimaterialtypes
+    {
+//typeの修正materials登録後に更新
+      $Materials = $this->Materials->find()
+      ->where(['delete_flag' => 0])
+      ->toArray();
+
+      for($j=0; $j<count($Materials); $j++){
+
+        $type = substr($Materials[$j]["material_code"], 8, 3);
+   
+        $MaterialTypes = $this->MaterialTypes->find()
+        ->where(['type' => $type])
+        ->toArray();
+
+        $this->Materials->updateAll(
+            ['material_type_id' => $MaterialTypes[0]["id"]],
+            ['id'  => $Materials[$j]['id']]
+          );
+  
+        }
+
+    }
+
+    public function torikomimaterials()//http://localhost:5050/Zzzcsvs/torikomimaterials
+    {
+      $fp = fopen("torikomicsvs/materials220112.csv", "r");//csvファイルはwebrootに入れる
+    	$fpcount = fopen("torikomicsvs/materials220112.csv", 'r' );
+    	for( $count = 0; fgets( $fpcount ); $count++ );
+    	$this->set('count',$count);
+
+    	$arrFp = array();//空の配列を作る
+    	$line = fgets($fp);//ファイル$fpの上の１行を取る（１行目はカラム名）
+    	for ($k=1; $k<=$count-1; $k++) {//行数分
+    		$line = fgets($fp);//ファイル$fpの上の１行を取る（２行目から）
+    		$sample = explode(',',$line);//$lineを","毎に配列に入れる
+
+    		$keys=array_keys($sample);
+    		$keys[array_search('0',$keys)]='material_code';//名前の変更
+    		$keys[array_search('1',$keys)]='name';
+    		$keys[array_search('2',$keys)]='tanni';
+    		$keys[array_search('3',$keys)]='syubetsu';
+        $keys[array_search('4',$keys)]='material_supplier_id';
+        $keys[array_search('5',$keys)]='damy';
+    		$sample = array_combine($keys, $sample);
+
+        $sample = array_merge($sample,array('created_at' => "2022-01-18 10:00:00"));
+        $sample = array_merge($sample,array('created_staff' => 1));
+        $sample = array_merge($sample,array('is_active' => 0));
+        $sample = array_merge($sample,array('delete_flag' => 0));
+
+        unset($sample['damy']);
+
+        $arrFp[] = $sample;//配列に追加する
+    	}
+    	$this->set('arrFp',$arrFp);//$arrFpをctpで使用できるようセット
+
+      $arrFpcodeng = array();//空の配列を作る
+      for($j=0; $j<count($arrFp); $j++){
+
+        if(strpos($arrFp[$j]["material_code"],'D') !== false){//'D'が含まれている場合大東工場
+
+          $arrFp[$j] = array_merge($arrFp[$j],array('factory_id'=>1));
+          $arrFp[$j] = array_merge($arrFp[$j],array('status_kensahyou'=>1));
+
+        }elseif(strpos($arrFp[$j]["material_code"],'I') !== false){//石狩工場
+
+          $arrFp[$j] = array_merge($arrFp[$j],array('factory_id'=>2));
+          $arrFp[$j] = array_merge($arrFp[$j],array('status_kensahyou'=>1));
+
+        }elseif(strpos($arrFp[$j]["material_code"],'B') !== false){//美唄工場
+
+          $arrFp[$j] = array_merge($arrFp[$j],array('factory_id'=>3));
+          $arrFp[$j] = array_merge($arrFp[$j],array('status_kensahyou'=>1));
+
+        }else{//門真工場
+
+          $arrFp[$j] = array_merge($arrFp[$j],array('factory_id'=>4));
+          $arrFp[$j] = array_merge($arrFp[$j],array('status_kensahyou'=>1));
+
+        }
 
         $code = substr($arrFp[$j]["material_code"], 1, 6);
 
@@ -286,57 +438,74 @@ class ZzzcsvsController extends AppController
 
         }else{
 
-          echo "<pre>";
-          print_r("ng ".$j);
-          print_r($arrFp[$j]);
-          echo "</pre>";
-
           $arrFpcodeng[] = $arrFp[$j];
 
         }
 
       }
-
+/*
       echo "<pre>";
       print_r($arrFpcodeng);
       echo "</pre>";
-
-      $fp = fopen('torikomicsvs/仕入品ng220111.csv', 'w');
+*/
+      $fp = fopen('torikomicsvs/仕入品ng220118.csv', 'w');
       foreach ($arrFpcodeng as $line) {
         $line = mb_convert_encoding($line, 'SJIS-win', 'UTF-8');//UTF-8の文字列をSJIS-winに変更する※文字列に使用、ファイルごとはできない
         fputcsv($fp, $line);
       }
       fclose($fp);
-*/
-/*
+
+      $countok = 0;
+      $countng = 0;
+      $arrFptourokung = array();//空の配列を作る
       for($j=0; $j<count($arrFp); $j++){
 
         $tourokuarr = $arrFp[$j];
 
-        $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $tourokuarr);
-        if ($this->Materials->save($Materials)) {
+        $Materials = $this->Materials->find()
+        ->where(['material_code' => $arrFp[$j]["material_code"]])
+        ->toArray();
 
-          echo "<pre>";
-          print_r("ok");
-          print_r($arrFp[$j]);
-          echo "</pre>";
+        if(!isset($Materials[0])){//データベースになければ登録
+          $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $tourokuarr);
+          if ($this->Materials->save($Materials)) {
+  
+            $countok = $countok + 1;
 
-        }else{
+          }else{
+  
+            $countng = $countng + 1;
+            $arrFptourokung[] = $arrFp[$j];
 
-          echo "<pre>";
-          print_r("ng ".$j);
-          print_r($arrFp[$j]);
-          echo "</pre>";
+            echo "<pre>";
+            print_r("ng ".$j);
+            print_r($arrFp[$j]);
+            echo "</pre>";
+  
+          }
 
-        }
+          }
 
       }
 
-    	echo "<pre>";
-     	print_r(count($arrFp));
+      $fp = fopen('torikomicsvs/仕入品登録ng220112.csv', 'w');
+      foreach ($arrFptourokung as $line) {
+        $line = mb_convert_encoding($line, 'SJIS-win', 'UTF-8');//UTF-8の文字列をSJIS-winに変更する※文字列に使用、ファイルごとはできない
+        fputcsv($fp, $line);
+      }
+      fclose($fp);
+
+      echo "<pre>";
+      print_r("all ".count($arrFp));
       echo "</pre>";
-*/
-  //    $Materials = $this->Materials->patchEntities($this->Materials->newEntity(), $arrFp);
+      echo "<pre>";
+      print_r("ok ".$countok);
+      echo "</pre>";
+      echo "<pre>";
+      print_r("ng ".$countng);
+      echo "</pre>";
+
+  //    $Materials = $this->Materials->patchEntities($this->Materials->newEntity(), $arrFp);//登録は個別で行う
   //    $this->Materials->saveMany($Materials);
 
     }

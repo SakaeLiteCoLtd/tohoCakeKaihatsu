@@ -62,6 +62,11 @@ class GroupsTable extends Table
             ->notEmpty('name_group');
 
         $validator
+            ->integer('group_code')
+            ->requirePresence('group_code', 'create')
+            ->notEmpty('group_code');
+
+        $validator
             ->integer('delete_flag')
             ->requirePresence('delete_flag', 'create')
             ->notEmpty('delete_flag');

@@ -138,7 +138,7 @@ class KadousController extends AppController
         ->where(['start_datetime >=' => $date_sta, 'start_datetime <' => $date_fin,
         'DailyReports.delete_flag' => 0, 'factory_id' => $data["factory_id"]])
         ->order(["machine_num"=>"ASC"])->toArray();
-  
+
       }else{
 
         $Linenames = $this->Linenames->find()
@@ -315,7 +315,7 @@ class KadousController extends AppController
 
         if(isset($data["machine_num"])){
 
-        }elseif(){
+  //      }elseif(){
 
         }
         $machine_num = $data["machine_num"];

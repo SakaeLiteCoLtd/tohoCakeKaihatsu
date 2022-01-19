@@ -31,13 +31,13 @@ class ProductsController extends AppController
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
        $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "製品", 'Groups.delete_flag' => 0])
+       ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Menus.id' => 35, 'Groups.delete_flag' => 0])
        ->toArray();
 
        if(!isset($Groups[0])){
 
         $Groups = $this->Groups->find()->contain(["Menus"])
-        ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "成形条件表", 'Groups.delete_flag' => 0])
+        ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Menus.id' => 40, 'Groups.delete_flag' => 0])
         ->toArray();
 
         $this->set('check_gyoumu', 0);
@@ -284,8 +284,8 @@ class ProductsController extends AppController
 
       if(isset($ProductName[0])){
 
-        return $this->redirect(['action' => 'addform',
-        's' => ['mess' => "入力された品名は既に存在します。長さを追加する場合は「長さ追加」メニューから登録してください。"]]);
+//        return $this->redirect(['action' => 'addform',
+///       's' => ['mess' => "入力された品名は既に存在します。長さを追加する場合は「長さ追加」メニューから登録してください。"]]);
 
       }
 

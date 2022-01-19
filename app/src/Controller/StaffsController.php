@@ -402,6 +402,9 @@ class StaffsController extends AppController
           $Staffs = $this->Staffs->find()
           ->where(['name' => $data["name"], 'delete_flag' => 0])->order(["id"=>"DESC"])->toArray();
 
+          $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
+          ->where(['Groups.name_group' => $data["group_name"], 'Groups.delete_flag' => 0])->order(["menu_id"=>"ASC"])->toArray();
+
             $arrtourokuuser = array();
             $arrtourokuuser = [
               'user_code' => $data["user_code"],
@@ -409,13 +412,11 @@ class StaffsController extends AppController
               'staff_id' => $Staffs[0]["id"],
               'super_user' => 0,
               'group_name' => $data["group_name"],
+              'group_code' => $Groups[0]["group_code"],
               'delete_flag' => 0,
               'created_at' => date("Y-m-d H:i:s"),
               'created_staff' => $staff_id
             ];
-
-            $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
-            ->where(['Groups.name_group' => $data["group_name"], 'Groups.delete_flag' => 0])->order(["menu_id"=>"ASC"])->toArray();
 
             $arrMenuids = array();
             for($k=0; $k<count($Groups); $k++){
@@ -707,24 +708,27 @@ class StaffsController extends AppController
       $Users = $this->Users->find()
       ->where(['staff_id' => $data['id'], 'delete_flag' => 0])->toArray();
       $userId = $Users[0]['id'];
+      $passwordmoto = $makepassword->hash($Users[0]["password"]);
+
+      $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
+      ->where(['Groups.name_group' => $data["group_name"], 'Groups.delete_flag' => 0])
+      ->order(["menu_id"=>"ASC"])->toArray();
+      $group_code = $Groups[0]["group_code"];
 
       $arrupdateuser = array();
       $arrupdateuser = [
         'user_code' => $Users[0]["user_code"],
-        'password' => $Users[0]["password"],
+        'password' => $passwordmoto,
         'staff_id' => $Users[0]["staff_id"],
         'super_user' => 0,
         'group_name' => $Users[0]["group_name"],
+        'group_code' => $group_code,
         'delete_flag' => 1,
         'created_at' => $Users[0]["created_at"]->format("Y-m-d H:i:s"),
         'created_staff' => $Users[0]["created_staff"],
         'updated_at' => date("Y-m-d H:i:s"),
         'updated_staff' => $staff_id
       ];
-
-      $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
-      ->where(['Groups.name_group' => $data["group_name"], 'Groups.delete_flag' => 0])
-      ->order(["menu_id"=>"ASC"])->toArray();
 
       $arrMenuids = array();
       for($k=0; $k<count($Groups); $k++){
@@ -738,21 +742,7 @@ class StaffsController extends AppController
         );
 
       }
-/*
-      echo "<pre>";
-      print_r(strlen($data["date_start"]));
-      echo "</pre>";
-      
-      if(strlen($data["date_finish"]) > 0){
-        echo "<pre>";
-        print_r("1");
-        echo "</pre>";
-        }else{
-          echo "<pre>";
-          print_r("2");
-          echo "</pre>";
-        }
-*/
+
       $Staffs = $this->Staffs->patchEntity($this->Staffs->newEntity(), $arrupdatestaff);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -807,6 +797,7 @@ class StaffsController extends AppController
              'staff_id' => $data["staff_id"],
              'super_user' => 0,
              'group_name' => $data["group_name"],
+             'group_code' => $group_code,
              'delete_flag' => 0,
              'created_at' => date("Y-m-d H:i:s"),
              'created_staff' => $staff_id,

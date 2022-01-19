@@ -34,7 +34,7 @@ class CustomersController extends AppController
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
        $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "得意先・仕入先", 'Groups.delete_flag' => 0])
+       ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Menus.id' => 34, 'Groups.delete_flag' => 0])
        ->toArray();
 
        if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
