@@ -9,6 +9,7 @@ use Cake\Validation\Validator;
 /**
  * Groups Model
  *
+ * @property |\Cake\ORM\Association\BelongsTo $GroupNames
  * @property \App\Model\Table\MenusTable|\Cake\ORM\Association\BelongsTo $Menus
  *
  * @method \App\Model\Entity\Group get($primaryKey, $options = [])
@@ -37,6 +38,9 @@ class GroupsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
+        $this->belongsTo('GroupNames', [
+            'foreignKey' => 'group_name_id'
+        ]);
         $this->belongsTo('Menus', [
             'foreignKey' => 'menu_id',
             'joinType' => 'INNER'
@@ -54,17 +58,6 @@ class GroupsTable extends Table
         $validator
             ->integer('id')
             ->allowEmpty('id', 'create');
-
-        $validator
-            ->scalar('name_group')
-            ->maxLength('name_group', 40)
-            ->requirePresence('name_group', 'create')
-            ->notEmpty('name_group');
-
-        $validator
-            ->integer('group_code')
-            ->requirePresence('group_code', 'create')
-            ->notEmpty('group_code');
 
         $validator
             ->integer('delete_flag')
@@ -101,6 +94,7 @@ class GroupsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->existsIn(['group_name_id'], 'GroupNames'));
         $rules->add($rules->existsIn(['menu_id'], 'Menus'));
 
         return $rules;

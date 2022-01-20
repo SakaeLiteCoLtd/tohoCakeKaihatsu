@@ -11,8 +11,7 @@ use Cake\ORM\Entity;
  * @property string $password
  * @property int $staff_id
  * @property int $super_user
- * @property string $group_name
- * @property int $group_code
+ * @property int $group_name_id
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at
  * @property int $created_staff
@@ -38,8 +37,7 @@ class User extends Entity
         'password' => true,
         'staff_id' => true,
         'super_user' => true,
-        'group_name' => true,
-        'group_code' => true,
+        'group_name_id' => true,
         'delete_flag' => true,
         'created_at' => true,
         'created_staff' => true,

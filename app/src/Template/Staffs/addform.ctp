@@ -107,7 +107,7 @@
             <td width="280"><strong>パスワード</strong></td>
         	</tr>
           <tr>
-            <td><?= $this->Form->control('group_name', ['options' => $Groupnames, 'label'=>false, "empty"=>"選択してください", 'required'=>true]) ?></td>
+            <td><?= $this->Form->control('group_name_id', ['options' => $Groupnames, 'label'=>false, "empty"=>"選択してください", 'required'=>true]) ?></td>
             <td><?= $this->Form->control('password', array('type'=>'password', 'label'=>false, 'required'=>true, 'size'=>20)) ?></td>
         	</tr>
         </table>

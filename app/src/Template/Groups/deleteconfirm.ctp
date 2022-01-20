@@ -18,14 +18,14 @@
 
 <form method="post" action="/groups/deletedo">
 
-<?= $this->Form->create($group, ['url' => ['action' => 'deletedo']]) ?>
+<?= $this->Form->create($name, ['url' => ['action' => 'deletedo']]) ?>
 <br><br><br>
 
 <nav class="sample non-sample">
-    <?= $this->Form->create($group) ?>
+    <?= $this->Form->create($name) ?>
     <fieldset>
 
-      <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$group['id'], 'label'=>false)) ?>
+      <?= $this->Form->control('id', array('type'=>'hidden', 'value'=>$id, 'label'=>false)) ?>
 
       <legend><strong style="font-size: 15pt; color:red"><?= __('権限グループ情報削除') ?></strong></legend>
         <br>
@@ -41,7 +41,7 @@
             <td width="280"><strong>権限グループ</strong></td>
         	</tr>
           <tr>
-            <td><?= h($group['name_group']) ?></td>
+            <td><?= h($name) ?></td>
         	</tr>
         </table>
 

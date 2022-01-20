@@ -18,11 +18,11 @@
 
 <form method="post" action="/groups/index">
 
-<?= $this->Form->create($group, ['url' => ['action' => 'index']]) ?>
+<?= $this->Form->create($name, ['url' => ['action' => 'index']]) ?>
 <br><br><br>
 
 <nav class="sample non-sample">
-    <?= $this->Form->create($group) ?>
+    <?= $this->Form->create($name) ?>
     <fieldset>
 
       <legend><strong style="font-size: 15pt; color:red"><?= __('権限グループ情報削除') ?></strong></legend>
@@ -39,7 +39,7 @@
             <td width="280"><strong>権限グループ</strong></td>
         	</tr>
           <tr>
-            <td><?= h($group['name_group']) ?></td>
+            <td><?= h($name) ?></td>
         	</tr>
         </table>
 

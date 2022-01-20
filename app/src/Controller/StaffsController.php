@@ -20,6 +20,7 @@ class StaffsController extends AppController
      $this->Factories = TableRegistry::get('Factories');
      $this->Departments = TableRegistry::get('Departments');
      $this->Positions = TableRegistry::get('Positions');
+     $this->GroupNames = TableRegistry::get('GroupNames');
 
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
@@ -178,10 +179,13 @@ class StaffsController extends AppController
 
       $user_code = $Users[0]["user_code"];
       $this->set('user_code', $user_code);
-      $group_name = $Users[0]["group_name"];
-      $this->set('group_name', $group_name);
       $staffhyouji = $Users[0]["staff"]['name'];
       $this->set('staffhyouji', $staffhyouji);
+
+      $GroupNames = $this->GroupNames->find()
+      ->where(['id' => $Users[0]['group_name_id']])->toArray();
+      $group_name = $GroupNames[0]["name"];
+      $this->set('group_name', $group_name);
 
     }
 /*
@@ -244,12 +248,12 @@ class StaffsController extends AppController
       }
       $this->set('positions', $positions);
 
-      $Groups = $this->Groups->find()
+      $arrGroupNames = $this->GroupNames->find()
       ->where(['delete_flag' => 0])->toArray();
 
       $Groupnames = array();
-      for($k=0; $k<count($Groups); $k++){
-        $Groupnames = array_merge($Groupnames,array($Groups[$k]['name_group']=>$Groups[$k]['name_group']));
+      for($k=0; $k<count($arrGroupNames); $k++){
+        $Groupnames[$arrGroupNames[$k]['id']] = $arrGroupNames[$k]['name'];
       }
       $Groupnames = array_unique($Groupnames);
       $this->set('Groupnames', $Groupnames);
@@ -262,7 +266,11 @@ class StaffsController extends AppController
       $this->set('Staffs', $Staffs);
 
       $data = $this->request->getData();
-
+      /*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
       if($data['sex'] == 0){
         $sexhyouji = "男";
       }else{
@@ -314,6 +322,10 @@ class StaffsController extends AppController
       }
       $this->set('date_start', $date_start);
 
+      $GroupNames = $this->GroupNames->find()
+      ->where(['id' => $data['group_name_id']])->toArray();
+      $group_name = $GroupNames[0]["name"];
+      $this->set('group_name', $group_name);
     }
 
     public function adddo()
@@ -367,6 +379,11 @@ class StaffsController extends AppController
       $date_start = $data['date_start'];
       $this->set('date_start', $date_start);
 
+      $GroupNames = $this->GroupNames->find()
+      ->where(['id' => $data['group_name_id']])->toArray();
+      $group_name = $GroupNames[0]["name"];
+      $this->set('group_name', $group_name);
+
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
       $arrtourokustaff = array();
@@ -391,6 +408,7 @@ class StaffsController extends AppController
       print_r($arrtourokustaff);
       echo "</pre>";
 */
+
       //新しいデータを登録
       $Staffs = $this->Staffs->patchEntity($this->Staffs->newEntity(), $arrtourokustaff);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -403,7 +421,7 @@ class StaffsController extends AppController
           ->where(['name' => $data["name"], 'delete_flag' => 0])->order(["id"=>"DESC"])->toArray();
 
           $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
-          ->where(['Groups.name_group' => $data["group_name"], 'Groups.delete_flag' => 0])->order(["menu_id"=>"ASC"])->toArray();
+          ->where(['Groups.group_name_id' => $data["group_name_id"], 'Groups.delete_flag' => 0])->order(["menu_id"=>"ASC"])->toArray();
 
             $arrtourokuuser = array();
             $arrtourokuuser = [
@@ -411,8 +429,7 @@ class StaffsController extends AppController
               'password' => $data["password"],
               'staff_id' => $Staffs[0]["id"],
               'super_user' => 0,
-              'group_name' => $data["group_name"],
-              'group_code' => $Groups[0]["group_code"],
+              'group_name_id' => $data["group_name_id"],
               'delete_flag' => 0,
               'created_at' => date("Y-m-d H:i:s"),
               'created_staff' => $staff_id
@@ -435,15 +452,8 @@ class StaffsController extends AppController
               }
 
             }
-/*
-            echo "<pre>";
-            print_r($arrtourokuuser);
-            echo "</pre>";
-            echo "<pre>";
-            print_r($arrMenuids);
-            echo "</pre>";
-*/
-          $Users = $this->Users->patchEntity($this->Users->newEntity(), $arrtourokuuser);
+
+            $Users = $this->Users->patchEntity($this->Users->newEntity(), $arrtourokuuser);
           $this->Users->save($Users);
 
           $StaffAbilities = $this->StaffAbilities->patchEntities($this->StaffAbilities->newEntity(), $arrMenuids);
@@ -496,8 +506,8 @@ class StaffsController extends AppController
       ->where(['staff_id' => $id, 'delete_flag' => 0])->toArray();
       $user_code = $Users[0]["user_code"];
       $this->set('user_code', $user_code);
-      $group_name = $Users[0]["group_name"];
-      $this->set('group_name', $group_name);
+      $group_name_id = $Users[0]["group_name_id"];
+      $this->set('group_name_id', $group_name_id);
 
       if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
         $Departments = $this->Departments->find()
@@ -525,14 +535,13 @@ class StaffsController extends AppController
       }
       $this->set('positions', $positions);
 
-      $Groups = $this->Groups->find()
+      $arrGroupNames = $this->GroupNames->find()
       ->where(['delete_flag' => 0])->toArray();
 
       $Groupnames = array();
-      for($k=0; $k<count($Groups); $k++){
-        $Groupnames = array_merge($Groupnames,array($Groups[$k]['name_group']=>$Groups[$k]['name_group']));
+      for($k=0; $k<count($arrGroupNames); $k++){
+        $Groupnames[$arrGroupNames[$k]['id']] = $arrGroupNames[$k]['name'];
       }
-
       $Groupnames = array_unique($Groupnames);
       $this->set('Groupnames', $Groupnames);
 
@@ -602,6 +611,12 @@ class StaffsController extends AppController
         $date_finish = "";
       }
       $this->set('date_finish', $date_finish);
+
+      $GroupNames = $this->GroupNames->find()
+      ->where(['id' => $data['group_name_id']])->toArray();
+      $group_name = $GroupNames[0]["name"];
+      $this->set('group_name', $group_name);
+
     }
 
     public function editdo()
@@ -657,6 +672,11 @@ class StaffsController extends AppController
       $date_finish = $data['date_finish'];
       $this->set('date_finish', $date_finish);
 
+      $GroupNames = $this->GroupNames->find()
+      ->where(['id' => $data['group_name_id']])->toArray();
+      $group_name = $GroupNames[0]["name"];
+      $this->set('group_name', $group_name);
+
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
       $Staffs = $this->Staffs->find()
@@ -710,19 +730,13 @@ class StaffsController extends AppController
       $userId = $Users[0]['id'];
       $passwordmoto = $makepassword->hash($Users[0]["password"]);
 
-      $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
-      ->where(['Groups.name_group' => $data["group_name"], 'Groups.delete_flag' => 0])
-      ->order(["menu_id"=>"ASC"])->toArray();
-      $group_code = $Groups[0]["group_code"];
-
       $arrupdateuser = array();
       $arrupdateuser = [
         'user_code' => $Users[0]["user_code"],
         'password' => $passwordmoto,
         'staff_id' => $Users[0]["staff_id"],
         'super_user' => 0,
-        'group_name' => $Users[0]["group_name"],
-        'group_code' => $group_code,
+        'group_name_id' => $Users[0]["group_name_id"],
         'delete_flag' => 1,
         'created_at' => $Users[0]["created_at"]->format("Y-m-d H:i:s"),
         'created_staff' => $Users[0]["created_staff"],
@@ -730,6 +744,9 @@ class StaffsController extends AppController
         'updated_staff' => $staff_id
       ];
 
+      $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
+      ->where(['Groups.group_name_id' => $data["group_name_id"], 'Groups.delete_flag' => 0])
+      ->order(["menu_id"=>"ASC"])->toArray();
       $arrMenuids = array();
       for($k=0; $k<count($Groups); $k++){
 
@@ -796,8 +813,7 @@ class StaffsController extends AppController
              'password' => $password,
              'staff_id' => $data["staff_id"],
              'super_user' => 0,
-             'group_name' => $data["group_name"],
-             'group_code' => $group_code,
+             'group_name_id' => $data["group_name_id"],
              'delete_flag' => 0,
              'created_at' => date("Y-m-d H:i:s"),
              'created_staff' => $staff_id,
@@ -909,10 +925,13 @@ class StaffsController extends AppController
 
       $user_code = $Users[0]["user_code"];
       $this->set('user_code', $user_code);
-      $group_name = $Users[0]["group_name"];
-      $this->set('group_name', $group_name);
       $staffhyouji = $Users[0]["staff"]['name'];
       $this->set('staffhyouji', $staffhyouji);
+
+      $GroupNames = $this->GroupNames->find()
+      ->where(['id' => $Users[0]['group_name_id']])->toArray();
+      $group_name = $GroupNames[0]["name"];
+      $this->set('group_name', $group_name);
 
     }
 
@@ -990,10 +1009,13 @@ class StaffsController extends AppController
 
       $user_code = $Users[0]["user_code"];
       $this->set('user_code', $user_code);
-      $group_name = $Users[0]["group_name"];
-      $this->set('group_name', $group_name);
       $staffhyouji = $Users[0]["staff"]['name'];
       $this->set('staffhyouji', $staffhyouji);
+
+      $GroupNames = $this->GroupNames->find()
+      ->where(['id' => $Users[0]['group_name_id']])->toArray();
+      $group_name = $GroupNames[0]["name"];
+      $this->set('group_name', $group_name);
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 

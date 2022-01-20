@@ -105,7 +105,7 @@
             <td width="280"><strong>パスワード</strong></td>
         	</tr>
           <tr>
-            <td><?= h($this->request->getData('group_name')) ?></td>
+            <td><?= h($group_name) ?></td>
             <td><?= __("****") ?></td>
         	</tr>
         </table>

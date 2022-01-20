@@ -16,6 +16,7 @@ class GroupsController extends AppController
      parent::initialize();
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
+     $this->GroupNames = TableRegistry::get('GroupNames');
 
      $session = $this->request->getSession();
      $datasession = $session->read();
@@ -29,7 +30,7 @@ class GroupsController extends AppController
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
        $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Menus.id' => 32, 'Groups.delete_flag' => 0])
+       ->where(['Groups.group_name_id' => $datasession['Auth']['User']['group_name_id'], 'Menus.id' => 32, 'Groups.delete_flag' => 0])
        ->toArray();
 
        if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
@@ -44,37 +45,26 @@ class GroupsController extends AppController
     public function index()
     {
         $this->paginate = [
-            'contain' => ['Menus']
         ];
-        $groups = $this->paginate($this->Groups->find()
-        ->select(['name_group','delete_flag' => 0])->group(['name_group']));
+        $groups = $this->paginate($this->GroupNames->find()
+        ->where(['delete_flag' => 0]));
 
         $this->set(compact('groups'));
 
-        $Groups = $this->Groups->find()->contain(["Menus"])
-        ->where(['Groups.delete_flag' => 0])->toArray();
-
-        $tmp = array();
-        $array_result = array();
-       
-        foreach( $Groups as $key => $value ){
-         // 配列に値が見つからなければ$tmpに格納
-         if( !in_array( $value['name_group'], $tmp ) ) {
-          $tmp[] = $value['name_group'];
-          $array_result[] = $value;
-         }
-        }
-        $Groups = $array_result;
-        $this->set('Groups', $Groups);
+        $GroupNames = $this->GroupNames->find()
+        ->where(['delete_flag' => 0])->toArray();
+        $this->set('GroupNames', $GroupNames);
 /*
         echo "<pre>";
-        print_r($Groups);
+        print_r($GroupNames);
         echo "</pre>";
   */
     }
 
-    public function detail($name_group = null)
+    public function detail($id = null)
     {
+      $this->set('id', $id);
+
       $groups = $this->Groups->newEntity();
       $this->set('groups', $groups);
 
@@ -86,18 +76,19 @@ class GroupsController extends AppController
         if(!isset($_SESSION)){
           session_start();
         }
-        $_SESSION['groupdata'] = array();
-        $_SESSION['groupdata'] = $id;
+        $_SESSION['groupnamedata'] = array();
+        $_SESSION['groupnamedata'] = $id;
 
         return $this->redirect(['action' => 'deleteconfirm']);
 
       }
-
+      $GroupNames = $this->GroupNames->find()
+      ->where(['id' => $id])->toArray();
+      $name_group = $GroupNames[0]["name"];
       $this->set('name_group', $name_group);
 
       $Groups = $this->Groups->find()->contain(["Menus"])
-      ->where(['name_group' => $name_group, 'Groups.delete_flag' => 0])->toArray();
-      $this->set('id', $Groups[0]["id"]);
+      ->where(['group_name_id' => $id, 'Groups.delete_flag' => 0])->toArray();
 
       for($k=0; $k<count($Groups); $k++){
 
@@ -274,56 +265,55 @@ class GroupsController extends AppController
 
       $data = $this->request->getData();
 
-      $arrtourokugroup = array();
+      $arrtourokugroupname = [
+        'name' => $data["name_group"],
+        'delete_flag' => 0,
+        'created_at' => date("Y-m-d H:i:s"),
+        'created_staff' => $staff_id
+      ];
 
-      if($data['menu_name0'] === "マスター登録権限なし"){
-
-        $arrtourokugroup[] = [
-          'name_group' => $data["name_group"],
-          'group_code' => 9999,
-          'menu_id' => 9999,
-          'delete_flag' => 0,
-          'created_at' => date("Y-m-d H:i:s"),
-          'created_staff' => $staff_id
-        ];
-
-      }else{
-
-        for ($k=0; $k<=$data["num_menu"]; $k++){
-
-          $Menus = $this->Menus->find()
-          ->where(['name_menu' => $data['menu_name'.$k]])->toArray();
-  
-          $Groupcodes = $this->Groups->find()
-          ->where(['delete_flag' => 0])->order(["group_code"=>"DESC"])->toArray();
-          $group_code = $Groupcodes[0]["group_code"]+1;
-            $arrtourokugroup[] = [
-              'name_group' => $data["name_group"],
-              'group_code' => $group_code,
-              'menu_id' => $Menus[0]['id'],
-              'delete_flag' => 0,
-              'created_at' => date("Y-m-d H:i:s"),
-              'created_staff' => $staff_id
-            ];
-        }
-
-        }
-/*
-      echo "<pre>";
-      print_r($arrtourokugroup);
-      echo "</pre>";
-*/
       //新しいデータを登録
-      $Groups = $this->Groups->patchEntities($this->Groups->newEntity(), $arrtourokugroup);
+      $GroupNames = $this->GroupNames->patchEntity($this->GroupNames->newEntity(), $arrtourokugroupname);
       $connection = ConnectionManager::get('default');//トランザクション1
       // トランザクション開始2
       $connection->begin();//トランザクション3
       try {//トランザクション4
-        if ($this->Groups->saveMany($Groups)) {
+        if ($this->GroupNames->save($GroupNames)) {
 
-          $connection->commit();// コミット5
-          $mes = "以下のように登録されました。";
-          $this->set('mes',$mes);
+          $GroupNames = $this->GroupNames->find()
+          ->where(['name' => $data["name_group"], 'delete_flag' => 0])->toArray();
+  
+          $arrtourokugroup = array();
+          for ($k=0; $k<=$data["num_menu"]; $k++){
+
+            $Menus = $this->Menus->find()
+            ->where(['name_menu' => $data['menu_name'.$k], 'delete_flag' => 0])->toArray();
+
+              $arrtourokugroup[] = [
+                'group_name_id' => $GroupNames[0]['id'],
+                'menu_id' => $Menus[0]['id'],
+                'delete_flag' => 0,
+                'created_at' => date("Y-m-d H:i:s"),
+                'created_staff' => $staff_id
+              ];
+          }
+
+          $Groups = $this->Groups->patchEntities($this->Groups->newEntity(), $arrtourokugroup);
+          if ($this->Groups->saveMany($Groups)) {
+           
+            $connection->commit();// コミット5
+            $mes = "以下のように登録されました。";
+            $this->set('mes',$mes);
+  
+          } else {
+
+            $mes = "※登録されませんでした";
+            $this->set('mes',$mes);
+            $this->Flash->error(__('The data could not be saved. Please, try again.'));
+            throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+  
+          }
+  
 
         } else {
 
@@ -346,13 +336,14 @@ class GroupsController extends AppController
       $session = $this->request->getSession();
       $_SESSION = $session->read();
 
-      $id = $_SESSION['groupdata'];
+      $id = $_SESSION['groupnamedata'];
+      $this->set('id', $id);
 
-        $group = $this->Groups->get($id, [
-          'contain' => ['Menus']
-        ]);
-        $this->set(compact('group'));
-    }
+      $GroupNames = $this->GroupNames->find()
+      ->where(['id' => $id])->toArray();
+      $name = $GroupNames[0]["name"];
+      $this->set('name', $name);
+  }
 
     public function deletedo()
     {
@@ -361,10 +352,10 @@ class GroupsController extends AppController
 
       $data = $this->request->getData();
 
-      $group = $this->Groups->get($data["id"], [
-        'contain' => ['Menus']
-      ]);
-      $this->set(compact('group'));
+      $GroupNames = $this->GroupNames->find()
+      ->where(['id' => $data["id"]])->toArray();
+      $name = $GroupNames[0]["name"];
+      $this->set('name', $name);
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
 
@@ -374,10 +365,9 @@ class GroupsController extends AppController
       ];
 /*
       echo "<pre>";
-      print_r($arrdeletecompany);
+      print_r($data["id"]);
       echo "</pre>";
 */
-      $Groups = $this->Groups->patchEntity($this->Groups->newEntity(), $arrdeletegroups);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
        $connection->begin();//トランザクション3
@@ -386,10 +376,12 @@ class GroupsController extends AppController
            [ 'delete_flag' => 1,
              'updated_at' => date('Y-m-d H:i:s'),
              'updated_staff' => $staff_id],
-           ['name_group'  => $group['name_group']]
-         )){
-
-           //スタッフ権限もこのタイミングで削除
+           ['group_name_id'  => $data["id"]])
+            && $this->GroupNames->updateAll(
+          [ 'delete_flag' => 1,
+            'updated_at' => date('Y-m-d H:i:s'),
+            'updated_staff' => $staff_id],
+          ['id'  => $data["id"]])){
 
          $mes = "※以下のデータが削除されました。";
          $this->set('mes',$mes);

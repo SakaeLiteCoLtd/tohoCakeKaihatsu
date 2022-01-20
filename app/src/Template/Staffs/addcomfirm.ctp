@@ -31,7 +31,7 @@
 <?= $this->Form->control('user_code', array('type'=>'hidden', 'value'=>$this->request->getData('user_code'), 'label'=>false)) ?>
 <?= $this->Form->control('staff_code', array('type'=>'hidden', 'value'=>$this->request->getData('staff_code'), 'label'=>false)) ?>
 <?= $this->Form->control('staff_id', array('type'=>'hidden', 'value'=>$this->request->getData('staff_id'), 'label'=>false)) ?>
-<?= $this->Form->control('group_name', array('type'=>'hidden', 'value'=>$this->request->getData('group_name'), 'label'=>false)) ?>
+<?= $this->Form->control('group_name_id', array('type'=>'hidden', 'value'=>$this->request->getData('group_name_id'), 'label'=>false)) ?>
 <?= $this->Form->control('password', array('type'=>'hidden', 'value'=>$this->request->getData('password'), 'label'=>false)) ?>
 
 <br><br><br>
@@ -119,7 +119,7 @@
             <td width="280"><strong>パスワード</strong></td>
         	</tr>
           <tr>
-            <td><?= h($this->request->getData('group_name')) ?></td>
+            <td><?= h($group_name) ?></td>
             <td><?= __("****") ?></td>
         	</tr>
         </table>

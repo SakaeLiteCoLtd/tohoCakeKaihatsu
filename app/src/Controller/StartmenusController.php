@@ -71,11 +71,11 @@ class StartmenusController extends AppController
       if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合
 
         $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
-        ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Groups.delete_flag' => 0])
+        ->where(['Groups.group_name_id' => $datasession['Auth']['User']['group_name_id'], 'Groups.delete_flag' => 0])
         ->order(["menu_id"=>"ASC"])->toArray();
 
         $Groupsadmin = $this->Groups->find()->contain(["Menus"])
-        ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Menus.id' => 29, 'Groups.delete_flag' => 0])
+        ->where(['Groups.group_name_id' => $datasession['Auth']['User']['group_name_id'], 'Menus.id' => 29, 'Groups.delete_flag' => 0])
         ->toArray();
  
         if(isset($Groupsadmin[0])){//管理者メニュー表示

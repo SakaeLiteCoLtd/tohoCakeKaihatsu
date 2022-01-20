@@ -18,8 +18,7 @@ class GroupsFixture extends TestFixture
     // @codingStandardsIgnoreStart
     public $fields = [
         'id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
-        'name_group' => ['type' => 'string', 'length' => 40, 'null' => false, 'default' => null, 'collate' => 'utf8_unicode_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
-        'group_code' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
+        'group_name_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'menu_id' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'delete_flag' => ['type' => 'integer', 'length' => 11, 'unsigned' => false, 'null' => false, 'default' => '0', 'comment' => '', 'precision' => null, 'autoIncrement' => null],
         'created_at' => ['type' => 'datetime', 'length' => null, 'null' => false, 'default' => null, 'comment' => '', 'precision' => null],
@@ -46,13 +45,12 @@ class GroupsFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'name_group' => 'Lorem ipsum dolor sit amet',
-                'group_code' => 1,
+                'group_name_id' => 1,
                 'menu_id' => 1,
                 'delete_flag' => 1,
-                'created_at' => '2022-01-18 15:26:42',
+                'created_at' => '2022-01-20 10:26:08',
                 'created_staff' => 1,
-                'updated_at' => '2022-01-18 15:26:42',
+                'updated_at' => '2022-01-20 10:26:08',
                 'updated_staff' => 1
             ],
         ];

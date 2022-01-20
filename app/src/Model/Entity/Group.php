@@ -7,8 +7,7 @@ use Cake\ORM\Entity;
  * Group Entity
  *
  * @property int $id
- * @property string $name_group
- * @property int $group_code
+ * @property int|null $group_name_id
  * @property int $menu_id
  * @property int $delete_flag
  * @property \Cake\I18n\FrozenTime $created_at
@@ -31,8 +30,7 @@ class Group extends Entity
      * @var array
      */
     protected $_accessible = [
-        'name_group' => true,
-        'group_code' => true,
+        'group_name_id' => true,
         'menu_id' => true,
         'delete_flag' => true,
         'created_at' => true,

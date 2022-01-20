@@ -10,6 +10,7 @@ use Cake\Validation\Validator;
  * Users Model
  *
  * @property \App\Model\Table\StaffsTable|\Cake\ORM\Association\BelongsTo $Staffs
+ * @property |\Cake\ORM\Association\BelongsTo $GroupNames
  *
  * @method \App\Model\Entity\User get($primaryKey, $options = [])
  * @method \App\Model\Entity\User newEntity($data = null, array $options = [])
@@ -39,6 +40,10 @@ class UsersTable extends Table
 
         $this->belongsTo('Staffs', [
             'foreignKey' => 'staff_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('GroupNames', [
+            'foreignKey' => 'group_name_id',
             'joinType' => 'INNER'
         ]);
     }
@@ -71,17 +76,6 @@ class UsersTable extends Table
             ->integer('super_user')
             ->requirePresence('super_user', 'create')
             ->notEmpty('super_user');
-
-        $validator
-            ->scalar('group_name')
-            ->maxLength('group_name', 40)
-            ->requirePresence('group_name', 'create')
-            ->notEmpty('group_name');
-
-        $validator
-            ->integer('group_code')
-            ->requirePresence('group_code', 'create')
-            ->notEmpty('group_code');
 
         $validator
             ->integer('delete_flag')
@@ -119,6 +113,7 @@ class UsersTable extends Table
     public function buildRules(RulesChecker $rules)
     {
         $rules->add($rules->existsIn(['staff_id'], 'Staffs'));
+        $rules->add($rules->existsIn(['group_name_id'], 'GroupNames'));
 
         return $rules;
     }

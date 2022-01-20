@@ -22,7 +22,7 @@ class htmlimgmenutop extends AppController
         if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合
 
             $Groups_products = $this->Groups->find()->contain(["Menus"])
-            ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Menus.id' => 35, 'Groups.delete_flag' => 0])
+            ->where(['Groups.group_name_id' => $datasession['Auth']['User']['group_name_id'], 'Menus.id' => 35, 'Groups.delete_flag' => 0])
             ->toArray();
             if(isset($Groups_products[0])){
                 $check_products = 1;
@@ -31,7 +31,7 @@ class htmlimgmenutop extends AppController
             }
 
             $Groups_images = $this->Groups->find()->contain(["Menus"])
-            ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Menus.id' => 38, 'Groups.delete_flag' => 0])
+            ->where(['Groups.group_name_id' => $datasession['Auth']['User']['group_name_id'], 'Menus.id' => 38, 'Groups.delete_flag' => 0])
             ->toArray();
             if(isset($Groups_images[0])){
                 $check_images = 1;
@@ -40,7 +40,7 @@ class htmlimgmenutop extends AppController
             }
 
             $Groups_seikeikis = $this->Groups->find()->contain(["Menus"])
-            ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Menus.id' => 40, 'Groups.delete_flag' => 0])
+            ->where(['Groups.group_name_id' => $datasession['Auth']['User']['group_name_id'], 'Menus.id' => 40, 'Groups.delete_flag' => 0])
             ->toArray();
             if(isset($Groups_seikeikis[0])){
                 $check_seikeikis = 1;

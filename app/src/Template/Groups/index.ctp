@@ -32,19 +32,19 @@ echo $this->Html->css('index');
         <thead>
           <tr>
             <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
-            <th scope="col" style='width:200'><?= $this->Paginator->sort('name_group', ['label'=>"権限グループ名"]) ?></th>
+            <th scope="col" style='width:200'><font color=black><?= __('権限グループ名') ?></font></th>
             <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
           </tr>
         </thead>
         <tbody>
 
-        <?php for($j=0; $j<count($Groups); $j++): ?>
+        <?php for($j=0; $j<count($GroupNames); $j++): ?>
 
         <tr>
         <td><?= h($i) ?></td>
-        <td><?= h($Groups[$j]["name_group"]) ?></td>
+        <td><?= h($GroupNames[$j]["name"]) ?></td>
         <td class="actions">
-                  <?= $this->Html->link(__('詳細'), ['action' => 'detail', $Groups[$j]["name_group"]]) ?>
+                  <?= $this->Html->link(__('詳細'), ['action' => 'detail', $GroupNames[$j]["id"]]) ?>
         </td>
         </tr>
         <?php

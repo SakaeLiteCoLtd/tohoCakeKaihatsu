@@ -282,11 +282,11 @@ class KadousController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-
+/*
       echo "<pre>";
       print_r($data);
       echo "</pre>";
-
+*/
       if(isset($data["kensahyou"])){
 
         return $this->redirect(['controller' => 'Kensahyousokuteidatas', 'action' => 'kensakuhyouji',
@@ -304,34 +304,69 @@ class KadousController extends AppController
         $product_code = $machine_products[1];
         $this->set('product_code', $product_code);
 
-        $target_num = 0;
+        $target_num = $machine_num;
         $this->set('target_num', $target_num);
-
-        echo "<pre>";
-        print_r("if");
-        echo "</pre>";
   
       }else{
 
-        if(isset($data["machine_num"])){
-
-  //      }elseif(){
-
-        }
         $machine_num = $data["machine_num"];
         $this->set('machine_num', $machine_num);
         $product_code = $data["product_code"];
         $this->set('product_code', $product_code);
 
-        echo "<pre>";
-        print_r("else");
-        echo "</pre>";
+        if(isset($data["mae"])){
+  
+          $target_num = $data["target_num"];
+          for($i=0; $i<=$data["num_max"]; $i++){
+
+            if($target_num > 0){
+              $target_num = $target_num - 1;
+            }else{
+              $target_num = $data["num_max"];
+            }
+
+            if($data["machine_num".$data["target_num"]] != $data["machine_num".$target_num] && $data["product_code".$target_num] != "-"){
+
+              $machine_num = $data["machine_num".$target_num];
+              $this->set('machine_num', $machine_num);
+              $product_code = $data["product_code".$target_num];
+              $this->set('product_code', $product_code);
+  
+              break;
+            }
+  
+          }
+
+          $this->set('target_num', $target_num);
+
+        }elseif(isset($data["tugi"])){
+
+          $target_num = $data["target_num"];
+          for($i=0; $i<=$data["num_max"]; $i++){
+
+            if($target_num < $data["num_max"]){
+              $target_num = $target_num + 1;
+            }else{
+              $target_num = 0;
+            }
+
+            if($data["machine_num".$data["target_num"]] != $data["machine_num".$target_num] && $data["product_code".$target_num] != "-"){
+
+              $machine_num = $data["machine_num".$target_num];
+              $this->set('machine_num', $machine_num);
+              $product_code = $data["product_code".$target_num];
+              $this->set('product_code', $product_code);
+  
+              break;
+            }
+  
+          }
+
+          $this->set('target_num', $target_num);
+    
+        }
 
       }
-
-      echo "<pre>";
-      print_r($machine_num);
-      echo "</pre>";
 
       $factory_id = $data["factory_id"];
       $this->set('factory_id', $factory_id);

@@ -22,7 +22,7 @@ class htmlstaffmenu extends AppController
         if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合
 
             $Groups_departments = $this->Groups->find()->contain(["Menus"])
-            ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Menus.id' => 30, 'Groups.delete_flag' => 0])
+            ->where(['Groups.group_name_id' => $datasession['Auth']['User']['group_name_id'], 'Menus.id' => 30, 'Groups.delete_flag' => 0])
             ->toArray();
             if(isset($Groups_departments[0])){
                 $check_departments = 1;
@@ -31,7 +31,7 @@ class htmlstaffmenu extends AppController
             }
 
             $Groups_positions = $this->Groups->find()->contain(["Menus"])
-            ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Menus.id' => 31, 'Groups.delete_flag' => 0])
+            ->where(['Groups.group_name_id' => $datasession['Auth']['User']['group_name_id'], 'Menus.id' => 31, 'Groups.delete_flag' => 0])
             ->toArray();
             if(isset($Groups_positions[0])){
                 $check_positions = 1;
@@ -40,7 +40,7 @@ class htmlstaffmenu extends AppController
             }
 
             $Groups_groups = $this->Groups->find()->contain(["Menus"])
-            ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Menus.id' => 32, 'Groups.delete_flag' => 0])
+            ->where(['Groups.group_name_id' => $datasession['Auth']['User']['group_name_id'], 'Menus.id' => 32, 'Groups.delete_flag' => 0])
             ->toArray();
             if(isset($Groups_groups[0])){
                 $check_groups = 1;
@@ -49,7 +49,7 @@ class htmlstaffmenu extends AppController
             }
 
             $Groups_staffs = $this->Groups->find()->contain(["Menus"])
-            ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Menus.id' => 33, 'Groups.delete_flag' => 0])
+            ->where(['Groups.group_name_id' => $datasession['Auth']['User']['group_name_id'], 'Menus.id' => 33, 'Groups.delete_flag' => 0])
             ->toArray();
             if(isset($Groups_staffs[0])){
                 $check_staffs = 1;
@@ -58,25 +58,16 @@ class htmlstaffmenu extends AppController
             }
 
             $Groups_customers = $this->Groups->find()->contain(["Menus"])
-            ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Menus.id' => 34, 'Groups.delete_flag' => 0])
+            ->where(['Groups.group_name_id' => $datasession['Auth']['User']['group_name_id'], 'Menus.id' => 34, 'Groups.delete_flag' => 0])
             ->toArray();
             if(isset($Groups_customers[0])){
                 $check_customers = 1;
             }else{
                 $check_customers = 0;
             }
-/*
-            $Groups_products = $this->Groups->find()->contain(["Menus"])
-            ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "製品", 'Groups.delete_flag' => 0])
-            ->toArray();
-            if(isset($Groups_products[0])){
-                $check_products = 1;
-            }else{
-                $check_products = 0;
-            }
-*/
+
             $Groups_materialTypes = $this->Groups->find()->contain(["Menus"])
-            ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Menus.id' => 36, 'Groups.delete_flag' => 0])
+            ->where(['Groups.group_name_id' => $datasession['Auth']['User']['group_name_id'], 'Menus.id' => 36, 'Groups.delete_flag' => 0])
             ->toArray();
             if(isset($Groups_materialTypes[0])){
                 $check_materialTypes = 1;
@@ -85,7 +76,7 @@ class htmlstaffmenu extends AppController
             }
 
             $Groups_materials = $this->Groups->find()->contain(["Menus"])
-            ->where(['Groups.group_code' => $datasession['Auth']['User']['group_code'], 'Menus.id' => 37, 'Groups.delete_flag' => 0])
+            ->where(['Groups.group_name_id' => $datasession['Auth']['User']['group_name_id'], 'Menus.id' => 37, 'Groups.delete_flag' => 0])
             ->toArray();
             if(isset($Groups_materials[0])){
                 $check_materials = 1;
