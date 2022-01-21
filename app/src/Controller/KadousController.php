@@ -292,6 +292,12 @@ class KadousController extends AppController
       print_r($data);
       echo "</pre>";
 */
+      if(!isset($data["date_sta"])){//ログインしなおして入ってきたとき
+
+        return $this->redirect(['action' => 'yobidashidate']);
+
+      }
+
       if(isset($data["kensahyou"])){
 
         return $this->redirect(['controller' => 'Kensahyousokuteidatas', 'action' => 'kensakuhyouji',
