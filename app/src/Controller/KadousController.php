@@ -98,13 +98,18 @@ class KadousController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $data = $this->request->getData();
+      $Data = $this->request->query('s');
+      if(isset($Data["date"])){
+        $dateselect = $Data["date"];
+      }else{
+        $data = $this->request->getData();
+        $dateselect = $data["date_sta_year"]."-".$data["date_sta_month"]."-".$data["date_sta_date"];
+      }
       /*
       echo "<pre>";
       print_r($data);
       echo "</pre>";
 */
-      $dateselect = $data["date_sta_year"]."-".$data["date_sta_month"]."-".$data["date_sta_date"];
       $date1 = strtotime($dateselect);
       $date_sta = $dateselect." 06:00:00";
       $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 06:00:00";
@@ -292,6 +297,11 @@ class KadousController extends AppController
         return $this->redirect(['controller' => 'Kensahyousokuteidatas', 'action' => 'kensakuhyouji',
         's' => substr($data["date_sta"], 0, 10)."_".$data["machine_num"]."_".$data["product_code"]]);
 
+      }elseif(isset($data["ichiran"])){
+       
+        return $this->redirect(['action' => 'view',
+        's' => ['date' => substr($data["date_sta"], 0, 10)]]);
+
       }else{
 
       $arrsyousai = array_keys($data, '詳細');
@@ -304,7 +314,13 @@ class KadousController extends AppController
         $product_code = $machine_products[1];
         $this->set('product_code', $product_code);
 
-        $target_num = $machine_num;
+        for($i=0; $i<=$data["num_max"]; $i++){
+          if($data["machine_num".$i] == $machine_num && $data["product_code".$i] == $product_code){
+            $target_num = $i;
+            break;
+          }
+        }
+
         $this->set('target_num', $target_num);
   
       }else{
@@ -325,7 +341,8 @@ class KadousController extends AppController
               $target_num = $data["num_max"];
             }
 
-            if($data["machine_num".$data["target_num"]] != $data["machine_num".$target_num] && $data["product_code".$target_num] != "-"){
+            if(substr($data["product_code".$data["target_num"]], 0, 11) != substr($data["product_code".$target_num], 0, 11) 
+            && $data["product_code".$target_num] != "-"){
 
               $machine_num = $data["machine_num".$target_num];
               $this->set('machine_num', $machine_num);
@@ -341,7 +358,7 @@ class KadousController extends AppController
 
         }elseif(isset($data["tugi"])){
 
-          $target_num = $data["target_num"];
+          $target_num = $data["target_num"]-1;
           for($i=0; $i<=$data["num_max"]; $i++){
 
             if($target_num < $data["num_max"]){
@@ -350,7 +367,8 @@ class KadousController extends AppController
               $target_num = 0;
             }
 
-            if($data["machine_num".$data["target_num"]] != $data["machine_num".$target_num] && $data["product_code".$target_num] != "-"){
+            if(substr($data["product_code".$data["target_num"]], 0, 11) != substr($data["product_code".$target_num], 0, 11) 
+            && $data["product_code".$target_num] != "-"){
 
               $machine_num = $data["machine_num".$target_num];
               $this->set('machine_num', $machine_num);

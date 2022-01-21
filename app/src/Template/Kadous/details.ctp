@@ -125,6 +125,8 @@ echo $this->Html->css('kensahyou');
           <td style="border-style: none;"><?= __("　　　　　　　　　　　　　　　　　　　") ?></td>
         <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
         <td style="border-style: none;"><?= __("　") ?></td>
+          <td style="border-style: none;"><div><?= $this->Form->submit('一覧画面へ戻る', array('name' => 'ichiran')); ?></div></td>
+        <td style="border-style: none;"><?= __("　") ?></td>
           <td style="border-style: none;"><div><?= $this->Form->submit('検査表表示', array('name' => 'kensahyou')); ?></div></td>
           <td style="border-style: none;"><?= __("　　　　　　　　　　　　　　　　　　　") ?></td>
           <td style="border-style: none;"><div><?= $this->Form->submit('次のラインへ', array('name' => 'tugi')); ?></div></td>
