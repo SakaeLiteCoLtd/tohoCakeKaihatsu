@@ -22,7 +22,7 @@ echo $this->Html->css('kensahyou');
 
 <br><br><br>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'menu']]) ?>
+<?= $this->Form->create($product, ['url' => ['controller' => 'Kensahyouyobidashies', 'action' => 'index']]) ?>
 
 <?php
       echo $htmlkensahyouheader;

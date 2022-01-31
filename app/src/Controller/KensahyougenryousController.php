@@ -444,6 +444,20 @@ class KensahyougenryousController extends AppController
             ${"cylinder_name".$j} = "";
             $this->set('cylinder_name'.$j,${"cylinder_name".$j});
           }
+          if(isset($data["dry_temp".$j])){
+            ${"dry_temp".$j} = $data["dry_temp".$j];
+            $this->set('dry_temp'.$j,${"dry_temp".$j});
+          }else{
+            ${"dry_temp".$j} = "";
+            $this->set('dry_temp'.$j,${"dry_temp".$j});
+          }
+          if(isset($data["dry_hour".$j])){
+            ${"dry_hour".$j} = $data["dry_hour".$j];
+            $this->set('dry_hour'.$j,${"dry_hour".$j});
+          }else{
+            ${"dry_hour".$j} = "";
+            $this->set('dry_hour'.$j,${"dry_hour".$j});
+          }
           if(isset($data["recycled_mixing_ratio".$j])){
             ${"recycled_mixing_ratio".$j} = $data["recycled_mixing_ratio".$j];
             $this->set('recycled_mixing_ratio'.$j,${"recycled_mixing_ratio".$j});
@@ -489,23 +503,6 @@ class KensahyougenryousController extends AppController
               ${"mixing_ratio".$j.$i} = "";
               $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
             }
-
-            if(isset($data["dry_temp".$j.$i])){
-              ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
-              $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-            }else{
-              ${"dry_temp".$j.$i} = "";
-              $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-            }
-
-            if(isset($data["dry_hour".$j.$i])){
-              ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
-              $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
-            }else{
-              ${"dry_hour".$j.$i} = "";
-              $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
-            }
-
 
           }
 
@@ -546,6 +543,20 @@ class KensahyougenryousController extends AppController
             ${"cylinder_name".$j} = "";
             $this->set('cylinder_name'.$j,${"cylinder_name".$j});
           }
+          if(isset($data["dry_temp".$j])){
+            ${"dry_temp".$j} = $data["dry_temp".$j];
+            $this->set('dry_temp'.$j,${"dry_temp".$j});
+          }else{
+            ${"dry_temp".$j} = "";
+            $this->set('dry_temp'.$j,${"dry_temp".$j});
+          }
+          if(isset($data["dry_hour".$j])){
+            ${"dry_hour".$j} = $data["dry_hour".$j];
+            $this->set('dry_hour'.$j,${"dry_hour".$j});
+          }else{
+            ${"dry_hour".$j} = "";
+            $this->set('dry_hour'.$j,${"dry_hour".$j});
+          }
           if(isset($data["recycled_mixing_ratio".$j])){
             ${"recycled_mixing_ratio".$j} = $data["recycled_mixing_ratio".$j];
             $this->set('recycled_mixing_ratio'.$j,${"recycled_mixing_ratio".$j});
@@ -594,23 +605,6 @@ class KensahyougenryousController extends AppController
               $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
             }
 
-            if(isset($data["dry_temp".$j.$i])){
-              ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
-              $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-            }else{
-              ${"dry_temp".$j.$i} = "";
-              $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-            }
-
-            if(isset($data["dry_hour".$j.$i])){
-              ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
-              $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
-            }else{
-              ${"dry_hour".$j.$i} = "";
-              $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
-            }
-
-
           }
 
         }
@@ -637,6 +631,22 @@ class KensahyougenryousController extends AppController
             $mess = "※入力漏れがあります。";
           }
 
+          if(strlen($data["dry_temp".$j]) > 0){
+            ${"dry_temp".$j} = $data["dry_temp".$j];
+            $this->set('dry_temp'.$j,${"dry_temp".$j});
+          }else{
+            ${"dry_temp".$j} = "";
+            $this->set('dry_temp'.$j,${"dry_temp".$j});
+            $mess = "※入力漏れがあります。";
+          }
+          if(strlen($data["dry_hour".$j]) > 0){
+            ${"dry_hour".$j} = $data["dry_hour".$j];
+            $this->set('dry_hour'.$j,${"dry_hour".$j});
+          }else{
+            ${"dry_hour".$j} = "";
+            $this->set('dry_hour'.$j,${"dry_hour".$j});
+            $mess = "※入力漏れがあります。";
+          }
           if(strlen($data["recycled_mixing_ratio".$j]) > 0){
             ${"recycled_mixing_ratio".$j} = $data["recycled_mixing_ratio".$j];
             $this->set('recycled_mixing_ratio'.$j,${"recycled_mixing_ratio".$j});
@@ -645,6 +655,7 @@ class KensahyougenryousController extends AppController
             $this->set('recycled_mixing_ratio'.$j,${"recycled_mixing_ratio".$j});
             $mess = "※入力漏れがあります。";
           }
+
 
           for($i=1; $i<=${"tuikagenryou".$j}; $i++){
 
@@ -690,24 +701,6 @@ class KensahyougenryousController extends AppController
               $mess = "※入力漏れがあります。";
             }
 
-            if(strlen($data["dry_temp".$j.$i]) > 0){
-              ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
-              $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-            }else{
-              ${"dry_temp".$j.$i} = "";
-              $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-              $mess = "※入力漏れがあります。";
-            }
-
-            if(strlen($data["dry_hour".$j.$i]) > 0){
-              ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
-              $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
-            }else{
-              ${"dry_hour".$j.$i} = "";
-              $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
-              $mess = "※入力漏れがあります。";
-            }
-
           }
 
         }
@@ -745,10 +738,10 @@ class KensahyougenryousController extends AppController
         $this->set('check_material_name'.$j.$i,${"check_material_name".$j.$i});
         ${"mixing_ratio".$j.$i} = "";
         $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
-        ${"dry_temp".$j.$i} = "";
-        $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-        ${"dry_hour".$j.$i} = "";
-        $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
+        ${"dry_temp".$j} = "";
+        $this->set('dry_temp'.$j,${"dry_temp".$j});
+        ${"dry_hour".$j} = "";
+        $this->set('dry_hour'.$j,${"dry_hour".$j});
         ${"recycled_mixing_ratio".$j} = "";
         $this->set('recycled_mixing_ratio'.$j,${"recycled_mixing_ratio".$j});
 
@@ -813,6 +806,20 @@ class KensahyougenryousController extends AppController
           $this->set('cylinder_name'.$j,${"cylinder_name".$j});
         }
 
+        if(isset($data["dry_temp".$j])){
+          ${"dry_temp".$j} = $data["dry_temp".$j];
+          $this->set('dry_temp'.$j,${"dry_temp".$j});
+        }else{
+          ${"dry_temp".$j} = "";
+          $this->set('dry_temp'.$j,${"dry_temp".$j});
+        }
+        if(isset($data["dry_hour".$j])){
+          ${"dry_hour".$j} = $data["dry_hour".$j];
+          $this->set('dry_hour'.$j,${"dry_hour".$j});
+        }else{
+          ${"dry_hour".$j} = "";
+          $this->set('dry_hour'.$j,${"dry_hour".$j});
+        }
         if(isset($data["recycled_mixing_ratio".$j])){
           ${"recycled_mixing_ratio".$j} = $data["recycled_mixing_ratio".$j];
           $this->set('recycled_mixing_ratio'.$j,${"recycled_mixing_ratio".$j});
@@ -846,22 +853,6 @@ class KensahyougenryousController extends AppController
           }else{
             ${"mixing_ratio".$j.$i} = "";
             $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
-          }
-
-          if(isset($data["dry_temp".$j.$i])){
-            ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
-            $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-          }else{
-            ${"dry_temp".$j.$i} = "";
-            $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-          }
-
-          if(isset($data["dry_hour".$j.$i])){
-            ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
-            $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
-          }else{
-            ${"dry_hour".$j.$i} = "";
-            $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
           }
 
         }
@@ -950,6 +941,20 @@ class KensahyougenryousController extends AppController
           $this->set('cylinder_name'.$j,${"cylinder_name".$j});
         }
 
+        if(isset($data["dry_temp".$j])){
+          ${"dry_temp".$j} = $data["dry_temp".$j];
+          $this->set('dry_temp'.$j,${"dry_temp".$j});
+        }else{
+          ${"dry_temp".$j} = "";
+          $this->set('dry_temp'.$j,${"dry_temp".$j});
+        }
+        if(isset($data["dry_hour".$j])){
+          ${"dry_hour".$j} = $data["dry_hour".$j];
+          $this->set('dry_hour'.$j,${"dry_hour".$j});
+        }else{
+          ${"dry_hour".$j} = "";
+          $this->set('dry_hour'.$j,${"dry_hour".$j});
+        }
         if(isset($data["recycled_mixing_ratio".$j])){
           ${"recycled_mixing_ratio".$j} = $data["recycled_mixing_ratio".$j];
           $this->set('recycled_mixing_ratio'.$j,${"recycled_mixing_ratio".$j});
@@ -983,22 +988,6 @@ class KensahyougenryousController extends AppController
           }else{
             ${"mixing_ratio".$j.$i} = "";
             $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
-          }
-
-          if(isset($data["dry_temp".$j.$i])){
-            ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
-            $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-          }else{
-            ${"dry_temp".$j.$i} = "";
-            $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-          }
-
-          if(isset($data["dry_hour".$j.$i])){
-            ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
-            $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
-          }else{
-            ${"dry_hour".$j.$i} = "";
-            $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
           }
 
         }
@@ -1096,6 +1085,20 @@ class KensahyougenryousController extends AppController
           $this->set('cylinder_name'.$j,${"cylinder_name".$j});
         }
 
+        if(isset($data["dry_temp".$j])){
+          ${"dry_temp".$j} = $data["dry_temp".$j];
+          $this->set('dry_temp'.$j,${"dry_temp".$j});
+        }else{
+          ${"dry_temp".$j} = "";
+          $this->set('dry_temp'.$j,${"dry_temp".$j});
+        }
+        if(isset($data["dry_hour".$j])){
+          ${"dry_hour".$j} = $data["dry_hour".$j];
+          $this->set('dry_hour'.$j,${"dry_hour".$j});
+        }else{
+          ${"dry_hour".$j} = "";
+          $this->set('dry_hour'.$j,${"dry_hour".$j});
+        }
         if(isset($data["recycled_mixing_ratio".$j])){
           ${"recycled_mixing_ratio".$j} = $data["recycled_mixing_ratio".$j];
           $this->set('recycled_mixing_ratio'.$j,${"recycled_mixing_ratio".$j});
@@ -1129,22 +1132,6 @@ class KensahyougenryousController extends AppController
           }else{
             ${"mixing_ratio".$j.$i} = "";
             $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
-          }
-
-          if(isset($data["dry_temp".$j.$i])){
-            ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
-            $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-          }else{
-            ${"dry_temp".$j.$i} = "";
-            $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
-          }
-
-          if(isset($data["dry_hour".$j.$i])){
-            ${"dry_hour".$j.$i} = $data["dry_hour".$j.$i];
-            $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
-          }else{
-            ${"dry_hour".$j.$i} = "";
-            $this->set('dry_hour'.$j.$i,${"dry_hour".$j.$i});
           }
 
         }
@@ -1317,8 +1304,8 @@ class KensahyougenryousController extends AppController
                   "material_number" => $i,
                   "material_id" => $data["material_id".$j.$i],
                   "mixing_ratio" => $data["mixing_ratio".$j.$i],
-                  "dry_temp" => $data["dry_temp".$j.$i],
-                  "dry_hour" => $data["dry_hour".$j.$i],
+                  "dry_temp" => $data["dry_temp".$j],
+                  "dry_hour" => $data["dry_hour".$j],
                   "recycled_mixing_ratio" => $data["recycled_mixing_ratio".$j],
                   "delete_flag" => 0,
                   'created_at' => date("Y-m-d H:i:s"),
@@ -3025,12 +3012,12 @@ class KensahyougenryousController extends AppController
             $this->set('mixing_ratio'.$j.$i,${"mixing_ratio".$j.$i});
           }
 
-          if(isset($data["dry_temp".$j.$i])){
-            ${"dry_temp".$j.$i} = $data["dry_temp".$j.$i];
-            $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+          if(isset($data["dry_temp".$j."1"])){
+            ${"dry_temp".$j."1"} = $data["dry_temp".$j."1"];
+            $this->set('dry_temp'.$j."1",${"dry_temp".$j."1"});
           }else{
-            ${"dry_temp".$j.$i} = "";
-            $this->set('dry_temp'.$j.$i,${"dry_temp".$j.$i});
+            ${"dry_temp".$j."1"} = "";
+            $this->set('dry_temp'.$j."1",${"dry_temp".$j."1"});
           }
 
           if(isset($data["dry_hour".$j.$i])){
@@ -3198,8 +3185,9 @@ class KensahyougenryousController extends AppController
  
             $this->ProductConditionParents->updateAll(
               [ 
-               'is_active' => 1,
-               'finish_datetime' => date("Y-m-d H:i:s"),
+                'is_active' => 1,
+                'delete_flag' => 1,
+                'finish_datetime' => date("Y-m-d H:i:s"),
                'updated_at' => date('Y-m-d H:i:s'),
                'updated_staff' => $staff_id],
               ['id'  => $product_condition_parent_id]);
@@ -3285,8 +3273,8 @@ class KensahyougenryousController extends AppController
                   "material_number" => $i,
                   "material_id" => $data["material_id".$j.$i],
                   "mixing_ratio" => $data["mixing_ratio".$j.$i],
-                  "dry_temp" => $data["dry_temp".$j.$i],
-                  "dry_hour" => $data["dry_hour".$j.$i],
+                  "dry_temp" => $data["dry_temp".$j."1"],
+                  "dry_hour" => $data["dry_hour".$j."1"],
                   "recycled_mixing_ratio" => $data["recycled_mixing_ratio".$j."1"],
                   "delete_flag" => 0,
                   'created_at' => date("Y-m-d H:i:s"),

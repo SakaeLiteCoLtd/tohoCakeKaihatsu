@@ -802,17 +802,17 @@ class KensahyousokuteidatasController extends AppController
 
           if(isset($ProductConditonChildren[0])){
 
-            ${"extrude_roatation".$j} = $ProductConditonChildren[0]["extrude_roatation"];
+            ${"extrude_roatation".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrude_roatation"]);
             $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
-            ${"extrusion_load".$j} = $ProductConditonChildren[0]["extrusion_load"];
+            ${"extrusion_load".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrusion_load"]);
             $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
 
             for($n=1; $n<8; $n++){
-              ${"temp_".$n.$j} = sprintf("%.1f", $ProductConditonChildren[0]["temp_".$n]);
+              ${"temp_".$n.$j} = sprintf("%.0f", $ProductConditonChildren[0]["temp_".$n]);
               $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
             }
 
-            $pickup_speed = $ProductConditonChildren[0]["pickup_speed"];
+            $pickup_speed = sprintf("%.1f", $ProductConditonChildren[0]["pickup_speed"]);
             $this->set('pickup_speed', $pickup_speed);
 
             ${"screw_mesh_1".$j} = $ProductConditonChildren[0]['screw_mesh_1'];
@@ -1033,9 +1033,9 @@ class KensahyousokuteidatasController extends AppController
 
           if(isset($ProductConditonChildren[0])){
 
-            ${"extrude_roatation".$j} = $ProductConditonChildren[0]["extrude_roatation"];
+            ${"extrude_roatation".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrude_roatation"]);
             $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
-            ${"extrusion_load".$j} = $ProductConditonChildren[0]["extrusion_load"];
+            ${"extrusion_load".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrusion_load"]);
             $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
             ${"extrusion_upper_limit".$j} = $ProductConditonChildren[0]["extrusion_upper_limit"];
             $this->set('extrusion_upper_limit'.$j, ${"extrusion_upper_limit".$j});
@@ -1043,7 +1043,7 @@ class KensahyousokuteidatasController extends AppController
             $this->set('extrusion_lower_limit'.$j, ${"extrusion_lower_limit".$j});
 
             for($n=1; $n<8; $n++){
-              ${"temp_".$n.$j} = sprintf("%.1f", $ProductConditonChildren[0]["temp_".$n]);
+              ${"temp_".$n.$j} = sprintf("%.0f", $ProductConditonChildren[0]["temp_".$n]);
               $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
               ${"temp_".$n."_upper_limit".$j} = sprintf("%.1f", $ProductConditonChildren[0]["temp_".$n."_upper_limit"]);
               $this->set('temp_'.$n."_upper_limit".$j, ${"temp_".$n."_upper_limit".$j});
@@ -1051,7 +1051,7 @@ class KensahyousokuteidatasController extends AppController
               $this->set('temp_'.$n."_lower_limit".$j, ${"temp_".$n."_lower_limit".$j});
             }
 
-            $pickup_speed = $ProductConditonChildren[0]["pickup_speed"];
+            $pickup_speed = sprintf("%.1f", $ProductConditonChildren[0]["pickup_speed"]);
             $this->set('pickup_speed', $pickup_speed);
             $pickup_speed_upper_limit = $ProductConditonChildren[0]["pickup_speed_upper_limit"];
             $this->set('pickup_speed_upper_limit', $pickup_speed_upper_limit);
@@ -1081,9 +1081,9 @@ class KensahyousokuteidatasController extends AppController
 
       for($j=1; $j<=$countseikeiki; $j++){
 
-        ${"inspection_extrude_roatation".$j} = $data['inspection_extrude_roatation'.$j];
+        ${"inspection_extrude_roatation".$j} = sprintf("%.1f", $data['inspection_extrude_roatation'.$j]);
         $this->set('inspection_extrude_roatation'.$j, ${"inspection_extrude_roatation".$j});
-        ${"inspection_extrusion_load".$j} = $data['inspection_extrusion_load'.$j];
+        ${"inspection_extrusion_load".$j} = sprintf("%.1f", $data['inspection_extrusion_load'.$j]);
         $this->set('inspection_extrusion_load'.$j, ${"inspection_extrusion_load".$j});
 
         for($n=1; $n<8; $n++){
@@ -1105,7 +1105,7 @@ class KensahyousokuteidatasController extends AppController
 
       }
 
-      $inspection_pickup_speed = $data['inspection_pickup_speed'];
+      $inspection_pickup_speed = sprintf("%.1f", $data['inspection_pickup_speed']);
       $this->set('inspection_pickup_speed', $inspection_pickup_speed);
 
     }
@@ -1264,17 +1264,17 @@ class KensahyousokuteidatasController extends AppController
 
           if(isset($ProductConditonChildren[0])){
 
-            ${"extrude_roatation".$j} = $ProductConditonChildren[0]["extrude_roatation"];
+            ${"extrude_roatation".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrude_roatation"]);
             $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
-            ${"extrusion_load".$j} = $ProductConditonChildren[0]["extrusion_load"];
+            ${"extrusion_load".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrusion_load"]);
             $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
 
             for($n=1; $n<8; $n++){
-              ${"temp_".$n.$j} = sprintf("%.1f", $ProductConditonChildren[0]["temp_".$n]);
+              ${"temp_".$n.$j} = sprintf("%.0f", $ProductConditonChildren[0]["temp_".$n]);
               $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
             }
 
-            $pickup_speed = $ProductConditonChildren[0]["pickup_speed"];
+            $pickup_speed = sprintf("%.1f", $ProductConditonChildren[0]["pickup_speed"]);
             $this->set('pickup_speed', $pickup_speed);
 
             ${"screw_mesh_1".$j} = $ProductConditonChildren[0]['screw_mesh_1'];
@@ -1304,9 +1304,9 @@ class KensahyousokuteidatasController extends AppController
         ->where(['product_material_machine_id' => ${"product_material_machine_id".$j}, 'cylinder_name' => ${"cylinder_name".$j}, 'delete_flag' => 0])
         ->toArray();
 
-        ${"inspection_extrude_roatation".$j} = $data['inspection_extrude_roatation'.$j];
+        ${"inspection_extrude_roatation".$j} = sprintf("%.1f", $data['inspection_extrude_roatation'.$j]);
         $this->set('inspection_extrude_roatation'.$j, ${"inspection_extrude_roatation".$j});
-        ${"inspection_extrusion_load".$j} = $data['inspection_extrusion_load'.$j];
+        ${"inspection_extrusion_load".$j} = sprintf("%.1f", $data['inspection_extrusion_load'.$j]);
         $this->set('inspection_extrusion_load'.$j, ${"inspection_extrusion_load".$j});
 
         for($n=1; $n<8; $n++){
@@ -1318,7 +1318,7 @@ class KensahyousokuteidatasController extends AppController
 
       }
 
-      $inspection_pickup_speed = $data['inspection_pickup_speed'];
+      $inspection_pickup_speed = sprintf("%.1f", $data['inspection_pickup_speed']);
       $this->set('inspection_pickup_speed', $inspection_pickup_speed);
 
       $tourokuInspectionDataConditonParents = [
@@ -3592,19 +3592,19 @@ class KensahyousokuteidatasController extends AppController
 
           if(isset($ProductConditonChildren[0])){
 
-            ${"extrude_roatation".$j} = $ProductConditonChildren[0]["extrude_roatation"];
+            ${"extrude_roatation".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrude_roatation"]);
             $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
-            ${"extrusion_load".$j} = $ProductConditonChildren[0]["extrusion_load"];
+            ${"extrusion_load".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrusion_load"]);
             $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
             ${"product_conditon_child_id".$j} = $ProductConditonChildren[0]["id"];
             $this->set('product_conditon_child_id'.$j, ${"product_conditon_child_id".$j});
 
             for($n=1; $n<8; $n++){
-              ${"temp_".$n.$j} = sprintf("%.1f", $ProductConditonChildren[0]["temp_".$n]);
+              ${"temp_".$n.$j} = sprintf("%.0f", $ProductConditonChildren[0]["temp_".$n]);
               $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
             }
 
-            $pickup_speed = $ProductConditonChildren[0]["pickup_speed"];
+            $pickup_speed = sprintf("%.1f", $ProductConditonChildren[0]["pickup_speed"]);
             $this->set('pickup_speed', $pickup_speed);
 
             ${"screw_mesh_1".$j} = $ProductConditonChildren[0]['screw_mesh_1'];
@@ -3664,16 +3664,16 @@ class KensahyousokuteidatasController extends AppController
     
             $j = $k + 1;
   
-            ${"inspection_extrude_roatation".$j.$i} = $InspectionDataConditonChildren[0]['inspection_extrude_roatation'];
+            ${"inspection_extrude_roatation".$j.$i} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_extrude_roatation']);
             $this->set('inspection_extrude_roatation'.$j.$i, ${"inspection_extrude_roatation".$j.$i});
-            ${"inspection_extrusion_load".$j.$i} = $InspectionDataConditonChildren[0]['inspection_extrusion_load'];
+            ${"inspection_extrusion_load".$j.$i} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_extrusion_load']);
             $this->set('inspection_extrusion_load'.$j.$i, ${"inspection_extrusion_load".$j.$i});
-            ${"inspection_pickup_speed".$j.$i} = $InspectionDataConditonChildren[0]['inspection_pickup_speed'];
+            ${"inspection_pickup_speed".$j.$i} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_pickup_speed']);
             $this->set('inspection_pickup_speed'.$j.$i, ${"inspection_pickup_speed".$j.$i});
 
             for($n=1; $n<8; $n++){
     
-              ${"inspection_temp_".$n.$j.$i} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_temp_'.$n]);
+              ${"inspection_temp_".$n.$j.$i} = sprintf("%.0f", $InspectionDataConditonChildren[0]['inspection_temp_'.$n]);
               $this->set('inspection_temp_'.$n.$j.$i, ${"inspection_temp_".$n.$j.$i});
   
             }
@@ -6969,17 +6969,17 @@ class KensahyousokuteidatasController extends AppController
     
             if(isset($ProductConditonChildren[0])){
   
-              ${"extrude_roatation".$j} = $ProductConditonChildren[0]["extrude_roatation"];
+              ${"extrude_roatation".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrude_roatation"]);
               $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
-              ${"extrusion_load".$j} = $ProductConditonChildren[0]["extrusion_load"];
+              ${"extrusion_load".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrusion_load"]);
               $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
   
               for($n=1; $n<8; $n++){
-                ${"temp_".$n.$j} = sprintf("%.1f", $ProductConditonChildren[0]["temp_".$n]);
+                ${"temp_".$n.$j} = sprintf("%.0f", $ProductConditonChildren[0]["temp_".$n]);
                 $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
               }
   
-              $pickup_speed = $ProductConditonChildren[0]["pickup_speed"];
+              $pickup_speed = sprintf("%.1f", $ProductConditonChildren[0]["pickup_speed"]);
               $this->set('pickup_speed', $pickup_speed);
   
               ${"screw_mesh_1".$j} = $ProductConditonChildren[0]['screw_mesh_1'];
@@ -7110,11 +7110,11 @@ class KensahyousokuteidatasController extends AppController
   */
               $j = $k + 1;
     
-              ${"inspection_extrude_roatation".$j} = $InspectionDataConditonChildren[0]['inspection_extrude_roatation'];
+              ${"inspection_extrude_roatation".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_extrude_roatation']);
               $this->set('inspection_extrude_roatation'.$j, ${"inspection_extrude_roatation".$j});
-              ${"inspection_extrusion_load".$j} = $InspectionDataConditonChildren[0]['inspection_extrusion_load'];
+              ${"inspection_extrusion_load".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_extrusion_load']);
               $this->set('inspection_extrusion_load'.$j, ${"inspection_extrusion_load".$j});
-              ${"inspection_pickup_speed".$j} = $InspectionDataConditonChildren[0]['inspection_pickup_speed'];
+              ${"inspection_pickup_speed".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_pickup_speed']);
               $this->set('inspection_pickup_speed'.$j, ${"inspection_pickup_speed".$j});
 
               for($n=1; $n<8; $n++){
@@ -7683,19 +7683,19 @@ class KensahyousokuteidatasController extends AppController
 
           if(isset($ProductConditonChildren[0])){
 
-            ${"extrude_roatation".$j} = $ProductConditonChildren[0]["extrude_roatation"];
+            ${"extrude_roatation".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrude_roatation"]);
             $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
-            ${"extrusion_load".$j} = $ProductConditonChildren[0]["extrusion_load"];
+            ${"extrusion_load".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrusion_load"]);
             $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
             ${"product_conditon_child_id".$j} = $ProductConditonChildren[0]["id"];
             $this->set('product_conditon_child_id'.$j, ${"product_conditon_child_id".$j});
       
             for($n=1; $n<8; $n++){
-              ${"temp_".$n.$j} = sprintf("%.1f", $ProductConditonChildren[0]["temp_".$n]);
+              ${"temp_".$n.$j} = sprintf("%.0f", $ProductConditonChildren[0]["temp_".$n]);
               $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
             }
 
-            $pickup_speed = $ProductConditonChildren[0]["pickup_speed"];
+            $pickup_speed = sprintf("%.1f", $ProductConditonChildren[0]["pickup_speed"]);
             $this->set('pickup_speed', $pickup_speed);
 
             ${"screw_mesh_1".$j} = $ProductConditonChildren[0]['screw_mesh_1'];

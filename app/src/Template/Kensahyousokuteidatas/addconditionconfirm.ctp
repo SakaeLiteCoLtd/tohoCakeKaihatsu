@@ -133,11 +133,11 @@ $mes = "";
             if(${"inspection_temp_".$n.$j} <= (int)${"temp_".$n.$j} + (int)${"temp_".$n."_upper_limit".$j}
             && ${"inspection_temp_".$n.$j} >= (int)${"temp_".$n.$j} + (int)${"temp_".$n."_lower_limit".$j}){
               echo '<td>';
-              echo sprintf("%.1f", ${"inspection_temp_".$n.$j}) ;
+              echo sprintf("%.0f", ${"inspection_temp_".$n.$j}) ;
               echo '</td>';
             } else {
               echo '<td><font color="red">';
-              echo sprintf("%.1f", ${"inspection_temp_".$n.$j}) ;
+              echo sprintf("%.0f", ${"inspection_temp_".$n.$j}) ;
               echo '</td>';
               $mes = "規格から外れたデータがあります。入力間違いがないか確認し、正しければそのまま登録してください。".'<br>';
             }

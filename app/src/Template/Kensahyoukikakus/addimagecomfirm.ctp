@@ -27,7 +27,8 @@ echo $this->Html->css('kensahyou');
 
 <?= $this->Form->create($inspectionStandardSizeParents, ['url' => ['action' => 'addformselect']]) ?>
 <br>
-    <div align="center"><strong style="font-size: 13pt; color:red"><?= __("以下の画像が選択されました。よろしければ規格登録へ進んでください。") ?></strong></div>
+<div align="center"><strong style="font-size: 13pt; color:red"><?= __("以下の画像が選択されました。よろしければ規格登録へ進んでください。") ?></strong></div>
+<div align="center"><strong style="font-size: 13pt; color:red"><?= __("※この画面では画像登録は完了していません。") ?></strong></div>
     <br>
 
 <table width="300">

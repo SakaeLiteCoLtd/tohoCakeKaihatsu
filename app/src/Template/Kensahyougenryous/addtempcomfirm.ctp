@@ -56,6 +56,8 @@ echo $this->Html->css('kensahyou');
 
 <?= $this->Form->control('tuikagenryou'.$j, array('type'=>'hidden', 'value'=>${"tuikagenryou".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('cylinder_name'.$j, array('type'=>'hidden', 'value'=>${"cylinder_name".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('dry_temp'.$j, array('type'=>'hidden', 'value'=>${"dry_temp".$j}, 'label'=>false)) ?>
+<?= $this->Form->control('dry_hour'.$j, array('type'=>'hidden', 'value'=>${"dry_hour".$j}, 'label'=>false)) ?>
 <?= $this->Form->control('recycled_mixing_ratio'.$j, array('type'=>'hidden', 'value'=>${"recycled_mixing_ratio".$j}, 'label'=>false)) ?>
 
 <table>
@@ -85,15 +87,15 @@ echo $this->Html->css('kensahyou');
         echo "<td>\n";
         echo ${"mixing_ratio".$j.$i};
         echo "</td>\n";
-        echo "<td>\n";
-        echo ${"dry_temp".$j.$i}." ℃";
-        echo "</td>\n";
-        echo "<td>\n";
-        echo ${"dry_hour".$j.$i}." h以上";
-        echo "</td>\n";
 
         if($i==1){
           echo "<td rowspan=${"tuikagenryou".$j}>\n";
+          echo ${"dry_temp".$j}." ℃";
+          echo "</td>\n";
+          echo "<td rowspan=${"tuikagenryou".$j}>\n";
+          echo ${"dry_hour".$j}." h以上";
+          echo "</td>\n";
+            echo "<td rowspan=${"tuikagenryou".$j}>\n";
           echo ${"recycled_mixing_ratio".$j};
           echo "</td>\n";
         }
@@ -107,8 +109,6 @@ echo $this->Html->css('kensahyou');
         <?= $this->Form->control('material_id'.$j.$i, array('type'=>'hidden', 'value'=>${"material_id".$j.$i}, 'label'=>false)) ?>
         <?= $this->Form->control('material_name'.$j.$i, array('type'=>'hidden', 'value'=>${"material_name".$j.$i}, 'label'=>false)) ?>
         <?= $this->Form->control('mixing_ratio'.$j.$i, array('type'=>'hidden', 'value'=>${"mixing_ratio".$j.$i}, 'label'=>false)) ?>
-        <?= $this->Form->control('dry_temp'.$j.$i, array('type'=>'hidden', 'value'=>${"dry_temp".$j.$i}, 'label'=>false)) ?>
-        <?= $this->Form->control('dry_hour'.$j.$i, array('type'=>'hidden', 'value'=>${"dry_hour".$j.$i}, 'label'=>false)) ?>
       <?php endfor;?>
 
 </table>

@@ -26,7 +26,7 @@ class htmlkensahyoulogincheck extends AppController
       if($Users[0]['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 
         $Groups = $this->Groups->find()->contain(["Menus"])
-        ->where(['Groups.name_group' => $Users[0]['group_name'], 'Menus.name_menu' => "成形条件表", 'Groups.delete_flag' => 0])
+        ->where(['Groups.group_name_id' => $Users[0]['group_name_id'], 'Menus.id' => 40, 'Groups.delete_flag' => 0])
         ->toArray();
 
         if(isset($Groups[0])){

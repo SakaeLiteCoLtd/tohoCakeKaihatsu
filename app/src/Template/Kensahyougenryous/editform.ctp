@@ -178,15 +178,17 @@ $arrMaterial_name_list = json_encode($arrMaterial_name_list);//jsに配列を受
         echo "<td>\n";
         echo "<input type='text' required name=mixing_ratio".$j.$i." value=${"mixing_ratio".$j.$i} >\n";
         echo "</td>\n";
-        echo "<td>\n";
-        echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=dry_temp".$j.$i." value=${"dry_temp".$j.$i} > ℃ \n";
-        echo "</td>\n";
-        echo "<td>\n";
-        echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=dry_hour".$j.$i." value=${"dry_hour".$j.$i} > h以上\n";
-        echo "</td>\n";
 
         if($i==1){
+
           echo "<td rowspan=${"tuikagenryou".$j}>\n";
+          echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=dry_temp".$j.$i." value=${"dry_temp".$j.$i} > ℃ \n";
+          echo "</td>\n";
+          echo "<td rowspan=${"tuikagenryou".$j}>\n";
+          echo "<input type='text' style='width:60px' pattern='^[0-9.]+$' title='半角数字で入力して下さい。' required name=dry_hour".$j.$i." value=${"dry_hour".$j.$i} > h以上\n";
+          echo "</td>\n";
+
+            echo "<td rowspan=${"tuikagenryou".$j}>\n";
           echo "<input type='text' required name=recycled_mixing_ratio".$j.$i." value=${"recycled_mixing_ratio".$j.$i} >\n";
           echo "</td>\n";
           }

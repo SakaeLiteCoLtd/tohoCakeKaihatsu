@@ -153,23 +153,24 @@ class htmlkensahyouprogram extends AppController
                "</td>\n".
                "<td style='background-color: #FFFFCC'>\n".
                "${"mixing_ratio".$j.$i}\n".
-               "</td>\n".
-               "<td style='background-color: #FFFFCC'>\n".
-               "${"dry_temp".$j.$i}\n".
-               " ℃\n".
-               "</td>\n".
-               "<td style='background-color: #FFFFCC'>\n".
-               "${"dry_hour".$j.$i}\n".
-               " h以上\n".
                "</td>\n";
 
                if($i==1){
 
                 $html = $html.
 
+               "<td rowspan=${"tuikagenryou".$j} style='background-color: #FFFFCC'>\n".
+               "${"dry_temp".$j.$i}\n".
+               " ℃\n".
+               "</td>\n".
+               "<td rowspan=${"tuikagenryou".$j} style='background-color: #FFFFCC'>\n".
+               "${"dry_hour".$j.$i}\n".
+               " h以上\n".
+               "</td>\n".
                 "<td style='background-color: #FFFFCC' rowspan=${"tuikagenryou".$j}>\n".
                 "${"recycled_mixing_ratio".$j}\n".
                 "</td>\n";
+
               }
 
               $html = $html.

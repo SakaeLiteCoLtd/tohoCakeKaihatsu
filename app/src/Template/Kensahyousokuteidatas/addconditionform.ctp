@@ -87,24 +87,26 @@ echo $this->Html->css('kensahyou');
          echo "<td>\n";
          echo ${"mixing_ratio".$j.$i};
          echo "</td>\n";
-         echo "<td>\n";
+
+         if($i==1){
+
+         echo "<td rowspan=${"tuikagenryou".$j}>\n";
          echo ${"dry_temp".$j.$i}." ℃";
          echo "</td>\n";
-         echo "<td>\n";
+         echo "<td rowspan=${"tuikagenryou".$j}>\n";
          echo ${"dry_hour".$j.$i}." h以上";
          echo "</td>\n";
          if(${"dry_hour".$j.$i} > 0){
-           echo "<td style='font-size: 10pt'>\n";
+           echo "<td rowspan=${"tuikagenryou".$j} style='font-size: 10pt'>\n";
            echo "確認チェック";
            echo "<br>\n";
            echo "<input type='checkbox' name=check".$j." required>\n";
            echo "</td>\n";
          }else{
-          echo "<td>\n";
+          echo "<td rowspan=${"tuikagenryou".$j}>\n";
           echo "</td>\n";
           }
 
-          if($i==1){
             echo "<td rowspan=${"tuikagenryou".$j}>\n";
             echo ${"recycled_mixing_ratio".$j.$i};
             echo "</td>\n";

@@ -16,6 +16,8 @@ class ProductsController extends AppController
      parent::initialize();
      $this->Customers = TableRegistry::get('Customers');
      $this->Factories = TableRegistry::get('Factories');
+     $this->Kensakigus = TableRegistry::get('Kensakigus');
+     $this->Tanis = TableRegistry::get('Tanis');
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
 
@@ -226,9 +228,15 @@ class ProductsController extends AppController
       $arrStatusKensahyou = ["0" => "表示", "1" => "非表示"];
       $this->set('arrStatusKensahyou', $arrStatusKensahyou);
 
-      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個", "本" => "本"];
+      $Tanis = $this->Tanis->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrTanni = array();
+      $arrTanni[""] = "";
+      for($j=0; $j<count($Tanis); $j++){
+        $arrTanni[$Tanis[$j]["name"]] = $Tanis[$j]["name"];
+      }
       $this->set('arrTanni', $arrTanni);
-
+      
       $arrig_bank_modes = [
         0 => "X-Y",
         1 => "Y-Y"
@@ -1138,8 +1146,22 @@ class ProductsController extends AppController
       $this->set('status_kensahyou', $status_kensahyou);
       $ig_bank_modes = $ProductName[0]["ig_bank_modes"];
       $this->set('ig_bank_modes', $ig_bank_modes);
-
+/*
       $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個", "本" => "本"];
+      $this->set('arrTanni', $arrTanni);
+*/
+      if($factory_id == 5){
+        $Tanis = $this->Tanis->find()
+        ->where(['delete_flag' => 0])->toArray();
+        }else{
+        $Tanis = $this->Tanis->find()
+        ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+        }
+      $arrTanni = array();
+      $arrTanni[""] = "";
+      for($j=0; $j<count($Tanis); $j++){
+        $arrTanni[$Tanis[$j]["name"]] = $Tanis[$j]["name"];
+      }
       $this->set('arrTanni', $arrTanni);
 
       $arrig_bank_modes = [
@@ -1150,7 +1172,7 @@ class ProductsController extends AppController
 
       $arrStatusLength = ["0" => "有", "1" => "無"];
       $this->set('arrStatusLength', $arrStatusLength);
-      
+      /*
       $arrkensakigu = [
         "" => "",
         "デジタルノギス" => "デジタルノギス",
@@ -1160,6 +1182,20 @@ class ProductsController extends AppController
         "金尺" => "金尺",
         "デジタル計り" => "デジタル計り"
       ];
+      $this->set('arrkensakigu', $arrkensakigu);
+*/
+      if($factory_id == 5){
+        $Kensakigus = $this->Kensakigus->find()
+        ->where(['delete_flag' => 0])->toArray();
+        }else{
+        $Kensakigus = $this->Kensakigus->find()
+        ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
+        }
+      $arrkensakigu = array();
+      $arrkensakigu[""] = "";
+      for($j=0; $j<count($Kensakigus); $j++){
+        $arrkensakigu[$Kensakigus[$j]["name"]] = $Kensakigus[$j]["name"];
+      }
       $this->set('arrkensakigu', $arrkensakigu);
 
       $Customers = $this->Customers->find()
