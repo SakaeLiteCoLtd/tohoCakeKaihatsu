@@ -1146,17 +1146,9 @@ class ProductsController extends AppController
       $this->set('status_kensahyou', $status_kensahyou);
       $ig_bank_modes = $ProductName[0]["ig_bank_modes"];
       $this->set('ig_bank_modes', $ig_bank_modes);
-/*
-      $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個", "本" => "本"];
-      $this->set('arrTanni', $arrTanni);
-*/
-      if($factory_id == 5){
-        $Tanis = $this->Tanis->find()
-        ->where(['delete_flag' => 0])->toArray();
-        }else{
-        $Tanis = $this->Tanis->find()
-        ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
-        }
+      
+      $Tanis = $this->Tanis->find()
+      ->where(['delete_flag' => 0])->toArray();
       $arrTanni = array();
       $arrTanni[""] = "";
       for($j=0; $j<count($Tanis); $j++){

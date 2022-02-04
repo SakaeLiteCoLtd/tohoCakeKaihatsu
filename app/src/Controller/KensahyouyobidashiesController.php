@@ -2008,7 +2008,8 @@ class KensahyouyobidashiesController extends AppController
         '#40' => '#40',
         '#60' => '#60',
         '#80' => '#80',
-        '#100' => '#100'
+        '#100' => '#100',
+        'ﾒｯｼｭ#20' => 'ﾒｯｼｭ#20'
               ];
       $this->set('arrScrewMesh',$arrScrewMesh);
 

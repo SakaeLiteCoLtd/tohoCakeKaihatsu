@@ -86,13 +86,19 @@
         </table>
         <table>
           <tr>
-            <td width="180"><strong>生年月日</strong></td>
-            <td width="180"><strong>入社日</strong></td>
-            <td width="180"><strong>退社日</strong></td>
+            <td width="280"><strong>生年月日</strong></td>
+            <td width="280"><strong>入社日</strong></td>
         	</tr>
           <tr>
             <td><?= $this->Form->input("birth", array('type' => 'date', 'minYear' => date('Y') - 70, 'monthNames' => false, 'label'=>false, 'empty' => true)); ?></td>
             <td><?= $this->Form->input("date_start", array('type' => 'date', 'monthNames' => false, 'label'=>false, 'empty' => true)); ?></td>
+        	</tr>
+        </table>
+        <table>
+          <tr>
+            <td width="280"><strong>退社日</strong></td>
+        	</tr>
+          <tr>
             <td><?= $this->Form->input("date_finish", array('type' => 'date', 'monthNames' => false, 'label'=>false, 'empty' => true)); ?></td>
         	</tr>
         </table>

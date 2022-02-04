@@ -26,12 +26,12 @@ class htmlkensahyoukadoumenu extends AppController
             "<a href='/Kensahyoukadous/kensahyoumenu'>\n".
             "<img src='/img/menus/kensahyoumenu.gif' width=145 height=50>\n".
 //稼働のメニュー
-/*
+
             "</a></td><td style='border: none'>　　　</td>\n".
             "<td style='border: none'>\n".
             "<a href='/kadous/yobidashidate'>\n".
             "<img src='/img/menus/kadoumenu.gif' width=145 height=50>\n".
-*/
+
             //
             "</a></td>\n".
             "</table>\n";
@@ -177,7 +177,6 @@ class htmlkensahyoukadoumenu extends AppController
      }
  
        $html =
-   //    "<table bgcolor='white' width='1000' style='position: fixed;top: 85px; left:20%; z-index:9999;'>\n".//固定
        "<table bgcolor='white' width='1436'>\n".
            "<tr>\n".
            "<td width='500' colspan='2' nowrap='nowrap' style='height: 40px'><strong>\n".

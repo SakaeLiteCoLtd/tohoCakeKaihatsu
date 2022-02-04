@@ -15,11 +15,12 @@ class KadousController extends AppController
    $this->Staffs = TableRegistry::get('Staffs');
    $this->Factories = TableRegistry::get('Factories');
    $this->Products = TableRegistry::get('Products');
-
+   $this->RelayLogs = TableRegistry::get('RelayLogs');
+   $this->MachineRelays = TableRegistry::get('MachineRelays');
+   $this->ShotdataBases = TableRegistry::get('ShotdataBases');
    $this->DailyReports = TableRegistry::get('DailyReports');
    $this->Linenames = TableRegistry::get('Linenames');
    $this->InspectionDataResultParents = TableRegistry::get('InspectionDataResultParents');
-   $this->RelayLogs = TableRegistry::get('RelayLogs');
 
    if(!isset($_SESSION)){//フォーム再送信の確認対策
     session_start();
@@ -460,9 +461,32 @@ class KadousController extends AppController
       $this->set('arrIjous', $arrIjous);
 
     }
+
+    $RelayLogs = $this->RelayLogs->find()->contain(["MachineRelays"])
+    ->where(['machine_num' => $machine_num, 'datetime >=' => $date_sta,
+     'datetime <' => $date_fin, 'RelayLogs.delete_flag' => 0])
+     ->order(["RelayLogs.datetime"=>"ASC"])->toArray();
+
+     $arrRelayLogs = array();
+     for($i=0; $i<count($RelayLogs); $i++){
+
+      if($RelayLogs[$i]["status"] == 1){
+        $status = "ON";
+      }else{
+        $status = "OFF";
+      }
+
+      $arrRelayLogs[] = [
+        "datetime" => $RelayLogs[$i]["datetime"]->format("Y-m-d H:i"),
+        "name" => $RelayLogs[$i]["machine_relay"]["name"],
+        "status" => $status
+      ];
+
+     }
+     $this->set('arrRelayLogs', $arrRelayLogs);
 /*
       echo "<pre>";
-      print_r($arrIjous);
+      print_r($arrRelayLogs);
       echo "</pre>";
 */
       echo "<pre>";

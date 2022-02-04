@@ -414,6 +414,7 @@ class KensahyoukikakusController extends AppController
       print_r($_FILES);
       echo "</pre>";
 */
+//$_FILESエラーコード参考https://www.flatflag.nir87.com/move_uploaded_file-970
       if($_FILES['upfile']['error'] == 0){
 
         if($_FILES['upfile']['size']>2000000){
@@ -446,7 +447,7 @@ class KensahyoukikakusController extends AppController
 
         }
 
-      }elseif($_FILES['upfile']['error'] == 1){
+      }elseif($_FILES['upfile']['error'] == 1){//エラーコード「1」=>UPLOAD_ERR_INI_SIZE	php.iniのupload_max_filesizeのサイズを超えている
 
         if(!isset($_SESSION)){
           session_start();
@@ -497,6 +498,9 @@ class KensahyoukikakusController extends AppController
           $_SESSION['img_product_code'] = array();
           $_SESSION['img_product_code'] = $product_code;
   
+          //画像ファイル名に「_」を使うことが多いため、「~」を使用禁止にしている
+          //「~」は\myClass\menulists\htmlkensahyoukadoumenuを使用するためにファイル名に含まれていたらNG
+
           return $this->redirect(['action' => 'addimageform',
           's' => ['mess' => "※ファイル名に「~」が含まれています。ファイル名に「~」を使用しないでください。"]]);
           }

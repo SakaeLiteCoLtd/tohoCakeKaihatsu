@@ -377,6 +377,7 @@ class KensahyoutemperaturesController extends AppController
 
       $arrScrewMesh = [
         '-' => '',
+        '#20' => '#20',
         '#30' => '#30',
         '#40' => '#40',
         '#60' => '#60',
@@ -1122,6 +1123,7 @@ class KensahyoutemperaturesController extends AppController
 
       $arrScrewMesh = [
         '-' => '',
+        '#20' => '#20',
         '#30' => '#30',
         '#40' => '#40',
         '#60' => '#60',

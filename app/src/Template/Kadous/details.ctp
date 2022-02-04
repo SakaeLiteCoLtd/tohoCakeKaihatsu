@@ -94,11 +94,10 @@ echo $this->Html->css('kensahyou');
 <br><br>
 <legend align="center"><strong style="font-size: 12pt; color:blue"><?= __('工程異常一覧') ?></strong></legend>
 <br>
-
 <table>
 <thead>
             <tr class="parents">
-            <td style='font-size: 10pt; border-width: 1px solid black;'><?= __('時間') ?></td>
+            <td style='font-size: 10pt; border-width: 1px solid black;'><?= __('　時間　') ?></td>
             <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('長さ(mm)') ?></td>
             <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('ロス重量(kg)') ?></td>
             <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('報告者') ?></td>
@@ -113,6 +112,26 @@ echo $this->Html->css('kensahyou');
   <td><?= h("　".$arrIjous[$j]["loss_amount"]."　") ?></td>
   <td style='font-size: 10pt'><?= h("　".$arrIjous[$j]["staff_name"]."　") ?></td>
   <td style='text-align: left;font-size: 10pt'><?= h("　".$arrIjous[$j]["bik"]) ?></td>
+<?php endfor;?>
+</tbody>
+    </table>
+    <br><br>
+<legend align="center"><strong style="font-size: 12pt; color:blue"><?= __('リレーログ一覧') ?></strong></legend>
+<br>
+<table>
+<thead>
+            <tr class="parents">
+            <td style='font-size: 10pt; border-width: 1px solid black;'><?= __('　時間　') ?></td>
+            <td style='font-size: 10pt; border-width: 1px solid black;'><?= __('　リレー名　') ?></td>
+            <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('ステイタス') ?></td>
+            </tr>
+        </thead>
+<tbody>
+<?php for($j=0; $j<count($arrRelayLogs); $j++): ?>
+  <tr class='children'>
+  <td style='font-size: 10pt'><?= h("　".$arrRelayLogs[$j]["datetime"]."　") ?></td>
+  <td><?= h("　".$arrRelayLogs[$j]["name"]."　") ?></td>
+  <td><?= h("　".$arrRelayLogs[$j]["status"]."　") ?></td>
 <?php endfor;?>
 </tbody>
     </table>
