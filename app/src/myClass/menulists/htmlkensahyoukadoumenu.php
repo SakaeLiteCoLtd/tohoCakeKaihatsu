@@ -26,13 +26,35 @@ class htmlkensahyoukadoumenu extends AppController
             "<a href='/Kensahyoukadous/kensahyoumenu'>\n".
             "<img src='/img/menus/kensahyoumenu.gif' width=145 height=50>\n".
 //稼働のメニュー
-/*
+
+            "</a></td><td style='border: none'>　　　</td>\n".
+            "<td style='border: none'>\n".
+            "<a href='/kadous/menu'>\n".
+            "<img src='/img/menus/kadoumenu.gif' width=145 height=50>\n".
+
+            //
+            "</a></td>\n".
+            "</table>\n";
+
+    		return $html;
+    		$this->html = $html;
+  	}
+
+    public function kensahyoukadousubmenus()
+  	{
+        $html =
+            "<table>\n".
+            "<td style='border: none'>\n".
+            "<a href='/kadous/yobidashidate'>\n".
+            "<img src='/img/menus/kadounippou.gif' width=145 height=50>\n".
             "</a></td><td style='border: none'>　　　</td>\n".
             "<td style='border: none'>\n".
             "<a href='/kadous/yobidashidate'>\n".
-            "<img src='/img/menus/kadoumenu.gif' width=145 height=50>\n".
-*/
-            //
+            "<img src='/img/menus/kadourelay.gif' width=145 height=50>\n".
+            "</a></td><td style='border: none'>　　　</td>\n".
+            "<td style='border: none'>\n".
+            "<a href='/kadous/yobidashidate'>\n".
+            "<img src='/img/menus/kadouabnormal.gif' width=145 height=50>\n".
             "</a></td>\n".
             "</table>\n";
 

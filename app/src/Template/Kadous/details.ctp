@@ -16,8 +16,9 @@
 <table class='sample hesdermenu'>
   <tbody>
     <td style='border: none;align: left'>
-      <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
-      <font size='4'>　>>　</font><a href='/Kadous/yobidashidate' /><font size='4' color=black>稼働関係</font></a>
+    <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
+      <font size='4'>　>>　</font><a href='/Kadous/menu' /><font size='4' color=black>稼働関係</font></a>
+      <font size='4'>　>>　</font><a href='/Kadous/yobidashidate' /><font size='4' color=black>日報呼出</font></a>
     </a></td>
   </tbody>
 </table>
@@ -45,6 +46,10 @@ echo $this->Html->css('kensahyou');
     <tr>
     <td><?= h("　".$date_sta."　～　".$date_fin_hyouji."　") ?></td>
     <td width="100"><?= h($name_machine) ?></td>
+
+    <td width="30" style="border-style: none;background-color: #E6FFFF"><?= h("　") ?></td>
+    <td style="border-style: none;background-color: #E6FFFF"><div><?= $this->Form->submit('ショットデータCSV出力', array('name' => 'shotdata')); ?></div></td>
+
     </tr>
   </tbody>
 </table>

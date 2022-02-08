@@ -218,6 +218,7 @@ class ZzzcsvsController extends AppController
 
     public function torikomiproductnamecheck()//http://localhost:5050/Zzzcsvs/torikomiproductnamecheck
     {
+
       $fp = fopen("torikomicsvs/products220125.csv", "r");//csvファイルはwebrootに入れる
     	$fpcount = fopen("torikomicsvs/products220125.csv", 'r' );
     	for( $count = 0; fgets( $fpcount ); $count++ );
@@ -239,8 +240,6 @@ class ZzzcsvsController extends AppController
         $keys[array_search('5',$keys)]='length';
         $keys[array_search('6',$keys)]='length_cut';
         $keys[array_search('7',$keys)]='customer_id';
-   //     $keys[array_search('8',$keys)]='dammy';
-   //     $keys[array_search('5',$keys)]='customer';//
     		$sample = array_combine($keys, $sample);
 
         $sample = array_merge($sample,array('created_at' => date("Y-m-d 12:00:00")));
@@ -251,6 +250,9 @@ class ZzzcsvsController extends AppController
 
     //    unset($sample['dammy']);
 
+        $arrFpdownload[] = $sample;//ダウンロードテスト
+
+/*
         $Products = $this->Products->find()
         ->where(['product_code' => $sample["product_code"], "delete_flag" => 0])
         ->toArray();
@@ -264,24 +266,51 @@ class ZzzcsvsController extends AppController
             ['id'  => $Products[0]['id']]
           );
 
-          /*
-          echo "<pre>";
-          print_r($Products[0]["name"]." ".$sample['name']);
-          echo "</pre>";
-    */
         }
-
+*/
     	}
 
     	$this->set('arrFp',$arrFp);//$arrFpをctpで使用できるようセット
 
       $count = 0;
-
+/*
       echo "<pre>";
-      print_r($arrFp);
+      print_r($arrFpdownload);
       echo "</pre>";
+*/
 
-      $this->render('/Zzzcsvs/torikomimaterialtypes');
+//参考https://blog.supersonico.info/archives/869/
+
+		//CSV形式で情報をファイルに出力のための準備
+		$csvFileName = '/tmp/' . time() . rand() . '.csv';
+		$res = fopen($csvFileName, 'w');
+		if ($res === FALSE) {
+			throw new Exception('ファイルの書き込みに失敗しました。');
+		}
+
+		// ループしながら出力
+		foreach($arrFpdownload as $dataInfo) {
+			// 文字コード変換。エクセルで開けるようにする
+			mb_convert_variables('SJIS', 'UTF-8', $dataInfo);
+			// ファイルに書き出しをする
+			fputcsv($res, $dataInfo);
+		}
+
+		// ハンドル閉じる
+		fclose($res);
+
+		// ダウンロード開始
+		header('Content-Type: application/octet-stream');
+
+    $filename = "ショットデータ".date('Y年m月d日H時i分s秒出力').".csv";
+
+		// ここで渡されるファイルがダウンロード時のファイル名になる
+		header("Content-Disposition: attachment; filename=${filename}"); 
+		header('Content-Transfer-Encoding: binary');
+		header('Content-Length: ' . filesize($csvFileName));
+		readfile($csvFileName);
+
+    $this->render('/Zzzcsvs/torikomimaterialtypes');
 
     }
 

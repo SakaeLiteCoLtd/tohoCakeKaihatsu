@@ -16,3 +16,6 @@
 $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
+
+<br><br>
+<div align="center"><font color="red" size="3"><?= __($mess) ?></font></div>

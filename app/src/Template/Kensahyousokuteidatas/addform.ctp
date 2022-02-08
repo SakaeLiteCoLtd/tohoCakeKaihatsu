@@ -446,16 +446,20 @@ var moji = "length"
     <?php endfor;?>
 
     <?php
-
     if(${"gaikan".$j} == 1){
       ${"gaikanhyouji".$j} = "✕";
     }else{
       ${"gaikanhyouji".$j} = "〇";
     }
-
     ?>
 
-    <td style='width:55; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
+    <?php if (${"gaikan".$j} == 1): ?>
+      <td style='width:55; border-top-style:none'><font color="red"><?= h(${"gaikanhyouji".$j}) ?></td>
+    <?php else : ?>
+      <td style='width:55; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
+    <?php endif; ?>
+
+
     <td style='width:75; border-top-style:none'><?= h(${"weight".$j}) ?></td>
     <td style='width:35; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
 

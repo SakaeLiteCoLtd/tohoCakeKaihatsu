@@ -2107,6 +2107,12 @@ class KensahyousokuteidatasController extends AppController
 
             }
 
+            if($data['gaikan'.$j] > 0){
+        
+              $gouhi_check = $gouhi_check + 1;
+
+            }
+
           }
           if($gouhi_check > 0){
             ${"gouhi".$j} = 1;
@@ -4228,11 +4234,13 @@ class KensahyousokuteidatasController extends AppController
         $product_name = $Products[0]["name"];
         $this->set('product_name', $product_name);
   
+        $startday = date("Y-m-d 06:00:00");
         $product_code_ini = substr($product_code, 0, 11);
         $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
         ->contain(['InspectionDataResultParents' => ['ProductConditionParents','Products']])//測定データのうち、長さ違いも含め呼出
         ->where(['product_code like' => $product_code_ini.'%', 'machine_num' => $machine_num,
-        'InspectionDataResultParents.daily_report_id >' => 0,
+          'InspectionDataResultParents.daily_report_id >' => 0,
+          'InspectionDataResultParents.datetime <' => $startday,
          'InspectionDataResultChildren.delete_flag' => 0])
         ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
 
@@ -4323,6 +4331,8 @@ class KensahyousokuteidatasController extends AppController
       $this->set('product_code', $product_code);
 
       $product_code_ini = substr($product_code, 0, 11);
+      $this->set('product_code_ini', $product_code_ini);
+
       $DailyReportsData = $this->DailyReports->find()
       ->contain(['Products'])
       ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 
@@ -7370,6 +7380,8 @@ class KensahyousokuteidatasController extends AppController
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
       $product_code_ini = substr($product_code, 0, 11);
+      $this->set('product_code_ini', $product_code_ini);
+
       $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren->find()
       ->contain(['InspectionStandardSizeParents' => ["Products"]])
       ->where(['product_code like' => $product_code_ini.'%',

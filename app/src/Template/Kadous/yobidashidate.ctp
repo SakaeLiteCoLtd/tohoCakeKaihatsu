@@ -12,8 +12,9 @@
 <table class='sample hesdermenu'>
   <tbody>
     <td style='border: none;align: left'>
-      <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
-      <font size='4'>　>>　</font><a href='/Kadous/yobidashidate' /><font size='4' color=black>稼働関係</font></a>
+    <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
+      <font size='4'>　>>　</font><a href='/Kadous/menu' /><font size='4' color=black>稼働関係</font></a>
+      <font size='4'>　>>　</font><a href='/Kadous/yobidashidate' /><font size='4' color=black>日報呼出</font></a>
     </a></td>
   </tbody>
 </table>
@@ -30,6 +31,8 @@ echo $this->Html->css('kensahyou');
 
 <br><br><br>
 
+<?php
+/*
 <?= $this->Form->create($product, ['url' => ['action' => 'view']]) ?>
         <?php if ($usercheck == 1): ?>
           <table>
@@ -45,6 +48,12 @@ echo $this->Html->css('kensahyou');
 
  <?php else : ?>
 <?php endif; ?>
+*/
+?>
+
+<?= $this->Form->create($product, ['url' => ['action' => 'view']]) ?>
+
+<?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>1, 'label'=>false)) ?>
 
     <table>
   <tbody style="background-color: #FFFFCC">

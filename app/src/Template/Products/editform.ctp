@@ -77,8 +77,8 @@
       <td width="20"><strong style="font-size: 9pt">長さ<br>（mm）</strong></td>
       <td width="20"><strong style="font-size: 9pt">カット<br>長さ<br>（mm）</strong></td>
       <td width="20"><strong>長さ<br>測定<br>有無</strong></td>
-       <td width="20"><strong style="font-size: 10pt">※公差<br>下限</strong></td>
        <td width="20"><strong style="font-size: 10pt">※公差<br>上限</strong></td>
+       <td width="20"><strong style="font-size: 10pt">※公差<br>下限</strong></td>
        <td width="20"><strong style="font-size: 10pt">※測定器具</strong></td>
         <td width="80"><strong>※備考</strong></td>
       <td><strong>削除</strong></td>
@@ -97,9 +97,9 @@
       ('length_cut'.$i, array('type'=>'tel', 'label'=>false, 'value'=>$ProductName[$i]["length_cut"], 'pattern' => '^[0-9.-]+$','size'=>3,  'title'=>'半角数字で入力して下さい。', 'required' => 'true', 'autocomplete'=>"off",'size'=>1)) ?></td>
       <td><?= $this->Form->control('status_length'.$i, ['options' => $arrStatusLength, 'value'=>$ProductName[$i]["status_length"], 'label'=>false]) ?></td>
       <td><?= $this->Form->control
-      ('length_lower_limit'.$i, array('type'=>'tel', 'label'=>false, 'value'=>$ProductName[$i]["length_lower_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
-      <td><?= $this->Form->control
       ('length_upper_limit'.$i, array('type'=>'tel', 'label'=>false, 'value'=>$ProductName[$i]["length_upper_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
+      <td><?= $this->Form->control
+      ('length_lower_limit'.$i, array('type'=>'tel', 'label'=>false, 'value'=>$ProductName[$i]["length_lower_limit"], 'pattern' => '^[0-9.-]+$','size'=>1,  'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
       <td><?= $this->Form->control('length_measuring_instrument'.$i, ['options' => $arrkensakigu, 'value'=>$ProductName[$i]["length_measuring_instrument"], 'label'=>false]) ?></td>
       <td><?= $this->Form->control
       ('bik'.$i, array('type'=>'text', 'label'=>false, 'value'=>$ProductName[$i]["bik"], 'size'=>7)) ?></td>

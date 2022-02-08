@@ -57,8 +57,8 @@
         <td><strong>長さ（mm）</strong></td>
         <td width="80"><strong>カット長さ（mm）</strong></td>
         <td width="50"><strong>長さ<br>測定<br>有無</strong></td>
-        <td width="50"><strong>公差<br>下限</strong></td>
         <td width="50"><strong>公差<br>上限</strong></td>
+        <td width="50"><strong>公差<br>下限</strong></td>
         <td width="200"><strong>備考</strong></td>
       </tr>
       
@@ -90,8 +90,8 @@
 
       <td><?= h($ProductName[$i]["length"]) ?></td>
       <td><?= h($ProductName[$i]["length_cut"]) ?></td>
-      <td><?= h($ProductName[$i]["length_lower_limit"]) ?></td>
       <td><?= h($ProductName[$i]["length_upper_limit"]) ?></td>
+      <td><?= h($ProductName[$i]["length_lower_limit"]) ?></td>
       <td><?= h($ProductName[$i]["bik"]) ?></td>
       </tr>
 
@@ -113,9 +113,9 @@
         <td><strong>長さ（mm）</strong></td>
         <td width="80"><strong>カット長さ（mm）</strong></td>
         <td width="80"><strong>長さ測定<br>有無</strong></td>
-        <td width="50"><strong>公差<br>下限</strong></td>
         <td width="50"><strong>公差<br>上限</strong></td>
-        <td><strong style="font-size: 10pt">測定器具</strong></td>
+        <td width="50"><strong>公差<br>下限</strong></td>
+       <td><strong style="font-size: 10pt">測定器具</strong></td>
         <td width="150"><strong>備考</strong></td>
       </tr>
       
@@ -133,10 +133,10 @@
       <td><?= h(${"status_length_name".$k}) ?></td>
       <?= $this->Form->control('status_length'.$k, array('type'=>'hidden', 'value'=>${"status_length".$k}, 'label'=>false)) ?>
       <?= $this->Form->control('status_length_name'.$k, array('type'=>'hidden', 'value'=>${"status_length_name".$k}, 'label'=>false)) ?>
-      <td><?= h(${"length_lower_limit".$k}) ?></td>
-      <?= $this->Form->control('length_lower_limit'.$k, array('type'=>'hidden', 'value'=>${"length_lower_limit".$k}, 'label'=>false)) ?>
       <td><?= h(${"length_upper_limit".$k}) ?></td>
       <?= $this->Form->control('length_upper_limit'.$k, array('type'=>'hidden', 'value'=>${"length_upper_limit".$k}, 'label'=>false)) ?>
+      <td><?= h(${"length_lower_limit".$k}) ?></td>
+      <?= $this->Form->control('length_lower_limit'.$k, array('type'=>'hidden', 'value'=>${"length_lower_limit".$k}, 'label'=>false)) ?>
       <td><?= h(${"length_measuring_instrument".$k}) ?></td>
       <?= $this->Form->control('length_measuring_instrument'.$k, array('type'=>'hidden', 'value'=>${"length_measuring_instrument".$k}, 'label'=>false)) ?>
       <td><?= h(${"bik".$k}) ?></td>

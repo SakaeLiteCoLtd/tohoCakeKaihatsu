@@ -121,6 +121,8 @@ $mes = "";
 
 <?php if ($j == 1): ?>
     <td style='width:43; border-top-style:none'>S</td>
+<?php elseif ($j == $gyou): ?>
+    <td style='width:43; border-top-style:none'>E</td>
 <?php else : ?>
   <td style='width:43; border-top-style:none'><?= h($lot_hyouji) ?></td>
 <?php endif; ?>

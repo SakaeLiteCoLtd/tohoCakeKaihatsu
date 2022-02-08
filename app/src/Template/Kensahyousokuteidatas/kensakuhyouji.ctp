@@ -4,6 +4,10 @@
  $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
  $htmlkensahyoukadou = $htmlkensahyoukadoumenu->kensahyoukadoumenus();
  $htmlkensahyoumenu = $htmlkensahyoukadoumenu->kensahyoumenus();
+
+ use Cake\ORM\TableRegistry;//独立したテーブルを扱う
+ $this->Products = TableRegistry::get('Products');
+
 ?>
 <?php
 $this->layout = false;
@@ -119,7 +123,7 @@ echo $this->Html->css('kensahyou');
 
   <?php for($i=1; $i<=11; $i++): ?>
 
-    <?php if (${"input_type".$i} == "judge"): ?>
+  <?php if (${"input_type".$i} == "judge"): ?>
 
       <?php
      if(${"result_size".$j.$i} == 0){
@@ -129,18 +133,39 @@ echo $this->Html->css('kensahyou');
     }
   ?>
 
-      <td style='width:80; border-top-style:none'><?= h(${"judge".$j.$i}) ?></td>
-    <?php else : ?>
-      <td style='width:80; border-top-style:none'><?= h(${"result_size".$j.$i}) ?></td>
+      <?php if (${"result_size".$j.$i} == 1): ?>
+        <td style='width:80; border-top-style:none'><font color="red"><?= h(${"judge".$j.$i}) ?></td>
+      <?php else : ?>
+        <td style='width:80; border-top-style:none'><?= h(${"judge".$j.$i}) ?></td>
       <?php endif; ?>
+
+  <?php else : ?>
+
+    <?php
+  if(${"size_name".$i} == "長さ"){//長さ列の場合
+    $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"length".$j}, 'delete_flag' => 0])->toArray();
+    ${"size".$i} = $Products[0]["length_cut"];
+    ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
+    ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
+  }
+  ?>
+
+      <?php if (${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+      && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}): ?>
+        <td style='width:80; border-top-style:none'><?= h(${"result_size".$j.$i}) ?></td>
+      <?php else : ?>
+        <td style='width:80; border-top-style:none'><font color="red"><?= h(${"result_size".$j.$i}) ?></td>
+      <?php endif; ?>
+
+  <?php endif; ?>
 
   <?php endfor;?>
 
   <?php
   if(${"appearance".$j} == 1){
-    ${"gaikanhyouji".$j} = "不";
+    ${"gaikanhyouji".$j} = "✕";
   }else{
-    ${"gaikanhyouji".$j} = "良";
+    ${"gaikanhyouji".$j} = "〇";
   }
 
   if(${"judge".$j} == 1){
@@ -151,7 +176,12 @@ echo $this->Html->css('kensahyou');
 
   ?>
 
-<td style='width:60; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
+<?php if (${"appearance".$j} == 1): ?>
+      <td style='width:60; border-top-style:none'><font color="red"><?= h(${"gaikanhyouji".$j}) ?></td>
+    <?php else : ?>
+      <td style='width:60; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
+    <?php endif; ?>
+
   <td style='width:60; border-top-style:none'><?= h(${"result_weight".$j}) ?></td>
   <td style='width:50; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
 

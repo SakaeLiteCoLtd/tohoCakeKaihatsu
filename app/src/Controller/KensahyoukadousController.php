@@ -31,6 +31,16 @@ class KensahyoukadousController extends AppController
 
     public function index()
     {
+      
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
     }
 
     public function kensahyoumenu()

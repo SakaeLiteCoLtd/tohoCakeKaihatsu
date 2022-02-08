@@ -18,8 +18,6 @@ class ProductsController extends AppController
      $this->Factories = TableRegistry::get('Factories');
      $this->Kensakigus = TableRegistry::get('Kensakigus');
      $this->Tanis = TableRegistry::get('Tanis');
-     $this->InspectionStandardSizeChildren = TableRegistry::get('InspectionStandardSizeChildren');
-     $this->InspectionStandardSizeParents = TableRegistry::get('InspectionStandardSizeParents');
      $this->Menus = TableRegistry::get('Menus');//以下ログイン権限チェック
      $this->Groups = TableRegistry::get('Groups');
 
@@ -1444,28 +1442,6 @@ class ProductsController extends AppController
                 'updated_at' => date('Y-m-d H:i:s'),
                 'updated_staff' => $staff_id],
                 ['id'  => $ProductsId[0]["id"]])){
-
-                  //検査表の規格もあれば更新
-                  $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren->find()
-                  ->contain(['InspectionStandardSizeParents'])
-                  ->where(['product_id' => $ProductsId[0]["id"], 'size_name' => "長さ",
-                  'InspectionStandardSizeParents.is_active' => 0,
-                  'InspectionStandardSizeParents.delete_flag' => 0,
-                  'InspectionStandardSizeChildren.delete_flag' => 0])
-                  ->order(["InspectionStandardSizeChildren.id"=>"DESC"])->toArray();
-
-                  if(isset($InspectionStandardSizeChildren[0])){
-
-                    $this->InspectionStandardSizeChildren->updateAll(
-                      [ 'size' => $data["length_cut".$i],
-                        'upper_limit' => $data["length_upper_limit".$i],
-                        'lower_limit' => $data["length_lower_limit".$i],
-                        'updated_at' => date('Y-m-d H:i:s'),
-                        'updated_staff' => $staff_id],
-                        ['id'  => $InspectionStandardSizeChildren[0]["id"]]);
-
-                  }
-
                 }
                 $count_update = $count_update + 1;
             }

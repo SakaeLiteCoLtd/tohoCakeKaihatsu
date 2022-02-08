@@ -496,7 +496,7 @@ class StaffsController extends AppController
       $datasession = $session->read();
 
       $Users = $this->Users->find()->contain(["Staffs"])
-      ->where(['Staffs.id' => $datasession['Auth']['User']['staff_id'], 'Users.delete_flag' => 0])
+      ->where(['Staffs.id' => $id, 'Users.delete_flag' => 0])
       ->toArray();
 
       $Factories = $this->Staffs->Factories->find('list', ['limit' => 200]);
