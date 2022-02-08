@@ -5,6 +5,8 @@ use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;//独立したテーブルを扱う
 
+use App\myClass\classprograms\kadouprogram;//myClassフォルダに配置したクラスを使用
+
 class KadousController extends AppController
 {
 
@@ -29,15 +31,6 @@ class KadousController extends AppController
   header('Cache-Control:');
   header('Pragma:');
 
-  }
-
-  public function beforeFilter(Event $event){
-    parent::beforeFilter($event);
-
-    // 認証なしでアクセスできるアクションの指定
-//    $this->Auth->allow([
-//      "index", "yobidashidate", "view"
-//    ]);
   }
   
     public function menu()
@@ -418,66 +411,10 @@ class KadousController extends AppController
           $date_sta = $data["date_sta"];
           $date_fin = $data["date_fin"];
     
-          $ShotdataBases = $this->ShotdataBases->find()
-          ->where(['machine_num' => $machine_num, 'datetime >=' => $date_sta,
-           'datetime <' => $date_fin, 'ShotdataBases.delete_flag' => 0])
-           ->order(["ShotdataBases.datetime"=>"ASC"])->toArray();
+          $machine_sta_fin = $machine_num."_".$date_sta."_".$date_fin;
+          $kadouprograms = new kadouprogram();
+          $shotdatacsv = $kadouprograms->shotdatacsv($machine_sta_fin);
       
-           $arrShotdataBasescsv = array();
-           for($i=0; $i<count($ShotdataBases); $i++){
-
-            $arrShotdataBasescsv[] = [
-              "datetime" => $ShotdataBases[$i]["datetime"]->format("Y-m-d H:i:s"),
-              "stop_time" => $ShotdataBases[$i]["stop_time"],
-              "temp_outside" => $ShotdataBases[$i]["temp_outside"],
-              "temp_inside" => $ShotdataBases[$i]["temp_inside"],
-              "temp_water" => $ShotdataBases[$i]["temp_water"],
-              "analog1_ch1" => $ShotdataBases[$i]["analog1_ch1"],
-              "analog1_ch2" => $ShotdataBases[$i]["analog1_ch2"],
-              "analog1_ch3" => $ShotdataBases[$i]["analog1_ch3"],
-              "analog1_ch4" => $ShotdataBases[$i]["analog1_ch4"],
-              "valid_data_num" => $ShotdataBases[$i]["valid_data_num"],
-              "existence_stop" => $ShotdataBases[$i]["existence_stop"],
-              "place_stop" => $ShotdataBases[$i]["place_stop"],
-              "existence_out_limit" => $ShotdataBases[$i]["existence_out_limit"],
-              "place_out_limit" => $ShotdataBases[$i]["place_out_limit"],
-              "existence_change_standard_value" => $ShotdataBases[$i]["existence_change_standard_value"],
-              "value1_mode" => $ShotdataBases[$i]["value1_mode"],
-              "value1_mean" => $ShotdataBases[$i]["value1_mean"],
-              "value1_max" => $ShotdataBases[$i]["value1_max"],
-              "value1_min" => $ShotdataBases[$i]["value1_min"],
-              "value1_std" => $ShotdataBases[$i]["value1_std"],
-              "value2_mode" => $ShotdataBases[$i]["value2_mode"],
-              "value2_mean" => $ShotdataBases[$i]["value2_mean"],
-              "value2_max" => $ShotdataBases[$i]["value2_max"],
-              "value2_min" => $ShotdataBases[$i]["value2_min"],
-              "value2_std" => $ShotdataBases[$i]["value2_std"],
-            ];
-    
-           }
-
-           //CSV形式で情報をファイルに出力のための準備
-              $csvFileName = '/tmp/' . time() . rand() . '.csv';
-              $res = fopen($csvFileName, 'w');
-              if ($res === FALSE) {
-                throw new Exception('ファイルの書き込みに失敗しました。');
-              }
-
-              foreach($arrShotdataBasescsv as $dataInfo) {
-                // 文字コード変換。エクセルで開けるようにする
-                mb_convert_variables('SJIS', 'UTF-8', $dataInfo);
-                fputcsv($res, $dataInfo);
-              }
-              fclose($res);
-
-              header('Content-Type: application/octet-stream');
-
-              $filename = "ショットデータ".substr($date_sta, 0, 10)."_".$machine_num."号ライン.csv";
-              header("Content-Disposition: attachment; filename=${filename}"); 
-              header('Content-Transfer-Encoding: binary');
-              header('Content-Length: ' . filesize($csvFileName));
-              readfile($csvFileName);
-    
         }
 
       }
@@ -551,34 +488,12 @@ class KadousController extends AppController
 
     }
 
-    $RelayLogs = $this->RelayLogs->find()->contain(["MachineRelays"])
-    ->where(['machine_num' => $machine_num, 'datetime >=' => $date_sta,
-     'datetime <' => $date_fin, 'RelayLogs.delete_flag' => 0])
-     ->order(["RelayLogs.datetime"=>"ASC"])->toArray();
+    $machine_sta_fin = $machine_num."_".$date_sta."_".$date_fin;
+    $kadouprograms = new kadouprogram();
+    $arrRelayLogs = $kadouprograms->yobidashirelaylogs($machine_sta_fin);
+    $this->set('arrRelayLogs', $arrRelayLogs);
 
-     $arrRelayLogs = array();
-     for($i=0; $i<count($RelayLogs); $i++){
-
-      if($RelayLogs[$i]["status"] == 1){
-        $status = "ON";
-      }else{
-        $status = "OFF";
-      }
-
-      $arrRelayLogs[] = [
-        "datetime" => $RelayLogs[$i]["datetime"]->format("Y-m-d H:i"),
-        "name" => $RelayLogs[$i]["machine_relay"]["name"],
-        "status" => $status
-      ];
-
-     }
-     $this->set('arrRelayLogs', $arrRelayLogs);
-/*
-      echo "<pre>";
-      print_r($arrRelayLogs);
-      echo "</pre>";
-*/
-      echo "<pre>";
+    echo "<pre>";
       print_r("");
       echo "</pre>";
 

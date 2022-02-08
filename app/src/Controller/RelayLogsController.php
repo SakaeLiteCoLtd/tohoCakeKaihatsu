@@ -5,6 +5,8 @@ use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;//独立したテーブルを扱う
 
+use App\myClass\classprograms\kadouprogram;//myClassフォルダに配置したクラスを使用
+
 class RelayLogsController extends AppController
 {
 
@@ -24,10 +26,10 @@ class RelayLogsController extends AppController
 
    if(!isset($_SESSION)){//フォーム再送信の確認対策
     session_start();
-  }
-  header('Expires:');
-  header('Cache-Control:');
-  header('Pragma:');
+   }
+    header('Expires:');
+    header('Cache-Control:');
+    header('Pragma:');
 
   }
 
@@ -58,32 +60,70 @@ class RelayLogsController extends AppController
         }
       $this->set('arrDays',$arrDays);
 
-      $session = $this->request->getSession();
-      $datasession = $session->read();
-      $staff_id = $datasession['Auth']['User']['staff_id'];
+      $Linenames = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => 1])->toArray();
 
-      $Staffs = $this->Staffs->find()
-      ->where(['id' => $staff_id])
-      ->toArray();
-      $factory_id = $Staffs[0]["factory_id"];
-
-      if($factory_id == 5){
-  
-        $this->set('usercheck', 1);
-        $Factories = $this->Factories->find('list');
-        $this->set(compact('Factories'));
-
-      }else{
-  
-        $this->set('usercheck', 0);
-
+      $arrGouki = array();
+      for($j=0; $j<count($Linenames); $j++){
+        $array = array($Linenames[$j]["machine_num"] => $Linenames[$j]["name"]);
+        $arrGouki = $arrGouki + $array;
       }
+      $this->set('arrGouki', $arrGouki);
 
     }
 
-    public function view()
+    public function details()
     {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
 
+      $data = $this->request->getData();
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      if(isset($data["date_sta_year"])){
+        $dateselect = $data["date_sta_year"]."-".$data["date_sta_month"]."-".$data["date_sta_date"];
+
+        $date1 = strtotime($dateselect);
+        $date_sta = $dateselect." 06:00:00";
+        $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 06:00:00";
+        $date_fin_hyouji = date('Y-m-d', strtotime('+1 day', $date1))." 05:59:59";
+        $this->set('date_sta', $date_sta);
+        $this->set('date_fin', $date_fin);
+        $this->set('date_fin_hyouji', $date_fin_hyouji);
+      }
+
+      if(isset($data["shotdata"])){//ショットデータ出力
+       
+        $machine_num = $data["machine_num"];
+        $this->set('machine_num', $machine_num);
+        $date_sta = $data["date_sta"];
+        $this->set('date_sta', $date_sta);
+        $date_fin = $data["date_fin"];
+        $this->set('date_fin', $date_fin);
+        $date_fin_hyouji = $data["date_fin_hyouji"];
+        $this->set('date_fin_hyouji', $date_fin_hyouji);
+        $factory_id = $data["factory_id"];
+        $this->set('factory_id', $factory_id);
+
+        $machine_sta_fin = $machine_num."_".$date_sta."_".$date_fin;
+        $kadouprograms = new kadouprogram();
+        $shotdatacsv = $kadouprograms->shotdatacsv($machine_sta_fin);
+        
+      }
+
+      $machine_num = $data["machine_num"];
+      $this->set('machine_num', $machine_num);
+      $factory_id = $data["factory_id"];
+      $this->set('factory_id', $factory_id);
+
+      $machine_sta_fin = $machine_num."_".$date_sta."_".$date_fin;
+      $kadouprograms = new kadouprogram();
+      $arrRelayLogs = $kadouprograms->yobidashirelaylogs($machine_sta_fin);
+      $this->set('arrRelayLogs', $arrRelayLogs);
+  
     }
 
 }

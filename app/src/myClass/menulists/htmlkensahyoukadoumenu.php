@@ -49,12 +49,15 @@ class htmlkensahyoukadoumenu extends AppController
             "<img src='/img/menus/kadounippou.gif' width=145 height=50>\n".
             "</a></td><td style='border: none'>　　　</td>\n".
             "<td style='border: none'>\n".
-            "<a href='/kadous/yobidashidate'>\n".
+            "<a href='/RelayLogs/yobidashidate'>\n".
             "<img src='/img/menus/kadourelay.gif' width=145 height=50>\n".
+//異常ログ
+/*
             "</a></td><td style='border: none'>　　　</td>\n".
             "<td style='border: none'>\n".
             "<a href='/kadous/yobidashidate'>\n".
             "<img src='/img/menus/kadouabnormal.gif' width=145 height=50>\n".
+*/
             "</a></td>\n".
             "</table>\n";
 
