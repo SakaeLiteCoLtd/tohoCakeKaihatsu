@@ -1885,7 +1885,7 @@ class KensahyousokuteidatasController extends AppController
 
           $i = $arrNum[$k];
 
-          if(strlen($data['result_size'.$j.$i]) > 0){//ちゃんと入力されている場合
+          if(strlen($data["result_size".$j."_".$i]) > 0){//ちゃんと入力されている場合
             $checknull = $checknull;
           }else{//入力漏れがある場合
             $checknull = $checknull + 1;
@@ -1980,16 +1980,16 @@ class KensahyousokuteidatasController extends AppController
   
             for($i=1; $i<=11; $i++){
 
-              if(isset($data['result_size'.$j.$i])){
-                if(strlen($data['result_size'.$j.$i]) > 0){
-                  ${"result_size".$j.$i} = sprintf("%.1f", $data['result_size'.$j.$i]);
+              if(isset($data["result_size".$j."_".$i])){
+                if(strlen($data["result_size".$j."_".$i]) > 0){
+                  ${"result_size".$j."_".$i} = sprintf("%.1f", $data["result_size".$j."_".$i]);
                 }else{
-                  ${"result_size".$j.$i} = "";
+                  ${"result_size".$j."_".$i} = "";
                 }
               }else{
-                ${"result_size".$j.$i} = "";
+                ${"result_size".$j."_".$i} = "";
               }
-              $this->set('result_size'.$j.$i,${"result_size".$j.$i});
+              $this->set("result_size".$j."_".$i,${"result_size".$j."_".$i});
 
             }
 
@@ -2062,23 +2062,23 @@ class KensahyousokuteidatasController extends AppController
 
           for($i=1; $i<=11; $i++){
 
-            if(strlen($data['result_size'.$j.$i]) > 0){
-              ${"result_size".$j.$i} = $data['result_size'.$j.$i];
+            if(strlen($data["result_size".$j."_".$i]) > 0){
+              ${"result_size".$j."_".$i} = $data["result_size".$j."_".$i];
   
-              $dotini = substr(${"result_size".$j.$i}, 0, 1);
-              $dotend = substr(${"result_size".$j.$i}, -1, 1);
+              $dotini = substr(${"result_size".$j."_".$i}, 0, 1);
+              $dotend = substr(${"result_size".$j."_".$i}, -1, 1);
   
               if($dotini == "."){
-                ${"result_size".$j.$i} = "0".${"result_size".$j.$i};
+                ${"result_size".$j."_".$i} = "0".${"result_size".$j."_".$i};
               }elseif($dotend == "."){
-                ${"result_size".$j.$i} = ${"result_size".$j.$i}."0";
+                ${"result_size".$j."_".$i} = ${"result_size".$j."_".$i}."0";
               }
-              ${"result_size".$j.$i} = sprintf("%.1f", ${"result_size".$j.$i});
+              ${"result_size".$j."_".$i} = sprintf("%.1f", ${"result_size".$j."_".$i});
   
             }else{
-              ${"result_size".$j.$i} = "";
+              ${"result_size".$j."_".$i} = "";
             }
-            $this->set('result_size'.$j.$i,${"result_size".$j.$i});
+            $this->set("result_size".$j."_".$i,${"result_size".$j."_".$i});
 
             $Productlengthcheck = $this->Products->find()
             ->where(['product_code like' => $product_code_ini.'%'
@@ -2092,12 +2092,12 @@ class KensahyousokuteidatasController extends AppController
         
             }
     
-            if(${"input_type".$i} !== "judge" && ${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-            && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+            if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+            && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
       
               $gouhi_check = $gouhi_check;
 
-            } elseif(${"input_type".$i} == "judge" && ${"result_size".$j.$i} < 1) {
+            } elseif(${"input_type".$i} == "judge" && ${"result_size".$j."_".$i} < 1) {
 
               $gouhi_check = $gouhi_check;
 
@@ -2208,7 +2208,7 @@ class KensahyousokuteidatasController extends AppController
 
               for($i=1; $i<=11; $i++){
 
-                if(strlen($data['result_size'.$j.$i]) > 0){
+                if(strlen($data["result_size".$j."_".$i]) > 0){
 
                   $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren->find()
                   ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'], "size_number" => $i])
@@ -2217,7 +2217,7 @@ class KensahyousokuteidatasController extends AppController
                   $tourokuInspectionDataResultChildren[] = [
                     "inspection_data_result_parent_id" => $InspectionDataResultParentsId[0]["id"],
                     "inspection_standard_size_child_id" => $InspectionStandardSizeChildren[0]["id"],
-                    'result_size' => sprintf("%.2f", $data['result_size'.$j.$i]),
+                    "result_size" => sprintf("%.2f", $data["result_size".$j."_".$i]),
                     "delete_flag" => 0,
                     'created_at' => date("Y-m-d H:i:s"),
                     "created_staff" => $Users[0]["staff_id"]//ログインは不要
@@ -2390,29 +2390,29 @@ class KensahyousokuteidatasController extends AppController
 
           for($i=1; $i<=11; $i++){
 
-            if(strlen($data['result_size'.$j.$i]) > 0){
-              ${"result_size".$j.$i} = $data['result_size'.$j.$i];
+            if(strlen($data["result_size".$j."_".$i]) > 0){
+              ${"result_size".$j."_".$i} = $data["result_size".$j."_".$i];
               /*
               echo "<pre>";
-              print_r(${"result_size".$j.$i});
+              print_r(${"result_size".$j."_".$i});
               echo "</pre>";
         */
-              $dotini = substr(${"result_size".$j.$i}, 0, 1);
-              $dotend = substr(${"result_size".$j.$i}, -1, 1);
+              $dotini = substr(${"result_size".$j."_".$i}, 0, 1);
+              $dotend = substr(${"result_size".$j."_".$i}, -1, 1);
   
               if($dotini == "."){
-                ${"result_size".$j.$i} = "0".${"result_size".$j.$i};
+                ${"result_size".$j."_".$i} = "0".${"result_size".$j."_".$i};
               }elseif($dotend == "."){
-                ${"result_size".$j.$i} = ${"result_size".$j.$i}."0";
+                ${"result_size".$j."_".$i} = ${"result_size".$j."_".$i}."0";
               }
-              if(${"result_size".$j.$i} !== "〇" && ${"result_size".$j.$i} !== "✕"){
-                ${"result_size".$j.$i} = sprintf("%.1f", ${"result_size".$j.$i});
+              if(${"result_size".$j."_".$i} !== "〇" && ${"result_size".$j."_".$i} !== "✕"){
+                ${"result_size".$j."_".$i} = sprintf("%.1f", ${"result_size".$j."_".$i});
               }
 
             }else{
-              ${"result_size".$j.$i} = "";
+              ${"result_size".$j."_".$i} = "";
             }
-            $this->set('result_size'.$j.$i,${"result_size".$j.$i});
+            $this->set("result_size".$j."_".$i,${"result_size".$j."_".$i});
             
             $Productlengthcheck = $this->Products->find()
             ->where(['product_code like' => $product_code_ini.'%'
@@ -2426,10 +2426,10 @@ class KensahyousokuteidatasController extends AppController
         
             }
 
-            if(${"input_type".$i} !== "judge" && ${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-            && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+            if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+            && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
               $gouhi_check = $gouhi_check;
-            } elseif(${"input_type".$i} == "judge" && ${"result_size".$j.$i} < 1) {
+            } elseif(${"input_type".$i} == "judge" && ${"result_size".$j."_".$i} < 1) {
               $gouhi_check = $gouhi_check;
             } else {
               $gouhi_check = $gouhi_check + 1;
@@ -2537,25 +2537,25 @@ class KensahyousokuteidatasController extends AppController
 
           for($i=1; $i<=11; $i++){
 
-            if(strlen($data['result_size'.$j.$i]) > 0){
-              ${"result_size".$j.$i} = $data['result_size'.$j.$i];
+            if(strlen($data["result_size".$j."_".$i]) > 0){
+              ${"result_size".$j."_".$i} = $data["result_size".$j."_".$i];
 
-              $dotini = substr(${"result_size".$j.$i}, 0, 1);
-              $dotend = substr(${"result_size".$j.$i}, -1, 1);
+              $dotini = substr(${"result_size".$j."_".$i}, 0, 1);
+              $dotend = substr(${"result_size".$j."_".$i}, -1, 1);
   
               if($dotini == "."){
-                ${"result_size".$j.$i} = "0".${"result_size".$j.$i};
+                ${"result_size".$j."_".$i} = "0".${"result_size".$j."_".$i};
               }elseif($dotend == "."){
-                ${"result_size".$j.$i} = ${"result_size".$j.$i}."0";
+                ${"result_size".$j."_".$i} = ${"result_size".$j."_".$i}."0";
               }
-              if(${"result_size".$j.$i} !== "〇" && ${"result_size".$j.$i} !== "✕"){
-                ${"result_size".$j.$i} = sprintf("%.1f", ${"result_size".$j.$i});
+              if(${"result_size".$j."_".$i} !== "〇" && ${"result_size".$j."_".$i} !== "✕"){
+                ${"result_size".$j."_".$i} = sprintf("%.1f", ${"result_size".$j."_".$i});
               }
 
             }else{
-              ${"result_size".$j.$i} = "";
+              ${"result_size".$j."_".$i} = "";
             }
-            $this->set('result_size'.$j.$i,${"result_size".$j.$i});
+            $this->set("result_size".$j."_".$i,${"result_size".$j."_".$i});
             
             $Productlengthcheck = $this->Products->find()
             ->where(['product_code like' => $product_code_ini.'%'
@@ -2569,10 +2569,10 @@ class KensahyousokuteidatasController extends AppController
         
             }
 
-            if(${"input_type".$i} !== "judge" && ${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-            && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+            if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+            && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
               $gouhi_check = $gouhi_check;
-            } elseif(${"input_type".$i} == "judge" && ${"result_size".$j.$i} < 1) {
+            } elseif(${"input_type".$i} == "judge" && ${"result_size".$j."_".$i} < 1) {
               $gouhi_check = $gouhi_check;
             } else {
               $gouhi_check = $gouhi_check + 1;
@@ -2663,23 +2663,23 @@ class KensahyousokuteidatasController extends AppController
 
           for($i=1; $i<=11; $i++){
 
-            if(strlen($data['result_size'.$j.$i]) > 0){
-              ${"result_size".$j.$i} = $data['result_size'.$j.$i];
+            if(strlen($data["result_size".$j."_".$i]) > 0){
+              ${"result_size".$j."_".$i} = $data["result_size".$j."_".$i];
   
-              $dotini = substr(${"result_size".$j.$i}, 0, 1);
-              $dotend = substr(${"result_size".$j.$i}, -1, 1);
+              $dotini = substr(${"result_size".$j."_".$i}, 0, 1);
+              $dotend = substr(${"result_size".$j."_".$i}, -1, 1);
   
               if($dotini == "."){
-                ${"result_size".$j.$i} = "0".${"result_size".$j.$i};
+                ${"result_size".$j."_".$i} = "0".${"result_size".$j."_".$i};
               }elseif($dotend == "."){
-                ${"result_size".$j.$i} = ${"result_size".$j.$i}."0";
+                ${"result_size".$j."_".$i} = ${"result_size".$j."_".$i}."0";
               }
-              ${"result_size".$j.$i} = sprintf("%.1f", ${"result_size".$j.$i});
+              ${"result_size".$j."_".$i} = sprintf("%.1f", ${"result_size".$j."_".$i});
 
             }else{
-              ${"result_size".$j.$i} = "";
+              ${"result_size".$j."_".$i} = "";
             }
-            $this->set('result_size'.$j.$i,${"result_size".$j.$i});
+            $this->set("result_size".$j."_".$i,${"result_size".$j."_".$i});
             
             $Productlengthcheck = $this->Products->find()
             ->where(['product_code like' => $product_code_ini.'%'
@@ -2693,10 +2693,10 @@ class KensahyousokuteidatasController extends AppController
         
             }
 
-            if(${"input_type".$i} !== "judge" && ${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-            && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+            if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+            && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
               $gouhi_check = $gouhi_check;
-            } elseif(${"input_type".$i} == "judge" && ${"result_size".$j.$i} < 1) {
+            } elseif(${"input_type".$i} == "judge" && ${"result_size".$j."_".$i} < 1) {
               $gouhi_check = $gouhi_check;
             } else {
               $gouhi_check = $gouhi_check + 1;
@@ -2824,23 +2824,23 @@ class KensahyousokuteidatasController extends AppController
 
           for($i=1; $i<=11; $i++){
 
-            if(strlen($data['result_size'.$j.$i]) > 0){
-              ${"result_size".$j.$i} = $data['result_size'.$j.$i];
+            if(strlen($data["result_size".$j."_".$i]) > 0){
+              ${"result_size".$j."_".$i} = $data["result_size".$j."_".$i];
   
-              $dotini = substr(${"result_size".$j.$i}, 0, 1);
-              $dotend = substr(${"result_size".$j.$i}, -1, 1);
+              $dotini = substr(${"result_size".$j."_".$i}, 0, 1);
+              $dotend = substr(${"result_size".$j."_".$i}, -1, 1);
   
               if($dotini == "."){
-                ${"result_size".$j.$i} = "0".${"result_size".$j.$i};
+                ${"result_size".$j."_".$i} = "0".${"result_size".$j."_".$i};
               }elseif($dotend == "."){
-                ${"result_size".$j.$i} = ${"result_size".$j.$i}."0";
+                ${"result_size".$j."_".$i} = ${"result_size".$j."_".$i}."0";
               }
-              ${"result_size".$j.$i} = sprintf("%.1f", ${"result_size".$j.$i});
+              ${"result_size".$j."_".$i} = sprintf("%.1f", ${"result_size".$j."_".$i});
 
             }else{
-              ${"result_size".$j.$i} = "";
+              ${"result_size".$j."_".$i} = "";
             }
-            $this->set('result_size'.$j.$i,${"result_size".$j.$i});
+            $this->set("result_size".$j."_".$i,${"result_size".$j."_".$i});
             
             $Productlengthcheck = $this->Products->find()
             ->where(['product_code like' => $product_code_ini.'%'
@@ -2854,10 +2854,10 @@ class KensahyousokuteidatasController extends AppController
         
             }
 
-            if(${"input_type".$i} !== "judge" && ${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-            && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+            if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+            && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
               $gouhi_check = $gouhi_check;
-            } elseif(${"input_type".$i} == "judge" && ${"result_size".$j.$i} < 1) {
+            } elseif(${"input_type".$i} == "judge" && ${"result_size".$j."_".$i} < 1) {
               $gouhi_check = $gouhi_check;
             } else {
               $gouhi_check = $gouhi_check + 1;
@@ -2895,7 +2895,7 @@ class KensahyousokuteidatasController extends AppController
 
           $i = $arrNum[$k];
 
-          if(strlen($data['result_size'.$j.$i]) > 0){//ちゃんと入力されている場合
+          if(strlen($data["result_size".$j."_".$i]) > 0){//ちゃんと入力されている場合
             $checknull = $checknull;
           }else{//入力漏れがある場合
             $checknull = $checknull + 1;
@@ -2985,16 +2985,16 @@ class KensahyousokuteidatasController extends AppController
 
             for($i=1; $i<=11; $i++){
 
-              if(isset($data['result_size'.$j.$i])){
-                if(strlen($data['result_size'.$j.$i]) > 0){
-                  ${"result_size".$j.$i} = sprintf("%.1f", $data['result_size'.$j.$i]);
+              if(isset($data["result_size".$j."_".$i])){
+                if(strlen($data["result_size".$j."_".$i]) > 0){
+                  ${"result_size".$j."_".$i} = sprintf("%.1f", $data["result_size".$j."_".$i]);
                 }else{
-                  ${"result_size".$j.$i} = "";
+                  ${"result_size".$j."_".$i} = "";
                 }
               }else{
-                ${"result_size".$j.$i} = "";
+                ${"result_size".$j."_".$i} = "";
               }
-              $this->set('result_size'.$j.$i,${"result_size".$j.$i});
+              $this->set("result_size".$j."_".$i,${"result_size".$j."_".$i});
 
             }
 
@@ -3030,7 +3030,7 @@ class KensahyousokuteidatasController extends AppController
 
         for($i=1; $i<=11; $i++){
 
-          if(strlen($data['result_size'.$j.$i]) > 0){
+          if(strlen($data["result_size".$j."_".$i]) > 0){
 
             $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren->find()
             ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'], "size_number" => $i])
@@ -3039,7 +3039,7 @@ class KensahyousokuteidatasController extends AppController
             $updateInspectionDataResultChildren[] = [
               "inspection_data_result_parent_id" => $motoInspectionDataResultParentId,
               "inspection_standard_size_child_id" => $InspectionStandardSizeChildren[0]["id"],
-              'result_size' => $data['result_size'.$j.$i],
+              "result_size" => $data["result_size".$j."_".$i],
               "delete_flag" => 0,
               'created_at' => date("Y-m-d H:i:s"),
               "created_staff" => $Users[0]["staff_id"]//ログインは不要
@@ -3169,23 +3169,23 @@ class KensahyousokuteidatasController extends AppController
 
         for($i=1; $i<=11; $i++){
 
-          if(strlen($data['result_size'.$j.$i]) > 0){
-            ${"result_size".$j.$i} = $data['result_size'.$j.$i];
+          if(strlen($data["result_size".$j."_".$i]) > 0){
+            ${"result_size".$j."_".$i} = $data["result_size".$j."_".$i];
 
-            $dotini = substr(${"result_size".$j.$i}, 0, 1);
-            $dotend = substr(${"result_size".$j.$i}, -1, 1);
+            $dotini = substr(${"result_size".$j."_".$i}, 0, 1);
+            $dotend = substr(${"result_size".$j."_".$i}, -1, 1);
 
             if($dotini == "."){
-              ${"result_size".$j.$i} = "0".${"result_size".$j.$i};
+              ${"result_size".$j."_".$i} = "0".${"result_size".$j."_".$i};
             }elseif($dotend == "."){
-              ${"result_size".$j.$i} = ${"result_size".$j.$i}."0";
+              ${"result_size".$j."_".$i} = ${"result_size".$j."_".$i}."0";
             }
-            ${"result_size".$j.$i} = sprintf("%.1f", ${"result_size".$j.$i});
+            ${"result_size".$j."_".$i} = sprintf("%.1f", ${"result_size".$j."_".$i});
 
           }else{
-            ${"result_size".$j.$i} = "";
+            ${"result_size".$j."_".$i} = "";
           }
-          $this->set('result_size'.$j.$i,${"result_size".$j.$i});
+          $this->set("result_size".$j."_".$i,${"result_size".$j."_".$i});
           
           $Productlengthcheck = $this->Products->find()
           ->where(['product_code like' => $product_code_ini.'%'
@@ -3199,10 +3199,10 @@ class KensahyousokuteidatasController extends AppController
       
           }
     
-          if(${"input_type".$i} !== "judge" && ${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-          && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+          if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+          && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
             $gouhi_check = $gouhi_check;
-          } elseif(${"input_type".$i} == "judge" && ${"result_size".$j.$i} < 1) {
+          } elseif(${"input_type".$i} == "judge" && ${"result_size".$j."_".$i} < 1) {
             $gouhi_check = $gouhi_check;
           } else {
             $gouhi_check = $gouhi_check + 1;
@@ -3384,23 +3384,23 @@ class KensahyousokuteidatasController extends AppController
 
         for($i=1; $i<=11; $i++){
 
-          if(strlen($data['result_size'.$j.$i]) > 0){
-            ${"result_size".$j.$i} = $data['result_size'.$j.$i];
+          if(strlen($data["result_size".$j."_".$i]) > 0){
+            ${"result_size".$j."_".$i} = $data["result_size".$j."_".$i];
 
-            $dotini = substr(${"result_size".$j.$i}, 0, 1);
-            $dotend = substr(${"result_size".$j.$i}, -1, 1);
+            $dotini = substr(${"result_size".$j."_".$i}, 0, 1);
+            $dotend = substr(${"result_size".$j."_".$i}, -1, 1);
 
             if($dotini == "."){
-              ${"result_size".$j.$i} = "0".${"result_size".$j.$i};
+              ${"result_size".$j."_".$i} = "0".${"result_size".$j."_".$i};
             }elseif($dotend == "."){
-              ${"result_size".$j.$i} = ${"result_size".$j.$i}."0";
+              ${"result_size".$j."_".$i} = ${"result_size".$j."_".$i}."0";
             }
-            ${"result_size".$j.$i} = sprintf("%.1f", ${"result_size".$j.$i});
+            ${"result_size".$j."_".$i} = sprintf("%.1f", ${"result_size".$j."_".$i});
 
           }else{
-            ${"result_size".$j.$i} = "";
+            ${"result_size".$j."_".$i} = "";
           }
-          $this->set('result_size'.$j.$i,${"result_size".$j.$i});
+          $this->set("result_size".$j."_".$i,${"result_size".$j."_".$i});
           
           $Productlengthcheck = $this->Products->find()
           ->where(['product_code like' => $product_code_ini.'%'
@@ -3414,10 +3414,10 @@ class KensahyousokuteidatasController extends AppController
       
           }
     
-          if(${"input_type".$i} !== "judge" && ${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-          && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+          if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+          && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
             $gouhi_check = $gouhi_check;
-          } elseif(${"input_type".$i} == "judge" && ${"result_size".$j.$i} < 1) {
+          } elseif(${"input_type".$i} == "judge" && ${"result_size".$j."_".$i} < 1) {
             $gouhi_check = $gouhi_check;
           } else {
             $gouhi_check = $gouhi_check + 1;
@@ -4533,7 +4533,7 @@ class KensahyousokuteidatasController extends AppController
         for($i=1; $i<=11; $i++){
 
           ${"result_size".$n.$i} = "";
-          $this->set('result_size'.$n.$i,${"result_size".$n.$i});
+          $this->set("result_size".$n."_".$i,${"result_size".$n.$i});
 
         }
 
@@ -4541,8 +4541,8 @@ class KensahyousokuteidatasController extends AppController
 
           $size_number = $InspectionDataResultChildren[$i]['inspection_standard_size_child']['size_number'];
 
-          ${"result_size".$n.$size_number} = sprintf("%.1f", $InspectionDataResultChildren[$i]['result_size']);
-          $this->set('result_size'.$n.$size_number,${"result_size".$n.$size_number});
+          ${"result_size".$n.$size_number} = sprintf("%.1f", $InspectionDataResultChildren[$i]["result_size"]);
+          $this->set("result_size".$n."_".$size_number,${"result_size".$n.$size_number});
 
         }
 
@@ -4651,8 +4651,8 @@ class KensahyousokuteidatasController extends AppController
   
           for($i=1; $i<=11; $i++){
 
-            ${"result_size".$j.$i} = $data['result_size'.$j.$i];
-            $this->set('result_size'.$j.$i,${"result_size".$j.$i});
+            ${"result_size".$j."_".$i} = $data["result_size".$j."_".$i];
+            $this->set("result_size".$j."_".$i,${"result_size".$j."_".$i});
   
           }
   
@@ -4750,8 +4750,8 @@ class KensahyousokuteidatasController extends AppController
     
           for($i=1; $i<=11; $i++){
 
-            ${"result_size".$j.$i} = $data['result_size'.$j.$i];
-            $this->set('result_size'.$j.$i,${"result_size".$j.$i});
+            ${"result_size".$j."_".$i} = $data["result_size".$j."_".$i];
+            $this->set("result_size".$j."_".$i,${"result_size".$j."_".$i});
   
           }
   
@@ -5210,7 +5210,7 @@ class KensahyousokuteidatasController extends AppController
         for($i=1; $i<=11; $i++){
 
           ${"result_size".$n.$i} = "";
-          $this->set('result_size'.$n.$i,${"result_size".$n.$i});
+          $this->set("result_size".$n."_".$i,${"result_size".$n.$i});
 
         }
 
@@ -5218,8 +5218,8 @@ class KensahyousokuteidatasController extends AppController
 
           $size_number = $InspectionDataResultChildren[$i]['inspection_standard_size_child']['size_number'];
 
-          ${"result_size".$n.$size_number} = $InspectionDataResultChildren[$i]['result_size'];
-          $this->set('result_size'.$n.$size_number,${"result_size".$n.$size_number});
+          ${"result_size".$n.$size_number} = $InspectionDataResultChildren[$i]["result_size"];
+          $this->set("result_size".$n."_".$size_number,${"result_size".$n.$size_number});
 
         }
 
@@ -5464,8 +5464,8 @@ class KensahyousokuteidatasController extends AppController
          
           for($i=1; $i<=11; $i++){
 
-            if(strlen($data['result_size'.$n.$i]) > 0){
-              ${"result_size".$n.$i} = $data['result_size'.$n.$i];
+            if(strlen($data["result_size".$n."_".$i]) > 0){
+              ${"result_size".$n.$i} = $data["result_size".$n."_".$i];
 
               $dotini = substr(${"result_size".$n.$i}, 0, 1);
               $dotend = substr(${"result_size".$n.$i}, -1, 1);
@@ -5480,7 +5480,7 @@ class KensahyousokuteidatasController extends AppController
             }else{
               ${"result_size".$n.$i} = "";
             }
-            $this->set('result_size'.$m.$i,${"result_size".$n.$i});
+            $this->set("result_size".$m."_".$i,${"result_size".$n.$i});
 
             $Productlengthcheck = $this->Products->find()
             ->where(['product_code like' => $product_code_ini.'%'
@@ -5787,13 +5787,13 @@ class KensahyousokuteidatasController extends AppController
 
         for($i=1; $i<=11; $i++){
 
-          if(strlen($data['result_size'.$n.$i]) > 0){
-            ${"result_size".$n.$i} = $data['result_size'.$n.$i];
+          if(strlen($data["result_size".$n."_".$i]) > 0){
+            ${"result_size".$n.$i} = $data["result_size".$n."_".$i];
             ${"result_size".$n.$i} = sprintf("%.1f", ${"result_size".$n.$i});
           }else{
             ${"result_size".$n.$i} = "";
           }
-          $this->set('result_size'.$n.$i,${"result_size".$n.$i});
+          $this->set("result_size".$n."_".$i,${"result_size".$n.$i});
 
         }
 
@@ -6014,14 +6014,14 @@ class KensahyousokuteidatasController extends AppController
                 }
         
                 $InspectionDataResultParentsId = $this->InspectionDataResultParents->find()->contain(['ProductConditionParents','Products'])
-                ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 
+                ->where(['InspectionDataResultParents.delete_flag' => 0, 'machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 
                 'datetime >=' => $datetimesta, 'datetime <' => $datetimefin, 'lot_number' => $data['lot_number'.$j]])
                 ->order(["InspectionDataResultParents.updated_at"=>"DESC"])->toArray();
 
                 $tourokuInspectionDataResultChildren = array();
                 for($i=1; $i<=11; $i++){
 
-                  if(strlen($data['result_size'.$j.$i]) > 0){
+                  if(strlen($data["result_size".$j."_".$i]) > 0){
 
                     $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren->find()
                     ->where(['inspection_standard_size_parent_id' => $inspection_standard_size_parent_id, "size_number" => $i])
@@ -6030,7 +6030,7 @@ class KensahyousokuteidatasController extends AppController
                     $tourokuInspectionDataResultChildren[] = [
                       "inspection_data_result_parent_id" => $InspectionDataResultParentsId[0]["id"],
                       "inspection_standard_size_child_id" => $InspectionStandardSizeChildren[0]["id"],
-                      'result_size' => $data['result_size'.$j.$i],
+                      "result_size" => $data["result_size".$j."_".$i],
                       "delete_flag" => 0,
                       'created_at' => date("Y-m-d H:i:s"),
                       "created_staff" => $staff_id
@@ -6782,7 +6782,7 @@ class KensahyousokuteidatasController extends AppController
         for($i=1; $i<=11; $i++){
 
           ${"result_size".$n.$i} = "";
-          $this->set('result_size'.$n.$i,${"result_size".$n.$i});
+          $this->set("result_size".$n."_".$i,${"result_size".$n.$i});
 
         }
 
@@ -6790,8 +6790,8 @@ class KensahyousokuteidatasController extends AppController
 
           $size_number = $InspectionDataResultChildren[$i]['inspection_standard_size_child']['size_number'];
 
-          ${"result_size".$n.$size_number} = $InspectionDataResultChildren[$i]['result_size'];
-          $this->set('result_size'.$n.$size_number,${"result_size".$n.$size_number});
+          ${"result_size".$n.$size_number} = $InspectionDataResultChildren[$i]["result_size"];
+          $this->set("result_size".$n."_".$size_number,${"result_size".$n.$size_number});
 
         }
 
@@ -7113,12 +7113,8 @@ class KensahyousokuteidatasController extends AppController
             ->where(['ProductConditonChildren.cylinder_name' => $cylinder_name
             , 'InspectionDataConditonChildren.created_at <=' => $datetime])
             ->order(["InspectionDataConditonChildren.created_at"=>"DESC"])->limit(1)->toArray();
-      /*
-            echo "<pre>";
-            print_r($InspectionDataConditonChildren[0]);
-            echo "</pre>";
-  */
-              $j = $k + 1;
+
+            $j = $k + 1;
     
               ${"inspection_extrude_roatation".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_extrude_roatation']);
               $this->set('inspection_extrude_roatation'.$j, ${"inspection_extrude_roatation".$j});
@@ -7135,11 +7131,7 @@ class KensahyousokuteidatasController extends AppController
               }
   
           }
-  /*
-          echo "<pre>";
-          print_r("toujitu");
-          echo "</pre>";
-  */
+
         }
 
       }
@@ -7615,7 +7607,7 @@ class KensahyousokuteidatasController extends AppController
         for($i=1; $i<=11; $i++){
 
           ${"result_size".$n.$i} = "";
-          $this->set('result_size'.$n.$i,${"result_size".$n.$i});
+          $this->set("result_size".$n."_".$i,${"result_size".$n.$i});
 
         }
 
@@ -7623,8 +7615,8 @@ class KensahyousokuteidatasController extends AppController
 
           $size_number = $InspectionDataResultChildren[$i]['inspection_standard_size_child']['size_number'];
     
-          ${"result_size".$n.$size_number} = sprintf("%.1f", $InspectionDataResultChildren[$i]['result_size']);
-          $this->set('result_size'.$n.$size_number,${"result_size".$n.$size_number});
+          ${"result_size".$n.$size_number} = sprintf("%.1f", $InspectionDataResultChildren[$i]["result_size"]);
+          $this->set("result_size".$n."_".$size_number,${"result_size".$n.$size_number});
 
         }
 

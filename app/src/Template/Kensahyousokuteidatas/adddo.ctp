@@ -108,7 +108,7 @@ echo $this->Html->css('kensahyou');
   <td style='width:130; border-top-style:none'><?= h(${"staff_hyouji".$j}) ?></td>
 
   <?php for($i=1; $i<=9; $i++): ?>
-    <td style='width:90; border-top-style:none'><?= h(${"result_size".$j.$i}) ?></td>
+    <td style='width:90; border-top-style:none'><?= h(${"result_size".$j."_".$i}) ?></td>
   <?php endfor;?>
 
   <td style='width:100; border-top-style:none'><?= h(${"gaikan".$j}) ?></td>

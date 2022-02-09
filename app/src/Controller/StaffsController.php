@@ -212,6 +212,15 @@ class StaffsController extends AppController
       $Staffs = $this->Staffs->newEntity();
       $this->set('Staffs', $Staffs);
 
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
       $session = $this->request->getSession();
       $datasession = $session->read();
 
@@ -266,11 +275,22 @@ class StaffsController extends AppController
       $this->set('Staffs', $Staffs);
 
       $data = $this->request->getData();
-      /*
+/*
       echo "<pre>";
       print_r($data);
       echo "</pre>";
 */
+      $Usercheck = $this->Users->find()
+      ->where(['user_code' => $data['user_code'], 'delete_flag' => 0])
+      ->toArray();
+
+      if(isset($Usercheck[0])){
+
+        return $this->redirect(['action' => 'addform',
+        's' => ['mess' => "ユーザーID：「".$data['user_code']."」は既に使用されています。"]]);
+  
+      }
+
       if($data['sex'] == 0){
         $sexhyouji = "男";
       }else{
@@ -423,10 +443,13 @@ class StaffsController extends AppController
           $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
           ->where(['Groups.group_name_id' => $data["group_name_id"], 'Groups.delete_flag' => 0])->order(["menu_id"=>"ASC"])->toArray();
 
+          $makepassword = new DefaultPasswordHasher();
+          $password = $makepassword->hash($data["password"]);
+
             $arrtourokuuser = array();
             $arrtourokuuser = [
               'user_code' => $data["user_code"],
-              'password' => $data["password"],
+              'password' => $password,
               'staff_id' => $Staffs[0]["id"],
               'super_user' => 0,
               'group_name_id' => $data["group_name_id"],
@@ -481,6 +504,15 @@ class StaffsController extends AppController
 
     public function editform()
     {
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
       $session = $this->request->getSession();
       $_SESSION = $session->read();
 
@@ -551,6 +583,17 @@ class StaffsController extends AppController
       $this->set('Staffs', $Staffs);
 
       $data = $this->request->getData();
+
+      $Usercheck = $this->Users->find()
+      ->where(['staff_id !=' => $data['staff_id'], 'user_code' => $data['user_code'], 'delete_flag' => 0])
+      ->toArray();
+
+      if(isset($Usercheck[0])){
+
+        return $this->redirect(['action' => 'editform',
+        's' => ['mess' => "ユーザーID：「".$data['user_code']."」は既に使用されています。"]]);
+  
+      }
 
       if($data['sex'] == 0){
         $sexhyouji = "男";

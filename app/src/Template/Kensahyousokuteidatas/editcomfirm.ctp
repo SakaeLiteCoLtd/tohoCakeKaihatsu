@@ -143,14 +143,14 @@ $mes = "";
   <?php for($i=1; $i<=11; $i++): ?>
     <?php
     if(${"size_name".$i} !== "長さ" && ${"input_type".$i} !== "judge" 
-    && ${"result_size".$j.$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
-    && ${"result_size".$j.$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
+    && ${"result_size".$j."_".$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
+    && ${"result_size".$j."_".$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
       echo '<td style="width:84; border-top-style:none">';
-      echo ${"result_size".$j.$i} ;
+      echo ${"result_size".$j."_".$i} ;
       echo '</td>';
     } elseif(${"input_type".$i} == "judge") {
 
-      if(${"result_size".$j.$i} == 0){
+      if(${"result_size".$j."_".$i} == 0){
         ${"judge".$j.$i} = "〇";
         echo '<td style="width:84; border-top-style:none">';
         echo ${"judge".$j.$i};
@@ -164,17 +164,17 @@ $mes = "";
  
     } elseif(${"size_name".$i} == "長さ") {
       echo '<td style="width:84; border-top-style:none">';
-      echo ${"result_size".$j.$i};
+      echo ${"result_size".$j."_".$i};
       echo '</td>';
     } else {
       echo '<td style="width:84; border-top-style:none"><font color="red">';
-      echo ${"result_size".$j.$i};
+      echo ${"result_size".$j."_".$i};
       echo '</td>';
       $mes = $mes.$j."行目".$i."番目に規格から外れたデータがあります。入力間違いがないか確認し、正しければそのまま登録してください。".'<br>';
     }
 
     ?>
-    <?= $this->Form->control('result_size'.$j.$i, array('type'=>'hidden', 'value'=>${"result_size".$j.$i}, 'label'=>false)) ?>
+    <?= $this->Form->control('result_size'.$j."_".$i, array('type'=>'hidden', 'value'=>${"result_size".$j."_".$i}, 'label'=>false)) ?>
 
   <?php endfor;?>
 

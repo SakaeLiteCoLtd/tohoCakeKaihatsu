@@ -126,17 +126,17 @@ echo $this->Html->css('kensahyou');
   <?php if (${"input_type".$i} == "judge"): ?>
 
       <?php
-     if(${"result_size".$j.$i} == 0){
-       ${"judge".$j.$i} = "〇";
+     if(${"result_size".$j."_".$i} == 0){
+       ${"judge".$j."_".$i} = "〇";
      }else{
-      ${"judge".$j.$i} = "✕";
+      ${"judge".$j."_".$i} = "✕";
     }
   ?>
 
-      <?php if (${"result_size".$j.$i} == 1): ?>
-        <td style='width:80; border-top-style:none'><font color="red"><?= h(${"judge".$j.$i}) ?></td>
+      <?php if (${"result_size".$j."_".$i} == 1): ?>
+        <td style='width:80; border-top-style:none'><font color="red"><?= h(${"judge".$j."_".$i}) ?></td>
       <?php else : ?>
-        <td style='width:80; border-top-style:none'><?= h(${"judge".$j.$i}) ?></td>
+        <td style='width:80; border-top-style:none'><?= h(${"judge".$j."_".$i}) ?></td>
       <?php endif; ?>
 
   <?php else : ?>
@@ -150,11 +150,11 @@ echo $this->Html->css('kensahyou');
   }
   ?>
 
-      <?php if (${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-      && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}): ?>
-        <td style='width:80; border-top-style:none'><?= h(${"result_size".$j.$i}) ?></td>
+      <?php if (${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+      && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}): ?>
+        <td style='width:80; border-top-style:none'><?= h(${"result_size".$j."_".$i}) ?></td>
       <?php else : ?>
-        <td style='width:80; border-top-style:none'><font color="red"><?= h(${"result_size".$j.$i}) ?></td>
+        <td style='width:80; border-top-style:none'><font color="red"><?= h(${"result_size".$j."_".$i}) ?></td>
       <?php endif; ?>
 
   <?php endif; ?>

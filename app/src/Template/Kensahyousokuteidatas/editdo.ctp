@@ -108,6 +108,8 @@ echo $this->Html->css('kensahyou');
 
   <?php if ($j == 1): ?>
     <td style='width:43; border-top-style:none'>S</td>
+  <?php elseif ($j == $gyou): ?>
+    <td style='width:43; border-top-style:none'>E</td>
 <?php else : ?>
   <td style='width:43; border-top-style:none'><?= h($lot_hyouji) ?></td>
 <?php endif; ?>
@@ -123,14 +125,14 @@ echo $this->Html->css('kensahyou');
 <?php for($i=1; $i<=11; $i++): ?>
     <?php
     if(${"size_name".$i} !== "長さ" && ${"input_type".$i} !== "judge" 
-    && ${"result_size".$j.$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
-    && ${"result_size".$j.$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
+    && ${"result_size".$j."_".$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
+    && ${"result_size".$j."_".$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
       echo '<td style="width:84; border-top-style:none">';
-      echo ${"result_size".$j.$i} ;
+      echo ${"result_size".$j."_".$i} ;
       echo '</td>';
     } elseif(${"input_type".$i} == "judge") {
 
-      if(${"result_size".$j.$i} == 0){
+      if(${"result_size".$j."_".$i} == 0){
         ${"judge".$j.$i} = "〇";
         echo '<td style="width:84; border-top-style:none">';
         echo ${"judge".$j.$i};
@@ -144,11 +146,11 @@ echo $this->Html->css('kensahyou');
  
     } elseif(${"size_name".$i} == "長さ") {
       echo '<td style="width:84; border-top-style:none">';
-      echo ${"result_size".$j.$i};
+      echo ${"result_size".$j."_".$i};
       echo '</td>';
     } else {
       echo '<td style="width:84; border-top-style:none"><font color="red">';
-      echo ${"result_size".$j.$i};
+      echo ${"result_size".$j."_".$i};
       echo '</td>';
     }
 

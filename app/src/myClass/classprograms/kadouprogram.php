@@ -86,6 +86,8 @@ class kadouprogram extends AppController
           header('Content-Transfer-Encoding: binary');
           header('Content-Length: ' . filesize($csvFileName));
           readfile($csvFileName);
+
+          exit;//exitをいれておかないとhtmlのソースを含んだCSVファイルになってしまう
   	}
 
     public function yobidashirelaylogs($machine_sta_fin)

@@ -183,9 +183,7 @@ for($i=0; $i<$count_length; $i++){
 <?= $this->Form->control('gouhi'.$j, array('type'=>'hidden', 'value'=>${"gouhi".$j}, 'label'=>false)) ?>
 
   <?php for($i=1; $i<=11; $i++): ?>
-
-    <?= $this->Form->control('result_size'.$j.$i, array('type'=>'hidden', 'value'=>${"result_size".$j.$i}, 'label'=>false)) ?>
-
+    <?= $this->Form->control("result_size".$j."_".$i, array('type'=>'hidden', 'value'=>${"result_size".$j."_".$i}, 'label'=>false)) ?>
   <?php endfor;?>
 
 <?php endfor;?>
@@ -369,9 +367,9 @@ var moji = "length"
   <?php for($i=1; $i<=11; $i++): ?>
 
     <?php if (${"input_type".$i} == "judge"): ?>
-      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, ["empty"=>"-", 'options' => $arrJudge, 'label'=>false]) ?></td>
+      <td style='width:75; border-top-style:none'><?= $this->Form->control("result_size".$j."_".$i, ["empty"=>"-", 'options' => $arrJudge, 'label'=>false]) ?></td>
     <?php else : ?>
-      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off", "step"=>"0.01")) ?></td>
+      <td style='width:75; border-top-style:none'><?= $this->Form->control("result_size".$j."_".$i, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off", "step"=>"0.01")) ?></td>
       <?php endif; ?>
 
   <?php endfor;?>
@@ -416,32 +414,33 @@ var moji = "length"
   
       }
 
-      if(${"input_type".$i} !== "judge" && ${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-      && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+      if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+      && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
         echo '<td style="width:75; border-top-style:none">';
-        echo ${"result_size".$j.$i};
+        echo ${"result_size".$j."_".$i};
         echo '</td>';
       } elseif(${"input_type".$i} == "judge") {
 
-        if(${"result_size".$j.$i} < 1){
-          ${"judge".$j.$i} = "〇";
+        if(${"result_size".$j."_".$i} < 1){
+          ${"judge".$j."_".$i} = "〇";
           echo '<td style="width:75; border-top-style:none">';
-          echo ${"judge".$j.$i};
+          echo ${"judge".$j."_".$i};
           echo '</td>';
         }else{
-          ${"judge".$j.$i} = "✕";
+          ${"judge".$j."_".$i} = "✕";
           echo '<td style="width:75; border-top-style:none"><font color="red">';
-          echo ${"judge".$j.$i};
+          echo ${"judge".$j."_".$i};
           echo '</td>';
           }
 
       } else {
         echo '<td style="width:75; border-top-style:none"><font color="red">';
-        echo ${"result_size".$j.$i};
+        echo ${"result_size".$j."_".$i};
         echo '</td>';
       }
       ?>
-      <?= $this->Form->control('result_size'.$j.$i, array('type'=>'hidden', 'value'=>${"result_size".$j.$i}, 'label'=>false)) ?>
+
+      <?= $this->Form->control("result_size".$j."_".$i, array('type'=>'hidden', 'value'=>${"result_size".$j."_".$i}, 'label'=>false)) ?>
 
     <?php endfor;?>
 
@@ -505,9 +504,9 @@ var moji = "length"
   <?php for($i=1; $i<=11; $i++): ?>
 
     <?php if (${"input_type".$i} == "judge"): ?>
-      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, ['options' => $arrJudge, 'value'=>${"result_size".$j.$i}, 'label'=>false]) ?></td>
+      <td style='width:75; border-top-style:none'><?= $this->Form->control("result_size".$j."_".$i, ['options' => $arrJudge, 'value'=>${"result_size".$j."_".$i}, 'label'=>false]) ?></td>
     <?php else : ?>
-      <td style='width:75; border-top-style:none'><?= $this->Form->control('result_size'.$j.$i, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off", "step"=>"0.01")) ?></td>
+      <td style='width:75; border-top-style:none'><?= $this->Form->control("result_size".$j."_".$i, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off", "step"=>"0.01")) ?></td>
       <?php endif; ?>
 
       <?php endfor;?>
@@ -546,32 +545,33 @@ var moji = "length"
 
         }
 
-        if(${"input_type".$i} !== "judge" && ${"result_size".$j.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-        && ${"result_size".$j.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+        if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+        && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
           echo '<td style="width:75; border-top-style:none">';
-          echo ${"result_size".$j.$i};
+          echo ${"result_size".$j."_".$i};
           echo '</td>';
         } elseif(${"input_type".$i} == "judge") {
   
-          if(${"result_size".$j.$i} < 1){
-            ${"judge".$j.$i} = "〇";
+          if(${"result_size".$j."_".$i} < 1){
+            ${"judge".$j."_".$i} = "〇";
             echo '<td style="width:75; border-top-style:none">';
-            echo ${"judge".$j.$i};
+            echo ${"judge".$j."_".$i};
             echo '</td>';
           }else{
-            ${"judge".$j.$i} = "✕";
+            ${"judge".$j."_".$i} = "✕";
             echo '<td style="width:75; border-top-style:none"><font color="red">';
-            echo ${"judge".$j.$i};
+            echo ${"judge".$j."_".$i};
             echo '</td>';
             }
   
         } else {
           echo '<td style="width:75; border-top-style:none"><font color="red">';
-          echo ${"result_size".$j.$i};
+          echo ${"result_size".$j."_".$i};
           echo '</td>';
         }
           ?>
-        <?= $this->Form->control('result_size'.$j.$i, array('type'=>'hidden', 'value'=>${"result_size".$j.$i}, 'label'=>false)) ?>
+
+        <?= $this->Form->control("result_size".$j."_".$i, array('type'=>'hidden', 'value'=>${"result_size".$j."_".$i}, 'label'=>false)) ?>
 
       <?php endfor;?>
 

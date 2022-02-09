@@ -28,6 +28,8 @@
     <fieldset>
         <legend><strong style="font-size: 15pt; color:red"><?= __('メンバー新規登録') ?></strong></legend>
         <br>
+<div align="center"><font color="red" size="4"><?= __($mess) ?></font></div>
+<br>
         <table>
           <tbody class='sample non-sample'>
             <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('登録するデータを入力してください') ?></strong></td></tr>

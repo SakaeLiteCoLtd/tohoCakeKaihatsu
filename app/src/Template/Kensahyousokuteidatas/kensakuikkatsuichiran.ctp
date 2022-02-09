@@ -175,18 +175,18 @@ $numtoujitucount = $numtoujitucount + 1;
   <?php if (${"input_type".$i} == "judge"): ?>
 
 <?php
-if(${"result_size".$j.$i} == 0){
- ${"judge".$j.$i} = "〇";
+if(${"result_size".$j."_".$i} == 0){
+ ${"judge".$j."_".$i} = "〇";
 }else{
-${"judge".$j.$i} = "✕";
+${"judge".$j."_".$i} = "✕";
 }
 ?>
 
-<td style='width:78; border-top-style:none'><?= h(${"judge".$j.$i}) ?></td>
-<?php elseif(strlen(${"result_size".$j.$i}) > 0) : ?>
-<td style='width:78; border-top-style:none'><?= h(sprintf("%.1f", ${"result_size".$j.$i})) ?></td>
+<td style='width:78; border-top-style:none'><?= h(${"judge".$j."_".$i}) ?></td>
+<?php elseif(strlen(${"result_size".$j."_".$i}) > 0) : ?>
+<td style='width:78; border-top-style:none'><?= h(sprintf("%.1f", ${"result_size".$j."_".$i})) ?></td>
 <?php else : ?>
-<td style='width:78; border-top-style:none'><?= h(${"result_size".$j.$i}) ?></td>
+<td style='width:78; border-top-style:none'><?= h(${"result_size".$j."_".$i}) ?></td>
 <?php endif; ?>
 
 <?php endfor;?>

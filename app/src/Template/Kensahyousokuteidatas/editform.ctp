@@ -140,9 +140,9 @@ echo $this->Html->css('kensahyou');
     <td style='width:78; border-top-style:none'>
 
     <?php if (${"input_type".$i} == "judge"): ?>
-      <?= $this->Form->control('result_size'.$j.$i, ['options' => $arrJudge, 'value'=>${"result_size".$j.$i}, 'label'=>false]) ?>
+      <?= $this->Form->control('result_size'.$j."_".$i, ['options' => $arrJudge, 'value'=>${"result_size".$j."_".$i}, 'label'=>false]) ?>
     <?php else : ?>
-      <?= $this->Form->control('result_size'.$j.$i, array('type'=>'text', 'label'=>false, 'value'=>${"result_size".$j.$i}, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?>
+      <?= $this->Form->control('result_size'.$j."_".$i, array('type'=>'text', 'label'=>false, 'value'=>${"result_size".$j."_".$i}, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。')) ?>
       <?php endif; ?>
 
     </td>
@@ -258,7 +258,7 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('lossflag'.$j, array('type'=>'hidden', 'value'=>${"lossflag".$j}, 'label'=>false)) ?>
 
 <?php for($i=1; $i<=11; $i++): ?>
-  <?= $this->Form->control('result_size'.$j.$i, array('type'=>'hidden', 'value'=>${"result_size".$j.$i}, 'label'=>false)) ?>
+  <?= $this->Form->control('result_size'.$j."_".$i, array('type'=>'hidden', 'value'=>${"result_size".$j."_".$i}, 'label'=>false)) ?>
 <?php endfor;?>
 
 <?php endfor;?>

@@ -127,14 +127,14 @@ $mes = "";
 
   <?php for($i=1; $i<=10; $i++): ?>
     <?php
-    if(${"result_size".$j.$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
-    && ${"result_size".$j.$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
+    if(${"result_size".$j."_".$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
+    && ${"result_size".$j."_".$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
       echo '<td style="width:80; border-top-style:none">';
-      echo ${"result_size".$j.$i} ;
+      echo ${"result_size".$j."_".$i} ;
       echo '</td>';
     } else {
       echo '<td style="width:80; border-top-style:none"><font color="red">';
-      echo ${"result_size".$j.$i};
+      echo ${"result_size".$j."_".$i};
       echo '</td>';
       if($k < 2){
         $mes = $mes.$i."番目に規格から外れたデータがあります。入力間違いがないか確認し、正しければそのまま登録してください。".'<br>';
@@ -143,7 +143,7 @@ $mes = "";
       ${"gouhi".$j} = 1;
     }
     ?>
-    <?= $this->Form->control('result_size'.$j.$i, array('type'=>'hidden', 'value'=>${"result_size".$j.$i}, 'label'=>false)) ?>
+    <?= $this->Form->control('result_size'.$j.$i, array('type'=>'hidden', 'value'=>${"result_size".$j."_".$i}, 'label'=>false)) ?>
 
   <?php endfor;?>
 

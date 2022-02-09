@@ -32,6 +32,8 @@
     <fieldset>
         <legend><strong style="font-size: 15pt; color:red"><?= __('メンバー情報編集') ?></strong></legend>
         <br>
+<div align="center"><font color="red" size="4"><?= __($mess) ?></font></div>
+<br>
         <table>
           <tbody class='sample non-sample'>
             <tr><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __('データを編集してください') ?></strong></td></tr>
@@ -96,7 +98,7 @@
         </table>
         <table>
           <tr>
-            <td width="280"><strong>退社日</strong></td>
+            <td width="280"><strong>※退社日</strong></td>
         	</tr>
           <tr>
             <td><?= $this->Form->input("date_finish", array('type' => 'date', 'monthNames' => false, 'label'=>false, 'empty' => true)); ?></td>
