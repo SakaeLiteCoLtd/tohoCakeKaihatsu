@@ -325,11 +325,6 @@ echo $this->Html->css('kensahyou');
               echo "<td>\n";
               echo "${"screw_number_2".$j}\n";
               echo "</td>\n";
-              /*
-              echo "<td>\n";
-              echo "${"screw_2".$j}\n";
-              echo "</td>\n";
-              */
             }else{
               echo "<td>\n";
               echo "± 1.0\n";
@@ -340,11 +335,6 @@ echo $this->Html->css('kensahyou');
               echo "<td>\n";
               echo "${"screw_number_3".$j}\n";
               echo "</td>\n";
-              /*
-              echo "<td>\n";
-              echo "${"screw_3".$j}\n";
-              echo "</td>\n";
-              */
             }
         }else{
           if($i==1){
@@ -368,11 +358,6 @@ echo $this->Html->css('kensahyou');
             echo "<td>\n";
             echo "${"screw_number_2".$j}\n";
             echo "</td>\n";
-            /*
-            echo "<td>\n";
-            echo "${"screw_2".$j}\n";
-            echo "</td>\n";
-            */
           }else{
             echo "<td style='border-top-style:none;'>\n";
             echo "</td>\n";
@@ -382,11 +367,6 @@ echo $this->Html->css('kensahyou');
             echo "<td>\n";
             echo "${"screw_number_3".$j}\n";
             echo "</td>\n";
-            /*
-            echo "<td>\n";
-            echo "${"screw_3".$j}\n";
-            echo "</td>\n";
-            */
           }
         }
 

@@ -122,7 +122,48 @@ for($i=0; $i<$count_length; $i++){
 
 <?php endfor;?>
 
-<?php if ($checkloss > 0)://ロス入力の場合 ?>
+<?php if ($kaishi_loss_input > 0)://開始ロス入力の場合 ?>
+
+  <br>
+ <div align="center"><font size="3"><?= __("ロス重量と備考を入力してください。") ?></font></div>
+<br>
+<table align="center">
+  <tbody class="login">
+    <tr height="45">
+      <td width="150"><strong>ロス重量（kg）</strong></td>
+    </tr>
+    <tr height="45">
+    <td class="login" width="200"><?= $this->Form->control('kaishi_loss_amount', array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9A-Za-z.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
+    </tr>
+    </tbody>
+</table>
+<br>
+
+    <table align="center">
+    <tbody class="login">
+    <tr height="45">
+    <td width="150"><strong>備考（※任意入力）</strong></td>
+    </tr>
+    <tr height="45">
+    <td height="120" colspan="28" style="vertical-align: top; border-bottom: solid;border-width: 1px;text-align: left">
+              <textarea name="kaishi_bik"  cols="120" rows="10"></textarea>
+          </td>
+    </tr>
+    </tbody>
+</table>
+<br>
+
+<table>
+  <tbody class='sample non-sample'>
+    <tr>
+    <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+          <td style="border-style: none;"><?= __("　") ?></td>
+      <td style="border:none"><?= $this->Form->submit(('登録'), array('name' => 'kaishilosstouroku')) ?></td>
+    </tr>
+  </tbody>
+</table>
+
+<?php elseif ($checkloss > 0)://ロス入力の場合 ?>
 
   <?= $this->Form->control('gyou', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
 
@@ -339,6 +380,8 @@ var moji = "length"
 
   <?php if ($checkedit == 0 && $j == $gyou && $check_seikeijouken == 0)://測定データ入力部分 ?>
 
+  <?php if ($kaishi_loss_flag == 1): ?>
+
     <table class="form" id="position">
 
   <td style='width:37; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
@@ -377,8 +420,50 @@ var moji = "length"
   <td style='width:55; border-top-style:none'><?= $this->Form->control('gaikan'.$j, ["empty"=>"-", 'options' => $arrGaikan, 'label'=>false]) ?></td>
   <td style='width:75; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
   <td style='width:35; border-top-style:none'>-</td>
+
   <td style='width:37; border-top-style:none'><?= $this->Form->submit(('登'), array('name' => 'tuika')) ?></td>
-  <td style='width:37; border-top-style:none'>-</td>
+  <td style='width:37; border-top-style:none; background-color:gold'><?= $this->Form->submit(('異'), array('name' => 'kaishi_loss')) ?></td>
+
+  <?= $this->Form->control('kaishi_loss_amount', array('type'=>'hidden', 'value'=>$kaishi_loss_amount, 'label'=>false)) ?>
+  <?= $this->Form->control('kaishi_bik', array('type'=>'hidden', 'value'=>$kaishi_bik, 'label'=>false)) ?>
+
+  <?php else : ?>
+
+    <table class="form" id="position">
+
+  <td style='width:37; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
+  <td style='width:85; border-top-style:none'>
+  </td>
+
+  <?php if ($j == 1): ?>
+
+  <td style='width:82; border-top-style:none'></td>
+  
+  <?php else : ?>
+
+    <?php
+    $h = $j - 1;
+      ?>
+
+    <td style='width:82; border-top-style:none'></td>
+
+    <?php endif; ?>
+
+  <td style='width:107; border-top-style:none'></td>
+
+  <?php for($i=1; $i<=11; $i++): ?>
+
+    <td style='width:75; border-top-style:none'></td>
+
+  <?php endfor;?>
+
+  <td style='width:55; border-top-style:none'></td>
+  <td style='width:75; border-top-style:none'></td>
+  <td style='width:35; border-top-style:none'></td>
+  <td style='width:37; border-top-style:none'></td>
+  <td style='width:37; border-top-style:none'><?= $this->Form->submit(('異'), array('name' => 'kaishi_loss')) ?></td>
+  
+  <?php endif; ?>
 
 </table>
 
