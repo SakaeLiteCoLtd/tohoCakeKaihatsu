@@ -1521,11 +1521,11 @@ class KensahyousokuteidatasController extends AppController
         $mikan_check = $data["mikan_check"];
       }
       $this->set('mikan_check',$mikan_check);
-
+/*
       echo "<pre>";
       print_r($data);
       echo "</pre>";
-
+*/
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
       $machine_num = $data["machine_num"];
@@ -2154,8 +2154,8 @@ class KensahyousokuteidatasController extends AppController
           }
           $this->set('lot_number'.$j,${"lot_number".$j});
 
-          if(isset($data['datetime'.$j]["hour"])){
-            ${"datetime".$j} = $data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"];
+          if(isset($data['datetimenow'.$j])){
+            ${"datetime".$j} = date('H:i');
           }elseif(isset($data['datetime'.$j])){
             ${"datetime".$j} = $data['datetime'.$j];
           }elseif(isset($data['datetime_h_i'.$j])){
@@ -2281,21 +2281,23 @@ class KensahyousokuteidatasController extends AppController
         ${"user_code".$j} = $data['user_code'.$j];
         $Users = $this->Users->find()->contain(["Staffs"])->where(['user_code' => ${"user_code".$j}, 'Users.delete_flag' => 0])->toArray();
 
-        if(isset($data['datetime'.$j]["hour"])){
+        if(isset($data['datetimenow'.$j])){
 
           $InspectionDataResultParents = $this->InspectionDataResultParents->find()
           ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'],
-           'product_condition_parent_id' => $data['product_condition_parent_id'],
-           'datetime' => date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00"])
+          'product_condition_parent_id' => $data['product_condition_parent_id'],
+          'inspection_data_conditon_parent_id' => $data['inspection_data_conditon_parent_id'],
+          'lot_number' => $data['lot_number'.$j]])
           ->order(["id"=>"DESC"])->toArray();
 
           }
 
-          
           if(!isset($data['tuzukikara']) && $data["gyou"] > 1){
             $jm = $j - 1;
 
-            if(date("Y-m-d ").$data['datetime'.$jm] < date("Y-m-d ")."06:00:00" && date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00" > date("Y-m-d ")."06:00:00"){
+            if(date("Y-m-d ").$data['datetime'.$jm] 
+            < date("Y-m-d ")."06:00:00" && date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00" 
+            > date("Y-m-d ")."06:00:00"){
               $check_over = 1;
             }else{
               $check_over = 0;
@@ -2306,7 +2308,8 @@ class KensahyousokuteidatasController extends AppController
             $check_over = 0;
           }
 
-          if($data["mikan_check"] == 0 && $check_over == 0 && !isset($InspectionDataResultParents[0]) && isset($data['datetime'.$j]["hour"])){//再読み込みで同じデータが登録されないようにチェック
+          if($data["mikan_check"] == 0 && $check_over == 0 && !isset($InspectionDataResultParents[0])
+           && isset($data['datetimenow'.$j])){//再読み込みで同じデータが登録されないようにチェック
 
           $tourokuInspectionDataResultParents = array();
 
@@ -2318,7 +2321,7 @@ class KensahyousokuteidatasController extends AppController
               "product_condition_parent_id" => $data['product_condition_parent_id'],
               'product_id' => $data['product_id'.$j],
               'lot_number' => $data['lot_number'.$j],
-              'datetime' => date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00",
+              'datetime' => date("Y-m-d H:i").":00",
               'staff_id' => $Users[0]["staff_id"],
               'appearance' => $data['gaikan'.$j],
               'result_weight' => $data['weight'.$j],
@@ -2341,7 +2344,7 @@ class KensahyousokuteidatasController extends AppController
               "product_condition_parent_id" => $data['product_condition_parent_id'],
               'product_id' => $data['product_id'.$j],
               'lot_number' => $data['lot_number'.$j],
-              'datetime' => date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00",
+              'datetime' => date("Y-m-d H:i").":00",
               'staff_id' => $Users[0]["staff_id"],
               'appearance' => $data['gaikan'.$j],
               'result_weight' => $data['weight'.$j],
@@ -2352,7 +2355,6 @@ class KensahyousokuteidatasController extends AppController
             ];
 
           }
-
 /*
           echo "<pre>";
           print_r($tourokuInspectionDataResultParents);
@@ -2369,7 +2371,7 @@ class KensahyousokuteidatasController extends AppController
 
               $InspectionDataResultParentsId = $this->InspectionDataResultParents->find()
               ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'],
-               'datetime' => date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00"])
+              "delete_flag" => 0, 'lot_number' => $data['lot_number'.$j]])
               ->order(["id"=>"DESC"])->toArray();
 
               $tourokuInspectionDataResultChildren = array();
@@ -2440,9 +2442,9 @@ class KensahyousokuteidatasController extends AppController
             }
             $this->set('gyou', $gyou);
 
-          }elseif(isset($data['datetime'.$j]["hour"])){
+          }elseif(isset($data['datetimenow'.$j])){
 
-            $mes = "※検査時間が同じデータは登録できません。";
+            $mes = "※再読み込みされました。同じデータは登録されません。";
             $this->set('mes',$mes);
 
             if($data["gyou"] == 1){//再読み込みのときと同じ時間で登録しようとした時でgyouがちがう
@@ -2456,9 +2458,17 @@ class KensahyousokuteidatasController extends AppController
               'InspectionDataResultParents.datetime <' => date("Y-m-d H:i:s"),
               'InspectionStandardSizeParents.delete_flag' => 0,
               'InspectionDataResultParents.delete_flag' => 0])
-              ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
+              ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
 
               $gyou = count($InspectionDataResultParentDatas) + 1;
+            }
+
+            for($j=0; $j<count($InspectionDataResultParentDatas); $j++){
+
+              $datetimenum = $j + 1;
+              ${"datetime".$datetimenum} = $InspectionDataResultParentDatas[$j]['datetime']->format("H:i");;
+              $this->set('datetime'.$datetimenum,${"datetime".$datetimenum});
+    
             }
 /*
             echo "<pre>";

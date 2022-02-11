@@ -387,6 +387,7 @@ var moji = "length"
   <td style='width:85; border-top-style:none'>
   <p id="RealtimeClockArea"></p>
   </td>
+  <?= $this->Form->control('datetimenow'.$j, array('type'=>'hidden', 'value'=>1, 'label'=>false)) ?>
 
       <?php if ($j == 1): ?>
 
