@@ -380,29 +380,27 @@ var moji = "length"
 
   <?php if ($checkedit == 0 && $j == $gyou && $check_seikeijouken == 0)://測定データ入力部分 ?>
 
-  <?php if ($kaishi_loss_flag == 1): ?>
-
     <table class="form" id="position">
 
   <td style='width:37; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
   <td style='width:85; border-top-style:none'>
-  <?= $this->Form->control('datetime'.$j, array('type'=>'time', 'label'=>false)) ?>
+  <p id="RealtimeClockArea"></p>
   </td>
 
-  <?php if ($j == 1): ?>
+      <?php if ($j == 1): ?>
 
-  <td style='width:82; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
-  
-  <?php else : ?>
+      <td style='width:82; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
+      
+      <?php else : ?>
 
-    <?php
-    $h = $j - 1;
-      ?>
+        <?php
+        $h = $j - 1;
+          ?>
 
-    <td style='width:82; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'value'=>${"product_id".$h}, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
+        <td style='width:82; border-top-style:none'><?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'value'=>${"product_id".$h}, 'label'=>false, 'autofocus'=>true, 'id'=>"auto1"]) ?></td>
 
-    <?php endif; ?>
+        <?php endif; ?>
 
   <td style='width:107; border-top-style:none'><font size='1.8'><?= h("ユーザーID：") ?></font>
   <?= $this->Form->control('user_code'.$j, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9A-Za-z-]+$', 'title'=>'半角英数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
@@ -421,51 +419,36 @@ var moji = "length"
   <td style='width:75; border-top-style:none'><?= $this->Form->control('weight'.$j, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'autocomplete'=>"off")) ?></td>
   <td style='width:35; border-top-style:none'>-</td>
 
+  <?php if ($j == 1 && $kaishi_loss_flag == 0): ?>
+
   <td style='width:37; border-top-style:none'><?= $this->Form->submit(('登'), array('name' => 'tuika')) ?></td>
   <td style='width:37; border-top-style:none; background-color:gold'><?= $this->Form->submit(('異'), array('name' => 'kaishi_loss')) ?></td>
 
   <?= $this->Form->control('kaishi_loss_amount', array('type'=>'hidden', 'value'=>$kaishi_loss_amount, 'label'=>false)) ?>
   <?= $this->Form->control('kaishi_bik', array('type'=>'hidden', 'value'=>$kaishi_bik, 'label'=>false)) ?>
 
-  <?php else : ?>
+  <?php elseif ($kaishi_loss_flag == 0): ?>
 
-    <table class="form" id="position">
+<td style='width:37; border-top-style:none'><?= $this->Form->submit(('登'), array('name' => 'tuika')) ?></td>
+<td style='width:37; border-top-style:none'>-</td>
 
-  <td style='width:37; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
-  <td style='width:85; border-top-style:none'>
-  </td>
+<?php else : ?>
 
-  <?php if ($j == 1): ?>
-
-  <td style='width:82; border-top-style:none'></td>
-  
-  <?php else : ?>
-
-    <?php
-    $h = $j - 1;
-      ?>
-
-    <td style='width:82; border-top-style:none'></td>
-
-    <?php endif; ?>
-
-  <td style='width:107; border-top-style:none'></td>
-
-  <?php for($i=1; $i<=11; $i++): ?>
-
-    <td style='width:75; border-top-style:none'></td>
-
-  <?php endfor;?>
-
-  <td style='width:55; border-top-style:none'></td>
-  <td style='width:75; border-top-style:none'></td>
-  <td style='width:35; border-top-style:none'></td>
-  <td style='width:37; border-top-style:none'></td>
-  <td style='width:37; border-top-style:none'><?= $this->Form->submit(('異'), array('name' => 'kaishi_loss')) ?></td>
+    <td style='width:37; border-top-style:none'></td>
+    <td style='width:37; border-top-style:none'><?= $this->Form->submit(('異'), array('name' => 'kaishi_loss')) ?></td>
   
   <?php endif; ?>
 
 </table>
+
+
+<?php if ($gyou == 1 && $kaishi_loss_flag == 1): ?>
+  <br>
+   <div align="center"><font size="4"><strong style="font-size: 13pt; color:red"><?= __("※最初に開始ロスを登録してください。") ?></strong></font></div>
+  <br>
+<?php else: ?>
+<?php endif; ?>
+
 
 <?php elseif ($checkedit == 0 && $j < $gyou) ://測定データ表示部分 ?>
 
@@ -703,7 +686,8 @@ var moji = "length"
 
 <?php endif; ?>
 
-<br>
+  <br>
+
 <table>
   <tr><td style="border:none"><strong style="font-size: 13pt"><?= __('成形条件') ?></strong></td></tr>
 </table>

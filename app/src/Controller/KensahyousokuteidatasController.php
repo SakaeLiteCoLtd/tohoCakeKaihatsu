@@ -1521,11 +1521,11 @@ class KensahyousokuteidatasController extends AppController
         $mikan_check = $data["mikan_check"];
       }
       $this->set('mikan_check',$mikan_check);
-/*
+
       echo "<pre>";
       print_r($data);
       echo "</pre>";
-*/
+
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
       $machine_num = $data["machine_num"];
@@ -2330,8 +2330,8 @@ class KensahyousokuteidatasController extends AppController
               "created_staff" => $Users[0]["staff_id"]//ログインは不要
             ];
 
-            ${"lossflag".$j} = 1;
-            $this->set('lossflag'.$j,${"lossflag".$j});
+            $lossflag1 = 1;
+            $this->set('lossflag1',$lossflag1);
 
           }else{
 
@@ -3606,20 +3606,30 @@ class KensahyousokuteidatasController extends AppController
 
     }elseif(isset($data["kaishi_loss"]) || isset($data["kaishilosstouroku"]) || !isset($data["gyou"])){//最初にここに来た時
 
-      if(isset($data["kaishi_loss"])){
+      $kaishi_loss_flag = 1;
+      $this->set('kaishi_loss_flag', $kaishi_loss_flag);
+
+      if(isset($data["kaishi_loss"])){//開始ロスの登録
 
         $checkloss = 1;
         $this->set('checkloss', $checkloss);
         $kaishi_loss_input = 1;
         $this->set('kaishi_loss_input', $kaishi_loss_input);
+        $kaishi_loss_flag = 0;
+        $this->set('kaishi_loss_flag', $kaishi_loss_flag);
 
-      }elseif(isset($data["kaishilosstouroku"])){
+      }elseif(isset($data["kaishilosstouroku"])){//開始ロスの登録後
 
         $kaishi_loss_amount = $data["kaishi_loss_amount"];
         $this->set('kaishi_loss_amount', $kaishi_loss_amount);
         $kaishi_bik = $data["kaishi_bik"];
         $this->set('kaishi_bik', $kaishi_bik);
-        $kaishi_loss_flag = 1;
+        $kaishi_loss_flag = 0;
+        $this->set('kaishi_loss_flag', $kaishi_loss_flag);
+
+      }elseif(isset($data["gyou"])){//開始ロスの登録後
+
+        $kaishi_loss_flag = 0;
         $this->set('kaishi_loss_flag', $kaishi_loss_flag);
 
       }
