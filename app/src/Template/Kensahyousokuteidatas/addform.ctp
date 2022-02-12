@@ -30,6 +30,8 @@ function showClock1() {
 var nowTime = new Date(); //  現在日時を得る
 var nowHour = nowTime.getHours(); // 時を抜き出す
 var nowMin  = nowTime.getMinutes(); // 分を抜き出す
+if(nowHour < 10) { nowHour = "0" + nowHour; }
+if(nowMin < 10) { nowMin = "0" + nowMin; }
 
 var msg = nowHour + ":" + nowMin;
 document.getElementById("RealtimeClockArea").innerHTML = msg;

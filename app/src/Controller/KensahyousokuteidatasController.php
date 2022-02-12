@@ -4832,11 +4832,13 @@ class KensahyousokuteidatasController extends AppController
       for($k=0; $k<$countseikeiki; $k++){//各成型機の基準値の呼び出し
         
         $cylinder_name = $ProductMaterialMachines[$k]["cylinder_name"];
+        $product_code_ini = substr($product_code, 0, 11);
 
         //成形機毎に取り出し
         $InspectionDataConditonChildren = $this->InspectionDataConditonChildren->find()
-        ->contain(['ProductConditonChildren'])
-        ->where(['ProductConditonChildren.cylinder_name' => $cylinder_name
+        ->contain(['ProductConditonChildren', 'InspectionDataConditonParents'])
+        ->where(['product_code like' => $product_code_ini.'%'
+        , 'ProductConditonChildren.cylinder_name' => $cylinder_name
         , 'InspectionDataConditonChildren.created_at <=' => $datetimefin])
         ->order(["InspectionDataConditonChildren.created_at"=>"DESC"])->limit(1)->toArray();
 
@@ -5126,12 +5128,14 @@ class KensahyousokuteidatasController extends AppController
         for($k=0; $k<$countseikeiki; $k++){//各成型機の基準値の呼び出し
           
           $cylinder_name = $ProductMaterialMachines[$k]["cylinder_name"];
-  
+          $product_code_ini = substr($product_code, 0, 11);
+
           //成形機毎に取り出し
           $InspectionDataConditonChildren = $this->InspectionDataConditonChildren->find()
-          ->contain(['ProductConditonChildren'])
-          ->where(['ProductConditonChildren.cylinder_name' => $cylinder_name
-          , 'InspectionDataConditonChildren.created_at <=' => $datetimefin])
+          ->contain(['ProductConditonChildren', 'InspectionDataConditonParents'])
+          ->where(['product_code like' => $product_code_ini.'%'
+          , 'ProductConditonChildren.cylinder_name' => $cylinder_name
+            , 'InspectionDataConditonChildren.created_at <=' => $datetimefin])
           ->order(["InspectionDataConditonChildren.created_at"=>"DESC"])->limit(1)->toArray();
   
           $j = $k + 1;
@@ -5732,11 +5736,13 @@ class KensahyousokuteidatasController extends AppController
       for($k=0; $k<$countseikeiki; $k++){//各成型機の基準値の呼び出し
         
         $cylinder_name = $ProductMaterialMachines[$k]["cylinder_name"];
+        $product_code_ini = substr($product_code, 0, 11);
 
         //成形機毎に取り出し
         $InspectionDataConditonChildren = $this->InspectionDataConditonChildren->find()
-        ->contain(['ProductConditonChildren'])
-        ->where(['ProductConditonChildren.cylinder_name' => $cylinder_name
+        ->contain(['ProductConditonChildren', 'InspectionDataConditonParents'])
+        ->where(['product_code like' => $product_code_ini.'%'
+        , 'ProductConditonChildren.cylinder_name' => $cylinder_name
         , 'InspectionDataConditonChildren.created_at <=' => $datetimefin])
         ->order(["InspectionDataConditonChildren.created_at"=>"DESC"])->limit(1)->toArray();
 
@@ -6206,11 +6212,13 @@ class KensahyousokuteidatasController extends AppController
       for($k=0; $k<$countseikeiki; $k++){//各成型機の基準値の呼び出し
         
         $cylinder_name = $ProductMaterialMachines[$k]["cylinder_name"];
+        $product_code_ini = substr($product_code, 0, 11);
 
         //成形機毎に取り出し
         $InspectionDataConditonChildren = $this->InspectionDataConditonChildren->find()
-        ->contain(['ProductConditonChildren'])
-        ->where(['ProductConditonChildren.cylinder_name' => $cylinder_name
+        ->contain(['ProductConditonChildren', 'InspectionDataConditonParents'])
+        ->where(['product_code like' => $product_code_ini.'%'
+        , 'ProductConditonChildren.cylinder_name' => $cylinder_name
         , 'InspectionDataConditonChildren.created_at <=' => $datetimefin])
         ->order(["InspectionDataConditonChildren.created_at"=>"DESC"])->limit(1)->toArray();
 
@@ -6371,11 +6379,13 @@ class KensahyousokuteidatasController extends AppController
       for($k=0; $k<$countseikeiki; $k++){//各成型機の基準値の呼び出し
         
         $cylinder_name = $ProductMaterialMachines[$k]["cylinder_name"];
+        $product_code_ini = substr($product_code, 0, 11);
 
         //成形機毎に取り出し
         $InspectionDataConditonChildren = $this->InspectionDataConditonChildren->find()
-        ->contain(['ProductConditonChildren'])
-        ->where(['ProductConditonChildren.cylinder_name' => $cylinder_name
+        ->contain(['ProductConditonChildren', 'InspectionDataConditonParents'])
+        ->where(['product_code like' => $product_code_ini.'%'
+        , 'ProductConditonChildren.cylinder_name' => $cylinder_name
         , 'InspectionDataConditonChildren.created_at <=' => $datetimefin])
         ->order(["InspectionDataConditonChildren.created_at"=>"DESC"])->limit(1)->toArray();
 
@@ -7847,12 +7857,14 @@ class KensahyousokuteidatasController extends AppController
           for($k=0; $k<$countseikeiki; $k++){//各成型機の基準値の呼び出し
         
             $cylinder_name = $ProductMaterialMachines[$k]["cylinder_name"];
-  
+            $product_code_ini = substr($product_code, 0, 11);
+
             //成形機毎に取り出し
             $InspectionDataConditonChildren = $this->InspectionDataConditonChildren->find()
-            ->contain(['ProductConditonChildren'])
-            ->where(['ProductConditonChildren.cylinder_name' => $cylinder_name
-            , 'InspectionDataConditonChildren.created_at <=' => $datetime])
+            ->contain(['ProductConditonChildren', 'InspectionDataConditonParents'])
+            ->where(['product_code like' => $product_code_ini.'%'
+            , 'ProductConditonChildren.cylinder_name' => $cylinder_name
+                , 'InspectionDataConditonChildren.created_at <=' => $datetime])
             ->order(["InspectionDataConditonChildren.created_at"=>"DESC"])->limit(1)->toArray();
 
             $j = $k + 1;
@@ -8374,11 +8386,9 @@ class KensahyousokuteidatasController extends AppController
         }
 
       }
-/*
-      echo "<pre>";
-      print_r($product_code);
-      echo "</pre>";
-*/
+
+
+      //ここから成形条件
       $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
       ->where(['machine_num' => $machine_num, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
       ->order(["version"=>"DESC"])->toArray();
@@ -8476,14 +8486,16 @@ class KensahyousokuteidatasController extends AppController
 
       }
 
+      $product_code_ini = substr($product_code, 0, 11);
       for($k=0; $k<$countseikeiki; $k++){//各成型機の基準値の呼び出し
         
         $cylinder_name = $ProductMaterialMachines[$k]["cylinder_name"];
 
         //成形機毎に取り出し
         $InspectionDataConditonChildren = $this->InspectionDataConditonChildren->find()
-        ->contain(['ProductConditonChildren'])
-        ->where(['ProductConditonChildren.cylinder_name' => $cylinder_name
+        ->contain(['ProductConditonChildren', 'InspectionDataConditonParents'])
+        ->where(['product_code like' => $product_code_ini.'%'
+        , 'ProductConditonChildren.cylinder_name' => $cylinder_name
         , 'InspectionDataConditonChildren.created_at <=' => $date_fin])
         ->order(["InspectionDataConditonChildren.created_at"=>"DESC"])->limit(1)->toArray();
 
@@ -8505,7 +8517,6 @@ class KensahyousokuteidatasController extends AppController
 
       }
 
-      $product_code_ini = substr($product_code, 0, 11);
       $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
       ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
      ->order(["version"=>"DESC"])->toArray();
