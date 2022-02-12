@@ -8387,7 +8387,58 @@ class KensahyousokuteidatasController extends AppController
 
       }
 
+      $machine_product_datetime = $machine_num."_".$product_code."_".$date_fin;
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();//クラスを使用
+      $htmlseikeijouken = $htmlkensahyougenryouheader->seikeijouken($machine_product_datetime);//クラスを使用
+      $this->set('htmlseikeijouken', $htmlseikeijouken);
 
+      $product_code_ini = substr($product_code, 0, 11);
+      $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
+      ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
+      ->order(["version"=>"DESC"])->toArray();
+
+      $product_condition_parent_id = $ProductConditionParents[0]["id"];
+      $this->set('product_condition_parent_id', $product_condition_parent_id);
+
+      $version = $ProductConditionParents[0]["version"];
+
+      $product_code_ini = substr($product_code, 0, 11);
+      $ProductMaterialMachines= $this->ProductMaterialMachines->find()
+      ->contain(['ProductConditionParents' => ["Products"]])
+      ->where(['Products.product_code like' => $product_code_ini.'%',
+      'ProductConditionParents.delete_flag' => 0,
+      'ProductMaterialMachines.delete_flag' => 0,
+      'ProductConditionParents.machine_num' => $machine_num,
+      'ProductConditionParents.version' => $version])
+      ->order(["cylinder_number"=>"ASC"])->toArray();
+
+      $countseikeiki = count($ProductMaterialMachines);
+      $this->set('countseikeiki', $countseikeiki);
+
+      for($k=0; $k<$countseikeiki; $k++){//基準値の呼び出し
+
+        $j = $k + 1;
+
+        ${"product_material_machine_id".$j} = $ProductMaterialMachines[$k]["id"];
+        $this->set('product_material_machine_id'.$j, ${"product_material_machine_id".$j});
+        ${"cylinder_name".$j} = $ProductMaterialMachines[$k]["cylinder_name"];
+        $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
+
+        $ProductConditonChildren = $this->ProductConditonChildren->find()
+        ->where(['product_material_machine_id' => ${"product_material_machine_id".$j},
+         'cylinder_name' => ${"cylinder_name".$j}, 'delete_flag' => 0])
+        ->toArray();
+
+        if(isset($ProductConditonChildren[0])){
+
+          ${"product_conditon_child_id".$j} = $ProductConditonChildren[0]["id"];
+          $this->set('product_conditon_child_id'.$j, ${"product_conditon_child_id".$j});
+
+        }
+
+      }
+
+/*      
       //ここから成形条件
       $ProductConditionParents = $this->ProductConditionParents->find()->contain(["Products"])
       ->where(['machine_num' => $machine_num, 'product_code' => $product_code, 'ProductConditionParents.delete_flag' => 0])
@@ -8516,7 +8567,9 @@ class KensahyousokuteidatasController extends AppController
           }
 
       }
-
+      //ここまで成形条件
+*/
+      
       $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
       ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
      ->order(["version"=>"DESC"])->toArray();
