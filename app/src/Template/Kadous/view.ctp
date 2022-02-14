@@ -63,7 +63,6 @@ echo $this->Html->css('kensahyou');
             <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('終了ロス') ?><br><?= __('(kg)') ?></td>
             <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('長さ(mm)') ?></td>
             <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('当日数量(本)') ?></td>
-            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('理論数量(本)') ?></td>
             <td style='font-size: 10pt; width:60; border-width: 1px solid black;'></td>
             </tr>
         </thead>
@@ -73,6 +72,7 @@ echo $this->Html->css('kensahyou');
 
   <?= $this->Form->control('machine_num'.$j, array('type'=>'hidden', 'value'=>$arrAll[$j]["machine_num"], 'label'=>false)) ?>
   <?= $this->Form->control('product_code'.$j, array('type'=>'hidden', 'value'=>$arrAll[$j]["product_code"], 'label'=>false)) ?>
+  <?= $this->Form->control('start_datetime'.$j, array('type'=>'hidden', 'value'=>$arrAll[$j]["start_datetime"], 'label'=>false)) ?>
   <?= $this->Form->control('num'.$j, array('type'=>'hidden', 'value'=>$j, 'label'=>false)) ?>
   <?= $this->Form->control('num_max', array('type'=>'hidden', 'value'=>$j, 'label'=>false)) ?>
 
@@ -99,8 +99,8 @@ echo $this->Html->css('kensahyou');
   if($arrAll[$j]["product_code_ini"] == "-"){
     $countproduct_rowspan = 1;
   }else{
-    $product_code_ini_machine_num = $arrAll[$j]["product_code_ini"]."_".$arrAll[$j]["machine_num"];
-    $countproduct_rowspan = $arrCountProducts[$product_code_ini_machine_num];
+    $product_code_ini_machine_num_datetime = $arrAll[$j]["product_code_ini"]."_".$arrAll[$j]["machine_num"]."_".$arrAll[$j]["start_datetime"];
+    $countproduct_rowspan = $arrCountProducts[$product_code_ini_machine_num_datetime];
     }
   echo "<td rowspan=$countproduct_rowspan>\n";
   ?>
@@ -146,21 +146,21 @@ echo $this->Html->css('kensahyou');
 
   <td style='font-size: 10pt'><?= h($arrAll[$j]["length"]) ?></td>
   <td style='font-size: 10pt'><?= h($arrAll[$j]["amount"]) ?></td>
-  <td style='font-size: 11pt'></td>
 
   <?php if ($arrAll[$j]["countproduct_code_ini"] == 1): ?>
   <?php
   if($arrAll[$j]["product_code_ini"] == "-"){
     $countproduct_rowspan = 1;
   }else{
-    $product_code_ini_machine_num = $arrAll[$j]["product_code_ini"]."_".$arrAll[$j]["machine_num"];
-    $countproduct_rowspan = $arrCountProducts[$product_code_ini_machine_num];
+    $arrproduct_code_ini_machine_num_datetime = $arrAll[$j]["product_code_ini"]
+    ."_".$arrAll[$j]["machine_num"]."_".$arrAll[$j]["start_datetime"];
+    $countproduct_rowspan = $arrCountProducts[$arrproduct_code_ini_machine_num_datetime];
     }
   echo "<td rowspan=$countproduct_rowspan>\n";
   ?>
               <?php if ($arrAll[$j]["product_code"] !== "-"): ?>
               <?php
-              echo $this->Form->submit("詳細" , ['name' => $arrAll[$j]["machine_num"]."_".$arrAll[$j]["product_code"]]) ;
+              echo $this->Form->submit("詳細" , ['name' => $arrAll[$j]["machine_num"]."_".$arrAll[$j]["product_code"]."_".$arrAll[$j]["start_datetime"]]) ;
               ?>
               <?php else : ?>
                 <?= h("-") ?>

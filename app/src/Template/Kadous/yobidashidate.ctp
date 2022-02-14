@@ -58,7 +58,7 @@ echo $this->Html->css('kensahyou');
     <table>
   <tbody style="background-color: #FFFFCC">
     <tr class="parents">
-    <td width="250" colspan='3'><strong>日報呼出日</strong></td>
+    <td width="520" colspan='7'><strong>日報呼出日</strong></td>
     </tr>
     <tr>
     <td style="border-right-style: none;border-width: 1px">
@@ -69,9 +69,25 @@ echo $this->Html->css('kensahyou');
   <div align="center">
        <?= $this->Form->input("date_sta_month", array('type' => 'select', "options"=>$arrMonths, 'value' => $dayyetom, 'monthNames' => false, 'label'=>false)); ?>
      </div></td>
-  <td style="border-left-style: none;border-width: 1px">
+     <td style="border-right-style: none;border-left-style: none;border-width: 1px">
   <div align="center">
        <?= $this->Form->input("date_sta_date", array('type' => 'select', "options"=>$arrDays, 'value' => $dayyetod, 'label'=>false)); ?>
+     </div></td>
+     <td style="border-right-style: none;border-left-style: none;border-width: 1px">
+    <div align="center">
+         <?= $this->Form->input("date_select_flag", array('type' => 'select', "options"=>$arrSelects, 'label'=>false)); ?>
+     </div></td>
+     <td style="border-right-style: none;border-left-style: none;border-width: 1px">
+    <div align="center">
+         <?= $this->Form->input("date_sta_year_fin", array('type' => 'select', "options"=>$arrYearsfin, 'label'=>false)); ?>
+     </div></td>
+  <td style="border-right-style: none;border-left-style: none;border-width: 1px">
+  <div align="center">
+       <?= $this->Form->input("date_sta_month_fin", array('type' => 'select', "options"=>$arrMonthsfin, 'monthNames' => false, 'label'=>false)); ?>
+     </div></td>
+  <td style="border-left-style: none;border-width: 1px">
+  <div align="center">
+       <?= $this->Form->input("date_sta_date_fin", array('type' => 'select', "options"=>$arrDaysfin, 'label'=>false)); ?>
      </div></td>
     </tr>
   </tbody>

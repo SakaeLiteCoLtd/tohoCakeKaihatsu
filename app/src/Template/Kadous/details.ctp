@@ -44,7 +44,7 @@ echo $this->Html->css('kensahyou');
   <td width="100">ライン</td>
     </tr>
     <tr>
-    <td><?= h("　".$date_sta."　～　".$date_fin_hyouji."　") ?></td>
+    <td><?= h("　".$date_sta."　～　".$date_fin."　") ?></td>
     <td width="100"><?= h($name_machine) ?></td>
 
     <td width="30" style="border-style: none;background-color: #E6FFFF"><?= h("　") ?></td>
@@ -149,7 +149,7 @@ echo $this->Html->css('kensahyou');
           <td style="border-style: none;"><?= __("　　　　　　　　　　　　　　　　　　　") ?></td>
         <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
         <td style="border-style: none;"><?= __("　") ?></td>
-          <td style="border-style: none;"><div><?= $this->Form->submit('一覧画面へ戻る', array('name' => 'ichiran')); ?></div></td>
+          <td style="border-style: none;"><div><?= $this->Form->submit('呼出画面へ戻る', array('name' => 'ichiran')); ?></div></td>
         <td style="border-style: none;"><?= __("　") ?></td>
           <td style="border-style: none;"><div><?= $this->Form->submit('検査表表示', array('name' => 'kensahyou')); ?></div></td>
           <td style="border-style: none;"><?= __("　　　　　　　　　　　　　　　　　　　") ?></td>
@@ -169,6 +169,7 @@ echo $this->Html->css('kensahyou');
 <?php for($j=0; $j<=$this->request->getData('num_max'); $j++): ?>
   <?= $this->Form->control('machine_num'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('machine_num'.$j), 'label'=>false)) ?>
   <?= $this->Form->control('product_code'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('product_code'.$j), 'label'=>false)) ?>
+  <?= $this->Form->control('start_datetime'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('start_datetime'.$j), 'label'=>false)) ?>
   <?= $this->Form->control('num'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('num'.$j), 'label'=>false)) ?>
   <?= $this->Form->control('num_max', array('type'=>'hidden', 'value'=>$j, 'label'=>false)) ?>
 <?php endfor;?>
