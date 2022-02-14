@@ -487,7 +487,30 @@ class KensahyousokuteidatasController extends AppController
       header('Pragma:');
 
       $Data = $this->request->query('s');
+/*
+      echo "<pre>";
+      print_r($Data);
+      echo "</pre>";
+*/
+      //未完了の製品・ラインではないかチェック
+      $InspectionDataResultParentsnotfin = $this->InspectionDataResultParents->find()
+      ->contain(['InspectionStandardSizeParents', 'ProductConditionParents', 'Products'])
+      ->where([
+        'InspectionStandardSizeParents.delete_flag' => 0,
+        'InspectionDataResultParents.delete_flag' => 0,
+        'kanryou_flag IS' => NULL,
+        'Products.product_code' => $Data["product_code"],
+        'machine_num' => $Data["machine_num"]
+      ])
+      ->order(["InspectionDataResultParents.datetime"=>"DESC"])->limit('1')->toArray();
 
+      if(isset($InspectionDataResultParentsnotfin[0])){
+
+        return $this->redirect(['action' => 'addformpre',
+        's' => ['mess' => $Data["machine_num"]."号ライン、「".$Data["product_code"]."」は未完了の測定があります。検査中一覧画面から測定を完了させてください。"]]);
+
+       }
+ 
       if(isset($Data["product_code"])){
 
         $product_code = $Data["product_code"];
@@ -2432,7 +2455,7 @@ class KensahyousokuteidatasController extends AppController
 
           if($data["mikan_check"] == 1 || $check_over == 1){
 
-            $mes = "※午前6時をまたぐ登録はできません。検査完了へ進んでください。";
+            $mes = "※午前6時をまたぐ登録はできません。終了ロスを登録後、検査完了へ進んでください。";
             $this->set('mes',$mes);
 
             if($data["mikan_check"] == 1 && isset($data["tuzukikara"])){
@@ -4760,6 +4783,12 @@ class KensahyousokuteidatasController extends AppController
       $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderkensaku($machine_datetime_product);
       $this->set('htmlgenryouheader',$htmlgenryouheader);
 
+      $machine_product_datetime = $machine_num."_".$product_code."_".$datetimefin;
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();//クラスを使用
+      $htmlseikeijouken = $htmlkensahyougenryouheader->seikeijouken($machine_product_datetime);//クラスを使用
+      $this->set('htmlseikeijouken', $htmlseikeijouken);
+
+      /*
       $product_code_ini = substr($product_code, 0, 11);
       $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
       ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
@@ -4859,6 +4888,8 @@ class KensahyousokuteidatasController extends AppController
           }
 
       }
+*/
+
 
       echo "<pre>";//フォームの再読み込みの防止
       print_r("");
@@ -4946,12 +4977,7 @@ class KensahyousokuteidatasController extends AppController
           $this->set('product_condition_parent_id'.$j,${"product_condition_parent_id".$j});
           ${"lot_number".$j} = $data['lot_number'.$j];
           $this->set('lot_number'.$j,${"lot_number".$j});
-/*
-          ${"datetime".$j} = [
-            "hour" => $data['datetime'.$j]["hour"],
-            "minute" => $data['datetime'.$j]["minute"],
-          ];
-*/
+
           ${"datetime".$j} = $datekensaku." ".$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00";
           $this->set('datetime'.$j,${"datetime".$j});
           ${"product_id".$j} = $data['product_id'.$j];
@@ -5056,106 +5082,11 @@ class KensahyousokuteidatasController extends AppController
         $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderkensaku($machine_datetime_product);
         $this->set('htmlgenryouheader',$htmlgenryouheader);
   
-        $product_code_ini = substr($product_code, 0, 11);
-        $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
-        ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
-        ->order(["version"=>"DESC"])->toArray();
-  
-        $version = $ProductConditionParents[0]["version"];
-  
-        $product_code_ini = substr($product_code, 0, 11);
-        $ProductMaterialMachines= $this->ProductMaterialMachines->find()
-        ->contain(['ProductConditionParents' => ["Products"]])
-        ->where(['Products.product_code like' => $product_code_ini.'%',
-        'ProductConditionParents.delete_flag' => 0,
-        'ProductMaterialMachines.delete_flag' => 0,
-        'ProductConditionParents.machine_num' => $machine_num,
-        'ProductConditionParents.version' => $version])
-        ->order(["cylinder_number"=>"ASC"])->toArray();
-  
-        $countseikeiki = count($ProductMaterialMachines);
-        $this->set('countseikeiki', $countseikeiki);
-    
-        for($k=0; $k<$countseikeiki; $k++){//基準値の呼び出し
-  
-          $j = $k + 1;
-          ${"product_material_machine_id".$j} = $ProductMaterialMachines[$k]["id"];
-          $this->set('product_material_machine_id'.$j, ${"product_material_machine_id".$j});
-          ${"cylinder_name".$j} = $ProductMaterialMachines[$k]["cylinder_name"];
-          $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
-  
-          $ProductConditonChildren = $this->ProductConditonChildren->find()
-          ->where(['product_material_machine_id' => ${"product_material_machine_id".$j},
-           'cylinder_name' => ${"cylinder_name".$j}, 'delete_flag' => 0])
-          ->toArray();
-  
-          if(isset($ProductConditonChildren[0])){
-  
-            ${"extrude_roatation".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrude_roatation"]);
-            $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
-            ${"extrusion_load".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrusion_load"]);
-            $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
-            ${"product_conditon_child_id".$j} = $ProductConditonChildren[0]["id"];
-            $this->set('product_conditon_child_id'.$j, ${"product_conditon_child_id".$j});
-      
-            for($n=1; $n<8; $n++){
-              ${"temp_".$n.$j} = sprintf("%.0f", $ProductConditonChildren[0]["temp_".$n]);
-              $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
-            }
-  
-            $pickup_speed = sprintf("%.1f", $ProductConditonChildren[0]["pickup_speed"]);
-            $this->set('pickup_speed', $pickup_speed);
-  
-            ${"screw_mesh_1".$j} = $ProductConditonChildren[0]['screw_mesh_1'];
-            $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
-            ${"screw_number_1".$j} = $ProductConditonChildren[0]['screw_number_1'];
-            $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
-            ${"screw_mesh_2".$j} = $ProductConditonChildren[0]['screw_mesh_2'];
-            $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
-            ${"screw_number_2".$j} = $ProductConditonChildren[0]['screw_number_2'];
-            $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
-            ${"screw_mesh_3".$j} = $ProductConditonChildren[0]['screw_mesh_3'];
-            $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
-            ${"screw_number_3".$j} = $ProductConditonChildren[0]['screw_number_3'];
-            $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
-            ${"screw".$j} = $ProductConditonChildren[0]['screw'];
-            $this->set('screw'.$j, ${"screw".$j});
-  
-          }
-  
-        }
-  
-        for($k=0; $k<$countseikeiki; $k++){//各成型機の基準値の呼び出し
-          
-          $cylinder_name = $ProductMaterialMachines[$k]["cylinder_name"];
-          $product_code_ini = substr($product_code, 0, 11);
+        $machine_product_datetime = $machine_num."_".$product_code."_".$datetimefin;
+        $htmlkensahyougenryouheader = new htmlkensahyouprogram();//クラスを使用
+        $htmlseikeijouken = $htmlkensahyougenryouheader->seikeijouken($machine_product_datetime);//クラスを使用
+        $this->set('htmlseikeijouken', $htmlseikeijouken);
 
-          //成形機毎に取り出し
-          $InspectionDataConditonChildren = $this->InspectionDataConditonChildren->find()
-          ->contain(['ProductConditonChildren', 'InspectionDataConditonParents'])
-          ->where(['product_code like' => $product_code_ini.'%'
-          , 'ProductConditonChildren.cylinder_name' => $cylinder_name
-            , 'InspectionDataConditonChildren.created_at <=' => $datetimefin])
-          ->order(["InspectionDataConditonChildren.created_at"=>"DESC"])->limit(1)->toArray();
-  
-          $j = $k + 1;
-  
-            ${"inspection_extrude_roatation".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_extrude_roatation']);
-            $this->set('inspection_extrude_roatation'.$j, ${"inspection_extrude_roatation".$j});
-            ${"inspection_extrusion_load".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_extrusion_load']);
-            $this->set('inspection_extrusion_load'.$j, ${"inspection_extrusion_load".$j});
-            ${"inspection_pickup_speed".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_pickup_speed']);
-            $this->set('inspection_pickup_speed'.$j, ${"inspection_pickup_speed".$j});
-  
-            for($n=1; $n<8; $n++){
-  
-              ${"inspection_temp_".$n.$j} = $InspectionDataConditonChildren[0]['inspection_temp_'.$n];
-              $this->set('inspection_temp_'.$n.$j, ${"inspection_temp_".$n.$j});
-  
-            }
-  
-        }
-  
         for($j=1; $j<=$gyoumax; $j++){
 
           ${"inspection_data_conditon_parent_id".$j} = $data['inspection_data_conditon_parent_id'.$j];
@@ -5664,105 +5595,10 @@ class KensahyousokuteidatasController extends AppController
       $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderkensaku($machine_datetime_product);
       $this->set('htmlgenryouheader',$htmlgenryouheader);
 
-      $product_code_ini = substr($product_code, 0, 11);
-      $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
-      ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
-      ->order(["version"=>"DESC"])->toArray();
-
-      $version = $ProductConditionParents[0]["version"];
-
-      $product_code_ini = substr($product_code, 0, 11);
-      $ProductMaterialMachines= $this->ProductMaterialMachines->find()
-      ->contain(['ProductConditionParents' => ["Products"]])
-      ->where(['Products.product_code like' => $product_code_ini.'%',
-      'ProductConditionParents.delete_flag' => 0,
-      'ProductMaterialMachines.delete_flag' => 0,
-      'ProductConditionParents.machine_num' => $machine_num,
-      'ProductConditionParents.version' => $version])
-      ->order(["cylinder_number"=>"ASC"])->toArray();
-
-      $countseikeiki = count($ProductMaterialMachines);
-      $this->set('countseikeiki', $countseikeiki);
-  
-      for($k=0; $k<$countseikeiki; $k++){//基準値の呼び出し
-
-        $j = $k + 1;
-        ${"product_material_machine_id".$j} = $ProductMaterialMachines[$k]["id"];
-        $this->set('product_material_machine_id'.$j, ${"product_material_machine_id".$j});
-        ${"cylinder_name".$j} = $ProductMaterialMachines[$k]["cylinder_name"];
-        $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
-
-        $ProductConditonChildren = $this->ProductConditonChildren->find()
-        ->where(['product_material_machine_id' => ${"product_material_machine_id".$j},
-         'cylinder_name' => ${"cylinder_name".$j}, 'delete_flag' => 0])
-        ->toArray();
-
-        if(isset($ProductConditonChildren[0])){
-
-          ${"extrude_roatation".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrude_roatation"]);
-          $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
-          ${"extrusion_load".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrusion_load"]);
-          $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
-          ${"product_conditon_child_id".$j} = $ProductConditonChildren[0]["id"];
-          $this->set('product_conditon_child_id'.$j, ${"product_conditon_child_id".$j});
-    
-          for($n=1; $n<8; $n++){
-            ${"temp_".$n.$j} = sprintf("%.0f", $ProductConditonChildren[0]["temp_".$n]);
-            $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
-          }
-
-          $pickup_speed = sprintf("%.1f", $ProductConditonChildren[0]["pickup_speed"]);
-          $this->set('pickup_speed', $pickup_speed);
-
-          ${"screw_mesh_1".$j} = $ProductConditonChildren[0]['screw_mesh_1'];
-          $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
-          ${"screw_number_1".$j} = $ProductConditonChildren[0]['screw_number_1'];
-          $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
-          ${"screw_mesh_2".$j} = $ProductConditonChildren[0]['screw_mesh_2'];
-          $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
-          ${"screw_number_2".$j} = $ProductConditonChildren[0]['screw_number_2'];
-          $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
-          ${"screw_mesh_3".$j} = $ProductConditonChildren[0]['screw_mesh_3'];
-          $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
-          ${"screw_number_3".$j} = $ProductConditonChildren[0]['screw_number_3'];
-          $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
-          ${"screw".$j} = $ProductConditonChildren[0]['screw'];
-          $this->set('screw'.$j, ${"screw".$j});
-
-        }
-
-      }
-
-      for($k=0; $k<$countseikeiki; $k++){//各成型機の基準値の呼び出し
-        
-        $cylinder_name = $ProductMaterialMachines[$k]["cylinder_name"];
-        $product_code_ini = substr($product_code, 0, 11);
-
-        //成形機毎に取り出し
-        $InspectionDataConditonChildren = $this->InspectionDataConditonChildren->find()
-        ->contain(['ProductConditonChildren', 'InspectionDataConditonParents'])
-        ->where(['product_code like' => $product_code_ini.'%'
-        , 'ProductConditonChildren.cylinder_name' => $cylinder_name
-        , 'InspectionDataConditonChildren.created_at <=' => $datetimefin])
-        ->order(["InspectionDataConditonChildren.created_at"=>"DESC"])->limit(1)->toArray();
-
-        $j = $k + 1;
-
-          ${"inspection_extrude_roatation".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_extrude_roatation']);
-          $this->set('inspection_extrude_roatation'.$j, ${"inspection_extrude_roatation".$j});
-          ${"inspection_extrusion_load".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_extrusion_load']);
-          $this->set('inspection_extrusion_load'.$j, ${"inspection_extrusion_load".$j});
-          ${"inspection_pickup_speed".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_pickup_speed']);
-          $this->set('inspection_pickup_speed'.$j, ${"inspection_pickup_speed".$j});
-
-          for($n=1; $n<8; $n++){
-
-            ${"inspection_temp_".$n.$j} = $InspectionDataConditonChildren[0]['inspection_temp_'.$n];
-            $this->set('inspection_temp_'.$n.$j, ${"inspection_temp_".$n.$j});
-
-          }
-
-      }
+      $machine_product_datetime = $machine_num."_".$product_code."_".$datetimefin;
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();//クラスを使用
+      $htmlseikeijouken = $htmlkensahyougenryouheader->seikeijouken($machine_product_datetime);//クラスを使用
+      $this->set('htmlseikeijouken', $htmlseikeijouken);
 
     }
 
@@ -6140,106 +5976,10 @@ class KensahyousokuteidatasController extends AppController
       $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderkensaku($machine_datetime_product);
       $this->set('htmlgenryouheader',$htmlgenryouheader);
 
-      $product_code_ini = substr($product_code, 0, 11);
-      $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
-      ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
-      ->order(["version"=>"DESC"])->toArray();
-
-      $version = $ProductConditionParents[0]["version"];
-
-      $product_code_ini = substr($product_code, 0, 11);
-      $ProductMaterialMachines= $this->ProductMaterialMachines->find()
-      ->contain(['ProductConditionParents' => ["Products"]])
-      ->where(['Products.product_code like' => $product_code_ini.'%',
-      'ProductConditionParents.delete_flag' => 0,
-      'ProductMaterialMachines.delete_flag' => 0,
-      'ProductConditionParents.machine_num' => $machine_num,
-      'ProductConditionParents.version' => $version])
-      ->order(["cylinder_number"=>"ASC"])->toArray();
-
-      $countseikeiki = count($ProductMaterialMachines);
-      $this->set('countseikeiki', $countseikeiki);
-  
-      for($k=0; $k<$countseikeiki; $k++){//基準値の呼び出し
-
-        $j = $k + 1;
-        ${"product_material_machine_id".$j} = $ProductMaterialMachines[$k]["id"];
-        $this->set('product_material_machine_id'.$j, ${"product_material_machine_id".$j});
-        ${"cylinder_name".$j} = $ProductMaterialMachines[$k]["cylinder_name"];
-        $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
-
-        $ProductConditonChildren = $this->ProductConditonChildren->find()
-        ->where(['product_material_machine_id' => ${"product_material_machine_id".$j},
-         'cylinder_name' => ${"cylinder_name".$j}, 'delete_flag' => 0])
-        ->toArray();
-
-        if(isset($ProductConditonChildren[0])){
-
-          ${"extrude_roatation".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrude_roatation"]);
-          $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
-          ${"extrusion_load".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrusion_load"]);
-          $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
-          ${"product_conditon_child_id".$j} = $ProductConditonChildren[0]["id"];
-          $this->set('product_conditon_child_id'.$j, ${"product_conditon_child_id".$j});
-    
-          for($n=1; $n<8; $n++){
-            ${"temp_".$n.$j} = sprintf("%.0f", $ProductConditonChildren[0]["temp_".$n]);
-            $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
-          }
-
-          $pickup_speed = sprintf("%.1f", $ProductConditonChildren[0]["pickup_speed"]);
-          $this->set('pickup_speed', $pickup_speed);
-
-          ${"screw_mesh_1".$j} = $ProductConditonChildren[0]['screw_mesh_1'];
-          $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
-          ${"screw_number_1".$j} = $ProductConditonChildren[0]['screw_number_1'];
-          $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
-          ${"screw_mesh_2".$j} = $ProductConditonChildren[0]['screw_mesh_2'];
-          $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
-          ${"screw_number_2".$j} = $ProductConditonChildren[0]['screw_number_2'];
-          $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
-          ${"screw_mesh_3".$j} = $ProductConditonChildren[0]['screw_mesh_3'];
-          $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
-          ${"screw_number_3".$j} = $ProductConditonChildren[0]['screw_number_3'];
-          $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
-          ${"screw".$j} = $ProductConditonChildren[0]['screw'];
-          $this->set('screw'.$j, ${"screw".$j});
-
-        }
-
-      }
-
-      for($k=0; $k<$countseikeiki; $k++){//各成型機の基準値の呼び出し
-        
-        $cylinder_name = $ProductMaterialMachines[$k]["cylinder_name"];
-        $product_code_ini = substr($product_code, 0, 11);
-
-        //成形機毎に取り出し
-        $InspectionDataConditonChildren = $this->InspectionDataConditonChildren->find()
-        ->contain(['ProductConditonChildren', 'InspectionDataConditonParents'])
-        ->where(['product_code like' => $product_code_ini.'%'
-        , 'ProductConditonChildren.cylinder_name' => $cylinder_name
-        , 'InspectionDataConditonChildren.created_at <=' => $datetimefin])
-        ->order(["InspectionDataConditonChildren.created_at"=>"DESC"])->limit(1)->toArray();
-
-        $j = $k + 1;
-
-          ${"inspection_extrude_roatation".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_extrude_roatation']);
-          $this->set('inspection_extrude_roatation'.$j, ${"inspection_extrude_roatation".$j});
-          ${"inspection_extrusion_load".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_extrusion_load']);
-          $this->set('inspection_extrusion_load'.$j, ${"inspection_extrusion_load".$j});
-          ${"inspection_pickup_speed".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_pickup_speed']);
-          $this->set('inspection_pickup_speed'.$j, ${"inspection_pickup_speed".$j});
-
-          for($n=1; $n<8; $n++){
-
-            ${"inspection_temp_".$n.$j} = $InspectionDataConditonChildren[0]['inspection_temp_'.$n];
-            $this->set('inspection_temp_'.$n.$j, ${"inspection_temp_".$n.$j});
-
-          }
-
-      }
-
+      $machine_product_datetime = $machine_num."_".$product_code."_".$datetimefin;
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();//クラスを使用
+      $htmlseikeijouken = $htmlkensahyougenryouheader->seikeijouken($machine_product_datetime);//クラスを使用
+      $this->set('htmlseikeijouken', $htmlseikeijouken);
     }
 
     public function editdo()
@@ -6307,105 +6047,10 @@ class KensahyousokuteidatasController extends AppController
       $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderkensaku($machine_datetime_product);
       $this->set('htmlgenryouheader',$htmlgenryouheader);
 
-      $product_code_ini = substr($product_code, 0, 11);
-      $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
-      ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
-      ->order(["version"=>"DESC"])->toArray();
-
-      $version = $ProductConditionParents[0]["version"];
-
-      $product_code_ini = substr($product_code, 0, 11);
-      $ProductMaterialMachines= $this->ProductMaterialMachines->find()
-      ->contain(['ProductConditionParents' => ["Products"]])
-      ->where(['Products.product_code like' => $product_code_ini.'%',
-      'ProductConditionParents.delete_flag' => 0,
-      'ProductMaterialMachines.delete_flag' => 0,
-      'ProductConditionParents.machine_num' => $machine_num,
-      'ProductConditionParents.version' => $version])
-      ->order(["cylinder_number"=>"ASC"])->toArray();
-
-      $countseikeiki = count($ProductMaterialMachines);
-      $this->set('countseikeiki', $countseikeiki);
-  
-      for($k=0; $k<$countseikeiki; $k++){//基準値の呼び出し
-
-        $j = $k + 1;
-        ${"product_material_machine_id".$j} = $ProductMaterialMachines[$k]["id"];
-        $this->set('product_material_machine_id'.$j, ${"product_material_machine_id".$j});
-        ${"cylinder_name".$j} = $ProductMaterialMachines[$k]["cylinder_name"];
-        $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
-
-        $ProductConditonChildren = $this->ProductConditonChildren->find()
-        ->where(['product_material_machine_id' => ${"product_material_machine_id".$j},
-         'cylinder_name' => ${"cylinder_name".$j}, 'delete_flag' => 0])
-        ->toArray();
-
-        if(isset($ProductConditonChildren[0])){
-
-          ${"extrude_roatation".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrude_roatation"]);
-          $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
-          ${"extrusion_load".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrusion_load"]);
-          $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
-          ${"product_conditon_child_id".$j} = $ProductConditonChildren[0]["id"];
-          $this->set('product_conditon_child_id'.$j, ${"product_conditon_child_id".$j});
-    
-          for($n=1; $n<8; $n++){
-            ${"temp_".$n.$j} = sprintf("%.0f", $ProductConditonChildren[0]["temp_".$n]);
-            $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
-          }
-
-          $pickup_speed = sprintf("%.1f", $ProductConditonChildren[0]["pickup_speed"]);
-          $this->set('pickup_speed', $pickup_speed);
-
-          ${"screw_mesh_1".$j} = $ProductConditonChildren[0]['screw_mesh_1'];
-          $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
-          ${"screw_number_1".$j} = $ProductConditonChildren[0]['screw_number_1'];
-          $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
-          ${"screw_mesh_2".$j} = $ProductConditonChildren[0]['screw_mesh_2'];
-          $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
-          ${"screw_number_2".$j} = $ProductConditonChildren[0]['screw_number_2'];
-          $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
-          ${"screw_mesh_3".$j} = $ProductConditonChildren[0]['screw_mesh_3'];
-          $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
-          ${"screw_number_3".$j} = $ProductConditonChildren[0]['screw_number_3'];
-          $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
-          ${"screw".$j} = $ProductConditonChildren[0]['screw'];
-          $this->set('screw'.$j, ${"screw".$j});
-
-        }
-
-      }
-
-      for($k=0; $k<$countseikeiki; $k++){//各成型機の基準値の呼び出し
-        
-        $cylinder_name = $ProductMaterialMachines[$k]["cylinder_name"];
-        $product_code_ini = substr($product_code, 0, 11);
-
-        //成形機毎に取り出し
-        $InspectionDataConditonChildren = $this->InspectionDataConditonChildren->find()
-        ->contain(['ProductConditonChildren', 'InspectionDataConditonParents'])
-        ->where(['product_code like' => $product_code_ini.'%'
-        , 'ProductConditonChildren.cylinder_name' => $cylinder_name
-        , 'InspectionDataConditonChildren.created_at <=' => $datetimefin])
-        ->order(["InspectionDataConditonChildren.created_at"=>"DESC"])->limit(1)->toArray();
-
-        $j = $k + 1;
-
-          ${"inspection_extrude_roatation".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_extrude_roatation']);
-          $this->set('inspection_extrude_roatation'.$j, ${"inspection_extrude_roatation".$j});
-          ${"inspection_extrusion_load".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_extrusion_load']);
-          $this->set('inspection_extrusion_load'.$j, ${"inspection_extrusion_load".$j});
-          ${"inspection_pickup_speed".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_pickup_speed']);
-          $this->set('inspection_pickup_speed'.$j, ${"inspection_pickup_speed".$j});
-
-          for($n=1; $n<8; $n++){
-
-            ${"inspection_temp_".$n.$j} = $InspectionDataConditonChildren[0]['inspection_temp_'.$n];
-            $this->set('inspection_temp_'.$n.$j, ${"inspection_temp_".$n.$j});
-
-          }
-
-      }
+      $machine_product_datetime = $machine_num."_".$product_code."_".$datetimefin;
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();//クラスを使用
+      $htmlseikeijouken = $htmlkensahyougenryouheader->seikeijouken($machine_product_datetime);//クラスを使用
+      $this->set('htmlseikeijouken', $htmlseikeijouken);
 
       $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren->find()
       ->contain(['InspectionStandardSizeParents' => ["Products"]])
@@ -6652,14 +6297,7 @@ class KensahyousokuteidatasController extends AppController
             ];
   
         }
-/*
-        echo "<pre>";
-        print_r($updateDailyreportmoto);
-        echo "</pre>";
-        echo "<pre>";
-        print_r($updateDailyreport);
-        echo "</pre>";
-  */
+
         for($j=1; $j<=$gyou; $j++){
 
           $InspectionDataResultParentsmoto = $this->InspectionDataResultParents->find()->contain(['ProductConditionParents',"Products"])
@@ -6695,12 +6333,8 @@ class KensahyousokuteidatasController extends AppController
             'created_at' => $InspectionDataResultParentsmoto[0]["created_at"],
             "created_staff" => $staff_id
           ];
-    
-      //    echo "<pre>";
-      //    print_r($updateInspectionDataResultParents);
-      //    echo "</pre>";
 
-      $product_code_ini = substr($product_code, 0, 11);
+          $product_code_ini = substr($product_code, 0, 11);
 
           $connection = ConnectionManager::get('default');//トランザクション1
           // トランザクション開始2
