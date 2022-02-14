@@ -40,7 +40,7 @@ echo $this->Html->css('kensahyou');
 <table>
   <tbody style="background-color: #FFFFCC">
   <tr class="parents">
-  <td>呼出日</td>
+  <td>呼出範囲</td>
     </tr>
     <tr>
     <td><?= h("　".$date_sta."　～　".$date_fin_hyouji."　") ?></td>
@@ -53,16 +53,18 @@ echo $this->Html->css('kensahyou');
         <thead>
             <tr class="parents">
             <td style='font-size: 10pt; width:50; height:60; border-width: 1px solid black;'><?= __('ライン') ?></td>
-            <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('検査表開始時間') ?></td>
-            <td style='font-size: 9pt; width:125; border-width: 1px solid black;'><?= __('稼働開始時間') ?></td>
-            <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('検査表終了時間') ?></td>
-            <td style='font-size: 9pt; width:125; border-width: 1px solid black;'><?= __('稼働終了時間') ?></td>
+            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('稼働開始時間') ?></td>
+            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('検査表開始時間') ?></td>
+            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('検査表終了時間') ?></td>
+            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('稼働終了時間') ?></td>
+            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('稼働時間') ?></td>
             <td style='font-size: 10pt; width:200; border-width: 1px solid black;'><?= __('製品名') ?></td>
-            <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('開始ロス') ?><br><?= __('(kg)') ?></td>
-            <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('中間ロス') ?><br><?= __('(kg)') ?></td>
-            <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('終了ロス') ?><br><?= __('(kg)') ?></td>
-            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('長さ(mm)') ?></td>
-            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('当日数量(本)') ?></td>
+            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('開始ロス') ?><br><?= __('(kg)') ?></td>
+            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('中間ロス') ?><br><?= __('(kg)') ?></td>
+            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('終了ロス') ?><br><?= __('(kg)') ?></td>
+            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('合計ロス') ?><br><?= __('(kg)') ?></td>
+            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('長さ') ?><br><?= __('(mm)') ?></td>
+            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('当日数量') ?><br><?= __('(本)') ?></td>
             <td style='font-size: 10pt; width:60; border-width: 1px solid black;'></td>
             </tr>
         </thead>
@@ -102,24 +104,29 @@ echo $this->Html->css('kensahyou');
     $product_code_ini_machine_num_datetime = $arrAll[$j]["product_code_ini"]."_".$arrAll[$j]["machine_num"]."_".$arrAll[$j]["start_datetime"];
     $countproduct_rowspan = $arrCountProducts[$product_code_ini_machine_num_datetime];
     }
-  echo "<td rowspan=$countproduct_rowspan>\n";
-  ?>
-  <?= h(substr($arrAll[$j]["start_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["start_datetime"], 11, 8)) ?></td>
-
-  <?php
-  echo "<td rowspan=$countproduct_rowspan>\n";
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
   ?>
   <?= h(substr($arrAll[$j]["relay_start_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["relay_start_datetime"], 11, 8)) ?></td>
 
   <?php
-  echo "<td rowspan=$countproduct_rowspan>\n";
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
+  ?>
+  <?= h(substr($arrAll[$j]["start_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["start_datetime"], 11, 8)) ?></td>
+
+  <?php
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
   ?>
   <?= h(substr($arrAll[$j]["finish_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["finish_datetime"], 11, 8)) ?></td>
 
   <?php
-  echo "<td rowspan=$countproduct_rowspan>\n";
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
   ?>
   <?= h(substr($arrAll[$j]["relay_finish_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["relay_finish_datetime"], 11, 8)) ?></td>
+
+  <?php
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
+  ?>
+  <?= h($arrAll[$j]["relay_time"]) ?></td>
 
   <?php
   echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
@@ -129,17 +136,22 @@ echo $this->Html->css('kensahyou');
   <?php
   echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
   ?>
-  </td>
+    <?= h($arrAll[$j]["loss_sta"]) ?></td>
 
   <?php
   echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
   ?>
- </td>
+    <?= h($arrAll[$j]["loss_mid"]) ?></td>
 
  <?php
   echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
   ?>
- </td>
+    <?= h($arrAll[$j]["loss_fin"]) ?></td>
+
+ <?php
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
+  ?>
+    <?= h($arrAll[$j]["loss_total"]) ?></td>
 
   <?php else : ?>
   <?php endif; ?>

@@ -222,10 +222,28 @@ class KadousController extends AppController
       $arrproduct_code_ini_machine_num_datetime = array();
       for($i=0; $i<count($DailyReportsData); $i++){
 
-        /*
+        if((int)substr($DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"), 11, 2) < 6){//前日の検査
+
+          $date_fin_relayLog = $DailyReportsData[$i]["start_datetime"]->format("Y-m-d")." 05:59:59";
+          $date1fin = strtotime($DailyReportsData[$i]["start_datetime"]->format("Y-m-d"));
+          $date_sta_relayLog = date('Y-m-d', strtotime('-1 day', $date1fin))." 06:00:00";
+    
+        }else{
+
+          $date_sta_relayLog = $DailyReportsData[$i]["start_datetime"]->format("Y-m-d")." 06:00:00";
+          $date1fin = strtotime($DailyReportsData[$i]["start_datetime"]->format("Y-m-d"));
+          $date_fin_relayLog = date('Y-m-d', strtotime('+1 day', $date1fin))." 05:59:59";
+  
+        }
+
         $RelayLogsData = $this->RelayLogs->find()
-        ->where(['datetime >=' => $date_sta, 'datetime <' => $date_fin,
-        'delete_flag' => 0, 'factory_code' => $factory_id, 'machine_num' => $DailyReportsData[$i]["machine_num"]])
+        ->where([
+          'datetime >=' => $date_sta_relayLog,
+          'datetime <' => $date_fin_relayLog,
+          'delete_flag' => 0,
+          'factory_code' => $factory_id,
+          'machine_num' => $DailyReportsData[$i]["machine_num"]
+          ])
         ->order(["datetime"=>"ASC"])->toArray();
 
         if(isset($RelayLogsData[0])){
@@ -235,7 +253,6 @@ class KadousController extends AppController
           $relay_start_datetime = "";
           $relay_finish_datetime = "";
         }
-        */
 
         $riron_amount = $DailyReportsData[$i]["amount"] * ($DailyReportsData[$i]["total_loss_weight"]
          + $DailyReportsData[$i]["sum_weight"]) / $DailyReportsData[$i]["sum_weight"];
@@ -251,20 +268,54 @@ class KadousController extends AppController
         $arrproduct_code_ini_machine_num_datetime[] = substr($DailyReportsData[$i]["product"]["product_code"], 0, 11)
         ."_".$DailyReportsData[$i]["machine_num"]."_".$DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s");
 
+        //開始中間終了ロスの取得
+        $InspectionDataResultParentDatas = $this->InspectionDataResultParents->find()
+        ->contain(['ProductConditionParents', 'Products'])
+        ->where([
+        'machine_num' => $DailyReportsData[$i]["machine_num"],
+        'product_code like' => substr($DailyReportsData[$i]["product"]["product_code"], 0, 11).'%',
+        'InspectionDataResultParents.delete_flag' => 0,
+        'datetime >=' => $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"),
+        'datetime <=' => $DailyReportsData[$i]["finish_datetime"]->format("Y-m-d H:i:s")
+        ])
+        ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
+
+        $loss_sta = 0;
+        $loss_mid = 0;
+        $loss_fin = 0;
+        for($j=0; $j<count($InspectionDataResultParentDatas); $j++){
+
+          if($j == 0){
+            $loss_sta = $InspectionDataResultParentDatas[$j]["loss_amount"];
+          }elseif($j == count($InspectionDataResultParentDatas) - 1){
+            $loss_fin = $InspectionDataResultParentDatas[$j]["loss_amount"];
+          }else{
+            $loss_mid = $loss_mid + (float)$InspectionDataResultParentDatas[$j]["loss_amount"];
+          }
+
+        }
+
+        date_default_timezone_set('Asia/Tokyo');
+        $from = strtotime($relay_start_datetime);
+        $to = strtotime($relay_finish_datetime);
+        $relay_time = gmdate("H:i:s", $to - $from);//時間の差をフォーマット
+
         $arrDaily_report[] = [
           "machine_num" => $DailyReportsData[$i]["machine_num"],
           "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"),
-      //    "relay_start_datetime" => $relay_start_datetime,
-          "relay_start_datetime" => "",
+          "relay_start_datetime" => $relay_start_datetime,
           "finish_datetime" => $DailyReportsData[$i]["finish_datetime"]->format("Y-m-d H:i:s"),
-      //    "relay_finish_datetime" => $relay_finish_datetime,
-          "relay_finish_datetime" => "",
+          "relay_finish_datetime" => $relay_finish_datetime,
+          "relay_time" => $relay_time,
           "product_code" => $DailyReportsData[$i]["product"]["product_code"],
           "product_code_ini" => substr($DailyReportsData[$i]["product"]["product_code"], 0, 11),
           "name" => $DailyReportsData[$i]["product"]["name"],
           "length" => $DailyReportsData[$i]["product"]["length"],
           "amount" => $DailyReportsData[$i]["amount"],
-          "riron_amount" => "",
+          "loss_sta" => $loss_sta,
+          "loss_mid" => $loss_mid,
+          "loss_fin" => $loss_fin,
+          "loss_total" => $loss_sta + $loss_mid + $loss_fin,
           "sum_weight" => sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]),
           "count" => $count,
           "countproduct_code_ini" => $countproduct_code_ini,
@@ -287,12 +338,16 @@ class KadousController extends AppController
           "finish_datetime" => "-",
           "relay_start_datetime" => "-",
           "relay_finish_datetime" => "-",
+          "relay_time" => "-",
           "product_code" => "-",
           "product_code_ini" => "-",
           "name" => "-",
           "length" => "-",
           "amount" => "-",
-          "riron_amount" => "-",
+          "loss_sta" => "-",
+          "loss_mid" => "-",
+          "loss_fin" => "-",
+          "loss_total" => "-",
           "sum_weight" => "-",
           "count" => 1,
           "countproduct_code_ini" => 1,
@@ -410,6 +465,11 @@ class KadousController extends AppController
   
       }else{
 
+        $date_sta = $data["date_sta"];
+        $this->set('date_sta', $date_sta);
+        $date_fin = $data["date_fin"];
+        $this->set('date_fin', $date_fin);
+
         $machine_num = $data["machine_num"];
         $this->set('machine_num', $machine_num);
         $product_code = $data["product_code"];
@@ -461,6 +521,11 @@ class KadousController extends AppController
 
         }elseif(isset($data["tugi"])){
 
+          $date_sta = $data["date_sta"];
+          $this->set('date_sta', $date_sta);
+          $date_fin = $data["date_fin"];
+          $this->set('date_fin', $date_fin);
+  
           $target_num = $data["target_num"]-1;
           for($i=0; $i<=$data["num_max"]; $i++){
 
@@ -593,8 +658,8 @@ class KadousController extends AppController
     $this->set('arrRelayLogs', $arrRelayLogs);
 
     echo "<pre>";
-      print_r("");
-      echo "</pre>";
+    print_r("");
+    echo "</pre>";
 
     }
 
