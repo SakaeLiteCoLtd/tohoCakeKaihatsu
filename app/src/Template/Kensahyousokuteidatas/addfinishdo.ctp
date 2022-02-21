@@ -42,6 +42,7 @@ echo $this->Html->css('kensahyou');
     <td width="150"><strong>生産数量（本）</strong></td>
     <td width="150"><strong>総重量（kg）</strong></td>
     <td width="150"><strong>総ロス重量（kg）</strong></td>
+    <td width="150"><strong>ロス率（％）</strong></td>
     <td width="150"><strong>達成率（％）</strong></td>
     </tr>
 
@@ -52,6 +53,7 @@ echo $this->Html->css('kensahyou');
     <td><?= h($this->request->getData('amount'.$k)) ?></td>
     <td><?= h($this->request->getData('sum_weight'.$k)) ?></td>
     <td><?= h($this->request->getData('total_loss_weight'.$k)) ?></td>
+    <td><?= h($this->request->getData('lossritsu'.$k)) ?></td>
     <td><?= h($this->request->getData('tasseiritsu'.$k)) ?></td>
     </tr>
     

@@ -136,42 +136,57 @@ class KadousController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
+      $tyuukann_flag = 0;
+
       $Data = $this->request->query('s');
-      if(isset($Data["date"])){
-        $dateselect = $Data["date"];
+      if(isset($Data["num_max"])){
+
+        echo "<pre>";
+        print_r($Data);
+        echo "</pre>";
+
+        $factory_id = $Data["factory_id"];
+        $date_sta = $Data["date_sta"];
+        $date_fin = $Data["date_fin"];
+        $date_fin_hyouji = $Data["date_fin_hyouji"];
+        $this->set('date_sta', $date_sta);
+        $this->set('date_fin', $date_fin);
+        $this->set('date_fin_hyouji', $date_fin_hyouji);
+
+        if($Data["button_name"] == "tyuukann"){
+          $tyuukann_flag = 1;
+        }
+
       }else{
         $data = $this->request->getData();
         $dateselect = $data["date_sta_year"]."-".$data["date_sta_month"]."-".$data["date_sta_date"];
-      }
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
-      if($data["date_select_flag"] == 0){
 
-        $date1 = strtotime($dateselect);
-        $date_sta = $dateselect." 06:00:00";
-        $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 06:00:00";
-        $date_fin_hyouji = date('Y-m-d', strtotime('+1 day', $date1))." 05:59:59";
-        $this->set('date_sta', $date_sta);
-        $this->set('date_fin', $date_fin);
-        $this->set('date_fin_hyouji', $date_fin_hyouji);
+        if($data["date_select_flag"] == 0){
+
+          $date1 = strtotime($dateselect);
+          $date_sta = $dateselect." 06:00:00";
+          $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 06:00:00";
+          $date_fin_hyouji = date('Y-m-d', strtotime('+1 day', $date1))." 05:59:59";
+          $this->set('date_sta', $date_sta);
+          $this->set('date_fin', $date_fin);
+          $this->set('date_fin_hyouji', $date_fin_hyouji);
+    
+        }elseif($data["date_select_flag"] == 1){
   
-      }else{
-
-        $date1 = strtotime($dateselect);
-        $date_sta = $dateselect." 06:00:00";
-
-        $dateselectfin = $data["date_sta_year_fin"]."-".$data["date_sta_month_fin"]."-".$data["date_sta_date_fin"];
-        $date1fin = strtotime($dateselectfin);
-
-        $date_fin = date('Y-m-d', strtotime('+1 day', $date1fin))." 06:00:00";
-        $date_fin_hyouji = date('Y-m-d', strtotime('+1 day', $date1fin))." 05:59:59";
-        $this->set('date_sta', $date_sta);
-        $this->set('date_fin', $date_fin);
-        $this->set('date_fin_hyouji', $date_fin_hyouji);
-
+          $date1 = strtotime($dateselect);
+          $date_sta = $dateselect." 06:00:00";
+  
+          $dateselectfin = $data["date_sta_year_fin"]."-".$data["date_sta_month_fin"]."-".$data["date_sta_date_fin"];
+          $date1fin = strtotime($dateselectfin);
+  
+          $date_fin = date('Y-m-d', strtotime('+1 day', $date1fin))." 06:00:00";
+          $date_fin_hyouji = date('Y-m-d', strtotime('+1 day', $date1fin))." 05:59:59";
+          $this->set('date_sta', $date_sta);
+          $this->set('date_fin', $date_fin);
+          $this->set('date_fin_hyouji', $date_fin_hyouji);
+  
+        }
+  
       }
 
       $session = $this->request->getSession();
@@ -334,21 +349,21 @@ class KadousController extends AppController
 
         $arrlines_fushiyous[] = [
           "machine_num" => $arrline_fushiyou_moto[$i],
-          "start_datetime" => "-",
-          "finish_datetime" => "-",
-          "relay_start_datetime" => "-",
-          "relay_finish_datetime" => "-",
-          "relay_time" => "-",
-          "product_code" => "-",
-          "product_code_ini" => "-",
-          "name" => "-",
-          "length" => "-",
-          "amount" => "-",
-          "loss_sta" => "-",
-          "loss_mid" => "-",
-          "loss_fin" => "-",
-          "loss_total" => "-",
-          "sum_weight" => "-",
+          "start_datetime" => "",
+          "finish_datetime" => "",
+          "relay_start_datetime" => "",
+          "relay_finish_datetime" => "",
+          "relay_time" => "",
+          "product_code" => "",
+          "product_code_ini" => "",
+          "name" => "",
+          "length" => "",
+          "amount" => "",
+          "loss_sta" => "",
+          "loss_mid" => "",
+          "loss_fin" => "",
+          "loss_total" => "",
+          "sum_weight" => "",
           "count" => 1,
           "countproduct_code_ini" => 1,
         ];
@@ -370,6 +385,16 @@ class KadousController extends AppController
 
       $this->set('arrAll', $arrAll);
 /*
+      if($tyuukann_flag > 0){
+        $arrAllmoto = $arrAll;
+        $arrAll = array();
+        for($k=0; $k<count($arrAllmoto); $k++){
+          if((float)$arrAllmoto[$k]["loss_mid"] > 0){
+            $arrAll[] = $arrAllmoto[$k];
+          }
+        }
+      }
+
       echo "<pre>";
       print_r($arrAll);
       echo "</pre>";
@@ -423,6 +448,24 @@ class KadousController extends AppController
       }elseif(isset($data["ichiran"])){
        
         return $this->redirect(['action' => 'yobidashidate']);
+
+      }elseif(isset($data["checkbutton"]) || isset($data["tyuukann"])){
+       
+        $num_max = $data["num_max"];
+        $factory_id = $data["factory_id"];
+        $date_sta = $data["date_sta"];
+        $date_fin = $data["date_fin"];
+        $date_fin_hyouji = $data["date_fin_hyouji"];
+
+        if(isset($data["checkbutton"])){
+          $button_name = "checkbutton";
+        }else{
+          $button_name = "tyuukann";
+        }
+        return $this->redirect(['action' => 'view',
+        's' => ['button_name' => $button_name, 'num_max' => $num_max, 'factory_id' => $factory_id,
+         'date_fin' => $date_fin,'date_sta' => $date_sta,
+         'date_fin_hyouji' => $date_fin_hyouji]]);
 
       }else{
 
@@ -626,7 +669,7 @@ class KadousController extends AppController
       $this->set('arrProdcts', $arrProdcts);
 
       $InspectionDataResultParentDatas = $this->InspectionDataResultParents->find()
-      ->contain(['ProductConditionParents', 'Products'])
+      ->contain(['ProductConditionParents', 'Products', 'Staffs'])
       ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%',
       'InspectionDataResultParents.delete_flag' => 0,
       'datetime >=' => $date_sta, 'datetime <=' => $date_fin])
@@ -636,7 +679,7 @@ class KadousController extends AppController
       for($i=0; $i<count($InspectionDataResultParentDatas); $i++){
 
         if(strlen($InspectionDataResultParentDatas[$i]["loss_amount"]) > 0){
-
+    
           $arrIjous[] = [
             "datetime" => $InspectionDataResultParentDatas[$i]["datetime"]->format("Y-m-d H:i:s"),
             "length" => $InspectionDataResultParentDatas[$i]["product"]["length"],

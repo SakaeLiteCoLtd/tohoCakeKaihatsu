@@ -49,6 +49,7 @@ echo $this->Html->css('kensahyou');
     <td width="150"><strong>生産数量（本）</strong></td>
     <td width="150"><strong>総重量（kg）</strong></td>
     <td width="150"><strong>総ロス重量（kg）</strong></td>
+    <td width="150"><strong>ロス率（％）</strong></td>
     <td width="150"><strong>達成率（％）</strong></td>
     </tr>
 
@@ -58,6 +59,7 @@ echo $this->Html->css('kensahyou');
       <?= $this->Form->control('amount'.$k, array('type'=>'hidden', 'value'=>$this->request->getData('amount'.$k), 'label'=>false)) ?>
       <?= $this->Form->control('sum_weight'.$k, array('type'=>'hidden', 'value'=>${"sum_weight".$k}, 'label'=>false)) ?>
       <?= $this->Form->control('total_loss_weight'.$k, array('type'=>'hidden', 'value'=>${"total_loss_weight".$k}, 'label'=>false)) ?>
+      <?= $this->Form->control('lossritsu'.$k, array('type'=>'hidden', 'value'=>${"lossritsu".$k}, 'label'=>false)) ?>
       <?= $this->Form->control('tasseiritsu'.$k, array('type'=>'hidden', 'value'=>${"tasseiritsu".$k}, 'label'=>false)) ?>
 
     <tr height="45">
@@ -65,6 +67,7 @@ echo $this->Html->css('kensahyou');
     <td><?= h($this->request->getData('amount'.$k)) ?></td>
     <td><?= h(${"sum_weight".$k}) ?></td>
     <td><?= h(${"total_loss_weight".$k}) ?></td>
+    <td><?= h(${"lossritsu".$k}) ?></td>
     <td><?= h(${"tasseiritsu".$k}) ?></td>
     </tr>
     

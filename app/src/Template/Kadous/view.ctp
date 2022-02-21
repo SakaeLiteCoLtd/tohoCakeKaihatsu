@@ -80,31 +80,30 @@ echo $this->Html->css('kensahyou');
 
   <tr class='children'>
 
-  <?php
-        $Linenames = $this->Linenames->find()
-        ->where(['delete_flag' => 0, 'factory_id' => $factory_id, 'machine_num' => $arrAll[$j]["machine_num"]])->toArray();
-      $name_machine = $Linenames[0]["name"];
-?>
-
-<?php if ($arrAll[$j]["count"] == 1): ?>
-  <?php
-  $machine_num = $arrAll[$j]["machine_num"];
-  $count_rowspan = $arrCountMachine[$machine_num];
-  echo "<td rowspan=$count_rowspan>\n";
-  ?>
-  <?= h($name_machine) ?></td>
-  <?php else : ?>
-  <?php endif; ?>
-
   <?php if ($arrAll[$j]["countproduct_code_ini"] == 1): ?>
+
   <?php
-  if($arrAll[$j]["product_code_ini"] == "-"){
+  if($arrAll[$j]["product_code_ini"] == ""){
     $countproduct_rowspan = 1;
   }else{
     $product_code_ini_machine_num_datetime = $arrAll[$j]["product_code_ini"]."_".$arrAll[$j]["machine_num"]."_".$arrAll[$j]["start_datetime"];
     $countproduct_rowspan = $arrCountProducts[$product_code_ini_machine_num_datetime];
     }
-  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
+  ?>
+
+<?php
+        $Linenames = $this->Linenames->find()
+        ->where(['delete_flag' => 0, 'factory_id' => $factory_id, 'machine_num' => $arrAll[$j]["machine_num"]])->toArray();
+      $name_machine = $Linenames[0]["name"];
+?>
+
+    <?php
+    echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
+    ?>
+    <?= h($name_machine) ?></td>
+
+    <?php
+    echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
   ?>
   <?= h(substr($arrAll[$j]["relay_start_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["relay_start_datetime"], 11, 8)) ?></td>
 
@@ -161,7 +160,7 @@ echo $this->Html->css('kensahyou');
 
   <?php if ($arrAll[$j]["countproduct_code_ini"] == 1): ?>
   <?php
-  if($arrAll[$j]["product_code_ini"] == "-"){
+  if($arrAll[$j]["product_code_ini"] == ""){
     $countproduct_rowspan = 1;
   }else{
     $arrproduct_code_ini_machine_num_datetime = $arrAll[$j]["product_code_ini"]
@@ -170,7 +169,7 @@ echo $this->Html->css('kensahyou');
     }
   echo "<td rowspan=$countproduct_rowspan>\n";
   ?>
-              <?php if ($arrAll[$j]["product_code"] !== "-"): ?>
+              <?php if ($arrAll[$j]["product_code"] !== ""): ?>
               <?php
               echo $this->Form->submit("詳細" , ['name' => $arrAll[$j]["machine_num"]."_".$arrAll[$j]["product_code"]."_".$arrAll[$j]["start_datetime"]]) ;
               ?>
@@ -187,13 +186,26 @@ echo $this->Html->css('kensahyou');
 
         </tbody>
     </table>
+    <?= $this->Form->control('date_select_flag', array('type'=>'hidden', 'value'=>2, 'label'=>false)) ?>
     <?= $this->Form->control('date_sta', array('type'=>'hidden', 'value'=>$date_sta, 'label'=>false)) ?>
     <?= $this->Form->control('date_fin', array('type'=>'hidden', 'value'=>$date_fin, 'label'=>false)) ?>
+    <?= $this->Form->control('date_fin_hyouji', array('type'=>'hidden', 'value'=>$date_fin_hyouji, 'label'=>false)) ?>
     <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$factory_id, 'label'=>false)) ?>
+    <?= $this->Form->control('num_max', array('type'=>'hidden', 'value'=>count($arrAll), 'label'=>false)) ?>
     <br>
     <table align="center">
     <tbody class='sample non-sample'>
       <tr>
+
+      <?php 
+/*
+        <td style="border-style: none;"><div><?= $this->Form->submit('チェック部分のみ再表示', array('name' => 'checkbutton')); ?></div></td>
+        <td style="border-style: none;"><?= __("　") ?></td>
+*/
+        ?>
+
+        <td style="border-style: none;"><div><?= $this->Form->submit('中間ロス有のみ再表示', array('name' => 'tyuukann')); ?></div></td>
+        <td style="border-style: none;"><?= __("　") ?></td>
         <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
       </tr>
     </tbody>

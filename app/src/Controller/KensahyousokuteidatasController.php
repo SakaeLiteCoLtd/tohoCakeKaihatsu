@@ -2796,6 +2796,11 @@ class KensahyousokuteidatasController extends AppController
 
         $loss_num = $data["checkloss"];
 
+        if(strlen($data["loss_amount"]) == 0 && strlen($data["bik"])){
+          ${"lossflag".$loss_num} = 0;
+          $this->set('lossflag'.$loss_num, ${"lossflag".$loss_num});
+        }
+
         $count_seikeijouken = $data["count_seikeijouken"];
         $this->set('count_seikeijouken', $count_seikeijouken);
   
@@ -4009,6 +4014,10 @@ class KensahyousokuteidatasController extends AppController
         ${"tasseiritsu".$j} = sprintf("%.1f", ${"tasseiritsu".$j});
         $this->set('tasseiritsu'.$j, ${"tasseiritsu".$j});
   
+        ${"lossritsu".$j} = ${"total_loss_weight".$j} * 100 / (${"sum_weight".$j} + ${"total_loss_weight".$j});
+        ${"lossritsu".$j} = sprintf("%.1f", ${"lossritsu".$j});
+        $this->set('lossritsu'.$j, ${"lossritsu".$j});
+
         }
 
     }

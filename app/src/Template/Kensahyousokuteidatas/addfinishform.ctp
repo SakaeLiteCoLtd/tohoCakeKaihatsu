@@ -52,7 +52,7 @@ echo $this->Html->css('kensahyou');
 
     <tr height="45">
     <td><?= h($arrProducts[$k]) ?></td>
-    <td class="login" width="200"><?= $this->Form->control('amount'.$k, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9A-Za-z.-]+$', 'title'=>'半角数字で入力して下さい。')) ?></td>
+    <td class="login" width="200"><?= $this->Form->control('amount'.$k, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9A-Za-z.-]+$', 'title'=>'半角数字で入力して下さい。', 'required'=>true)) ?></td>
     </tr>
     
     <?php endfor;?>
