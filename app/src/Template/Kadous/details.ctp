@@ -166,7 +166,7 @@ echo $this->Html->css('kensahyou');
   <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
   <?= $this->Form->control('target_num', array('type'=>'hidden', 'value'=>$target_num, 'label'=>false)) ?>
 
-<?php for($j=0; $j<=$this->request->getData('num_max'); $j++): ?>
+<?php for($j=0; $j<=$num_max; $j++): ?>
   <?= $this->Form->control('machine_num'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('machine_num'.$j), 'label'=>false)) ?>
   <?= $this->Form->control('product_code'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('product_code'.$j), 'label'=>false)) ?>
   <?= $this->Form->control('start_datetime'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('start_datetime'.$j), 'label'=>false)) ?>

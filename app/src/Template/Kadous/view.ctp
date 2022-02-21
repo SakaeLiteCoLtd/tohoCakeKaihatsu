@@ -199,8 +199,7 @@ echo $this->Html->css('kensahyou');
 
       <?php 
 /*
-        <td style="border-style: none;"><div><?= $this->Form->submit('チェック部分のみ再表示', array('name' => 'checkbutton')); ?></div></td>
-        <td style="border-style: none;"><?= __("　") ?></td>
+
 */
         ?>
 

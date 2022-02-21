@@ -140,11 +140,11 @@ class KadousController extends AppController
 
       $Data = $this->request->query('s');
       if(isset($Data["num_max"])){
-
+/*
         echo "<pre>";
         print_r($Data);
         echo "</pre>";
-
+*/
         $factory_id = $Data["factory_id"];
         $date_sta = $Data["date_sta"];
         $date_fin = $Data["date_fin"];
@@ -315,62 +315,93 @@ class KadousController extends AppController
         $to = strtotime($relay_finish_datetime);
         $relay_time = gmdate("H:i:s", $to - $from);//時間の差をフォーマット
 
-        $arrDaily_report[] = [
-          "machine_num" => $DailyReportsData[$i]["machine_num"],
-          "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"),
-          "relay_start_datetime" => $relay_start_datetime,
-          "finish_datetime" => $DailyReportsData[$i]["finish_datetime"]->format("Y-m-d H:i:s"),
-          "relay_finish_datetime" => $relay_finish_datetime,
-          "relay_time" => $relay_time,
-          "product_code" => $DailyReportsData[$i]["product"]["product_code"],
-          "product_code_ini" => substr($DailyReportsData[$i]["product"]["product_code"], 0, 11),
-          "name" => $DailyReportsData[$i]["product"]["name"],
-          "length" => $DailyReportsData[$i]["product"]["length"],
-          "amount" => $DailyReportsData[$i]["amount"],
-          "loss_sta" => $loss_sta,
-          "loss_mid" => $loss_mid,
-          "loss_fin" => $loss_fin,
-          "loss_total" => $loss_sta + $loss_mid + $loss_fin,
-          "sum_weight" => sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]),
-          "count" => $count,
-          "countproduct_code_ini" => $countproduct_code_ini,
-        ];
+        if($tyuukann_flag == 0){//中間ではない時
+
+          $arrDaily_report[] = [
+            "machine_num" => $DailyReportsData[$i]["machine_num"],
+            "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"),
+            "relay_start_datetime" => $relay_start_datetime,
+            "finish_datetime" => $DailyReportsData[$i]["finish_datetime"]->format("Y-m-d H:i:s"),
+            "relay_finish_datetime" => $relay_finish_datetime,
+            "relay_time" => $relay_time,
+            "product_code" => $DailyReportsData[$i]["product"]["product_code"],
+            "product_code_ini" => substr($DailyReportsData[$i]["product"]["product_code"], 0, 11),
+            "name" => $DailyReportsData[$i]["product"]["name"],
+            "length" => $DailyReportsData[$i]["product"]["length"],
+            "amount" => $DailyReportsData[$i]["amount"],
+            "loss_sta" => $loss_sta,
+            "loss_mid" => $loss_mid,
+            "loss_fin" => $loss_fin,
+            "loss_total" => $loss_sta + $loss_mid + $loss_fin,
+            "sum_weight" => sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]),
+            "count" => $count,
+            "countproduct_code_ini" => $countproduct_code_ini,
+          ];
+
+        }elseif($loss_mid > 0){//中間のみの時
+
+          $arrDaily_report[] = [
+            "machine_num" => $DailyReportsData[$i]["machine_num"],
+            "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"),
+            "relay_start_datetime" => $relay_start_datetime,
+            "finish_datetime" => $DailyReportsData[$i]["finish_datetime"]->format("Y-m-d H:i:s"),
+            "relay_finish_datetime" => $relay_finish_datetime,
+            "relay_time" => $relay_time,
+            "product_code" => $DailyReportsData[$i]["product"]["product_code"],
+            "product_code_ini" => substr($DailyReportsData[$i]["product"]["product_code"], 0, 11),
+            "name" => $DailyReportsData[$i]["product"]["name"],
+            "length" => $DailyReportsData[$i]["product"]["length"],
+            "amount" => $DailyReportsData[$i]["amount"],
+            "loss_sta" => $loss_sta,
+            "loss_mid" => $loss_mid,
+            "loss_fin" => $loss_fin,
+            "loss_total" => $loss_sta + $loss_mid + $loss_fin,
+            "sum_weight" => sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]),
+            "count" => $count,
+            "countproduct_code_ini" => $countproduct_code_ini,
+          ];
+
+        }
 
       }
 
       $arrline_shiyou = array_unique($arrline_shiyou);
       $arrline_shiyou = array_values($arrline_shiyou);
 
-      $arrline_fushiyou_moto = array_diff($arrlines_all, $arrline_shiyou);
-      $arrline_fushiyou_moto = array_values($arrline_fushiyou_moto);
-
       $arrlines_fushiyous = array();
-      for($i=0; $i<count($arrline_fushiyou_moto); $i++){
+      if($tyuukann_flag == 0){
 
-        $arrlines_fushiyous[] = [
-          "machine_num" => $arrline_fushiyou_moto[$i],
-          "start_datetime" => "",
-          "finish_datetime" => "",
-          "relay_start_datetime" => "",
-          "relay_finish_datetime" => "",
-          "relay_time" => "",
-          "product_code" => "",
-          "product_code_ini" => "",
-          "name" => "",
-          "length" => "",
-          "amount" => "",
-          "loss_sta" => "",
-          "loss_mid" => "",
-          "loss_fin" => "",
-          "loss_total" => "",
-          "sum_weight" => "",
-          "count" => 1,
-          "countproduct_code_ini" => 1,
-        ];
-
+        $arrline_fushiyou_moto = array_diff($arrlines_all, $arrline_shiyou);
+        $arrline_fushiyou_moto = array_values($arrline_fushiyou_moto);
+  
+        for($i=0; $i<count($arrline_fushiyou_moto); $i++){
+  
+          $arrlines_fushiyous[] = [
+            "machine_num" => $arrline_fushiyou_moto[$i],
+            "start_datetime" => "",
+            "finish_datetime" => "",
+            "relay_start_datetime" => "",
+            "relay_finish_datetime" => "",
+            "relay_time" => "",
+            "product_code" => "",
+            "product_code_ini" => "",
+            "name" => "",
+            "length" => "",
+            "amount" => "",
+            "loss_sta" => "",
+            "loss_mid" => "",
+            "loss_fin" => "",
+            "loss_total" => "",
+            "sum_weight" => "",
+            "count" => 1,
+            "countproduct_code_ini" => 1,
+          ];
+  
+        }
+    
       }
 
-      $arrAll = array_merge($arrDaily_report, $arrlines_fushiyous);
+    $arrAll = array_merge($arrDaily_report, $arrlines_fushiyous);
 
       foreach( $arrAll as $key => $row ) {
         $machine_num_array[$key] = $row["machine_num"];
@@ -385,16 +416,6 @@ class KadousController extends AppController
 
       $this->set('arrAll', $arrAll);
 /*
-      if($tyuukann_flag > 0){
-        $arrAllmoto = $arrAll;
-        $arrAll = array();
-        for($k=0; $k<count($arrAllmoto); $k++){
-          if((float)$arrAllmoto[$k]["loss_mid"] > 0){
-            $arrAll[] = $arrAllmoto[$k];
-          }
-        }
-      }
-
       echo "<pre>";
       print_r($arrAll);
       echo "</pre>";
@@ -429,6 +450,8 @@ class KadousController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
+      $num_max = $data["num_max"];
+      $this->set('num_max', $num_max);
 /*
       echo "<pre>";
       print_r($data);
@@ -504,6 +527,13 @@ class KadousController extends AppController
           }
         }
 
+        for($i=0; $i<=$data["num_max"]; $i++){
+          if(isset($data["machine_num".$i])){
+            $num_max = $i;
+          }
+        }
+
+        $this->set('num_max', $num_max);
         $this->set('target_num', $target_num);
   
       }else{
