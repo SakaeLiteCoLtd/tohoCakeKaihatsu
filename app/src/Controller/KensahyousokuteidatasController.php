@@ -131,21 +131,6 @@ class KensahyousokuteidatasController extends AppController
       $session = $this->request->getSession();
       $datasession = $session->read();
 
-      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
-
-        $Groups = $this->Groups->find()->contain(["Menus"])
-        ->where(['Groups.group_name_id' => $datasession['Auth']['User']['group_name_id'], 'Menus.id' => 40, 'Groups.delete_flag' => 0])
-        ->toArray();
- 
-        if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
- 
-          return $this->redirect(['action' => 'menu',
-          's' => ['mess' => "成形条件を登録する権限がありません。責任者に報告してください。"]]);
-
-        }
- 
-      }
-
       $Users= $this->Users->find('all')->contain(["Staffs"])->where(['user_code' => $datasession['Auth']['User']['user_code'], 'Users.delete_flag' => 0])->toArray();
       $user_code = $datasession['Auth']['User']['user_code'];
       $this->set('user_code', $user_code);
@@ -2796,7 +2781,7 @@ class KensahyousokuteidatasController extends AppController
 
         $loss_num = $data["checkloss"];
 
-        if(strlen($data["loss_amount"]) == 0 && strlen($data["bik"])){
+        if(strlen($data["loss_amount"]) == 0 && strlen($data["bik"]) == 0){
           ${"lossflag".$loss_num} = 0;
           $this->set('lossflag'.$loss_num, ${"lossflag".$loss_num});
         }
