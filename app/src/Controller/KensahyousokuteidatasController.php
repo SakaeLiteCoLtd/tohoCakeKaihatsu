@@ -127,7 +127,7 @@ class KensahyousokuteidatasController extends AppController
       $data = $this->request->getData();
       $mess = "";
       $this->set('mess', $mess);
- 
+
       $session = $this->request->getSession();
       $datasession = $session->read();
 
@@ -1529,6 +1529,12 @@ class KensahyousokuteidatasController extends AppController
         $mikan_check = $data["mikan_check"];
       }
       $this->set('mikan_check',$mikan_check);
+
+      $end_ok_check = 0;
+      if(!isset($data["lot_number2"])){
+        $end_ok_check = 1;
+      }
+      $this->set('end_ok_check', $end_ok_check);
 /*
       echo "<pre>";
       print_r($data);
@@ -1708,7 +1714,7 @@ class KensahyousokuteidatasController extends AppController
         ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 
         'InspectionStandardSizeParents.delete_flag' => 0,
         'InspectionDataResultParents.delete_flag' => 0])
-        ->order(["InspectionDataResultParents.datetime"=>"DESC"])->limit('1')->toArray();
+        ->order(["InspectionDataResultParents.created_at"=>"DESC"])->limit('1')->toArray();
 /*
         echo "<pre>";
         print_r($InspectionDataResultParentData[0]);
@@ -2443,6 +2449,9 @@ class KensahyousokuteidatasController extends AppController
             $mes = "※午前6時をまたぐ登録はできません。終了ロスを登録後、検査完了へ進んでください。";
             $this->set('mes',$mes);
 
+            $end_ok_check = 0;
+            $this->set('end_ok_check', $end_ok_check);
+            
             if($data["mikan_check"] == 1 && isset($data["tuzukikara"])){
               $gyou = $data["gyou"] + 1;
             }else{

@@ -1284,6 +1284,8 @@ var moji = "length"
 
 <br><br>
 
+<?php if ($end_ok_check == 0): ?>
+
 <table align="center">
   <tbody class='sample non-sample'>
     <tr>
@@ -1291,6 +1293,14 @@ var moji = "length"
     </tr>
   </tbody>
 </table>
+
+<?php else : ?>
+
+  <br>
+   <div align="center"><font size="4"><strong style="font-size: 13pt; color:red"><?= __("※１行のみで登録完了はできません。２行目以降の登録をしてください。") ?></strong></font></div>
+  <br>
+
+<?php endif; ?>
 
 <?php elseif ($checkedit == 0) : ?>
 
