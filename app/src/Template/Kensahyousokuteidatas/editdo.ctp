@@ -189,6 +189,7 @@ echo $this->Html->css('kensahyou');
     <td width="150">生産数量（本）</td>
     <td width="150">総重量（kg）</td>
     <td width="150">総ロス重量（kg）</td>
+    <td width="150">ロス率（％）</td>
     <td width="150">達成率（％）</td>
     </tr>
     <?php for($k=0; $k<$this->request->getData('countlength'); $k++): ?>
@@ -197,6 +198,7 @@ echo $this->Html->css('kensahyou');
     <td><?= h($this->request->getData('amount'.$k)) ?></td>
     <td><?= h($this->request->getData('sum_weight'.$k)) ?></td>
     <td><?= h($this->request->getData('total_loss_weight'.$k)) ?></td>
+    <td><?= h($this->request->getData('lossiritsu'.$k)) ?></td>
     <td><?= h($this->request->getData('tasseiritsu'.$k)) ?></td>
     </tr>
     <?php endfor;?>

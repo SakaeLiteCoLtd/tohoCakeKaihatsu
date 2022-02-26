@@ -63,6 +63,7 @@ echo $this->Html->css('kensahyou');
             <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('生産数量(本)') ?></td>
             <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('総重量(kg)') ?></td>
             <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('総ロス重量(kg)') ?></td>
+            <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('ロス率(％)') ?></td>
             <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('達成率(％)') ?></td>
             </tr>
         </thead>
@@ -75,6 +76,7 @@ echo $this->Html->css('kensahyou');
   <td><?= h($arrProdcts[$j]["amount"]) ?></td>
   <td><?= h($arrProdcts[$j]["sum_weight"]) ?></td>
   <td><?= h($arrProdcts[$j]["total_loss_weight"]) ?></td>
+  <td><?= h($arrProdcts[$j]["lossritsu"]) ?></td>
   <td><?= h($arrProdcts[$j]["tasseiritsu"]) ?></td>
 <?php endfor;?>
 </tbody>
@@ -159,6 +161,7 @@ echo $this->Html->css('kensahyou');
   </table>
   <br><br>
 
+  <?= $this->Form->control('product_name', array('type'=>'hidden', 'value'=>$product_name, 'label'=>false)) ?>
   <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$factory_id, 'label'=>false)) ?>
   <?= $this->Form->control('date_sta', array('type'=>'hidden', 'value'=>$date_sta, 'label'=>false)) ?>
   <?= $this->Form->control('date_fin', array('type'=>'hidden', 'value'=>$date_fin, 'label'=>false)) ?>

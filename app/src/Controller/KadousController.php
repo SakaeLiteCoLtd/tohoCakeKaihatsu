@@ -59,6 +59,15 @@ class KadousController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
+      $Data=$this->request->query('s');
+      if(isset($Data["mess"])){
+        $mess = $Data["mess"];
+        $this->set('mess',$mess);
+      }else{
+        $mess = "";
+        $this->set('mess',$mess);
+      }
+
       $dateYMD = date('Y-m-d');
       $dateYMD1 = strtotime($dateYMD);
       $dayyey = date('Y', strtotime('-1 day', $dateYMD1));
@@ -81,12 +90,6 @@ class KadousController extends AppController
         }
       $this->set('arrDays',$arrDays);
 
-      $arrSelects = [
-        "0" => "のみ",
-        "1" => "から"
-      ];
-      $this->set('arrSelects',$arrSelects);
-
       $arrYearsfin = array();
       $arrYearsfin["-"] ="-";
       for ($k=$dayyeini; $k<=$dayyey; $k++){
@@ -108,28 +111,26 @@ class KadousController extends AppController
         }
       $this->set('arrDaysfin',$arrDaysfin);
 
-      $session = $this->request->getSession();
-      $datasession = $session->read();
-      $staff_id = $datasession['Auth']['User']['staff_id'];
+      $Linenames = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => 1])->toArray();
 
-      $Staffs = $this->Staffs->find()
-      ->where(['id' => $staff_id])
-      ->toArray();
-      $factory_id = $Staffs[0]["factory_id"];
-
-      if($factory_id == 5){
-  
-        $this->set('usercheck', 1);
-        $Factories = $this->Factories->find('list');
-        $this->set(compact('Factories'));
-
-      }else{
-  
-        $this->set('usercheck', 0);
-
+      $arrGouki = array();
+      $arrGouki["-"] = "選択なし";
+      for($j=0; $j<count($Linenames); $j++){
+        $array = array($Linenames[$j]["machine_num"] => $Linenames[$j]["name"]);
+        $arrGouki = $arrGouki + $array;
       }
+      $this->set('arrGouki', $arrGouki);
 
-    }
+      $Product_name_list = $this->Products->find()
+      ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
+
+      $arrProduct_name_list = array();
+      for($j=0; $j<count($Product_name_list); $j++){
+        array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+      }
+      $this->set('arrProduct_name_list', $arrProduct_name_list);
+ }
 
     public function view()
     {
@@ -140,15 +141,17 @@ class KadousController extends AppController
 
       $Data = $this->request->query('s');
       if(isset($Data["num_max"])){
-/*
+
         echo "<pre>";
         print_r($Data);
         echo "</pre>";
-*/
+
         $factory_id = $Data["factory_id"];
         $date_sta = $Data["date_sta"];
         $date_fin = $Data["date_fin"];
         $date_fin_hyouji = $Data["date_fin_hyouji"];
+        $product_name = $Data["product_name"];
+        $this->set('product_name', $product_name);
         $this->set('date_sta', $date_sta);
         $this->set('date_fin', $date_fin);
         $this->set('date_fin_hyouji', $date_fin_hyouji);
@@ -158,20 +161,28 @@ class KadousController extends AppController
         }
 
       }else{
+
         $data = $this->request->getData();
+        /*
+        echo "<pre>";
+        print_r($data);
+        echo "</pre>";
+  */
+        $Products = $this->Products->find()
+        ->where(['name' => $data["product_name"], 'delete_flag' => 0])->toArray();
+        $product_name = $data["product_name"];
+        $this->set('product_name', $product_name);
+
+        if(strlen($data["product_name"]) > 0 && !isset($Products[0])){
+        
+          return $this->redirect(['action' => 'yobidashidate',
+          's' => ['mess' => "入力された製品名は登録されていません。"]]);
+  
+        }
+        $factory_id = $data["factory_id"];
         $dateselect = $data["date_sta_year"]."-".$data["date_sta_month"]."-".$data["date_sta_date"];
 
-        if($data["date_select_flag"] == 0){
-
-          $date1 = strtotime($dateselect);
-          $date_sta = $dateselect." 06:00:00";
-          $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 06:00:00";
-          $date_fin_hyouji = date('Y-m-d', strtotime('+1 day', $date1))." 05:59:59";
-          $this->set('date_sta', $date_sta);
-          $this->set('date_fin', $date_fin);
-          $this->set('date_fin_hyouji', $date_fin_hyouji);
-    
-        }elseif($data["date_select_flag"] == 1){
+        if($data["date_sta_year_fin"] != "-" && $data["date_sta_month_fin"] != "-" && $data["date_sta_date_fin"] != "-"){
   
           $date1 = strtotime($dateselect);
           $date_sta = $dateselect." 06:00:00";
@@ -184,46 +195,31 @@ class KadousController extends AppController
           $this->set('date_sta', $date_sta);
           $this->set('date_fin', $date_fin);
           $this->set('date_fin_hyouji', $date_fin_hyouji);
-  
+
+        }else{
+
+          $date1 = strtotime($dateselect);
+          $date_sta = $dateselect." 06:00:00";
+          $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 06:00:00";
+          $date_fin_hyouji = date('Y-m-d', strtotime('+1 day', $date1))." 05:59:59";
+          $this->set('date_sta', $date_sta);
+          $this->set('date_fin', $date_fin);
+          $this->set('date_fin_hyouji', $date_fin_hyouji);
+
         }
   
       }
 
-      $session = $this->request->getSession();
-      $datasession = $session->read();
-      $staff_id = $datasession['Auth']['User']['staff_id'];
-
-      $Staffs = $this->Staffs->find()
-      ->where(['id' => $staff_id])
-      ->toArray();
-      $factory_id = $Staffs[0]["factory_id"];
       $this->set('factory_id', $factory_id);
 
-      if(isset($data["factory_id"])){
+      $Linenames = $this->Linenames->find()
+      ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
 
-        $this->set('factory_id', $data["factory_id"]);
-
-        $Linenames = $this->Linenames->find()
-        ->where(['delete_flag' => 0, 'factory_id' => $data["factory_id"]])->toArray();
-
-        $DailyReportsData = $this->DailyReports->find()
-        ->contain(['Products'])
-        ->where(['start_datetime >=' => $date_sta, 'start_datetime <' => $date_fin,
-        'DailyReports.delete_flag' => 0, 'factory_id' => $data["factory_id"]])
-        ->order(["start_datetime"=>"ASC"])->toArray();
-
-      }else{
-
-        $Linenames = $this->Linenames->find()
-        ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
-
-        $DailyReportsData = $this->DailyReports->find()
-        ->contain(['Products'])
-        ->where(['start_datetime >=' => $date_sta, 'start_datetime <' => $date_fin,
-        'DailyReports.delete_flag' => 0, 'factory_id' => $factory_id])
-        ->order(["start_datetime"=>"ASC"])->toArray();
-  
-      }
+      $DailyReportsData = $this->DailyReports->find()
+      ->contain(['Products'])
+      ->where(['start_datetime >=' => $date_sta, 'start_datetime <' => $date_fin,
+      'DailyReports.delete_flag' => 0, 'factory_id' => $factory_id])
+      ->order(["start_datetime"=>"ASC"])->toArray();
 
       $arrlines_all = array();
       for($i=0; $i<count($Linenames); $i++){
@@ -479,6 +475,7 @@ class KadousController extends AppController
         $date_sta = $data["date_sta"];
         $date_fin = $data["date_fin"];
         $date_fin_hyouji = $data["date_fin_hyouji"];
+        $product_name = $data["product_name"];
 
         if(isset($data["checkbutton"])){
           $button_name = "checkbutton";
@@ -487,7 +484,7 @@ class KadousController extends AppController
         }
         return $this->redirect(['action' => 'view',
         's' => ['button_name' => $button_name, 'num_max' => $num_max, 'factory_id' => $factory_id,
-         'date_fin' => $date_fin,'date_sta' => $date_sta,
+         'date_fin' => $date_fin,'date_sta' => $date_sta,'product_name' => $product_name,
          'date_fin_hyouji' => $date_fin_hyouji]]);
 
       }else{
@@ -682,6 +679,8 @@ class KadousController extends AppController
       
         $tasseiritsu = $DailyReportsData[$i]["sum_weight"] * 100 / ($DailyReportsData[$i]["sum_weight"] + $DailyReportsData[$i]["total_loss_weight"]);
         $tasseiritsu = sprintf("%.1f", $tasseiritsu);
+        $lossritsu = $DailyReportsData[$i]["total_loss_weight"] * 100 / ($DailyReportsData[$i]["sum_weight"] + $DailyReportsData[$i]["total_loss_weight"]);
+        $lossritsu = sprintf("%.1f", $lossritsu);
 
         $arrProdcts[] = [
           "product_code" => $DailyReportsData[$i]["product"]["product_code"],
@@ -690,6 +689,7 @@ class KadousController extends AppController
           "amount" => $DailyReportsData[$i]["amount"],
           "sum_weight" => $DailyReportsData[$i]["sum_weight"],
           "total_loss_weight" => $DailyReportsData[$i]["total_loss_weight"],
+          "lossritsu" => $lossritsu,
           "tasseiritsu" => $tasseiritsu,
         ];
 

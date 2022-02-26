@@ -229,6 +229,7 @@ $mes = "";
     <td width="150">生産数量（本）</td>
     <td width="150">総重量（kg）</td>
     <td width="150">総ロス重量（kg）</td>
+    <td width="150">ロス率（％）</td>
     <td width="150">達成率（％）</td>
     </tr>
     <?php for($k=0; $k<$countlength; $k++): ?>
@@ -237,12 +238,14 @@ $mes = "";
     <td><?= h(${"amount".$k}) ?></td>
     <td><?= h(${"sum_weight".$k}) ?></td>
     <td><?= h(${"total_loss_weight".$k}) ?></td>
+    <td><?= h(${"lossiritsu".$k}) ?></td>
     <td><?= h(${"tasseiritsu".$k}) ?></td>
 
     <?= $this->Form->control('length'.$k, array('type'=>'hidden', 'value'=>${"length".$k}, 'label'=>false)) ?>
     <?= $this->Form->control('amount'.$k, array('type'=>'hidden', 'value'=>${"amount".$k}, 'label'=>false)) ?>
     <?= $this->Form->control('sum_weight'.$k, array('type'=>'hidden', 'value'=>${"sum_weight".$k}, 'label'=>false)) ?>
     <?= $this->Form->control('total_loss_weight'.$k, array('type'=>'hidden', 'value'=>${"total_loss_weight".$k}, 'label'=>false)) ?>
+    <?= $this->Form->control('lossiritsu'.$k, array('type'=>'hidden', 'value'=>${"lossiritsu".$k}, 'label'=>false)) ?>
     <?= $this->Form->control('tasseiritsu'.$k, array('type'=>'hidden', 'value'=>${"tasseiritsu".$k}, 'label'=>false)) ?>
 
     </tr>

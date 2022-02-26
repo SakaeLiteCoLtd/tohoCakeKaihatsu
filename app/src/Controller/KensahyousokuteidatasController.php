@@ -4573,11 +4573,19 @@ class KensahyousokuteidatasController extends AppController
 
       $arrProducts = array();
       for($j=0; $j<count($DailyReportsData); $j++){
+
+        $tasseiritsu = $DailyReportsData[$j]["sum_weight"] * 100 / ($DailyReportsData[$j]["sum_weight"] + $DailyReportsData[$j]["total_loss_weight"]);
+        $tasseiritsu = sprintf("%.1f", $tasseiritsu);
+        $lossritsu = $DailyReportsData[$j]["total_loss_weight"] * 100 / ($DailyReportsData[$j]["sum_weight"] + $DailyReportsData[$j]["total_loss_weight"]);
+        $lossritsu = sprintf("%.1f", $lossritsu);
+
         $arrProducts[] = [
           "length" => $DailyReportsData[$j]["product"]["length"],
           "amount" => $DailyReportsData[$j]["amount"],
           "sum_weight" => $DailyReportsData[$j]["sum_weight"],
           "total_loss_weight" => $DailyReportsData[$j]["total_loss_weight"],
+          "lossritsu" => $lossritsu,
+          "tasseiritsu" => $tasseiritsu,
           "bik" => $DailyReportsData[$j]["bik"],
         ];
       }
@@ -4666,7 +4674,8 @@ class KensahyousokuteidatasController extends AppController
             $this->set('lower_limit'.$num,${"lower_limit".$num});
             ${"size".$num} = "-";
             $this->set('size'.$num,${"size".$num});
-            ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+      //      ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+            ${"measuring_instrument".$num} = "※製品規格参照";
             $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
     
           }elseif($InspectionStandardSizeChildren[$i]["input_type"] === "judge"){
@@ -4790,109 +4799,6 @@ class KensahyousokuteidatasController extends AppController
       $htmlkensahyougenryouheader = new htmlkensahyouprogram();//クラスを使用
       $htmlseikeijouken = $htmlkensahyougenryouheader->seikeijouken($machine_product_datetime);//クラスを使用
       $this->set('htmlseikeijouken', $htmlseikeijouken);
-
-      /*
-      $product_code_ini = substr($product_code, 0, 11);
-      $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
-      ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
-      ->order(["version"=>"DESC"])->toArray();
-
-      $version = $ProductConditionParents[0]["version"];
-
-      $product_code_ini = substr($product_code, 0, 11);
-      $ProductMaterialMachines= $this->ProductMaterialMachines->find()
-      ->contain(['ProductConditionParents' => ["Products"]])
-      ->where(['Products.product_code like' => $product_code_ini.'%',
-      'ProductConditionParents.delete_flag' => 0,
-      'ProductMaterialMachines.delete_flag' => 0,
-      'ProductConditionParents.machine_num' => $machine_num,
-      'ProductConditionParents.version' => $version])
-      ->order(["cylinder_number"=>"ASC"])->toArray();
-
-      $countseikeiki = count($ProductMaterialMachines);
-      $this->set('countseikeiki', $countseikeiki);
-  
-      for($k=0; $k<$countseikeiki; $k++){//基準値の呼び出し
-
-        $j = $k + 1;
-        ${"product_material_machine_id".$j} = $ProductMaterialMachines[$k]["id"];
-        $this->set('product_material_machine_id'.$j, ${"product_material_machine_id".$j});
-        ${"cylinder_name".$j} = $ProductMaterialMachines[$k]["cylinder_name"];
-        $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
-
-        $ProductConditonChildren = $this->ProductConditonChildren->find()
-        ->where(['product_material_machine_id' => ${"product_material_machine_id".$j},
-         'cylinder_name' => ${"cylinder_name".$j}, 'delete_flag' => 0])
-        ->toArray();
-
-        if(isset($ProductConditonChildren[0])){
-
-          ${"extrude_roatation".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrude_roatation"]);
-          $this->set('extrude_roatation'.$j, ${"extrude_roatation".$j});
-          ${"extrusion_load".$j} = sprintf("%.1f", $ProductConditonChildren[0]["extrusion_load"]);
-          $this->set('extrusion_load'.$j, ${"extrusion_load".$j});
-          ${"product_conditon_child_id".$j} = $ProductConditonChildren[0]["id"];
-          $this->set('product_conditon_child_id'.$j, ${"product_conditon_child_id".$j});
-    
-          for($n=1; $n<8; $n++){
-            ${"temp_".$n.$j} = sprintf("%.0f", $ProductConditonChildren[0]["temp_".$n]);
-            $this->set('temp_'.$n.$j, ${"temp_".$n.$j});
-          }
-
-          $pickup_speed = sprintf("%.1f", $ProductConditonChildren[0]["pickup_speed"]);
-          $this->set('pickup_speed', $pickup_speed);
-
-          ${"screw_mesh_1".$j} = $ProductConditonChildren[0]['screw_mesh_1'];
-          $this->set('screw_mesh_1'.$j, ${"screw_mesh_1".$j});
-          ${"screw_number_1".$j} = $ProductConditonChildren[0]['screw_number_1'];
-          $this->set('screw_number_1'.$j, ${"screw_number_1".$j});
-          ${"screw_mesh_2".$j} = $ProductConditonChildren[0]['screw_mesh_2'];
-          $this->set('screw_mesh_2'.$j, ${"screw_mesh_2".$j});
-          ${"screw_number_2".$j} = $ProductConditonChildren[0]['screw_number_2'];
-          $this->set('screw_number_2'.$j, ${"screw_number_2".$j});
-          ${"screw_mesh_3".$j} = $ProductConditonChildren[0]['screw_mesh_3'];
-          $this->set('screw_mesh_3'.$j, ${"screw_mesh_3".$j});
-          ${"screw_number_3".$j} = $ProductConditonChildren[0]['screw_number_3'];
-          $this->set('screw_number_3'.$j, ${"screw_number_3".$j});
-          ${"screw".$j} = $ProductConditonChildren[0]['screw'];
-          $this->set('screw'.$j, ${"screw".$j});
-
-        }
-
-      }
-
-      for($k=0; $k<$countseikeiki; $k++){//各成型機の基準値の呼び出し
-        
-        $cylinder_name = $ProductMaterialMachines[$k]["cylinder_name"];
-        $product_code_ini = substr($product_code, 0, 11);
-
-        //成形機毎に取り出し
-        $InspectionDataConditonChildren = $this->InspectionDataConditonChildren->find()
-        ->contain(['ProductConditonChildren', 'InspectionDataConditonParents'])
-        ->where(['product_code like' => $product_code_ini.'%'
-        , 'ProductConditonChildren.cylinder_name' => $cylinder_name
-        , 'InspectionDataConditonChildren.created_at <=' => $datetimefin])
-        ->order(["InspectionDataConditonChildren.created_at"=>"DESC"])->limit(1)->toArray();
-
-        $j = $k + 1;
-
-          ${"inspection_extrude_roatation".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_extrude_roatation']);
-          $this->set('inspection_extrude_roatation'.$j, ${"inspection_extrude_roatation".$j});
-          ${"inspection_extrusion_load".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_extrusion_load']);
-          $this->set('inspection_extrusion_load'.$j, ${"inspection_extrusion_load".$j});
-          ${"inspection_pickup_speed".$j} = sprintf("%.1f", $InspectionDataConditonChildren[0]['inspection_pickup_speed']);
-          $this->set('inspection_pickup_speed'.$j, ${"inspection_pickup_speed".$j});
-
-          for($n=1; $n<8; $n++){
-
-            ${"inspection_temp_".$n.$j} = $InspectionDataConditonChildren[0]['inspection_temp_'.$n];
-            $this->set('inspection_temp_'.$n.$j, ${"inspection_temp_".$n.$j});
-
-          }
-
-      }
-*/
-
 
       echo "<pre>";//フォームの再読み込みの防止
       print_r("");
@@ -5196,7 +5102,8 @@ class KensahyousokuteidatasController extends AppController
               $this->set('lower_limit'.$num,${"lower_limit".$num});
               ${"size".$num} = "-";
               $this->set('size'.$num,${"size".$num});
-              ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+      //        ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+              ${"measuring_instrument".$num} = "※製品規格参照";
               $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
       
             }elseif($InspectionStandardSizeChildren[$i]["input_type"] === "judge"){
@@ -5456,7 +5363,8 @@ class KensahyousokuteidatasController extends AppController
             $this->set('lower_limit'.$num,${"lower_limit".$num});
             ${"size".$num} = "-";
             $this->set('size'.$num,${"size".$num});
-            ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+    //        ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+            ${"measuring_instrument".$num} = "※製品規格参照";
             $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
     
           }elseif($InspectionStandardSizeChildren[$i]["input_type"] === "judge"){
@@ -5738,7 +5646,8 @@ class KensahyousokuteidatasController extends AppController
             $this->set('lower_limit'.$num,${"lower_limit".$num});
             ${"size".$num} = "-";
             $this->set('size'.$num,${"size".$num});
-            ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+  //          ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+            ${"measuring_instrument".$num} = "※製品規格参照";
             $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
     
           }elseif($InspectionStandardSizeChildren[$i]["input_type"] === "judge"){
@@ -5968,6 +5877,10 @@ class KensahyousokuteidatasController extends AppController
         ${"tasseiritsu".$j} = sprintf("%.1f", ${"tasseiritsu".$j});
         $this->set('tasseiritsu'.$j, ${"tasseiritsu".$j});
   
+        ${"lossiritsu".$j} = ${"total_loss_weight".$j} * 100 / (${"sum_weight".$j} + ${"total_loss_weight".$j});
+        ${"lossiritsu".$j} = sprintf("%.1f", ${"lossiritsu".$j});
+        $this->set('lossiritsu'.$j, ${"lossiritsu".$j});
+
       }
 
       $bik = $data["bik"];
@@ -6112,7 +6025,8 @@ class KensahyousokuteidatasController extends AppController
             $this->set('lower_limit'.$num,${"lower_limit".$num});
             ${"size".$num} = "-";
             $this->set('size'.$num,${"size".$num});
-            ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+  //          ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+            ${"measuring_instrument".$num} = "※製品規格参照";
             $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
     
           }elseif($InspectionStandardSizeChildren[$i]["input_type"] === "judge"){

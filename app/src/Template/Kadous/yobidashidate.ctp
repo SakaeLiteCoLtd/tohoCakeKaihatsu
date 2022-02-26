@@ -23,6 +23,25 @@ $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
 
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<?php
+$arrProduct_name_list = json_encode($arrProduct_name_list);//jsに配列を受け渡すために変換
+?>
+
+<script>
+  $(function() {
+      // 入力補完候補の単語リスト
+      let wordlist = <?php echo $arrProduct_name_list; ?>
+      // 入力補完を実施する要素に単語リストを設定
+      $("#product_name_list").autocomplete({
+        source: wordlist
+      });
+  });
+</script>
+
 <?php
       $dayyetoy = date('Y');
       $dayyetom = date('n');
@@ -31,36 +50,25 @@ echo $this->Html->css('kensahyou');
 
 <br><br><br>
 
-<?php
-/*
-<?= $this->Form->create($product, ['url' => ['action' => 'view']]) ?>
-        <?php if ($usercheck == 1): ?>
-          <table>
-          <tr class="parents">
-            <td width="200"><strong>工場名</strong></td>
-        	</tr>
-          <tr style="background-color: #FFFFCC">
-            <td><?= $this->Form->control('factory_id', ['options' => $Factories, 'label'=>false]) ?></td>
-        	</tr>
-        </table>
-        <br>
-        <br>
-
- <?php else : ?>
-<?php endif; ?>
-*/
-?>
-
 <?= $this->Form->create($product, ['url' => ['action' => 'view']]) ?>
 
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>1, 'label'=>false)) ?>
 
+<br>
+<div align="center"><font size="3"><?= __("日報呼出日以外は空のまま呼出できます") ?></font></div>
+<div align="center"><font color="red" size="3"><?= __($mess) ?></font></div>
+<br>
+
     <table>
   <tbody style="background-color: #FFFFCC">
     <tr class="parents">
-    <td width="520" colspan='7'><strong>日報呼出日</strong></td>
+    <td width="100"><strong>ライン</strong></td>
+    <td width="300"><strong>製品名</strong></td>
+    <td width="500" colspan='7'><strong>日報呼出日</strong></td>
     </tr>
     <tr>
+    <td><?= $this->Form->control('machine_num', ['options' => $arrGouki, 'label'=>false]) ?></td>
+    <td><?= $this->Form->control('product_name', array('type'=>'text', 'label'=>false, 'id'=>"product_name_list")) ?></td>
     <td style="border-right-style: none;border-width: 1px">
     <div align="center">
          <?= $this->Form->input("date_sta_year", array('type' => 'select', "options"=>$arrYears, 'value' => $dayyetoy, 'label'=>false)); ?>
@@ -75,7 +83,7 @@ echo $this->Html->css('kensahyou');
      </div></td>
      <td style="border-right-style: none;border-left-style: none;border-width: 1px">
     <div align="center">
-         <?= $this->Form->input("date_select_flag", array('type' => 'select', "options"=>$arrSelects, 'label'=>false)); ?>
+    <?= __('～') ?>
      </div></td>
      <td style="border-right-style: none;border-left-style: none;border-width: 1px">
     <div align="center">

@@ -69,7 +69,8 @@ echo $this->Html->css('kensahyou');
   <td>公差上限</td>
 
   <?php for($i=1; $i<=11; $i++): ?>
-    <?php if (${"input_type".$i} == "int" && strlen(${"upper_limit".$i}) > 0 && substr(${"upper_limit".$i}, 0, 1) != "+" && substr(${"upper_limit".$i}, 0, 1) != "-"): ?>
+    <?php if (${"input_type".$i} == "int" && strlen(${"upper_limit".$i}) > 0
+     && substr(${"upper_limit".$i}, 0, 1) != "+" && substr(${"upper_limit".$i}, 0, 1) != "-"): ?>
     <td><?= h("+".${"upper_limit".$i}) ?></td>
     <?php else : ?>
       <td><?= h(${"upper_limit".$i}) ?></td>
@@ -111,7 +112,7 @@ echo $this->Html->css('kensahyou');
   <?php elseif ($j == $gyou) : ?>
     <td style='width:36; border-top-style:none; font-size: 11pt'>E</td>
   <?php else : ?>
-    <td style='width:36; border-top-style:none; font-size: 11pt'><?= h(${"lot_number".$j}) ?></td>
+    <td style='width:36; border-top-style:none; font-size: 11pt'><?= h($j-1) ?></td>
   <?php endif; ?>
 
 
@@ -198,6 +199,8 @@ echo $this->Html->css('kensahyou');
     <td width="150">生産数量（本）</td>
     <td width="150">総重量（kg）</td>
     <td width="150">総ロス重量（kg）</td>
+    <td width="100">ロス率(％)</td>
+    <td width="100">達成率(％)</td>
     </tr>
     <?php for($k=0; $k<count($arrProducts); $k++): ?>
     <tr>
@@ -205,6 +208,8 @@ echo $this->Html->css('kensahyou');
     <td><?= h($arrProducts[$k]["amount"]) ?></td>
     <td><?= h($arrProducts[$k]["sum_weight"]) ?></td>
     <td><?= h($arrProducts[$k]["total_loss_weight"]) ?></td>
+    <td><?= h($arrProducts[$k]["lossritsu"]) ?></td>
+    <td><?= h($arrProducts[$k]["tasseiritsu"]) ?></td>
     </tr>
     <?php endfor;?>
   </tbody>

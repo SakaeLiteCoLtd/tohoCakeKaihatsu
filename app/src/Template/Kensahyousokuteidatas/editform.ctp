@@ -121,7 +121,7 @@ echo $this->Html->css('kensahyou');
   <?php elseif ($j == $gyou) : ?>
     <td style='width:40; border-top-style:none;'>E</td>
   <?php else : ?>
-    <td style='width:40; border-top-style:none;'><?= h(${"lot_number".$j}) ?></td>
+    <td style='width:40; border-top-style:none;'><?= h($j-1) ?></td>
   <?php endif; ?>
 
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>

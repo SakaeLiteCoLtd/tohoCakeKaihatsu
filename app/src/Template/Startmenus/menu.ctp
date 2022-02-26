@@ -38,7 +38,7 @@
             <br><br>
             <font size='4'>　・</font><a><font size='4' color=black><?= $this->Html->link(__("製造メニュートップ"), ['controller' => "Images", 'action' => 'index']) ?></font></a>
             <br><br>
-            <font size='4'>　・</font><a><font size='4' color=black><?= $this->Html->link(__("成形メニュートップ"), ['controller' => "Kensahyoukadous", 'action' => 'kensahyoumenu']) ?></font></a>
+            <font size='4'>　・</font><a><font size='4' color=black><?= $this->Html->link(__("メニュートップ"), ['controller' => "Kensahyoukadous", 'action' => 'index']) ?></font></a>
 
           <br><br><br><br><br><br><br><br>
           <br><br><br><br><br><br><br><br>
