@@ -53,16 +53,18 @@ echo $this->Html->css('kensahyou');
         <thead>
             <tr class="parents">
             <td style='font-size: 10pt; width:50; height:60; border-width: 1px solid black;'><?= __('ライン') ?></td>
-            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('日付') ?></td>
-            <td style='font-size: 10pt; width:200; border-width: 1px solid black;'><?= __('製品名') ?></td>
-            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('生産開始時間') ?></td>
+            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('稼働開始時間') ?></td>
             <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('検査表開始時間') ?></td>
             <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('検査表終了時間') ?></td>
-            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('生産終了時間') ?></td>
-            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('生産時間') ?></td>
+            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('稼働終了時間') ?></td>
+            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('稼働時間') ?></td>
+            <td style='font-size: 10pt; width:200; border-width: 1px solid black;'><?= __('製品名') ?></td>
             <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('開始ロス') ?><br><?= __('(kg)') ?></td>
             <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('中間ロス') ?><br><?= __('(kg)') ?></td>
             <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('終了ロス') ?><br><?= __('(kg)') ?></td>
+            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('合計ロス') ?><br><?= __('(kg)') ?></td>
+            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('長さ') ?><br><?= __('(mm)') ?></td>
+            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('当日数量') ?><br><?= __('(本)') ?></td>
             <td style='font-size: 10pt; width:60; border-width: 1px solid black;'></td>
             </tr>
         </thead>
@@ -78,6 +80,17 @@ echo $this->Html->css('kensahyou');
 
   <tr class='children'>
 
+  <?php if ($arrAll[$j]["countproduct_code_ini"] == 1): ?>
+
+  <?php
+  if($arrAll[$j]["product_code_ini"] == ""){
+    $countproduct_rowspan = 1;
+  }else{
+    $product_code_ini_machine_num_datetime = $arrAll[$j]["product_code_ini"]."_".$arrAll[$j]["machine_num"]."_".$arrAll[$j]["start_datetime"];
+    $countproduct_rowspan = $arrCountProducts[$product_code_ini_machine_num_datetime];
+    }
+  ?>
+
 <?php
         $Linenames = $this->Linenames->find()
         ->where(['delete_flag' => 0, 'factory_id' => $factory_id, 'machine_num' => $arrAll[$j]["machine_num"]])->toArray();
@@ -85,67 +98,88 @@ echo $this->Html->css('kensahyou');
 ?>
 
     <?php
-    echo "<td style='font-size: 10pt'>\n";
+    echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
     ?>
     <?= h($name_machine) ?></td>
 
     <?php
-    echo "<td style='font-size: 10pt'>\n";
+    echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
   ?>
-  <?= h($arrAll[$j]["date"]) ?></td>
+  <?= h(substr($arrAll[$j]["relay_start_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["relay_start_datetime"], 11, 8)) ?></td>
 
   <?php
-  echo "<td style='font-size: 10pt'>\n";
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
   ?>
-  <?= h($arrAll[$j]["name"]) ?></td>
+  <?= h(substr($arrAll[$j]["start_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["start_datetime"], 11, 8)) ?></td>
 
   <?php
-    echo "<td style='font-size: 10pt'>\n";
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
   ?>
-  <?= h($arrAll[$j]["relay_start_datetime"]) ?></td>
+  <?= h(substr($arrAll[$j]["finish_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["finish_datetime"], 11, 8)) ?></td>
 
   <?php
-  echo "<td style='font-size: 10pt'>\n";
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
   ?>
-  <?= h($arrAll[$j]["start_datetime"]) ?></td>
+  <?= h(substr($arrAll[$j]["relay_finish_datetime"], 0, 10)) ?><br><?= h(substr($arrAll[$j]["relay_finish_datetime"], 11, 8)) ?></td>
 
   <?php
-  echo "<td style='font-size: 10pt'>\n";
-  ?>
-  <?= h($arrAll[$j]["finish_datetime"]) ?></td>
-
-  <?php
-  echo "<td style='font-size: 10pt'>\n";
-  ?>
-  <?= h($arrAll[$j]["relay_finish_datetime"]) ?></td>
-
-  <?php
-  echo "<td style='font-size: 10pt'>\n";
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
   ?>
   <?= h($arrAll[$j]["relay_time"]) ?></td>
 
   <?php
-  echo "<td style='font-size: 10pt'>\n";
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
+  ?>
+  <?= h($arrAll[$j]["name"]) ?></td>
+
+  <?php
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
   ?>
     <?= h($arrAll[$j]["loss_sta"]) ?></td>
 
   <?php
-  echo "<td style='font-size: 10pt'>\n";
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
   ?>
     <?= h($arrAll[$j]["loss_mid"]) ?></td>
 
  <?php
-  echo "<td style='font-size: 10pt'>\n";
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
   ?>
     <?= h($arrAll[$j]["loss_fin"]) ?></td>
 
-  <?php
-  echo "<td>\n";
+ <?php
+  echo "<td rowspan=$countproduct_rowspan style='font-size: 10pt'>\n";
   ?>
+    <?= h($arrAll[$j]["loss_total"]) ?></td>
+
+  <?php else : ?>
+  <?php endif; ?>
+
+  <td style='font-size: 10pt'><?= h($arrAll[$j]["length"]) ?></td>
+  <td style='font-size: 10pt'><?= h($arrAll[$j]["amount"]) ?></td>
+
+  <?php if ($arrAll[$j]["countproduct_code_ini"] == 1): ?>
+  <?php
+  if($arrAll[$j]["product_code_ini"] == ""){
+    $countproduct_rowspan = 1;
+  }else{
+    $arrproduct_code_ini_machine_num_datetime = $arrAll[$j]["product_code_ini"]
+    ."_".$arrAll[$j]["machine_num"]."_".$arrAll[$j]["start_datetime"];
+    $countproduct_rowspan = $arrCountProducts[$arrproduct_code_ini_machine_num_datetime];
+    }
+  echo "<td rowspan=$countproduct_rowspan>\n";
+  ?>
+              <?php if ($arrAll[$j]["product_code"] !== ""): ?>
               <?php
               echo $this->Form->submit("詳細" , ['name' => $arrAll[$j]["machine_num"]."_".$arrAll[$j]["product_code"]."_".$arrAll[$j]["start_datetime"]]) ;
               ?>
+              <?php else : ?>
+                <?= h("-") ?>
+              <?php endif; ?>
               </td>
+
+  <?php else : ?>
+  <?php endif; ?>
 
             </tr>
 <?php endfor;?>

@@ -141,11 +141,11 @@ class KadousController extends AppController
 
       $Data = $this->request->query('s');
       if(isset($Data["num_max"])){
-
+/*
         echo "<pre>";
         print_r($Data);
         echo "</pre>";
-
+*/
         $factory_id = $Data["factory_id"];
         $date_sta = $Data["date_sta"];
         $date_fin = $Data["date_fin"];
@@ -259,22 +259,19 @@ class KadousController extends AppController
 
         if(isset($RelayLogsData[0])){
           $relay_start_datetime = $RelayLogsData[0]["datetime"]->format("Y-m-d H:i:s");
+          $relay_start_datetime_hyouji = $RelayLogsData[0]["datetime"]->format("H:i");
           $relay_finish_datetime = $RelayLogsData[count($RelayLogsData)-1]["datetime"]->format("Y-m-d H:i:s");
+          $relay_finish_datetime_hyouji = $RelayLogsData[count($RelayLogsData)-1]["datetime"]->format("H:i");
         }else{
           $relay_start_datetime = "";
+          $relay_start_datetime_hyouji = "";
+          $relay_finish_datetime_hyouji = "";
           $relay_finish_datetime = "";
         }
 
         $riron_amount = $DailyReportsData[$i]["amount"] * ($DailyReportsData[$i]["total_loss_weight"]
          + $DailyReportsData[$i]["sum_weight"]) / $DailyReportsData[$i]["sum_weight"];
         $riron_amount = sprintf("%.1f", $riron_amount);
-
-        $count = count(array_keys($arrline_shiyou, $DailyReportsData[$i]["machine_num"])) + 1;
-        $countproduct_code_ini = count(array_keys($arrproduct_code_ini_machine_num_datetime,
-         substr($DailyReportsData[$i]["product"]["product_code"], 0, 11)."_".$DailyReportsData[$i]["machine_num"]
-         ."_".$DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"))) + 1;
-
-        $arrline_shiyou[] = $DailyReportsData[$i]["machine_num"];
 
         $arrproduct_code_ini_machine_num_datetime[] = substr($DailyReportsData[$i]["product"]["product_code"], 0, 11)
         ."_".$DailyReportsData[$i]["machine_num"]."_".$DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s");
@@ -309,106 +306,121 @@ class KadousController extends AppController
         date_default_timezone_set('Asia/Tokyo');
         $from = strtotime($relay_start_datetime);
         $to = strtotime($relay_finish_datetime);
-        $relay_time = gmdate("H:i:s", $to - $from);//時間の差をフォーマット
+        $relay_time = gmdate("H時間i分", $to - $from);//時間の差をフォーマット
 
+        $count_check = count($arrDaily_report) - 1;
+
+        $date = $DailyReportsData[$i]["start_datetime"]->format("Y-m-d");
         if($tyuukann_flag == 0){//中間ではない時
+          
+          if($count_check == -1){
 
-          $arrDaily_report[] = [
-            "machine_num" => $DailyReportsData[$i]["machine_num"],
-            "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"),
-            "relay_start_datetime" => $relay_start_datetime,
-            "finish_datetime" => $DailyReportsData[$i]["finish_datetime"]->format("Y-m-d H:i:s"),
-            "relay_finish_datetime" => $relay_finish_datetime,
-            "relay_time" => $relay_time,
-            "product_code" => $DailyReportsData[$i]["product"]["product_code"],
-            "product_code_ini" => substr($DailyReportsData[$i]["product"]["product_code"], 0, 11),
-            "name" => $DailyReportsData[$i]["product"]["name"],
-            "length" => $DailyReportsData[$i]["product"]["length"],
-            "amount" => $DailyReportsData[$i]["amount"],
-            "loss_sta" => $loss_sta,
-            "loss_mid" => $loss_mid,
-            "loss_fin" => $loss_fin,
-            "loss_total" => $loss_sta + $loss_mid + $loss_fin,
-            "sum_weight" => sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]),
-            "count" => $count,
-            "countproduct_code_ini" => $countproduct_code_ini,
-          ];
+            $arrDaily_report[] = [
+              "machine_num" => $DailyReportsData[$i]["machine_num"],
+              "date" => $date,
+              "start_datetime_check" => $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"),
+              "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("H:i"),
+              "relay_start_datetime" => $relay_start_datetime_hyouji,
+              "finish_datetime" => $DailyReportsData[$i]["finish_datetime"]->format("H:i"),
+              "relay_finish_datetime" => $relay_finish_datetime_hyouji,
+              "relay_time" => $relay_time,
+              "product_code" => $DailyReportsData[$i]["product"]["product_code"],
+              "product_code_ini" => substr($DailyReportsData[$i]["product"]["product_code"], 0, 11),
+              "name" => $DailyReportsData[$i]["product"]["name"],
+              "length" => $DailyReportsData[$i]["product"]["length"],
+              "amount" => $DailyReportsData[$i]["amount"],
+              "loss_sta" => $loss_sta,
+              "loss_mid" => $loss_mid,
+              "loss_fin" => $loss_fin,
+              "loss_total" => $loss_sta + $loss_mid + $loss_fin,
+              "sum_weight" => sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]),
+            ];
+          }elseif($count_check >= 0 && ($arrDaily_report[$count_check]["start_datetime_check"] != $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s") 
+          || $arrDaily_report[$count_check]["product_code_ini"] != substr($DailyReportsData[$i]["product"]["product_code"], 0, 11))){
+
+            $arrDaily_report[] = [
+              "machine_num" => $DailyReportsData[$i]["machine_num"],
+              "date" => $date,
+              "start_datetime_check" => $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"),
+              "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("H:i"),
+              "relay_start_datetime" => $relay_start_datetime_hyouji,
+              "finish_datetime" => $DailyReportsData[$i]["finish_datetime"]->format("H:i"),
+              "relay_finish_datetime" => $relay_finish_datetime_hyouji,
+              "relay_time" => $relay_time,
+              "product_code" => $DailyReportsData[$i]["product"]["product_code"],
+              "product_code_ini" => substr($DailyReportsData[$i]["product"]["product_code"], 0, 11),
+              "name" => $DailyReportsData[$i]["product"]["name"],
+              "length" => $DailyReportsData[$i]["product"]["length"],
+              "amount" => $DailyReportsData[$i]["amount"],
+              "loss_sta" => $loss_sta,
+              "loss_mid" => $loss_mid,
+              "loss_fin" => $loss_fin,
+              "loss_total" => $loss_sta + $loss_mid + $loss_fin,
+              "sum_weight" => sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]),
+            ];
+          }
 
         }elseif($loss_mid > 0){//中間のみの時
 
-          $arrDaily_report[] = [
-            "machine_num" => $DailyReportsData[$i]["machine_num"],
-            "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"),
-            "relay_start_datetime" => $relay_start_datetime,
-            "finish_datetime" => $DailyReportsData[$i]["finish_datetime"]->format("Y-m-d H:i:s"),
-            "relay_finish_datetime" => $relay_finish_datetime,
-            "relay_time" => $relay_time,
-            "product_code" => $DailyReportsData[$i]["product"]["product_code"],
-            "product_code_ini" => substr($DailyReportsData[$i]["product"]["product_code"], 0, 11),
-            "name" => $DailyReportsData[$i]["product"]["name"],
-            "length" => $DailyReportsData[$i]["product"]["length"],
-            "amount" => $DailyReportsData[$i]["amount"],
-            "loss_sta" => $loss_sta,
-            "loss_mid" => $loss_mid,
-            "loss_fin" => $loss_fin,
-            "loss_total" => $loss_sta + $loss_mid + $loss_fin,
-            "sum_weight" => sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]),
-            "count" => $count,
-            "countproduct_code_ini" => $countproduct_code_ini,
-          ];
+          if($count_check == -1){
+            $arrDaily_report[] = [
+              "machine_num" => $DailyReportsData[$i]["machine_num"],
+              "date" => $date,
+              "start_datetime_check" => $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"),
+              "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("H:i"),
+              "relay_start_datetime" => $relay_start_datetime_hyouji,
+              "finish_datetime" => $DailyReportsData[$i]["finish_datetime"]->format("H:i"),
+              "relay_finish_datetime" => $relay_finish_datetime_hyouji,
+              "relay_time" => $relay_time,
+              "product_code" => $DailyReportsData[$i]["product"]["product_code"],
+              "product_code_ini" => substr($DailyReportsData[$i]["product"]["product_code"], 0, 11),
+              "name" => $DailyReportsData[$i]["product"]["name"],
+              "length" => $DailyReportsData[$i]["product"]["length"],
+              "amount" => $DailyReportsData[$i]["amount"],
+              "loss_sta" => $loss_sta,
+              "loss_mid" => $loss_mid,
+              "loss_fin" => $loss_fin,
+              "loss_total" => $loss_sta + $loss_mid + $loss_fin,
+              "sum_weight" => sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]),
+            ];
+          }elseif($count_check >= 0 && ($arrDaily_report[$count_check]["start_datetime_check"] != $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s") 
+          || $arrDaily_report[$count_check]["product_code_ini"] != substr($DailyReportsData[$i]["product"]["product_code"], 0, 11))){
+            $arrDaily_report[] = [
+              "machine_num" => $DailyReportsData[$i]["machine_num"],
+              "date" => $date,
+              "start_datetime_check" => $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"),
+              "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("H:i"),
+              "relay_start_datetime" => $relay_start_datetime_hyouji,
+              "finish_datetime" => $DailyReportsData[$i]["finish_datetime"]->format("H:i"),
+              "relay_finish_datetime" => $relay_finish_datetime_hyouji,
+              "relay_time" => $relay_time,
+              "product_code" => $DailyReportsData[$i]["product"]["product_code"],
+              "product_code_ini" => substr($DailyReportsData[$i]["product"]["product_code"], 0, 11),
+              "name" => $DailyReportsData[$i]["product"]["name"],
+              "length" => $DailyReportsData[$i]["product"]["length"],
+              "amount" => $DailyReportsData[$i]["amount"],
+              "loss_sta" => $loss_sta,
+              "loss_mid" => $loss_mid,
+              "loss_fin" => $loss_fin,
+              "loss_total" => $loss_sta + $loss_mid + $loss_fin,
+              "sum_weight" => sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]),
+            ];
+          }
 
         }
 
       }
 
-      $arrline_shiyou = array_unique($arrline_shiyou);
-      $arrline_shiyou = array_values($arrline_shiyou);
+      $arrAll = $arrDaily_report;
 
-      $arrlines_fushiyous = array();
-      if($tyuukann_flag == 0){
-
-        $arrline_fushiyou_moto = array_diff($arrlines_all, $arrline_shiyou);
-        $arrline_fushiyou_moto = array_values($arrline_fushiyou_moto);
-  
-        for($i=0; $i<count($arrline_fushiyou_moto); $i++){
-  
-          $arrlines_fushiyous[] = [
-            "machine_num" => $arrline_fushiyou_moto[$i],
-            "start_datetime" => "",
-            "finish_datetime" => "",
-            "relay_start_datetime" => "",
-            "relay_finish_datetime" => "",
-            "relay_time" => "",
-            "product_code" => "",
-            "product_code_ini" => "",
-            "name" => "",
-            "length" => "",
-            "amount" => "",
-            "loss_sta" => "",
-            "loss_mid" => "",
-            "loss_fin" => "",
-            "loss_total" => "",
-            "sum_weight" => "",
-            "count" => 1,
-            "countproduct_code_ini" => 1,
-          ];
-  
-        }
-    
-      }
-
-    $arrAll = array_merge($arrDaily_report, $arrlines_fushiyous);
-
-      foreach( $arrAll as $key => $row ) {
+      foreach($arrAll as $key => $row ) {
         $machine_num_array[$key] = $row["machine_num"];
-        $count_array[$key] = $row["count"];
-        $countproduct_code_ini_array[$key] = $row["countproduct_code_ini"];
+        $start_datetime_array[$key] = $row["start_datetime_check"];
       }
 
-      array_multisort( $machine_num_array,
-      $count_array, SORT_ASC, SORT_NUMERIC,
-      $countproduct_code_ini_array, SORT_ASC,
-      $arrAll );
+      array_multisort($machine_num_array, SORT_ASC,
+      array_map( "strtotime", $start_datetime_array ), SORT_ASC,
+      $arrAll);
 
       $this->set('arrAll', $arrAll);
 /*

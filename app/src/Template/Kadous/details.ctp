@@ -40,7 +40,7 @@ echo $this->Html->css('kensahyou');
 <table>
   <tbody style="background-color: #FFFFCC">
   <tr class="parents">
-  <td>呼出日</td>
+  <td>生産時間</td>
   <td width="100">ライン</td>
     </tr>
     <tr>
