@@ -49,8 +49,8 @@ echo $this->Html->css('index');
             <tr>
               <th scope="col" style='width:50'><font color=black><?= __('No.') ?></font></th>
               <th scope="col"><?= $this->Paginator->sort('material_code', ['label'=>"仕入品コード"]) ?></th>
-              <th scope="col" style='width:400'><?= $this->Paginator->sort('name', ['label'=>"仕入品名"]) ?></th>
-              <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"仕入先"]) ?></th>
+              <th scope="col"><?= $this->Paginator->sort('name', ['label'=>"仕入品名"]) ?></th>
+              <th scope="col"><?= $this->Paginator->sort('name', ['label'=>"仕入先"]) ?></th>
               <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>
         </thead>

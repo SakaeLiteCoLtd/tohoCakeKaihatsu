@@ -119,73 +119,6 @@ class ProductsController extends AppController
       $_SESSION['product_detail']["factory_id"] = $Products[0]["factory_id"];
 
       return $this->redirect(['action' => 'editsyousai']);
-
-      /*
-      $data = $this->request->getData();
-      if(isset($data["edit"])){
-
-        $id = $data["id"];
-
-        if(!isset($_SESSION)){
-          session_start();
-        }
-        $_SESSION['productdata'] = array();
-        $_SESSION['productdata'] = $id;
-
-        return $this->redirect(['action' => 'editform']);
-
-      }elseif(isset($data["delete"])){
-
-        $id = $data["id"];
-
-        if(!isset($_SESSION)){
-          session_start();
-        }
-        $_SESSION['productdata'] = array();
-        $_SESSION['productdata'] = $id;
-
-        return $this->redirect(['action' => 'deleteconfirm']);
-
-      }
-      $this->set('id', $id);
-
-      $Products = $this->Products->find()->contain(["Factories", "Customers"])
-      ->where(['Products.id' => $id])->toArray();
-
-      $Factories = $this->Factories->find()
-      ->where(['id' => $Products[0]["factory"]['id']])->toArray();
-      $factory_name = $Factories[0]['name'];
-      $this->set('factory_name', $factory_name);
-
-      $product_code_ini = substr($Products[0]["product_code"], 0, 11);
-
-      $ProductName = $this->Products->find()
-      ->where(['product_code like' => $product_code_ini.'%', 'delete_flag' => 0])->toArray();
-
-      if(!isset($ProductName[0])){
-
-        return $this->redirect(['action' => 'editpreform',
-        's' => ['mess' => "自社工場：".$factory_name."、製品名：「".$data['name']."」の製品は存在しません。"]]);
-
-      }
-      $this->set('ProductName', $ProductName);
-
-      $name = $Products[0]['name'];
-      $this->set('name', $name);
-      $tanni = $ProductName[0]["tanni"];
-      $this->set('tanni', $tanni);
-      $weight = $ProductName[0]["weight"];
-      $this->set('weight', $weight);
-      $status_kensahyou = $ProductName[0]["status_kensahyou"];
-      $this->set('status_kensahyou', $status_kensahyou);
-      $ig_bank_modes = $ProductName[0]["ig_bank_modes"];
-      $this->set('ig_bank_modes', $ig_bank_modes);
-      
-      $Customers = $this->Customers->find()
-      ->where(['id' => $ProductName[0]['customer_id']])->toArray();
-      $customer_name = $Customers[0]["name"];
-      $this->set('customer_name', $customer_name);
-*/
     }
 
     public function index()
@@ -987,27 +920,9 @@ class ProductsController extends AppController
         ${"arrProduct_name_list".$i} = array_values(${"arrProduct_name_list".$i});
   
         $this->set('arrProduct_name_list'.$i, ${"arrProduct_name_list".$i});
-  /*
-        echo "<pre>";
-        print_r($i." ".$Factories[$i]["id"]);
-        echo "</pre>";
-  */
+
       }
 
-      /*
-      $Product_name_list = $this->Products->find()
-      ->where(['delete_flag' => 0])->toArray();
-
-      $arrProduct_name_list = array();
-      for($j=0; $j<count($Product_name_list); $j++){
-        array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
-      }
-      $arrProduct_name_list = array_unique($arrProduct_name_list);
-      $arrProduct_name_list = array_values($arrProduct_name_list);
-
-      $this->set('arrProduct_name_list', $arrProduct_name_list);
-*/
-      
     }
 
     public function editsyousai()
@@ -1176,18 +1091,7 @@ class ProductsController extends AppController
 
       $arrStatusLength = ["0" => "有", "1" => "無"];
       $this->set('arrStatusLength', $arrStatusLength);
-      /*
-      $arrkensakigu = [
-        "" => "",
-        "デジタルノギス" => "デジタルノギス",
-        "ルーペ" => "ルーペ",
-        "テーパーゲージ" => "テーパーゲージ",
-        "厚みゲージ" => "厚みゲージ",
-        "金尺" => "金尺",
-        "デジタル計り" => "デジタル計り"
-      ];
-      $this->set('arrkensakigu', $arrkensakigu);
-*/
+
       if($factory_id == 5){
         $Kensakigus = $this->Kensakigus->find()
         ->where(['delete_flag' => 0])->toArray();

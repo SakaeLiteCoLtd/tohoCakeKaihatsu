@@ -31,7 +31,7 @@ echo $this->Html->css('kensahyou');
 
 <?= $this->Form->create($product, ['url' => ['action' => 'details']]) ?>
 
-<table align="center">
+<table align="center" style="width:1000px; position: fixed; top: 70px; left: 50%; margin-left:-500px;">
     <tbody class='sample non-sample'>
       <tr>
       <td style="border-style: none;"><div><?= $this->Form->submit('前のラインへ', array('name' => 'mae')); ?></div></td>
@@ -161,7 +161,6 @@ echo $this->Html->css('kensahyou');
     </table>
     <br><br>
 
-
   <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$factory_id, 'label'=>false)) ?>
   <?= $this->Form->control('date_sta', array('type'=>'hidden', 'value'=>$date_sta, 'label'=>false)) ?>
   <?= $this->Form->control('date_fin', array('type'=>'hidden', 'value'=>$date_fin, 'label'=>false)) ?>
@@ -169,7 +168,7 @@ echo $this->Html->css('kensahyou');
   <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
   <?= $this->Form->control('target_num', array('type'=>'hidden', 'value'=>$target_num, 'label'=>false)) ?>
 
-<?php for($j=0; $j<=$num_max; $j++): ?>
+<?php for($j=0; $j<$num_max; $j++): ?>
   <?= $this->Form->control('machine_num'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('machine_num'.$j), 'label'=>false)) ?>
   <?= $this->Form->control('product_code'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('product_code'.$j), 'label'=>false)) ?>
   <?= $this->Form->control('start_datetime'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('start_datetime'.$j), 'label'=>false)) ?>

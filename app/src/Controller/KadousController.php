@@ -71,10 +71,10 @@ class KadousController extends AppController
       $dateYMD = date('Y-m-d');
       $dateYMD1 = strtotime($dateYMD);
       $dayyey = date('Y', strtotime('-1 day', $dateYMD1));
-      $dayyeini = date('Y', strtotime('-5 year', $dateYMD1));
       $arrYears = array();
-      for ($k=$dayyeini; $k<=$dayyey; $k++){
-        $arrYears[$k]=$k;
+      for ($k=0; $k<=5; $k++){
+        $year = $dayyey - $k;
+        $arrYears[$year]=$year;
       }
       $this->set('arrYears',$arrYears);
   
@@ -92,8 +92,9 @@ class KadousController extends AppController
 
       $arrYearsfin = array();
       $arrYearsfin["-"] ="-";
-      for ($k=$dayyeini; $k<=$dayyey; $k++){
-        $arrYearsfin[$k]=$k;
+      for ($k=0; $k<=5; $k++){
+        $year = $dayyey - $k;
+        $arrYearsfin[$year]=$year;
       }
       $this->set('arrYearsfin',$arrYearsfin);
   
@@ -624,7 +625,7 @@ class KadousController extends AppController
   
           $target_num = $data["target_num"] - 1;
           if($target_num < 0){
-            $target_num = $data["num_max"];
+            $target_num = $data["num_max"] - 1;
           }
     
           $machine_num = $data["machine_num".$target_num];
