@@ -82,7 +82,7 @@ if($status_kensahyou == 0){
 
       <table>
       <tr>
-      <td width="480"><strong>仕入品仕入先</strong></td>
+      <td width="480"><strong>仕入先</strong></td>
       </tr>
       <tr>
       <td><?= h($supplier_name) ?></td>

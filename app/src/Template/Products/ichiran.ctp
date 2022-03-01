@@ -34,6 +34,8 @@ echo $this->Html->css('index');
 
   <h2><font color=red><?= __('製品一覧') ?></font></h2>
 
+  <?php
+/*
   <table>
       <tbody class='sample non-sample'>
         <tr alien='right'>
@@ -43,18 +45,20 @@ echo $this->Html->css('index');
         </tr>
       </tbody>
     </table>
+*/
+    ?>
 
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-              <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
-                <th scope="col" style='width:200'><?= $this->Paginator->sort('product_code', ['label'=>"製品コード"]) ?></th>
-                <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"品名"]) ?></th>
-                <th scope="col" style='width:200'><?= $this->Paginator->sort('custmoer_id', ['label'=>"得意先"]) ?></th>
+              <th scope="col" style='width:50'><font color=black><?= __('No.') ?></font></th>
+                <th scope="col" style='width:160'><?= $this->Paginator->sort('product_code', ['label'=>"製品コード"]) ?></th>
+                <th scope="col" style='width:400'><?= $this->Paginator->sort('name', ['label'=>"品名"]) ?></th>
+                <th scope="col" style='width:250'><?= $this->Paginator->sort('custmoer_id', ['label'=>"得意先"]) ?></th>
 
                 <?php if ($check_gyoumu == 1) : ?>
 
-                <th scope="col" style='width:100'><?= __('') ?></th>
+                <th scope="col" style='width:70'><?= __('') ?></th>
 
                 <?php else : ?>
   <?php endif; ?>

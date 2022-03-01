@@ -151,6 +151,8 @@ class KadousController extends AppController
         $date_fin = $Data["date_fin"];
         $date_fin_hyouji = $Data["date_fin_hyouji"];
         $product_name = $Data["product_name"];
+        $machine_num = $Data["machine_num"];
+        $this->set('machine_num', $machine_num);
         $this->set('product_name', $product_name);
         $this->set('date_sta', $date_sta);
         $this->set('date_fin', $date_fin);
@@ -172,6 +174,8 @@ class KadousController extends AppController
         ->where(['name' => $data["product_name"], 'delete_flag' => 0])->toArray();
         $product_name = $data["product_name"];
         $this->set('product_name', $product_name);
+        $machine_num = $data["machine_num"];
+        $this->set('machine_num', $machine_num);
 
         if(strlen($data["product_name"]) > 0 && !isset($Products[0])){
         
@@ -215,11 +219,30 @@ class KadousController extends AppController
       $Linenames = $this->Linenames->find()
       ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
 
-      $DailyReportsData = $this->DailyReports->find()
-      ->contain(['Products'])
-      ->where(['start_datetime >=' => $date_sta, 'start_datetime <' => $date_fin,
-      'DailyReports.delete_flag' => 0, 'factory_id' => $factory_id])
-      ->order(["start_datetime"=>"ASC"])->toArray();
+      if($machine_num != "-"){
+        $DailyReportsData = $this->DailyReports->find()
+        ->contain(['Products'])
+        ->where([
+        'Products.name like' => '%'.$product_name.'%',
+        'start_datetime >=' => $date_sta, 
+        'start_datetime <' => $date_fin,
+        'DailyReports.delete_flag' => 0, 
+        'machine_num' => $machine_num,
+        'factory_id' => $factory_id
+        ])
+        ->order(["start_datetime"=>"ASC"])->toArray();
+      }else{
+        $DailyReportsData = $this->DailyReports->find()
+        ->contain(['Products'])
+        ->where([
+        'Products.name like' => '%'.$product_name.'%',
+        'start_datetime >=' => $date_sta, 
+        'start_datetime <' => $date_fin,
+        'DailyReports.delete_flag' => 0, 
+        'factory_id' => $factory_id
+        ])
+        ->order(["start_datetime"=>"ASC"])->toArray();
+      }
 
       $arrlines_all = array();
       for($i=0; $i<count($Linenames); $i++){
@@ -233,38 +256,40 @@ class KadousController extends AppController
       $arrproduct_code_ini_machine_num_datetime = array();
       for($i=0; $i<count($DailyReportsData); $i++){
 
-        if((int)substr($DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"), 11, 2) < 6){//前日の検査
-
-          $date_fin_relayLog = $DailyReportsData[$i]["start_datetime"]->format("Y-m-d")." 05:59:59";
-          $date1fin = strtotime($DailyReportsData[$i]["start_datetime"]->format("Y-m-d"));
-          $date_sta_relayLog = date('Y-m-d', strtotime('-1 day', $date1fin))." 06:00:00";
-    
-        }else{
-
-          $date_sta_relayLog = $DailyReportsData[$i]["start_datetime"]->format("Y-m-d")." 06:00:00";
-          $date1fin = strtotime($DailyReportsData[$i]["start_datetime"]->format("Y-m-d"));
-          $date_fin_relayLog = date('Y-m-d', strtotime('+1 day', $date1fin))." 05:59:59";
-  
-        }
-
-        $RelayLogsData = $this->RelayLogs->find()
+        $RelayLogsDataSta = $this->RelayLogs->find()
         ->where([
-          'datetime >=' => $date_sta_relayLog,
-          'datetime <' => $date_fin_relayLog,
+          'machine_relay_id' => 5,
+          'status' => 1,
+          'datetime <' => $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"),
           'delete_flag' => 0,
           'factory_code' => $factory_id,
           'machine_num' => $DailyReportsData[$i]["machine_num"]
           ])
-        ->order(["datetime"=>"ASC"])->toArray();
+          ->order(["datetime"=>"DESC"])->limit('1')->toArray();
 
-        if(isset($RelayLogsData[0])){
-          $relay_start_datetime = $RelayLogsData[0]["datetime"]->format("Y-m-d H:i:s");
-          $relay_start_datetime_hyouji = $RelayLogsData[0]["datetime"]->format("H:i");
-          $relay_finish_datetime = $RelayLogsData[count($RelayLogsData)-1]["datetime"]->format("Y-m-d H:i:s");
-          $relay_finish_datetime_hyouji = $RelayLogsData[count($RelayLogsData)-1]["datetime"]->format("H:i");
+        if(isset($RelayLogsDataSta[0])){
+          $relay_start_datetime = $RelayLogsDataSta[0]["datetime"]->format("Y-m-d H:i:s");
+          $relay_start_datetime_hyouji = $RelayLogsDataSta[0]["datetime"]->format("H:i");
         }else{
           $relay_start_datetime = "";
           $relay_start_datetime_hyouji = "";
+        }
+
+        $RelayLogsDataFin = $this->RelayLogs->find()
+        ->where([
+          'machine_relay_id' => 5,
+          'status' => 0,
+          'datetime >' => $DailyReportsData[$i]["finish_datetime"]->format("Y-m-d H:i:s"),
+          'delete_flag' => 0,
+          'factory_code' => $factory_id,
+          'machine_num' => $DailyReportsData[$i]["machine_num"]
+          ])
+          ->order(["datetime"=>"ASC"])->limit('1')->toArray();
+  
+        if(isset($RelayLogsDataFin[0])){
+          $relay_finish_datetime = $RelayLogsDataFin[0]["datetime"]->format("Y-m-d H:i:s");
+          $relay_finish_datetime_hyouji = $RelayLogsDataFin[0]["datetime"]->format("H:i");
+        }else{
           $relay_finish_datetime_hyouji = "";
           $relay_finish_datetime = "";
         }
@@ -303,16 +328,39 @@ class KadousController extends AppController
 
         }
 
-        date_default_timezone_set('Asia/Tokyo');
-        $from = strtotime($relay_start_datetime);
-        $to = strtotime($relay_finish_datetime);
-        $relay_time = gmdate("H時間i分", $to - $from);//時間の差をフォーマット
+        $DailyReportssum_weight = $this->DailyReports->find()//総重量の取得
+        ->contain(['Products'])
+        ->where(['start_datetime' => $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"), 
+        'finish_datetime' => $DailyReportsData[$i]["finish_datetime"]->format("Y-m-d H:i:s"),
+        'product_code like' => substr($DailyReportsData[$i]["product"]["product_code"], 0, 11).'%',
+        'DailyReports.delete_flag' => 0, 'factory_id' => $factory_id])
+        ->order(["start_datetime"=>"ASC"])->toArray();
+  
+        $sum_weight = 0;
+        for($j=0; $j<count($DailyReportssum_weight); $j++){
+          $sum_weight = $sum_weight + $DailyReportssum_weight[$j]["sum_weight"];
+        }
+
+        if(strlen($relay_start_datetime) > 0 && strlen($relay_finish_datetime) > 0){
+          date_default_timezone_set('Asia/Tokyo');
+          $from = strtotime($relay_start_datetime);
+          $to = strtotime($relay_finish_datetime);
+          $relay_time = gmdate("G時間i分", $to - $from);//時間の差をフォーマット
+        }else{
+          $relay_time = "";
+        }
 
         $count_check = count($arrDaily_report) - 1;
 
         $date = $DailyReportsData[$i]["start_datetime"]->format("Y-m-d");
         if($tyuukann_flag == 0){//中間ではない時
           
+          $tasseiritsu = sprintf("%.1f", $sum_weight) * 100 / (sprintf("%.1f", $sum_weight) + $loss_sta + $loss_mid + $loss_fin);
+          $tasseiritsu = sprintf("%.1f", $tasseiritsu);
+    
+          $lossritsu = ($loss_sta + $loss_mid + $loss_fin) * 100 / (sprintf("%.1f", $sum_weight) + $loss_sta + $loss_mid + $loss_fin);
+          $lossritsu = sprintf("%.1f", $lossritsu);
+  
           if($count_check == -1){
 
             $arrDaily_report[] = [
@@ -334,6 +382,8 @@ class KadousController extends AppController
               "loss_fin" => $loss_fin,
               "loss_total" => $loss_sta + $loss_mid + $loss_fin,
               "sum_weight" => sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]),
+              "tasseiritsu" => $tasseiritsu,
+              "lossritsu" => $lossritsu,
             ];
           }elseif($count_check >= 0 && ($arrDaily_report[$count_check]["start_datetime_check"] != $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s") 
           || $arrDaily_report[$count_check]["product_code_ini"] != substr($DailyReportsData[$i]["product"]["product_code"], 0, 11))){
@@ -357,11 +407,19 @@ class KadousController extends AppController
               "loss_fin" => $loss_fin,
               "loss_total" => $loss_sta + $loss_mid + $loss_fin,
               "sum_weight" => sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]),
+              "tasseiritsu" => $tasseiritsu,
+              "lossritsu" => $lossritsu,
             ];
           }
 
         }elseif($loss_mid > 0){//中間のみの時
 
+          $tasseiritsu = sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]) * 100 / (sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]) + $loss_sta + $loss_mid + $loss_fin);
+          $tasseiritsu = sprintf("%.1f", $tasseiritsu);
+    
+          $lossritsu = ($loss_sta + $loss_mid + $loss_fin) * 100 / (sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]) + $loss_sta + $loss_mid + $loss_fin);
+          $lossritsu = sprintf("%.1f", $lossritsu);
+
           if($count_check == -1){
             $arrDaily_report[] = [
               "machine_num" => $DailyReportsData[$i]["machine_num"],
@@ -382,6 +440,8 @@ class KadousController extends AppController
               "loss_fin" => $loss_fin,
               "loss_total" => $loss_sta + $loss_mid + $loss_fin,
               "sum_weight" => sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]),
+              "tasseiritsu" => $tasseiritsu,
+              "lossritsu" => $lossritsu,
             ];
           }elseif($count_check >= 0 && ($arrDaily_report[$count_check]["start_datetime_check"] != $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s") 
           || $arrDaily_report[$count_check]["product_code_ini"] != substr($DailyReportsData[$i]["product"]["product_code"], 0, 11))){
@@ -404,6 +464,8 @@ class KadousController extends AppController
               "loss_fin" => $loss_fin,
               "loss_total" => $loss_sta + $loss_mid + $loss_fin,
               "sum_weight" => sprintf("%.1f", $DailyReportsData[$i]["sum_weight"]),
+              "tasseiritsu" => $tasseiritsu,
+              "lossritsu" => $lossritsu,
             ];
           }
 
@@ -413,19 +475,23 @@ class KadousController extends AppController
 
       $arrAll = $arrDaily_report;
 
+      $machine_num_array = array();
+      $start_datetime_array = array();
       foreach($arrAll as $key => $row ) {
         $machine_num_array[$key] = $row["machine_num"];
         $start_datetime_array[$key] = $row["start_datetime_check"];
       }
 
-      array_multisort($machine_num_array, SORT_ASC,
-      array_map( "strtotime", $start_datetime_array ), SORT_ASC,
-      $arrAll);
+      if(count($start_datetime_array) > 0){
+        array_multisort($machine_num_array, SORT_ASC,
+        array_map( "strtotime", $start_datetime_array ), SORT_ASC,
+        $arrAll);
+      }
 
       $this->set('arrAll', $arrAll);
 /*
       echo "<pre>";
-      print_r($arrAll);
+      print_r(count($arrAll));
       echo "</pre>";
 */
       $arrAllMachine = array();
@@ -488,6 +554,7 @@ class KadousController extends AppController
         $date_fin = $data["date_fin"];
         $date_fin_hyouji = $data["date_fin_hyouji"];
         $product_name = $data["product_name"];
+        $machine_num = $data["machine_num"];
 
         if(isset($data["checkbutton"])){
           $button_name = "checkbutton";
@@ -496,7 +563,7 @@ class KadousController extends AppController
         }
         return $this->redirect(['action' => 'view',
         's' => ['button_name' => $button_name, 'num_max' => $num_max, 'factory_id' => $factory_id,
-         'date_fin' => $date_fin,'date_sta' => $date_sta,'product_name' => $product_name,
+         'date_fin' => $date_fin,'date_sta' => $date_sta,'product_name' => $product_name,'machine_num' => $machine_num,
          'date_fin_hyouji' => $date_fin_hyouji]]);
 
       }else{
@@ -510,7 +577,8 @@ class KadousController extends AppController
         $this->set('machine_num', $machine_num);
         $product_code = $machine_products_date[1];
         $this->set('product_code', $product_code);
-  
+        $start_datetime = $machine_products_date[2]." ".$machine_products_date[3];
+
         if((int)substr($machine_products_date[3], 0, 2) < 6){//前日の検査
 
           $date_fin = $machine_products_date[2]." 05:59:59";
@@ -530,19 +598,14 @@ class KadousController extends AppController
         }
 
         for($i=0; $i<=$data["num_max"]; $i++){
-          if($data["machine_num".$i] == $machine_num && $data["product_code".$i] == $product_code){
+          if($data["machine_num".$i] == $machine_num
+           && $data["product_code".$i] == $product_code
+           && $data["start_datetime".$i] == $start_datetime){
             $target_num = $i;
             break;
           }
         }
 
-        for($i=0; $i<=$data["num_max"]; $i++){
-          if(isset($data["machine_num".$i])){
-            $num_max = $i;
-          }
-        }
-
-        $this->set('num_max', $num_max);
         $this->set('target_num', $target_num);
   
       }else{
@@ -559,93 +622,69 @@ class KadousController extends AppController
 
         if(isset($data["mae"])){
   
-          $target_num = $data["target_num"];
-          for($i=0; $i<=$data["num_max"]; $i++){
+          $target_num = $data["target_num"] - 1;
+          if($target_num < 0){
+            $target_num = $data["num_max"];
+          }
+    
+          $machine_num = $data["machine_num".$target_num];
+          $this->set('machine_num', $machine_num);
+          $product_code = $data["product_code".$target_num];
+          $this->set('product_code', $product_code);
 
-            if($target_num > 0){
-              $target_num = $target_num - 1;
-            }else{
-              $target_num = $data["num_max"];
-            }
+          if((int)substr($data["start_datetime".$target_num], 11, 2) < 6){//前日の検査
 
-            if(substr($data["start_datetime".$data["target_num"]], 0, 11) != substr($data["start_datetime".$target_num], 0, 11) 
-            && $data["product_code".$target_num] != "-"){
-
-              $machine_num = $data["machine_num".$target_num];
-              $this->set('machine_num', $machine_num);
-              $product_code = $data["product_code".$target_num];
-              $this->set('product_code', $product_code);
-  
-              if((int)substr($data["start_datetime".$target_num], 11, 2) < 6){//前日の検査
-
-                $date_fin = substr($data["start_datetime".$target_num], 0, 10)." 05:59:59";
-                $this->set('date_fin', $date_fin);
-                $date1fin = strtotime(substr($data["start_datetime".$target_num], 0, 10));
-                $date_sta = date('Y-m-d', strtotime('-1 day', $date1fin))." 06:00:00";
-                $this->set('date_sta', $date_sta);
-          
-              }else{
+            $date_fin = substr($data["start_datetime".$target_num], 0, 10)." 05:59:59";
+            $this->set('date_fin', $date_fin);
+            $date1fin = strtotime(substr($data["start_datetime".$target_num], 0, 10));
+            $date_sta = date('Y-m-d', strtotime('-1 day', $date1fin))." 06:00:00";
+            $this->set('date_sta', $date_sta);
       
-                $date_sta = substr($data["start_datetime".$target_num], 0, 10)." 06:00:00";
-                $this->set('date_sta', $date_sta);
-                $date1fin = strtotime(substr($data["start_datetime".$target_num], 0, 10));
-                $date_fin = date('Y-m-d', strtotime('+1 day', $date1fin))." 05:59:59";
-                $this->set('date_fin', $date_fin);
-        
-              }
-      
-              break;
-            }
+          }else{
   
+            $date_sta = substr($data["start_datetime".$target_num], 0, 10)." 06:00:00";
+            $this->set('date_sta', $date_sta);
+            $date1fin = strtotime(substr($data["start_datetime".$target_num], 0, 10));
+            $date_fin = date('Y-m-d', strtotime('+1 day', $date1fin))." 05:59:59";
+            $this->set('date_fin', $date_fin);
+    
           }
 
           $this->set('target_num', $target_num);
 
         }elseif(isset($data["tugi"])){
-
+    
           $date_sta = $data["date_sta"];
           $this->set('date_sta', $date_sta);
           $date_fin = $data["date_fin"];
           $this->set('date_fin', $date_fin);
-  
-          $target_num = $data["target_num"]-1;
-          for($i=0; $i<=$data["num_max"]; $i++){
 
-            if($target_num < $data["num_max"]){
-              $target_num = $target_num + 1;
-            }else{
-              $target_num = 0;
-            }
+          $target_num = $data["target_num"] + 1;
+          if($target_num >= $data["num_max"]){
+            $target_num = 0;
+          }
 
-            if(substr($data["start_datetime".$data["target_num"]], 0, 11) != substr($data["start_datetime".$target_num], 0, 11) 
-            && $data["product_code".$target_num] != "-"){
+          $machine_num = $data["machine_num".$target_num];
+          $this->set('machine_num', $machine_num);
+          $product_code = $data["product_code".$target_num];
+          $this->set('product_code', $product_code);
 
-              $machine_num = $data["machine_num".$target_num];
-              $this->set('machine_num', $machine_num);
-              $product_code = $data["product_code".$target_num];
-              $this->set('product_code', $product_code);
-  
-              if((int)substr($data["start_datetime".$target_num], 11, 2) < 6){//前日の検査
+          if((int)substr($data["start_datetime".$target_num], 11, 2) < 6){//前日の検査
 
-                $date_fin = substr($data["start_datetime".$target_num], 0, 10)." 05:59:59";
-                $this->set('date_fin', $date_fin);
-                $date1fin = strtotime(substr($data["start_datetime".$target_num], 0, 10));
-                $date_sta = date('Y-m-d', strtotime('-1 day', $date1fin))." 06:00:00";
-                $this->set('date_sta', $date_sta);
-          
-              }else{
+            $date_fin = substr($data["start_datetime".$target_num], 0, 10)." 05:59:59";
+            $this->set('date_fin', $date_fin);
+            $date1fin = strtotime(substr($data["start_datetime".$target_num], 0, 10));
+            $date_sta = date('Y-m-d', strtotime('-1 day', $date1fin))." 06:00:00";
+            $this->set('date_sta', $date_sta);
       
-                $date_sta = substr($data["start_datetime".$target_num], 0, 10)." 06:00:00";
-                $this->set('date_sta', $date_sta);
-                $date1fin = strtotime(substr($data["start_datetime".$target_num], 0, 10));
-                $date_fin = date('Y-m-d', strtotime('+1 day', $date1fin))." 05:59:59";
-                $this->set('date_fin', $date_fin);
-        
-              }
-      
-              break;
-            }
+          }else{
   
+            $date_sta = substr($data["start_datetime".$target_num], 0, 10)." 06:00:00";
+            $this->set('date_sta', $date_sta);
+            $date1fin = strtotime(substr($data["start_datetime".$target_num], 0, 10));
+            $date_fin = date('Y-m-d', strtotime('+1 day', $date1fin))." 05:59:59";
+            $this->set('date_fin', $date_fin);
+    
           }
 
           $this->set('target_num', $target_num);
@@ -656,8 +695,8 @@ class KadousController extends AppController
           $this->set('machine_num', $machine_num);
           $product_code = $data["product_code"];
           $this->set('product_code', $product_code);
-          $target_num = $data["num_max"];
-          $this->set('target_num', $target_num);
+          $num_max = $data["num_max"];
+          $this->set('num_max', $num_max);
   
           $date_sta = $data["date_sta"];
           $date_fin = $data["date_fin"];

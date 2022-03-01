@@ -64,6 +64,18 @@ class ProductsController extends AppController
 
     public function ichiran($id = null)
     {
+
+      $this->paginate = [
+        'limit' => 13,
+        'contain' => ['Customers'],
+        'order' => [//'Products.updated_at' => 'desc',
+        'Products.created_at' => 'desc']
+      ];
+      $products = $this->paginate($this->Products->find()->where(['Products.delete_flag' => 0]));
+
+      $this->set(compact('products'));
+
+      /*
       if(strlen($id) > 0){
 
         $this->paginate = [
@@ -87,7 +99,7 @@ class ProductsController extends AppController
         $this->set(compact('products'));
 
       }
-  
+  */
     }
 
     public function detail($id = null)

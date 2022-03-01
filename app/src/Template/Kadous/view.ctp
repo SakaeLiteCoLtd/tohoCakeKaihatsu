@@ -63,6 +63,9 @@ echo $this->Html->css('kensahyou');
             <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('開始ロス') ?><br><?= __('(kg)') ?></td>
             <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('中間ロス') ?><br><?= __('(kg)') ?></td>
             <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('終了ロス') ?><br><?= __('(kg)') ?></td>
+            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('ロス時間') ?></td>
+            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('ロス率') ?><br><?= __('(％)') ?></td>
+            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('達成率') ?><br><?= __('(％)') ?></td>
             <td style='font-size: 10pt; width:60; border-width: 1px solid black;'></td>
             </tr>
         </thead>
@@ -72,7 +75,7 @@ echo $this->Html->css('kensahyou');
 
   <?= $this->Form->control('machine_num'.$j, array('type'=>'hidden', 'value'=>$arrAll[$j]["machine_num"], 'label'=>false)) ?>
   <?= $this->Form->control('product_code'.$j, array('type'=>'hidden', 'value'=>$arrAll[$j]["product_code"], 'label'=>false)) ?>
-  <?= $this->Form->control('start_datetime'.$j, array('type'=>'hidden', 'value'=>$arrAll[$j]["start_datetime"], 'label'=>false)) ?>
+  <?= $this->Form->control('start_datetime'.$j, array('type'=>'hidden', 'value'=>$arrAll[$j]["start_datetime_check"], 'label'=>false)) ?>
   <?= $this->Form->control('num'.$j, array('type'=>'hidden', 'value'=>$j, 'label'=>false)) ?>
   <?= $this->Form->control('num_max', array('type'=>'hidden', 'value'=>$j, 'label'=>false)) ?>
 
@@ -139,11 +142,23 @@ echo $this->Html->css('kensahyou');
   ?>
     <?= h($arrAll[$j]["loss_fin"]) ?></td>
 
+    <td style='font-size: 10pt'></td>
+
+    <?php
+  echo "<td style='font-size: 10pt'>\n";
+  ?>
+    <?= h($arrAll[$j]["lossritsu"]) ?></td>
+
+    <?php
+  echo "<td style='font-size: 10pt'>\n";
+  ?>
+    <?= h($arrAll[$j]["tasseiritsu"]) ?></td>
+
   <?php
   echo "<td>\n";
   ?>
               <?php
-              echo $this->Form->submit("詳細" , ['name' => $arrAll[$j]["machine_num"]."_".$arrAll[$j]["product_code"]."_".$arrAll[$j]["start_datetime"]]) ;
+              echo $this->Form->submit("詳細" , ['name' => $arrAll[$j]["machine_num"]."_".$arrAll[$j]["product_code"]."_".$arrAll[$j]["start_datetime_check"]]) ;
               ?>
               </td>
 
@@ -158,6 +173,7 @@ echo $this->Html->css('kensahyou');
     <?= $this->Form->control('date_fin_hyouji', array('type'=>'hidden', 'value'=>$date_fin_hyouji, 'label'=>false)) ?>
     <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$factory_id, 'label'=>false)) ?>
     <?= $this->Form->control('product_name', array('type'=>'hidden', 'value'=>$product_name, 'label'=>false)) ?>
+    <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
     <?= $this->Form->control('num_max', array('type'=>'hidden', 'value'=>count($arrAll), 'label'=>false)) ?>
     <br>
     <table align="center">

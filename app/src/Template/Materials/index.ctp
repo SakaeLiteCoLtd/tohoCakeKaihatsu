@@ -30,6 +30,8 @@ echo $this->Html->css('index');
 
   <h2><font color=red><?= __('仕入品一覧') ?></font></h2>
 
+  <?php
+/*
   <table>
       <tbody class='sample non-sample'>
         <tr alien='right'>
@@ -39,14 +41,17 @@ echo $this->Html->css('index');
         </tr>
       </tbody>
     </table>
+*/
+    ?>
 
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-              <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
+              <th scope="col" style='width:50'><font color=black><?= __('No.') ?></font></th>
               <th scope="col"><?= $this->Paginator->sort('material_code', ['label'=>"仕入品コード"]) ?></th>
-              <th scope="col" style='width:350'><?= $this->Paginator->sort('name', ['label'=>"仕入品名"]) ?></th>
-                <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
+              <th scope="col" style='width:400'><?= $this->Paginator->sort('name', ['label'=>"仕入品名"]) ?></th>
+              <th scope="col" style='width:200'><?= $this->Paginator->sort('name', ['label'=>"仕入先"]) ?></th>
+              <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>
         </thead>
         <tbody>
@@ -55,6 +60,7 @@ echo $this->Html->css('index');
               <td><?= h($i) ?></td>
                 <td><?= h($material->material_code) ?></td>
                 <td><?= h($material->name) ?></td>
+                <td><?= h($material->material_supplier->name) ?></td>
                 <td class="actions">
                   <?= $this->Html->link(__('編集'), ['action' => 'detail', $material->id]) ?>
                 </td>

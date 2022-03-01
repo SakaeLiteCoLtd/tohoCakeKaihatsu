@@ -51,6 +51,14 @@ class MaterialsController extends AppController
     public function index($id = null)
     {
 
+      $this->paginate = [
+          'limit' => 13,
+          'contain' => ['MaterialSuppliers', 'MaterialTypes', 'Factories'],
+          'order' => ['Materials.created_at' => 'desc']
+        ];
+      $materials = $this->paginate($this->Materials->find()->where(['Materials.delete_flag' => 0]));
+      $this->set(compact('materials'));
+/*
       if(strlen($id) > 0){
   
         $this->paginate = [
@@ -66,14 +74,14 @@ class MaterialsController extends AppController
 
         $this->paginate = [
           'limit' => 13,
-            'contain' => ['MaterialTypes', 'Factories'],
-            'order' => ['Materials.material_code' => 'asc']
+            'contain' => ['MaterialSuppliers', 'MaterialTypes', 'Factories'],
+            'order' => ['Materials.created_at' => 'desc']
           ];
         $materials = $this->paginate($this->Materials->find()->where(['Materials.delete_flag' => 0]));
         $this->set(compact('materials'));
 
       }
-
+*/
     }
 
     public function editpreform()

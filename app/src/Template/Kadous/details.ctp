@@ -31,6 +31,23 @@ echo $this->Html->css('kensahyou');
 
 <?= $this->Form->create($product, ['url' => ['action' => 'details']]) ?>
 
+<table align="center">
+    <tbody class='sample non-sample'>
+      <tr>
+      <td style="border-style: none;"><div><?= $this->Form->submit('前のラインへ', array('name' => 'mae')); ?></div></td>
+          <td style="border-style: none;"><?= __("　　　　　　　　　　　　　　　　　　　") ?></td>
+        <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+        <td style="border-style: none;"><?= __("　") ?></td>
+          <td style="border-style: none;"><div><?= $this->Form->submit('呼出画面へ戻る', array('name' => 'ichiran')); ?></div></td>
+        <td style="border-style: none;"><?= __("　") ?></td>
+          <td style="border-style: none;"><div><?= $this->Form->submit('検査表表示', array('name' => 'kensahyou')); ?></div></td>
+          <td style="border-style: none;"><?= __("　　　　　　　　　　　　　　　　　　　") ?></td>
+          <td style="border-style: none;"><div><?= $this->Form->submit('次のラインへ', array('name' => 'tugi')); ?></div></td>
+      </tr>
+    </tbody>
+  </table>
+  <br><br>
+
 <?php
         $Linenames = $this->Linenames->find()
         ->where(['delete_flag' => 0, 'factory_id' => $factory_id, 'machine_num' => $machine_num])->toArray();
@@ -144,24 +161,7 @@ echo $this->Html->css('kensahyou');
     </table>
     <br><br>
 
-<table align="center">
-    <tbody class='sample non-sample'>
-      <tr>
-      <td style="border-style: none;"><div><?= $this->Form->submit('前のラインへ', array('name' => 'mae')); ?></div></td>
-          <td style="border-style: none;"><?= __("　　　　　　　　　　　　　　　　　　　") ?></td>
-        <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
-        <td style="border-style: none;"><?= __("　") ?></td>
-          <td style="border-style: none;"><div><?= $this->Form->submit('呼出画面へ戻る', array('name' => 'ichiran')); ?></div></td>
-        <td style="border-style: none;"><?= __("　") ?></td>
-          <td style="border-style: none;"><div><?= $this->Form->submit('検査表表示', array('name' => 'kensahyou')); ?></div></td>
-          <td style="border-style: none;"><?= __("　　　　　　　　　　　　　　　　　　　") ?></td>
-          <td style="border-style: none;"><div><?= $this->Form->submit('次のラインへ', array('name' => 'tugi')); ?></div></td>
-      </tr>
-    </tbody>
-  </table>
-  <br><br>
 
-  <?= $this->Form->control('product_name', array('type'=>'hidden', 'value'=>$product_name, 'label'=>false)) ?>
   <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$factory_id, 'label'=>false)) ?>
   <?= $this->Form->control('date_sta', array('type'=>'hidden', 'value'=>$date_sta, 'label'=>false)) ?>
   <?= $this->Form->control('date_fin', array('type'=>'hidden', 'value'=>$date_fin, 'label'=>false)) ?>
@@ -174,5 +174,5 @@ echo $this->Html->css('kensahyou');
   <?= $this->Form->control('product_code'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('product_code'.$j), 'label'=>false)) ?>
   <?= $this->Form->control('start_datetime'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('start_datetime'.$j), 'label'=>false)) ?>
   <?= $this->Form->control('num'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('num'.$j), 'label'=>false)) ?>
-  <?= $this->Form->control('num_max', array('type'=>'hidden', 'value'=>$j, 'label'=>false)) ?>
+  <?= $this->Form->control('num_max', array('type'=>'hidden', 'value'=>$num_max, 'label'=>false)) ?>
 <?php endfor;?>
