@@ -35,7 +35,11 @@ echo $this->Html->css('kensahyou');
   <td style='width:101'>測定箇所</td>
 
   <?php for($i=1; $i<=11; $i++): ?>
-    <td style='width:118'><?= h(${"size_name".$i}) ?></td>
+    <?php if (${"size_name".$i} == "長さ"): ?>
+      <td style='width:118'>切断長</td>
+    <?php else : ?>
+      <td style='width:118'><?= h(${"size_name".$i}) ?></td>
+    <?php endif; ?>
     <?= $this->Form->control('size_name'.$i, array('type'=>'hidden', 'value'=>${"size_name".$i}, 'label'=>false)) ?>
   <?php endfor;?>
 
@@ -92,7 +96,11 @@ echo $this->Html->css('kensahyou');
   <td style='width:101'>測定箇所</td>
 
   <?php for($i=1; $i<=11; $i++): ?>
-    <td style='width:118'><?= h(${"size_name".$i}) ?></td>
+    <?php if (${"size_name".$i} == "長さ"): ?>
+      <td style='width:118'>切断長</td>
+    <?php else : ?>
+      <td style='width:118'><?= h(${"size_name".$i}) ?></td>
+    <?php endif; ?>
     <?= $this->Form->control('size_name'.$i, array('type'=>'hidden', 'value'=>${"size_name".$i}, 'label'=>false)) ?>
   <?php endfor;?>
 

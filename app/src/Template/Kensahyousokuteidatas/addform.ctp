@@ -251,7 +251,7 @@ for($i=0; $i<$count_length; $i++){
 
   <?php for($i=1; $i<=11; $i++): ?>
     <?php if ($i == $num_length + 1): ?>
-    <td style='width:75'><div class="length"></div><?= h("長さ") ?></td>
+    <td style='width:75'><div class="length"></div><?= h("切断長") ?></td>
     <?php else : ?>
       <td style='width:75'><div class="length"></div><?= h(${"size_name".$i}) ?></td>
       <?php endif; ?>
@@ -269,7 +269,7 @@ for($i=0; $i<$count_length; $i++){
 
     <td style='font-size: 11pt' width="37" rowspan='8'>No.</td>
     <td width="85" rowspan='7'>時間</td>
-  <td width="82" rowspan='6'><strong><font size="3">長さ<br>(mm)</font></strong></td>
+  <td width="82" rowspan='6'><strong><font size="3">規格<br>長さ<br>(mm)</font></strong></td>
 
   <td>規格</td>
 

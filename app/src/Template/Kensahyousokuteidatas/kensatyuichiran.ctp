@@ -64,7 +64,11 @@ echo $this->Html->css('kensahyou');
   <td style='width:98'>測定箇所</td>
 
   <?php for($i=1; $i<=11; $i++): ?>
-    <td style='width:78'><?= h(${"size_name".$i}) ?></td>
+    <?php if (${"size_name".$i} == "長さ"): ?>
+      <td style='width:78'>切断長</td>
+    <?php else : ?>
+      <td style='width:78'><?= h(${"size_name".$i}) ?></td>
+    <?php endif; ?>
   <?php endfor;?>
 
   <td width="56" rowspan='3'>外観</td>
@@ -77,7 +81,7 @@ echo $this->Html->css('kensahyou');
 
 <td width="36" rowspan='8' style='font-size: 10pt'>No.</td>
 <td width="130" rowspan='7'>時間</td>
-<td width="60" rowspan='6'>長さ<br>(mm)</td>
+<td width="60" rowspan='6'>規格<br>長さ<br>(mm)</td>
 
   <td>規格</td>
 

@@ -50,7 +50,11 @@ $mes = "";
   <td style='width:110'>測定箇所</td>
 
   <?php for($i=1; $i<=11; $i++): ?>
-    <td style='width:84'><?= h(${"size_name".$i}) ?></td>
+    <?php if (${"size_name".$i} == "長さ"): ?>
+      <td style='width:84'>切断長</td>
+    <?php else : ?>
+      <td style='width:84'><?= h(${"size_name".$i}) ?></td>
+    <?php endif; ?>
   <?php endfor;?>
 
   <td width="65" rowspan='3'>外観</td>
@@ -66,7 +70,7 @@ $mes = "";
   <?= h("/".substr($datekensaku, 5, 2)) ?><br>
   <?= h("/".substr($datekensaku, 8, 2)) ?><br>
   </font><br>時間</td>
-  <td width="65" rowspan='6'>長さ<br>(mm)</td>
+  <td width="65" rowspan='6'>規格<br>長さ<br>(mm)</td>
 
   <td>規格</td>
 

@@ -42,7 +42,11 @@ echo $this->Html->css('kensahyou');
   <td style='width:96'>測定箇所</td>
 
   <?php for($i=1; $i<=11; $i++): ?>
-    <td style='width:78'><?= h(${"size_name".$i}) ?></td>
+    <?php if (${"size_name".$i} == "長さ"): ?>
+      <td style='width:78'>切断長</td>
+    <?php else : ?>
+      <td style='width:78'><?= h(${"size_name".$i}) ?></td>
+    <?php endif; ?>
   <?php endfor;?>
 
   <td width="48" rowspan='4'>外観</td>
