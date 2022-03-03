@@ -31,10 +31,10 @@ echo $this->Html->css('kensahyou');
 <div align="center"><strong style="font-size: 13pt; color:red"><?= __("※この画面では画像登録は完了していません。") ?></strong></div>
     <br>
 
-<table width="300">
+<table>
 <tbody style="background-color: #FFFFCC">
    <tr>
-     <td width="300"><strong>製品名</strong></td>
+     <td><strong>製品名</strong></td>
    </tr>
    <tr>
      <td><?= h($product_name) ?></td>

@@ -180,10 +180,20 @@ class KensahyouyobidashiesController extends AppController
 
           $arrProducts1[] = $InspectionStandardSizeChildren[$j]["inspection_standard_size_parent"]["product"]["product_code"];
           $product_code_ini = substr($InspectionStandardSizeChildren[$j]["inspection_standard_size_parent"]["product"]["product_code"], 0, 11);
+
+          if(strlen($InspectionStandardSizeChildren[$j]["updated_staff"]) > 0){//更新されている場合
+            $kousin_datetime = $InspectionStandardSizeChildren[$j]["updated_at"]->format("Y-m-d H:i:s");
+            $kousin_staff = $InspectionStandardSizeChildren[$j]["updated_staff"];
+          }else{
+            $kousin_datetime = $InspectionStandardSizeChildren[$j]["created_at"]->format("Y-m-d H:i:s");
+            $kousin_staff = $InspectionStandardSizeChildren[$j]["created_staff"];
+          }
+
           $arrProduct_created_at[] = [
             "product_code_ini" => $product_code_ini,
             "product_code" => $InspectionStandardSizeChildren[$j]["inspection_standard_size_parent"]["product"]["product_code"],
-            "kikaku_created_at" => $InspectionStandardSizeChildren[$j]["inspection_standard_size_parent"]["product"]["created_at"]->format("Y-m-d H:i:s")
+            "kikaku_created_at" => $kousin_datetime,
+            "kikaku_created_staff" => $kousin_staff
           ];
 
         }else{//まだ配列になければ追加
@@ -197,11 +207,21 @@ class KensahyouyobidashiesController extends AppController
           if($check == 0){
             $arrProducts1[] = $InspectionStandardSizeChildren[$j]["inspection_standard_size_parent"]["product"]["product_code"];
             $product_code_ini = substr($InspectionStandardSizeChildren[$j]["inspection_standard_size_parent"]["product"]["product_code"], 0, 11);
+
+            if(strlen($InspectionStandardSizeChildren[$j]["updated_staff"]) > 0){//更新されている場合
+              $kousin_datetime = $InspectionStandardSizeChildren[$j]["updated_at"]->format("Y-m-d H:i:s");
+              $kousin_staff = $InspectionStandardSizeChildren[$j]["updated_staff"];
+            }else{
+              $kousin_datetime = $InspectionStandardSizeChildren[$j]["created_at"]->format("Y-m-d H:i:s");
+              $kousin_staff = $InspectionStandardSizeChildren[$j]["created_staff"];
+            }
+
             $arrProduct_created_at[] = [
               "product_code_ini" => $product_code_ini,
               "product_code" => $InspectionStandardSizeChildren[$j]["inspection_standard_size_parent"]["product"]["product_code"],
-              "kikaku_created_at" => $InspectionStandardSizeChildren[$j]["inspection_standard_size_parent"]["product"]["created_at"]->format("Y-m-d H:i:s")
-            ];
+              "kikaku_created_at" => $kousin_datetime,
+              "kikaku_created_staff" => $kousin_staff
+              ];
           }
 
         }
@@ -271,14 +291,17 @@ class KensahyouyobidashiesController extends AppController
           for($j=0; $j<count($arrProduct_created_at); $j++){
             if($arrProduct_created_at[$j]["product_code_ini"] == $product_code_ini){
               $kikaku_created_at = $arrProduct_created_at[$j]["kikaku_created_at"];
+              $kikaku_created_staff = $arrProduct_created_at[$j]["kikaku_created_staff"];
             }
           }
 
         }else{
           $kikaku = 0;
         }
+
         $seikeijoukencheck = array_search($arrProducts[$i], $arrProducts2);
-        if(strlen($seikeijoukencheck) > 0){
+
+        if(strlen($seikeijoukencheck) > 0){//原料等の条件を登録済みの場合
           $seikeijouken = "登録済み";
 
           if($factory_id == 5){//本部の人がログインしている場合
@@ -301,21 +324,34 @@ class KensahyouyobidashiesController extends AppController
             for($k=0; $k<count($ProductConditionParents); $k++){
 
               $machine_num = $ProductConditionParents[$k]["machine_num"];;
-              $seikeijouken_created_at = $ProductConditionParents[$k]["created_at"]->format("Y-m-d H:i:s");
+  
+              if(strlen($ProductConditionParents[$k]["updated_staff"]) > 0){//更新されている場合
+                $seikeijouken_created_at = $ProductConditionParents[$k]["updated_at"]->format("Y-m-d H:i:s");
+                $seikeijouken_created_staff = $ProductConditionParents[$k]["updated_staff"];
+              }else{
+                $seikeijouken_created_at = $ProductConditionParents[$k]["created_at"]->format("Y-m-d H:i:s");
+                $seikeijouken_created_staff = $ProductConditionParents[$k]["created_staff"];
+              }
   
               if(strtotime($kikaku_created_at) > strtotime($seikeijouken_created_at)){
                 $datetime = $kikaku_created_at;
+                $staff = $kikaku_created_staff;
               }else{
                 $datetime = $seikeijouken_created_at;
+                $staff = $seikeijouken_created_staff;
               }
       
+              $StaffDatas = $this->Staffs->find()
+              ->where(['id' => $staff])->toArray();
+              $staff_name = $StaffDatas[0]["name"];
+
               if($machine_num == "-"){
                 $Linename = "-";
               }else{
                 $LinenameDatas = $this->Linenames->find()
                 ->where(['delete_flag' => 0, 'factory_id' => $Products[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
                 $Linename = $LinenameDatas[0]["name"];
-                }
+              }
         
               $arrKensahyous[] = [
                 "product_code_ini" => $product_code_ini,
@@ -326,23 +362,24 @@ class KensahyouyobidashiesController extends AppController
                 "seikeijouken" => $seikeijouken,
                 "kikaku_created_at" => $kikaku_created_at,
                 "seikeijouken_created_at" => $seikeijouken_created_at,
-                "datetime" => $datetime
+                "datetime" => $datetime,
+                "staff" => $staff_name
               ];
   
             }
     
           }
 
-        }else{
-          
+        }else{//原料等の条件を登録できていない場合
+              
           $seikeijouken = 0;
 
-          if(strtotime($kikaku_created_at) > strtotime($seikeijouken_created_at)){
-            $datetime = $kikaku_created_at;
-          }else{
-            $datetime = $seikeijouken_created_at;
-          }
-  
+          $datetime = $kikaku_created_at;
+          $staff = $kikaku_created_staff;
+          $StaffDatas = $this->Staffs->find()
+          ->where(['id' => $staff])->toArray();
+          $staff_name = $StaffDatas[0]["name"];
+
           if($machine_num == "-"){
             $Linename = "-";
           }else{
@@ -360,8 +397,9 @@ class KensahyouyobidashiesController extends AppController
             "seikeijouken" => $seikeijouken,
             "kikaku_created_at" => $kikaku_created_at,
             "seikeijouken_created_at" => $seikeijouken_created_at,
-            "datetime" => $datetime
-          ];
+            "datetime" => $datetime,
+            "staff" => $staff_name
+      ];
   
         }
 
@@ -417,7 +455,11 @@ class KensahyouyobidashiesController extends AppController
         $arrGouki = $arrGouki + $array;
     }
       $this->set('arrGouki', $arrGouki);
-
+/*
+      echo "<pre>";
+      print_r($arrKensahyous);
+      echo "</pre>";
+*/
       echo "<pre>";
       print_r("");
       echo "</pre>";
@@ -460,11 +502,7 @@ class KensahyouyobidashiesController extends AppController
         return $this->redirect(['controller' => 'kensahyoukikakus',  'action' => 'addformpre']);
 
       }
-/*
-      echo "<pre>";
-      print_r($getdata);
-      echo "</pre>";
-*/
+
       $arrtouroku = array_keys($getdata, '登録');
       $arrfukusei = array_keys($getdata, '複製');
       $arrdelete = array_keys($getdata, '削除');
@@ -614,7 +652,7 @@ class KensahyouyobidashiesController extends AppController
           $arrProduct_created_at[] = [
             "product_code_ini" => $product_code_ini,
             "product_code" => $InspectionStandardSizeChildren[$j]["inspection_standard_size_parent"]["product"]["product_code"],
-            "kikaku_created_at" => $InspectionStandardSizeChildren[$j]["inspection_standard_size_parent"]["product"]["created_at"]->format("Y-m-d H:i:s")
+            "kikaku_created_at" => $InspectionStandardSizeChildren[$j]["inspection_standard_size_parent"]["created_at"]->format("Y-m-d H:i:s")
           ];
 
         }else{//まだ配列になければ追加
@@ -631,7 +669,7 @@ class KensahyouyobidashiesController extends AppController
             $arrProduct_created_at[] = [
               "product_code_ini" => $product_code_ini,
               "product_code" => $InspectionStandardSizeChildren[$j]["inspection_standard_size_parent"]["product"]["product_code"],
-              "kikaku_created_at" => $InspectionStandardSizeChildren[$j]["inspection_standard_size_parent"]["product"]["created_at"]->format("Y-m-d H:i:s")
+              "kikaku_created_at" => $InspectionStandardSizeChildren[$j]["inspection_standard_size_parent"]["created_at"]->format("Y-m-d H:i:s")
             ];
           }
 

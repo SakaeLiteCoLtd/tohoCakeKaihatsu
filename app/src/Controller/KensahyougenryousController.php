@@ -3176,7 +3176,7 @@ class KensahyougenryousController extends AppController
               'start_datetime' => $ProductConditionParentmoto[0]["start_datetime"]->format("Y-m-d H:i:s"),
               'is_active' => 0,
               'delete_flag' => 0,
-              'created_at' => $ProductConditionParentmoto[0]["created_at"]->format("Y-m-d H:i:s"),
+              'created_at' => date("Y-m-d H:i:s"),
               'created_staff' => $ProductConditionParentmoto[0]["created_staff"],
               'updated_at' => date("Y-m-d H:i:s"),
               'updated_staff' => $staff_id

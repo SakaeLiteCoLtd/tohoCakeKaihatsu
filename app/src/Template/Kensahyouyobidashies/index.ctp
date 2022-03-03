@@ -159,12 +159,13 @@ $disp_data = array_slice($arrKensahyous, $start_no, MAX, true);
 <table>
         <thead>
             <tr class="parents">
-            <td style='width:60; height:60; border-width: 1px solid black;'><?= __('No.') ?></td>
-            <td style='height:60; border-width: 1px solid black;'><?= __('製品名') ?></td>
-            <td style='width:100; height:60; border-width: 1px solid black;'><?= __('ライン') ?></td>
-            <td style='width:150; height:60; border-width: 1px solid black;'><?= __('検査表画像・規格') ?></td>
-            <td style='width:150; height:60; border-width: 1px solid black;'><?= __('原料・温度条件') ?></td>
-            <td style='width:200; height:60; border-width: 1px solid black;'><?= __('データ作成日') ?></td>
+            <td style='width:40; height:60; border-width: 1px solid black;'><?= __('No.') ?></td>
+            <td style='height:60; border-width: 1px solid black;font-size: 11pt'><?= __('製品名') ?></td>
+            <td style='width:60; height:60; border-width: 1px solid black;font-size: 11pt'><?= __('ライン') ?></td>
+            <td style='width:130; height:60; border-width: 1px solid black;font-size: 11pt'><?= __('検査表画像・規格') ?></td>
+            <td style='width:120; height:60; border-width: 1px solid black;font-size: 11pt'><?= __('原料・温度条件') ?></td>
+            <td style='width:190; height:60; border-width: 1px solid black;font-size: 11pt'><?= __('データ作成日') ?></td>
+            <td style='height:60; border-width: 1px solid black;font-size: 11pt'><?= __('データ更新者') ?></td>
             </tr>
         </thead>
 
@@ -207,6 +208,11 @@ foreach($disp_data as $val){ // データ表示
         <td><?= h($val["datetime"]) ?></td>
     <?php endif; ?>
 
+    <?php if ($val["seikeijouken"] !== "登録済み" || $val["kikaku"] !== "登録済み"): ?>
+      <td>-</td>
+    <?php else : ?>
+        <td><?= h($val["staff"]) ?></td>
+    <?php endif; ?>
 
 </tr>
 

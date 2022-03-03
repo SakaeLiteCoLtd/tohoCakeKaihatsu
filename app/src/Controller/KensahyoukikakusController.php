@@ -1902,7 +1902,9 @@ class KensahyoukikakusController extends AppController
             'is_active' => 0,
             'delete_flag' => 0,
             'created_at' => $datetimenow,
-            'created_staff' => $staff_id
+            'created_staff' => $staff_id,
+            'updated_at' => $datetimenow,
+            "updated_staff" => $staff_id
           ];
 
           if ($this->InspectionStandardSizeParents->updateAll(
@@ -1938,8 +1940,10 @@ class KensahyoukikakusController extends AppController
                     "lower_limit" => sprintf("%.1f", $data['lower_limit'.$i]),
                     "measuring_instrument" => $data['measuring_instrument'.$i],
                     "delete_flag" => 0,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    "created_staff" => $staff_id
+                    'created_at' => $datetimenow,
+                    "created_staff" => $staff_id,
+                    'updated_at' => $datetimenow,
+                    "updated_staff" => $staff_id
                   ];
           
                   $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren
@@ -1960,8 +1964,10 @@ class KensahyoukikakusController extends AppController
                     "lower_limit" => $data['lower_limit'.$i],
                     "measuring_instrument" => $data['measuring_instrument'.$i],
                     "delete_flag" => 0,
-                    'created_at' => date("Y-m-d H:i:s"),
-                    "created_staff" => $staff_id
+                    'created_at' => $datetimenow,
+                    "created_staff" => $staff_id,
+                    'updated_at' => $datetimenow,
+                    "updated_staff" => $staff_id
                   ];
         
                   $InspectionStandardSizeChildren = $this->InspectionStandardSizeChildren
@@ -1998,7 +2004,9 @@ class KensahyoukikakusController extends AppController
               "measuring_instrument" => "-",
               "delete_flag" => 0,
               'created_at' => $datetimenow,
-              "created_staff" => $staff_id
+              "created_staff" => $staff_id,
+              'updated_at' => $datetimenow,
+              "updated_staff" => $staff_id
             ];
     
           } else {
