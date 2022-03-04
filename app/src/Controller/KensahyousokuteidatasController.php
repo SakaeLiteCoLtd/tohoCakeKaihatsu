@@ -1898,11 +1898,17 @@ class KensahyousokuteidatasController extends AppController
           $length_measuring_instrument = "-";
         }
         ${"arrLength_size".$n} = array();
+
+        if(sprintf("%.1f", $Products[$n]["length_lower_limit"]) < 0){
+          $lower = sprintf("%.1f", $Products[$n]["length_lower_limit"]);
+        }else{
+          $lower = "+".sprintf("%.1f", $Products[$n]["length_lower_limit"]);
+        }
         ${"arrLength_size".$n} = [
           "product_id" => $Products[$n]["id"],
           "size" => sprintf("%.1f", $Products[$n]["length_cut"]),
           "upper" => "+".sprintf("%.1f", $Products[$n]["length_upper_limit"]),
-          "lower" => sprintf("%.1f", $Products[$n]["length_lower_limit"]),
+          "lower" => $lower,
           "length_measuring_instrument" => $length_measuring_instrument
         ];
   
@@ -6864,7 +6870,8 @@ class KensahyousokuteidatasController extends AppController
             $this->set('lower_limit'.$num,${"lower_limit".$num});
             ${"size".$num} = "-";
             $this->set('size'.$num,${"size".$num});
-            ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+            ${"measuring_instrument".$num} = "※製品規格参照";
+    //        ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
             $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
     
           }elseif($InspectionStandardSizeChildren[$i]["input_type"] === "judge"){
@@ -7201,7 +7208,8 @@ class KensahyousokuteidatasController extends AppController
               $this->set('lower_limit'.$num,${"lower_limit".$num});
               ${"size".$num} = "-";
               $this->set('size'.$num,${"size".$num});
-              ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+              ${"measuring_instrument".$num} = "※製品規格参照";
+        //      ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
               $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
       
             }elseif($InspectionStandardSizeChildren[$i]["input_type"] === "judge"){
@@ -7368,7 +7376,8 @@ class KensahyousokuteidatasController extends AppController
                 $this->set('lower_limit'.$num,${"lower_limit".$num});
                 ${"size".$num} = "-";
                 $this->set('size'.$num,${"size".$num});
-                ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+                ${"measuring_instrument".$num} = "※製品規格参照";
+                //     ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
                 $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
         
               }elseif($InspectionStandardSizeChildren[$i]["input_type"] === "judge"){
@@ -7735,7 +7744,8 @@ class KensahyousokuteidatasController extends AppController
             $this->set('lower_limit'.$num,${"lower_limit".$num});
             ${"size".$num} = "-";
             $this->set('size'.$num,${"size".$num});
-            ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
+            ${"measuring_instrument".$num} = "※製品規格参照";
+            //      ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
             $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
     
           }elseif($InspectionStandardSizeChildren[$i]["input_type"] === "judge"){
