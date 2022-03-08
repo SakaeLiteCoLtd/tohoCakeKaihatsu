@@ -59,19 +59,31 @@ echo $this->Html->css('kensahyou');
       <?= $this->Form->control('amount'.$k, array('type'=>'hidden', 'value'=>$this->request->getData('amount'.$k), 'label'=>false)) ?>
       <?= $this->Form->control('sum_weight'.$k, array('type'=>'hidden', 'value'=>${"sum_weight".$k}, 'label'=>false)) ?>
       <?= $this->Form->control('total_loss_weight'.$k, array('type'=>'hidden', 'value'=>${"total_loss_weight".$k}, 'label'=>false)) ?>
-      <?= $this->Form->control('lossritsu'.$k, array('type'=>'hidden', 'value'=>${"lossritsu".$k}, 'label'=>false)) ?>
-      <?= $this->Form->control('tasseiritsu'.$k, array('type'=>'hidden', 'value'=>${"tasseiritsu".$k}, 'label'=>false)) ?>
 
     <tr height="45">
     <td><?= h($this->request->getData('length'.$k)) ?></td>
     <td><?= h($this->request->getData('amount'.$k)) ?></td>
     <td><?= h(${"sum_weight".$k}) ?></td>
     <td><?= h(${"total_loss_weight".$k}) ?></td>
-    <td><?= h(${"lossritsu".$k}) ?></td>
-    <td><?= h(${"tasseiritsu".$k}) ?></td>
+
+    <?php if ($k == 0): ?>
+      <?php
+        echo "<td rowspan=$num>";
+        echo "$lossritsu";
+        echo "</td>";
+        echo "<td rowspan=$num>";
+        echo "$tasseiritsu";
+        echo "</td>";
+      ?>
+    <?php else : ?>
+    <?php endif; ?>
+
     </tr>
     
     <?php endfor;?>
+
+    <?= $this->Form->control('lossritsu', array('type'=>'hidden', 'value'=>$lossritsu, 'label'=>false)) ?>
+    <?= $this->Form->control('tasseiritsu', array('type'=>'hidden', 'value'=>$tasseiritsu, 'label'=>false)) ?>
 
     </tbody>
 </table>

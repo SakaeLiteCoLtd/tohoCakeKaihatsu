@@ -98,7 +98,8 @@ echo $this->Html->css('kensahyou');
 
             <tr>
             <td><?= h($LinenameDatas[0]["name"]);?></td>
-              <td><?= h($arrInspectionDataResultParents[$i]["product_code"]) ? $this->Html->link($arrInspectionDataResultParents[$i]["product_code"], ['action' => 'kensatyuichiran', 's' => "0_".$arrInspectionDataResultParents[$i]["machine_num"]."_".$arrInspectionDataResultParents[$i]["product_code"]]) : '' ?></td>
+              <td><?= h($arrInspectionDataResultParents[$i]["product_code"]) ? $this->Html->link($arrInspectionDataResultParents[$i]["product_code"],
+               ['controller' => 'Kensahyousokuteidatas', 'action' => 'kensatyuichiran', 's' => "0_".$arrInspectionDataResultParents[$i]["machine_num"]."_".$arrInspectionDataResultParents[$i]["product_code"]]) : '' ?></td>
               <td><?= h("　".$arrInspectionDataResultParents[$i]["name"]."　");?></td>
             </tr>
           <?php endfor;?>

@@ -4209,6 +4209,7 @@ class KensahyousokuteidatasController extends AppController
       $date_fin = $data["date_fin"];
       $this->set('date_fin', $date_fin);
       $product_code_ini = substr($product_code, 0, 11);
+      $this->set('num', $data["num"]);
 
       for($j=0; $j<$data["num"]; $j++){
 
@@ -4235,7 +4236,7 @@ class KensahyousokuteidatasController extends AppController
         ${"sum_weight".$j} = $weight_ave * $data["amount".$j];
         ${"sum_weight".$j} = sprintf("%.1f", ${"sum_weight".$j});
         $this->set('sum_weight'.$j, ${"sum_weight".$j});
-
+/*
         ${"tasseiritsu".$j} = ${"sum_weight".$j} * 100 / (${"sum_weight".$j} + ${"total_loss_weight".$j});
         ${"tasseiritsu".$j} = sprintf("%.1f", ${"tasseiritsu".$j});
         $this->set('tasseiritsu'.$j, ${"tasseiritsu".$j});
@@ -4243,9 +4244,23 @@ class KensahyousokuteidatasController extends AppController
         ${"lossritsu".$j} = ${"total_loss_weight".$j} * 100 / (${"sum_weight".$j} + ${"total_loss_weight".$j});
         ${"lossritsu".$j} = sprintf("%.1f", ${"lossritsu".$j});
         $this->set('lossritsu'.$j, ${"lossritsu".$j});
-
+*/
         }
 
+        $total_sum_weight = 0;
+        $total_loss_weight = 0;
+        for($j=0; $j<$data["num"]; $j++){
+          $total_sum_weight = $total_sum_weight + ${"sum_weight".$j};
+          $total_loss_weight = $total_loss_weight + ${"total_loss_weight".$j};
+        }
+
+        $tasseiritsu = $total_sum_weight * 100 / ($total_sum_weight + $total_loss_weight);
+        $tasseiritsu = sprintf("%.1f", $tasseiritsu);
+        $this->set('tasseiritsu', $tasseiritsu);
+        $lossritsu = $total_loss_weight * 100 / ($total_sum_weight + $total_loss_weight);
+        $lossritsu = sprintf("%.1f", $lossritsu);
+        $this->set('lossritsu', $lossritsu);
+  
     }
 
     public function addfinishdo()//日報の登録
@@ -4262,6 +4277,10 @@ class KensahyousokuteidatasController extends AppController
       $this->set('date_sta', $date_sta);
       $date_fin = $data["date_fin"];
       $this->set('date_fin', $date_fin);
+      $this->set('num', $data["num"]);
+      $this->set('lossritsu', $data["lossritsu"]);
+      $this->set('tasseiritsu', $data["tasseiritsu"]);
+
 /*
       echo "<pre>";
       print_r($data);
@@ -4280,7 +4299,7 @@ class KensahyousokuteidatasController extends AppController
       for($j=0; $j<$data["num"]; $j++){
 
         $Products = $this->Products->find()
-        ->where(['product_code like' => $product_code_ini.'%', 'length' => $data["length".$j], 'status_kensahyou' => 0, 'delete_flag' => 0])
+        ->where(['product_code like' => $product_code_ini.'%', 'length' => $data["length".$j], 'delete_flag' => 0])
         ->toArray();
 
         $tourokuDailyreport[] = [

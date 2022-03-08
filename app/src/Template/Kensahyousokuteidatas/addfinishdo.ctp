@@ -53,8 +53,17 @@ echo $this->Html->css('kensahyou');
     <td><?= h($this->request->getData('amount'.$k)) ?></td>
     <td><?= h($this->request->getData('sum_weight'.$k)) ?></td>
     <td><?= h($this->request->getData('total_loss_weight'.$k)) ?></td>
-    <td><?= h($this->request->getData('lossritsu'.$k)) ?></td>
-    <td><?= h($this->request->getData('tasseiritsu'.$k)) ?></td>
+    <?php if ($k == 0): ?>
+      <?php
+        echo "<td rowspan=$num>";
+        echo "$lossritsu";
+        echo "</td>";
+        echo "<td rowspan=$num>";
+        echo "$tasseiritsu";
+        echo "</td>";
+      ?>
+    <?php else : ?>
+    <?php endif; ?>
     </tr>
     
     <?php endfor;?>
