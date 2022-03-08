@@ -40,6 +40,77 @@ $mes = "";
 <?php
       echo $htmlkensahyouheader;
  ?>
+
+<table class="white">
+
+<tr>
+  <td colspan='3'>バンク：<?= h($mode) ?></td>
+<td style='width:98'>測定箇所</td>
+
+<?php for($i=1; $i<=11; $i++): ?>
+  <?php if (${"size_name".$i} == "長さ"): ?>
+    <td style='width:78'>切断長</td>
+  <?php else : ?>
+    <td style='width:78'><?= h(${"size_name".$i}) ?></td>
+  <?php endif; ?>
+<?php endfor;?>
+
+<td width="56" rowspan='3'>外観</td>
+<td width="70" rowspan='3'>重量<br>（目安）</td>
+<td width="35" rowspan='5' style='font-size: 10pt'>合<br>否<br>判<br>定</td>
+<td width="35" rowspan='5' style='font-size: 10pt'>工<br>程<br>異<br>常</td>
+
+</tr>
+<tr>
+
+<td width="36" rowspan='8' style='font-size: 10pt'>No.</td>
+<td width="130" rowspan='7'>時間</td>
+<td width="60" rowspan='6'>規格<br>長さ<br>(mm)</td>
+
+<td>規格</td>
+
+  <?php for($i=1; $i<=11; $i++): ?>
+    <td><?= h(${"size".$i}) ?></td>
+  <?php endfor;?>
+</tr>
+<tr>
+<td>公差上限</td>
+
+<?php for($i=1; $i<=11; $i++): ?>
+  <?php if (${"input_type".$i} == "int" && strlen(${"upper_limit".$i}) > 0 && substr(${"upper_limit".$i}, 0, 1) != "+" && substr(${"upper_limit".$i}, 0, 1) != "-"): ?>
+  <td><?= h("+".${"upper_limit".$i}) ?></td>
+  <?php else : ?>
+    <td><?= h(${"upper_limit".$i}) ?></td>
+    <?php endif; ?>
+<?php endfor;?>
+
+</tr>
+<tr>
+<td>公差下限</td>
+
+  <?php for($i=1; $i<=11; $i++): ?>
+    <td><?= h(${"lower_limit".$i}) ?></td>
+  <?php endfor;?>
+
+  <td width="56" style="font-size: 10pt">〇・✕</td>
+      <td width="60">g / 本</td>
+
+</tr>
+<tr>
+<td>検査器具</td>
+
+  <?php for($i=1; $i<=11; $i++): ?>
+    <td style='font-size: 8pt'><?= h(${"measuring_instrument".$i}) ?></td>
+  <?php endfor;?>
+
+  <td width="56" style='font-size: 10pt'>目視</td>
+  <td style='width:60; border-top-style:none; font-size: 9pt'>デジタル秤</td>
+
+</tr>
+
+</table>
+
+
  <?php
        echo $htmlgenryouheader;
   ?>

@@ -29,6 +29,9 @@ echo $this->Html->css('index');
 
   <h2><font color=red><?= __('得意先・仕入先一覧') ?></font></h2>
 
+  <?php
+/*
+
   <table>
       <tbody class='sample non-sample'>
         <tr alien='right'>
@@ -39,12 +42,15 @@ echo $this->Html->css('index');
       </tbody>
     </table>
 
+    */
+    ?>
+
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
               <th scope="col" style='width:100'><font color=black><?= __('No.') ?></font></th>
-              <th scope="col" style='width:220'><?= $this->Paginator->sort('name', ['label'=>"得意先・仕入先コード"]) ?></th>
-              <th scope="col" style='width:250'><?= $this->Paginator->sort('name', ['label'=>"得意先・仕入先名"]) ?></th>
+              <th scope="col" style='width:150'><?= $this->Paginator->sort('name', ['label'=>"得意先・仕入先コード"]) ?></th>
+              <th scope="col"><?= $this->Paginator->sort('name', ['label'=>"得意先・仕入先名"]) ?></th>
                 <th scope="col" style='width:100' class="actions"><?= __('') ?></th>
             </tr>
         </thead>

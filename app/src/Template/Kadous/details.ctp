@@ -73,17 +73,17 @@ echo $this->Html->css('kensahyou');
 <br>
 <table>
 <thead>
-            <tr class="parents">
-            <td style='font-size: 10pt; border-width: 1px solid black;'><?= __('製品コード') ?></td>
-            <td style='font-size: 10pt; border-width: 1px solid black;'><?= __('製品名') ?></td>
-            <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('長さ(mm)') ?></td>
-            <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('生産数量(本)') ?></td>
-            <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('総重量(kg)') ?></td>
-            <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('総ロス重量(kg)') ?></td>
-            <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('ロス率(％)') ?></td>
-            <td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('達成率(％)') ?></td>
-            </tr>
-        </thead>
+<tr class="parents">
+<td style='font-size: 10pt; border-width: 1px solid black;'><?= __('製品コード') ?></td>
+<td style='font-size: 10pt; border-width: 1px solid black;'><?= __('製品名') ?></td>
+<td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('長さ(mm)') ?></td>
+<td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('生産数量(本)') ?></td>
+<td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('総重量(kg)') ?></td>
+<td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('総ロス重量(kg)') ?></td>
+<td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('ロス率(％)') ?></td>
+<td style='font-size: 10pt; width:100; border-width: 1px solid black;'><?= __('達成率(％)') ?></td>
+</tr>
+</thead>
 <tbody>
 <?php for($j=0; $j<count($arrProdcts); $j++): ?>
   <tr class='children'>
@@ -100,21 +100,72 @@ echo $this->Html->css('kensahyou');
     </table>
 
 <br>
-<table>
-  <tbody style="background-color: #FFFFCC">
-  <tr class="parents">
-  <td>　備考（総括）　</td>
-    </tr>
-    <tr>
-    <?php if (strlen($bik) > 60): ?>
-    <td width="800" style='text-align: left;font-size: 10pt'><?= h("　".$bik) ?></td>
-    <?php else : ?>
-      <td style='text-align: left;font-size: 10pt'><?= h("　".$bik) ?></td>
-      <?php endif; ?>
 
-    </tr>
-  </tbody>
+
+<table width="1080">
+  <tr class="parents">
+    <td colspan="7"><?= h($name_machine."号ライン") ?></td>
+  </tr>
+  <tr class='parents'>
+    <td width="80"></td>
+    <td>ヒーターON時間</td>
+    <td>量産開始時間</td>
+    <td>検査表開始時間</td>
+    <td>検査表終了時間</td>
+    <td>量産終了時間</td>
+    <td>ヒーターOFF時間</td>
+  </tr>
+  <tr class='children'>
+    <td style="background-color: #f0e68c" width="80">日時</td>
+    <td>22</td>
+    <td>33</td>
+    <td>44</td>
+    <td>55</td>
+    <td>66</td>
+    <td>77</td>
+  </tr>
 </table>
+<table width="1080">
+  <tr class='children'>
+    <td style="background-color: #f0e68c; border-top:none" width="80">間隔(分)</td>
+    <td style="border-top:none" width="260">222</td>
+    <td style="border-top:none" width="160">333</td>
+    <td style="border-top:none">444</td>
+    <td style="border-top:none" width="160">555</td>
+    <td style="border-top:none" width="260">666</td>
+  </tr>
+</table>
+<table width="1080">
+  <tr class='children'>
+    <td style="background-color: #f0e68c; border-top:none" width="80">備考</td>
+    <td style="border-top:none" colspan="6" align="left"><?= h("　".$bik) ?></td>
+  </tr>
+</table>
+
+<br>
+
+<table width="580">
+  <tr class="parents">
+    <td width="80"></td>
+    <td colspan="2">量産開始 ～ 量産終了</td>
+  </tr>
+  <tr class='parents'>
+    <td width="80"></td>
+    <td width="250">本数</td>
+    <td width="250">メートル換算</td>
+  </tr>
+  <tr class='children'>
+    <td width="80">理論</td>
+    <td>本</td>
+    <td>(m)</td>
+  </tr>
+  <tr class='children'>
+    <td width="80">実数</td>
+    <td>本</td>
+    <td>(m)</td>
+  </tr>
+</table>
+
 <br><br>
 <legend align="center"><strong style="font-size: 12pt; color:blue"><?= __('工程異常一覧') ?></strong></legend>
 <br>

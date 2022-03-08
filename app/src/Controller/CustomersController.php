@@ -56,6 +56,25 @@ class CustomersController extends AppController
       ->where(['Staffs.id' => $datasession['Auth']['User']['staff_id'], 'Users.delete_flag' => 0])
       ->toArray();
 
+      $this->paginate = [
+        'limit' => 13,
+        'contain' => ['Factories'],
+        'order' => [
+          'Customers.created_at' => 'desc',
+          'Customers.updated_at' => 'desc'
+          ]
+      ];
+      if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
+        $customers = $this->paginate($this->Customers->find()
+        ->where(['Customers.delete_flag' => 0]));
+      }else{
+        $customers = $this->paginate($this->Customers->find()
+        ->where(['Customers.factory_id' => $Users[0]["staff"]["factory_id"], 'Customers.delete_flag' => 0]));
+      }
+
+      $this->set(compact('customers'));
+
+/*
       if(strlen($id) > 0){
   
         $this->paginate = [
@@ -96,7 +115,7 @@ class CustomersController extends AppController
       $this->set(compact('customers'));
 
       }
-
+*/
     }
 
     public function detail($id = null)

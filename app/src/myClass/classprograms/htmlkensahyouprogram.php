@@ -21,6 +21,7 @@ class htmlkensahyouprogram extends AppController
         $this->Linenames = TableRegistry::get('Linenames');
         $this->InspectionDataConditonChildren = TableRegistry::get('InspectionDataConditonChildren');
         $this->InspectionDataConditonParents = TableRegistry::get('InspectionDataConditonParents');
+        $this->InspectionDataResultParents = TableRegistry::get('InspectionDataResultParents');
          }
 
     public function genryouheader($product_code_machine_num)
@@ -919,7 +920,156 @@ class htmlkensahyouprogram extends AppController
           $this->html = $html;
    
    }
+
+   public function mikanryouichiran($datetimesta_factory)
+   {
+    $arrdatetimesta_factory = explode("_",$datetimesta_factory);
+    $datetimesta = $arrdatetimesta_factory[0];
+    $factory_id = $arrdatetimesta_factory[1];
+
+    if($factory_id == 5){//本部の人がログインしている場合
+
+      $InspectionDataResultParentsnotfin = $this->InspectionDataResultParents->find()
+      ->contain(['InspectionStandardSizeParents', 'ProductConditionParents', 'Products'])
+      ->where(['InspectionStandardSizeParents.delete_flag' => 0,
+      'InspectionDataResultParents.delete_flag' => 0,
+      'kanryou_flag IS' => NULL,
+       'datetime <' => $datetimesta])
+       ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
+  
+    }else{
+
+       $InspectionDataResultParentsnotfin = $this->InspectionDataResultParents->find()
+       ->contain(['InspectionStandardSizeParents', 'ProductConditionParents', 'Products'])
+       ->where(['InspectionStandardSizeParents.delete_flag' => 0,
+       'InspectionDataResultParents.delete_flag' => 0,
+       'kanryou_flag IS' => NULL,
+        'datetime <' => $datetimesta,
+        'OR' => [['Products.factory_id' => $factory_id], ['Products.factory_id' => 5]]])
+        ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
+ 
+    }
+
+     $arrInspectionDataResultParentnotfin = array();
+     for($i=0; $i<count($InspectionDataResultParentsnotfin); $i++){
+
+      $check_proini = 0;
+      $product_code_ini = substr($InspectionDataResultParentsnotfin[$i]["product"]["product_code"], 0, 11);
+      $machine_num = $InspectionDataResultParentsnotfin[$i]["product_condition_parent"]["machine_num"];
+
+      for($j=0; $j<count($arrInspectionDataResultParentnotfin); $j++){//同じ製品が既に登録されていたら登録しない
+        
+        if($arrInspectionDataResultParentnotfin[$j]["product_code_ini_machine_num"] == $product_code_ini."_".$machine_num){
+          $check_proini = $check_proini + 1;
+        }
+
+      }
+
+      if($check_proini == 0){
+
+        $arrInspectionDataResultParentnotfin[] = [
+          "machine_num" => $InspectionDataResultParentsnotfin[$i]["product_condition_parent"]["machine_num"],
+          "product_code" => $InspectionDataResultParentsnotfin[$i]["product"]["product_code"],
+          "product_code_ini_machine_num" => $product_code_ini."_".$InspectionDataResultParentsnotfin[$i]["product_condition_parent"]["machine_num"],
+          "name" => $InspectionDataResultParentsnotfin[$i]["product"]["name"],
+          "datetime" => $InspectionDataResultParentsnotfin[$i]["datetime"]->format('Y-m-d'),
+        ];
+
+        }
+
+    }
+
+    $tmp = array();
+    $array_result = array();
    
+    foreach( $arrInspectionDataResultParentnotfin as $key => $value ){
+   
+     // 配列に値が見つからなければ$tmpに格納
+     if( !in_array( $value['product_code_ini_machine_num'], $tmp ) ) {
+      $tmp[] = $value['product_code_ini_machine_num'];
+      $array_result[] = $value;
+     }
+   
+    }
+    $arrInspectionDataResultParentnotfin = $array_result;
+
+    return $arrInspectionDataResultParentnotfin;
+
+   }
+
+   public function toujitsuichiran($datetimesta_factory)
+   {
+    $arrdatetimesta_factory = explode("_",$datetimesta_factory);
+    $datetimesta = $arrdatetimesta_factory[0];
+    $factory_id = $arrdatetimesta_factory[1];
+
+    if($factory_id == 5){//本部の人がログインしている場合
+
+      $InspectionDataResultParents = $this->InspectionDataResultParents->find()
+      ->contain(['InspectionStandardSizeParents', 'ProductConditionParents', 'Products'])
+      ->where(['InspectionStandardSizeParents.delete_flag' => 0,
+       'InspectionDataResultParents.delete_flag' => 0,
+       'datetime >=' => $datetimesta])
+       ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
+
+    }else{
+
+      $InspectionDataResultParents = $this->InspectionDataResultParents->find()
+      ->contain(['InspectionStandardSizeParents', 'ProductConditionParents', 'Products'])
+      ->where(['InspectionStandardSizeParents.delete_flag' => 0,
+       'InspectionDataResultParents.delete_flag' => 0,
+       'datetime >=' => $datetimesta,
+       'OR' => [['Products.factory_id' => $factory_id], ['Products.factory_id' => 5]]])
+       ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
+
+    }
+
+     $arrInspectionDataResultParents = array();
+     for($i=0; $i<count($InspectionDataResultParents); $i++){
+
+      $check_proini = 0;
+      $product_code_ini = substr($InspectionDataResultParents[$i]["product"]["product_code"], 0, 11);
+      $machine_num = $InspectionDataResultParents[$i]["product_condition_parent"]["machine_num"];
+
+      for($j=0; $j<count($arrInspectionDataResultParents); $j++){//同じ製品が既に登録されていたら登録しない
+        
+        if($arrInspectionDataResultParents[$j]["product_code_ini_machine_num"] == $product_code_ini."_".$machine_num){
+          $check_proini = $check_proini + 1;
+        }
+
+      }
+
+      if($check_proini == 0){
+
+        $arrInspectionDataResultParents[] = [
+          "machine_num" => $InspectionDataResultParents[$i]["product_condition_parent"]["machine_num"],
+          "product_code" => $InspectionDataResultParents[$i]["product"]["product_code"],
+          "product_code_ini_machine_num" => $product_code_ini."_".$InspectionDataResultParents[$i]["product_condition_parent"]["machine_num"],
+          "name" => $InspectionDataResultParents[$i]["product"]["name"],
+        ];
+
+        }
+
+    }
+
+    $tmp = array();
+    $array_result = array();
+   
+    foreach( $arrInspectionDataResultParents as $key => $value ){
+   
+     // 配列に値が見つからなければ$tmpに格納
+     if( !in_array( $value['product_code_ini_machine_num'], $tmp ) ) {
+      $tmp[] = $value['product_code_ini_machine_num'];
+      $array_result[] = $value;
+     }
+   
+    }
+    $arrInspectionDataResultParents = $array_result;
+
+    return $arrInspectionDataResultParents;
+
+   }
+
 }
 
 ?>

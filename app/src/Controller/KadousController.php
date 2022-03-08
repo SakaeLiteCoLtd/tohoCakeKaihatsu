@@ -295,9 +295,13 @@ class KadousController extends AppController
           $relay_finish_datetime = "";
         }
 
-        $riron_amount = $DailyReportsData[$i]["amount"] * ($DailyReportsData[$i]["total_loss_weight"]
-         + $DailyReportsData[$i]["sum_weight"]) / $DailyReportsData[$i]["sum_weight"];
-        $riron_amount = sprintf("%.1f", $riron_amount);
+        if($DailyReportsData[$i]["sum_weight"] > 0){
+          $riron_amount = $DailyReportsData[$i]["amount"] * ($DailyReportsData[$i]["total_loss_weight"]
+          + $DailyReportsData[$i]["sum_weight"]) / $DailyReportsData[$i]["sum_weight"];
+         $riron_amount = sprintf("%.1f", $riron_amount);
+         }else{
+          $riron_amount = 0;
+        }
 
         $arrproduct_code_ini_machine_num_datetime[] = substr($DailyReportsData[$i]["product"]["product_code"], 0, 11)
         ."_".$DailyReportsData[$i]["machine_num"]."_".$DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s");

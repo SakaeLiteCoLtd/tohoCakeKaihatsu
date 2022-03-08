@@ -52,20 +52,20 @@ echo $this->Html->css('kensahyou');
 <table>
         <thead>
             <tr class="parents">
-            <td style='font-size: 10pt; width:50; height:60; border-width: 1px solid black;'><?= __('ライン') ?></td>
-            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('日付') ?></td>
-            <td style='font-size: 10pt; width:200; border-width: 1px solid black;'><?= __('製品名') ?></td>
-            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('生産開始時間') ?></td>
-            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('検査表開始時間') ?></td>
-            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('検査表終了時間') ?></td>
-            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('生産終了時間') ?></td>
-            <td style='font-size: 10pt; width:110; border-width: 1px solid black;'><?= __('生産時間') ?></td>
+            <td style='font-size: 9pt; width:50; height:50; border-width: 1px solid black;'><?= __('ライン') ?></td>
+            <td style='font-size: 10pt; width:90; border-width: 1px solid black;'><?= __('日付') ?></td>
+            <td style='font-size: 10pt; border-width: 1px solid black;'><?= __('製品名') ?></td>
+            <td style='font-size: 9pt; width:90; border-width: 1px solid black;'><?= __('生産開始時間') ?></td>
+            <td style='font-size: 9pt; width:100; border-width: 1px solid black;'><?= __('検査表開始時間') ?></td>
+            <td style='font-size: 9pt; width:100; border-width: 1px solid black;'><?= __('検査表終了時間') ?></td>
+            <td style='font-size: 9pt; width:90; border-width: 1px solid black;'><?= __('生産終了時間') ?></td>
+            <td style='font-size: 9pt; width:90; border-width: 1px solid black;'><?= __('生産時間') ?></td>
             <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('開始ロス') ?><br><?= __('(kg)') ?></td>
             <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('中間ロス') ?><br><?= __('(kg)') ?></td>
             <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('終了ロス') ?><br><?= __('(kg)') ?></td>
             <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('ロス時間') ?></td>
-            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('ロス率') ?><br><?= __('(％)') ?></td>
-            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('達成率') ?><br><?= __('(％)') ?></td>
+            <td style='font-size: 10pt; width:70; border-width: 1px solid black;'><?= __('ロス率') ?><br><?= __('(％)') ?></td>
+            <td style='font-size: 10pt; width:70; border-width: 1px solid black;'><?= __('達成率') ?><br><?= __('(％)') ?></td>
             <td style='font-size: 10pt; width:60; border-width: 1px solid black;'></td>
             </tr>
         </thead>

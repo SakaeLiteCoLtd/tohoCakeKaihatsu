@@ -29,12 +29,47 @@ echo $this->Html->css('kensahyou');
 <br><br><br>
 <?= $this->Form->create($product, ['url' => ['action' => 'kensatyuichiran']]) ?>
 
-<div align="center"><strong><font color="blue"><?php echo "本日測定中製品一覧";?></font></strong></div>
+  <br>
+  <div align="center"><strong><font color="blue"><?php echo "未完了検査表一覧（本日分以外）";?></font></strong></div>
 <br>
 <table class="white">
       <tbody class='sample non-sample'>
         <tr>
-        <td style='width:100'>ライン</td>
+        <td>ライン</td>
+        <td style='width:200'>管理No.</td>
+        <td>　製品名　</td>
+        <td style='width:100'>検査日</td>
+        </tr>
+
+          <?php for($i=0; $i<count($arrInspectionDataResultParentnotfin); $i++): ?>
+
+            <?php
+            $ProductDatas = $this->Products->find()
+            ->where(['product_code' => $arrInspectionDataResultParentnotfin[$i]["product_code"]])->toArray();
+            $LinenameDatas = $this->Linenames->find()
+            ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $arrInspectionDataResultParentnotfin[$i]["machine_num"]])->toArray();
+            ?>
+
+            <tr>
+            <td><?= h($LinenameDatas[0]["name"]);?></td>
+              <td><?= h($arrInspectionDataResultParentnotfin[$i]["product_code"]) ? $this->Html->link($arrInspectionDataResultParentnotfin[$i]["product_code"],
+               ['controller' => 'Kensahyousokuteidatas', 'action' => 'kensatyuichiran', 's' => "1_".$arrInspectionDataResultParentnotfin[$i]["machine_num"]."_".$arrInspectionDataResultParentnotfin[$i]["product_code"]]) : '' ?></td>
+              <td><?= h("　".$arrInspectionDataResultParentnotfin[$i]["name"]."　");?></td>
+              <td style="font-size: 10pt"><?= h($arrInspectionDataResultParentnotfin[$i]["datetime"]);?></td>
+            </tr>
+          <?php endfor;?>
+
+      </tbody>
+    </table>
+
+    <br><br>
+
+<div align="center"><strong><font color="blue"><?php echo "本日測定中検査表一覧";?></font></strong></div>
+<br>
+<table class="white">
+      <tbody class='sample non-sample'>
+        <tr>
+        <td>ライン</td>
         <td style='width:200'>管理No.</td>
           <td>　製品名　</td>
         </tr>
@@ -57,44 +92,6 @@ echo $this->Html->css('kensahyou');
 
       </tbody>
     </table>
-
-<br>
-
-<?php if (count($arrInspectionDataResultParentnotfin) > 0 ): ?>
-  <br>
-  <div align="center"><strong><font color="blue"><?php echo "以下の測定は未完了です。（本日測定分以外）";?></font></strong></div>
-<br>
-<table class="white">
-      <tbody class='sample non-sample'>
-        <tr>
-        <td style='width:100'>ライン</td>
-        <td style='width:200'>管理No.</td>
-        <td style='width:200'>　製品名　</td>
-        <td style='width:150'>検査日</td>
-        </tr>
-
-          <?php for($i=0; $i<count($arrInspectionDataResultParentnotfin); $i++): ?>
-
-            <?php
-      $ProductDatas = $this->Products->find()
-      ->where(['product_code' => $arrInspectionDataResultParentnotfin[$i]["product_code"]])->toArray();
-      $LinenameDatas = $this->Linenames->find()
-      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $arrInspectionDataResultParentnotfin[$i]["machine_num"]])->toArray();
-            ?>
-
-            <tr>
-            <td><?= h($LinenameDatas[0]["name"]);?></td>
-              <td><?= h($arrInspectionDataResultParentnotfin[$i]["product_code"]) ? $this->Html->link($arrInspectionDataResultParentnotfin[$i]["product_code"], ['action' => 'kensatyuichiran', 's' => "1_".$arrInspectionDataResultParentnotfin[$i]["machine_num"]."_".$arrInspectionDataResultParentnotfin[$i]["product_code"]]) : '' ?></td>
-              <td><?= h("　".$arrInspectionDataResultParentnotfin[$i]["name"]."　");?></td>
-              <td><?= h($arrInspectionDataResultParentnotfin[$i]["datetime"]);?></td>
-            </tr>
-          <?php endfor;?>
-
-      </tbody>
-    </table>
-
-  <?php else : ?>
-  <?php endif; ?>
 
 <br>
 

@@ -5,6 +5,8 @@ use App\Controller\AppController;
 use Cake\Event\Event;
 use Cake\ORM\TableRegistry;//独立したテーブルを扱う
 
+use App\myClass\classprograms\htmlkensahyouprogram;//myClassフォルダに配置したクラスを使用
+
 class KensahyoukadousController extends AppController
 {
 
@@ -16,7 +18,7 @@ class KensahyoukadousController extends AppController
    $this->Factories = TableRegistry::get('Factories');
    $this->Products = TableRegistry::get('Products');
    $this->Customers = TableRegistry::get('Customers');
-
+   $this->Staffs = TableRegistry::get('Staffs');
   }
 
   public function beforeFilter(Event $event){
@@ -45,6 +47,25 @@ class KensahyoukadousController extends AppController
 
     public function kensahyoumenu()
     {
+      $session = $this->request->getSession();
+      $datasession = $session->read();
+      $staff_id = $datasession['Auth']['User']['staff_id'];
+      $Staffs = $this->Staffs->find()->where(['id' => $staff_id])->toArray();
+      $factory_id = $Staffs[0]["factory_id"];
+
+      $datetimesta = date('Y-m-d 06:00:00');//今日の6時が境目
+
+      //検査中一覧のクラス
+      $datetimesta_factory = $datetimesta."_".$factory_id;
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();
+      $arrInspectionDataResultParents = $htmlkensahyougenryouheader->toujitsuichiran($datetimesta_factory);
+      $this->set('arrInspectionDataResultParents', $arrInspectionDataResultParents);
+
+      //未検査一覧のクラス
+      $datetimesta_factory = $datetimesta."_".$factory_id;
+      $htmlkensahyougenryouheader = new htmlkensahyouprogram();
+      $arrInspectionDataResultParentnotfin = $htmlkensahyougenryouheader->mikanryouichiran($datetimesta_factory);
+      $this->set('arrInspectionDataResultParentnotfin', $arrInspectionDataResultParentnotfin);
     }
 
     public function login()
