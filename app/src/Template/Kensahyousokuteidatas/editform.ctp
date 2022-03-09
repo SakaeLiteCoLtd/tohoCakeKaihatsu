@@ -197,11 +197,11 @@ echo $this->Html->css('kensahyou');
 <table>
   <tbody style="background-color: #FFFFCC">
     <tr>
-    <td width="400">備考</td>
+    <td width="700">備考</td>
     </tr>
     <tr>
    <td>
-   <?= $this->Form->control('bik', array('type'=>'text', 'label'=>false, 'value'=>$arrProducts[0]["bik"])) ?>
+   <?= $this->Form->control('bik', array('type'=>'text', 'label'=>false, 'size'=>90, 'value'=>$arrProducts[0]["bik"])) ?>
     </td>
     </tr>
   </tbody>

@@ -227,10 +227,10 @@ echo $this->Html->css('kensahyou');
 <table>
   <tbody style="background-color: #FFFFCC">
     <tr>
-    <td width="400">備考</td>
+    <td width="800">備考</td>
     </tr>
     <tr>
-   <td><?= h($this->request->getData('bik')) ?></td>
+   <td align="left"><?= h($this->request->getData('bik')) ?></td>
     </tr>
   </tbody>
 </table>

@@ -6430,9 +6430,14 @@ class KensahyousokuteidatasController extends AppController
         $updateDailyreport = array();
         for($i=0; $i<$data["countlength"]; $i++){
         
+          $product_code_ini = substr($product_code, 0, 11);
           $ProductDaily = $this->Products->find()
-          ->where(['length' => $data['length'.$i], 'delete_flag' => 0])->toArray();
-  
+          ->where(['product_code like' => $product_code_ini.'%', 'length' => $data['length'.$i], 'delete_flag' => 0])->toArray();
+  /*
+          echo "<pre>";
+          print_r($ProductDaily[0]);
+          echo "</pre>";
+    */
           $DailyReportsMoto = $this->DailyReports->find()
           ->contain(['Products'])
           ->where(['machine_num' => $machine_num, 'product_id' => $ProductDaily[0]["id"], 
@@ -6517,7 +6522,7 @@ class KensahyousokuteidatasController extends AppController
               for($m=0; $m<$data["countlength"]; $m++){
                 
                 $Products = $this->Products->find()
-                ->where(['length' => $data['length'.$m], 'delete_flag' => 0])
+                ->where(['product_code like' => $product_code_ini.'%', 'length' => $data['length'.$m], 'delete_flag' => 0])
                 ->toArray();
   
                 $this->InspectionDataResultParents->updateAll(

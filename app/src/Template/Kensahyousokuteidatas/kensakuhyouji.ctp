@@ -236,10 +236,10 @@ echo $this->Html->css('kensahyou');
 <table>
   <tbody style="background-color: #FFFFCC">
     <tr>
-    <td width="400">備考</td>
+    <td width="800">備考</td>
     </tr>
     <tr>
-   <td><?= h($arrProducts[0]["bik"]) ?></td>
+   <td align="left"><?= h($arrProducts[0]["bik"]) ?></td>
     </tr>
   </tbody>
 </table>
