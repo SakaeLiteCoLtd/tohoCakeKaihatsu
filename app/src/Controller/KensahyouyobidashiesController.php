@@ -374,7 +374,7 @@ class KensahyouyobidashiesController extends AppController
               
           $seikeijouken = 0;
 
-          $datetime = $kikaku_created_at;
+          $datetime = date('Y-m-d H:i:s');
           $staff = $kikaku_created_staff;
           $StaffDatas = $this->Staffs->find()
           ->where(['id' => $staff])->toArray();

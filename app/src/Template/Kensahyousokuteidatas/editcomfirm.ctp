@@ -147,8 +147,8 @@ $mes = "";
   <?php for($i=1; $i<=11; $i++): ?>
     <?php
     if(${"size_name".$i} !== "長さ" && ${"input_type".$i} !== "judge" 
-    && ${"result_size".$j."_".$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
-    && ${"result_size".$j."_".$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
+    && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+    && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
       echo '<td style="width:84; border-top-style:none">';
       echo ${"result_size".$j."_".$i} ;
       echo '</td>';
@@ -225,6 +225,8 @@ $mes = "";
 <br>
 
 <?= $this->Form->control('countlength', array('type'=>'hidden', 'value'=>$countlength, 'label'=>false)) ?>
+<?= $this->Form->control('lossritsu', array('type'=>'hidden', 'value'=>$lossritsu, 'label'=>false)) ?>
+<?= $this->Form->control('tasseiritsu', array('type'=>'hidden', 'value'=>$tasseiritsu, 'label'=>false)) ?>
 
 <table>
   <tbody style="background-color: #FFFFCC">
@@ -242,15 +244,23 @@ $mes = "";
     <td><?= h(${"amount".$k}) ?></td>
     <td><?= h(${"sum_weight".$k}) ?></td>
     <td><?= h(${"total_loss_weight".$k}) ?></td>
-    <td><?= h(${"lossiritsu".$k}) ?></td>
-    <td><?= h(${"tasseiritsu".$k}) ?></td>
+
+    <?php if ($k == 0): ?>
+      <?php
+        echo "<td rowspan=$countlength>";
+        echo "$lossritsu";
+        echo "</td>";
+        echo "<td rowspan=$countlength>";
+        echo "$tasseiritsu";
+        echo "</td>";
+      ?>
+    <?php else : ?>
+    <?php endif; ?>
 
     <?= $this->Form->control('length'.$k, array('type'=>'hidden', 'value'=>${"length".$k}, 'label'=>false)) ?>
     <?= $this->Form->control('amount'.$k, array('type'=>'hidden', 'value'=>${"amount".$k}, 'label'=>false)) ?>
     <?= $this->Form->control('sum_weight'.$k, array('type'=>'hidden', 'value'=>${"sum_weight".$k}, 'label'=>false)) ?>
     <?= $this->Form->control('total_loss_weight'.$k, array('type'=>'hidden', 'value'=>${"total_loss_weight".$k}, 'label'=>false)) ?>
-    <?= $this->Form->control('lossiritsu'.$k, array('type'=>'hidden', 'value'=>${"lossiritsu".$k}, 'label'=>false)) ?>
-    <?= $this->Form->control('tasseiritsu'.$k, array('type'=>'hidden', 'value'=>${"tasseiritsu".$k}, 'label'=>false)) ?>
 
     </tr>
     <?php endfor;?>

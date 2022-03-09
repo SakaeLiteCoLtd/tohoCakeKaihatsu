@@ -275,8 +275,8 @@ $mes = "";
               echo "</td>\n";
             }elseif($i==2){
 
-              if($inspection_pickup_speed <= (int)$pickup_speed + (int)$pickup_speed_upper_limit
-              && $inspection_pickup_speed >= (int)$pickup_speed + (int)$pickup_speed_lower_limit){
+              if($inspection_pickup_speed <= (float)$pickup_speed + (float)$pickup_speed_upper_limit
+              && $inspection_pickup_speed >= (float)$pickup_speed + (float)$pickup_speed_lower_limit){
                 echo '<td>';
                 echo "$inspection_pickup_speed\n";
                 echo '</td>';

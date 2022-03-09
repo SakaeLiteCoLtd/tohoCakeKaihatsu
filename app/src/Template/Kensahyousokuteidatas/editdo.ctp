@@ -129,8 +129,8 @@ echo $this->Html->css('kensahyou');
 <?php for($i=1; $i<=11; $i++): ?>
     <?php
     if(${"size_name".$i} !== "長さ" && ${"input_type".$i} !== "judge" 
-    && ${"result_size".$j."_".$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
-    && ${"result_size".$j."_".$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
+    && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+    && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
       echo '<td style="width:84; border-top-style:none">';
       echo ${"result_size".$j."_".$i} ;
       echo '</td>';
@@ -202,8 +202,23 @@ echo $this->Html->css('kensahyou');
     <td><?= h($this->request->getData('amount'.$k)) ?></td>
     <td><?= h($this->request->getData('sum_weight'.$k)) ?></td>
     <td><?= h($this->request->getData('total_loss_weight'.$k)) ?></td>
-    <td><?= h($this->request->getData('lossiritsu'.$k)) ?></td>
-    <td><?= h($this->request->getData('tasseiritsu'.$k)) ?></td>
+
+    <?php if ($k == 0): ?>
+      <?php
+        $countlength = $this->request->getData('countlength');
+        $lossritsu = $this->request->getData('lossritsu');
+        $tasseiritsu = $this->request->getData('tasseiritsu');
+        
+        echo "<td rowspan=$countlength>";
+        echo "$lossritsu";
+        echo "</td>";
+        echo "<td rowspan=$countlength>";
+        echo "$tasseiritsu";
+        echo "</td>";
+      ?>
+    <?php else : ?>
+    <?php endif; ?>
+
     </tr>
     <?php endfor;?>
   </tbody>

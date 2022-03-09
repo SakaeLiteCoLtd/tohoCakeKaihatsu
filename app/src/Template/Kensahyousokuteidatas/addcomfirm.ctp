@@ -127,8 +127,8 @@ $mes = "";
 
   <?php for($i=1; $i<=10; $i++): ?>
     <?php
-    if(${"result_size".$j."_".$i} <= (int)${"size".$i} + (int)${"upper_limit".$i}
-    && ${"result_size".$j."_".$i} >= (int)${"size".$i} + (int)${"lower_limit".$i}){
+    if(${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
+    && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
       echo '<td style="width:80; border-top-style:none">';
       echo ${"result_size".$j."_".$i} ;
       echo '</td>';

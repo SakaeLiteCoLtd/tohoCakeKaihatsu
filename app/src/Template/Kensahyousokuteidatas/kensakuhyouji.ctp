@@ -214,8 +214,19 @@ echo $this->Html->css('kensahyou');
     <td><?= h($arrProducts[$k]["amount"]) ?></td>
     <td><?= h($arrProducts[$k]["sum_weight"]) ?></td>
     <td><?= h($arrProducts[$k]["total_loss_weight"]) ?></td>
-    <td><?= h($arrProducts[$k]["lossritsu"]) ?></td>
-    <td><?= h($arrProducts[$k]["tasseiritsu"]) ?></td>
+    <?php if ($k == 0): ?>
+      <?php
+      $num = count($arrProducts);
+
+        echo "<td rowspan=$num>";
+        echo "$lossritsu";
+        echo "</td>";
+        echo "<td rowspan=$num>";
+        echo "$tasseiritsu";
+        echo "</td>";
+      ?>
+    <?php else : ?>
+    <?php endif; ?>
     </tr>
     <?php endfor;?>
   </tbody>
