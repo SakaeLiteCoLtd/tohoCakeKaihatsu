@@ -330,7 +330,7 @@ for($i=0; $i<$count_length; $i++){
 var moji = "length"
     var tmp = document.getElementsByClassName("length") ;
 
-    for(var i=1;i<10;i++){
+    for(var i=0;i<10;i++){
         //id追加
         tmp[i].setAttribute("id",moji+i);
     }
@@ -338,7 +338,7 @@ var moji = "length"
     var moji = "size"
     var tmp = document.getElementsByClassName("size") ;
 
-    for(var i=1;i<10;i++){
+    for(var i=0;i<10;i++){
         //id追加
         tmp[i].setAttribute("id",moji+i);
     }
@@ -346,7 +346,7 @@ var moji = "length"
     var moji = "upper"
     var tmp = document.getElementsByClassName("upper") ;
 
-    for(var i=1;i<10;i++){
+    for(var i=0;i<10;i++){
         //id追加
         tmp[i].setAttribute("id",moji+i);
     }
@@ -354,7 +354,7 @@ var moji = "length"
     var moji = "lower"
     var tmp = document.getElementsByClassName("lower") ;
 
-    for(var i=1;i<10;i++){
+    for(var i=0;i<10;i++){
         //id追加
         tmp[i].setAttribute("id",moji+i);
     }
@@ -362,7 +362,7 @@ var moji = "length"
     var moji = "measuring_instrument"
     var tmp = document.getElementsByClassName("measuring_instrument") ;
 
-    for(var i=1;i<10;i++){
+    for(var i=0;i<10;i++){
         //id追加
         tmp[i].setAttribute("id",moji+i);
     }
