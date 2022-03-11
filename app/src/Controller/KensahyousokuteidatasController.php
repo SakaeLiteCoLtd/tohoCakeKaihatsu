@@ -96,7 +96,7 @@ class KensahyousokuteidatasController extends AppController
       $Staffs = $this->Staffs->find()->where(['id' => $staff_id])->toArray();
       $factory_id = $Staffs[0]["factory_id"];
 
-      $datetimesta = date('Y-m-d 06:00:00');//今日の6時が境目
+      $datetimesta = date('Y-m-d 00:00:00');//今日の0時が境目
 
       //検査中一覧のクラス
       $datetimesta_factory = $datetimesta."_".$factory_id;
@@ -497,6 +497,7 @@ class KensahyousokuteidatasController extends AppController
       print_r($Data);
       echo "</pre>";
 */
+/*
       //未完了の製品・ラインではないかチェック
       $InspectionDataResultParentsnotfin = $this->InspectionDataResultParents->find()
       ->contain(['InspectionStandardSizeParents', 'ProductConditionParents', 'Products'])
@@ -515,7 +516,7 @@ class KensahyousokuteidatasController extends AppController
         's' => ['mess' => $Data["machine_num"]."号ライン、「".$Data["product_code"]."」は未完了の測定があります。検査中一覧画面から測定を完了させてください。"]]);
 
        }
- 
+ */
       if(isset($Data["product_code"])){
 
         $product_code = $Data["product_code"];
@@ -1640,22 +1641,26 @@ class KensahyousokuteidatasController extends AppController
               }
 
               //検査日をキープしておく
+/*
               if(date("H") < 6){
-
                 $date1 = strtotime(date("Y-m-d"));
-                $date_sta = date('Y-m-d', strtotime('-1 day', $date1))." 06:00:00";
-                $date_fin = date("Y-m-d")." 06:00:00";
-
+                $date_sta = date('Y-m-d', strtotime('-1 day', $date1))." 06::00:00";
+                $date_fin = date("Y-m-d")." 06::00:00";
               }else{
-
                 $date1 = strtotime(date("Y-m-d"));
-                $date_sta = date("Y-m-d")." 06:00:00";
-                $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 06:00:00";
-
+                $date_sta = date("Y-m-d")." 06::00:00";
+                $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 06::00:00";
               }
               $_SESSION['kensa_datetime']["date_sta"] = $date_sta;
               $_SESSION['kensa_datetime']["date_fin"] = $date_fin;
-      
+*/
+
+              $date1 = strtotime(date("Y-m-d"));
+              $date_sta = date("Y-m-d")." 00:00:00";
+              $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 00:00:00";
+              $_SESSION['kensa_datetime']["date_sta"] = $date_sta;
+              $_SESSION['kensa_datetime']["date_fin"] = $date_fin;
+
               return $this->redirect(['action' => 'addform']);
 
         } else {
@@ -2029,6 +2034,11 @@ class KensahyousokuteidatasController extends AppController
               }
   
             }
+
+            if($data['gaikan'.$j] > 0){
+              $gouhi_check = $gouhi_check + 1;
+            }
+
             if($gouhi_check > 0){
               ${"gouhi".$j} = 1;
               ${"gouhihyouji".$j} = "否";
@@ -2464,9 +2474,7 @@ class KensahyousokuteidatasController extends AppController
             }
 
             if($data['gaikan'.$j] > 0){
-        
               $gouhi_check = $gouhi_check + 1;
-
             }
 
           }
@@ -2503,9 +2511,9 @@ class KensahyousokuteidatasController extends AppController
           if(!isset($data['tuzukikara']) && $data["gyou"] > 1){
             $jm = $j - 1;
 
-            if(date("Y-m-d ").$data['datetime'.$jm] 
-            < date("Y-m-d ")."06:00:00" && date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00" 
-            > date("Y-m-d ")."06:00:00"){
+            if(date("Y-m-d ").$data['datetime'.$jm] < date("Y-m-d ")."00:00:00"
+             && date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00" 
+            > date("Y-m-d ")."00:00:00"){//測定中に日付をまたいではいけない
               $check_over = 1;
             }else{
               $check_over = 0;
@@ -2640,7 +2648,7 @@ class KensahyousokuteidatasController extends AppController
 
           if($data["mikan_check"] == 1 || $check_over == 1){
 
-            $mes = "※午前6時をまたぐ登録はできません。終了ロスを登録後、検査完了へ進んでください。";
+            $mes = "※午前0時をまたぐ登録はできません。終了ロスを登録後、検査完了へ進んでください。";
             $this->set('mes',$mes);
 
             $end_ok_check = 0;
@@ -3258,6 +3266,11 @@ class KensahyousokuteidatasController extends AppController
             }
 
           }
+
+          if($data['gaikan'.$j] > 0){
+            $gouhi_check = $gouhi_check + 1;
+          }
+
           if($gouhi_check > 0){
             ${"gouhi".$j} = 1;
             ${"gouhihyouji".$j} = "否";
@@ -3420,9 +3433,10 @@ class KensahyousokuteidatasController extends AppController
         print_r($updateInspectionDataResultParents);
         echo "</pre>";
 */
-        $InspectionDataResultParents = $this->InspectionDataResultParents->find()->contain(['Products'])
+        $InspectionDataResultParents = $this->InspectionDataResultParents->find()->contain(['Products', 'ProductConditionParents'])
         ->where([
           'product_code like' => $product_code_ini.'%',
+          'machine_num' => $machine_num,
      //     'inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'],
           'datetime >=' => $date_sta, 'datetime <' => $date_fin,
      //    'product_condition_parent_id' => $data['product_condition_parent_id'],
@@ -3615,6 +3629,11 @@ class KensahyousokuteidatasController extends AppController
           }
 
         }
+
+        if($data['gaikan'.$j] > 0){
+          $gouhi_check = $gouhi_check + 1;
+        }
+
         if($gouhi_check > 0){
           ${"gouhi".$j} = 1;
           ${"gouhihyouji".$j} = "否";
@@ -3830,6 +3849,11 @@ class KensahyousokuteidatasController extends AppController
           }
 
         }
+
+        if($data['gaikan'.$j] > 0){
+          $gouhi_check = $gouhi_check + 1;
+        }
+
         if($gouhi_check > 0){
           ${"gouhi".$j} = 1;
           ${"gouhihyouji".$j} = "否";
@@ -4633,12 +4657,12 @@ class KensahyousokuteidatasController extends AppController
         $startY = $data['start']['year'];
     		$startM = $data['start']['month'];
     		$startD = $data['start']['day'];
-        $startYMD = $startY."-".$startM."-".$startD." 06:00";
+        $startYMD = $startY."-".$startM."-".$startD." 00:00";
 
         $endY = $data['end']['year'];
     		$endM = $data['end']['month'];
     		$endD = $data['end']['day'] + 1;
-        $endYMD = $endY."-".$endM."-".$endD." 05:59";
+        $endYMD = $endY."-".$endM."-".$endD." 00:00";
   
         $product_code_ini = substr($product_code, 0, 11);
         $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
@@ -4646,7 +4670,7 @@ class KensahyousokuteidatasController extends AppController
         ->where(['product_code like' => $product_code_ini.'%', 'machine_num' => $machine_num,
         'InspectionDataResultParents.daily_report_id >' => 0,
          'InspectionDataResultChildren.delete_flag' => 0,
-        'datetime >=' => $startYMD, 'datetime <=' => $endYMD])
+        'datetime >=' => $startYMD, 'datetime <' => $endYMD])
         ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
 
         $arrDates = array();
@@ -4692,7 +4716,7 @@ class KensahyousokuteidatasController extends AppController
         $product_name = $Products[0]["name"];
         $this->set('product_name', $product_name);
   
-        $startday = date("Y-m-d 06:00:00");
+        $startday = date("Y-m-d 00:00:00");
         $product_code_ini = substr($product_code, 0, 11);
         $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
         ->contain(['InspectionDataResultParents' => ['ProductConditionParents','Products']])//測定データのうち、長さ違いも含め呼出
@@ -4771,9 +4795,9 @@ class KensahyousokuteidatasController extends AppController
       echo "</pre>";
 */
       $datekensaku = $arrdata[0];
-      $datetimesta = $arrdata[0]." 06:00";
+      $datetimesta = $arrdata[0]." 00:00";
 			$date1 = strtotime($arrdata[0]);
-			$datetimefin = date('Y-m-d', strtotime('+1 day', $date1))." 05:59";
+			$datetimefin = date('Y-m-d', strtotime('+1 day', $date1))." 00:00";
       $this->set('datekensaku', $datekensaku);
       $this->set('datetimesta', $datetimesta);
       $this->set('datetimefin', $datetimefin);
@@ -5024,7 +5048,7 @@ class KensahyousokuteidatasController extends AppController
 
       }
 
-      $machine_datetime_product = $machine_num."_".$datekensaku."_06:00:00_".$product_code;
+      $machine_datetime_product = $machine_num."_".$datekensaku."_00:00:00_".$product_code;
 
       $htmlkensahyougenryouheader = new htmlkensahyouprogram();
       $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderkensaku($machine_datetime_product);
@@ -5230,7 +5254,7 @@ class KensahyousokuteidatasController extends AppController
         }
         $this->set('mode',$mode);
   
-        $machine_datetime_product = $machine_num."_".$datekensaku."_06:00:00_".$product_code;
+        $machine_datetime_product = $machine_num."_".$datekensaku."_00:00:00_".$product_code;
 
         $htmlkensahyougenryouheader = new htmlkensahyouprogram();
         $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderkensaku($machine_datetime_product);
@@ -5731,7 +5755,7 @@ class KensahyousokuteidatasController extends AppController
 
       }
 
-      $machine_datetime_product = $machine_num."_".$datekensaku."_06:00:00_".$product_code;
+      $machine_datetime_product = $machine_num."_".$datekensaku."_00:00:00_".$product_code;
 
       $htmlkensahyougenryouheader = new htmlkensahyouprogram();
       $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderkensaku($machine_datetime_product);
@@ -6115,7 +6139,7 @@ class KensahyousokuteidatasController extends AppController
       $bik = $data["bik"];
       $this->set('bik', $bik);
  
-      $machine_datetime_product = $machine_num."_".$datekensaku."_06:00:00_".$product_code;
+      $machine_datetime_product = $machine_num."_".$datekensaku."_00:00:00_".$product_code;
 
       $htmlkensahyougenryouheader = new htmlkensahyouprogram();
       $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderkensaku($machine_datetime_product);
@@ -6186,7 +6210,7 @@ class KensahyousokuteidatasController extends AppController
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
-      $machine_datetime_product = $machine_num."_".$datekensaku."_06:00:00_".$product_code;
+      $machine_datetime_product = $machine_num."_".$datekensaku."_00:00:00_".$product_code;
 
       $htmlkensahyougenryouheader = new htmlkensahyouprogram();
       $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderkensaku($machine_datetime_product);
@@ -7690,73 +7714,7 @@ class KensahyousokuteidatasController extends AppController
       $Staffs = $this->Staffs->find()->where(['id' => $staff_id])->toArray();
       $factory_id = $Staffs[0]["factory_id"];
 
-      $datetimesta = date('Y-m-d 06:00:00');//今日の6時が境目
-
-/*
-      if($factory_id == 5){//本部の人がログインしている場合
-
-        $InspectionDataResultParents = $this->InspectionDataResultParents->find()
-        ->contain(['InspectionStandardSizeParents', 'ProductConditionParents', 'Products'])
-        ->where(['InspectionStandardSizeParents.delete_flag' => 0,
-         'InspectionDataResultParents.delete_flag' => 0,
-         'datetime >=' => $datetimesta])
-         ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
-  
-      }else{
-
-        $InspectionDataResultParents = $this->InspectionDataResultParents->find()
-        ->contain(['InspectionStandardSizeParents', 'ProductConditionParents', 'Products'])
-        ->where(['InspectionStandardSizeParents.delete_flag' => 0,
-         'InspectionDataResultParents.delete_flag' => 0,
-         'datetime >=' => $datetimesta,
-         'OR' => [['Products.factory_id' => $factory_id], ['Products.factory_id' => 5]]])
-         ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
-  
-      }
-
-       $arrInspectionDataResultParents = array();
-       for($i=0; $i<count($InspectionDataResultParents); $i++){
-
-        $check_proini = 0;
-        $product_code_ini = substr($InspectionDataResultParents[$i]["product"]["product_code"], 0, 11);
-        $machine_num = $InspectionDataResultParents[$i]["product_condition_parent"]["machine_num"];
-  
-        for($j=0; $j<count($arrInspectionDataResultParents); $j++){//同じ製品が既に登録されていたら登録しない
-          
-          if($arrInspectionDataResultParents[$j]["product_code_ini_machine_num"] == $product_code_ini."_".$machine_num){
-            $check_proini = $check_proini + 1;
-          }
-
-        }
-
-        if($check_proini == 0){
-
-          $arrInspectionDataResultParents[] = [
-            "machine_num" => $InspectionDataResultParents[$i]["product_condition_parent"]["machine_num"],
-            "product_code" => $InspectionDataResultParents[$i]["product"]["product_code"],
-            "product_code_ini_machine_num" => $product_code_ini."_".$InspectionDataResultParents[$i]["product_condition_parent"]["machine_num"],
-            "name" => $InspectionDataResultParents[$i]["product"]["name"],
-          ];
-  
-          }
-
-      }
-
-      $tmp = array();
-      $array_result = array();
-     
-      foreach( $arrInspectionDataResultParents as $key => $value ){
-     
-       // 配列に値が見つからなければ$tmpに格納
-       if( !in_array( $value['product_code_ini_machine_num'], $tmp ) ) {
-        $tmp[] = $value['product_code_ini_machine_num'];
-        $array_result[] = $value;
-       }
-     
-      }
-      $arrInspectionDataResultParents = $array_result;
-      $this->set('arrInspectionDataResultParents', $arrInspectionDataResultParents);
-*/
+      $datetimesta = date('Y-m-d 00:00:00');//今日の6時が境目
 
       //検査中一覧のクラス
       $datetimesta_factory = $datetimesta."_".$factory_id;
@@ -7779,7 +7737,11 @@ class KensahyousokuteidatasController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->query('s');
-
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
       $arrdata = explode("_",$data);
       if(isset($arrdata[2])){
         $mikan_check = $arrdata[0];
@@ -7828,11 +7790,6 @@ class KensahyousokuteidatasController extends AppController
 
       }
       $this->set('check_num', $check_num);
-/*
-      echo "<pre>";
-      print_r($getData);
-      echo "</pre>";
-*/
       $this->set('machine_num', $machine_num);
       $this->set('product_code', $product_code);
       $this->set('mikan_check', $mikan_check);
@@ -7851,7 +7808,7 @@ class KensahyousokuteidatasController extends AppController
       }
       $this->set('mode',$mode);
 
-      $datetimesta = date('Y-m-d 06:00:00');
+      $datetimesta = date('Y-m-d 00:00:00');
 
       $htmlproductcheck = new htmlproductcheck();//クラスを使用
       $arrayproductdate = $htmlproductcheck->productcheckprogram($product_code);//クラスを使用
@@ -7945,25 +7902,17 @@ class KensahyousokuteidatasController extends AppController
 
       }
 
+      
       if($mikan_check == 0){//本日
 
-        if(date("H") < 6){
+        $date1 = strtotime(date("Y-m-d"));
+        $date_sta = date("Y-m-d")." 00:00:00";
+        $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 00:00:00";
 
-          $date1 = strtotime(date("Y-m-d"));
-          $date_sta = date('Y-m-d', strtotime('-1 day', $date1))." 06:00:00";
-          $date_fin = date("Y-m-d")." 06:00:00";
-
-        }else{
-
-          $date1 = strtotime(date("Y-m-d"));
-          $date_sta = date("Y-m-d")." 06:00:00";
-          $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 06:00:00";
-
-        }
         $this->set('date_sta', $date_sta);
         $this->set('date_fin', $date_fin);
 
-        $machine_datetime_product = $machine_num."_".substr($date_sta, 0, 10)."_06:00:00_".$product_code;
+        $machine_datetime_product = $machine_num."_".substr($date_sta, 0, 10)."_00:00:00_".$product_code;
 
         $htmlkensahyougenryouheader = new htmlkensahyouprogram();
         $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderkensaku($machine_datetime_product);
@@ -7986,13 +7935,21 @@ class KensahyousokuteidatasController extends AppController
         'datetime >=' => $datetimesta])
         ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
   
-      }else{
+      }else{//昨日以前の場合
+
+        $datetime_target = $arrdata[3];
+  
+        $date1 = strtotime($datetime_target);
+        $date_sta = $datetime_target." 00:00:00";
+        $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 00:00:00";
 
         $product_code_ini = substr($product_code, 0, 11);
         $InspectionDataResultParents = $this->InspectionDataResultParents->find()
         ->contain(['ProductConditionParents', 'InspectionStandardSizeParents', 'Products'])
-        ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.delete_flag' => 0,
+        ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%',
+         'InspectionStandardSizeParents.delete_flag' => 0,
         'kanryou_flag IS' => NULL,
+        'datetime >=' => $date_sta, 'datetime <' => $date_fin,
         'InspectionDataResultParents.delete_flag' => 0])
         ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
   
@@ -8000,25 +7957,14 @@ class KensahyousokuteidatasController extends AppController
         $this->set('gyou', $gyou);
   
         $datetimestaresult = $InspectionDataResultParents[0]["created_at"]->format("Y-m-d H:i:s");
-        $datetimestaresultsta = $InspectionDataResultParents[0]["created_at"]->format("H");
 
-        if($datetimestaresultsta < 6){
+        $date1 = strtotime($InspectionDataResultParents[0]["created_at"]->format("Y-m-d"));
+        $date_sta = $InspectionDataResultParents[0]["created_at"]->format("Y-m-d")." 00:00:00";
 
-          $date1 = strtotime($InspectionDataResultParents[0]["created_at"]->format("Y-m-d"));
-          $date_sta = date('Y-m-d', strtotime('-1 day', $date1))." 06:00:00";
-          $date_fin = $InspectionDataResultParents[0]["created_at"]->format("Y-m-d")." 06:00:00";
-
-        }else{
-
-          $date1 = strtotime($InspectionDataResultParents[0]["created_at"]->format("Y-m-d"));
-          $date_sta = $InspectionDataResultParents[0]["created_at"]->format("Y-m-d")." 06:00:00";
-          $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 06:00:00";
-
-        }
         $this->set('date_sta', $date_sta);
         $this->set('date_fin', $date_fin);
 
-        $machine_datetime_product = $machine_num."_".substr($date_sta, 0, 10)."_06:00:00_".$product_code;
+        $machine_datetime_product = $machine_num."_".substr($date_sta, 0, 10)."_00:00:00_".$product_code;
 
         $htmlkensahyougenryouheader = new htmlkensahyouprogram();
         $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderkensaku($machine_datetime_product);
@@ -8172,10 +8118,10 @@ class KensahyousokuteidatasController extends AppController
       $InspectionDataConditonParents = $this->InspectionDataConditonParents->find()
       ->where(['product_code like' => $product_code_ini.'%', 'delete_flag' => 0, 'datetime >=' => $datetimesta])->order(["datetime"=>"DESC"])->toArray();
 
-      if(!isset($InspectionDataConditonParents[0])){
+      if(!isset($InspectionDataConditonParents[0])){//0時の手前で当日条件を登録して0時を回った場合
         $InspectionDataConditonParents = $this->InspectionDataConditonParents->find()
         ->where(['product_code like' => $product_code_ini.'%', 'delete_flag' => 0])->order(["datetime"=>"DESC"])->toArray();
-        }
+      }
       $inspection_data_conditon_parent_id = $InspectionDataConditonParents[0]['id'];
       $this->set('inspection_data_conditon_parent_id', $inspection_data_conditon_parent_id);
 

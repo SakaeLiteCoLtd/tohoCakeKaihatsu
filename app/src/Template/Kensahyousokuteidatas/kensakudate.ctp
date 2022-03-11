@@ -90,22 +90,31 @@ $dayye = date('Y-m-d', strtotime('-1 day', $dateYMD1));
           <?php
           if(isset($arrDates[$i])){
             $date = $arrDates[$i];
-          }else{
-            $date = "";
           }
           ?>
 
-          <tr>
+<tr>
+
+          <?php if (isset($arrDates[$i])): ?>
+
             <td><?= h($date) ? $this->Html->link($date, ['action' => 'kensakuhyouji', 's' => $date."_".$machine_num."_".$product_code]) : '' ?></td>
             <td><?= h("　".$product_name."　");?></td>
             <?php
-      $ProductDatas = $this->Products->find()
-      ->where(['product_code' => $product_code])->toArray();
-      $LinenameDatas = $this->Linenames->find()
-      ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
+              $ProductDatas = $this->Products->find()
+              ->where(['product_code' => $product_code])->toArray();
+              $LinenameDatas = $this->Linenames->find()
+              ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"], 'machine_num' => $machine_num])->toArray();
             ?>
+            <td><?= h($LinenameDatas[0]["name"]);?></td>
 
-<td><?= h($LinenameDatas[0]["name"]);?></td>
+          <?php else : ?>
+
+            <td></td>
+            <td></td>
+            <td></td>
+
+          <?php endif; ?>
+
           </tr>
         <?php endfor;?>
 

@@ -61,7 +61,7 @@ echo $this->Html->css('kensahyou');
   <td width="100">ライン</td>
     </tr>
     <tr>
-    <td><?= h("　".$date_sta."　～　".$date_fin."　") ?></td>
+    <td><?= h("　".$date_sta."　～　".$date_fin_hyouji."　") ?></td>
     <td width="100"><?= h($name_machine) ?></td>
 
     <td width="30" style="border-style: none;background-color: #E6FFFF"><?= h("　") ?></td>
@@ -71,7 +71,7 @@ echo $this->Html->css('kensahyou');
   </tbody>
 </table>
 <br>
-<table>
+<table width="1200">
 <thead>
 <tr class="parents">
 <td style='font-size: 10pt; border-width: 1px solid black;'><?= __('製品コード') ?></td>
@@ -93,8 +93,22 @@ echo $this->Html->css('kensahyou');
   <td><?= h($arrProdcts[$j]["amount"]) ?></td>
   <td><?= h($arrProdcts[$j]["sum_weight"]) ?></td>
   <td><?= h($arrProdcts[$j]["total_loss_weight"]) ?></td>
-  <td><?= h($arrProdcts[$j]["lossritsu"]) ?></td>
-  <td><?= h($arrProdcts[$j]["tasseiritsu"]) ?></td>
+
+  <?php if ($j == 0): ?>
+      <?php
+      $num = count($arrProdcts);
+
+        echo "<td rowspan=$num>";
+        echo "$lossritsu";
+        echo "</td>";
+        echo "<td rowspan=$num>";
+        echo "$tasseiritsu";
+        echo "</td>";
+      ?>
+    <?php else : ?>
+    <?php endif; ?>
+
+
 <?php endfor;?>
 </tbody>
     </table>
@@ -102,7 +116,7 @@ echo $this->Html->css('kensahyou');
 <br>
 
 
-<table width="1080">
+<table width="1200">
   <tr class="parents">
     <td colspan="7"><?= h($name_machine."号ライン") ?></td>
   </tr>
@@ -117,25 +131,25 @@ echo $this->Html->css('kensahyou');
   </tr>
   <tr class='children'>
     <td style="background-color: #f0e68c" width="80">日時</td>
-    <td>22</td>
-    <td>33</td>
-    <td>44</td>
-    <td>55</td>
-    <td>66</td>
-    <td>77</td>
+    <td style='font-size: 11pt;'><?= h($heater_start_datetime) ?></td>
+    <td style='font-size: 11pt;'><?= h($relay_start_datetime) ?></td>
+    <td style='font-size: 11pt;'><?= h($start_datetime) ?></td>
+    <td style='font-size: 11pt;'><?= h($finish_datetime) ?></td>
+    <td style='font-size: 11pt;'><?= h($relay_finish_datetime) ?></td>
+    <td style='font-size: 11pt;'><?= h($heater_finish_datetime) ?></td>
   </tr>
 </table>
-<table width="1080">
+<table width="1200">
   <tr class='children'>
-    <td style="background-color: #f0e68c; border-top:none" width="80">間隔(分)</td>
-    <td style="border-top:none" width="260">222</td>
-    <td style="border-top:none" width="160">333</td>
-    <td style="border-top:none">444</td>
-    <td style="border-top:none" width="160">555</td>
-    <td style="border-top:none" width="260">666</td>
+    <td style="background-color: #f0e68c; border-top:none" width="80">間隔</td>
+    <td style="border-top:none" width="260"><?= h($interval_heater_relay_on) ?> 分</td>
+    <td style="border-top:none"><?= h($interval_relay_start) ?> 分</td>
+    <td style="border-top:none"><?= h($interval_start_finish) ?> 分</td>
+    <td style="border-top:none"><?= h($interval_finish_relay) ?> 分</td>
+    <td style="border-top:none" width="260"><?= h($interval_relay_heater_off) ?> 分</td>
   </tr>
 </table>
-<table width="1080">
+<table width="1200">
   <tr class='children'>
     <td style="background-color: #f0e68c; border-top:none" width="80">備考</td>
     <td style="border-top:none" colspan="6" align="left"><?= h("　".$bik) ?></td>
@@ -143,6 +157,9 @@ echo $this->Html->css('kensahyou');
 </table>
 
 <br>
+
+<?php
+/*
 
 <table width="580">
   <tr class="parents">
@@ -165,6 +182,9 @@ echo $this->Html->css('kensahyou');
     <td>(m)</td>
   </tr>
 </table>
+
+*/
+?>
 
 <br><br>
 <legend align="center"><strong style="font-size: 12pt; color:blue"><?= __('工程異常一覧') ?></strong></legend>

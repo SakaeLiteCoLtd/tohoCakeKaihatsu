@@ -113,16 +113,37 @@ echo $this->Html->css('kensahyou');
 
   <table class="form">
 
-  <?php if ($j == 1): ?>
-  <td style='width:36; border-top-style:none; font-size: 11pt'>S</td>
-  <?php elseif ($j == $gyou) : ?>
-    <td style='width:36; border-top-style:none; font-size: 11pt'>E</td>
-  <?php else : ?>
-    <td style='width:36; border-top-style:none; font-size: 11pt'><?= h($j-1) ?></td>
-  <?php endif; ?>
+  <?php if (${"judge".$j} == 1): ?>
 
+    <?php if ($j == 1): ?>
+    <td style='width:36; border-top-style:none; font-size: 11pt; background-color:red'>S</td>
+    <?php elseif ($j == $gyou) : ?>
+      <td style='width:36; border-top-style:none; font-size: 11pt; background-color:red'>E</td>
+    <?php else : ?>
+      <td style='width:36; border-top-style:none; font-size: 11pt; background-color:red'><?= h($j-1) ?></td>
+    <?php endif; ?>
 
-  <td style='width:130; border-top-style:none; font-size: 10pt'><?= h(${"datetime".$j}) ?></td></td>
+    <?php else : ?>
+
+      <?php if ($j == 1): ?>
+    <td style='width:36; border-top-style:none; font-size: 11pt'>S</td>
+    <?php elseif ($j == $gyou) : ?>
+      <td style='width:36; border-top-style:none; font-size: 11pt'>E</td>
+    <?php else : ?>
+      <td style='width:36; border-top-style:none; font-size: 11pt'><?= h($j-1) ?></td>
+    <?php endif; ?>
+
+      <?php endif; ?>
+
+  <?php if (${"judge".$j} == 1): ?>
+
+    <td style='width:130; border-top-style:none; font-size: 10pt; background-color:red'><?= h(${"datetime".$j}) ?></td></td>
+
+    <?php else : ?>
+
+      <td style='width:130; border-top-style:none; font-size: 10pt'><?= h(${"datetime".$j}) ?></td></td>
+
+    <?php endif; ?>
 
   <td style='width:60; border-top-style:none'><?= h(${"length".$j}) ?></td>
 
@@ -190,7 +211,13 @@ echo $this->Html->css('kensahyou');
     <?php endif; ?>
 
   <td style='width:60; border-top-style:none'><?= h(${"result_weight".$j}) ?></td>
-  <td style='width:50; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+
+  <?php if (${"gouhihyouji".$j} == "否"): ?>
+   <td style='width:50; border-top-style:none'><font color="red"><?= h(${"gouhihyouji".$j}) ?></td>
+   <?php else : ?>
+    <td style='width:50; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+    <?php endif; ?>
+
 
 </table>
 

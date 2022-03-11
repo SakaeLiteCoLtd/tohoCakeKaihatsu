@@ -53,7 +53,7 @@ class KensahyoukadousController extends AppController
       $Staffs = $this->Staffs->find()->where(['id' => $staff_id])->toArray();
       $factory_id = $Staffs[0]["factory_id"];
 
-      $datetimesta = date('Y-m-d 06:00:00');//今日の6時が境目
+      $datetimesta = date('Y-m-d 00:00:00');//今日の0時が境目
 
       //検査中一覧のクラス
       $datetimesta_factory = $datetimesta."_".$factory_id;

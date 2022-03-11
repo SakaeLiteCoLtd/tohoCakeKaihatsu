@@ -66,7 +66,8 @@ echo $this->Html->css('kensahyou');
             <tr>
             <td><?= h($LinenameDatas[0]["name"]);?></td>
               <td><?= h($arrInspectionDataResultParentnotfin[$i]["product_code"]) ? $this->Html->link($arrInspectionDataResultParentnotfin[$i]["product_code"],
-               ['controller' => 'Kensahyousokuteidatas', 'action' => 'kensatyuichiran', 's' => "1_".$arrInspectionDataResultParentnotfin[$i]["machine_num"]."_".$arrInspectionDataResultParentnotfin[$i]["product_code"]]) : '' ?></td>
+               ['controller' => 'Kensahyousokuteidatas', 'action' => 'kensatyuichiran',
+                's' => "1_".$arrInspectionDataResultParentnotfin[$i]["machine_num"]."_".$arrInspectionDataResultParentnotfin[$i]["product_code"]."_".$arrInspectionDataResultParentnotfin[$i]["datetime"]]) : '' ?></td>
               <td><?= h("　".$arrInspectionDataResultParentnotfin[$i]["name"]."　");?></td>
               <td style="font-size: 10pt"><?= h($arrInspectionDataResultParentnotfin[$i]["datetime"]);?></td>
             </tr>
@@ -99,7 +100,8 @@ echo $this->Html->css('kensahyou');
             <tr>
             <td><?= h($LinenameDatas[0]["name"]);?></td>
               <td><?= h($arrInspectionDataResultParents[$i]["product_code"]) ? $this->Html->link($arrInspectionDataResultParents[$i]["product_code"],
-               ['controller' => 'Kensahyousokuteidatas', 'action' => 'kensatyuichiran', 's' => "0_".$arrInspectionDataResultParents[$i]["machine_num"]."_".$arrInspectionDataResultParents[$i]["product_code"]]) : '' ?></td>
+               ['controller' => 'Kensahyousokuteidatas', 'action' => 'kensatyuichiran',
+                's' => "0_".$arrInspectionDataResultParents[$i]["machine_num"]."_".$arrInspectionDataResultParents[$i]["product_code"]]) : '' ?></td>
               <td><?= h("　".$arrInspectionDataResultParents[$i]["name"]."　");?></td>
             </tr>
           <?php endfor;?>

@@ -457,8 +457,14 @@ var moji = "length"
 
   <table class="white">
 
+  <?php if (${"gouhihyouji".$j} == "否"): ?>
+    <td style='width:37; border-top-style:none; background-color:red'><?= h(${"lot_number".$j}) ?></td>
+    <td style='width:85; border-top-style:none; background-color:red'><?= h(${"datetime".$j}) ?></td></td>
+   <?php else : ?>
     <td style='width:37; border-top-style:none'><?= h(${"lot_number".$j}) ?></td>
     <td style='width:85; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
+    <?php endif; ?>
+
     <td style='width:82; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
 
     <?php
@@ -531,7 +537,13 @@ var moji = "length"
 
 
     <td style='width:75; border-top-style:none'><?= h(${"weight".$j}) ?></td>
-    <td style='width:35; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+
+    <?php if (${"gouhihyouji".$j} == "否"): ?>
+   <td style='width:35; border-top-style:none'><font color="red"><?= h(${"gouhihyouji".$j}) ?></td>
+   <?php else : ?>
+      <td style='width:35; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+    <?php endif; ?>
+
 
     <?php if ($check_seikeijouken == 0)://成形条件調整中ではないとき ?>
 

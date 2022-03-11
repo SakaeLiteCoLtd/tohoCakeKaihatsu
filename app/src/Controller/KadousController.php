@@ -190,13 +190,13 @@ class KadousController extends AppController
         if($data["date_sta_year_fin"] != "-" && $data["date_sta_month_fin"] != "-" && $data["date_sta_date_fin"] != "-"){
   
           $date1 = strtotime($dateselect);
-          $date_sta = $dateselect." 06:00:00";
+          $date_sta = $dateselect." 00:00:00";
   
           $dateselectfin = $data["date_sta_year_fin"]."-".$data["date_sta_month_fin"]."-".$data["date_sta_date_fin"];
           $date1fin = strtotime($dateselectfin);
   
-          $date_fin = date('Y-m-d', strtotime('+1 day', $date1fin))." 06:00:00";
-          $date_fin_hyouji = date('Y-m-d', strtotime('+1 day', $date1fin))." 05:59:59";
+          $date_fin = date('Y-m-d', strtotime('+1 day', $date1fin))." 00:00:00";
+          $date_fin_hyouji = $dateselectfin." 23:59:59";
           $this->set('date_sta', $date_sta);
           $this->set('date_fin', $date_fin);
           $this->set('date_fin_hyouji', $date_fin_hyouji);
@@ -204,9 +204,9 @@ class KadousController extends AppController
         }else{
 
           $date1 = strtotime($dateselect);
-          $date_sta = $dateselect." 06:00:00";
-          $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 06:00:00";
-          $date_fin_hyouji = date('Y-m-d', strtotime('+1 day', $date1))." 05:59:59";
+          $date_sta = $dateselect." 00:00:00";
+          $date_fin = date('Y-m-d', strtotime('+1 day', $date1fin))." 00:00:00";
+          $date_fin_hyouji = $dateselectfin." 23:59:59";
           $this->set('date_sta', $date_sta);
           $this->set('date_fin', $date_fin);
           $this->set('date_fin_hyouji', $date_fin_hyouji);
@@ -584,23 +584,11 @@ class KadousController extends AppController
         $this->set('product_code', $product_code);
         $start_datetime = $machine_products_date[2]." ".$machine_products_date[3];
 
-        if((int)substr($machine_products_date[3], 0, 2) < 6){//前日の検査
-
-          $date_fin = $machine_products_date[2]." 05:59:59";
-          $this->set('date_fin', $date_fin);
-          $date1fin = strtotime($machine_products_date[2]);
-          $date_sta = date('Y-m-d', strtotime('-1 day', $date1fin))." 06:00:00";
-          $this->set('date_sta', $date_sta);
-    
-        }else{
-
-          $date_sta = $machine_products_date[2]." 06:00:00";
-          $this->set('date_sta', $date_sta);
-          $date1fin = strtotime($machine_products_date[2]);
-          $date_fin = date('Y-m-d', strtotime('+1 day', $date1fin))." 05:59:59";
-          $this->set('date_fin', $date_fin);
-  
-        }
+        $date_sta = $machine_products_date[2]." 00:00:00";
+        $this->set('date_sta', $date_sta);
+        $date1fin = strtotime($machine_products_date[2]);
+        $date_fin = date('Y-m-d', strtotime('+1 day', $date1fin))." 00:00:00";
+        $this->set('date_fin', $date_fin);
 
         for($i=0; $i<=$data["num_max"]; $i++){
           if($data["machine_num".$i] == $machine_num
@@ -637,23 +625,11 @@ class KadousController extends AppController
           $product_code = $data["product_code".$target_num];
           $this->set('product_code', $product_code);
 
-          if((int)substr($data["start_datetime".$target_num], 11, 2) < 6){//前日の検査
-
-            $date_fin = substr($data["start_datetime".$target_num], 0, 10)." 05:59:59";
-            $this->set('date_fin', $date_fin);
-            $date1fin = strtotime(substr($data["start_datetime".$target_num], 0, 10));
-            $date_sta = date('Y-m-d', strtotime('-1 day', $date1fin))." 06:00:00";
-            $this->set('date_sta', $date_sta);
-      
-          }else{
-  
-            $date_sta = substr($data["start_datetime".$target_num], 0, 10)." 06:00:00";
-            $this->set('date_sta', $date_sta);
-            $date1fin = strtotime(substr($data["start_datetime".$target_num], 0, 10));
-            $date_fin = date('Y-m-d', strtotime('+1 day', $date1fin))." 05:59:59";
-            $this->set('date_fin', $date_fin);
-    
-          }
+          $date_sta = substr($data["start_datetime".$target_num], 0, 10)." 00:00:00";
+          $this->set('date_sta', $date_sta);
+          $date1fin = strtotime(substr($data["start_datetime".$target_num], 0, 10));
+          $date_fin = date('Y-m-d', strtotime('+1 day', $date1fin))." 00:00:00";
+          $this->set('date_fin', $date_fin);
 
           $this->set('target_num', $target_num);
 
@@ -674,23 +650,11 @@ class KadousController extends AppController
           $product_code = $data["product_code".$target_num];
           $this->set('product_code', $product_code);
 
-          if((int)substr($data["start_datetime".$target_num], 11, 2) < 6){//前日の検査
-
-            $date_fin = substr($data["start_datetime".$target_num], 0, 10)." 05:59:59";
-            $this->set('date_fin', $date_fin);
-            $date1fin = strtotime(substr($data["start_datetime".$target_num], 0, 10));
-            $date_sta = date('Y-m-d', strtotime('-1 day', $date1fin))." 06:00:00";
-            $this->set('date_sta', $date_sta);
-      
-          }else{
-  
-            $date_sta = substr($data["start_datetime".$target_num], 0, 10)." 06:00:00";
-            $this->set('date_sta', $date_sta);
-            $date1fin = strtotime(substr($data["start_datetime".$target_num], 0, 10));
-            $date_fin = date('Y-m-d', strtotime('+1 day', $date1fin))." 05:59:59";
-            $this->set('date_fin', $date_fin);
-    
-          }
+          $date_sta = substr($data["start_datetime".$target_num], 0, 10)." 00:00:00";
+          $this->set('date_sta', $date_sta);
+          $date1fin = strtotime(substr($data["start_datetime".$target_num], 0, 10));
+          $date_fin = date('Y-m-d', strtotime('+1 day', $date1fin))." 00:00:00";
+          $this->set('date_fin', $date_fin);
 
           $this->set('target_num', $target_num);
     
@@ -715,10 +679,20 @@ class KadousController extends AppController
         }
 
       }
-
+/*
+      echo "<pre>";
+      print_r($date_fin);
+      echo "</pre>";
+      echo "<pre>";
+      print_r($product_code);
+      echo "</pre>";
+      echo "<pre>";
+      print_r($machine_num);
+      echo "</pre>";
+*/
       $factory_id = $data["factory_id"];
       $this->set('factory_id', $factory_id);
-      $date_fin_hyouji = substr($date_fin, 0, 10)." 05:59:59";
+      $date_fin_hyouji = substr($date_sta, 0, 10)." 23:59:59";
       $this->set('date_fin_hyouji', $date_fin_hyouji);
 
       $product_code_ini = substr($product_code, 0, 11);
@@ -730,13 +704,155 @@ class KadousController extends AppController
       'factory_id' => $factory_id])
       ->order(["machine_num"=>"ASC"])->toArray();
 
+      $start_datetime = $DailyReportsData[0]["start_datetime"]->format("Y-n-j G:i:s");
+      $finish_datetime = $DailyReportsData[0]["finish_datetime"]->format("Y-n-j G:i:s");
+      $this->set('start_datetime', $start_datetime);
+      $this->set('finish_datetime', $finish_datetime);
+
+      //データ取得リレーのON、OFF時間を取得（生産開始、終了）
+      $RelayLogsDataSta = $this->RelayLogs->find()
+      ->where([
+        'machine_relay_id' => 5,
+        'status' => 1,
+        'datetime <' => $start_datetime,
+        'delete_flag' => 0,
+        'factory_code' => $factory_id,
+        'machine_num' => $machine_num
+        ])
+        ->order(["datetime"=>"DESC"])->limit('1')->toArray();
+
+      if(isset($RelayLogsDataSta[0])){
+        $relay_start_datetime = $RelayLogsDataSta[0]["datetime"]->format("Y-n-j G:i:s");
+      }else{
+        $relay_start_datetime = "";
+      }
+      $this->set('relay_start_datetime', $relay_start_datetime);
+
+      $RelayLogsDataFin = $this->RelayLogs->find()
+      ->where([
+        'machine_relay_id' => 5,
+        'status' => 0,
+        'datetime >' => $finish_datetime,
+        'delete_flag' => 0,
+        'factory_code' => $factory_id,
+        'machine_num' => $machine_num
+        ])
+        ->order(["datetime"=>"ASC"])->limit('1')->toArray();
+
+      if(isset($RelayLogsDataFin[0])){
+        $relay_finish_datetime = $RelayLogsDataFin[0]["datetime"]->format("Y-n-j G:i:s");
+      }else{
+        $relay_finish_datetime = "";
+      }
+      $this->set('relay_finish_datetime', $relay_finish_datetime);
+
+      //ヒーターのON、OFF時間を取得
+      $RelayLogsDataSta = $this->RelayLogs->find()
+      ->where([
+        'machine_relay_id' => 1,
+        'status' => 1,
+        'datetime <' => $start_datetime,
+        'delete_flag' => 0,
+        'factory_code' => $factory_id,
+        'machine_num' => $machine_num
+        ])
+      ->order(["datetime"=>"DESC"])->limit('2')->toArray();
+
+      //１秒差以内で時限リレーOFFがあれば無視する
+      $RelayLogsDataCheck = $this->RelayLogs->find()
+      ->where([
+        'machine_relay_id' => 0,
+        'status' => 0,
+        'datetime >=' => date("Y-m-d H:i:s",strtotime($RelayLogsDataSta[0]["datetime"]->format("Y-n-j G:i:s") . "-1 second")),
+        'datetime <=' => date("Y-m-d H:i:s",strtotime($RelayLogsDataSta[0]["datetime"]->format("Y-n-j G:i:s") . "+1 second")),
+        'delete_flag' => 0,
+        'factory_code' => $factory_id,
+        'machine_num' => $machine_num
+        ])
+      ->toArray();
+  
+      if(isset($RelayLogsDataCheck[0])){//存在する時は２つ前のONを持ってくる
+        if(isset($RelayLogsDataSta[1])){
+          $heater_start_datetime = $RelayLogsDataSta[1]["datetime"]->format("Y-n-j G:i:s");
+        }else{
+          $heater_start_datetime = "";
+        }
+      }else{
+        if(isset($RelayLogsDataSta[0])){
+          $heater_start_datetime = $RelayLogsDataSta[0]["datetime"]->format("Y-n-j G:i:s");
+        }else{
+          $heater_start_datetime = "";
+        }
+      }
+      $this->set('heater_start_datetime', $heater_start_datetime);
+
+      $RelayLogsDataFin = $this->RelayLogs->find()
+      ->where([
+        'machine_relay_id' => 1,
+        'status' => 0,
+        'datetime >' => $finish_datetime,
+        'delete_flag' => 0,
+        'factory_code' => $factory_id,
+        'machine_num' => $machine_num
+        ])
+        ->order(["datetime"=>"ASC"])->limit('1')->toArray();
+
+      if(isset($RelayLogsDataFin[0])){
+        $heater_finish_datetime = $RelayLogsDataFin[0]["datetime"]->format("Y-n-j G:i:s");
+      }else{
+        $heater_finish_datetime = "";
+      }
+      $this->set('heater_finish_datetime', $heater_finish_datetime);
+
+      //それぞれの時間の感覚を計算
+      $interval_heater_relay_on = 0;
+      $interval_relay_start = 0;
+      $interval_start_finish = 0;
+      $interval_finish_relay = 0;
+      $interval_relay_heater_off = 0;
+
+      $from_heater_start_datetime = strtotime($heater_start_datetime);
+      $to_relay_start_datetime = strtotime($relay_start_datetime);
+      if($to_relay_start_datetime - $from_heater_start_datetime > 0){
+        $interval_heater_relay_on = ($to_relay_start_datetime - $from_heater_start_datetime) / 60;
+        $interval_heater_relay_on = sprintf("%.1f", $interval_heater_relay_on);
+      }
+      $this->set('interval_heater_relay_on', $interval_heater_relay_on);
+
+      $from_relay_start_datetime = strtotime($relay_start_datetime);
+      $to_start_datetime = strtotime($start_datetime);
+      if($to_start_datetime - $from_relay_start_datetime > 0){
+        $interval_relay_start = ($to_start_datetime - $from_relay_start_datetime) / 60;
+        $interval_relay_start = sprintf("%.1f", $interval_relay_start);
+      }
+      $this->set('interval_relay_start', $interval_relay_start);
+
+      $from_start_datetime = strtotime($start_datetime);
+      $to_finish_datetime = strtotime($finish_datetime);
+      if($to_finish_datetime - $from_start_datetime > 0){
+        $interval_start_finish = ($to_finish_datetime - $from_start_datetime) / 60;
+        $interval_start_finish = sprintf("%.1f", $interval_start_finish);
+      }
+      $this->set('interval_start_finish', $interval_start_finish);
+
+      $from_finish_datetime = strtotime($finish_datetime);
+      $to_relay_finish_datetime = strtotime($relay_finish_datetime);
+      if($to_relay_finish_datetime - $from_finish_datetime > 0){
+        $interval_finish_relay = ($to_relay_finish_datetime - $from_finish_datetime) / 60;
+        $interval_finish_relay = sprintf("%.1f", $interval_finish_relay);
+      }
+      $this->set('interval_finish_relay', $interval_finish_relay);
+
+      $from_relay_finish_datetime = strtotime($relay_finish_datetime);
+      $to_heater_finish_datetime = strtotime($heater_finish_datetime);
+      if($to_heater_finish_datetime - $from_relay_finish_datetime > 0){
+        $interval_relay_heater_off = ($to_heater_finish_datetime - $from_relay_finish_datetime) / 60;
+        $interval_relay_heater_off = sprintf("%.1f", $interval_relay_heater_off);
+      }
+      $this->set('interval_relay_heater_off', $interval_relay_heater_off);
+
       $arrProdcts = array();
       for($i=0; $i<count($DailyReportsData); $i++){
-      
-        $tasseiritsu = $DailyReportsData[$i]["sum_weight"] * 100 / ($DailyReportsData[$i]["sum_weight"] + $DailyReportsData[$i]["total_loss_weight"]);
-        $tasseiritsu = sprintf("%.1f", $tasseiritsu);
-        $lossritsu = $DailyReportsData[$i]["total_loss_weight"] * 100 / ($DailyReportsData[$i]["sum_weight"] + $DailyReportsData[$i]["total_loss_weight"]);
-        $lossritsu = sprintf("%.1f", $lossritsu);
 
         $arrProdcts[] = [
           "product_code" => $DailyReportsData[$i]["product"]["product_code"],
@@ -745,14 +861,25 @@ class KadousController extends AppController
           "amount" => $DailyReportsData[$i]["amount"],
           "sum_weight" => $DailyReportsData[$i]["sum_weight"],
           "total_loss_weight" => $DailyReportsData[$i]["total_loss_weight"],
-          "lossritsu" => $lossritsu,
-          "tasseiritsu" => $tasseiritsu,
         ];
-
         $this->set('bik', $DailyReportsData[$i]["bik"]);
 
       }
       $this->set('arrProdcts', $arrProdcts);
+
+      $total_sum_weight = 0;
+      $total_loss_weight = 0;
+      for($j=0; $j<count($arrProdcts); $j++){
+        $total_sum_weight = $total_sum_weight + $arrProdcts[$j]["sum_weight"];
+        $total_loss_weight = $total_loss_weight + $arrProdcts[$j]["total_loss_weight"];
+      }
+
+      $tasseiritsu = $total_sum_weight * 100 / ($total_sum_weight + $total_loss_weight);
+      $tasseiritsu = sprintf("%.1f", $tasseiritsu);
+      $this->set('tasseiritsu', $tasseiritsu);
+      $lossritsu = $total_loss_weight * 100 / ($total_sum_weight + $total_loss_weight);
+      $lossritsu = sprintf("%.1f", $lossritsu);
+      $this->set('lossritsu', $lossritsu);
 
       $InspectionDataResultParentDatas = $this->InspectionDataResultParents->find()
       ->contain(['ProductConditionParents', 'Products', 'Staffs'])
