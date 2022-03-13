@@ -23,6 +23,7 @@ class KadousController extends AppController
    $this->DailyReports = TableRegistry::get('DailyReports');
    $this->Linenames = TableRegistry::get('Linenames');
    $this->InspectionDataResultParents = TableRegistry::get('InspectionDataResultParents');
+   $this->InspectionDataConditonChildren = TableRegistry::get('InspectionDataConditonChildren');
 
    if(!isset($_SESSION)){//フォーム再送信の確認対策
     session_start();
@@ -529,6 +530,9 @@ class KadousController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
+      if(!isset($data["num_max"])){//ログインしなおして入ってきたとき
+        return $this->redirect(['action' => 'yobidashidate']);
+      }
       $num_max = $data["num_max"];
       $this->set('num_max', $num_max);
 /*
@@ -536,12 +540,6 @@ class KadousController extends AppController
       print_r($data);
       echo "</pre>";
 */
-      if(!isset($data["date_sta"])){//ログインしなおして入ってきたとき
-
-        return $this->redirect(['action' => 'yobidashidate']);
-
-      }
-
       if(isset($data["kensahyou"])){
 
         return $this->redirect(['controller' => 'Kensahyousokuteidatas', 'action' => 'kensakuhyouji',
@@ -568,14 +566,15 @@ class KadousController extends AppController
         }
         return $this->redirect(['action' => 'view',
         's' => ['button_name' => $button_name, 'num_max' => $num_max, 'factory_id' => $factory_id,
-         'date_fin' => $date_fin,'date_sta' => $date_sta,'product_name' => $product_name,'machine_num' => $machine_num,
-         'date_fin_hyouji' => $date_fin_hyouji]]);
+        'date_fin' => $date_fin,'date_sta' => $date_sta,'product_name' => $product_name,'machine_num' => $machine_num,
+        'date_fin_hyouji' => $date_fin_hyouji]]);
 
       }else{
 
       $arrsyousai = array_keys($data, '詳細');
 
       if(isset($arrsyousai[0])){
+
         $arrmachine_products_date = $arrsyousai[0];
         $machine_products_date = explode("_",$arrmachine_products_date);
         $machine_num = $machine_products_date[0];
@@ -679,17 +678,7 @@ class KadousController extends AppController
         }
 
       }
-/*
-      echo "<pre>";
-      print_r($date_fin);
-      echo "</pre>";
-      echo "<pre>";
-      print_r($product_code);
-      echo "</pre>";
-      echo "<pre>";
-      print_r($machine_num);
-      echo "</pre>";
-*/
+
       $factory_id = $data["factory_id"];
       $this->set('factory_id', $factory_id);
       $date_fin_hyouji = substr($date_sta, 0, 10)." 23:59:59";
@@ -851,9 +840,37 @@ class KadousController extends AppController
       }
       $this->set('interval_relay_heater_off', $interval_relay_heater_off);
 
+      //量産時間と引き取り速度を取得
+      $from_relay_start_datetime = strtotime($relay_start_datetime);
+      $to_relay_finish_datetime = strtotime($relay_finish_datetime);
+      $time_ryousan = ($to_relay_finish_datetime - $from_relay_start_datetime) / 60;
+      $time_ryousan = sprintf("%.1f", $time_ryousan);
+      echo "<pre>";
+      print_r($time_ryousan);
+      echo "</pre>";
+
+      $InspectionDataResultParentSpeed = $this->InspectionDataResultParents->find()
+      ->contain(['ProductConditionParents', 'Products'])
+      ->where([
+      'machine_num' => $machine_num,
+      'product_code like' => $product_code_ini.'%', 
+      'InspectionDataResultParents.delete_flag' => 0,
+      'datetime >=' => $finish_datetime,
+      'datetime <=' => $finish_datetime
+      ])
+      ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
+
+      $InspectionDataConditonChildrenSpeed = $this->InspectionDataConditonChildren->find()
+      ->where(['inspection_data_conditon_parent_id' => $InspectionDataResultParentSpeed[0]["inspection_data_conditon_parent_id"]])
+      ->order(["created_at"=>"DESC"])->limit('1')->toArray();
+
+      $inspection_pickup_speed = $InspectionDataConditonChildrenSpeed[0]["inspection_pickup_speed"];
+      echo "<pre>";
+      print_r($inspection_pickup_speed);
+      echo "</pre>";
+
       $arrProdcts = array();
       for($i=0; $i<count($DailyReportsData); $i++){
-
         $arrProdcts[] = [
           "product_code" => $DailyReportsData[$i]["product"]["product_code"],
           "name" => $DailyReportsData[$i]["product"]["name"],
@@ -863,7 +880,6 @@ class KadousController extends AppController
           "total_loss_weight" => $DailyReportsData[$i]["total_loss_weight"],
         ];
         $this->set('bik', $DailyReportsData[$i]["bik"]);
-
       }
       $this->set('arrProdcts', $arrProdcts);
 

@@ -1641,20 +1641,6 @@ class KensahyousokuteidatasController extends AppController
               }
 
               //検査日をキープしておく
-/*
-              if(date("H") < 6){
-                $date1 = strtotime(date("Y-m-d"));
-                $date_sta = date('Y-m-d', strtotime('-1 day', $date1))." 06::00:00";
-                $date_fin = date("Y-m-d")." 06::00:00";
-              }else{
-                $date1 = strtotime(date("Y-m-d"));
-                $date_sta = date("Y-m-d")." 06::00:00";
-                $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 06::00:00";
-              }
-              $_SESSION['kensa_datetime']["date_sta"] = $date_sta;
-              $_SESSION['kensa_datetime']["date_fin"] = $date_fin;
-*/
-
               $date1 = strtotime(date("Y-m-d"));
               $date_sta = date("Y-m-d")." 00:00:00";
               $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 00:00:00";
@@ -1890,11 +1876,7 @@ class KensahyousokuteidatasController extends AppController
           }
 
         }
-/*
-        echo "<pre>";
-        print_r($arrNum);
-        echo "</pre>";
-*/
+
         $this->set('InspectionStandardSizeChildren', $InspectionStandardSizeChildren);
 
       }else{
@@ -2510,17 +2492,22 @@ class KensahyousokuteidatasController extends AppController
 
           if(!isset($data['tuzukikara']) && $data["gyou"] > 1){
             $jm = $j - 1;
-
-            if(date("Y-m-d ").$data['datetime'.$jm] < date("Y-m-d ")."00:00:00"
-             && date("Y-m-d ").$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00" 
-            > date("Y-m-d ")."00:00:00"){//測定中に日付をまたいではいけない
+      
+            if(date("Y-m-d")." 00:00:00" > $date_fin){//測定中に日付をまたいではいけない
               $check_over = 1;
             }else{
               $check_over = 0;
             }
           }elseif($data["mikan_check"] == 1){
             $check_over = 1;
-          }else{
+          }else{//最初にデータを登録した時間をdate_staとする
+            
+            $date1 = strtotime(date("Y-m-d"));
+            $date_sta = date("Y-m-d")." 00:00:00";
+            $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 00:00:00";
+            $this->set('date_sta',$date_sta);
+            $this->set('date_fin',$date_fin);
+    
             $check_over = 0;
           }
 
