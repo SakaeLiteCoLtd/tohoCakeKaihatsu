@@ -158,33 +158,70 @@ echo $this->Html->css('kensahyou');
 
 <br>
 
-<?php
-/*
-
 <table width="580">
   <tr class="parents">
     <td width="80"></td>
-    <td colspan="2">量産開始 ～ 量産終了</td>
+    <td colspan="3">量産開始 ～ 量産終了</td>
   </tr>
   <tr class='parents'>
     <td width="80"></td>
+    <td width="250">切断長</td>
     <td width="250">本数</td>
     <td width="250">メートル換算</td>
   </tr>
-  <tr class='children'>
-    <td width="80">理論</td>
-    <td>本</td>
-    <td>(m)</td>
-  </tr>
-  <tr class='children'>
-    <td width="80">実数</td>
-    <td>本</td>
-    <td>(m)</td>
-  </tr>
-</table>
 
-*/
-?>
+  <?php for($j=0; $j<count($arrlength); $j++): ?>
+
+    <?php if ($j == 0): ?>
+      <tr class='children'>
+
+      <?php
+        $num = count($arrlength);
+        echo "<td width='80' rowspan=$num>\n";
+        echo "理論\n";
+        echo "</td>\n";
+        ?>
+
+        <td><?= h($arrlength[$j]["length_cut"]) ?>(mm)</td>
+        <td><?= h(${"riron_amount".$arrlength[$j]["product_id"]}) ?>(本)</td>
+        <td><?= h(${"riron_total_length_".$arrlength[$j]["product_id"]}) ?>(m)</td>
+      </tr>
+    <?php else : ?>
+      <tr class='children'>
+      <td><?= h($arrlength[$j]["length_cut"]) ?>(mm)</td>
+      <td><?= h(${"riron_amount".$arrlength[$j]["product_id"]}) ?>(本)</td>
+        <td><?= h(${"riron_total_length_".$arrlength[$j]["product_id"]}) ?>(m)</td>
+      </tr>
+    <?php endif; ?>
+
+  <?php endfor;?>
+
+  <?php for($j=0; $j<count($arrlength); $j++): ?>
+
+    <?php if ($j == 0): ?>
+      <tr class='children'>
+
+        <?php
+        $num = count($arrlength);
+        echo "<td width='80' rowspan=$num>\n";
+        echo "実数\n";
+        echo "</td>\n";
+        ?>
+        <td><?= h($arrlength[$j]["length_cut"]) ?>(mm)</td>
+        <td><?= h(${"amount".$arrlength[$j]["product_id"]}) ?>(本)</td>
+        <td><?= h(${"total_length_".$arrlength[$j]["product_id"]}) ?>(m)</td>
+      </tr>
+    <?php else : ?>
+      <tr class='children'>
+      <td><?= h($arrlength[$j]["length_cut"]) ?>(mm)</td>
+      <td><?= h(${"amount".$arrlength[$j]["product_id"]}) ?>(本)</td>
+      <td><?= h(${"total_length_".$arrlength[$j]["product_id"]}) ?>(m)</td>
+      </tr>
+    <?php endif; ?>
+
+  <?php endfor;?>
+
+  </table>
 
 <br><br>
 <legend align="center"><strong style="font-size: 12pt; color:blue"><?= __('工程異常一覧') ?></strong></legend>

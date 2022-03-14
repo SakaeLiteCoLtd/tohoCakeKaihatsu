@@ -845,32 +845,118 @@ class KadousController extends AppController
       $to_relay_finish_datetime = strtotime($relay_finish_datetime);
       $time_ryousan = ($to_relay_finish_datetime - $from_relay_start_datetime) / 60;
       $time_ryousan = sprintf("%.1f", $time_ryousan);
-      echo "<pre>";
-      print_r($time_ryousan);
-      echo "</pre>";
 
       $InspectionDataResultParentSpeed = $this->InspectionDataResultParents->find()
-      ->contain(['ProductConditionParents', 'Products'])
+      ->contain(['InspectionDataConditonParents' => ["InspectionDataConditonChildren"], 'ProductConditionParents', 'Products'])
       ->where([
       'machine_num' => $machine_num,
-      'product_code like' => $product_code_ini.'%', 
+      'Products.product_code like' => $product_code_ini.'%', 
       'InspectionDataResultParents.delete_flag' => 0,
-      'datetime >=' => $finish_datetime,
-      'datetime <=' => $finish_datetime
+      'InspectionDataResultParents.datetime >=' => $start_datetime,
+      'InspectionDataResultParents.datetime <=' => $finish_datetime//検査終了時間まで
       ])
-      ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
+      ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
 
-      $InspectionDataConditonChildrenSpeed = $this->InspectionDataConditonChildren->find()
-      ->where(['inspection_data_conditon_parent_id' => $InspectionDataResultParentSpeed[0]["inspection_data_conditon_parent_id"]])
-      ->order(["created_at"=>"DESC"])->limit('1')->toArray();
+      $arrdatetimespeeds = array();
+      $arrlength = array();
+      for($i=0; $i<count($InspectionDataResultParentSpeed); $i++){
+        $arrdatetimespeeds[] = [
+          "product_id" => $InspectionDataResultParentSpeed[$i]["product_id"],
+          "length_cut" => $InspectionDataResultParentSpeed[$i]["product"]["length_cut"],
+          "length" => $InspectionDataResultParentSpeed[$i]["product"]["length"],
+          "datetime" => $InspectionDataResultParentSpeed[$i]["datetime"]->format("Y-m-d H:i:s"),
+          "inspection_pickup_speed" => $InspectionDataResultParentSpeed[$i]["inspection_data_conditon_parent"]["inspection_data_conditon_children"][0]["inspection_pickup_speed"],
+        ];
+        $arrlength[] = [
+          "product_id" => $InspectionDataResultParentSpeed[$i]["product_id"],
+          "length_cut" => $InspectionDataResultParentSpeed[$i]["product"]["length_cut"],
+          "length" => $InspectionDataResultParentSpeed[$i]["product"]["length"],
+        ];
+      }
+      $arrlength = array_unique($arrlength, SORT_REGULAR);
+      $arrlength = array_values($arrlength);
+      $this->set('arrlength', $arrlength);
 
-      $inspection_pickup_speed = $InspectionDataConditonChildrenSpeed[0]["inspection_pickup_speed"];
+      for($i=0; $i<count($arrlength); $i++){//長さ毎の器を作る
+        ${"time_".$arrlength[$i]["product_id"]} = 0;
+        ${"riron_total_length_".$arrlength[$i]["product_id"]} = 0;
+      }
+
+      for($i=0; $i<=count($arrdatetimespeeds); $i++){//長さ毎の計測時間
+
+        $interval = 0;
+        $riron_length = 0;
+
+        if($i == 0){
+
+          $from_datetime = strtotime($relay_start_datetime);
+          $to__datetime = strtotime($arrdatetimespeeds[$i]["datetime"]);
+          $interval = ($to__datetime - $from_datetime) / 60;
+          $interval = sprintf("%.1f", $interval);
+          if($interval > 0){
+            ${"time_".$arrdatetimespeeds[$i]["product_id"]} = ${"time_".$arrdatetimespeeds[$i]["product_id"]} + $interval;
+
+            $riron_length = $interval * $arrdatetimespeeds[$i]["inspection_pickup_speed"];
+            ${"riron_total_length_".$arrdatetimespeeds[$i]["product_id"]} = ${"riron_total_length_".$arrdatetimespeeds[$i]["product_id"]} + $riron_length;
+          }
+
+        }elseif($i == count($arrdatetimespeeds)){
+
+          $from_datetime = strtotime($arrdatetimespeeds[$i - 1]["datetime"]);
+          $to__datetime = strtotime($relay_finish_datetime);
+          $interval = ($to__datetime - $from_datetime) / 60;
+          $interval = sprintf("%.1f", $interval);
+          if($interval > 0){
+            ${"time_".$arrdatetimespeeds[$i - 1]["product_id"]} = ${"time_".$arrdatetimespeeds[$i - 1]["product_id"]} + $interval;
+
+            $riron_length = $interval * $arrdatetimespeeds[$i - 1]["inspection_pickup_speed"];
+            ${"riron_total_length_".$arrdatetimespeeds[$i - 1]["product_id"]} = ${"riron_total_length_".$arrdatetimespeeds[$i - 1]["product_id"]} + $riron_length;
+          }
+
+        }else{
+
+          $from_datetime = strtotime($arrdatetimespeeds[$i - 1]["datetime"]);
+          $to__datetime = strtotime($arrdatetimespeeds[$i]["datetime"]);
+          $interval = ($to__datetime - $from_datetime) / 60;
+          $interval = sprintf("%.1f", $interval);
+          if($interval > 0){
+            ${"time_".$arrdatetimespeeds[$i]["product_id"]} = ${"time_".$arrdatetimespeeds[$i]["product_id"]} + $interval;
+
+            $riron_length = $interval * $arrdatetimespeeds[$i]["inspection_pickup_speed"];
+            ${"riron_total_length_".$arrdatetimespeeds[$i]["product_id"]} = ${"riron_total_length_".$arrdatetimespeeds[$i]["product_id"]} + $riron_length;
+          }
+
+        }
+
+      }
+
+      $arrRironlength = array();
+      for($i=0; $i<count($arrlength); $i++){
+
+        ${"riron_amount".$arrlength[$i]["product_id"]} = ${"riron_total_length_".$arrlength[$i]["product_id"]} * 1000 / $arrlength[$i]["length_cut"];
+        ${"riron_amount".$arrlength[$i]["product_id"]} = sprintf("%.0f", ${"riron_amount".$arrlength[$i]["product_id"]});
+        $this->set('riron_amount'.$arrlength[$i]["product_id"],${"riron_amount".$arrlength[$i]["product_id"]});
+
+        ${"riron_total_length_".$arrlength[$i]["product_id"]} = sprintf("%.1f", ${"riron_total_length_".$arrlength[$i]["product_id"]});
+        $this->set('riron_total_length_'.$arrlength[$i]["product_id"],${"riron_total_length_".$arrlength[$i]["product_id"]});
+
+      }
+/*
       echo "<pre>";
-      print_r($inspection_pickup_speed);
+      print_r($arrlength);
       echo "</pre>";
-
+      echo "<pre>";
+      print_r($arrdatetimespeeds);
+      echo "</pre>";
+*/
       $arrProdcts = array();
       for($i=0; $i<count($DailyReportsData); $i++){
+
+        ${"total_length_".$DailyReportsData[$i]["product_id"]} = $DailyReportsData[$i]["product"]["length_cut"] * $DailyReportsData[$i]["amount"] / 1000;//トータルの長さ＝カット長さ×本数
+        ${"amount".$DailyReportsData[$i]["product_id"]} = $DailyReportsData[$i]["amount"];
+        $this->set('total_length_'.$DailyReportsData[$i]["product_id"],${"total_length_".$DailyReportsData[$i]["product_id"]});
+        $this->set('amount'.$DailyReportsData[$i]["product_id"],${"amount".$DailyReportsData[$i]["product_id"]});
+
         $arrProdcts[] = [
           "product_code" => $DailyReportsData[$i]["product"]["product_code"],
           "name" => $DailyReportsData[$i]["product"]["name"],

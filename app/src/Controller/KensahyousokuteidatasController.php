@@ -2493,7 +2493,7 @@ class KensahyousokuteidatasController extends AppController
           if(!isset($data['tuzukikara']) && $data["gyou"] > 1){
             $jm = $j - 1;
       
-            if(date("Y-m-d")." 00:00:00" > $date_fin){//測定中に日付をまたいではいけない
+            if(date("Y-m-d H:i:s") > $date_fin){//測定中に日付をまたいではいけない
               $check_over = 1;
             }else{
               $check_over = 0;
@@ -7895,6 +7895,7 @@ class KensahyousokuteidatasController extends AppController
         $date1 = strtotime(date("Y-m-d"));
         $date_sta = date("Y-m-d")." 00:00:00";
         $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 00:00:00";
+        $datetimefin = $date_fin;
 
         $this->set('date_sta', $date_sta);
         $this->set('date_fin', $date_fin);
@@ -7956,12 +7957,8 @@ class KensahyousokuteidatasController extends AppController
         $htmlkensahyougenryouheader = new htmlkensahyouprogram();
         $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderkensaku($machine_datetime_product);
         $this->set('htmlgenryouheader',$htmlgenryouheader);
-
-        $InspectionDataConditonParentsdatetime = $this->InspectionDataConditonParents->find()
-        ->where(['product_code like' => $product_code_ini.'%', 'delete_flag' => 0, 'datetime <' => $datetimestaresult])
-        ->order(["datetime"=>"DESC"])->limit('1')->toArray();
   
-        $datetimesta = $InspectionDataConditonParentsdatetime[0]["datetime"]->format("Y-m-d H:i:s");
+        $datetimefin = $InspectionDataResultParents[$gyou - 1]["datetime"]->format("Y-m-d H:i:s");
 
         $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
         ->contain(['InspectionDataResultParents' => ['Products']])
@@ -8102,24 +8099,24 @@ class KensahyousokuteidatasController extends AppController
       $inspection_standard_size_parent_id = $InspectionStandardSizeParents[0]['id'];
       $this->set('inspection_standard_size_parent_id', $inspection_standard_size_parent_id);
 
-      $InspectionDataConditonParents = $this->InspectionDataConditonParents->find()
-      ->where(['product_code like' => $product_code_ini.'%', 'delete_flag' => 0, 'datetime >=' => $datetimesta])->order(["datetime"=>"DESC"])->toArray();
-
-      if(!isset($InspectionDataConditonParents[0])){//0時の手前で当日条件を登録して0時を回った場合
-        $InspectionDataConditonParents = $this->InspectionDataConditonParents->find()
-        ->where(['product_code like' => $product_code_ini.'%', 'delete_flag' => 0])->order(["datetime"=>"DESC"])->toArray();
+      $arrConditionids = array();
+      for($j=0; $j<count($InspectionDataResultParents); $j++){
+        $arrConditionids[] = $InspectionDataResultParents[$j]['inspection_data_conditon_parent_id'];
       }
-      $inspection_data_conditon_parent_id = $InspectionDataConditonParents[0]['id'];
-      $this->set('inspection_data_conditon_parent_id', $inspection_data_conditon_parent_id);
+      $arrConditionids = array_unique($arrConditionids);
+      $arrConditionids = array_values($arrConditionids);
 
-      $count_seikeijouken = count($InspectionDataConditonParents);
+      $count_seikeijouken = count($arrConditionids);
       $this->set('count_seikeijouken', $count_seikeijouken);
 
+      $inspection_data_conditon_parent_id = $arrConditionids[$count_seikeijouken - 1];
+      $this->set('inspection_data_conditon_parent_id', $inspection_data_conditon_parent_id);
+
       if($count_seikeijouken > 1){
-        $inspection_data_conditon_parent_id_moto = $InspectionDataConditonParents[count($InspectionDataConditonParents)-1]['id'];
+        $inspection_data_conditon_parent_id_moto = $arrConditionids[0];
         $this->set('inspection_data_conditon_parent_id_moto', $inspection_data_conditon_parent_id_moto);
       }
- 
+
       echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
