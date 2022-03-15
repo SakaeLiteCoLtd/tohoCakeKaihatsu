@@ -161,13 +161,14 @@ echo $this->Html->css('kensahyou');
 <table width="580">
   <tr class="parents">
     <td width="80"></td>
-    <td colspan="3">量産開始 ～ 量産終了</td>
+    <td colspan="4">量産開始 ～ 量産終了</td>
   </tr>
   <tr class='parents'>
     <td width="80"></td>
     <td width="250">切断長</td>
     <td width="250">本数</td>
     <td width="250">メートル換算</td>
+    <td width="250">合計長さ</td>
   </tr>
 
   <?php for($j=0; $j<count($arrlength); $j++): ?>
@@ -185,13 +186,21 @@ echo $this->Html->css('kensahyou');
         <td><?= h($arrlength[$j]["length_cut"]) ?>(mm)</td>
         <td><?= h(${"riron_amount".$arrlength[$j]["product_id"]}) ?>(本)</td>
         <td><?= h(${"riron_total_length_".$arrlength[$j]["product_id"]}) ?>(m)</td>
+
+        <?php
+        $num = count($arrlength);
+        echo "<td width='80' rowspan=$num>\n";
+        echo "$total_length_riron\n";
+        echo "(m)</td>\n";
+        ?>
+
       </tr>
     <?php else : ?>
       <tr class='children'>
       <td><?= h($arrlength[$j]["length_cut"]) ?>(mm)</td>
       <td><?= h(${"riron_amount".$arrlength[$j]["product_id"]}) ?>(本)</td>
-        <td><?= h(${"riron_total_length_".$arrlength[$j]["product_id"]}) ?>(m)</td>
-      </tr>
+      <td><?= h(${"riron_total_length_".$arrlength[$j]["product_id"]}) ?>(m)</td>
+    </tr>
     <?php endif; ?>
 
   <?php endfor;?>
@@ -210,6 +219,98 @@ echo $this->Html->css('kensahyou');
         <td><?= h($arrlength[$j]["length_cut"]) ?>(mm)</td>
         <td><?= h(${"amount".$arrlength[$j]["product_id"]}) ?>(本)</td>
         <td><?= h(${"total_length_".$arrlength[$j]["product_id"]}) ?>(m)</td>
+
+      <?php
+      $num = count($arrlength);
+      echo "<td width='80' rowspan=$num>\n";
+      echo "$total_length_jissai\n";
+      echo "(m)</td>\n";
+      ?>
+
+      </tr>
+    <?php else : ?>
+      <tr class='children'>
+      <td><?= h($arrlength[$j]["length_cut"]) ?>(mm)</td>
+      <td><?= h(${"amount".$arrlength[$j]["product_id"]}) ?>(本)</td>
+      <td><?= h(${"total_length_".$arrlength[$j]["product_id"]}) ?>(m)</td>
+      </tr>
+    <?php endif; ?>
+
+  <?php endfor;?>
+
+  </table>
+
+  <br>
+  
+  <table width="580">
+  <tr class="parents">
+    <td width="80"></td>
+    <td colspan="4">検査開始 ～ 検査終了</td>
+  </tr>
+  <tr class='parents'>
+    <td width="80"></td>
+    <td width="250">切断長</td>
+    <td width="250">本数</td>
+    <td width="250">メートル換算</td>
+    <td width="250">合計長さ</td>
+  </tr>
+
+  <?php for($j=0; $j<count($arrlength); $j++): ?>
+
+    <?php if ($j == 0): ?>
+      <tr class='children'>
+
+      <?php
+        $num = count($arrlength);
+        echo "<td width='80' rowspan=$num>\n";
+        echo "理論\n";
+        echo "</td>\n";
+        ?>
+
+        <td><?= h($arrlength[$j]["length_cut"]) ?>(mm)</td>
+        <td><?= h(${"riron_amount_kensatyu".$arrlength[$j]["product_id"]}) ?>(本)</td>
+        <td><?= h(${"riron_total_length_kensatyu_".$arrlength[$j]["product_id"]}) ?>(m)</td>
+
+        <?php
+        $num = count($arrlength);
+        echo "<td width='80' rowspan=$num>\n";
+        echo "$total_length_kensa_riron\n";
+        echo "(m)</td>\n";
+        ?>
+
+      </tr>
+    <?php else : ?>
+      <tr class='children'>
+      <td><?= h($arrlength[$j]["length_cut"]) ?>(mm)</td>
+      <td><?= h(${"riron_amount_kensatyu".$arrlength[$j]["product_id"]}) ?>(本)</td>
+      <td><?= h(${"riron_total_length_kensatyu_".$arrlength[$j]["product_id"]}) ?>(m)</td>
+    </tr>
+    <?php endif; ?>
+
+  <?php endfor;?>
+
+  <?php for($j=0; $j<count($arrlength); $j++): ?>
+
+    <?php if ($j == 0): ?>
+      <tr class='children'>
+
+        <?php
+        $num = count($arrlength);
+        echo "<td width='80' rowspan=$num>\n";
+        echo "実数\n";
+        echo "</td>\n";
+        ?>
+        <td><?= h($arrlength[$j]["length_cut"]) ?>(mm)</td>
+        <td><?= h(${"amount".$arrlength[$j]["product_id"]}) ?>(本)</td>
+        <td><?= h(${"total_length_".$arrlength[$j]["product_id"]}) ?>(m)</td>
+
+      <?php
+      $num = count($arrlength);
+      echo "<td width='80' rowspan=$num>\n";
+      echo "$total_length_jissai\n";
+      echo "(m)</td>\n";
+      ?>
+
       </tr>
     <?php else : ?>
       <tr class='children'>

@@ -44,6 +44,12 @@ echo $this->Html->css('kensahyou');
     </tr>
     <tr>
     <td><?= h("　".$date_sta."　～　".$date_fin_hyouji."　") ?></td>
+    <td style="border-style: none;background-color: #E6FFFF"><?= h("　") ?></td>
+      <td style="border-style: none;background-color: #E6FFFF"><div>
+        <?= $this->Form->submit('表示中データCSV出力', array('name' => 'outputcsv')); ?>
+      </div></td>
+    </tr>
+    <tr>
     </tr>
   </tbody>
 </table>
@@ -142,7 +148,10 @@ echo $this->Html->css('kensahyou');
   ?>
     <?= h($arrAll[$j]["loss_fin"]) ?></td>
 
-    <td style='font-size: 10pt'></td>
+    <?php
+  echo "<td style='font-size: 10pt'>\n";
+  ?>
+    <?= h($arrAll[$j]["loss_time"]) ?></td>
 
     <?php
   echo "<td style='font-size: 10pt'>\n";
@@ -174,6 +183,7 @@ echo $this->Html->css('kensahyou');
     <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$factory_id, 'label'=>false)) ?>
     <?= $this->Form->control('product_name', array('type'=>'hidden', 'value'=>$product_name, 'label'=>false)) ?>
     <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
+    <?= $this->Form->control('button_name', array('type'=>'hidden', 'value'=>$button_name, 'label'=>false)) ?>
     <?= $this->Form->control('num_max', array('type'=>'hidden', 'value'=>count($arrAll), 'label'=>false)) ?>
     <br>
     <table align="center">

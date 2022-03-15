@@ -28,6 +28,35 @@ class kadouprogram extends AppController
        ->order(["ShotdataBases.datetime"=>"ASC"])->toArray();
   
        $arrShotdataBasescsv = array();
+
+       $arrShotdataBasescsv[] = [
+        "datetime" => "datetime",
+        "stop_time" => "stop_time",
+        "temp_outside" => "temp_outside",
+        "temp_inside" => "temp_inside",
+        "temp_water" => "temp_water",
+        "analog1_ch1" => "analog1_ch1",
+        "analog1_ch2" => "analog1_ch2",
+        "analog1_ch3" => "analog1_ch3",
+        "analog1_ch4" => "analog1_ch4",
+        "valid_data_num" => "valid_data_num",
+        "existence_stop" => "existence_stop",
+        "place_stop" => "place_stop",
+        "existence_out_limit" => "existence_out_limit",
+        "place_out_limit" => "place_out_limit",
+        "existence_change_standard_value" => "existence_change_standard_value",
+        "value1_mode" => "value1_mode",
+        "value1_mean" => "value1_mean",
+        "value1_max" => "value1_max",
+        "value1_min" => "value1_min",
+        "value1_std" => "value1_std", 
+        "value2_mode" => "value2_mode",
+        "value2_mean" => "value2_mean",
+        "value2_max" => "value2_max",
+        "value2_min" => "value2_min",
+        "value2_std" => "value2_std",
+      ];
+
        for($i=0; $i<count($ShotdataBases); $i++){
 
         $arrShotdataBasescsv[] = [

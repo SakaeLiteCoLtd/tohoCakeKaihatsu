@@ -87,15 +87,15 @@ $arrProduct_name_list = json_encode($arrProduct_name_list);//jsに配列を受�
      </div></td>
      <td style="border-right-style: none;border-left-style: none;border-width: 1px">
     <div align="center">
-         <?= $this->Form->input("date_sta_year_fin", array('type' => 'select', "options"=>$arrYearsfin, 'label'=>false)); ?>
+      <?= $this->Form->input("date_sta_year_fin", array('type' => 'select', "options"=>$arrYears, 'value' => $dayyetoy, 'label'=>false)); ?>
      </div></td>
   <td style="border-right-style: none;border-left-style: none;border-width: 1px">
   <div align="center">
-       <?= $this->Form->input("date_sta_month_fin", array('type' => 'select', "options"=>$arrMonthsfin, 'monthNames' => false, 'label'=>false)); ?>
+       <?= $this->Form->input("date_sta_month_fin", array('type' => 'select', "options"=>$arrMonths, 'value' => $dayyetom, 'monthNames' => false, 'label'=>false)); ?>
      </div></td>
   <td style="border-left-style: none;border-width: 1px">
   <div align="center">
-       <?= $this->Form->input("date_sta_date_fin", array('type' => 'select', "options"=>$arrDaysfin, 'label'=>false)); ?>
+       <?= $this->Form->input("date_sta_date_fin", array('type' => 'select', "options"=>$arrDays, 'value' => $dayyetod, 'label'=>false)); ?>
      </div></td>
     </tr>
   </tbody>
