@@ -1,0 +1,6 @@
+php.iniの設定を変更する.htaccessはwebroot内に配置
+
+以下のような記述を追加する
+php_value memory_limit 256M
+php_value post_max_size 64M
+php_value max_input_vars 5000

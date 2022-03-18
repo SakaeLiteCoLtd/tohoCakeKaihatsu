@@ -83,13 +83,22 @@ class RelayLogsController extends AppController
       print_r($data);
       echo "</pre>";
 */
+      $this->set('date_sta_year', $data["date_sta_year"]);
+      $this->set('date_sta_month', $data["date_sta_month"]);
+      $this->set('date_sta_date', $data["date_sta_date"]);
+
+      $factory_id = $data["factory_id"];
+      $this->set('factory_id', $factory_id);
+
+      $machine_num = $data["machine_num"];
+
       if(isset($data["date_sta_year"])){
         $dateselect = $data["date_sta_year"]."-".$data["date_sta_month"]."-".$data["date_sta_date"];
 
         $date1 = strtotime($dateselect);
-        $date_sta = $dateselect." 06:00:00";
-        $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 06:00:00";
-        $date_fin_hyouji = date('Y-m-d', strtotime('+1 day', $date1))." 05:59:59";
+        $date_sta = $dateselect." 00:00:00";
+        $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 00:00:00";
+        $date_fin_hyouji = date('Y-m-d', strtotime('+1 day', $date1))." 00:00:00";
         $this->set('date_sta', $date_sta);
         $this->set('date_fin', $date_fin);
         $this->set('date_fin_hyouji', $date_fin_hyouji);
@@ -97,16 +106,12 @@ class RelayLogsController extends AppController
 
       if(isset($data["shotdata"])){//ショットデータ出力
        
-        $machine_num = $data["machine_num"];
-        $this->set('machine_num', $machine_num);
         $date_sta = $data["date_sta"];
         $this->set('date_sta', $date_sta);
         $date_fin = $data["date_fin"];
         $this->set('date_fin', $date_fin);
         $date_fin_hyouji = $data["date_fin_hyouji"];
         $this->set('date_fin_hyouji', $date_fin_hyouji);
-        $factory_id = $data["factory_id"];
-        $this->set('factory_id', $factory_id);
 
         $machine_sta_fin = $machine_num."_".$date_sta."_".$date_fin;
         $kadouprograms = new kadouprogram();
@@ -114,15 +119,50 @@ class RelayLogsController extends AppController
         
       }
 
-      $machine_num = $data["machine_num"];
+      if(isset($data["mae"])){
+
+        $Linenames = $this->Linenames->find()
+        ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->order(["machine_num"=>"ASC"])->toArray();
+
+        for($i=0; $i<count($Linenames); $i++){
+          if(($Linenames[$i]["machine_num"] == $machine_num) && ($i == 0)){
+            $machine_num = $Linenames[count($Linenames) - 1]["machine_num"];
+            break;
+          }elseif($Linenames[$i]["machine_num"] == $machine_num){
+            $machine_num = $Linenames[$i - 1]["machine_num"];
+            break;
+          }
+        }
+
+      }
+
+      if(isset($data["tugi"])){
+
+        $Linenames = $this->Linenames->find()
+        ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->order(["machine_num"=>"ASC"])->toArray();
+
+        for($i=0; $i<count($Linenames); $i++){
+          if(($Linenames[$i]["machine_num"] == $machine_num) && ($i == count($Linenames) - 1)){
+            $machine_num = $Linenames[0]["machine_num"];
+            break;
+          }elseif($Linenames[$i]["machine_num"] == $machine_num){
+            $machine_num = $Linenames[$i + 1]["machine_num"];
+            break;
+          }
+        }
+  
+      }
+
       $this->set('machine_num', $machine_num);
-      $factory_id = $data["factory_id"];
-      $this->set('factory_id', $factory_id);
 
       $machine_sta_fin = $machine_num."_".$date_sta."_".$date_fin;
       $kadouprograms = new kadouprogram();
       $arrRelayLogs = $kadouprograms->yobidashirelaylogs($machine_sta_fin);
       $this->set('arrRelayLogs', $arrRelayLogs);
+  
+      echo "<pre>";
+      print_r("");
+      echo "</pre>";
   
     }
 

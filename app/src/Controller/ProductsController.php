@@ -233,7 +233,7 @@ class ProductsController extends AppController
       $this->set('arrkensakigu', $arrkensakigu);
 
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $name])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $name, 'delete_flag' => 0])->toArray();
 
       if(isset($ProductName[0])){
 
@@ -582,7 +582,7 @@ class ProductsController extends AppController
       $this->set('factory_name', $factory_name);
 
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name'], 'delete_flag' => 0])->toArray();
 
       if(!isset($ProductName[0])){
 
@@ -679,7 +679,7 @@ class ProductsController extends AppController
       $this->set('factory_id', $factory_id);
 
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name'], 'delete_flag' => 0])->toArray();
       $this->set('ProductName', $ProductName);
 
       $product_code_ini = substr($ProductName[0]["product_code"], 0, 11);
@@ -758,7 +758,7 @@ class ProductsController extends AppController
       $this->set('factory_id', $factory_id);
 
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name'], 'delete_flag' => 0])->toArray();
       $this->set('ProductName', $ProductName);
 
       $product_code_moto = substr($ProductName[0]["product_code"], 0, 11);
@@ -965,7 +965,7 @@ class ProductsController extends AppController
       $this->set('factory_name', $factory_name);
 
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name'], 'delete_flag' => 0])->toArray();
 
       if(!isset($ProductName[0])){
 
@@ -1045,7 +1045,7 @@ class ProductsController extends AppController
       $this->set('factory_name', $factory_name);
 
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name'], 'delete_flag' => 0])->toArray();
 
       if(!isset($ProductName[0])){
 
@@ -1137,7 +1137,7 @@ class ProductsController extends AppController
       echo "</pre>";
 */
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['namemoto']])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['namemoto'], 'delete_flag' => 0])->toArray();
       $this->set('ProductName', $ProductName);
 
       $arrKoushinproduct = array();
@@ -1234,7 +1234,7 @@ class ProductsController extends AppController
       echo "</pre>";
 */
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['namemoto']])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['namemoto'], 'delete_flag' => 0])->toArray();
       $this->set('ProductName', $ProductName);
 
       $session = $this->request->getSession();
@@ -1387,12 +1387,32 @@ class ProductsController extends AppController
 
        }
 
-        } else {
+        } else {//全部削除の場合
 
-          $mes = "※登録されませんでした";
-          $this->set('mes',$mes);
-          $this->Flash->error(__('The data could not be saved. Please, try again.'));
-          throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+          for($i=0; $i<count($arrdeleteproduct); $i++){
+            if ($this->Products->updateAll(
+              [ 'delete_flag' => 1,
+                'updated_at' => date('Y-m-d H:i:s'),
+                'updated_staff' => $staff_id],
+                ['product_code'  => $data["delete_product_code".$i]])){
+                }
+                $count_update = $count_update + 1;
+              }
+  
+            if ($count_update == count($arrupdateproduct) + count($arrdeleteproduct)) {//全部の登録ができた場合
+
+            $mes = "※下記のように更新されました";
+            $this->set('mes',$mes);
+            $connection->commit();// コミット5
+
+          } else {
+
+            $mes = "※更新されませんでした";
+            $this->set('mes',$mes);
+            $this->Flash->error(__('The data could not be saved. Please, try again.'));
+            throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
+
+          }
 
         }
 
@@ -1594,7 +1614,7 @@ class ProductsController extends AppController
       $this->set('factory_name', $factory_name);
 
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name'], 'delete_flag' => 0])->toArray();
 
       if(!isset($ProductName[0])){
 
@@ -1674,7 +1694,7 @@ class ProductsController extends AppController
       $this->set('factory_name', $factory_name);
 
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name']])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name'], 'delete_flag' => 0])->toArray();
 
       if(!isset($ProductName[0])){
 
@@ -1753,7 +1773,7 @@ class ProductsController extends AppController
       $data = $this->request->getData();
 
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['namemoto']])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['namemoto'], 'delete_flag' => 0])->toArray();
       $this->set('ProductName', $ProductName);
 
       $arrKoushinproduct = array();
@@ -1850,7 +1870,7 @@ class ProductsController extends AppController
       echo "</pre>";
 */
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['namemoto']])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $data['namemoto'], 'delete_flag' => 0])->toArray();
       $this->set('ProductName', $ProductName);
 
       $session = $this->request->getSession();

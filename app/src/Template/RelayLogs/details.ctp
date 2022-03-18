@@ -26,10 +26,23 @@
 $this->layout = false;
 echo $this->Html->css('kensahyou');
 ?>
-
-<br><br><br>
-
 <?= $this->Form->create($product, ['url' => ['action' => 'details']]) ?>
+
+<table align="center" style="width:1000px; position: fixed; top: 70px; left: 50%; margin-left:-500px;">
+    <tbody class='sample non-sample'>
+      <tr>
+      <td style="border-style: none;"><div><?= $this->Form->submit('前のラインへ', array('name' => 'mae')); ?></div></td>
+          <td style="border-style: none;"><?= __("　　　　　　　　　　　　　　　　　　　") ?></td>
+        <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
+        <td style="border-style: none;"><?= __("　") ?></td>
+        <td style="border-style: none;"><div><?= $this->Form->submit('ショットデータCSV出力', array('name' => 'shotdata')); ?></div></td>
+          <td style="border-style: none;"><?= __("　　　　　　　　　　　　　　　　　　　") ?></td>
+          <td style="border-style: none;"><div><?= $this->Form->submit('次のラインへ', array('name' => 'tugi')); ?></div></td>
+      </tr>
+    </tbody>
+  </table>
+  <br><br>
+  <br><br>
 
 <?php
         $Linenames = $this->Linenames->find()
@@ -86,3 +99,7 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('date_fin', array('type'=>'hidden', 'value'=>$date_fin, 'label'=>false)) ?>
 <?= $this->Form->control('date_fin_hyouji', array('type'=>'hidden', 'value'=>$date_fin_hyouji, 'label'=>false)) ?>
 <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
+
+<?= $this->Form->control('date_sta_year', array('type'=>'hidden', 'value'=>$date_sta_year, 'label'=>false)) ?>
+<?= $this->Form->control('date_sta_month', array('type'=>'hidden', 'value'=>$date_sta_month, 'label'=>false)) ?>
+<?= $this->Form->control('date_sta_date', array('type'=>'hidden', 'value'=>$date_sta_date, 'label'=>false)) ?>

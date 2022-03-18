@@ -58,8 +58,8 @@ echo $this->Html->css('kensahyou');
 <table>
         <thead>
             <tr class="parents">
-            <td style='font-size: 9pt; width:50; height:50; border-width: 1px solid black;'><?= __('ライン') ?></td>
             <td style='font-size: 10pt; width:90; border-width: 1px solid black;'><?= __('日付') ?></td>
+            <td style='font-size: 9pt; width:50; height:50; border-width: 1px solid black;'><?= __('ライン') ?></td>
             <td style='font-size: 10pt; border-width: 1px solid black;'><?= __('製品名') ?></td>
             <td style='font-size: 9pt; width:90; border-width: 1px solid black;'><?= __('生産開始時間') ?></td>
             <td style='font-size: 9pt; width:100; border-width: 1px solid black;'><?= __('検査表開始時間') ?></td>
@@ -95,13 +95,13 @@ echo $this->Html->css('kensahyou');
 
     <?php
     echo "<td style='font-size: 10pt'>\n";
-    ?>
-    <?= h($name_machine) ?></td>
-
-    <?php
-    echo "<td style='font-size: 10pt'>\n";
   ?>
   <?= h($arrAll[$j]["date"]) ?></td>
+
+  <?php
+    echo "<td style='font-size: 10pt'>\n";
+    ?>
+    <?= h($name_machine) ?></td>
 
   <?php
   echo "<td style='font-size: 10pt'>\n";

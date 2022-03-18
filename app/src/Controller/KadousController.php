@@ -36,7 +36,7 @@ class KadousController extends AppController
   
     public function menu()
     {
-      //大東工場でない人の場合はトップに戻す
+      //大東工場でない人の場合はトップに戻す（日報画面は大東工場のみ見られる）
 
       $session = $this->request->getSession();
       $datasession = $session->read();
@@ -596,8 +596,8 @@ class KadousController extends AppController
       }
 
       $arrAll = $arrDaily_report;
-
-      //並べ替え
+/*
+      //並べ替え元
       $machine_num_array = array();
       $start_datetime_array = array();
       foreach($arrAll as $key => $row ) {
@@ -608,6 +608,22 @@ class KadousController extends AppController
       if(count($start_datetime_array) > 0){
         array_multisort($machine_num_array, SORT_ASC,
         array_map( "strtotime", $start_datetime_array ), SORT_ASC,
+        $arrAll);
+      }
+      $this->set('arrAll', $arrAll);
+*/
+
+      //並べ替え
+      $machine_num_array = array();
+      $date_array = array();
+      foreach($arrAll as $key => $row ) {
+        $machine_num_array[$key] = $row["machine_num"];
+        $date_array[$key] = $row["date"];
+      }
+
+      if(count($date_array) > 0){
+        array_multisort(array_map("strtotime", $date_array), SORT_ASC,
+        $machine_num_array, SORT_ASC,
         $arrAll);
       }
       $this->set('arrAll', $arrAll);

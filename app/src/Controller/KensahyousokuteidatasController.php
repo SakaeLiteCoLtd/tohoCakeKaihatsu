@@ -80,7 +80,11 @@ class KensahyousokuteidatasController extends AppController
 
     public function menu()
     {
-
+      /*
+      echo "<pre>";
+      print_r(phpinfo());
+      echo "</pre>";
+*/
       $Data=$this->request->query('s');
       if(isset($Data["mess"])){
         $mess = $Data["mess"];
@@ -2049,6 +2053,10 @@ class KensahyousokuteidatasController extends AppController
       $ProductParent = $this->Products->find()
       ->where(['product_code' => $product_code, 'status_kensahyou' => 0
       , 'status_length' => 0, 'delete_flag' => 0])->toArray();
+      if(!isset($ProductParent[0])){
+        $ProductParent = $this->Products->find()
+        ->where(['product_code' => $product_code, 'delete_flag' => 0])->toArray();
+      }
       $Products = $this->Products->find()
       ->where(['product_code IS NOT' => $product_code, 'product_code like' => $product_code_ini.'%'
       , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
