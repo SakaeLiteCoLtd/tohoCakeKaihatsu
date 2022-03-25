@@ -2003,7 +2003,8 @@ class KensahyousokuteidatasController extends AppController
               , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
               if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
   
-                $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
+                $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%',
+                 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0, 'status_kensahyou' => 0])->toArray();
                 ${"size".$i} = $Products[0]["length_cut"];
                 ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
                 ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
@@ -2441,7 +2442,8 @@ class KensahyousokuteidatasController extends AppController
             , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
             if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
-              $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
+              $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%',
+               'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0, 'status_kensahyou' => 0])->toArray();
               ${"size".$i} = $Products[0]["length_cut"];
               ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
               ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
@@ -2811,7 +2813,8 @@ class KensahyousokuteidatasController extends AppController
             , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
             if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
-              $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
+              $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%',
+               'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0, 'status_kensahyou' => 0])->toArray();
               ${"size".$i} = $Products[0]["length_cut"];
               ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
               ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
@@ -2954,7 +2957,8 @@ class KensahyousokuteidatasController extends AppController
             , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
             if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
-              $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
+              $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%',
+               'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0, 'status_kensahyou' => 0])->toArray();
               ${"size".$i} = $Products[0]["length_cut"];
               ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
               ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
@@ -3083,7 +3087,8 @@ class KensahyousokuteidatasController extends AppController
             , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
             if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
-              $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
+              $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%',
+               'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0, 'status_kensahyou' => 0])->toArray();
               ${"size".$i} = $Products[0]["length_cut"];
               ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
               ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
@@ -3244,7 +3249,8 @@ class KensahyousokuteidatasController extends AppController
             , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
             if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
-              $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
+              $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%',
+               'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0, 'status_kensahyou' => 0])->toArray();
               ${"size".$i} = $Products[0]["length_cut"];
               ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
               ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
@@ -3607,7 +3613,8 @@ class KensahyousokuteidatasController extends AppController
           , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
           if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
-            $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
+            $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%',
+             'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0, 'status_kensahyou' => 0])->toArray();
             ${"size".$i} = $Products[0]["length_cut"];
             ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
             ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
@@ -3827,7 +3834,8 @@ class KensahyousokuteidatasController extends AppController
           , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
           if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
-            $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0])->toArray();
+            $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%'
+            , 'length' => ${"lengthhyouji".$j}, 'delete_flag' => 0, 'status_kensahyou' => 0])->toArray();
             ${"size".$i} = $Products[0]["length_cut"];
             ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
             ${"lower_limit".$i} = $Products[0]["length_lower_limit"];

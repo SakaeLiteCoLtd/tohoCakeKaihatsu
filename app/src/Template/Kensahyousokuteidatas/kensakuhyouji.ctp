@@ -171,7 +171,8 @@ echo $this->Html->css('kensahyou');
 
     <?php
   if(${"size_name".$i} == "長さ"){//長さ列の場合
-    $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"length".$j}, 'delete_flag' => 0])->toArray();
+    $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%', 'length' => ${"length".$j},
+     'delete_flag' => 0, 'status_kensahyou' => 0])->toArray();
     ${"size".$i} = $Products[0]["length_cut"];
     ${"upper_limit".$i} = $Products[0]["length_upper_limit"];
     ${"lower_limit".$i} = $Products[0]["length_lower_limit"];
