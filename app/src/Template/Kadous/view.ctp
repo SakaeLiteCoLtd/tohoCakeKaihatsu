@@ -85,7 +85,11 @@ echo $this->Html->css('kensahyou');
   <?= $this->Form->control('num'.$j, array('type'=>'hidden', 'value'=>$j, 'label'=>false)) ?>
   <?= $this->Form->control('num_max', array('type'=>'hidden', 'value'=>$j, 'label'=>false)) ?>
 
-  <tr class='children'>
+  <?php if ($j % 2 == 0): ?>
+    <tr class='children' style='background-color: #ffffe0'>
+  <?php else : ?>
+    <tr class='children'>
+  <?php endif; ?>
 
 <?php
         $Linenames = $this->Linenames->find()

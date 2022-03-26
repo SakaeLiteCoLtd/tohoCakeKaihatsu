@@ -12,6 +12,11 @@
  $this->Linenames = TableRegistry::get('Linenames');
 
 ?>
+
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 <br>
 <table class='sample hesdermenu'>
   <tbody>
@@ -54,7 +59,7 @@ echo $this->Html->css('kensahyou');
       $name_machine = $Linenames[0]["name"];
 ?>
 
-<table>
+<table style="position: fixed; top: 130px; left: 7%">
   <tbody style="background-color: #FFFFCC">
   <tr class="parents">
   <td>生産時間</td>
@@ -71,7 +76,7 @@ echo $this->Html->css('kensahyou');
   </tbody>
 </table>
 <br>
-<table width="1200">
+<table width="1200" style="position: fixed; top: 230px; left: 7%">
 <thead>
 <tr class="parents">
 <td style='font-size: 10pt; border-width: 1px solid black;'><?= __('製品コード') ?></td>
@@ -86,7 +91,11 @@ echo $this->Html->css('kensahyou');
 </thead>
 <tbody>
 <?php for($j=0; $j<count($arrProdcts); $j++): ?>
-  <tr class='children'>
+  <?php if ($j % 2 == 0): ?>
+    <tr class='children' style='background-color: #ffffe0'>
+  <?php else : ?>
+    <tr class='children'>
+  <?php endif; ?>
   <td><?= h("　".$arrProdcts[$j]["product_code"]."　") ?></td>
   <td style='font-size: 10pt'><?= h("　".$arrProdcts[$j]["name"]."　") ?></td>
   <td><?= h($arrProdcts[$j]["length"]) ?></td>
@@ -98,10 +107,10 @@ echo $this->Html->css('kensahyou');
       <?php
       $num = count($arrProdcts);
 
-        echo "<td rowspan=$num>";
+        echo "<td rowspan=$num style='background-color: #E9FFA5'>";
         echo "$lossritsu";
         echo "</td>";
-        echo "<td rowspan=$num>";
+        echo "<td rowspan=$num style='background-color: #E9FFA5'>";
         echo "$tasseiritsu";
         echo "</td>";
       ?>
@@ -113,24 +122,27 @@ echo $this->Html->css('kensahyou');
 </tbody>
     </table>
 
-<br>
+<br><br><br>
+<br><br><br>
+<br><br><br>
+<br><br><br>
+<br><br><br>
 
-
-<table width="1200">
+<table width="1200" border="4" style='margin-left:100px;border-bottom-width: 0pt;' id="position">
   <tr class="parents">
-    <td colspan="7"><?= h($name_machine."号ライン") ?></td>
+    <td colspan="7"><strong><?= h($name_machine."号ライン") ?></strong></td>
   </tr>
   <tr class='parents'>
     <td width="80"></td>
-    <td>ヒーターON時間</td>
-    <td>量産開始時間</td>
-    <td>検査表開始時間</td>
-    <td>検査表終了時間</td>
-    <td>量産終了時間</td>
-    <td>ヒーターOFF時間</td>
+    <td><strong>ヒーターON時間</td>
+    <td><strong>量産開始時間</td>
+    <td><strong>検査表開始時間</td>
+    <td><strong>検査表終了時間</td>
+    <td><strong>量産終了時間</td>
+    <td><strong>ヒーターOFF時間</td>
   </tr>
-  <tr class='children'>
-    <td style="background-color: #f0e68c" width="80">日時</td>
+  <tr class='children' style='background-color: #ffffe0'>
+    <td style="background-color: #f0e68c" width="80"><strong>日時</td>
     <td style='font-size: 11pt;'><?= h($heater_start_datetime) ?></td>
     <td style='font-size: 11pt;'><?= h($relay_start_datetime) ?></td>
     <td style='font-size: 11pt;'><?= h($start_datetime) ?></td>
@@ -139,9 +151,9 @@ echo $this->Html->css('kensahyou');
     <td style='font-size: 11pt;'><?= h($heater_finish_datetime) ?></td>
   </tr>
 </table>
-<table width="1200">
+<table width="1200" border="4" style='margin-left:100px;border-bottom-width: 0pt;border-top-width: 0pt;'>
   <tr class='children'>
-    <td style="background-color: #f0e68c; border-top:none" width="80">間隔</td>
+    <td style="background-color: #f0e68c; border-top:none" width="80"><strong>間隔</td>
     <td style="border-top:none" width="260"><?= h($interval_heater_relay_on) ?> 分</td>
     <td style="border-top:none"><?= h($interval_relay_start) ?> 分</td>
     <td style="border-top:none"><?= h($interval_start_finish) ?> 分</td>
@@ -149,16 +161,16 @@ echo $this->Html->css('kensahyou');
     <td style="border-top:none" width="260"><?= h($interval_relay_heater_off) ?> 分</td>
   </tr>
 </table>
-<table width="1200">
-  <tr class='children'>
-    <td style="background-color: #f0e68c; border-top:none" width="80">備考</td>
+<table width="1200" border="4" style='margin-left:100px;border-top-width: 0pt;'>
+  <tr class='children' style='background-color: #ffffe0'>
+    <td style="background-color: #f0e68c; border-top:none" width="80"><strong>備考</td>
     <td style="border-top:none" colspan="6" align="left"><?= h("　".$bik) ?></td>
   </tr>
 </table>
 
 <br>
 
-<table width="580">
+<table width="580" style='margin-left:100px'>
   <tr class="parents">
     <td width="80"></td>
     <td colspan="4">量産開始 ～ 量産終了</td>
@@ -174,7 +186,7 @@ echo $this->Html->css('kensahyou');
   <?php for($j=0; $j<count($arrlength); $j++): ?>
 
     <?php if ($j == 0): ?>
-      <tr class='children'>
+      <tr class='children' style='background-color: #FFFF99'>
 
       <?php
         $num = count($arrlength);
@@ -196,7 +208,7 @@ echo $this->Html->css('kensahyou');
 
       </tr>
     <?php else : ?>
-      <tr class='children'>
+      <tr class='children' style='background-color: #FFFF99'>
       <td><?= h($arrlength[$j]["length_cut"]) ?>(mm)</td>
       <td><?= h(${"riron_amount".$arrlength[$j]["product_id"]}) ?>(本)</td>
       <td><?= h(${"riron_total_length_".$arrlength[$j]["product_id"]}) ?>(m)</td>
@@ -208,7 +220,7 @@ echo $this->Html->css('kensahyou');
   <?php for($j=0; $j<count($arrlength); $j++): ?>
 
     <?php if ($j == 0): ?>
-      <tr class='children'>
+      <tr class='children' style='background-color: #E9FFA5'>
 
         <?php
         $num = count($arrlength);
@@ -229,7 +241,7 @@ echo $this->Html->css('kensahyou');
 
       </tr>
     <?php else : ?>
-      <tr class='children'>
+      <tr class='children' style='background-color: #E9FFA5'>
       <td><?= h($arrlength[$j]["length_cut"]) ?>(mm)</td>
       <td><?= h(${"amount".$arrlength[$j]["product_id"]}) ?>(本)</td>
       <td><?= h(${"total_length_".$arrlength[$j]["product_id"]}) ?>(m)</td>
@@ -241,8 +253,8 @@ echo $this->Html->css('kensahyou');
   </table>
 
   <br>
-  
-  <table width="580">
+
+  <table width="580" style='margin-left:100px'>
   <tr class="parents">
     <td width="80"></td>
     <td colspan="4">検査開始 ～ 検査終了</td>
@@ -258,7 +270,7 @@ echo $this->Html->css('kensahyou');
   <?php for($j=0; $j<count($arrlength); $j++): ?>
 
     <?php if ($j == 0): ?>
-      <tr class='children'>
+      <tr class='children' style='background-color: #FFFF99'>
 
       <?php
         $num = count($arrlength);
@@ -280,7 +292,7 @@ echo $this->Html->css('kensahyou');
 
       </tr>
     <?php else : ?>
-      <tr class='children'>
+      <tr class='children' style='background-color: #FFFF99'>
       <td><?= h($arrlength[$j]["length_cut"]) ?>(mm)</td>
       <td><?= h(${"riron_amount_kensatyu".$arrlength[$j]["product_id"]}) ?>(本)</td>
       <td><?= h(${"riron_total_length_kensatyu_".$arrlength[$j]["product_id"]}) ?>(m)</td>
@@ -292,7 +304,7 @@ echo $this->Html->css('kensahyou');
   <?php for($j=0; $j<count($arrlength); $j++): ?>
 
     <?php if ($j == 0): ?>
-      <tr class='children'>
+      <tr class='children' style='background-color: #E9FFA5'>
 
         <?php
         $num = count($arrlength);
@@ -313,7 +325,7 @@ echo $this->Html->css('kensahyou');
 
       </tr>
     <?php else : ?>
-      <tr class='children'>
+      <tr class='children' style='background-color: #E9FFA5'>
       <td><?= h($arrlength[$j]["length_cut"]) ?>(mm)</td>
       <td><?= h(${"amount".$arrlength[$j]["product_id"]}) ?>(本)</td>
       <td><?= h(${"total_length_".$arrlength[$j]["product_id"]}) ?>(m)</td>
@@ -324,10 +336,11 @@ echo $this->Html->css('kensahyou');
 
   </table>
 
-<br><br>
-<legend align="center"><strong style="font-size: 12pt; color:blue"><?= __('工程異常一覧') ?></strong></legend>
+  <br><br>
+
+<legend style='margin-left:100px'><strong style="font-size: 12pt; color:blue"><?= __('工程異常一覧') ?></strong></legend>
 <br>
-<table>
+<table style='margin-left:100px'>
 <thead>
             <tr class="parents">
             <td style='font-size: 10pt; border-width: 1px solid black;'><?= __('　時間　') ?></td>
@@ -339,7 +352,13 @@ echo $this->Html->css('kensahyou');
         </thead>
 <tbody>
 <?php for($j=0; $j<count($arrIjous); $j++): ?>
-  <tr class='children'>
+
+  <?php if ($j % 2 == 0): ?>
+    <tr class='children' style='background-color: #ffffe0'>
+  <?php else : ?>
+    <tr class='children'>
+  <?php endif; ?>
+
   <td style='font-size: 10pt'><?= h("　".$arrIjous[$j]["datetime"]."　") ?></td>
   <td><?= h("　".$arrIjous[$j]["length"]."　") ?></td>
   <td><?= h("　".$arrIjous[$j]["loss_amount"]."　") ?></td>
@@ -348,10 +367,12 @@ echo $this->Html->css('kensahyou');
 <?php endfor;?>
 </tbody>
     </table>
+
     <br><br>
-<legend align="center"><strong style="font-size: 12pt; color:blue"><?= __('リレーログ一覧') ?></strong></legend>
+
+<legend style='margin-left:100px'><strong style="font-size: 12pt; color:blue"><?= __('リレーログ一覧') ?></strong></legend>
 <br>
-<table>
+<table style='margin-left:100px'>
 <thead>
             <tr class="parents">
             <td style='font-size: 10pt; border-width: 1px solid black;'><?= __('　時間　') ?></td>
@@ -361,7 +382,11 @@ echo $this->Html->css('kensahyou');
         </thead>
 <tbody>
 <?php for($j=0; $j<count($arrRelayLogs); $j++): ?>
-  <tr class='children'>
+  <?php if ($j % 2 == 0): ?>
+    <tr class='children' style='background-color: #ffffe0'>
+  <?php else : ?>
+    <tr class='children'>
+  <?php endif; ?>
   <td style='font-size: 10pt'><?= h("　".$arrRelayLogs[$j]["datetime"]."　") ?></td>
   <td><?= h("　".$arrRelayLogs[$j]["name"]."　") ?></td>
   <td><?= h("　".$arrRelayLogs[$j]["status"]."　") ?></td>
@@ -384,3 +409,13 @@ echo $this->Html->css('kensahyou');
   <?= $this->Form->control('num'.$j, array('type'=>'hidden', 'value'=>$this->request->getData('num'.$j), 'label'=>false)) ?>
   <?= $this->Form->control('num_max', array('type'=>'hidden', 'value'=>$num_max, 'label'=>false)) ?>
 <?php endfor;?>
+
+<br><br>
+<br><br>
+
+<script type="text/javascript">
+var adjust = 400;//初期表示位置の微調整
+$(function() {
+  $('html,body').animate({scrollTop:$('#position').offset().top - adjust }, 0, 'swing');
+});
+</script>

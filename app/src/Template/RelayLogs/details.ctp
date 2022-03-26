@@ -75,7 +75,11 @@ echo $this->Html->css('kensahyou');
         </thead>
 <tbody>
 <?php for($j=0; $j<count($arrRelayLogs); $j++): ?>
-  <tr class='children'>
+  <?php if ($j % 2 == 0): ?>
+    <tr class='children' style='background-color: #ffffe0'>
+  <?php else : ?>
+    <tr class='children'>
+  <?php endif; ?>
   <td style='font-size: 10pt'><?= h("　".$arrRelayLogs[$j]["datetime"]."　") ?></td>
   <td><?= h("　".$arrRelayLogs[$j]["name"]."　") ?></td>
   <td><?= h("　".$arrRelayLogs[$j]["status"]."　") ?></td>
