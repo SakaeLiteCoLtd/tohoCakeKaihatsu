@@ -135,10 +135,10 @@ echo $this->Html->css('kensahyou');
   <tr class='parents'>
     <td width="80"></td>
     <td><strong>ヒーターON時間</td>
-    <td><strong>量産開始時間</td>
+    <td><strong>稼働開始時間</td>
     <td><strong>検査表開始時間</td>
     <td><strong>検査表終了時間</td>
-    <td><strong>量産終了時間</td>
+    <td><strong>稼働終了時間</td>
     <td><strong>ヒーターOFF時間</td>
   </tr>
   <tr class='children' style='background-color: #ffffe0'>
@@ -173,7 +173,7 @@ echo $this->Html->css('kensahyou');
 <table width="580" style='margin-left:100px'>
   <tr class="parents">
     <td width="80"></td>
-    <td colspan="4">量産開始 ～ 量産終了</td>
+    <td colspan="4">稼働開始 ～ 稼働終了</td>
   </tr>
   <tr class='parents'>
     <td width="80"></td>

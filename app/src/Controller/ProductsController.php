@@ -214,6 +214,8 @@ class ProductsController extends AppController
       $this->set('tanni', $tanni);
       $weight = $data["weight"];
       $this->set('weight', $weight);
+      $mess = "";
+      $this->set('mess', $mess);
 
       $arrStatusKensahyou = ["0" => "表示", "1" => "非表示"];
       $this->set('arrStatusKensahyou', $arrStatusKensahyou);
@@ -234,13 +236,6 @@ class ProductsController extends AppController
 
       $ProductName = $this->Products->find()
       ->where(['factory_id' => $data['factory_id'], 'name' => $name, 'delete_flag' => 0])->toArray();
-
-      if(isset($ProductName[0])){
-
-//        return $this->redirect(['action' => 'addform',
-///       's' => ['mess' => "入力された品名は既に存在します。長さを追加する場合は「長さ追加」メニューから登録してください。"]]);
-
-      }
 
       if(strpos($name,';') !== false){
         return $this->redirect(['action' => 'addform',
@@ -282,7 +277,25 @@ class ProductsController extends AppController
         $_SESSION['newproduct'] = array();
         $_SESSION['newproduct'] = $data;
 
-        return $this->redirect(['action' => 'addcomfirm']);
+        $arrdaburicheck = array();
+        for($i=1; $i<=$data["tuikalength"]; $i++){
+          if($data["status_kensahyou".$i] == 0){
+            $arrdaburicheck[] = $data["length".$i];
+          }
+        }
+
+        $arrdaburicheckunique = array_unique($arrdaburicheck);
+        $arrdaburicheckunique = array_values($arrdaburicheckunique);
+  
+        if(count($arrdaburicheck) == count($arrdaburicheckunique)){//同じ長さで検査表表示のものは１つだけ
+          return $this->redirect(['action' => 'addcomfirm']);
+        }else{
+          $tuikalength = $data["tuikalength"];
+          $this->set('tuikalength', $tuikalength);
+
+          $mess = "同じ長さで検査表表示のものは複数登録できません。";
+          $this->set('mess', $mess);
+        }
 
       }else{//最初
 
@@ -581,6 +594,9 @@ class ProductsController extends AppController
       $factory_name = $Factories[0]['name'];
       $this->set('factory_name', $factory_name);
 
+      $mess = "";
+      $this->set('mess', $mess);
+     
       $ProductName = $this->Products->find()
       ->where(['factory_id' => $data['factory_id'], 'name' => $data['name'], 'delete_flag' => 0])->toArray();
 
@@ -637,8 +653,33 @@ class ProductsController extends AppController
         $_SESSION['editlengthproduct'] = array();
         $_SESSION['editlengthproduct'] = $data;
 
-        return $this->redirect(['action' => 'editlengthcomfirm']);
+        $arrdaburicheck = array();
 
+        for($i=0; $i<count($ProductName); $i++){
+          if($ProductName[$i]["status_kensahyou"] == 0){
+            $arrdaburicheck[] = $ProductName[$i]["length"];
+          }
+        }
+
+        for($i=1; $i<=$data["tuikalength"]; $i++){
+          if($data["status_kensahyou".$i] == 0){
+            $arrdaburicheck[] = $data["length".$i];
+          }
+        }
+
+        $arrdaburicheckunique = array_unique($arrdaburicheck);
+        $arrdaburicheckunique = array_values($arrdaburicheckunique);
+
+        if(count($arrdaburicheck) == count($arrdaburicheckunique)){//同じ長さで検査表表示のものは１つだけ
+          return $this->redirect(['action' => 'editlengthcomfirm']);
+        }else{
+          $tuikalength = $data["tuikalength"];
+          $this->set('tuikalength', $tuikalength);
+
+          $mess = "同じ長さで検査表表示のものは複数登録できません。";
+          $this->set('mess', $mess);
+        }
+  
       }else{//最初
 
         $tuikalength = 1;
@@ -1141,6 +1182,7 @@ class ProductsController extends AppController
       $this->set('ProductName', $ProductName);
 
       $arrKoushinproduct = array();
+      $arrdaburicheck = array();
       $arrDeleteproduct = array();
       for($i=0; $i<=$data["num"]; $i++){
 
@@ -1188,6 +1230,10 @@ class ProductsController extends AppController
           "bik" => $data["bik".$i]
           ];
 
+          if($data["status_kensahyou".$i] == 0){
+            $arrdaburicheck[] = $data["length".$i];
+          }
+
             }else{
 
               if($data["status_kensahyou".$i] == 0){
@@ -1213,6 +1259,26 @@ class ProductsController extends AppController
           $this->set('arrKoushinproduct', $arrKoushinproduct);
           $this->set('arrDeleteproduct', $arrDeleteproduct);
     
+          $arrdaburicheckunique = array_unique($arrdaburicheck);
+          $arrdaburicheckunique = array_values($arrdaburicheckunique);
+
+          if(count($arrdaburicheck) != count($arrdaburicheckunique)){//同じ長さで検査表表示のものは１つだけ
+
+            if(!isset($_SESSION)){
+              session_start();
+              header('Expires:-1');
+              header('Cache-Control:');
+              header('Pragma:');
+            }
+            
+            $_SESSION['editproductcheck'] = array();
+            $_SESSION['editproductcheck'] = ["factory_id" => $data['factory_id'], "name" => $data['namemoto']];
+
+            return $this->redirect(['action' => 'editform',
+            's' => ['mess' => "同じ長さで検査表表示のものは複数登録できません。"]]);
+
+          }
+
           if(!isset($_SESSION)){
             session_start();
           }

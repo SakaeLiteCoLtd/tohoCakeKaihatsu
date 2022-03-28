@@ -904,8 +904,14 @@ class KensahyouyobidashiesController extends AppController
 
       $ProductDatas = $this->Products->find()
       ->where(['product_code' => $product_code])->toArray();
-      $LinenameDatas = $this->Linenames->find()
-      ->where(['delete_flag' => 0, 'machine_num' => $machine_num, 'factory_id' => $ProductDatas[0]["factory_id"]])->toArray();
+
+      if($machine_num == "-"){
+        $LinenameDatas = $this->Linenames->find()
+        ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"]])->toArray();
+      }else{
+        $LinenameDatas = $this->Linenames->find()
+        ->where(['delete_flag' => 0, 'machine_num' => $machine_num, 'factory_id' => $ProductDatas[0]["factory_id"]])->toArray();
+      }
 
       $Products = $this->Products->find()
       ->where(['product_code' => $product_code])->toArray();
@@ -942,8 +948,14 @@ class KensahyouyobidashiesController extends AppController
 
       $ProductDatas = $this->Products->find()
       ->where(['product_code' => $product_code])->toArray();
-      $LinenameDatas = $this->Linenames->find()
-      ->where(['delete_flag' => 0, 'machine_num' => $machine_num, 'factory_id' => $ProductDatas[0]["factory_id"]])->toArray();
+      
+      if($machine_num == "-"){
+        $LinenameDatas = $this->Linenames->find()
+        ->where(['delete_flag' => 0, 'factory_id' => $ProductDatas[0]["factory_id"]])->toArray();
+      }else{
+        $LinenameDatas = $this->Linenames->find()
+        ->where(['delete_flag' => 0, 'machine_num' => $machine_num, 'factory_id' => $ProductDatas[0]["factory_id"]])->toArray();
+      }
 
       $product_code_ini = substr($product_code, 0, 11);
 /*

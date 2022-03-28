@@ -61,15 +61,15 @@ echo $this->Html->css('kensahyou');
             <td style='font-size: 10pt; width:90; border-width: 1px solid black;'><?= __('日付') ?></td>
             <td style='font-size: 9pt; width:50; height:50; border-width: 1px solid black;'><?= __('ライン') ?></td>
             <td style='font-size: 10pt; border-width: 1px solid black;'><?= __('製品名') ?></td>
-            <td style='font-size: 9pt; width:90; border-width: 1px solid black;'><?= __('生産開始時間') ?></td>
+            <td style='font-size: 9pt; width:90; border-width: 1px solid black;'><?= __('稼働開始時間') ?></td>
             <td style='font-size: 9pt; width:100; border-width: 1px solid black;'><?= __('検査表開始時間') ?></td>
             <td style='font-size: 9pt; width:100; border-width: 1px solid black;'><?= __('検査表終了時間') ?></td>
-            <td style='font-size: 9pt; width:90; border-width: 1px solid black;'><?= __('生産終了時間') ?></td>
-            <td style='font-size: 9pt; width:90; border-width: 1px solid black;'><?= __('生産時間') ?></td>
+            <td style='font-size: 9pt; width:90; border-width: 1px solid black;'><?= __('稼働終了時間') ?></td>
+            <td style='font-size: 9pt; width:90; border-width: 1px solid black;'><?= __('稼働時間') ?></td>
+            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('ロス時間') ?></td>
             <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('開始ロス') ?><br><?= __('(kg)') ?></td>
             <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('中間ロス') ?><br><?= __('(kg)') ?></td>
             <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('終了ロス') ?><br><?= __('(kg)') ?></td>
-            <td style='font-size: 10pt; width:80; border-width: 1px solid black;'><?= __('ロス時間') ?></td>
             <td style='font-size: 10pt; width:70; border-width: 1px solid black;'><?= __('ロス率') ?><br><?= __('(％)') ?></td>
             <td style='font-size: 10pt; width:70; border-width: 1px solid black;'><?= __('達成率') ?><br><?= __('(％)') ?></td>
             <td style='font-size: 10pt; width:60; border-width: 1px solid black;'></td>
@@ -85,11 +85,7 @@ echo $this->Html->css('kensahyou');
   <?= $this->Form->control('num'.$j, array('type'=>'hidden', 'value'=>$j, 'label'=>false)) ?>
   <?= $this->Form->control('num_max', array('type'=>'hidden', 'value'=>$j, 'label'=>false)) ?>
 
-  <?php if ($j % 2 == 0): ?>
-    <tr class='children' style='background-color: #ffffe0'>
-  <?php else : ?>
-    <tr class='children'>
-  <?php endif; ?>
+  <tr class='children'>
 
 <?php
         $Linenames = $this->Linenames->find()
@@ -132,10 +128,9 @@ echo $this->Html->css('kensahyou');
   ?>
   <?= h($arrAll[$j]["relay_finish_datetime"]) ?></td>
 
-  <?php
-  echo "<td style='font-size: 10pt'>\n";
-  ?>
-  <?= h($arrAll[$j]["relay_time"]) ?></td>
+  <td style='font-size: 10pt;background-color: #E9FFA5'><?= h($arrAll[$j]["relay_time"]) ?></td>
+
+  <td style='font-size: 10pt;background-color: #E9FFA5'><?= h($arrAll[$j]["loss_time"]) ?></td>
 
   <?php
   echo "<td style='font-size: 10pt'>\n";
@@ -152,20 +147,9 @@ echo $this->Html->css('kensahyou');
   ?>
     <?= h($arrAll[$j]["loss_fin"]) ?></td>
 
-    <?php
-  echo "<td style='font-size: 10pt'>\n";
-  ?>
-    <?= h($arrAll[$j]["loss_time"]) ?></td>
+    <td style='font-size: 10pt;background-color: #E9FFA5'><?= h($arrAll[$j]["lossritsu"]) ?></td>
 
-    <?php
-  echo "<td style='font-size: 10pt'>\n";
-  ?>
-    <?= h($arrAll[$j]["lossritsu"]) ?></td>
-
-    <?php
-  echo "<td style='font-size: 10pt'>\n";
-  ?>
-    <?= h($arrAll[$j]["tasseiritsu"]) ?></td>
+    <td style='font-size: 10pt;background-color: #E9FFA5'><?= h($arrAll[$j]["tasseiritsu"]) ?></td>
 
   <?php
   echo "<td>\n";

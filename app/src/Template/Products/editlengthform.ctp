@@ -31,7 +31,7 @@
 
     <?= $this->Form->create($product) ?>
     <fieldset>
-        <legend><strong style="font-size: 15pt; color:red"><?= __('製品長さ追加') ?></strong></legend>
+    <legend><strong style="font-size: 15pt; color:red"><?= __('製品長さ追加') ?></strong></legend>
         <br>
 
         <table>
@@ -104,6 +104,7 @@
      <table>
           <tbody class='sample non-sample'>
           <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt;"><?= __('長さを追加してください') ?></strong></td></tr>
+          <tr class='sample non-sample'><td style="border:none"><strong style="font-size: 13pt; color:red"><?= __($mess) ?></strong></td></tr>
           </tbody>
         </table>
 

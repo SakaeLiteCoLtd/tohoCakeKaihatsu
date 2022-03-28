@@ -140,9 +140,10 @@ class kadouprogram extends AppController
           $status = "OFF";
         }
   
+        $name = str_replace("リレー", "", $RelayLogs[$i]["machine_relay"]["name"]);
         $arrRelayLogs[] = [
           "datetime" => $RelayLogs[$i]["datetime"]->format("Y-m-d H:i"),
-          "name" => $RelayLogs[$i]["machine_relay"]["name"],
+          "name" => $name,
           "status" => $status
         ];
   

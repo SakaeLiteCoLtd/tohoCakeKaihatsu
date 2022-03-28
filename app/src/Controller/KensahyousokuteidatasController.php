@@ -4301,7 +4301,8 @@ class KensahyousokuteidatasController extends AppController
       for($j=0; $j<$data["num"]; $j++){
 
         $Products = $this->Products->find()
-        ->where(['product_code like' => $product_code_ini.'%', 'length' => $data["length".$j], 'delete_flag' => 0])
+        ->where(['product_code like' => $product_code_ini.'%',
+         'length' => $data["length".$j], 'delete_flag' => 0, 'status_kensahyou' => 0])
         ->toArray();
 
         $tourokuDailyreport[] = [
@@ -4485,12 +4486,12 @@ class KensahyousokuteidatasController extends AppController
          if($factory_id == 5){//本部の人がログインしている場合
 
           $Products = $this->Products->find()
-          ->where(['name' => $name, 'length' => $length, 'delete_flag' => 0])->toArray();
+          ->where(['name' => $name, 'length' => $length, 'status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
     
         }else{
   
           $Products = $this->Products->find()
-          ->where(['name' => $name, 'length' => $length, 'delete_flag' => 0,
+          ->where(['name' => $name, 'length' => $length, 'status_kensahyou' => 0, 'delete_flag' => 0,
            'OR' => [['factory_id' => $factory_id], ['factory_id' => 5]]])
           ->toArray();
   
@@ -6434,7 +6435,7 @@ class KensahyousokuteidatasController extends AppController
         
           $product_code_ini = substr($product_code, 0, 11);
           $ProductDaily = $this->Products->find()
-          ->where(['product_code like' => $product_code_ini.'%', 'length' => $data['length'.$i], 'delete_flag' => 0])->toArray();
+          ->where(['product_code like' => $product_code_ini.'%', 'length' => $data['length'.$i], 'status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
   /*
           echo "<pre>";
           print_r($ProductDaily[0]);
@@ -6524,7 +6525,7 @@ class KensahyousokuteidatasController extends AppController
               for($m=0; $m<$data["countlength"]; $m++){
                 
                 $Products = $this->Products->find()
-                ->where(['product_code like' => $product_code_ini.'%', 'length' => $data['length'.$m], 'delete_flag' => 0])
+                ->where(['product_code like' => $product_code_ini.'%', 'length' => $data['length'.$m], 'status_kensahyou' => 0, 'delete_flag' => 0])
                 ->toArray();
   
                 $this->InspectionDataResultParents->updateAll(
@@ -6799,12 +6800,12 @@ class KensahyousokuteidatasController extends AppController
         if($factory_id == 5){//本部の人がログインしている場合
 
           $Products = $this->Products->find()
-          ->where(['name' => $name, 'length' => $length, 'delete_flag' => 0])->toArray();
+          ->where(['name' => $name, 'length' => $length, 'status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
     
         }else{
   
           $Products = $this->Products->find()
-          ->where(['name' => $name, 'length' => $length, 'delete_flag' => 0,
+          ->where(['name' => $name, 'length' => $length, 'status_kensahyou' => 0, 'delete_flag' => 0,
            'OR' => [['factory_id' => $factory_id], ['factory_id' => 5]]])
           ->toArray();
   
