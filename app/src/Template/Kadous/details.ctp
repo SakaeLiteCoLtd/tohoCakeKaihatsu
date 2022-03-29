@@ -173,7 +173,7 @@ echo $this->Html->css('kensahyou');
 <table width="580" style='margin-left:100px'>
   <tr class="parents">
     <td width="80"></td>
-    <td colspan="4">稼働開始 ～ 稼働終了</td>
+    <td colspan="5">稼働開始 ～ 稼働終了</td>
   </tr>
   <tr class='parents'>
     <td width="80"></td>
@@ -181,6 +181,7 @@ echo $this->Html->css('kensahyou');
     <td width="250">本数</td>
     <td width="250">メートル換算</td>
     <td width="250">合計長さ</td>
+    <td width="250">総ロス率</td>
   </tr>
 
   <?php for($j=0; $j<count($arrlength); $j++): ?>
@@ -204,6 +205,9 @@ echo $this->Html->css('kensahyou');
         echo "<td width='80' rowspan=$num>\n";
         echo "$total_length_riron\n";
         echo "(m)</td>\n";
+        echo "<td width='80' rowspan=$num>\n";
+        echo "$riron_lossritsu\n";
+        echo "(%)</td>\n";
         ?>
 
       </tr>
@@ -237,6 +241,9 @@ echo $this->Html->css('kensahyou');
       echo "<td width='80' rowspan=$num>\n";
       echo "$total_length_jissai\n";
       echo "(m)</td>\n";
+      echo "<td width='80' rowspan=$num>\n";
+      echo "$lossritsu\n";
+      echo "(%)</td>\n";
       ?>
 
       </tr>
@@ -257,7 +264,7 @@ echo $this->Html->css('kensahyou');
   <table width="580" style='margin-left:100px'>
   <tr class="parents">
     <td width="80"></td>
-    <td colspan="4">検査開始 ～ 検査終了</td>
+    <td colspan="5">検査開始 ～ 検査終了</td>
   </tr>
   <tr class='parents'>
     <td width="80"></td>
@@ -265,6 +272,7 @@ echo $this->Html->css('kensahyou');
     <td width="250">本数</td>
     <td width="250">メートル換算</td>
     <td width="250">合計長さ</td>
+    <td width="250">中間ロス率</td>
   </tr>
 
   <?php for($j=0; $j<count($arrlength); $j++): ?>
@@ -288,6 +296,9 @@ echo $this->Html->css('kensahyou');
         echo "<td width='80' rowspan=$num>\n";
         echo "$total_length_kensa_riron\n";
         echo "(m)</td>\n";
+        echo "<td width='80' rowspan=$num>\n";
+        echo "$kensa_riron_lossritsu\n";
+        echo "(%)</td>\n";
         ?>
 
       </tr>
@@ -321,6 +332,9 @@ echo $this->Html->css('kensahyou');
       echo "<td width='80' rowspan=$num>\n";
       echo "$total_length_jissai\n";
       echo "(m)</td>\n";
+      echo "<td width='80' rowspan=$num>\n";
+      echo "$mid_lossritsu\n";
+      echo "(%)</td>\n";
       ?>
 
       </tr>

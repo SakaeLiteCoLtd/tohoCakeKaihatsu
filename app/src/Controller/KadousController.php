@@ -930,7 +930,7 @@ class KadousController extends AppController
       ->where([
         'machine_relay_id' => 5,
         'status' => 0,
-        'datetime >' => $finish_datetime,
+        'datetime >' => $start_datetime,
         'delete_flag' => 0,
         'factory_code' => $factory_id,
         'machine_num' => $machine_num
@@ -1037,6 +1037,9 @@ class KadousController extends AppController
       $to_relay_finish_datetime = strtotime($relay_finish_datetime);
       if($to_relay_finish_datetime - $from_finish_datetime > 0){
         $interval_finish_relay = ($to_relay_finish_datetime - $from_finish_datetime) / 60;
+        $interval_finish_relay = sprintf("%.1f", $interval_finish_relay);
+      }elseif($from_finish_datetime - $to_relay_finish_datetime > 0){
+        $interval_finish_relay = -1 * ($from_finish_datetime - $to_relay_finish_datetime) / 60;
         $interval_finish_relay = sprintf("%.1f", $interval_finish_relay);
       }
       $this->set('interval_finish_relay', $interval_finish_relay);
@@ -1199,6 +1202,22 @@ class KadousController extends AppController
       $this->set('arrProdcts', $arrProdcts);
       $this->set('total_length_jissai', $total_length_jissai);
 
+      if($total_length_riron > 0){
+        $riron_lossritsu = 100 * ($total_length_riron - $total_length_jissai) / $total_length_riron;
+        $riron_lossritsu = sprintf("%.1f", $riron_lossritsu);
+      }else{
+        $riron_lossritsu = "";
+      }
+      $this->set('riron_lossritsu', $riron_lossritsu);
+
+      if($total_length_kensa_riron > 0){
+        $kensa_riron_lossritsu = 100 * ($total_length_kensa_riron - $total_length_jissai) / $total_length_kensa_riron;
+        $kensa_riron_lossritsu = sprintf("%.1f", $kensa_riron_lossritsu);
+      }else{
+        $kensa_riron_lossritsu = "";
+      }
+      $this->set('kensa_riron_lossritsu', $kensa_riron_lossritsu);
+
       $total_sum_weight = 0;
       $total_loss_weight = 0;
       for($j=0; $j<count($arrProdcts); $j++){
@@ -1220,6 +1239,7 @@ class KadousController extends AppController
       'datetime >=' => $date_sta, 'datetime <=' => $date_fin])
       ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
 
+      $loss_mid = 0;
       $arrIjous = array();
       for($i=0; $i<count($InspectionDataResultParentDatas); $i++){
 
@@ -1233,10 +1253,22 @@ class KadousController extends AppController
             "staff_name" => $InspectionDataResultParentDatas[$i]["staff"]["name"],
           ];
   
+          if($i != 0 && $i != count($InspectionDataResultParentDatas) - 1){
+            $loss_mid = $loss_mid + (float)$InspectionDataResultParentDatas[$i]["loss_amount"];
+          }
+
         }
 
       }
       $this->set('arrIjous', $arrIjous);
+
+      if($loss_mid > 0){
+        $mid_lossritsu = 100 * $loss_mid / ($loss_mid + $total_sum_weight);
+        $mid_lossritsu = sprintf("%.1f", $mid_lossritsu);
+      }else{
+        $mid_lossritsu = "";
+      }
+      $this->set('mid_lossritsu', $mid_lossritsu);
 
     }
 
