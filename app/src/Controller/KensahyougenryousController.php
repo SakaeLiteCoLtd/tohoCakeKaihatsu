@@ -2881,7 +2881,7 @@ class KensahyougenryousController extends AppController
 
       }
 
-      $countseikeiki = $data["countseikeiki"];
+      $countseikeiki = $data["tuikaseikeiki"];
       $this->set('countseikeiki', $countseikeiki);
       $pickup_speed = $data["pickup_speed"];
       $this->set('pickup_speed', $pickup_speed);

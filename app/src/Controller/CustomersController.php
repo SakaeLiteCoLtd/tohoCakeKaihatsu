@@ -300,7 +300,7 @@ class CustomersController extends AppController
         ->where(['initial_kana' => $initial_kana, 'delete_flag' => 0])->toArray();
   
         $code_ini = "7".$CustomerCodeRules[0]["code"];
-  
+
         $CustomerData = $this->Customers->find()
         ->where(['customer_code like' => $code_ini.'%'])->toArray();
   
@@ -311,7 +311,11 @@ class CustomersController extends AppController
   
         $customer_code_renban = count($CustomerData) + 1;
         $customer_code_renban = sprintf('%02d', $customer_code_renban);//0埋め
-  
+
+        if(!isset($CustomerData[0])){
+          $customer_code_renban = $code_ini.$customer_code_renban;
+        }
+
         for($j=0; $j<count($CustomerData); $j++){
   
           if(substr($CustomerData[$j]["customer_code"], 0, 5) >= $customer_code_renban){//被っていればプラス１していく
@@ -321,15 +325,11 @@ class CustomersController extends AppController
           }
           
         }
-  /*
-        echo "<pre>";
-        print_r($customer_code_renban);
-        echo "</pre>";
-  */
+  
         $customer_code_last = $data['customer_code_last'];
         $customer_code = $customer_code_renban.$customer_code_last;
         $this->set('customer_code', $customer_code);
-  
+
         $arrtourokucustomer = array();
         $arrtourokucustomer = [
           'factory_id' => $factory_id,

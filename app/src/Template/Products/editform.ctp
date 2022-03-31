@@ -23,6 +23,7 @@
 <?= $this->Form->control('namemoto', array('type'=>'hidden', 'value'=>$name, 'label'=>false)) ?>
 <?= $this->Form->control('factory_name', array('type'=>'hidden', 'value'=>$factory_name, 'label'=>false)) ?>
 <?= $this->Form->control('customer_name', array('type'=>'hidden', 'value'=>$customer_name, 'label'=>false)) ?>
+<?= $this->Form->control('product_name_code', array('type'=>'hidden', 'value'=>$product_name_code, 'label'=>false)) ?>
 
 <?php
 //<nav class="large-3 medium-4 columns">

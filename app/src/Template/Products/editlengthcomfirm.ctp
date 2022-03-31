@@ -14,7 +14,7 @@
      echo $htmllogin;
 ?>
 <?php
-     echo $htmlproduct;
+      echo $htmlproduct;
 ?>
 
 <?= $this->Form->create($product, ['url' => ['action' => 'editlengthdo']]) ?>
@@ -22,6 +22,7 @@
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$factory_id, 'label'=>false)) ?>
 <?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$name, 'label'=>false)) ?>
 <?= $this->Form->control('tuikalength', array('type'=>'hidden', 'value'=>$tuikalength, 'label'=>false)) ?>
+<?= $this->Form->control('product_name_code', array('type'=>'hidden', 'value'=>$product_name_code, 'label'=>false)) ?>
 
 <?php
 //<nav class="large-3 medium-4 columns">
@@ -122,7 +123,8 @@
       <?php for($k=1; $k<=$tuikalength; $k++): ?>
 
       <tr>
-      <td><?= h($name) ?></td>
+      <td><?= h(${"name".$k}) ?></td>
+      <?= $this->Form->control('name'.$k, array('type'=>'hidden', 'value'=>${"name".$k}, 'label'=>false)) ?>
       <td><?= h(${"status_kensahyou_name".$k}) ?></td>
       <?= $this->Form->control('status_kensahyou'.$k, array('type'=>'hidden', 'value'=>${"status_kensahyou".$k}, 'label'=>false)) ?>
       <?= $this->Form->control('status_kensahyou_name'.$k, array('type'=>'hidden', 'value'=>${"status_kensahyou_name".$k}, 'label'=>false)) ?>

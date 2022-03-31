@@ -137,6 +137,7 @@ if($status_kensahyou == 0){
 
     <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$factory_id, 'label'=>false)) ?>
     <?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$name, 'label'=>false)) ?>
+    <?= $this->Form->control('product_name_code', array('type'=>'hidden', 'value'=>$product_name_code, 'label'=>false)) ?>
 
     </fieldset>
 

@@ -18,7 +18,7 @@
 <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <br>
-<table class='sample hesdermenu'>
+<table class='sample hesdermenu' style="background-color: #E6FFFF">
   <tbody>
     <td style='border: none;align: left'>
     <font size='4'>　　</font><a href='/Kensahyoukadous' /><font size='4' color=black>メニュートップ</font></a>
@@ -36,7 +36,12 @@ echo $this->Html->css('kensahyou');
 
 <?= $this->Form->create($product, ['url' => ['action' => 'details']]) ?>
 
-<table align="center" style="width:1000px; position: fixed; top: 70px; left: 50%; margin-left:-500px;">
+<table align="center" style="width:1310; position: fixed; top: 0px; left: 1%;z-index: 1;">
+  <tr><td style="height:250px; border-style: none;background-color: #E6FFFF"><?= __("　　　　　　　　　　　　　　　　　　　") ?></td></tr>
+</table>
+  <br><br>
+
+<table align="center" style="width:1000px; position: fixed; top: 70px; left: 50%; margin-left:-500px;z-index: 2;">
     <tbody class='sample non-sample'>
       <tr>
       <td style="border-style: none;"><div><?= $this->Form->submit('前のラインへ', array('name' => 'mae')); ?></div></td>
@@ -59,7 +64,7 @@ echo $this->Html->css('kensahyou');
       $name_machine = $Linenames[0]["name"];
 ?>
 
-<table style="position: fixed; top: 130px; left: 7%">
+<table style="position: fixed; top: 130px; left: 7%;z-index: 1;">
   <tbody style="background-color: #FFFFCC">
   <tr class="parents">
   <td>生産時間</td>
@@ -76,7 +81,7 @@ echo $this->Html->css('kensahyou');
   </tbody>
 </table>
 <br>
-<table width="1200" style="position: fixed; top: 230px; left: 7%">
+<table width="1210" style="position: fixed; top: 230px; left: 7%;z-index: 1;">
 <thead>
 <tr class="parents">
 <td style='font-size: 10pt; border-width: 1px solid black;'><?= __('製品コード') ?></td>
@@ -122,13 +127,19 @@ echo $this->Html->css('kensahyou');
 </tbody>
     </table>
 
-<br><br><br>
-<br><br><br>
-<br><br><br>
-<br><br><br>
-<br><br><br>
+    <br><br><br>
 
+    <?php for($j=0; $j<count($arrProdcts); $j++): ?>
+      <br><br>
+    <?php endfor;?>
+
+<?php
+/*
 <table width="1200" border="4" style='margin-left:100px;border-bottom-width: 0pt;' id="position">
+*/
+?>
+
+<table width="1200" border="4" style='margin-left:100px;border-bottom-width: 0pt;'>
   <tr class="parents">
     <td colspan="7"><strong><?= h($name_machine."号ライン") ?></strong></td>
   </tr>
@@ -154,11 +165,13 @@ echo $this->Html->css('kensahyou');
 <table width="1200" border="4" style='margin-left:100px;border-bottom-width: 0pt;border-top-width: 0pt;'>
   <tr class='children'>
     <td style="background-color: #f0e68c; border-top:none" width="80"><strong>間隔</td>
-    <td style="border-top:none" width="260"><?= h($interval_heater_relay_on) ?> 分</td>
-    <td style="border-top:none"><?= h($interval_relay_start) ?> 分</td>
-    <td style="border-top:none"><?= h($interval_start_finish) ?> 分</td>
-    <td style="border-top:none"><?= h($interval_finish_relay) ?> 分</td>
-    <td style="border-top:none" width="260"><?= h($interval_relay_heater_off) ?> 分</td>
+    <td style="border-top:none"></td>
+    <td style="background-color: #ffc0cb;border-top:none" width="176"><?= h($interval_heater_relay_on) ?> 分</td>
+    <td style="background-color: #ffc0cb;border-top:none" width="176"><?= h($interval_relay_start) ?> 分</td>
+    <td style="background-color: #ffc0cb;border-top:none" width="176"><?= h($interval_start_finish) ?> 分</td>
+    <td style="background-color: #ffc0cb;border-top:none" width="176"><?= h($interval_finish_relay) ?> 分</td>
+    <td style="background-color: #ffc0cb;border-top:none" width="176"><?= h($interval_relay_heater_off) ?> 分</td>
+    <td style="border-top:none"></td>
   </tr>
 </table>
 <table width="1200" border="4" style='margin-left:100px;border-top-width: 0pt;'>

@@ -21,13 +21,85 @@ class ZzzapisController extends AppController
     parent::beforeFilter($event);
 
     // 認証なしでアクセスできるアクションの指定
-    $this->Auth->allow(["test1","test2","testadd","testedit"]);
+    $this->Auth->allow(["nagasacheck","test1","test2","testadd","testedit"]);
   }
 
       public function initialize()
     {
      parent::initialize();
      $this->MaterialTypes = TableRegistry::get('MaterialTypes');
+     $this->Products = TableRegistry::get('Products');
+    }
+
+    public function nagasacheck()//http://localhost:5050/Zzzapis/nagasacheck
+    {
+
+      //productsテーブルに、同じ製品で同じ長さで検査表表示になっているものが存在しないか確認するためのプログラム
+      $Productsall = $this->Products->find()
+      ->where(['delete_flag' => 0])
+      ->order(["product_code"=>"ASC"])->toArray();
+/*
+      echo "<pre>";
+      print_r(count($Productsall));
+      echo "</pre>";
+*/
+      $arrProducts = array();
+      for($j=0; $j<count($Productsall); $j++){
+
+        if($Productsall[$j]["status_kensahyou"] == 0 && $Productsall[$j]["length"] > 0){
+
+          $product_code_ini = substr($Productsall[$j]["product_code"], 0, 11);
+
+          $arrProducts[] = [
+            "name" => $Productsall[$j]["name"],
+            "product_code_ini" => $product_code_ini,
+            "status_kensahyou" => $Productsall[$j]["status_kensahyou"],
+            "length" => $Productsall[$j]["length"],
+            "check" => $product_code_ini.";".$Productsall[$j]["status_kensahyou"].";".$Productsall[$j]["length"],
+          ];
+
+     //     array_push($arrProducts,$product_code_ini.";".$Productsall[$j]["status_kensahyou"].";".$Productsall[$j]["length"]);
+
+        }
+
+      }
+/*
+      echo "<pre>";
+      print_r(count($arrProducts));
+      echo "</pre>";
+*/
+  //    $arrProducts = array_unique($arrProducts);
+  //    $arrProducts = array_values($arrProducts);
+/*
+      echo "<pre>";
+      print_r(count($arrProducts));
+      echo "</pre>";
+*/
+
+             //CSV形式で情報をファイルに出力のための準備
+             $csvFileName = '/tmp/' . time() . rand() . '.csv';
+             $res = fopen($csvFileName, 'w');
+             if ($res === FALSE) {
+               throw new Exception('ファイルの書き込みに失敗しました。');
+             }
+   
+             foreach($arrProducts as $dataInfo) {
+               // 文字コード変換。エクセルで開けるようにする
+               mb_convert_variables('SJIS', 'UTF-8', $dataInfo);
+               fputcsv($res, $dataInfo);
+             }
+             fclose($res);
+   
+             header('Content-Type: application/octet-stream');
+   
+             $filename = "製品長さチェック220329.csv";
+             header("Content-Disposition: attachment; filename=${filename}"); 
+             header('Content-Transfer-Encoding: binary');
+             header('Content-Length: ' . filesize($csvFileName));
+             readfile($csvFileName);
+   
+             exit;//exitをいれておかないとhtmlのソースを含んだCSVファイルになってしまう
+   
     }
 
     //json出力

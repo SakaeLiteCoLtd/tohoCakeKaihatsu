@@ -22,6 +22,7 @@
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
 <?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$this->request->getData('name'), 'label'=>false)) ?>
 <?= $this->Form->control('tuikalength', array('type'=>'hidden', 'value'=>$tuikalength, 'label'=>false)) ?>
+<?= $this->Form->control('product_name_code', array('type'=>'hidden', 'value'=>$product_name_code, 'label'=>false)) ?>
 
 <?php
 //<nav class="large-3 medium-4 columns">
@@ -124,7 +125,8 @@
       <?php for($k=1; $k<=$tuikalength; $k++): ?>
 
       <tr>
-      <td><?= h($name) ?></td>
+      <td><?= $this->Form->control
+      ('name'.$k, array('type'=>'text', 'label'=>false, 'value'=>${"name".$k}, 'required' => 'true', 'size'=>10)) ?></td>
       <td><?= $this->Form->control('status_kensahyou'.$k, ['options' => $arrStatusKensahyou, 'label'=>false]) ?></td>
       <td><?= $this->Form->control
       ('length'.$k, array('type'=>'tel', 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'size'=>6, 'required' => 'true', 'autocomplete'=>"off",'size'=>1)) ?></td>

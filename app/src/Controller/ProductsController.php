@@ -575,7 +575,7 @@ class ProductsController extends AppController
 
       $arrProduct_name_list = array();
       for($j=0; $j<count($Product_name_list); $j++){
-        array_push($arrProduct_name_list,$Product_name_list[$j]["name"]);
+        array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["product_code"]);
       }
       $arrProduct_name_list = array_unique($arrProduct_name_list);
       $arrProduct_name_list = array_values($arrProduct_name_list);
@@ -593,12 +593,16 @@ class ProductsController extends AppController
       ->where(['id' => $data['factory_id']])->toArray();
       $factory_name = $Factories[0]['name'];
       $this->set('factory_name', $factory_name);
+      $this->set('product_name_code', $data["name"]);
+      $product_name_code = explode(";",$data["name"]);
+      $name = $product_name_code[0];
+      $product_code = $product_name_code[1];
 
       $mess = "";
       $this->set('mess', $mess);
      
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name'], 'delete_flag' => 0])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $name,  'product_code' => $product_code, 'delete_flag' => 0])->toArray();
 
       if(!isset($ProductName[0])){
 
@@ -616,9 +620,9 @@ class ProductsController extends AppController
 
       $factory_id = $data["factory_id"];
       $this->set('factory_id', $factory_id);
-      $name = $data["name"];
+      $name = $name;
       $this->set('name', $name);
-      
+
       $arrStatusKensahyou = ["0" => "表示", "1" => "非表示"];
       $this->set('arrStatusKensahyou', $arrStatusKensahyou);
 
@@ -641,6 +645,13 @@ class ProductsController extends AppController
         $tuikalength = $data["tuikalength"] + 1;
         $this->set('tuikalength', $tuikalength);
 
+        for($i=1; $i<$tuikalength; $i++){
+          ${"name".$i} = $data["name".$i];
+          $this->set('name'.$i, ${"name".$i});
+        }
+        ${"name".$tuikalength} = $name;
+        $this->set('name'.$tuikalength, ${"name".$tuikalength});
+  
       }elseif(isset($data["kakuninn"])){//確認
 
         if(!isset($_SESSION)){
@@ -682,6 +693,9 @@ class ProductsController extends AppController
   
       }else{//最初
 
+        $name1 = $name;
+        $this->set('name1', $name1);
+  
         $tuikalength = 1;
         $this->set('tuikalength', $tuikalength);
 
@@ -712,7 +726,10 @@ class ProductsController extends AppController
       print_r($data);
       echo "</pre>";
 */
-      $name = $data["name"];
+      $this->set('product_name_code', $data["product_name_code"]);
+      $product_name_code = explode(";",$data["product_name_code"]);
+      $name = $product_name_code[0];
+      $product_code = $product_name_code[1];
       $this->set('name', $name);
       $tuikalength = $data["tuikalength"];
       $this->set('tuikalength', $tuikalength);
@@ -720,7 +737,7 @@ class ProductsController extends AppController
       $this->set('factory_id', $factory_id);
 
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name'], 'delete_flag' => 0])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $name, 'product_code' => $product_code, 'delete_flag' => 0])->toArray();
       $this->set('ProductName', $ProductName);
 
       $product_code_ini = substr($ProductName[0]["product_code"], 0, 11);
@@ -744,6 +761,8 @@ class ProductsController extends AppController
         ${"bik".$j} = $data["bik".$j];
         $this->set('bik'.$j, ${"bik".$j});
 
+        ${"name".$j} = $data["name".$j];
+        $this->set('name'.$j, ${"name".$j});
         ${"status_kensahyou".$j} = $data["status_kensahyou".$j];
         $this->set('status_kensahyou'.$j, ${"status_kensahyou".$j});
 
@@ -791,7 +810,9 @@ class ProductsController extends AppController
       print_r($data);
       echo "</pre>";
 */
-      $name = $data["name"];
+      $product_name_code = explode(";",$data["product_name_code"]);
+      $name = $product_name_code[0];
+      $product_code = $product_name_code[1];
       $this->set('name', $name);
       $tuikalength = $data["tuikalength"];
       $this->set('tuikalength', $tuikalength);
@@ -799,11 +820,10 @@ class ProductsController extends AppController
       $this->set('factory_id', $factory_id);
 
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name'], 'delete_flag' => 0])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $name, 'product_code' => $product_code, 'delete_flag' => 0])->toArray();
       $this->set('ProductName', $ProductName);
 
       $product_code_moto = substr($ProductName[0]["product_code"], 0, 11);
-
       $product_code_ini = substr($ProductName[0]["product_code"], 0, 11);
 
       $status_kensahyou = $ProductName[0]["status_kensahyou"];
@@ -822,6 +842,8 @@ class ProductsController extends AppController
       $this->set('tuikalength', $tuikalength);
 
       for($j=1; $j<=$tuikalength; $j++){
+        ${"name".$j} = $data["name".$j];
+        $this->set('name'.$j, ${"name".$j});
         ${"length".$j} = $data["length".$j];
         $this->set('length'.$j, ${"length".$j});
         ${"length_cut".$j} = $data["length_cut".$j];
@@ -880,7 +902,7 @@ class ProductsController extends AppController
           $arrtourokuproduct[] = [
             'factory_id' => $data["factory_id"],
             'product_code' => $product_code_moto.$color_renban,
-            'name' => $data["name"],
+            'name' => ${"name".$j},
             'tanni' => $ProductName[0]["tanni"],
             'ig_bank_modes' => $ProductName[0]["ig_bank_modes"],
             'length' => ${"length".$j},
@@ -955,7 +977,7 @@ class ProductsController extends AppController
   
         ${"arrProduct_name_list".$i} = array();
         for($j=0; $j<count(${"Product_name_list".$i}); $j++){
-          array_push(${"arrProduct_name_list".$i},${"Product_name_list".$i}[$j]["name"]);
+          array_push(${"arrProduct_name_list".$i},${"Product_name_list".$i}[$j]["name"].";".${"Product_name_list".$i}[$j]["product_code"]);
         }
         ${"arrProduct_name_list".$i} = array_unique(${"arrProduct_name_list".$i});
         ${"arrProduct_name_list".$i} = array_values(${"arrProduct_name_list".$i});
@@ -1004,9 +1026,13 @@ class ProductsController extends AppController
       ->where(['id' => $data['factory_id']])->toArray();
       $factory_name = $Factories[0]['name'];
       $this->set('factory_name', $factory_name);
+      $this->set('product_name_code', $data["name"]);
+      $product_name_code = explode(";",$data["name"]);
+      $name = $product_name_code[0];
+      $product_code = $product_name_code[1];
 
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name'], 'delete_flag' => 0])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $name, 'product_code' => $product_code, 'delete_flag' => 0])->toArray();
 
       if(!isset($ProductName[0])){
 
@@ -1024,7 +1050,7 @@ class ProductsController extends AppController
 
       $factory_id = $data["factory_id"];
       $this->set('factory_id', $factory_id);
-      $name = $data["name"];
+      $name = $name;
       $this->set('name', $name);
       $tanni = $ProductName[0]["tanni"];
       $this->set('tanni', $tanni);
@@ -1084,9 +1110,13 @@ class ProductsController extends AppController
       ->where(['id' => $data['factory_id']])->toArray();
       $factory_name = $Factories[0]['name'];
       $this->set('factory_name', $factory_name);
+      $this->set('product_name_code', $data["product_name_code"]);
+      $product_name_code = explode(";",$data["product_name_code"]);
+      $name = $product_name_code[0];
+      $product_code = $product_name_code[1];
 
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['name'], 'delete_flag' => 0])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $name, 'product_code' => $product_code, 'delete_flag' => 0])->toArray();
 
       if(!isset($ProductName[0])){
 
@@ -1177,8 +1207,13 @@ class ProductsController extends AppController
       print_r($data);
       echo "</pre>";
 */
+      $product_name_code = explode(";",$data["product_name_code"]);
+      $this->set('product_name_code', $data["product_name_code"]);
+      $namemoto = $product_name_code[0];
+      $product_code = $product_name_code[1];
+
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['namemoto'], 'delete_flag' => 0])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $namemoto, 'product_code' => $product_code, 'delete_flag' => 0])->toArray();
       $this->set('ProductName', $ProductName);
 
       $arrKoushinproduct = array();
@@ -1299,8 +1334,12 @@ class ProductsController extends AppController
       print_r($data);
       echo "</pre>";
 */
+      $product_name_code = explode(";",$data["product_name_code"]);
+      $namemoto = $product_name_code[0];
+      $product_code = $product_name_code[1];
+
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $data['namemoto'], 'delete_flag' => 0])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'name' => $namemoto, 'product_code' => $product_code, 'delete_flag' => 0])->toArray();
       $this->set('ProductName', $ProductName);
 
       $session = $this->request->getSession();

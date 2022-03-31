@@ -24,6 +24,7 @@
 <?= $this->Form->control('factory_name', array('type'=>'hidden', 'value'=>$this->request->getData('factory_name'), 'label'=>false)) ?>
 <?= $this->Form->control('customer_name', array('type'=>'hidden', 'value'=>$this->request->getData('customer_name'), 'label'=>false)) ?>
 <?= $this->Form->control('ig_bank_modes', array('type'=>'hidden', 'value'=>$this->request->getData('ig_bank_modes'), 'label'=>false)) ?>
+<?= $this->Form->control('product_name_code', array('type'=>'hidden', 'value'=>$product_name_code, 'label'=>false)) ?>
 <br><br><br>
 
 <?php

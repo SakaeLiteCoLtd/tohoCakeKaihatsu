@@ -30,7 +30,6 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('delete_flag', array('type'=>'hidden', 'value'=>$delete_flag, 'label'=>false)) ?>
 <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
 <?= $this->Form->control('machine_num_moto', array('type'=>'hidden', 'value'=>$machine_num_moto, 'label'=>false)) ?>
-<?= $this->Form->control('countseikeiki', array('type'=>'hidden', 'value'=>$countseikeiki, 'label'=>false)) ?>
 <br> <br> <br>
 
 <?php

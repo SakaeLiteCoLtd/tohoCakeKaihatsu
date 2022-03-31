@@ -124,7 +124,7 @@
 
       <tr>
       <td><?= h(${"product_code".$k}) ?></td>
-      <td><?= h($name) ?></td>
+      <td><?= h(${"name".$k}) ?></td>
       <td><?= h(${"status_kensahyou_name".$k}) ?></td>
       <td><?= h(${"length".$k}) ?></td>
       <td><?= h(${"length_cut".$k}) ?></td>
@@ -141,7 +141,7 @@
      <table>
       <tr>
         <tbody class='sample non-sample'>
-        <td style="border-style: none;"><div><?= $this->Form->submit('製品長さ追加トップへ戻る', array('name' => 'top')); ?></div></td>
+        <td style="border-style: none;"><div><?= $this->Form->submit('製品長さ・ロット追加トップへ戻る', array('name' => 'top')); ?></div></td>
       </tbody>
     </tr>
     </table>
