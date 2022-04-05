@@ -253,7 +253,7 @@ class KadousController extends AppController
         ->where([
           'machine_relay_id' => 5,
           'status' => 0,
-          'datetime >' => $DailyReportsData[$i]["finish_datetime"]->format("Y-m-d H:i:s"),
+          'datetime >' => $DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"),
           'delete_flag' => 0,
           'factory_code' => $factory_id,
           'machine_num' => $DailyReportsData[$i]["machine_num"]
@@ -349,7 +349,7 @@ class KadousController extends AppController
         $count_check = count($arrDaily_report) - 1;
 
         //ロス時間の取得
-        $loss_time = "";
+        $loss_time = "-";
         $from1 = 0;
         $to1 = 0;
         $from2 = 0;
@@ -358,11 +358,19 @@ class KadousController extends AppController
           date_default_timezone_set('Asia/Tokyo');
           $from1 = strtotime($relay_start_datetime);
           $to1 = strtotime($DailyReportsData[$i]["start_datetime"]->format("Y-m-d H:i:s"));
+          if($to1 - $from1 < 0){
+            $from1 = 0;
+            $to1 = 0;
+          }
         }
         if(strlen($relay_finish_datetime) > 0){
           date_default_timezone_set('Asia/Tokyo');
           $from2 = strtotime($DailyReportsData[$i]["finish_datetime"]->format("Y-m-d H:i:s"));
           $to2 = strtotime($relay_finish_datetime);
+          if($to2 - $from2 < 0){
+            $from2 = 0;
+            $to2 = 0;
+          }
         }
         if(($to1 - $from1 + $to2 - $from2) > 0){
           $loss_time = gmdate("G時間i分", $to1 - $from1 + $to2 - $from2);//時間の差をフォーマット

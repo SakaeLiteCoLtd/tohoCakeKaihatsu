@@ -585,11 +585,6 @@ class CustomersController extends AppController
       $CustomerData = $this->Customers->find()
       ->where(['id IS NOT' => $data['id'], 'customer_code' => $customer_code_new, 'delete_flag' => 0])->toArray();
 
- //     $MaterialSuppliers = $this->MaterialSuppliers->find()
- //     ->where(['material_supplier_code' => $customer_code_new])->toArray();
-
- //     $CustomerData = $CustomerData + $MaterialSuppliers;
-
       if(isset($CustomerData[0])){
 
         if(!isset($_SESSION)){
