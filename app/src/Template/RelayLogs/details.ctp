@@ -87,16 +87,6 @@ echo $this->Html->css('kensahyou');
 </tbody>
     </table>
     <br><br>
-    <table align="center">
-    <tbody class='sample non-sample'>
-      <tr>
-      <td style="border: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
-        <td style="border-style: none;"><?= __("　") ?></td>
-      <td style="border-style: none;"><div><?= $this->Form->submit('ショットデータCSV出力', array('name' => 'shotdata')); ?></div></td>
-      </tr>
-    </tbody>
-  </table>
-  <br><br>
 
 <?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$factory_id, 'label'=>false)) ?>
 <?= $this->Form->control('date_sta', array('type'=>'hidden', 'value'=>$date_sta, 'label'=>false)) ?>

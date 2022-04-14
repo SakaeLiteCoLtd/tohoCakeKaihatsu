@@ -115,7 +115,7 @@ class ProductsController extends AppController
       }
       $_SESSION['product_detail'] = array();
       $_SESSION['product_detail'][0] = "check";
-      $_SESSION['product_detail']["name"] = $Products[0]["name"];
+      $_SESSION['product_detail']["name"] = $Products[0]["name"].";".$Products[0]["product_code"];
       $_SESSION['product_detail']["factory_id"] = $Products[0]["factory_id"];
 
       return $this->redirect(['action' => 'editsyousai']);

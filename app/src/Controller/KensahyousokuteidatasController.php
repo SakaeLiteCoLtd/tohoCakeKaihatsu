@@ -2000,7 +2000,7 @@ class KensahyousokuteidatasController extends AppController
               
               $Productlengthcheck = $this->Products->find()
               ->where(['product_code like' => $product_code_ini.'%'
-              , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+              , 'status_kensahyou' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
               if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
   
                 $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%',
@@ -2053,14 +2053,14 @@ class KensahyousokuteidatasController extends AppController
 
       $ProductParent = $this->Products->find()
       ->where(['product_code' => $product_code, 'status_kensahyou' => 0
-      , 'status_length' => 0, 'delete_flag' => 0])->toArray();
+      , 'delete_flag' => 0])->toArray();
       if(!isset($ProductParent[0])){
         $ProductParent = $this->Products->find()
         ->where(['product_code' => $product_code, 'delete_flag' => 0])->toArray();
       }
       $Products = $this->Products->find()
       ->where(['product_code IS NOT' => $product_code, 'product_code like' => $product_code_ini.'%'
-      , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+      , 'status_kensahyou' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
 
       $Products = array_merge($ProductParent, $Products);
 
@@ -2439,7 +2439,7 @@ class KensahyousokuteidatasController extends AppController
 
             $Productlengthcheck = $this->Products->find()
             ->where(['product_code like' => $product_code_ini.'%'
-            , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+            , 'status_kensahyou' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
             if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
               $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%',
@@ -2534,7 +2534,7 @@ class KensahyousokuteidatasController extends AppController
               "product_condition_parent_id" => $data['product_condition_parent_id'],
               'product_id' => $data['product_id'.$j],
               'lot_number' => $data['lot_number'.$j],
-              'datetime' => date("Y-m-d H:i").":22",
+              'datetime' => date("Y-m-d H:i").":00",
               'staff_id' => $Users[0]["staff_id"],
               'appearance' => $data['gaikan'.$j],
               'result_weight' => $data['weight'.$j],
@@ -2557,7 +2557,7 @@ class KensahyousokuteidatasController extends AppController
               "product_condition_parent_id" => $data['product_condition_parent_id'],
               'product_id' => $data['product_id'.$j],
               'lot_number' => $data['lot_number'.$j],
-              'datetime' => date("Y-m-d H:i").":22",
+              'datetime' => date("Y-m-d H:i").":00",
               'staff_id' => $Users[0]["staff_id"],
               'appearance' => $data['gaikan'.$j],
               'result_weight' => $data['weight'.$j],
@@ -2810,7 +2810,7 @@ class KensahyousokuteidatasController extends AppController
             
             $Productlengthcheck = $this->Products->find()
             ->where(['product_code like' => $product_code_ini.'%'
-            , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+            , 'status_kensahyou' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
             if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
               $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%',
@@ -2954,7 +2954,7 @@ class KensahyousokuteidatasController extends AppController
             
             $Productlengthcheck = $this->Products->find()
             ->where(['product_code like' => $product_code_ini.'%'
-            , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+            , 'status_kensahyou' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
             if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
               $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%',
@@ -3084,7 +3084,7 @@ class KensahyousokuteidatasController extends AppController
             
             $Productlengthcheck = $this->Products->find()
             ->where(['product_code like' => $product_code_ini.'%'
-            , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+            , 'status_kensahyou' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
             if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
               $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%',
@@ -3246,7 +3246,7 @@ class KensahyousokuteidatasController extends AppController
             
             $Productlengthcheck = $this->Products->find()
             ->where(['product_code like' => $product_code_ini.'%'
-            , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+            , 'status_kensahyou' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
             if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
               $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%',
@@ -3416,11 +3416,7 @@ class KensahyousokuteidatasController extends AppController
 
         $updateInspectionDataResultParents = array();
 
-        if($data['datetime'.$j]["hour"] > 5){
-          $datetime = substr($date_sta, 0, 10)." ".$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00";
-        }else{
-          $datetime = substr($date_fin, 0, 10)." ".$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00";
-        }
+        $datetime = substr($date_sta, 0, 10)." ".$data['datetime'.$j]["hour"].":".$data['datetime'.$j]["minute"].":00";
         $updateInspectionDataResultParents = [
           'product_id' => $data['product_id'.$j],
           'datetime' => $datetime,
@@ -3438,9 +3434,7 @@ class KensahyousokuteidatasController extends AppController
         ->where([
           'product_code like' => $product_code_ini.'%',
           'machine_num' => $machine_num,
-     //     'inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'],
           'datetime >=' => $date_sta, 'datetime <' => $date_fin,
-     //    'product_condition_parent_id' => $data['product_condition_parent_id'],
          'lot_number' => $data['lot_number'.$edit_num]])->order(["datetime"=>"DESC"])->toArray();
 
         $motoInspectionDataResultParentId = $InspectionDataResultParents[0]["id"];
@@ -3610,7 +3604,7 @@ class KensahyousokuteidatasController extends AppController
           
           $Productlengthcheck = $this->Products->find()
           ->where(['product_code like' => $product_code_ini.'%'
-          , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+          , 'status_kensahyou' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
           if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
             $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%',
@@ -3831,7 +3825,7 @@ class KensahyousokuteidatasController extends AppController
           
           $Productlengthcheck = $this->Products->find()
           ->where(['product_code like' => $product_code_ini.'%'
-          , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+          , 'status_kensahyou' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
           if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
             $Products= $this->Products->find()->where(['product_code like' => $product_code_ini.'%'
@@ -4223,10 +4217,16 @@ class KensahyousokuteidatasController extends AppController
         'InspectionDataResultParents.delete_flag' => 0])
         ->order(["InspectionDataResultParents.datetime"=>"DESC"])->toArray();
 
+        $count_weight = count($InspectionDataResultParentData);
         $total_weight = 0;
         $total_loss_weight = 0;
         for($k=0; $k<count($InspectionDataResultParentData); $k++){
-          $total_weight = $total_weight + $InspectionDataResultParentData[$k]["result_weight"];
+          if($InspectionDataResultParentData[$k]["lot_number"] == "S"){
+            $total_weight = $total_weight;
+            $count_weight = $count_weight - 1;
+          }else{
+            $total_weight = $total_weight + $InspectionDataResultParentData[$k]["result_weight"];
+          }
           $total_loss_weight = $total_loss_weight + $InspectionDataResultParentData[$k]["loss_amount"];
         }
 
@@ -4234,20 +4234,16 @@ class KensahyousokuteidatasController extends AppController
         ${"total_loss_weight".$j} = sprintf("%.1f", ${"total_loss_weight".$j});
         $this->set('total_loss_weight'.$j, ${"total_loss_weight".$j});
 
-        $weight_ave = $total_weight/(count($InspectionDataResultParentData) * 1000);
+        if($count_weight < 1){//１行のみの登録のときにエラーが出ないように
+          $count_weight = 1;
+          $total_weight = $InspectionDataResultParentData[0]["result_weight"];
+        }
+        $weight_ave = $total_weight/($count_weight * 1000);
         ${"sum_weight".$j} = $weight_ave * $data["amount".$j];
         ${"sum_weight".$j} = sprintf("%.1f", ${"sum_weight".$j});
         $this->set('sum_weight'.$j, ${"sum_weight".$j});
-/*
-        ${"tasseiritsu".$j} = ${"sum_weight".$j} * 100 / (${"sum_weight".$j} + ${"total_loss_weight".$j});
-        ${"tasseiritsu".$j} = sprintf("%.1f", ${"tasseiritsu".$j});
-        $this->set('tasseiritsu'.$j, ${"tasseiritsu".$j});
-  
-        ${"lossritsu".$j} = ${"total_loss_weight".$j} * 100 / (${"sum_weight".$j} + ${"total_loss_weight".$j});
-        ${"lossritsu".$j} = sprintf("%.1f", ${"lossritsu".$j});
-        $this->set('lossritsu'.$j, ${"lossritsu".$j});
-*/
-        }
+
+      }
 
         $total_sum_weight = 0;
         $total_loss_weight = 0;
@@ -4681,18 +4677,7 @@ class KensahyousokuteidatasController extends AppController
 
         for($k=0; $k<count($InspectionDataResultChildren); $k++){
 
-          if($InspectionDataResultChildren[$k]['inspection_data_result_parent']['datetime']->format('H') < 6){//前日の測定
-
-            $date1 = strtotime($InspectionDataResultChildren[$k]['inspection_data_result_parent']['datetime']->format('Y-m-d'));
-            $datetimeyes = date('Y-m-d', strtotime('-1 day', $date1));
-      
-            $arrDates[] = $datetimeyes;
-
-          }else{
-
-            $arrDates[] = $InspectionDataResultChildren[$k]['inspection_data_result_parent']['datetime']->format('Y-m-d');
-
-          }
+          $arrDates[] = $InspectionDataResultChildren[$k]['inspection_data_result_parent']['datetime']->format('Y-m-d');
 
         }
 
@@ -4734,18 +4719,7 @@ class KensahyousokuteidatasController extends AppController
 
         for($k=0; $k<count($InspectionDataResultChildren); $k++){
 
-          if($InspectionDataResultChildren[$k]['inspection_data_result_parent']['datetime']->format('H') < 6){//前日の測定
-
-            $date1 = strtotime($InspectionDataResultChildren[$k]['inspection_data_result_parent']['datetime']->format('Y-m-d'));
-            $datetimeyes = date('Y-m-d', strtotime('-1 day', $date1));
-      
-            $arrDates[] = $datetimeyes;
-
-          }else{
-
-            $arrDates[] = $InspectionDataResultChildren[$k]['inspection_data_result_parent']['datetime']->format('Y-m-d');
-
-          }
+          $arrDates[] = $InspectionDataResultChildren[$k]['inspection_data_result_parent']['datetime']->format('Y-m-d');
 
         }
 
@@ -6022,7 +5996,7 @@ class KensahyousokuteidatasController extends AppController
 
             $Productlengthcheck = $this->Products->find()
             ->where(['product_code like' => $product_code_ini.'%'
-            , 'status_kensahyou' => 0, 'status_length' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
+            , 'status_kensahyou' => 0, 'delete_flag' => 0])->order(["id"=>"ASC"])->toArray();
             if($i == $num_length + 1 && count($Productlengthcheck) > 0){//長さ列の場合
 
               ${"size".$i} = $Products[0]["length_cut"];
@@ -6282,7 +6256,6 @@ class KensahyousokuteidatasController extends AppController
             $this->set('lower_limit'.$num,${"lower_limit".$num});
             ${"size".$num} = "-";
             $this->set('size'.$num,${"size".$num});
-  //          ${"measuring_instrument".$num} = $InspectionStandardSizeChildren[$i]["measuring_instrument"];
             ${"measuring_instrument".$num} = "※製品規格参照";
             $this->set('measuring_instrument'.$num,${"measuring_instrument".$num});
     
@@ -6447,17 +6420,8 @@ class KensahyousokuteidatasController extends AppController
           'start_datetime >=' => $datetimesta, 'start_datetime <' => $datetimefin,
           'DailyReports.delete_flag' => 0])->toArray();
     
-          if(substr($data["datetime1"], 0, 2) < 6){
-            $start_datetime = substr($data["datetimefin"], 0, 10)." ".$data["datetime1"].":00";
-          }else{
-            $start_datetime = substr($data["datetimesta"], 0, 10)." ".$data["datetime1"].":00";
-          }
-    
-          if(substr($data["datetime".$data["gyou"]], 0, 2) < 6){
-            $finish_datetime = substr($data["datetimefin"], 0, 10)." ".$data["datetime".$data["gyou"]].":00";
-          }else{
-            $finish_datetime = substr($data["datetimesta"], 0, 10)." ".$data["datetime".$data["gyou"]].":00";
-          }
+          $start_datetime = substr($data["datetimesta"], 0, 10)." ".$data["datetime1"].":00";
+          $finish_datetime = substr($data["datetimesta"], 0, 10)." ".$data["datetime".$data["gyou"]].":00";
 
           $updateDailyreport[] = [
               'product_id' => $ProductDaily[0]["id"],
@@ -6487,11 +6451,7 @@ class KensahyousokuteidatasController extends AppController
           ${"user_code".$j} = $data['user_code'.$j];
           $Users = $this->Users->find()->contain(["Staffs"])->where(['user_code' => ${"user_code".$j}, 'Users.delete_flag' => 0])->toArray();
 
-          if(substr($data['datetime'.$j], 0, 2) < 6){
-            $datetime = substr($data["datetimefin"], 0, 10)." ".$data['datetime'.$j].":00";
-          }else{
-            $datetime = substr($data["datetimesta"], 0, 10)." ".$data['datetime'.$j].":00";
-          }
+          $datetime = substr($data["datetimesta"], 0, 10)." ".$data['datetime'.$j].":00";
 
           $updateInspectionDataResultParents = [
             "inspection_data_conditon_parent_id" => $data['inspection_data_conditon_parent_id'.$j],
@@ -6570,12 +6530,7 @@ class KensahyousokuteidatasController extends AppController
               $InspectionDataResultParents = $this->InspectionDataResultParents->patchEntity($this->InspectionDataResultParents->newEntity(), $updateInspectionDataResultParents);
               if ($this->InspectionDataResultParents->save($InspectionDataResultParents)) {
 
-                if(substr($data['datetime'.$j], 0, 2) < 6){//前日の測定
-                  $date1 = strtotime($data['datekensaku']);
-                  $datekensaku = date('Y-m-d', strtotime('+1 day', $date1));
-                    }else{
-                  $datekensaku = $data['datekensaku'];
-                }
+                $datekensaku = $data['datekensaku'];
         
                 $InspectionDataResultParentsId = $this->InspectionDataResultParents->find()->contain(['ProductConditionParents','Products'])
                 ->where(['InspectionDataResultParents.delete_flag' => 0, 'machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 

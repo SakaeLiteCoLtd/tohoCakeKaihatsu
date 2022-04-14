@@ -333,15 +333,17 @@ class KadousController extends AppController
         ->order(["start_datetime"=>"ASC"])->toArray();
   
         $sum_weight = 0;
+        $sum_weight_csv = 0;
         for($j=0; $j<count($DailyReportssum_weight); $j++){
           $sum_weight = $sum_weight + $DailyReportssum_weight[$j]["sum_weight"];
+          $sum_weight_csv = $sum_weight_csv + $DailyReportssum_weight[$j]["sum_weight"] - $DailyReportssum_weight[$j]["total_loss_weight"];
         }
 
         if(strlen($relay_start_datetime) > 0 && strlen($relay_finish_datetime) > 0){
           date_default_timezone_set('Asia/Tokyo');
           $from = strtotime($relay_start_datetime);
           $to = strtotime($relay_finish_datetime);
-          $relay_time = gmdate("G時間i分", $to - $from);//時間の差をフォーマット
+          $relay_time = gmdate("G:i", $to - $from);//時間の差をフォーマット
         }else{
           $relay_time = "";
         }
@@ -373,7 +375,7 @@ class KadousController extends AppController
           }
         }
         if(($to1 - $from1 + $to2 - $from2) > 0){
-          $loss_time = gmdate("G時間i分", $to1 - $from1 + $to2 - $from2);//時間の差をフォーマット
+          $loss_time = gmdate("G:i", $to1 - $from1 + $to2 - $from2);//時間の差をフォーマット
         }
 
         $date = $DailyReportsData[$i]["start_datetime"]->format("Y-m-d");
@@ -415,11 +417,12 @@ class KadousController extends AppController
               "machine_num" => $DailyReportsData[$i]["machine_num"],
               "date" => $date,
               "name" => $DailyReportsData[$i]["product"]["name"],
-              "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("H:i"),
               "relay_start_datetime" => $relay_start_datetime_hyouji,
+              "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("H:i"),
               "finish_datetime" => $DailyReportsData[$i]["finish_datetime"]->format("H:i"),
               "relay_finish_datetime" => $relay_finish_datetime_hyouji,
               "relay_time" => $relay_time,
+              "sum_weight_csv" => $sum_weight_csv,
               "loss_sta" => $loss_sta,
               "staff_sta_loss" => $staff_sta_loss,
               "bik_sta" => $bik_sta,
@@ -429,9 +432,10 @@ class KadousController extends AppController
               "loss_fin" => $loss_fin,
               "staff_fin_loss" => $staff_fin_loss,
               "bik_fin" => $bik_fin,
+              "loss_total" => $loss_sta + $loss_mid + $loss_fin,
               "loss_time" => $loss_time,
-              "tasseiritsu" => $tasseiritsu,
               "lossritsu" => $lossritsu,
+              "tasseiritsu" => $tasseiritsu,
             ];
 
             //１つ前と同一のデータであれば配列に追加しない
@@ -466,11 +470,12 @@ class KadousController extends AppController
               "machine_num" => $DailyReportsData[$i]["machine_num"],
               "date" => $date,
               "name" => $DailyReportsData[$i]["product"]["name"],
-              "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("H:i"),
               "relay_start_datetime" => $relay_start_datetime_hyouji,
+              "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("H:i"),
               "finish_datetime" => $DailyReportsData[$i]["finish_datetime"]->format("H:i"),
               "relay_finish_datetime" => $relay_finish_datetime_hyouji,
               "relay_time" => $relay_time,
+              "sum_weight_csv" => $sum_weight_csv,
               "loss_sta" => $loss_sta,
               "staff_sta_loss" => $staff_sta_loss,
               "bik_sta" => $bik_sta,
@@ -480,9 +485,10 @@ class KadousController extends AppController
               "loss_fin" => $loss_fin,
               "staff_fin_loss" => $staff_fin_loss,
               "bik_fin" => $bik_fin,
+              "loss_total" => $loss_sta + $loss_mid + $loss_fin,
               "loss_time" => $loss_time,
-              "tasseiritsu" => $tasseiritsu,
               "lossritsu" => $lossritsu,
+              "tasseiritsu" => $tasseiritsu,
             ];
 
           }
@@ -526,11 +532,12 @@ class KadousController extends AppController
               "machine_num" => $DailyReportsData[$i]["machine_num"],
               "date" => $date,
               "name" => $DailyReportsData[$i]["product"]["name"],
-              "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("H:i"),
               "relay_start_datetime" => $relay_start_datetime_hyouji,
+              "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("H:i"),
               "finish_datetime" => $DailyReportsData[$i]["finish_datetime"]->format("H:i"),
               "relay_finish_datetime" => $relay_finish_datetime_hyouji,
               "relay_time" => $relay_time,
+              "sum_weight_csv" => $sum_weight_csv,
               "loss_sta" => $loss_sta,
               "staff_sta_loss" => $staff_sta_loss,
               "bik_sta" => $bik_sta,
@@ -540,9 +547,10 @@ class KadousController extends AppController
               "loss_fin" => $loss_fin,
               "staff_fin_loss" => $staff_fin_loss,
               "bik_fin" => $bik_fin,
+              "loss_total" => $loss_sta + $loss_mid + $loss_fin,
               "loss_time" => $loss_time,
-              "tasseiritsu" => $tasseiritsu,
               "lossritsu" => $lossritsu,
+              "tasseiritsu" => $tasseiritsu,
             ];
 
             //１つ前と同一のデータであれば配列に追加しない
@@ -578,11 +586,12 @@ class KadousController extends AppController
               "machine_num" => $DailyReportsData[$i]["machine_num"],
               "date" => $date,
               "name" => $DailyReportsData[$i]["product"]["name"],
-              "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("H:i"),
               "relay_start_datetime" => $relay_start_datetime_hyouji,
+              "start_datetime" => $DailyReportsData[$i]["start_datetime"]->format("H:i"),
               "finish_datetime" => $DailyReportsData[$i]["finish_datetime"]->format("H:i"),
               "relay_finish_datetime" => $relay_finish_datetime_hyouji,
               "relay_time" => $relay_time,
+              "sum_weight_csv" => $sum_weight_csv,
               "loss_sta" => $loss_sta,
               "staff_sta_loss" => $staff_sta_loss,
               "bik_sta" => $bik_sta,
@@ -592,9 +601,10 @@ class KadousController extends AppController
               "loss_fin" => $loss_fin,
               "staff_fin_loss" => $staff_fin_loss,
               "bik_fin" => $bik_fin,
+              "loss_total" => $loss_sta + $loss_mid + $loss_fin,
               "loss_time" => $loss_time,
-              "tasseiritsu" => $tasseiritsu,
               "lossritsu" => $lossritsu,
+              "tasseiritsu" => $tasseiritsu,
             ];
 
           }
@@ -604,22 +614,6 @@ class KadousController extends AppController
       }
 
       $arrAll = $arrDaily_report;
-/*
-      //並べ替え元
-      $machine_num_array = array();
-      $start_datetime_array = array();
-      foreach($arrAll as $key => $row ) {
-        $machine_num_array[$key] = $row["machine_num"];
-        $start_datetime_array[$key] = $row["start_datetime_check"];
-      }
-
-      if(count($start_datetime_array) > 0){
-        array_multisort($machine_num_array, SORT_ASC,
-        array_map( "strtotime", $start_datetime_array ), SORT_ASC,
-        $arrAll);
-      }
-      $this->set('arrAll', $arrAll);
-*/
 
       //並べ替え
       $machine_num_array = array();
@@ -681,11 +675,12 @@ class KadousController extends AppController
           "machine_num" => "成形機",
           "date" => "日付",
           "name" => "製品名",
-          "start_datetime" => "生産開始時間",
-          "relay_start_datetime" => "検査表開始時間",
+          "relay_start_datetime" => "生産開始時間",
+          "start_datetime" => "検査表開始時間",
           "finish_datetime" => "検査表終了時間",
           "relay_finish_datetime" => "生産終了時間",
           "relay_time" => "生産時間",
+          "sum_weight_csv" => "生産重量",
           "loss_sta" => "開始ロス（kg）",
           "staff_sta_loss" => "開始ロス報告者",
           "bik_sta" => "開始ロス備考",
@@ -695,9 +690,10 @@ class KadousController extends AppController
           "loss_fin" => "終了ロス（kg）",
           "staff_fin_loss" => "終了ロス報告者",
           "bik_fin" => "終了ロス備考",
-          "loss_time" => "ロス時間	",
-          "tasseiritsu" => "ロス率（％）",
-          "lossritsu" => "達成率（％）",
+          "loss_total" => "総ロス重量",
+          "loss_time" => "ロス時間",
+          "lossritsu" => "ロス率（％）",
+          "tasseiritsu" => "達成率（％）",
         ];
         $arrCsvs = array_merge($arrCsvhead,$arrCsvs);
 

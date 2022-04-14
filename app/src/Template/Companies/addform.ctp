@@ -23,7 +23,7 @@
 
     <?= $this->Form->create($company) ?>
     <fieldset>
-        <legend><strong style="font-size: 15pt; color:red"><?= __('顧客新規登録') ?></strong></legend>
+        <legend><strong style="font-size: 15pt; color:red"><?= __('会社新規登録') ?></strong></legend>
         <br>
         <table>
           <tbody class='sample non-sample'>
