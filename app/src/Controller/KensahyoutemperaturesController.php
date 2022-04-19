@@ -26,12 +26,7 @@ class KensahyoutemperaturesController extends AppController
   		parent::beforeFilter($event);
 
   		// 認証なしでアクセスできるアクションの指定
-  		$this->Auth->allow(["menu"
- //     , "kensakupre", "kensakuhyouji"
- //     , "kensakumenu", "kensakurirekipre"
- //     , "kensakugouki", "kensakurirekigouki"
- //     , "kensakurirekiichiran", "kensakurirekihyouji"
-    ]);
+  		$this->Auth->allow(["menu"]);
   	}
 
       public function initialize()
@@ -136,7 +131,6 @@ class KensahyoutemperaturesController extends AppController
   
          $arrProduct_names = array();
          for($j=0; $j<count($Product_name_list); $j++){
-   //       array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          $arrProduct_names[$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm"] = $Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm";
         }
          $this->set('arrProduct_names', $arrProduct_names);

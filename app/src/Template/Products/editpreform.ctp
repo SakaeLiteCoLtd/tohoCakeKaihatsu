@@ -55,23 +55,10 @@ $(document).ready(function() {
 ?>
 <?php
      echo $htmlproduct;
-
-/*
-<table class="white">
-   <tr><td width="280"><strong>自動補完テスト１</strong></td></tr>
-   <td><?= $this->Form->input('name_menu1', array('type'=>'text', 'label'=>false, 'id'=>"aaauto1")) ?></td>
-   <tr><td width="280"><strong>てすと</strong></td></tr>
-   <td><div id="auto2"></div></td>
-</table>
-*/
 ?>
 
 <?= $this->Form->create($product, ['url' => ['action' => 'editsyousai']]) ?>
 <br><br><br>
-
-<?php
-//<nav class="large-3 medium-4 columns">
-?>
 
 <nav class="sample non-sample">
 

@@ -7725,7 +7725,11 @@ class KensahyousokuteidatasController extends AppController
           $_SESSION['tuzukikara'] = array();
           $_SESSION['tuzukikara']["check"] = 1;
           $_SESSION['tuzukikara']["data"] = $getData;
-
+/*
+          echo "<pre>";
+          print_r($getData);
+          echo "</pre>";
+*/
           return $this->redirect(['action' => 'addform']);
     
       }elseif(isset($getData["loss_flag"])){//異常登録の表示

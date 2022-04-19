@@ -558,6 +558,7 @@ class ProductsController extends AppController
         $mess = $Data["mess"];
         $this->set('mess',$mess);
       }else{
+        $data = $this->request->getData();
         $mess = "";
         $this->set('mess',$mess);
       }
@@ -569,6 +570,18 @@ class ProductsController extends AppController
         $arrFactories[] = array($value->id=>$value->name);
       }
       $this->set('arrFactories', $arrFactories);
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
+      $Customer_name_list = $this->Customers->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrCustomer_name_list = array();
+      for($j=0; $j<count($Customer_name_list); $j++){
+        array_push($arrCustomer_name_list,$Customer_name_list[$j]["name"]);
+      }
+      $this->set('arrCustomer_name_list', $arrCustomer_name_list);
 
       $Product_name_list = $this->Products->find()
       ->where(['delete_flag' => 0])->toArray();
@@ -580,6 +593,109 @@ class ProductsController extends AppController
       $arrProduct_name_list = array_unique($arrProduct_name_list);
       $arrProduct_name_list = array_values($arrProduct_name_list);
       $this->set('arrProduct_name_list', $arrProduct_name_list);
+
+      if(isset($data["customer"])){//顧客絞り込みをしたとき
+  
+        $Product_name_list = $this->Products->find()
+        ->contain(['Customers'])
+        ->where(['Products.factory_id' => $data["factory_id"], 'Customers.name' => $data["customer_name"], 'Products.delete_flag' => 0])
+        ->toArray();
+  
+         if(count($Product_name_list) < 1){//顧客名にミスがある場合
+  
+           $mess = "入力された顧客の製品は登録されていません。確認してください。";
+           $this->set('mess',$mess);
+  
+           $Product_name_list = $this->Products->find()
+           ->where(['delete_flag' => 0])
+           ->toArray();
+ 
+           $arrProduct_name_list = array();
+           for($j=0; $j<count($Product_name_list); $j++){
+             array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["product_code"]);
+           }
+           $this->set('arrProduct_name_list', $arrProduct_name_list);
+  
+         }else{
+  
+          $customer_check = 1;
+          $this->set('customer_check', $customer_check);
+    
+           $arrProduct_names = array();
+           $arrProduct_name_list = array();
+           for($j=0; $j<count($Product_name_list); $j++){
+             array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["product_code"]);
+           }
+           $arrProduct_name_list = array_unique($arrProduct_name_list);
+           $arrProduct_name_list = array_values($arrProduct_name_list);
+           $this->set('arrProduct_name_list', $arrProduct_name_list);
+     
+         }
+  
+       }elseif(isset($data["next"])){//「次へ」ボタンを押したとき
+  
+         if(strlen($data["namepro"]) > 0){//product_nameの入力がある
+  
+          $product_name_length = explode(";",$data["namepro"]);
+          $name = $product_name_length[0];
+          if(isset($product_name_length[1])){
+            $product_code = $product_name_length[1];
+          }else{
+            $product_code = "-";
+          }
+    
+          $Products = $this->Products->find()
+          ->where(['factory_id' => $data["factory_id"], 'name' => $name, 'product_code' => $product_code, 'delete_flag' => 0])
+          ->toArray();
+  
+           if(isset($Products[0])){
+  
+             return $this->redirect(['action' => 'editlengthform',
+             's' => ['factory_id' => $data["factory_id"], 'name' => $data["namepro"]]]);
+  
+           }else{
+  
+             $mess = "入力された製品名は登録されていません。確認してください。";
+             $this->set('mess',$mess);
+  
+              $Product_name_list = $this->Products->find()
+              ->where(['delete_flag' => 0])->toArray();
+    
+             $arrProduct_name_list = array();
+             for($j=0; $j<count($Product_name_list); $j++){
+               array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["product_code"]);
+             }
+             $this->set('arrProduct_name_list', $arrProduct_name_list);
+  
+           }
+  
+         }else{//product_nameの入力がない
+  
+           $mess = "製品名が入力されていません。";
+           $this->set('mess',$mess);
+  
+           $Product_name_list = $this->Products->find()
+           ->where(['delete_flag' => 0])->toArray();
+ 
+           $arrProduct_name_list = array();
+           for($j=0; $j<count($Product_name_list); $j++){
+             array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["product_code"]);
+           }
+           $this->set('arrProduct_name_list', $arrProduct_name_list);
+  
+         }
+  
+       }
+
+       if(!isset($_SESSION)){
+        session_start();
+      }
+      header('Expires:-1');
+      header('Cache-Control:');
+      header('Pragma:');
+  
+      print_r(" ");
+
     }
     
     public function editlengthform()
@@ -587,7 +703,12 @@ class ProductsController extends AppController
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      $data = $this->request->getData();
+      $Data=$this->request->query('s');
+      if(isset($Data["factory_id"])){
+        $data = $this->request->query('s');
+      }else{
+        $data = $this->request->getData();
+      }
 
       $Factories = $this->Factories->find()
       ->where(['id' => $data['factory_id']])->toArray();
@@ -600,9 +721,9 @@ class ProductsController extends AppController
 
       $mess = "";
       $this->set('mess', $mess);
-     
+
       $ProductName = $this->Products->find()
-      ->where(['factory_id' => $data['factory_id'], 'name' => $name,  'product_code' => $product_code, 'delete_flag' => 0])->toArray();
+      ->where(['factory_id' => $data['factory_id'], 'product_code' => $product_code, 'delete_flag' => 0])->toArray();
 
       if(!isset($ProductName[0])){
 

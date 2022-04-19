@@ -268,7 +268,15 @@ for($i=0; $i<$count_length; $i++){
 <tr>
 
     <td style='font-size: 11pt' width="37" rowspan='8'>No.</td>
-    <td width="85" rowspan='7'>時間</td>
+
+    <?php if ($renzoku_check == 1): ?>
+      <td width="85" rowspan='7'><br><br>時間<br><br><br>
+        <?= $this->Form->submit(('連続成形'), array('name' => 'renzoku')) ?>
+      </td>
+    <?php else : ?>
+      <td width="85" rowspan='7'>時間</td>
+    <?php endif; ?>
+
   <td width="82" rowspan='6'><strong><font size="3">規格<br>長さ<br>(mm)</font></strong></td>
 
   <td>規格</td>
@@ -447,7 +455,7 @@ var moji = "length"
 
 <?php if ($gyou == 1 && $kaishi_loss_flag == 1): ?>
   <br>
-   <div align="center"><font size="4"><strong style="font-size: 13pt; color:red"><?= __("※最初に開始ロスを登録してください。") ?></strong></font></div>
+   <div align="center"><font size="4"><strong style="font-size: 13pt; color:red"><?= __("※最初に開始ロスを登録してください。（ロスがない場合は0を入力してください）") ?></strong></font></div>
   <br>
 <?php else: ?>
 <?php endif; ?>

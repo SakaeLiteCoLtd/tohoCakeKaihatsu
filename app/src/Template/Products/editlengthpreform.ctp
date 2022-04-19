@@ -15,10 +15,20 @@
 <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <?php
+$arrCustomer_name_list = json_encode($arrCustomer_name_list);//javaに配列を受け渡すために変換
 $arrProduct_name_list = json_encode($arrProduct_name_list);//jsに配列を受け渡すために変換
 ?>
 
 <script>
+
+$(function() {
+      // 入力補完候補の単語リスト
+      let wordlist = <?php echo $arrCustomer_name_list; ?>
+      // 入力補完を実施する要素に単語リストを設定
+      $("#customer_name_list").autocomplete({
+        source: wordlist
+      });
+  });
 
 $(function() {
       // 入力補完候補の単語リスト
@@ -38,12 +48,8 @@ $(function() {
      echo $htmlproduct;
 ?>
 
-<?= $this->Form->create($product, ['url' => ['action' => 'editlengthform']]) ?>
+<?= $this->Form->create($product, ['url' => ['action' => 'editlengthpreform']]) ?>
 <br><br><br>
-
-<?php
-//<nav class="large-3 medium-4 columns">
-?>
 
 <nav class="sample non-sample">
 
@@ -70,11 +76,16 @@ $(function() {
 
       <table>
       <tr>
+      <td width="400" colspan=2><strong>顧客名</strong></td>
         <td width="300"><strong>品名</strong></td>
       </tr>
       <tr>
+      <td style="border-right-style:none">
+        <?= $this->Form->control('customer_name', array('type'=>'text', 'label'=>false, 'id'=>"customer_name_list")) ?>
+      </td>
+      <td style="border-left-style:none"><?= $this->Form->submit(('顧客絞込'), array('name' => 'customer')) ?></td>
         <td>
-        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30, 'id'=>"product_name_list", 'autocomplete'=>"off")) ?>
+        <?= $this->Form->control('namepro', array('type'=>'text', 'label'=>false, 'size'=>30, 'id'=>"product_name_list", 'autocomplete'=>"off")) ?>
         </td>
       </tr>
     </table>
@@ -86,7 +97,7 @@ $(function() {
         <tr>
         <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
           <td style="border-style: none;"><?= __("　") ?></td>
-          <td style="border:none"><?= $this->Form->submit(__('次へ')) ?></td>
+          <td style="border:none"><?= $this->Form->submit(('次へ'), array('name' => 'next')) ?></td>
         </tr>
       </tbody>
     </table>

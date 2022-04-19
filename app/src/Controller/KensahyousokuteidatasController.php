@@ -27,12 +27,7 @@ class KensahyousokuteidatasController extends AppController
 
   		// 認証なしでアクセスできるアクションの指定
       $this->Auth->allow([//"menu",
-      "addform", "addfinishform", "addfinishconfirm", "addfinishdo"
-//      , "kensakumenu", "kensakupre", "kensakuikkatsupre", "kensakudate", "kensakugouki"
- //     , "kensakuhyouji", "kensatyuproducts", "kensatyuichiran", "kensakuikkatsujouken"
-  //    , "kensakuikkatsugouki"
-    //  , "kensakuikkatsudate", "kensakuikkatsuichiran"
-      ]);
+      "addform", "addfinishform", "addfinishconfirm", "addfinishdo"]);
   	}
 
       public function initialize()
@@ -65,26 +60,10 @@ class KensahyousokuteidatasController extends AppController
      header('Expires:');
      header('Cache-Control:');
      header('Pragma:');
-/*
-     $Product_name_list = $this->Products->find()
-     ->where(['delete_flag' => 0])->toArray();
-
-     $arrProduct_name_list = array();
-     for($j=0; $j<count($Product_name_list); $j++){
-       array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
-     }
-
-    $this->set('arrProduct_name_list', $arrProduct_name_list);
-*/
     }
 
     public function menu()
     {
-      /*
-      echo "<pre>";
-      print_r(phpinfo());
-      echo "</pre>";
-*/
       $Data=$this->request->query('s');
       if(isset($Data["mess"])){
         $mess = $Data["mess"];
@@ -118,14 +97,6 @@ class KensahyousokuteidatasController extends AppController
 
     public function kensakumenu()
     {
-/*
- //     $cmd = 'dir';
-      $cmd = "wkhtmltopdf -V";
-      exec($cmd, $opt, $return_ver);
-      echo '実行結果：'.$return_ver;//0成功1失敗
-
- //     exec("wkhtmltopdf https://google.com google2.pdf 2> result.txt");
-*/
     }
 
     public function addlogin()
@@ -496,31 +467,7 @@ class KensahyousokuteidatasController extends AppController
       header('Pragma:');
 
       $Data = $this->request->query('s');
-/*
-      echo "<pre>";
-      print_r($Data);
-      echo "</pre>";
-*/
-/*
-      //未完了の製品・ラインではないかチェック
-      $InspectionDataResultParentsnotfin = $this->InspectionDataResultParents->find()
-      ->contain(['InspectionStandardSizeParents', 'ProductConditionParents', 'Products'])
-      ->where([
-        'InspectionStandardSizeParents.delete_flag' => 0,
-        'InspectionDataResultParents.delete_flag' => 0,
-        'kanryou_flag IS' => NULL,
-        'Products.product_code' => $Data["product_code"],
-        'machine_num' => $Data["machine_num"]
-      ])
-      ->order(["InspectionDataResultParents.datetime"=>"DESC"])->limit('1')->toArray();
 
-      if(isset($InspectionDataResultParentsnotfin[0])){
-
-        return $this->redirect(['action' => 'addformpre',
-        's' => ['mess' => $Data["machine_num"]."号ライン、「".$Data["product_code"]."」は未完了の測定があります。検査中一覧画面から測定を完了させてください。"]]);
-
-       }
- */
       if(isset($Data["product_code"])){
 
         $product_code = $Data["product_code"];
@@ -1022,11 +969,7 @@ class KensahyousokuteidatasController extends AppController
       ->toArray();
       $factory_id = $Staffs[0]["factory_id"];
       $this->set('factory_id', $factory_id);
-/*
-      echo "<pre>";
-      print_r($factory_id."_".$machine_num);
-      echo "</pre>";
-*/
+
       $htmlkensahyoukadoumenu = new htmlkensahyoukadoumenu();
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
@@ -1613,7 +1556,7 @@ class KensahyousokuteidatasController extends AppController
             }
             $session = $this->request->getSession();
     
-            $hanbetu_code = $product_code.$machine_num.$factory_id;
+            $hanbetu_code = $product_code.$machine_num;
             $_SESSION['productmachinefactory'] = array();
             $_SESSION['InspectionDataConditons'.$hanbetu_code] = array();
 
@@ -1724,7 +1667,11 @@ class KensahyousokuteidatasController extends AppController
         }
 
       }
-      
+      /*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
       $this->set('date_sta',$date_sta);
       $this->set('date_fin',$date_fin);
 
@@ -1735,16 +1682,15 @@ class KensahyousokuteidatasController extends AppController
       }
       $this->set('mikan_check',$mikan_check);
 
+      $renzoku_check = 0;
+      $this->set('renzoku_check', $renzoku_check);
+
       $end_ok_check = 0;
       if(!isset($data["lot_number2"])){
         $end_ok_check = 1;
       }
       $this->set('end_ok_check', $end_ok_check);
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
       $machine_num = $data["machine_num"];
@@ -1759,6 +1705,41 @@ class KensahyousokuteidatasController extends AppController
       }else{
         $inspection_data_conditon_parent_id_moto = $data['inspection_data_conditon_parent_id'];
         $this->set('inspection_data_conditon_parent_id_moto', $inspection_data_conditon_parent_id_moto);
+      }
+
+      if(isset($data["renzoku"])){
+  
+        $date1 = strtotime(date("Y-m-d"));
+        $date_sta = date("Y-m-d")." 00:00:00";
+        $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 00:00:00";
+        $_SESSION['kensa_datetime']["date_sta"] = $date_sta;
+        $_SESSION['kensa_datetime']["date_fin"] = $date_fin;
+
+        $hanbetu_code = $product_code.$machine_num;
+        $_SESSION['productmachinefactory'] = array();
+        $_SESSION['InspectionDataConditons'.$hanbetu_code] = array();
+
+        $_SESSION['productmachinefactory'] = array(
+          'chenk' => 1,
+          'hanbetu_code' => $hanbetu_code,
+        );
+
+        $_SESSION['InspectionDataConditons'.$hanbetu_code] = array(
+          'chenk' => 1,
+          'hanbetu_code' => $hanbetu_code,
+          'product_code' => $product_code,
+          'machine_num' => $machine_num,
+          'inspection_standard_size_parent_id' => $data["inspection_standard_size_parent_id"],
+          'product_condition_parent_id' => $data["product_condition_parent_id"],
+          'inspection_data_conditon_parent_id' => $data["inspection_data_conditon_parent_id"],
+        );
+/*
+        echo "<pre>";
+        print_r($_SESSION);
+        echo "</pre>";
+*/
+        return $this->redirect(['action' => 'addform']);
+
       }
 
       $mess = "";
@@ -2223,7 +2204,7 @@ class KensahyousokuteidatasController extends AppController
       }
 
       if(isset($data["tuika"])){//行追加//この時点でデータの登録をする
-
+   
         $checknull = 0;
         $j = $data["gyou"];
 
@@ -2256,9 +2237,9 @@ class KensahyousokuteidatasController extends AppController
             $mess = "※重量データに入力漏れがあります。".'<br>';
           }
 
-          if($data['gaikan'.$j] == "-"){//入力漏れがある場合
+          if($data['gaikan'.$j] === "-"){//入力漏れがある場合
             $checknull = $checknull + 1;
-            $mess = "※外観を選択してください。".'<br>';
+            $mess = "※外観を選択してください".'<br>';
           }else{//入力漏れがある場合
             $checknull = $checknull;
           }
@@ -2353,7 +2334,7 @@ class KensahyousokuteidatasController extends AppController
           }
 
         }else{//ちゃんと入力されている場合
-
+  
         for($j=1; $j<=$gyou; $j++){
 
           if(isset($data['lot_number'.$j])){
@@ -2495,7 +2476,9 @@ class KensahyousokuteidatasController extends AppController
           ->where(['inspection_standard_size_parent_id' => $data['inspection_standard_size_parent_id'],
           'product_condition_parent_id' => $data['product_condition_parent_id'],
           'inspection_data_conditon_parent_id' => $data['inspection_data_conditon_parent_id'],
-          'lot_number' => $data['lot_number'.$j], 'delete_flag' => 0])
+          'lot_number' => $data['lot_number'.$j], 'delete_flag' => 0,
+          'datetime >=' => $date_sta, 'datetime <' => $date_fin
+          ])
           ->order(["id"=>"DESC"])->toArray();
 
           }
@@ -2511,7 +2494,7 @@ class KensahyousokuteidatasController extends AppController
           }elseif($data["mikan_check"] == 1){
             $check_over = 1;
           }else{//最初にデータを登録した時間をdate_staとする
-            
+  
             $date1 = strtotime(date("Y-m-d"));
             $date_sta = date("Y-m-d")." 00:00:00";
             $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 00:00:00";
@@ -2568,11 +2551,7 @@ class KensahyousokuteidatasController extends AppController
             ];
 
           }
-/*
-          echo "<pre>";
-          print_r($tourokuInspectionDataResultParents);
-          echo "</pre>";
-*/
+
           $InspectionDataResultParents = $this->InspectionDataResultParents
           ->patchEntity($this->InspectionDataResultParents->newEntity(), $tourokuInspectionDataResultParents);
           $connection = ConnectionManager::get('default');//トランザクション1
@@ -2644,10 +2623,13 @@ class KensahyousokuteidatasController extends AppController
         }else{
 
           if($data["mikan_check"] == 1 || $check_over == 1){
-
-            $mes = "※午前0時をまたぐ登録はできません。終了ロスを登録後、検査完了へ進んでください。";
+  
+            $mes = "※午前0時をまたぐ登録はできません。終了ロスを登録後、検査完了へ進んでください。".'<br>';
+            $mes = $mes."※連続して成形する場合は「連続成形」ボタンを押してください。 　　　　　　　　　";
             $this->set('mes',$mes);
 
+            $renzoku_check = 1;
+            $this->set('renzoku_check', $renzoku_check);
             $end_ok_check = 0;
             $this->set('end_ok_check', $end_ok_check);
             
@@ -2686,11 +2668,7 @@ class KensahyousokuteidatasController extends AppController
               $this->set('datetime'.$datetimenum,${"datetime".$datetimenum});
     
             }
-/*
-            echo "<pre>";
-            print_r($gyou);
-            echo "</pre>";
-  */
+
             $this->set('gyou', $gyou);
 
           }else{
@@ -2786,11 +2764,7 @@ class KensahyousokuteidatasController extends AppController
 
             if(strlen($data["result_size".$j."_".$i]) > 0){
               ${"result_size".$j."_".$i} = $data["result_size".$j."_".$i];
-              /*
-              echo "<pre>";
-              print_r(${"result_size".$j."_".$i});
-              echo "</pre>";
-        */
+
               $dotini = substr(${"result_size".$j."_".$i}, 0, 1);
               $dotend = substr(${"result_size".$j."_".$i}, -1, 1);
   
@@ -2853,11 +2827,7 @@ class KensahyousokuteidatasController extends AppController
          'InspectionDataResultParents.delete_flag' => 0,
          'lot_number' => $data['lot_number'.$checkloss], 'datetime >=' => $date_sta, 'datetime <' => $date_fin])
         ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
-/*
-        echo "<pre>";
-        print_r($InspectionDataResultParents);
-        echo "</pre>";
-*/
+
         $loss_amount_moto = $InspectionDataResultParents[0]["loss_amount"];
         $this->set('loss_amount_moto', $loss_amount_moto);
         $bik_moto = $InspectionDataResultParents[0]["bik"];
@@ -3317,7 +3287,7 @@ class KensahyousokuteidatasController extends AppController
             $mess = "※重量データに入力漏れがあります。".'<br>';
           }
 
-          if($data['gaikan'.$j] == "-"){//入力漏れがある場合
+          if($data['gaikan'.$j] === "-"){//入力漏れがある場合
             $checknull = $checknull + 1;
             $mess = "※外観を選択してください。".'<br>';
           }else{
@@ -3425,11 +3395,7 @@ class KensahyousokuteidatasController extends AppController
           'result_weight' => $data['weight'.$j],
           'judge' => ${"gouhi".$j},
         ];
-      /*
-        echo "<pre>";
-        print_r($updateInspectionDataResultParents);
-        echo "</pre>";
-*/
+
         $InspectionDataResultParents = $this->InspectionDataResultParents->find()->contain(['Products', 'ProductConditionParents'])
         ->where([
           'product_code like' => $product_code_ini.'%',
@@ -3461,11 +3427,7 @@ class KensahyousokuteidatasController extends AppController
           }
 
         }
-        /*
-        echo "<pre>";
-        print_r($updateInspectionDataResultChildren);
-        echo "</pre>";
-*/
+
         $InspectionDataResultParents = $this->InspectionDataResultParents
         ->patchEntity($this->InspectionDataResultParents->newEntity(), $updateInspectionDataResultParents);
         $connection = ConnectionManager::get('default');//トランザクション1
@@ -3670,11 +3632,7 @@ class KensahyousokuteidatasController extends AppController
           'created_at' => date("Y-m-d H:i:s"),
           "created_staff" => $Users[0]["staff_id"]
         ];
-  /*
-        echo "<pre>";
-        print_r($tourokuInspectionDataConditonParents);
-        echo "</pre>";
-*/
+
         $InspectionDataConditonParents = $this->InspectionDataConditonParents
         ->patchEntity($this->InspectionDataConditonParents->newEntity(), $tourokuInspectionDataConditonParents);
         $connection = ConnectionManager::get('default');//トランザクション1
@@ -4100,11 +4058,7 @@ class KensahyousokuteidatasController extends AppController
       ->where(['id' => $inspection_data_conditon_parent_id])
       ->order(["id"=>"DESC"])->toArray();
       $inspection_data_conditon_parent_created = $InspectionDataConditonParentsall[0]["created_at"]->format("Y-m-d H:i:s");
-    /*
-      echo "<pre>";
-      print_r($InspectionDataConditonChildren);
-      echo "</pre>";
-*/
+
       $product_code_ini = substr($product_code, 0, 11);
       $InspectionDataConditonParents = $this->InspectionDataConditonParents->find()
       ->where(['product_code like' => $product_code_ini.'%', 'created_at >=' => $inspection_data_conditon_parent_created, 'InspectionDataConditonParents.delete_flag' => 0])
@@ -4115,7 +4069,7 @@ class KensahyousokuteidatasController extends AppController
         for($k=0; $k<$countseikeiki; $k++){//各成型機の基準値の呼び出し
     
           $cylinder_name = $ProductMaterialMachines[$k]["cylinder_name"];
-
+    
           //成形機毎に取り出し
           $InspectionDataConditonChildren = $this->InspectionDataConditonChildren->find()
           ->contain(['ProductConditonChildren'])
@@ -7711,8 +7665,213 @@ class KensahyousokuteidatasController extends AppController
         $mikan_check = $getData["mikan_check"];
         $machine_num = $getData["machine_num"];
         $product_code = $getData["product_code"];
-      }
+        }
 
+        if($mikan_check == 0){//本日
+
+          $date1 = strtotime(date("Y-m-d"));
+          $date_sta = date("Y-m-d")." 00:00:00";
+          $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 00:00:00";
+          $datetimesta = date('Y-m-d 00:00:00');
+          $datetimefin = $date_fin;
+
+          $product_code_ini = substr($product_code, 0, 11);
+          $InspectionDataResultParents = $this->InspectionDataResultParents->find()
+          ->contain(['ProductConditionParents', 'InspectionStandardSizeParents', 'Products'])
+          ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.delete_flag' => 0,
+           'InspectionDataResultParents.delete_flag' => 0,
+          'datetime >=' => $datetimesta])
+          ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
+    
+        }else{//昨日以前の場合
+
+          $datetime_target = $arrdata[3];
+          $date1 = strtotime($datetime_target);
+          $date_sta = $datetime_target." 00:00:00";
+          $date_fin = date('Y-m-d', strtotime('+1 day', $date1))." 00:00:00";
+
+          $product_code_ini = substr($product_code, 0, 11);
+          $InspectionDataResultParents = $this->InspectionDataResultParents->find()
+          ->contain(['ProductConditionParents', 'InspectionStandardSizeParents', 'Products'])
+          ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%',
+           'InspectionStandardSizeParents.delete_flag' => 0,
+          'kanryou_flag IS' => NULL,
+          'datetime >=' => $date_sta, 'datetime <' => $date_fin,
+          'InspectionDataResultParents.delete_flag' => 0])
+          ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
+  
+        }
+
+        $data_tuzukikara["machine_num"] = $machine_num;
+        $data_tuzukikara["product_code"] = $product_code;
+
+        $product_code_ini = substr($product_code, 0, 11);
+        $ProductConditionParents= $this->ProductConditionParents->find()->contain(["Products"])
+        ->where(['machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 'ProductConditionParents.delete_flag' => 0])
+        ->order(["version"=>"DESC"])->toArray();
+  
+        $product_condition_parent_id = $ProductConditionParents[0]["id"];
+  
+        $version = $ProductConditionParents[0]["version"];
+  
+        $product_code_ini = substr($product_code, 0, 11);
+        $ProductMaterialMachines= $this->ProductMaterialMachines->find()
+        ->contain(['ProductConditionParents' => ["Products"]])
+        ->where(['Products.product_code like' => $product_code_ini.'%',
+        'ProductConditionParents.delete_flag' => 0,
+        'ProductMaterialMachines.delete_flag' => 0,
+        'ProductConditionParents.machine_num' => $machine_num,
+        'ProductConditionParents.version' => $version])
+        ->order(["cylinder_number"=>"ASC"])->toArray();
+  
+        $countseikeiki = count($ProductMaterialMachines);
+  
+        $data_tuzukikara["product_condition_parent_id"] = $product_condition_parent_id;
+        $data_tuzukikara["countseikeiki"] = count($ProductMaterialMachines);
+
+        $InspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
+        ->where(['product_code like' => $product_code_ini.'%', 'InspectionStandardSizeParents.is_active' => 0, 'InspectionStandardSizeParents.delete_flag' => 0])
+       ->order(["version"=>"DESC"])->toArray();
+  
+        $inspection_standard_size_parent_id = $InspectionStandardSizeParents[0]['id'];
+        $this->set('inspection_standard_size_parent_id', $inspection_standard_size_parent_id);
+  
+        $data_tuzukikara["inspection_standard_size_parent_id"] = $inspection_standard_size_parent_id;
+
+        $arrConditionids = array();
+        for($j=0; $j<count($InspectionDataResultParents); $j++){
+          $arrConditionids[] = $InspectionDataResultParents[$j]['inspection_data_conditon_parent_id'];
+        }
+        $arrConditionids = array_unique($arrConditionids);
+        $arrConditionids = array_values($arrConditionids);
+  
+        $count_seikeijouken = count($arrConditionids);
+  
+        $data_tuzukikara["count_seikeijouken"] = $count_seikeijouken;
+
+        $inspection_data_conditon_parent_id = $arrConditionids[$count_seikeijouken - 1];
+  
+        if($count_seikeijouken > 1){
+          $inspection_data_conditon_parent_id_moto = $arrConditionids[0];
+        }
+  
+        $data_tuzukikara["inspection_data_conditon_parent_id"] = $inspection_data_conditon_parent_id;
+
+        $gyou = count($InspectionDataResultParents);
+
+        $data_tuzukikara["gyou"] = $gyou;
+        $data_tuzukikara["tuika"] = 1;
+
+        $data_tuzukikara["mikan_check"] = $mikan_check;
+        $data_tuzukikara["date_sta"] = $date_sta;
+        $data_tuzukikara["date_fin"] = $date_fin;
+
+        $ProductMaterialMachines= $this->ProductMaterialMachines->find()
+        ->contain(['ProductConditionParents' => ["Products"]])
+        ->where(['Products.product_code like' => $product_code_ini.'%',
+        'ProductConditionParents.delete_flag' => 0,
+        'ProductMaterialMachines.delete_flag' => 0,
+        'ProductConditionParents.machine_num' => $machine_num,
+        'ProductConditionParents.version' => $version])
+        ->order(["cylinder_number"=>"ASC"])->toArray();
+  
+        for($k=0; $k<$countseikeiki; $k++){//基準値の呼び出し
+
+          $j = $k + 1;
+  
+          ${"product_material_machine_id".$j} = $ProductMaterialMachines[$k]["id"];
+          $this->set('product_material_machine_id'.$j, ${"product_material_machine_id".$j});
+          ${"cylinder_name".$j} = $ProductMaterialMachines[$k]["cylinder_name"];
+          $this->set('cylinder_name'.$j, ${"cylinder_name".$j});
+  
+          $ProductConditonChildren = $this->ProductConditonChildren->find()
+          ->where(['product_material_machine_id' => ${"product_material_machine_id".$j},
+           'cylinder_name' => ${"cylinder_name".$j}, 'delete_flag' => 0])
+          ->toArray();
+  
+          if(isset($ProductConditonChildren[0])){
+  
+            $data_tuzukikara["product_conditon_child_id".$j] = $ProductConditonChildren[0]["id"];
+  
+          }
+  
+        }
+  
+        for($j=0; $j<count($InspectionDataResultParents); $j++){
+
+          $n = $j + 1;
+  
+          $InspectionDataResultChildren = $this->InspectionDataResultChildren->find()
+          ->contain(['InspectionStandardSizeChildren'])
+          ->where(['inspection_data_result_parent_id' => $InspectionDataResultParents[$j]["id"],
+           'InspectionDataResultChildren.delete_flag' => 0])
+          ->toArray();
+  
+          ${"InspectionDataResultParent_id".$n} = $InspectionDataResultParents[$j]['id'];
+          $data_tuzukikara["InspectionDataResultParent_id".$n] = ${"InspectionDataResultParent_id".$n};
+          ${"lot_number".$n} = $InspectionDataResultParents[$j]['lot_number'];
+          $data_tuzukikara["lot_number".$n] = ${"lot_number".$n};
+          ${"datetime_h_i".$n} = $InspectionDataResultParents[$j]['datetime']->format('H:i');
+          $data_tuzukikara["datetime_h_i".$n] = ${"datetime_h_i".$n};
+  
+          $Users = $this->Users->find()
+          ->where(['staff_id' => $InspectionDataResultParents[$j]['staff_id'], 'delete_flag' => 0])->toArray();
+          ${"user_code".$n} = $Users[0]['user_code'];
+          $data_tuzukikara["user_code".$n] = ${"user_code".$n};
+  
+          for($i=1; $i<=11; $i++){
+  
+            $data_tuzukikara["result_size".$n."_".$i] = "";
+
+          }
+  
+          for($i=0; $i<count($InspectionDataResultChildren); $i++){
+  
+            $size_number = $InspectionDataResultChildren[$i]['inspection_standard_size_child']['size_number'];
+      
+            ${"result_size".$n.$size_number} = sprintf("%.1f", $InspectionDataResultChildren[$i]["result_size"]);
+            $data_tuzukikara["result_size".$n."_".$size_number] = ${"result_size".$n.$size_number};
+
+          }
+  
+          if($InspectionDataResultParents[$j]["loss_amount"] > 0){
+  
+            ${"loss".$n} = $n;
+            $data_tuzukikara["loss".$n] = ${"loss".$n};
+            ${"loss_check".$n} = 1;
+            $data_tuzukikara["loss_flag"] = ${"loss_check".$n};
+  
+          }
+
+          ${"product_id".$n} = $InspectionDataResultParents[$j]["product"]['id'];
+          $data_tuzukikara["product_id".$n] = ${"product_id".$n};
+          ${"gaikan".$n} = $InspectionDataResultParents[$j]['appearance'];
+          $data_tuzukikara["gaikan".$n] = ${"gaikan".$n};
+          ${"weight".$n} = sprintf("%.1f", $InspectionDataResultParents[$j]['result_weight']);
+          $data_tuzukikara["weight".$n] = ${"weight".$n};
+          ${"gouhi".$n} = $InspectionDataResultParents[$j]['judge'];
+          $data_tuzukikara["gouhi".$n] = ${"gouhi".$n};
+  
+        }
+  
+        $data_tuzukikara["tuzukikara"] = "続きから登録する";
+
+        if(!isset($_SESSION)){
+          session_start();
+          }
+          $session = $this->request->getSession();
+  
+          $_SESSION['tuzukikara'] = array();
+          $_SESSION['tuzukikara']["check"] = 1;
+          $_SESSION['tuzukikara']["data"] = $data_tuzukikara;
+
+          return $this->redirect(['action' => 'addform']);
+          
+          echo "<pre>";
+          print_r($data_tuzukikara);
+          echo "</pre>";
+    
+/*
       $check_num = 0;
 
       if(isset($getData["tuzukikara"])){//続きから登録を押したとき
@@ -8092,7 +8251,7 @@ class KensahyousokuteidatasController extends AppController
       echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
-
+*/
     }
 
 }

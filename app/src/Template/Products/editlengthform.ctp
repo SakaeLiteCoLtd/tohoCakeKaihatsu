@@ -24,10 +24,6 @@
 <?= $this->Form->control('tuikalength', array('type'=>'hidden', 'value'=>$tuikalength, 'label'=>false)) ?>
 <?= $this->Form->control('product_name_code', array('type'=>'hidden', 'value'=>$product_name_code, 'label'=>false)) ?>
 
-<?php
-//<nav class="large-3 medium-4 columns">
-?>
-
 <nav class="sample non-sample">
 
     <?= $this->Form->create($product) ?>
