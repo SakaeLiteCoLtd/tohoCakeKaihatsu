@@ -69,10 +69,15 @@ class MaterialsController extends AppController
         $mess = $Data["mess"];
         $this->set('mess',$mess);
       }else{
+        $data = $this->request->getData();
         $mess = "";
         $this->set('mess',$mess);
       }
-
+      /*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
       $Factories = $this->Factories->find()
       ->where(['delete_flag' => 0])->toArray();
       $arrFactories = array();
@@ -81,6 +86,15 @@ class MaterialsController extends AppController
       }
       $this->set('arrFactories', $arrFactories);
 
+      $MaterialSupplier_name_list = $this->MaterialSuppliers->find()
+      ->where(['delete_flag' => 0])->toArray();
+      $arrMaterialSuppliers_name_list = array();
+      for($j=0; $j<count($MaterialSupplier_name_list); $j++){
+        array_push($arrMaterialSuppliers_name_list,$MaterialSupplier_name_list[$j]["name"]);
+      }
+      $this->set('arrMaterialSuppliers_name_list', $arrMaterialSuppliers_name_list);
+
+/*
       $this->set('countFactories', count($Factories));
       for($i=0; $i<count($Factories); $i++){
 
@@ -98,8 +112,7 @@ class MaterialsController extends AppController
   
         $this->set('arrMaterials_name_list'.$i, ${"arrMaterials_name_list".$i});
       }
-
-      /*
+*/
       $Materials_name_list = $this->Materials->find()
       ->where(['delete_flag' => 0])->toArray();
       $arrMaterials_name_list = array();
@@ -109,7 +122,101 @@ class MaterialsController extends AppController
       $arrMaterials_name_list = array_unique($arrMaterials_name_list);
       $arrMaterials_name_list = array_values($arrMaterials_name_list);
       $this->set('arrMaterials_name_list', $arrMaterials_name_list);
-      */
+      
+      if(isset($data["materialSupplier"])){//顧客絞り込みをしたとき
+  
+        $Material_name_list = $this->Materials->find()
+        ->contain(['MaterialSuppliers'])
+        ->where(['MaterialSuppliers.name' => $data["materialSuppliername"], 'Materials.delete_flag' => 0])
+        ->toArray();
+  
+         if(count($Material_name_list) < 1){//顧客名にミスがある場合
+  
+           $mess = "入力された仕入先の仕入品は登録されていません。確認してください。";
+           $this->set('mess',$mess);
+  
+           $Material_name_list = $this->Materials->find()
+           ->where(['delete_flag' => 0])
+           ->toArray();
+ 
+           $Material_name_list = array();
+           for($j=0; $j<count($Material_name_list); $j++){
+             array_push($Material_name_list,$Material_name_list[$j]["name"]);
+           }
+           $this->set('arrMaterials_name_list', $arrMaterials_name_list);
+  
+         }else{
+  
+          $customer_check = 1;
+          $this->set('customer_check', $customer_check);
+    
+           $arrMaterials_name_list = array();
+           for($j=0; $j<count($Material_name_list); $j++){
+             array_push($arrMaterials_name_list,$Material_name_list[$j]["name"]);
+           }
+           $arrMaterials_name_list = array_unique($arrMaterials_name_list);
+           $arrMaterials_name_list = array_values($arrMaterials_name_list);
+           $this->set('arrMaterials_name_list', $arrMaterials_name_list);
+   
+         }
+  
+       }elseif(isset($data["next"])){//「次へ」ボタンを押したとき
+
+         if(strlen($data["namematerial"]) > 0){//product_nameの入力がある
+  
+          $name = $data["namematerial"];
+    
+          $Materials = $this->Materials->find()
+          ->where(['factory_id' => $data["factory_id"], 'name' => $name, 'delete_flag' => 0])
+          ->toArray();
+  
+           if(isset($Materials[0])){
+  
+             return $this->redirect(['action' => 'detail',
+             's' => ['factory_id' => $data["factory_id"], 'name' => $data["namematerial"]]]);
+  
+           }else{
+  
+             $mess = "入力された仕入品は登録されていません。工場名・仕入品名を確認してください。";
+             $this->set('mess',$mess);
+  
+              $Material_name_list = $this->Materials->find()
+              ->where(['delete_flag' => 0])->toArray();
+    
+             $arrMaterials_name_list = array();
+             for($j=0; $j<count($Material_name_list); $j++){
+               array_push($arrMaterials_name_list,$Material_name_list[$j]["name"]);
+             }
+             $this->set('arrMaterials_name_list', $arrMaterials_name_list);
+  
+           }
+  
+         }else{//product_nameの入力がない
+  
+           $mess = "仕入品名が入力されていません。";
+           $this->set('mess',$mess);
+  
+           $Material_name_list = $this->Materials->find()
+           ->where(['delete_flag' => 0])->toArray();
+ 
+           $arrMaterials_name_list = array();
+           for($j=0; $j<count($Material_name_list); $j++){
+             array_push($arrMaterials_name_list,$Material_name_list[$j]["name"]);
+           }
+           $this->set('arrMaterials_name_list', $arrMaterials_name_list);
+  
+         }
+  
+       }
+       if(!isset($_SESSION)){
+        session_start();
+      }
+      header('Expires:-1');
+      header('Cache-Control:');
+      header('Pragma:');
+  
+      print_r(" ");
+
     }
 
     public function detail($id = null)
@@ -142,22 +249,11 @@ class MaterialsController extends AppController
 
         return $this->redirect(['action' => 'deleteconfirm']);
 
-      }elseif(isset($data["kensaku"])){
+      }elseif(isset($this->request->query('s')["name"])){
   
-        $Materials = $this->Materials->find()->where(['name' => $data['name'], 'factory_id' => $data['factory_id']])->toArray();
-
-        if(!isset($Materials[0])){
-
-          $Factories = $this->Factories->find()
-          ->where(['id' => $data['factory_id']])->toArray();
-          $factory_name = $Factories[0]['name'];
-    
-          return $this->redirect(['action' => 'editpreform',
-          's' => ['mess' => "自社工場：".$factory_name."、原料名：「".$data['name']."」の仕入品は存在しません。"]]);
-  
-        }else{
-          $id = $Materials[0]["id"];
-        }
+        $data = $this->request->query('s');
+        $Materials = $this->Materials->find()->where(['name' => $data['name'], 'factory_id' => $data['factory_id'], 'delete_flag' => 0])->toArray();
+        $id = $Materials[0]["id"];
 
       }
       $this->set('id', $id);

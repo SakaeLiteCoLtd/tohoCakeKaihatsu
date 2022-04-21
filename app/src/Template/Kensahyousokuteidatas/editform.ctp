@@ -37,6 +37,8 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('datetimesta', array('type'=>'hidden', 'value'=>$datetimesta, 'label'=>false)) ?>
 <?= $this->Form->control('datetimefin', array('type'=>'hidden', 'value'=>$datetimefin, 'label'=>false)) ?>
 <?= $this->Form->control('machine_num', array('type'=>'hidden', 'value'=>$machine_num, 'label'=>false)) ?>
+<?= $this->Form->control('gyoumaxmoto', array('type'=>'hidden', 'value'=>$gyoumaxmoto, 'label'=>false)) ?>
+<?= $this->Form->control('gyoumax', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
 
 <table class="white">
 
@@ -108,22 +110,22 @@ echo $this->Html->css('kensahyou');
 
 </table>
 
+<?php for($j=$gyoumaxmoto + 1; $j<=$gyou; $j++): ?>
+  <?= $this->Form->control('loss_amount'.$j, array('type'=>'hidden', 'value'=>${"loss_amount".$j}, 'label'=>false)) ?>
+  <?= $this->Form->control('loss_bik'.$j, array('type'=>'hidden', 'value'=>${"loss_bik".$j}, 'label'=>false)) ?>
+<?php endfor;?>
 
 <?php for($j=1; $j<=$gyou; $j++): ?>
 
-  <?= $this->Form->control('gyoumax', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
-  <?= $this->Form->control('datekensaku', array('type'=>'hidden', 'value'=>$datekensaku, 'label'=>false)) ?>
-  <?= $this->Form->control('datekensaku', array('type'=>'hidden', 'value'=>$datekensaku, 'label'=>false)) ?>
   <?= $this->Form->control('inspection_data_conditon_parent_id'.$j, array('type'=>'hidden', 'value'=>${"inspection_data_conditon_parent_id".$j}, 'label'=>false)) ?>
   <?= $this->Form->control('inspection_standard_size_parent_id'.$j, array('type'=>'hidden', 'value'=>${"inspection_standard_size_parent_id".$j}, 'label'=>false)) ?>
   <?= $this->Form->control('product_condition_parent_id'.$j, array('type'=>'hidden', 'value'=>${"product_condition_parent_id".$j}, 'label'=>false)) ?>
+  <?= $this->Form->control('lossflag'.$j, array('type'=>'hidden', 'value'=>${"lossflag".$j}, 'label'=>false)) ?>
 
   <table class="form">
 
   <?php if ($j == 1): ?>
   <td style='width:40; border-top-style:none;'>S</td>
-  <?php elseif ($j == $gyou) : ?>
-    <td style='width:40; border-top-style:none;'>E</td>
   <?php else : ?>
     <td style='width:40; border-top-style:none;'><?= h($j-1) ?></td>
   <?php endif; ?>
@@ -131,9 +133,21 @@ echo $this->Html->css('kensahyou');
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
 
   <td style='width:96; border-top-style:none'><?= $this->Form->control('datetime'.$j, array('type'=>'time', 'value'=>${"datetime".$j}, 'label'=>false)) ?></td>
-  <td style='width:65; border-top-style:none'><?= h(${"length".$j}) ?></td>
-  <?= $this->Form->control('product_id'.$j, array('type'=>'hidden', 'value'=>${"product_id".$j}, 'label'=>false)) ?>
-  <?= $this->Form->control('length'.$j, array('type'=>'hidden', 'value'=>${"length".$j}, 'label'=>false)) ?>
+
+  <?php if ($j <= $gyoumaxmoto): ?>
+
+    <td style='width:65; border-top-style:none'><?= h(${"length".$j}) ?></td>
+    <?= $this->Form->control('product_id'.$j, array('type'=>'hidden', 'value'=>${"product_id".$j}, 'label'=>false)) ?>
+    <?= $this->Form->control('length'.$j, array('type'=>'hidden', 'value'=>${"length".$j}, 'label'=>false)) ?>
+
+  <?php else : ?>
+
+    <td style='width:65; border-top-style:none'>
+    <?= $this->Form->control('product_id'.$j, ['options' => $arrLength, 'value'=>${"product_id".$j}, 'label'=>false, 'autofocus'=>true]) ?>
+  </td>
+
+  <?php endif; ?>
+
 
   <td style='width:110; border-top-style:none'>
     <font size='1.8'><?= h("社員コード：") ?>
@@ -154,7 +168,6 @@ echo $this->Html->css('kensahyou');
 
   <td style='width:55; border-top-style:none'><?= $this->Form->control('appearance'.$j, ['options' => $arrGaikan, 'value'=>${"appearance".$j}, 'label'=>false]) ?></td>
   <td style='width:70; border-top-style:none'><?= $this->Form->control('result_weight'.$j, array('type'=>'text', 'value'=>${"result_weight".$j}, 'label'=>false, 'pattern' => '^[0-9.-]+$', 'title'=>'半角数字で入力して下さい。', 'required' => 'true')) ?></td>
-  <?= $this->Form->control('lossflag'.$j, array('type'=>'hidden', 'value'=>${"lossflag".$j}, 'label'=>false)) ?>
 
   <?php if (${"lossflag".$j} > 0)://異常登録されている場合 ?>
         <td style='width:45; border-top-style:none; background-color:gold'><?= $this->Form->submit(('異'), array('name' => $j)) ?></td>
@@ -173,6 +186,16 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('countlength', array('type'=>'hidden', 'value'=>count($arrProducts), 'label'=>false)) ?>
 
 <br>
+
+<table align="center">
+  <tbody class='sample non-sample'>
+    <tr>
+      <td style="border:none"><?= $this->Form->submit(('行追加'), array('name' => 'tuika')) ?></td>
+    </tr>
+  </tbody>
+</table>
+<br><br>
+
 <table>
   <tbody style="background-color: #FFFFCC">
     <tr>
@@ -255,6 +278,7 @@ echo $this->Html->css('kensahyou');
 <?= $this->Form->control('datekensaku', array('type'=>'hidden', 'value'=>$datekensaku, 'label'=>false)) ?>
 <?= $this->Form->control('datekensaku', array('type'=>'hidden', 'value'=>$datekensaku, 'label'=>false)) ?>
 <?= $this->Form->control('loss_touroku_num', array('type'=>'hidden', 'value'=>$check_num, 'label'=>false)) ?>
+<?= $this->Form->control('gyoumaxmoto', array('type'=>'hidden', 'value'=>$gyoumaxmoto, 'label'=>false)) ?>
 
 <?php for($j=1; $j<=$gyou; $j++): ?>
 
@@ -275,6 +299,11 @@ echo $this->Html->css('kensahyou');
   <?= $this->Form->control('result_size'.$j."_".$i, array('type'=>'hidden', 'value'=>${"result_size".$j."_".$i}, 'label'=>false)) ?>
 <?php endfor;?>
 
+<?php endfor;?>
+
+<?php for($j=$gyoumaxmoto + 1; $j<=$gyou; $j++): ?>
+  <?= $this->Form->control('loss_amount'.$j, array('type'=>'hidden', 'value'=>${"loss_amount".$j}, 'label'=>false)) ?>
+  <?= $this->Form->control('loss_bik'.$j, array('type'=>'hidden', 'value'=>${"loss_bik".$j}, 'label'=>false)) ?>
 <?php endfor;?>
 
 <?= $this->Form->control('countlength', array('type'=>'hidden', 'value'=>$countlength, 'label'=>false)) ?>

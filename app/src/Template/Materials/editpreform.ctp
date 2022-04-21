@@ -22,43 +22,33 @@
 
 
 <?php
-      for($i=0; $i<$countFactories; $i++){
-        ${"factory_id".$i} = json_encode(${"factory_id".$i});//jsに配列を受け渡すために変換
-        ${"arrMaterials_name_list".$i} = json_encode(${"arrMaterials_name_list".$i});//jsに配列を受け渡すために変換
-      }
+$arrMaterialSuppliers_name_list = json_encode($arrMaterialSuppliers_name_list);//jsに配列を受け渡すために変換
+$arrMaterials_name_list = json_encode($arrMaterials_name_list);//jsに配列を受け渡すために変換
 ?>
-
-<?php for($i=0; $i<$countFactories; $i++): ?>
 
 <script>
 
-$(document).ready(function() {
-      $("#auto1").focusout(function() {
-        var inputNumber = $("#auto1").val();
+$(function() {
+      // 入力補完候補の単語リスト
+      let wordlist = <?php echo $arrMaterialSuppliers_name_list; ?>
+      // 入力補完を実施する要素に単語リストを設定
+      $("#materialSuppliers_name_list").autocomplete({
+        source: wordlist
+      });
+  });
 
-          if (inputNumber == <?php echo ${"factory_id".$i}; ?>) {
-     //       $("#auto2").text(inputNumber);
-
-            $(function() {
-                // 入力補完候補の単語リスト
-                let wordlist = <?php echo ${"arrMaterials_name_list".$i}; ?>
-                // 入力補完を実施する要素に単語リストを設定
-                $("#Materials_name_list").autocomplete({
-                  source: wordlist
-                });
-            });
-            
-          }
-
-    })
-});
+  $(function() {
+      // 入力補完候補の単語リスト
+      let wordlist = <?php echo $arrMaterials_name_list; ?>
+      // 入力補完を実施する要素に単語リストを設定
+      $("#Materials_name_list").autocomplete({
+        source: wordlist
+      });
+  });
 
 </script>
 
-<?php endfor;?>
-
-
-<?= $this->Form->create($materials, ['url' => ['action' => 'detail']]) ?>
+<?= $this->Form->create($materials, ['url' => ['action' => 'editpreform']]) ?>
 <br><br><br>
 
 <nav class="sample non-sample">
@@ -85,11 +75,16 @@ $(document).ready(function() {
       </table>
       <table>
       <tr>
+      <td width="400" colspan=2><strong>仕入先名</strong></td>
         <td width="320"><strong>仕入品名</strong></td>
       </tr>
       <tr>
+      <td style="border-right-style:none">
+        <?= $this->Form->control('materialSuppliername', array('type'=>'text', 'label'=>false, 'id'=>"materialSuppliers_name_list")) ?>
+      </td>
+      <td style="border-left-style:none"><?= $this->Form->submit(('仕入先絞込'), array('name' => 'materialSupplier')) ?></td>
         <td>
-        <?= $this->Form->control('name', array('type'=>'text', 'label'=>false, 'size'=>30, 'id'=>"Materials_name_list")) ?>
+        <?= $this->Form->control('namematerial', array('type'=>'text', 'label'=>false, 'size'=>30, 'id'=>"Materials_name_list")) ?>
         </td>
       </tr>
     </table>
@@ -101,7 +96,7 @@ $(document).ready(function() {
         <tr>
         <td style="border-style: none;"><div><?= $this->Form->submit('戻る', ['onclick' => 'history.back()', 'type' => 'button']); ?></div></td>
           <td style="border-style: none;"><?= __("　") ?></td>
-          <td style="border-style: none;"><div><?= $this->Form->submit('次へ', array('name' => 'kensaku')); ?></div></td>
+          <td style="border:none"><?= $this->Form->submit(('次へ'), array('name' => 'next')) ?></td>
        </tr>
       </tbody>
     </table>

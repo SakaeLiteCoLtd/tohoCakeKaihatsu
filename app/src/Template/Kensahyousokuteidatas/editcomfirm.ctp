@@ -119,6 +119,11 @@ $mes = "";
   $lot_hyouji = 0;
   ?>
 
+<?php for($j=$gyoumaxmoto + 1; $j<=$gyou; $j++): ?>
+  <?= $this->Form->control('loss_amount'.$j, array('type'=>'hidden', 'value'=>${"loss_amount".$j}, 'label'=>false)) ?>
+  <?= $this->Form->control('loss_bik'.$j, array('type'=>'hidden', 'value'=>${"loss_bik".$j}, 'label'=>false)) ?>
+<?php endfor;?>
+
 <?php for($j=1; $j<=$gyou; $j++): ?>
 
   <table class="form">
@@ -209,6 +214,7 @@ $mes = "";
 <?php endfor;?>
 
 <?= $this->Form->control('gyou', array('type'=>'hidden', 'value'=>$gyou, 'label'=>false)) ?>
+<?= $this->Form->control('gyoumaxmoto', array('type'=>'hidden', 'value'=>$gyoumaxmoto, 'label'=>false)) ?>
 
 <?php if ($delete_flag < 1): ?>
 
