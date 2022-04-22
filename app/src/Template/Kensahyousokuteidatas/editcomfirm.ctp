@@ -128,7 +128,19 @@ $mes = "";
 
   <table class="form">
 
-<?php if ($j == 1): ?>
+  <?php if (${"gouhihyouji".$j} === "否"): ?>
+
+    <?php if ($j == 1): ?>
+    <td style='width:43; border-top-style:none; background-color:red''>S</td>
+<?php elseif ($j == $gyou): ?>
+    <td style='width:43; border-top-style:none; background-color:red''>E</td>
+<?php else : ?>
+  <td style='width:43; border-top-style:none; background-color:red''><?= h($lot_hyouji) ?></td>
+<?php endif; ?>
+
+<?php else : ?>
+
+  <?php if ($j == 1): ?>
     <td style='width:43; border-top-style:none'>S</td>
 <?php elseif ($j == $gyou): ?>
     <td style='width:43; border-top-style:none'>E</td>
@@ -136,12 +148,25 @@ $mes = "";
   <td style='width:43; border-top-style:none'><?= h($lot_hyouji) ?></td>
 <?php endif; ?>
 
+<?php endif; ?>
+
+
 <?php
   $lot_hyouji = $lot_hyouji + 1;
   ?>
 
   <?= $this->Form->control('lot_number'.$j, array('type'=>'hidden', 'value'=>${"lot_number".$j}, 'label'=>false)) ?>
+
+  <?php if (${"gouhihyouji".$j} === "否"): ?>
+
+<td style='width:65; border-top-style:none; background-color:red'><?= h(${"datetime".$j}) ?></td></td>
+
+<?php else : ?>
+
   <td style='width:65; border-top-style:none'><?= h(${"datetime".$j}) ?></td></td>
+
+<?php endif; ?>
+
   <td style='width:65; border-top-style:none'><?= h(${"lengthhyouji".$j}) ?></td>
   <td style='width:110; border-top-style:none'><?= h(${"staff_hyouji".$j}) ?></td>
 
@@ -198,7 +223,17 @@ $mes = "";
 
 <td style='width:65; border-top-style:none'><?= h(${"gaikanhyouji".$j}) ?></td>
   <td style='width:65; border-top-style:none'><?= h(${"result_weight".$j}) ?></td>
+
+  <?php if (${"gouhihyouji".$j} === "否"): ?>
+
+    <td style='width:45; border-top-style:none'><font color="red"><?= h(${"gouhihyouji".$j}) ?></td>
+
+<?php else : ?>
+
   <td style='width:45; border-top-style:none'><?= h(${"gouhihyouji".$j}) ?></td>
+
+<?php endif; ?>
+
 
   <?= $this->Form->control('inspection_data_conditon_parent_id'.$j, array('type'=>'hidden', 'value'=>${"inspection_data_conditon_parent_id".$j}, 'label'=>false)) ?>
   <?= $this->Form->control('inspection_standard_size_parent_id'.$j, array('type'=>'hidden', 'value'=>${"inspection_standard_size_parent_id".$j}, 'label'=>false)) ?>

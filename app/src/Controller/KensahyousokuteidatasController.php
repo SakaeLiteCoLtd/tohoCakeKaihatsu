@@ -6099,8 +6099,6 @@ class KensahyousokuteidatasController extends AppController
 
         $data = $_SESSION['editformdata']["data"];
   //      $_SESSION['editformdata'] = array();
-
-     // $data = $this->request->getData();
 /*
       echo "<pre>";
       print_r($data);
@@ -6270,9 +6268,9 @@ class KensahyousokuteidatasController extends AppController
 
           if(isset($data['loss_amount'.$n])){
             ${"loss_amount".$n} = $data['loss_amount'.$n];
-            $this->set('loss_amount'.$n,${"loss_amount".$n});
+            $this->set('loss_amount'.$m,${"loss_amount".$n});
             ${"loss_bik".$n} = $data['loss_bik'.$n];
-            $this->set('loss_bik'.$n,${"loss_bik".$n});
+            $this->set('loss_bik'.$m,${"loss_bik".$n});
           }
           
           ${"user_code".$n} = $data['user_code'.$n];
@@ -6367,6 +6365,11 @@ class KensahyousokuteidatasController extends AppController
           ${"lot_number".$lot_number_m} = $data['lot_number'.$n];
           $this->set('lot_number'.$lot_number_m,${"lot_number".$lot_number_m});
 
+          if($j <= $gyoumaxmoto){
+            $gyoumaxmoto = $gyoumaxmoto - 1;
+            $this->set('gyoumaxmoto', $gyoumaxmoto);
+          }
+    
         }
 
         if($gouhi_check > 0){
@@ -6406,6 +6409,7 @@ class KensahyousokuteidatasController extends AppController
       for($j=0; $j<$data["countlength"]; $j++){
 
         ${"length".$j} = $DailyReportsData[$j]["product"]["length"];
+        ${"product_id".$j} = $DailyReportsData[$j]["product_id"];
         $this->set('length'.$j,${"length".$j});
         ${"amount".$j} = $data['amount'.$j];
         $this->set('amount'.$j,${"amount".$j});
@@ -6425,6 +6429,7 @@ class KensahyousokuteidatasController extends AppController
             $total_weight = $total_weight + $data["result_weight".$k];
             $total_weight_count = $total_weight_count + 1;
           }
+
         }
 
         $weight_ave = $total_weight/($total_weight_count * 1000);
@@ -6439,11 +6444,21 @@ class KensahyousokuteidatasController extends AppController
         'InspectionDataResultParents.delete_flag' => 0,
         'datetime >=' => $data["datetimesta"], 'datetime <=' => $data["datetimefin"]])
         ->order(["InspectionDataResultParents.datetime"=>"ASC"])->toArray();
-    
+  
         $total_loss_weight = 0;
         for($k=0; $k<count($InspectionDataResultParentDatas); $k++){
-          $total_loss_weight = $total_loss_weight + $InspectionDataResultParentDatas[$k]["loss_amount"];
+          $k1 = $k + 1;
+          if($data["delete_sokutei".$k1] == 0){
+            $total_loss_weight = $total_loss_weight + $InspectionDataResultParentDatas[$k]["loss_amount"];
+          }
         }
+
+        for($k=$gyoumaxmoto + 1; $k<=$gyoumax; $k++){
+          if($data["product_id".$k] == ${"product_id".$j} && isset(${"loss_amount".$k})){
+            $total_loss_weight = $total_loss_weight + ${"loss_amount".$k};
+          }
+        }
+
         ${"total_loss_weight".$j} = $total_loss_weight;
         ${"total_loss_weight".$j} = sprintf("%.1f", ${"total_loss_weight".$j});
         $this->set('total_loss_weight'.$j, ${"total_loss_weight".$j});
@@ -6788,11 +6803,7 @@ class KensahyousokuteidatasController extends AppController
             ];
   
         }
-/*
-        echo "<pre>";
-        print_r($updateDailyreport);
-        echo "</pre>";
-  */
+
         for($j=1; $j<=$gyoumaxmoto; $j++){
 
           $InspectionDataResultParentsmoto = $this->InspectionDataResultParents->find()->contain(['ProductConditionParents',"Products"])
@@ -6800,6 +6811,8 @@ class KensahyousokuteidatasController extends AppController
           , 'lot_number' => $data['lot_number'.$j], 'datetime >=' => $data["datetimesta"], 'datetime <=' => $data["datetimefin"]
           ])->order(["InspectionDataResultParents.id"=>"DESC"])->toArray();
   
+          if(isset($InspectionDataResultParentsmoto[0])){
+
           ${"user_code".$j} = $data['user_code'.$j];
           $Users = $this->Users->find()->contain(["Staffs"])->where(['user_code' => ${"user_code".$j}, 'Users.delete_flag' => 0])->toArray();
 
@@ -6881,12 +6894,12 @@ class KensahyousokuteidatasController extends AppController
 
               $InspectionDataResultParents = $this->InspectionDataResultParents->patchEntity($this->InspectionDataResultParents->newEntity(), $updateInspectionDataResultParents);
               if ($this->InspectionDataResultParents->save($InspectionDataResultParents)) {
-
+      
                 $datekensaku = $data['datekensaku'];
         
                 $InspectionDataResultParentsId = $this->InspectionDataResultParents->find()->contain(['ProductConditionParents','Products'])
                 ->where(['InspectionDataResultParents.delete_flag' => 0, 'machine_num' => $machine_num, 'product_code like' => $product_code_ini.'%', 
-                'datetime >=' => $datetimesta, 'datetime <' => $datetimefin, 'lot_number' => $data['lot_number'.$j]])
+                'datetime' => $datetime, 'lot_number' => $data['lot_number'.$j]])
                 ->order(["InspectionDataResultParents.updated_at"=>"DESC"])->toArray();
 
                 $tourokuInspectionDataResultChildren = array();
@@ -6948,6 +6961,8 @@ class KensahyousokuteidatasController extends AppController
 
         }
 
+        }
+
         if($gyou > $gyoumaxmoto){
 
             for($j=$gyoumaxmoto + 1; $j<=$gyou; $j++){
@@ -6965,6 +6980,7 @@ class KensahyousokuteidatasController extends AppController
 
               $tourokuInspectionDataResultParents = array();
               $tourokuInspectionDataResultParents = [
+                "daily_report_id" => $DailyReportsData[0]['id'],
                 "inspection_data_conditon_parent_id" => $data['inspection_data_conditon_parent_id'.$j],
                 "inspection_standard_size_parent_id" => $data['inspection_standard_size_parent_id'.$j],
                 "product_condition_parent_id" => $data['product_condition_parent_id'.$j],
@@ -6975,11 +6991,14 @@ class KensahyousokuteidatasController extends AppController
                 'appearance' => $data['appearance'.$j],
                 'result_weight' => $data['result_weight'.$j],
                 'judge' => $data['judge'.$j],
+                'kanryou_flag' => 1,
+                'loss_amount' => $data['loss_amount'.$j],
+                'bik' => $data['loss_bik'.$j],
                 "delete_flag" => 0,
                 'created_at' => date("Y-m-d H:i:s"),
                 "created_staff" => $staff_id
               ];
-
+  
             $InspectionDataResultParents = $this->InspectionDataResultParents
             ->patchEntity($this->InspectionDataResultParents->newEntity(), $tourokuInspectionDataResultParents);
             $connection = ConnectionManager::get('default');//トランザクション1
