@@ -160,7 +160,7 @@ class RelayLogsController extends AppController
       $arrRelayLogs = $kadouprograms->yobidashirelaylogs($machine_sta_fin);
       $this->set('arrRelayLogs', $arrRelayLogs);
   
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
   

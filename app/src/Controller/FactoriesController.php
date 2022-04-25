@@ -80,11 +80,7 @@ class FactoriesController extends AppController
 
       $Factories = $this->Factories->find()->contain(["Companies", "Staffs"])
       ->where(['Factories.id' => $id])->toArray();
-/*
-      echo "<pre>";
-      print_r($Products);
-      echo "</pre>";
-*/
+
       $Company_name = $Factories[0]["company"]['name'];
       $this->set('Company_name', $Company_name);
       $staff_name = $Factories[0]["staff"]['name'];
@@ -175,11 +171,7 @@ class FactoriesController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrtourokufactory);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $Factories = $this->Factories->patchEntity($this->Factories->newEntity(), $arrtourokufactory);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -288,11 +280,7 @@ class FactoriesController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrupdateFactories);
-      echo "</pre>";
-*/
+
       $Factories = $this->Factories->patchEntity($this->Factories->newEntity(), $arrupdateFactories);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -357,11 +345,7 @@ class FactoriesController extends AppController
       $arrdeleteFactories = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeletecompany);
-      echo "</pre>";
-*/
+
       $Factories = $this->Factories->patchEntity($this->Factories->newEntity(), $arrdeleteFactories);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2

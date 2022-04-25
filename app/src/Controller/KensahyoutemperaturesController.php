@@ -210,7 +210,8 @@ class KensahyoutemperaturesController extends AppController
        }
 
      }
-     echo "<pre>";
+     
+     echo "<pre>";//フォームの再読み込みの防止
      print_r("");
      echo "</pre>";
 
@@ -235,12 +236,7 @@ class KensahyoutemperaturesController extends AppController
       'ProductConditionParents.is_active' => 0,
       'ProductConditionParents.delete_flag' => 0])
       ->order(["machine_num"=>"ASC"])->toArray();
-/*
-      echo "<pre>";
-      print_r("data");
-      print_r($data);
-      echo "</pre>";
-*/
+
       $arrGouki = array();
       for($k=0; $k<count($ProductConditionParents); $k++){
         $array = array($ProductConditionParents[$k]["machine_num"] => $ProductConditionParents[$k]["machine_num"]);
@@ -439,7 +435,7 @@ class KensahyoutemperaturesController extends AppController
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
 
@@ -451,11 +447,7 @@ class KensahyoutemperaturesController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
@@ -523,11 +515,7 @@ class KensahyoutemperaturesController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
@@ -614,11 +602,7 @@ class KensahyoutemperaturesController extends AppController
         ];
 
       }
-/*
-      echo "<pre>";
-      print_r($tourokuProductConditonChildren);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $ProductConditonChildren = $this->ProductConditonChildren->patchEntities($this->ProductConditonChildren->newEntity(), $tourokuProductConditonChildren);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -716,7 +700,6 @@ class KensahyoutemperaturesController extends AppController
   
          $arrProduct_names = array();
          for($j=0; $j<count($Product_name_list); $j++){
-   //       array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          $arrProduct_names[$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm"] = $Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm";
         }
          $this->set('arrProduct_names', $arrProduct_names);
@@ -788,7 +771,7 @@ class KensahyoutemperaturesController extends AppController
 
      }
 
-     echo "<pre>";
+     echo "<pre>";//フォームの再読み込みの防止
      print_r("");
      echo "</pre>";
 
@@ -811,12 +794,7 @@ class KensahyoutemperaturesController extends AppController
       'ProductConditionParents.is_active' => 0,
       'ProductConditionParents.delete_flag' => 0])
       ->order(["machine_num"=>"ASC"])->toArray();
-/*
-      echo "<pre>";
-      print_r("data");
-      print_r($data);
-      echo "</pre>";
-*/
+
       $arrGouki = array();
       for($k=0; $k<count($ProductConditionParents); $k++){
         $array = array($ProductConditionParents[$k]["machine_num"] => $ProductConditionParents[$k]["machine_num"]);
@@ -963,7 +941,7 @@ class KensahyoutemperaturesController extends AppController
       $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheader($product_code_machine_num);
       $this->set('htmlgenryouheader',$htmlgenryouheader);
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
 
@@ -988,7 +966,7 @@ class KensahyoutemperaturesController extends AppController
         $this->set('mess',$mess);
       }
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
 
@@ -1147,7 +1125,7 @@ class KensahyoutemperaturesController extends AppController
       $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheader($product_code_machine_num);
       $this->set('htmlgenryouheader',$htmlgenryouheader);
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
 
@@ -1339,12 +1317,8 @@ class KensahyoutemperaturesController extends AppController
         ];
 
       }
-/*
-      echo "<pre>";
-      print_r($updateProductConditonChildren);
-      echo "</pre>";
-*/
-          if($data["check"] < 1){//削除ではない場合
+
+      if($data["check"] < 1){//削除ではない場合
 
             $ProductConditonChildren = $this->ProductConditonChildren->patchEntities($this->ProductConditonChildren->newEntity(), $updateProductConditonChildren);
             $connection = ConnectionManager::get('default');//トランザクション1
@@ -1480,7 +1454,6 @@ class KensahyoutemperaturesController extends AppController
   
          $arrProduct_names = array();
          for($j=0; $j<count($Product_name_list); $j++){
-   //       array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          $arrProduct_names[$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm"] = $Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm";
         }
          $this->set('arrProduct_names', $arrProduct_names);
@@ -1552,7 +1525,7 @@ class KensahyoutemperaturesController extends AppController
 
      }
 
-     echo "<pre>";
+     echo "<pre>";//フォームの再読み込みの防止
      print_r("");
      echo "</pre>";
 
@@ -1575,12 +1548,7 @@ class KensahyoutemperaturesController extends AppController
       'ProductConditionParents.is_active' => 0,
       'ProductConditionParents.delete_flag' => 0])
       ->order(["machine_num"=>"ASC"])->toArray();
-/*
-      echo "<pre>";
-      print_r("data");
-      print_r($data);
-      echo "</pre>";
-*/
+
       $arrGouki = array();
       for($k=0; $k<count($ProductConditionParents); $k++){
         $array = array($ProductConditionParents[$k]["machine_num"] => $ProductConditionParents[$k]["machine_num"]);
@@ -1726,11 +1694,7 @@ class KensahyoutemperaturesController extends AppController
 
       }
       $arrDates = array_values($arrDates);
-/*
-      echo "<pre>";
-      print_r($arrDates);
-      echo "</pre>";
-*/
+
       $this->set('arrDates',$arrDates);
 
       $mes = '＊最新の上位３つのデータです。';
@@ -1770,11 +1734,7 @@ class KensahyoutemperaturesController extends AppController
   
         }
         $arrDates = array_values($arrDates);
-  /*
-        echo "<pre>";
-        print_r($arrDates);
-        echo "</pre>";
-  */
+
         $this->set('arrDates',$arrDates);
   
         $mes = "検索期間： ".$startY."-".$startM."-".$startD .' ～ '.$endY."-".$endM."-".$endD;
@@ -1785,7 +1745,7 @@ class KensahyoutemperaturesController extends AppController
 
       }
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
 
@@ -1810,11 +1770,7 @@ class KensahyoutemperaturesController extends AppController
       $ProductConditonChildren = $this->ProductConditonChildren->find()
       ->where(['created_at' => $created_at])
       ->order(["cylinder_number"=>"ASC"])->toArray();
-/*
-      echo "<pre>";
-      print_r($ProductConditonChildren);
-      echo "</pre>";
-*/
+
       $countseikeiki = count($ProductConditonChildren);
       $this->set('countseikeiki', $countseikeiki);
 
@@ -1862,7 +1818,7 @@ class KensahyoutemperaturesController extends AppController
       $htmlgenryouheader = $htmlkensahyougenryouheader->genryouheaderrireki($arrcreated_at_machine_num);
       $this->set('htmlgenryouheader',$htmlgenryouheader);
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
 

@@ -202,11 +202,7 @@ class PositionsController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrtourokuposition);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $Positions = $this->Positions->patchEntity($this->Positions->newEntity(), $arrtourokuposition);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -280,11 +276,7 @@ class PositionsController extends AppController
         'updated_at' => date("Y-m-d H:i:s"),
         'updated_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrupdateposition);
-      echo "</pre>";
-*/
+
       $Positions = $this->Positions->patchEntity($this->Positions->newEntity(), $arrupdateposition);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -349,11 +341,7 @@ class PositionsController extends AppController
       $arrdeleteposition = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeletecompany);
-      echo "</pre>";
-*/
+
       $Occupations = $this->Positions->patchEntity($this->Positions->newEntity(), $arrdeleteposition);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2

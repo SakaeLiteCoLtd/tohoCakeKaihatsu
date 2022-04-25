@@ -155,7 +155,7 @@ class AccountsController extends AppController
       header('Cache-Control:');
       header('Pragma:');
   
-      print_r(" ");
+      print_r(" ");//フォームの再読み込みの防止
 
     }
 
@@ -165,11 +165,7 @@ class AccountsController extends AppController
       $this->set('customer', $customer);
 
       $data = $this->request->getData();
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $CustomerData = $this->Customers->find()
       ->where(['id' => $data["id"]])->toArray();
 
@@ -212,11 +208,7 @@ class AccountsController extends AppController
       $this->set('customer', $customer);
 
       $data = $this->request->getData();
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $session = $this->request->getSession();
       $datasession = $session->read();
 
@@ -269,14 +261,7 @@ class AccountsController extends AppController
         'updated_at' => date("Y-m-d H:i:s"),
         'updated_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrCustomermoto);
-      echo "</pre>";
-      echo "<pre>";
-      print_r($arrMaterialSuppliermoto);
-      echo "</pre>";
-*/
+
       $Customers = $this->Customers->patchEntity($this->Customers->newEntity(), $data);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -320,58 +305,12 @@ class AccountsController extends AppController
      }//トランザクション10
 
     }
-/*
-    public function productcodeselect()
-    {
-      $product = $this->Products->newEntity();
-      $this->set('product', $product);
 
-      $Data=$this->request->query('s');
-      if(isset($Data["mess"])){
-        $mess = $Data["mess"];
-        $this->set('mess',$mess);
-      }else{
-        $mess = "";
-        $this->set('mess',$mess);
-      }
-
-      $Factories = $this->Factories->find()
-      ->where(['delete_flag' => 0])->toArray();
-      $arrFactories = array();
-      foreach ($Factories as $value) {
-        $arrFactories[] = array($value->id=>$value->name);
-      }
-      $this->set('arrFactories', $arrFactories);
-
-      $this->set('countFactories', count($Factories));
-      for($i=0; $i<count($Factories); $i++){
-
-        $this->set('factory_id'.$i, $Factories[$i]["id"]);
-
-        ${"Product_name_list".$i} = $this->Products->find()
-        ->where(['factory_id' => $Factories[$i]["id"], 'delete_flag' => 0])->toArray();
-  
-        ${"arrProduct_name_list".$i} = array();
-        for($j=0; $j<count(${"Product_name_list".$i}); $j++){
-          array_push(${"arrProduct_name_list".$i},${"Product_name_list".$i}[$j]["name"].";".${"Product_name_list".$i}[$j]["length"]."mm");
-        }
-        ${"arrProduct_name_list".$i} = array_unique(${"arrProduct_name_list".$i});
-        ${"arrProduct_name_list".$i} = array_values(${"arrProduct_name_list".$i});
-  
-        $this->set('arrProduct_name_list'.$i, ${"arrProduct_name_list".$i});
-      }
-    }
-  */
     public function productcodeeditform()
     {
       $product = $this->Products->newEntity();
       $this->set('product', $product);
 
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
       $Data=$this->request->query('s');
       if(isset($Data["mess"])){
 
@@ -445,7 +384,7 @@ class AccountsController extends AppController
       header('Cache-Control:');
       header('Pragma:');
   
-      print_r(" ");
+      print_r(" ");//フォームの再読み込みの防止
 
     }
 
@@ -455,11 +394,7 @@ class AccountsController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $ProductsData = $this->Products->find()
       ->where(['id' => $data["id"]])->toArray();
 
@@ -531,11 +466,7 @@ class AccountsController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $this->set('product_code', $data["product_code"]);
 
       $ProductsData = $this->Products->find()
@@ -794,11 +725,7 @@ class AccountsController extends AppController
       $this->set('product', $product);
       
       $data = $this->request->getData();
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $Factories = $this->Factories->find()
       ->where(['id' => $data['factory_id']])->toArray();
       $factory_name = $Factories[0]['name'];
@@ -989,11 +916,7 @@ class AccountsController extends AppController
       $this->set('product', $product);
       
       $data = $this->request->getData();
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $Factories = $this->Factories->find()
       ->where(['id' => $data['factory_id']])->toArray();
       $factory_name = $Factories[0]['name'];

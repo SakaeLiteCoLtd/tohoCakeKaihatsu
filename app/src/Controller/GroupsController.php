@@ -54,12 +54,8 @@ class GroupsController extends AppController
         $GroupNames = $this->GroupNames->find()
         ->where(['delete_flag' => 0])->toArray();
         $this->set('GroupNames', $GroupNames);
-/*
-        echo "<pre>";
-        print_r($GroupNames);
-        echo "</pre>";
-  */
-    }
+
+      }
 
     public function detail($id = null)
     {
@@ -96,11 +92,7 @@ class GroupsController extends AppController
 
       }
       $this->set('arrGroups', $arrGroups);
-/*
-      echo "<pre>";
-      print_r($arrGroups);
-      echo "</pre>";
-*/
+
     }
 
     public function view($id = null)
@@ -197,11 +189,6 @@ class GroupsController extends AppController
 
       $this->set('arraycheck', $arraycheck);
 
-/*
-      echo "<pre>";
-      print_r($arraycheck);
-      echo "</pre>";
-*/
     }
 
     public function adddo元()
@@ -363,11 +350,7 @@ class GroupsController extends AppController
       $arrdeletegroups = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($data["id"]);
-      echo "</pre>";
-*/
+
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
        $connection->begin();//トランザクション3

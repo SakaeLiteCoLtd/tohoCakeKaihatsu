@@ -135,7 +135,7 @@ class MaterialTypesController extends AppController
       header('Cache-Control:');
       header('Pragma:');
 
-      print_r(" ");
+      print_r(" ");//フォームの再読み込みの防止
 
     }
 
@@ -246,11 +246,7 @@ class MaterialTypesController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrtourokumaterialType);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $MaterialTypes = $this->MaterialTypes->patchEntity($this->MaterialTypes->newEntity(), $arrtourokumaterialType);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -341,11 +337,7 @@ class MaterialTypesController extends AppController
         'updated_at' => date("Y-m-d H:i:s"),
         'updated_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrupdatematerialType);
-      echo "</pre>";
-*/
+
       $MaterialTypes = $this->MaterialTypes->patchEntity($this->MaterialTypes->newEntity(), $arrupdatematerialType);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -411,11 +403,7 @@ class MaterialTypesController extends AppController
       $arrdeletematerialType = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeletematerialType);
-      echo "</pre>";
-*/
+
       $MaterialTypes = $this->MaterialTypes->patchEntity($this->MaterialTypes->newEntity(), $arrdeletematerialType);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2

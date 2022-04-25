@@ -201,11 +201,7 @@ class DepartmentsController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrtourokudepartment);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $Departments = $this->Departments->patchEntity($this->Departments->newEntity(), $arrtourokudepartment);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -279,11 +275,7 @@ class DepartmentsController extends AppController
         'updated_at' => date("Y-m-d H:i:s"),
         'updated_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrupdatedepartment);
-      echo "</pre>";
-*/
+
       $Departments = $this->Departments->patchEntity($this->Departments->newEntity(), $arrupdatedepartment);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -348,11 +340,7 @@ class DepartmentsController extends AppController
       $arrdeletedepartment = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeletecompany);
-      echo "</pre>";
-*/
+
       $Departments = $this->Departments->patchEntity($this->Departments->newEntity(), $arrdeletedepartment);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2

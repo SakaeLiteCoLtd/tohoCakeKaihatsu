@@ -323,7 +323,7 @@ class KensahyoukikakusController extends AppController
 
      }
      
-     echo "<pre>";
+     echo "<pre>";//フォームの再読み込みの防止
      print_r("");
      echo "</pre>";
 
@@ -369,7 +369,9 @@ class KensahyoukikakusController extends AppController
       header('Cache-Control:');
       header('Pragma:');
   
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
+      echo "</pre>";
     }
 
     public function addimagecomfirm()
@@ -565,7 +567,7 @@ class KensahyoukikakusController extends AppController
       header('Cache-Control:');
       header('Pragma:');
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
       
@@ -644,7 +646,7 @@ class KensahyoukikakusController extends AppController
       header('Cache-Control:');
       header('Pragma:');
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
       
@@ -1068,7 +1070,7 @@ class KensahyoukikakusController extends AppController
 
      }
 
-     echo "<pre>";
+     echo "<pre>";//フォームの再読み込みの防止
      print_r("");
      echo "</pre>";
 
@@ -1204,7 +1206,7 @@ class KensahyoukikakusController extends AppController
 
       }
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
  
@@ -1244,7 +1246,7 @@ class KensahyoukikakusController extends AppController
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
     	$this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
  
@@ -1277,7 +1279,7 @@ class KensahyoukikakusController extends AppController
       $product_name = $ProductNs[0]["name"];
       $this->set('product_name',$product_name);
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
  
@@ -1427,7 +1429,7 @@ class KensahyoukikakusController extends AppController
         $this->set('mess',$mess);
       }
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
  
@@ -1588,7 +1590,7 @@ class KensahyoukikakusController extends AppController
 
         $this->set('InspectionStandardSizeChildren', $InspectionStandardSizeChildren);
 
-        echo "<pre>";
+        echo "<pre>";//フォームの再読み込みの防止
         print_r("");
         echo "</pre>";
    
@@ -1728,7 +1730,7 @@ class KensahyoukikakusController extends AppController
           $this->set('inputtype'.$i,${"inputtype".$i});
         }
 
-        echo "<pre>";
+        echo "<pre>";//フォームの再読み込みの防止
         print_r("");
         echo "</pre>";
    
@@ -1740,11 +1742,7 @@ class KensahyoukikakusController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
@@ -1838,11 +1836,7 @@ class KensahyoukikakusController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];

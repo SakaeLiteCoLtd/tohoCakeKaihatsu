@@ -19,8 +19,8 @@
 
 <?= $this->Form->create($product, ['url' => ['action' => 'editlengthform']]) ?>
 <br><br><br>
-<?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$this->request->getData('factory_id'), 'label'=>false)) ?>
-<?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$this->request->getData('name'), 'label'=>false)) ?>
+<?= $this->Form->control('factory_id', array('type'=>'hidden', 'value'=>$factory_id, 'label'=>false)) ?>
+<?= $this->Form->control('name', array('type'=>'hidden', 'value'=>$product_name_code, 'label'=>false)) ?>
 <?= $this->Form->control('tuikalength', array('type'=>'hidden', 'value'=>$tuikalength, 'label'=>false)) ?>
 <?= $this->Form->control('product_name_code', array('type'=>'hidden', 'value'=>$product_name_code, 'label'=>false)) ?>
 

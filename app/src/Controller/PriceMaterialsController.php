@@ -27,20 +27,6 @@ class PriceMaterialsController extends AppController
 
      }
 
-     if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
-/*
-       $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "単価関係", 'Groups.delete_flag' => 0])
-       ->toArray();
-
-       if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
-
-         return $this->redirect($this->Auth->logout());
-
-       }
-*/
-     }
-
     }
 
     public function index()
@@ -88,11 +74,7 @@ class PriceMaterialsController extends AppController
 
       $PriceMaterials = $this->PriceMaterials->find()->contain(["Materials", "MaterialSuppliers"])
       ->where(['PriceMaterials.id' => $id])->toArray();
-/*
-      echo "<pre>";
-      print_r($PriceProducts);
-      echo "</pre>";
-*/
+
       $material_code = $PriceMaterials[0]["material"]['material_code'];
       $this->set('material_code', $material_code);
       $materialSupplier = $PriceMaterials[0]["material_supplier"]['name'];
@@ -200,11 +182,7 @@ class PriceMaterialsController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrtourokupriceMaterial);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $PriceMaterials = $this->PriceMaterials->patchEntity($this->PriceMaterials->newEntity(), $arrtourokupriceMaterial);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -333,11 +311,7 @@ class PriceMaterialsController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrupdatepriceMaterial);
-      echo "</pre>";
-*/
+
       $PriceMaterials = $this->PriceMaterials->patchEntity($this->PriceMaterials->newEntity(), $arrupdatepriceMaterial);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -403,11 +377,7 @@ class PriceMaterialsController extends AppController
       $arrdeletepriceMaterial = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeletepriceMaterial);
-      echo "</pre>";
-*/
+
       $PriceMaterials = $this->PriceMaterials->patchEntity($this->PriceMaterials->newEntity(), $arrdeletepriceMaterial);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2

@@ -74,48 +74,6 @@ class CustomersController extends AppController
 
       $this->set(compact('customers'));
 
-/*
-      if(strlen($id) > 0){
-  
-        $this->paginate = [
-          'limit' => 13,
-          'contain' => ['Factories'],
-          'order' => [//'Customers.updated_at' => 'desc',
-          'Customers.created_at' => 'desc']
-        ];
-
-        if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
-          $customers = $this->paginate($this->Customers->find()
-          ->where(['Customers.delete_flag' => 0]));
-        }else{
-          $customers = $this->paginate($this->Customers->find()
-          ->where(['Customers.factory_id' => $Users[0]["staff"]["factory_id"], 'Customers.delete_flag' => 0]));
-        }
-
-      $this->set(compact('customers'));
-
-      }else{
-
-        $this->paginate = [
-          'limit' => 13,
-          'contain' => ['Factories']
-      ];
-
-      if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
-        $customers = $this->paginate($this->Customers->find()
-        ->where(['Customers.delete_flag' => 0])
-        ->order(["customer_code"=>"ASC"]));
-        }else{
-          $customers = $this->paginate($this->Customers->find()
-          ->where(['Customers.factory_id' => $Users[0]["staff"]["factory_id"], 'Customers.delete_flag' => 0])
-          ->order(["customer_code"=>"ASC"]));
-          }
-
-
-      $this->set(compact('customers'));
-
-      }
-*/
     }
 
     public function detail($id = null)
@@ -365,11 +323,6 @@ class CustomersController extends AppController
           'created_staff' => $staff_id
         ];
 
-  /*
-        echo "<pre>";
-        print_r($arrtourokucustomer);
-        echo "</pre>";
-  */
         $Customers = $this->Customers->patchEntity($this->Customers->newEntity(), $arrtourokucustomer);
         if ($this->Customers->save($Customers)) {
 
@@ -517,7 +470,7 @@ class CustomersController extends AppController
       header('Cache-Control:');
       header('Pragma:');
   
-      print_r(" ");
+      print_r(" ");//フォームの再読み込みの防止
 
     }
 
@@ -740,71 +693,7 @@ class CustomersController extends AppController
      }//トランザクション10
 
     }
-/*
-    public function deleteconfirm($id = null)
-    {
-      $session = $this->request->getSession();
-      $_SESSION = $session->read();
 
-      $id = $_SESSION['customerdata'];
-
-        $customer = $this->Customers->get($id, [
-            'contain' => []
-        ]);
-        $this->set(compact('customer'));
-    }
-
-    public function deletedo()
-    {
-      $session = $this->request->getSession();
-      $datasession = $session->read();
-
-      $data = $this->request->getData();
-
-      $customer = $this->Customers->get($data["id"], [
-          'contain' => []
-      ]);
-      $this->set(compact('customer'));
-
-      $staff_id = $datasession['Auth']['User']['staff_id'];
-
-      $arrdeletecustomer = array();
-      $arrdeletecustomer = [
-        'id' => $data["id"]
-      ];
-
-      $Customers = $this->Customers->patchEntity($this->Customers->newEntity(), $arrdeletecustomer);
-      $connection = ConnectionManager::get('default');//トランザクション1
-       // トランザクション開始2
-       $connection->begin();//トランザクション3
-       try {//トランザクション4
-         if ($this->Customers->updateAll(
-           [ 'delete_flag' => 1,
-             'updated_at' => date('Y-m-d H:i:s'),
-             'updated_staff' => $staff_id],
-           ['id'  => $arrdeletecustomer['id']]
-         )){
-
-         $mes = "※以下のデータが削除されました。";
-         $this->set('mes',$mes);
-         $connection->commit();// コミット5
-
-       } else {
-
-         $mes = "※削除されませんでした";
-         $this->set('mes',$mes);
-         $this->Flash->error(__('The data could not be saved. Please, try again.'));
-         throw new Exception(Configure::read("M.ERROR.INVALID"));//失敗6
-
-       }
-
-     } catch (Exception $e) {//トランザクション7
-     //ロールバック8
-       $connection->rollback();//トランザクション9
-     }//トランザクション10
-
-    }
-*/
     public function kensakupreform()
     {
       $customer = $this->Customers->newEntity();

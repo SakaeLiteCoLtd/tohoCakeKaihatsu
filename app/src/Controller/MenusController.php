@@ -189,11 +189,7 @@ class MenusController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrupdatemenus);
-      echo "</pre>";
-*/
+
       $Menus = $this->Menus->patchEntity($this->Menus->newEntity(), $arrupdatemenus);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -258,11 +254,7 @@ class MenusController extends AppController
       $arrdeletemenu = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeletemenu);
-      echo "</pre>";
-*/
+
       $Menus = $this->Menus->patchEntity($this->Menus->newEntity(), $arrdeletemenu);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2

@@ -27,20 +27,6 @@ class PriceProductsController extends AppController
 
      }
 
-     if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
-/*
-       $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "単価関係", 'Groups.delete_flag' => 0])
-       ->toArray();
-
-       if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
-
-         return $this->redirect($this->Auth->logout());
-
-       }
-*/
-     }
-
     }
 
     public function index()
@@ -98,11 +84,7 @@ class PriceProductsController extends AppController
 
       $PriceProducts = $this->PriceProducts->find()->contain(["Products", "Customers"])
       ->where(['PriceProducts.id' => $id])->toArray();
-/*
-      echo "<pre>";
-      print_r($PriceProducts);
-      echo "</pre>";
-*/
+
       $product_code = $PriceProducts[0]["product"]['product_code'];
       $this->set('product_code', $product_code);
       $customer_name = $PriceProducts[0]["customer"]['name'];
@@ -207,11 +189,7 @@ class PriceProductsController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrtourokupriceProduct);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $PriceProducts = $this->PriceProducts->patchEntity($this->PriceProducts->newEntity(), $arrtourokupriceProduct);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -337,11 +315,7 @@ class PriceProductsController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrupdatepriceProduct);
-      echo "</pre>";
-*/
+
       $PriceProducts = $this->PriceProducts->patchEntity($this->PriceProducts->newEntity(), $arrupdatepriceProduct);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -407,11 +381,7 @@ class PriceProductsController extends AppController
       $arrdeletepriceProduct = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeleteproduct);
-      echo "</pre>";
-*/
+
       $PriceProducts = $this->PriceProducts->patchEntity($this->PriceProducts->newEntity(), $arrdeletepriceProduct);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2

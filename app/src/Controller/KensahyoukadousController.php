@@ -23,12 +23,6 @@ class KensahyoukadousController extends AppController
 
   public function beforeFilter(Event $event){
     parent::beforeFilter($event);
-
-    // 認証なしでアクセスできるアクションの指定
-  //  $this->Auth->allow(["login","kikakunagasalogin",
-   // "seihinkensakuform","seihinkensakusyousai",
-    //"seihinyobidashimenu","seihinyobidashiichiran",
-    //"kensahyouseihinmenu","index","kensahyoumenu"]);
   }
 
     public function index()
@@ -86,8 +80,6 @@ class KensahyoukadousController extends AppController
 
           $LoginStaffs = $this->LoginStaffs->patchEntity($this->LoginStaffs->newEntity(), $arrtourokulogin);
           $this->LoginStaffs->save($LoginStaffs);
-
-  //        return $this->redirect($this->Auth->redirectUrl());
 
           return $this->redirect(['controller' => 'Images', 'action' => 'addpre']);
   

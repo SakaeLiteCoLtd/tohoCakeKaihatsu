@@ -76,16 +76,6 @@ class LinenamesController extends AppController
 
     $this->set(compact('linenames'));
 
-/*
-        $this->paginate = [
-            'contain' => ['Factories']
-        ];
-        $linenames = $this->paginate($this->Linenames->find()->where(['Linenames.delete_flag' => 0]));
-
-        $this->set(compact('linenames'));
-
-      */
-    
     }
 
     public function addform()
@@ -204,11 +194,7 @@ class LinenamesController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrtourokuLinenames);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $linenames = $this->Linenames->patchEntity($this->Linenames->newEntity(), $arrtourokuLinenames);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -374,11 +360,7 @@ class LinenamesController extends AppController
         'updated_at' => date("Y-m-d H:i:s"),
         'updated_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrupdatematerialType);
-      echo "</pre>";
-*/
+
       $linenames = $this->Linenames->patchEntity($this->Linenames->newEntity(), $arrupdateLinenames);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -446,11 +428,7 @@ class LinenamesController extends AppController
       $arrdeleteLinenames = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeletematerialType);
-      echo "</pre>";
-*/
+
       $linenames = $this->Linenames->patchEntity($this->Linenames->newEntity(), $arrdeleteLinenames);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2

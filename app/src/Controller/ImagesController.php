@@ -41,10 +41,6 @@ class ImagesController extends AppController
 
      if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
 /*
-       $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "検査表画像", 'Groups.delete_flag' => 0])
-       ->toArray();
-
        if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
 
          return $this->redirect($this->Auth->logout());
@@ -231,7 +227,6 @@ class ImagesController extends AppController
   
          $arrProduct_names = array();
          for($j=0; $j<count($Product_name_list); $j++){
-   //       array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          $arrProduct_names[$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm"] = $Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm";
         }
          $this->set('arrProduct_names', $arrProduct_names);
@@ -348,7 +343,7 @@ class ImagesController extends AppController
       header('Cache-Control:');
       header('Pragma:');
   
-      print_r(" ");
+      print_r(" ");//フォームの再読み込みの防止
 
     }
 
@@ -411,7 +406,7 @@ class ImagesController extends AppController
       header('Cache-Control:');
       header('Pragma:');
   
-      print_r(" ");
+      print_r(" ");//フォームの再読み込みの防止
 
     }
 
@@ -452,11 +447,7 @@ class ImagesController extends AppController
         's' => ['mess' => "※拡張子が「.JPG」でないファイルが選択されました。"]]);
 
       }
-/*
-      echo "<pre>";
-      print_r($_FILES);
-      echo "</pre>";
-*/
+
       if($_FILES['upfile']['error'] == 0){
 
         if($_FILES['upfile']['size']>2000000){
@@ -583,11 +574,7 @@ class ImagesController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrtourokuinspectionStandardSizeParent);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $InspectionStandardSizeParents = $this->InspectionStandardSizeParents
       ->patchEntity($this->InspectionStandardSizeParents->newEntity(), $arrtourokuinspectionStandardSizeParent);
@@ -672,11 +659,7 @@ class ImagesController extends AppController
       $arrdeleteinspectionStandardSizeParents = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeleteinspectionStandardSizeParents);
-      echo "</pre>";
-*/
+
       $InspectionStandardSizeParents = $this->InspectionStandardSizeParents
       ->patchEntity($this->InspectionStandardSizeParents->newEntity(), $arrdeleteinspectionStandardSizeParents);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -742,11 +725,7 @@ class ImagesController extends AppController
 
       $session = $this->request->getSession();
       $_SESSION = $session->read();
-/*
-      echo "<pre>";
-      print_r($_SESSION);
-      echo "</pre>";
-*/
+
       $id = $_SESSION['inspectionStandardSizeParentdata'];
       $this->set('id', $id);
 
@@ -813,11 +792,7 @@ class ImagesController extends AppController
 
       $session = $this->request->getSession();
       $_SESSION = $session->read();
-/*
-      echo "<pre>";
-      print_r($_SESSION);
-      echo "</pre>";
-*/
+
       $id = $_SESSION["inspectionStandardSizeParentdata"];
       $this->set('id', $id);
       $inspectionStandardSizeParents = $this->InspectionStandardSizeParents->find()->contain(["Products"])
@@ -848,11 +823,7 @@ class ImagesController extends AppController
         's' => ['mess' => "※拡張子が「.JPG」でないファイルが選択されました。"]]);
 
       }
-/*
-      echo "<pre>";
-      print_r($_FILES);
-      echo "</pre>";
-*/
+
       if($_FILES['upfile']['error'] == 0){
 
         if($_FILES['upfile']['size']>2000000){

@@ -46,15 +46,8 @@ class KensakigusController extends AppController
 
     public function index()
     {
-      /*
-        $this->paginate = [
-            'contain' => ['Factories']
-        ];
-        $kensakigus = $this->paginate($this->Kensakigus->find()->where(['Kensakigus.delete_flag' => 0]));
 
-        $this->set(compact('kensakigus'));
-*/
-        $session = $this->request->getSession();
+      $session = $this->request->getSession();
         $datasession = $session->read();
   
         $Users = $this->Users->find()->contain(["Staffs"])
@@ -169,11 +162,7 @@ class KensakigusController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrtourokuKensakigus);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $kensakigus = $this->Kensakigus->patchEntity($this->Kensakigus->newEntity(), $arrtourokuKensakigus);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -300,11 +289,7 @@ class KensakigusController extends AppController
         'updated_at' => date("Y-m-d H:i:s"),
         'updated_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrupdatematerialType);
-      echo "</pre>";
-*/
+
       $kensakigus = $this->Kensakigus->patchEntity($this->Kensakigus->newEntity(), $arrupdateKensakigus);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -371,11 +356,7 @@ class KensakigusController extends AppController
       $arrdeleteKensakigus = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeletematerialType);
-      echo "</pre>";
-*/
+
       $kensakigus = $this->Kensakigus->patchEntity($this->Kensakigus->newEntity(), $arrdeleteKensakigus);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2

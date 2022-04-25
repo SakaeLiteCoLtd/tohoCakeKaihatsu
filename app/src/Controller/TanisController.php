@@ -90,11 +90,7 @@ class TanisController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrtourokuTanis);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $tanis = $this->Tanis->patchEntity($this->Tanis->newEntity(), $arrtourokuTanis);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -221,11 +217,7 @@ class TanisController extends AppController
         'updated_at' => date("Y-m-d H:i:s"),
         'updated_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrupdatematerialType);
-      echo "</pre>";
-*/
+
       $tanis = $this->Tanis->patchEntity($this->Tanis->newEntity(), $arrupdateTanis);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -292,11 +284,7 @@ class TanisController extends AppController
       $arrdeleteTanis = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeletematerialType);
-      echo "</pre>";
-*/
+
       $tanis = $this->Tanis->patchEntity($this->Tanis->newEntity(), $arrdeleteTanis);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2

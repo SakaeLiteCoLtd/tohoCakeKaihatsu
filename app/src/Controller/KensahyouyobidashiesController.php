@@ -57,11 +57,6 @@ class KensahyouyobidashiesController extends AppController
   public function menu()
   {
     $Data = $this->request->query('s');
-
-    echo "<pre>";
-    print_r($Data);
-    echo "</pre>";
-
   }
 
     public function index()
@@ -88,6 +83,9 @@ class KensahyouyobidashiesController extends AppController
         }
         $this->set('account_check', $account_check);
 
+      }else{
+        $account_check = 1;
+        $this->set('account_check', $account_check);
       }
 
       $Users = $this->Users->find('all')->contain(["Staffs"])->where(['user_code' => $datasession['Auth']['User']['user_code'], 'Users.delete_flag' => 0])->toArray();
@@ -455,12 +453,8 @@ class KensahyouyobidashiesController extends AppController
         $arrGouki = $arrGouki + $array;
     }
       $this->set('arrGouki', $arrGouki);
-/*
-      echo "<pre>";
-      print_r($arrKensahyous);
-      echo "</pre>";
-*/
-      echo "<pre>";
+      
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
 
@@ -487,6 +481,9 @@ class KensahyouyobidashiesController extends AppController
         }
         $this->set('account_check', $account_check);
 
+      }else{
+        $account_check = 1;
+        $this->set('account_check', $account_check);
       }
 
       $Users= $this->Users->find('all')->contain(["Staffs"])->where(['user_code' => $datasession['Auth']['User']['user_code'], 'Users.delete_flag' => 0])->toArray();
@@ -879,8 +876,7 @@ class KensahyouyobidashiesController extends AppController
         $this->set('check',1);
       }
 
-
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
 
@@ -958,11 +954,7 @@ class KensahyouyobidashiesController extends AppController
       }
 
       $product_code_ini = substr($product_code, 0, 11);
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-  */
+
       if($machine_num == "-"){//規格の削除
 
         $InspectionStandardSizeParent = $this->InspectionStandardSizeParents->find()->contain(["Products"])
@@ -1091,11 +1083,7 @@ class KensahyouyobidashiesController extends AppController
       $this->set('user_code', $user_code);
 
       $Data = $this->request->query('s');
-/*
-      echo "<pre>";
-      print_r($Data);
-      echo "</pre>";
-*/
+
       $product_code = $Data["product_code"];
       $this->set('product_code', $product_code);
       $machine_num_moto = $Data["machine_num"];
@@ -1136,11 +1124,7 @@ class KensahyouyobidashiesController extends AppController
       $this->set('mes', $mes);
 
       $data = $this->request->getData();
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
       $machine_num = $data["machine_num"];
@@ -1190,14 +1174,11 @@ class KensahyouyobidashiesController extends AppController
       if($factory_id == 5){
         $Seikeikis = $this->Seikeikis->find()
         ->where(['delete_flag' => 0])->toArray();
-          }else{
+      }else{
             $Seikeikis = $this->Seikeikis->find()
             ->where(['delete_flag' => 0, 'factory_id' => $factory_id])->toArray();
-              }
-/*
-      $Seikeikis = $this->Seikeikis->find()
-      ->where(['delete_flag' => 0])->toArray();
-      */
+      }
+
       $arrSeikeikis = array();
       for($j=0; $j<count($Seikeikis); $j++){
         $arrSeikeikis[$Seikeikis[$j]["name"]] = $Seikeikis[$j]["name"];
@@ -1763,7 +1744,7 @@ class KensahyouyobidashiesController extends AppController
 
       }
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
 
@@ -1781,11 +1762,7 @@ class KensahyouyobidashiesController extends AppController
 //      $_SESSION['fukuseikensahyougenryoudata'] = array();
 
       $data = $arrayfukuseiKensahyougenryoudatas;
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
@@ -2376,12 +2353,7 @@ class KensahyouyobidashiesController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         "created_staff" => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r("ProductConditionParents");
-      print_r($tourokuProductConditionParent);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $ProductConditionParents = $this->ProductConditionParents
       ->patchEntity($this->ProductConditionParents->newEntity(), $tourokuProductConditionParent);
@@ -2446,12 +2418,7 @@ class KensahyouyobidashiesController extends AppController
                 ];
 
               }
-/*
-              echo "<pre>";
-              print_r("ProductMachineMaterials");
-              print_r($tourokuProductMachineMaterial);
-              echo "</pre>";
-  */      
+
               $ProductMachineMaterials = $this->ProductMachineMaterials
               ->patchEntities($this->ProductMachineMaterials->newEntity(), $tourokuProductMachineMaterial);
               if ($this->ProductMachineMaterials->saveMany($ProductMachineMaterials)) {

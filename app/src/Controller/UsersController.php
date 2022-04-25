@@ -223,11 +223,7 @@ class UsersController extends AppController
         }
 
       }
-/*
-      echo "<pre>";
-      print_r($arrMenuids);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $Users = $this->Users->patchEntity($this->Users->newEntity(), $arrtourokuuser);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -334,11 +330,7 @@ class UsersController extends AppController
         'updated_at' => date("Y-m-d H:i:s"),
         'updated_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrupdateuser);
-      echo "</pre>";
-*/
+
       $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
       ->where(['Groups.name_group' => $data["group_name"], 'Groups.delete_flag' => 0])->order(["menu_id"=>"ASC"])->toArray();
 
@@ -354,11 +346,7 @@ class UsersController extends AppController
         );
 
       }
-/*
-      echo "<pre>";
-      print_r($arrMenuids);
-      echo "</pre>";
-*/
+
       $Users = $this->Users->patchEntity($this->Users->newEntity(), $arrupdateuser);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -454,11 +442,7 @@ class UsersController extends AppController
       $arrdeleteuser = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeletecompany);
-      echo "</pre>";
-*/
+
       $Users = $this->Users->patchEntity($this->Users->newEntity(), $arrdeleteuser);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2

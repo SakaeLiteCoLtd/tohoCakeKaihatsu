@@ -38,8 +38,6 @@ class StartmenusController extends AppController
           $this->LoginStaffs->save($LoginStaffs);
 
           return $this->redirect($this->Auth->redirectUrl());
-
-   //       return $this->redirect(['controller' => 'Images', 'action' => 'addpre']);
   
         }
         $this->Flash->error(__('ユーザ名もしくはパスワードが間違っています'));
@@ -59,11 +57,6 @@ class StartmenusController extends AppController
       $session = $this->request->getSession();
       session_regenerate_id();//セッションIDの更新（セッションハイジャック対策）
       $datasession = $session->read();
-/*
-      echo "<pre>";
-      print_r(session_id());
-      echo "</pre>";
-*/
 
       $arrMenus = array();
       $arrController = array();
@@ -116,89 +109,6 @@ class StartmenusController extends AppController
       }
 
       for($k=0; $k<count($Groups); $k++){//表示可能なコントローラーの名前を配列に追加する
-/*
-        if($Groups[$k]['menu']['name_menu'] == "会社"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "companies";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "工場・営業所"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "factories";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "部署"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "departments";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "職種"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "occupations";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "役職"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "positions";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "スタッフ"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "staffs";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "メニュー"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "menus";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "グループ"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "groups";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "ユーザー"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "users";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "スタッフ権限"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "staffAbilities";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "得意先"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "customers";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "原料関係"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "materials";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "製品関係"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "products";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "運用代表"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "operations";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "単価関係"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "priceProducts";
-
-        }elseif($Groups[$k]['menu']['name_menu'] == "検査表画像"){
-
-          $arrMenus[] = $Groups[$k]['menu']['name_menu'];
-          $arrController[] = "Images";
-
-        }
-*/
 
         if($Groups[$k]['menu']['name_menu'] == "業務メニュー"){
 

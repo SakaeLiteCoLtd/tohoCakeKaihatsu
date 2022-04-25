@@ -94,25 +94,6 @@ class MaterialsController extends AppController
       }
       $this->set('arrMaterialSuppliers_name_list', $arrMaterialSuppliers_name_list);
 
-/*
-      $this->set('countFactories', count($Factories));
-      for($i=0; $i<count($Factories); $i++){
-
-        $this->set('factory_id'.$i, $Factories[$i]["id"]);
-
-        ${"Materials_name_list".$i} = $this->Materials->find()
-        ->where(['factory_id' => $Factories[$i]["id"], 'delete_flag' => 0])->toArray();
-  
-        ${"arrMaterials_name_list".$i} = array();
-        for($j=0; $j<count(${"Materials_name_list".$i}); $j++){
-          array_push(${"arrMaterials_name_list".$i},${"Materials_name_list".$i}[$j]["name"]);
-        }
-        ${"arrMaterials_name_list".$i} = array_unique(${"arrMaterials_name_list".$i});
-        ${"arrMaterials_name_list".$i} = array_values(${"arrMaterials_name_list".$i});
-  
-        $this->set('arrMaterials_name_list'.$i, ${"arrMaterials_name_list".$i});
-      }
-*/
       $Materials_name_list = $this->Materials->find()
       ->where(['delete_flag' => 0])->toArray();
       $arrMaterials_name_list = array();
@@ -215,7 +196,7 @@ class MaterialsController extends AppController
       header('Cache-Control:');
       header('Pragma:');
   
-      print_r(" ");
+      print_r(" ");//フォームの再読み込みの防止
 
     }
 
@@ -293,7 +274,6 @@ class MaterialsController extends AppController
         $this->set('mess',$mess);
       }
       
-     // $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個", "本" => "本"];
       $Tanis = $this->Tanis->find()
       ->where(['delete_flag' => 0])->toArray();
       $arrTanni = array();
@@ -455,11 +435,7 @@ class MaterialsController extends AppController
 
       $material_code = "S".$material_supplier_code.$code_factory.$material_code_renban.$material_code_renban2;
       $this->set('material_code', $material_code);
-/*
-      echo "<pre>";
-      print_r($material_code);
-      echo "</pre>";
-*/
+
       $arrtourokumaterial = array();
       $arrtourokumaterial = [
         'factory_id' => $data["factory_id"],
@@ -474,11 +450,6 @@ class MaterialsController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrtourokumaterial);
-      echo "</pre>";
-*/
 
       //新しいデータを登録
       $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $arrtourokumaterial);
@@ -544,7 +515,6 @@ class MaterialsController extends AppController
       $id = $_SESSION['materialdata'];
       $this->set('id', $id);
 
-  //    $arrTanni = ["" => "", "kg" => "kg", "枚" => "枚", "個" => "個", "本" => "本"];
       $Tanis = $this->Tanis->find()
       ->where(['delete_flag' => 0])->toArray();
       $arrTanni = array();
@@ -578,16 +548,7 @@ class MaterialsController extends AppController
       $factory_name = $Factories[0]['name'];
       $this->set('factory_id', $Materials[0]['factory_id']);
       $this->set('factory_name', $factory_name);
-/*
-      $MaterialTypes = $this->MaterialTypes->find()
-      ->where(['delete_flag' => 0])->toArray();
 
-      $arrMaterialTypes = array();
-      foreach ($MaterialTypes as $value) {
-        $arrMaterialTypes[] = array($value->id=>$value->type);
-      }
-      $this->set('arrMaterialTypes', $arrMaterialTypes);
-*/
     }
 
     public function editconfirm()
@@ -652,12 +613,8 @@ class MaterialsController extends AppController
 
         $material_code = $data["material_code"];
         $this->set('material_code', $material_code);
-        /*
-      echo "<pre>";
-      print_r($material_code);
-      echo "</pre>";
-*/
-      $arrMaterialmoto = array();
+
+        $arrMaterialmoto = array();
       $arrMaterialmoto = [
         'factory_id' => $Materialsmoto[0]["factory_id"],
         'material_code' => $Materialsmoto[0]["material_code"],
@@ -673,11 +630,7 @@ class MaterialsController extends AppController
         'updated_at' => date("Y-m-d H:i:s"),
         'updated_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrupdatematerial);
-      echo "</pre>";
-*/
+
       $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $data);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -775,11 +728,7 @@ class MaterialsController extends AppController
       $arrdeletematerial = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeletematerial);
-      echo "</pre>";
-*/
+
       $Materials = $this->Materials->patchEntity($this->Materials->newEntity(), $arrdeletematerial);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -857,11 +806,7 @@ class MaterialsController extends AppController
       $this->set('material', $material);
 
       $data = $this->request->getData();
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       if(strlen($data['material_supplier_name']) > 0 && strlen($data['material_name']) > 0){
 
         $MaterialSuppliers = $this->MaterialSuppliers->find()
@@ -943,11 +888,6 @@ class MaterialsController extends AppController
 
       $this->set('Materials', $Materials);
 
-/*
-      echo "<pre>";
-      print_r($Materials);
-      echo "</pre>";
-*/
     }
 
 }

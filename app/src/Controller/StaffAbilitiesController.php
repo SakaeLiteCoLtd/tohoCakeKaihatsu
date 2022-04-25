@@ -85,11 +85,7 @@ class StaffAbilitiesController extends AppController
 
       }
       $this->set('arrStaffAbilities', $arrStaffAbilities);
-/*
-      echo "<pre>";
-      print_r($arrGroups);
-      echo "</pre>";
-*/
+
     }
 
     public function view($id = null)

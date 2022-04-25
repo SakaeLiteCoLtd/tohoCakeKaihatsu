@@ -74,32 +74,6 @@ class ProductsController extends AppController
       $products = $this->paginate($this->Products->find()->where(['Products.delete_flag' => 0]));
 
       $this->set(compact('products'));
-
-      /*
-      if(strlen($id) > 0){
-
-        $this->paginate = [
-          'limit' => 13,
-          'contain' => ['Customers'],
-          'order' => [//'Products.updated_at' => 'desc',
-          'Products.created_at' => 'desc']
-        ];
-        $products = $this->paginate($this->Products->find()->where(['Products.delete_flag' => 0]));
-
-        $this->set(compact('products'));
-
-      }else{
-
-        $this->paginate = [
-          'limit' => 13,
-          'contain' => ['Customers'],
-        ];
-        $products = $this->paginate($this->Products->find()->where(['Products.delete_flag' => 0]));
-
-        $this->set(compact('products'));
-
-      }
-  */
     }
 
     public function detail($id = null)
@@ -311,7 +285,7 @@ class ProductsController extends AppController
       header('Cache-Control:');
       header('Pragma:');
   
-      print_r(" ");
+      print_r(" ");//フォームの再読み込みの防止
 
     }
 
@@ -398,11 +372,7 @@ class ProductsController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $name = $data["name"];
       $this->set('name', $name);
       $tanni = $data["tanni"];
@@ -520,11 +490,7 @@ class ProductsController extends AppController
           ];
   
         }
-  /*
-        echo "<pre>";
-        print_r($arrtourokuproduct);
-        echo "</pre>";
-  */
+
         $Products = $this->Products->patchEntities($this->Products->newEntity(), $arrtourokuproduct);
         if ($this->Products->saveMany($Products)) {
 
@@ -570,11 +536,7 @@ class ProductsController extends AppController
         $arrFactories[] = array($value->id=>$value->name);
       }
       $this->set('arrFactories', $arrFactories);
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $Customer_name_list = $this->Customers->find()
       ->where(['delete_flag' => 0])->toArray();
       $arrCustomer_name_list = array();
@@ -694,7 +656,7 @@ class ProductsController extends AppController
       header('Cache-Control:');
       header('Pragma:');
   
-      print_r(" ");
+      print_r(" ");//フォームの再読み込みの防止
 
     }
     
@@ -709,7 +671,11 @@ class ProductsController extends AppController
       }else{
         $data = $this->request->getData();
       }
-
+      /*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+*/
       $Factories = $this->Factories->find()
       ->where(['id' => $data['factory_id']])->toArray();
       $factory_name = $Factories[0]['name'];
@@ -829,7 +795,7 @@ class ProductsController extends AppController
       header('Cache-Control:');
       header('Pragma:');
   
-      print_r(" ");
+      print_r(" ");//フォームの再読み込みの防止
       
     }
 
@@ -842,11 +808,7 @@ class ProductsController extends AppController
       $_SESSION = $session->read();
 
       $data = $_SESSION['editlengthproduct'];
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $this->set('product_name_code', $data["product_name_code"]);
       $product_name_code = explode(";",$data["product_name_code"]);
       $name = $product_name_code[0];
@@ -926,11 +888,7 @@ class ProductsController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $product_name_code = explode(";",$data["product_name_code"]);
       $name = $product_name_code[0];
       $product_code = $product_name_code[1];
@@ -999,11 +957,7 @@ class ProductsController extends AppController
       $datasession = $session->read();
 
       $staff_id = $datasession['Auth']['User']['staff_id'];
-/*
-      echo "<pre>";
-      print_r($arrtourokuproduct);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $connection = ConnectionManager::get('default');//トランザクション1
       // トランザクション開始2
@@ -1208,7 +1162,7 @@ class ProductsController extends AppController
       header('Cache-Control:');
       header('Pragma:');
   
-      print_r(" ");
+      print_r(" ");//フォームの再読み込みの防止
 
     }
 
@@ -1305,7 +1259,7 @@ class ProductsController extends AppController
       header('Cache-Control:');
       header('Pragma:');
   
-      print_r(" ");
+      print_r(" ");//フォームの再読み込みの防止
 
     }
     
@@ -1416,7 +1370,7 @@ class ProductsController extends AppController
       header('Cache-Control:');
       header('Pragma:');
 
-      print_r(" ");
+      print_r(" ");//フォームの再読み込みの防止
 
     }
 
@@ -1426,11 +1380,7 @@ class ProductsController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $product_name_code = explode(";",$data["product_name_code"]);
       $this->set('product_name_code', $data["product_name_code"]);
       $namemoto = $product_name_code[0];
@@ -1553,11 +1503,7 @@ class ProductsController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $product_name_code = explode(";",$data["product_name_code"]);
       $namemoto = $product_name_code[0];
       $product_code = $product_name_code[1];
@@ -1652,12 +1598,8 @@ class ProductsController extends AppController
             }
         }
         $this->set('arrdeleteproduct', $arrdeleteproduct);
-/*
-        echo "<pre>";
-        print_r($arrupdateproductmoto);
-        echo "</pre>";
-*/
-      $connection = ConnectionManager::get('default');//トランザクション1
+
+        $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
        $connection->begin();//トランザクション3
        try {//トランザクション4
@@ -1783,11 +1725,7 @@ class ProductsController extends AppController
       $arrdeleteproduct = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeleteproduct);
-      echo "</pre>";
-*/
+
       $Products = $this->Products->patchEntity($this->Products->newEntity(), $arrdeleteproduct);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -1992,7 +1930,7 @@ class ProductsController extends AppController
       header('Cache-Control:');
       header('Pragma:');
   
-      print_r(" ");
+      print_r(" ");//フォームの再読み込みの防止
 
     }
     
@@ -2090,7 +2028,7 @@ class ProductsController extends AppController
       header('Cache-Control:');
       header('Pragma:');
 
-      print_r(" ");
+      print_r(" ");//フォームの再読み込みの防止
 
     }
 
@@ -2193,11 +2131,7 @@ class ProductsController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $ProductName = $this->Products->find()
       ->where(['factory_id' => $data['factory_id'], 'name' => $data['namemoto'], 'delete_flag' => 0])->toArray();
       $this->set('ProductName', $ProductName);

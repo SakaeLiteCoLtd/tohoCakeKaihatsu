@@ -34,20 +34,6 @@ class StaffsController extends AppController
 
      }
 
-     if($datasession['Auth']['User']['super_user'] == 0){//スーパーユーザーではない場合(スーパーユーザーの場合はそのままで大丈夫)
-/*
-       $Groups = $this->Groups->find()->contain(["Menus"])
-       ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "", 'Groups.delete_flag' => 0])
-       ->toArray();
-
-       if(!isset($Groups[0])){//権限がない人がログインした状態でurlをベタ打ちしてアクセスしてきた場合
-
-         return $this->redirect($this->Auth->logout());
-
-       }
-*/
-     }
-
     }
 
     public function index()
@@ -76,9 +62,6 @@ class StaffsController extends AppController
           'Staffs.created_at' => 'desc']
         ];
 
-  //      $this->paginate = [
-  //          'contain' => ['Factories', 'Departments', 'Positions']
-  //      ];
         if($Users[0]["staff"]["factory_id"] == 5){//本部の場合
           $staffs = $this->paginate($this->Staffs->find()
           ->where(['Staffs.delete_flag' => 0]));
@@ -188,25 +171,7 @@ class StaffsController extends AppController
       $this->set('group_name', $group_name);
 
     }
-/*
-    public function addmoto()
-    {
-        $staff = $this->Staffs->newEntity();
-        if ($this->request->is('post')) {
-            $staff = $this->Staffs->patchEntity($staff, $this->request->getData());
-            if ($this->Staffs->save($staff)) {
-                $this->Flash->success(__('The staff has been saved.'));
 
-                return $this->redirect(['action' => 'index']);
-            }
-            $this->Flash->error(__('The staff could not be saved. Please, try again.'));
-        }
-        $Factories = $this->Staffs->Factories->find('list', ['limit' => 200]);
-        $departments = $this->Staffs->Departments->find('list', ['limit' => 200]);
-        $positions = $this->Staffs->Positions->find('list', ['limit' => 200]);
-        $this->set(compact('staff', 'Factories', 'departments', 'occupations', 'positions'));
-    }
-*/
     public function addform()
     {
       $Staffs = $this->Staffs->newEntity();
@@ -423,11 +388,6 @@ class StaffsController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrtourokustaff);
-      echo "</pre>";
-*/
 
       //新しいデータを登録
       $Staffs = $this->Staffs->patchEntity($this->Staffs->newEntity(), $arrtourokustaff);
@@ -1064,11 +1024,7 @@ class StaffsController extends AppController
       $arrdeletestaff = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeletecompany);
-      echo "</pre>";
-*/
+
       $Staffs = $this->Staffs->patchEntity($this->Staffs->newEntity(), $arrdeletestaff);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2

@@ -121,11 +121,7 @@ class KadousController extends AppController
 
       $Data = $this->request->query('s');
       if(isset($Data["num_max"])){
-        /*
-        echo "<pre>";
-        print_r($Data);
-        echo "</pre>";
-  */
+
         $factory_id = $Data["factory_id"];
         $date_sta = $Data["date_sta"];
         $date_fin = $Data["date_fin"];
@@ -147,11 +143,7 @@ class KadousController extends AppController
       }else{
 
         $data = $this->request->getData();
-        /*
-        echo "<pre>";
-        print_r($data);
-        echo "</pre>";
-  */
+
         if(!isset($data["product_name"])){
           return $this->redirect(['action' => 'yobidashidate',
           's' => ['mess' => ""]]);
@@ -646,11 +638,7 @@ class KadousController extends AppController
       for($i=0; $i<count($arrCsvs); $i++){
         unset($arrCsvs[$i]['start_datetime_check']);
       }
-/*
-      echo "<pre>";
-      print_r($arrCsvs);
-      echo "</pre>";
-*/
+
       $arrAllMachine = array();
       for($i=0; $i<count($arrAll); $i++){
         $arrAllMachine[] = $arrAll[$i]["machine_num"];
@@ -723,7 +711,7 @@ class KadousController extends AppController
 
       }
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
 
@@ -740,11 +728,7 @@ class KadousController extends AppController
       }
       $num_max = $data["num_max"];
       $this->set('num_max', $num_max);
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       if(isset($data["kensahyou"])){
 
         return $this->redirect(['controller' => 'Kensahyousokuteidatas', 'action' => 'kensakuhyouji',
@@ -1177,11 +1161,7 @@ class KadousController extends AppController
       }
       $this->set('total_length_riron', $total_length_riron);
       $this->set('total_length_kensa_riron', $total_length_kensa_riron);
-/*
-      echo "<pre>";
-      print_r($arrlength);
-      echo "</pre>";
-*/
+
       $arrProdcts = array();
       $total_length_jissai = 0;
       for($i=0; $i<count($DailyReportsData); $i++){
@@ -1281,7 +1261,7 @@ class KadousController extends AppController
     $arrRelayLogs = $kadouprograms->yobidashirelaylogs($machine_sta_fin);
     $this->set('arrRelayLogs', $arrRelayLogs);
 
-    echo "<pre>";
+    echo "<pre>";//フォームの再読み込みの防止
     print_r("");
     echo "</pre>";
 

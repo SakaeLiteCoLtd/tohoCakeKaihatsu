@@ -29,19 +29,8 @@ class KensahyougenryousController extends AppController
       ,"kensakupre", "kensakuhyouji"
       ,"kensakugouki"
       , "kensakumenu", "kensakurirekipre"]);
-      
-/*
-      session_start();//全部NG
-      header('Expires:-1');
-      header('Cache-Control:');
-      header('Pragma:');
-      $session = $this->request->session();
-      $session->read();
 
-      $session = $this->request->getSession();
-      $session->destroy();
-*/
-  	}
+    }
 
       public function initialize()
     {
@@ -68,11 +57,7 @@ class KensahyougenryousController extends AppController
      header('Expires:');
      header('Cache-Control:');
      header('Pragma:');
-/*
-     echo "<pre>";
-     print_r("　");
-     echo "</pre>";
-*/
+
     }
 
     public function menu()
@@ -147,7 +132,6 @@ class KensahyougenryousController extends AppController
   
          $arrProduct_names = array();
          for($j=0; $j<count($Product_name_list); $j++){
-   //       array_push($arrProduct_name_list,$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm");
          $arrProduct_names[$Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm"] = $Product_name_list[$j]["name"].";".$Product_name_list[$j]["length"]."mm";
         }
          $this->set('arrProduct_names', $arrProduct_names);
@@ -233,7 +217,7 @@ class KensahyougenryousController extends AppController
 
      }
 
-     echo "<pre>";
+     echo "<pre>";//フォームの再読み込みの防止
      print_r("");
      echo "</pre>";
 
@@ -339,11 +323,6 @@ class KensahyougenryousController extends AppController
         $this->set('product_code', $product_code);
         $machine_num = $data["machine_num"];
         $this->set('machine_num', $machine_num);
-/*
-        echo "<pre>";
-        print_r($data);
-        echo "</pre>";
-  */
       }
 
       $ProductDatas = $this->Products->find()
@@ -367,7 +346,6 @@ class KensahyougenryousController extends AppController
 
       $Material_name_list = $this->Materials->find()
       ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
- //     ->where(['delete_flag' => 0])->toArray();
       $arrMaterial_name_list = array();
       for($j=0; $j<count($Material_name_list); $j++){
         array_push($arrMaterial_name_list,$Material_name_list[$j]["name"]);
@@ -392,11 +370,7 @@ class KensahyougenryousController extends AppController
         $arrSeikeikis[$Seikeikis[$j]["name"]] = $Seikeikis[$j]["name"];
       }
       $this->set('arrSeikeikis', $arrSeikeikis);
-/*
-      echo "<pre>";
-      print_r($arrSeikeikis);
-      echo "</pre>";
-*/
+
       $mess = "";
       $this->set('mess', $mess);
 
@@ -706,11 +680,7 @@ class KensahyougenryousController extends AppController
         }
 
         $this->set('mess', $mess);
-/*
-        echo "<pre>";
-        print_r($mess);
-        echo "</pre>";
-*/
+
         if(strlen($mess) < 1){
           if(!isset($_SESSION)){
             session_start();
@@ -747,7 +717,7 @@ class KensahyougenryousController extends AppController
 
       }
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
  
@@ -765,11 +735,7 @@ class KensahyougenryousController extends AppController
    //   $_SESSION['kensahyougenryoudata'] = array();
 
       $data = $arrayKensahyougenryoudatas;
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
@@ -901,11 +867,7 @@ class KensahyougenryousController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
@@ -1045,11 +1007,7 @@ class KensahyougenryousController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
@@ -1239,12 +1197,7 @@ class KensahyougenryousController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         "created_staff" => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r("ProductConditionParents");
-      print_r($tourokuProductConditionParent);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $ProductConditionParents = $this->ProductConditionParents
       ->patchEntity($this->ProductConditionParents->newEntity(), $tourokuProductConditionParent);
@@ -1281,12 +1234,7 @@ class KensahyougenryousController extends AppController
               'created_at' => date("Y-m-d H:i:s"),
               "created_staff" => $staff_id
             ];
-/*
-            echo "<pre>";
-            print_r("ProductMaterialMachines");
-            print_r($tourokuProductMaterialMachine);
-            echo "</pre>";
-  */    
+
             $ProductMaterialMachines = $this->ProductMaterialMachines
             ->patchEntity($this->ProductMaterialMachines->newEntity(), $tourokuProductMaterialMachine);
             if ($this->ProductMaterialMachines->save($ProductMaterialMachines)) {
@@ -1314,12 +1262,7 @@ class KensahyougenryousController extends AppController
                 ];
 
               }
-/*
-              echo "<pre>";
-              print_r("ProductMachineMaterial");
-              print_r($tourokuProductMachineMaterial);
-              echo "</pre>";
-  */
+
               $ProductMachineMaterials = $this->ProductMachineMaterials
               ->patchEntities($this->ProductMachineMaterials->newEntity(), $tourokuProductMachineMaterial);
               if ($this->ProductMachineMaterials->saveMany($ProductMachineMaterials)) {
@@ -1351,12 +1294,7 @@ class KensahyougenryousController extends AppController
                 ];
         
                 if($j >= $tuikaseikeiki){
-/*
-                  echo "<pre>";
-                  print_r("ProductConditonChildren");
-                  print_r($tourokuProductConditonChildren);
-                  echo "</pre>";
-  */  
+
                   $ProductConditonChildren = $this->ProductConditonChildren->patchEntities($this->ProductConditonChildren->newEntity(), $tourokuProductConditonChildren);
                   if ($this->ProductConditonChildren->saveMany($ProductConditonChildren)) {
 
@@ -1417,11 +1355,7 @@ class KensahyougenryousController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $Data=$this->request->query('s');
       if(isset($Data["mess"])){
         $mess = $Data["mess"];
@@ -1537,7 +1471,7 @@ class KensahyougenryousController extends AppController
 
      }
 
-     echo "<pre>";
+     echo "<pre>";//フォームの再読み込みの防止
      print_r("");
      echo "</pre>";
 
@@ -1560,12 +1494,7 @@ class KensahyougenryousController extends AppController
       'ProductConditionParents.is_active' => 0,
       'ProductConditionParents.delete_flag' => 0])
       ->order(["machine_num"=>"ASC"])->toArray();
-/*
-      echo "<pre>";
-      print_r("data");
-      print_r($data);
-      echo "</pre>";
-*/
+
       $arrGouki = array();
       for($k=0; $k<count($ProductConditionParents); $k++){
         $array = array($ProductConditionParents[$k]["machine_num"] => $ProductConditionParents[$k]["machine_num"]);
@@ -1775,7 +1704,7 @@ class KensahyougenryousController extends AppController
       $htmlkensahyouheader = $htmlkensahyoukadoumenu->kensahyouheader($product_code);
       $this->set('htmlkensahyouheader',$htmlkensahyouheader);
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
  
@@ -1800,7 +1729,7 @@ class KensahyougenryousController extends AppController
         $this->set('mess',$mess);
       }
 
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
 
@@ -1815,11 +1744,7 @@ class KensahyougenryousController extends AppController
       $this->set('mes', $mes);
 
       $data = $this->request->getData();
-      /*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
       $machine_num = $data["machine_num"];
@@ -1850,7 +1775,6 @@ class KensahyougenryousController extends AppController
 
       $Material_name_list = $this->Materials->find()
       ->where(['status_kensahyou' => 0, 'delete_flag' => 0])->toArray();
- //     ->where(['delete_flag' => 0])->toArray();
       $arrMaterial_name_list = array();
       for($j=0; $j<count($Material_name_list); $j++){
         array_push($arrMaterial_name_list,$Material_name_list[$j]["name"]);
@@ -2315,10 +2239,7 @@ class KensahyougenryousController extends AppController
 
             $Materials = $this->Materials->find()
             ->where(['id' => $ProductMachineMaterials[$i - 1]["material_id"]])->toArray();
-/*
-            ${"material_hyouji".$j.$i} = $Materials[0]["material_code"].":".$Materials[0]["maker"].":".$Materials[0]["material_code"];
-            $this->set('material_hyouji'.$j.$i,${"material_hyouji".$j.$i});
-*/
+
             ${"check_material".$j.$i} = 1;
             $this->set('check_material'.$j.$i,${"check_material".$j.$i});
             ${"material_name".$j.$i} = $Materials[0]["name"];
@@ -2479,8 +2400,7 @@ class KensahyougenryousController extends AppController
       }
       $this->set('arrGouki', $arrGouki);
 
-
-      echo "<pre>";
+      echo "<pre>";//フォームの再読み込みの防止
       print_r("");
       echo "</pre>";
 
@@ -2498,11 +2418,7 @@ class KensahyougenryousController extends AppController
 //      $_SESSION['updatekensahyougenryoudata'] = array();
 
       $data = $arrayKensahyougenryoudatas;
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
@@ -2552,11 +2468,7 @@ class KensahyougenryousController extends AppController
           $n = $n + 1;
 
           $this->set('tuikaseikeiki', $n);//成形機の数をセット
-/*
-          echo "<pre>";
-          print_r("seikeiki".$j);
-          echo "</pre>";
-*/
+
           ${"tuikagenryou".$j} = $data["tuikagenryou".$j];
 
           if(isset($data['cylinder_name'.$j])){
@@ -2816,11 +2728,7 @@ class KensahyougenryousController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
@@ -2945,11 +2853,7 @@ class KensahyougenryousController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
@@ -3421,11 +3325,7 @@ class KensahyougenryousController extends AppController
 //      $_SESSION['updatekensahyougenryoudata'] = array();
 
       $data = $arrayKensahyougenryoudatas;
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
       $machine_num = $data["machine_num"];
@@ -3606,11 +3506,7 @@ class KensahyougenryousController extends AppController
 //      $_SESSION['updatekensahyougenryoudata'] = array();
 
       $data = $arrayKensahyougenryoudatas;
-/*
-      echo "<pre>";
-      print_r($data);
-      echo "</pre>";
-*/
+
       $product_code = $data["product_code"];
       $this->set('product_code', $product_code);
       $machine_num = $data["machine_num"];
@@ -3826,12 +3722,8 @@ class KensahyougenryousController extends AppController
                   ['id'  => $ProductMaterialMachines[$k]["id"]]);
 
             }
- /*   
-            echo "<pre>";
-            print_r($ProductMaterialMachines);
-            echo "</pre>";
-*/
-              $connection->commit();// コミット5
+
+            $connection->commit();// コミット5
               $mes = "削除されました。";
               $this->set('mes',$mes);
     

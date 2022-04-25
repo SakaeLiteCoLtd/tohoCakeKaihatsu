@@ -56,16 +56,6 @@ class CompaniesController extends AppController
 
       $session = $this->request->getSession();
       $datasession = $session->read();
-/*
-      $Groups = $this->Groups->find()->contain(["Menus"])//GroupsテーブルとMenusテーブルを関連付ける
-      ->where(['Groups.name_group' => $datasession['Auth']['User']['group_name'], 'Menus.name_menu' => "会社"])->toArray();
-
-      if(count($Groups) < 1){
-        return $this->redirect(
-         ['controller' => 'Startmenus', 'action' => 'menu']
-        );
-      }
-*/
     }
 
     public function detail($id = null)
@@ -161,11 +151,7 @@ class CompaniesController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrtourokucompany);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $Companies = $this->Companies->patchEntity($this->Companies->newEntity(), $arrtourokucompany);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -237,11 +223,7 @@ class CompaniesController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrupdatecompany);
-      echo "</pre>";
-*/
+
       $Companies = $this->Companies->patchEntity($this->Companies->newEntity(), $arrupdatecompany);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -306,11 +288,7 @@ class CompaniesController extends AppController
       $arrdeletecompany = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeletecompany);
-      echo "</pre>";
-*/
+
       $Companies = $this->Companies->patchEntity($this->Companies->newEntity(), $arrdeletecompany);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2

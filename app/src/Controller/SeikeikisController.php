@@ -46,16 +46,8 @@ class SeikeikisController extends AppController
 
     public function index()
     {
-      /*
-        $this->paginate = [
-            'contain' => ['Factories']
-        ];
-        $seikeikis = $this->paginate($this->Seikeikis->find()->where(['Seikeikis.delete_flag' => 0]));
 
-        $this->set(compact('seikeikis'));
-*/
-
-        $session = $this->request->getSession();
+      $session = $this->request->getSession();
         $datasession = $session->read();
   
         $Users = $this->Users->find()->contain(["Staffs"])
@@ -170,11 +162,7 @@ class SeikeikisController extends AppController
         'created_at' => date("Y-m-d H:i:s"),
         'created_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrtourokuSeikeikis);
-      echo "</pre>";
-*/
+
       //新しいデータを登録
       $Seikeikis = $this->Seikeikis->patchEntity($this->Seikeikis->newEntity(), $arrtourokuSeikeikis);
       $connection = ConnectionManager::get('default');//トランザクション1
@@ -301,11 +289,7 @@ class SeikeikisController extends AppController
         'updated_at' => date("Y-m-d H:i:s"),
         'updated_staff' => $staff_id
       ];
-/*
-      echo "<pre>";
-      print_r($arrupdatematerialType);
-      echo "</pre>";
-*/
+
       $Seikeikis = $this->Seikeikis->patchEntity($this->Seikeikis->newEntity(), $arrupdateSeikeikis);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2
@@ -372,11 +356,7 @@ class SeikeikisController extends AppController
       $arrdeleteSeikeikis = [
         'id' => $data["id"]
       ];
-/*
-      echo "<pre>";
-      print_r($arrdeletematerialType);
-      echo "</pre>";
-*/
+
       $Seikeikis = $this->Seikeikis->patchEntity($this->Seikeikis->newEntity(), $arrdeleteSeikeikis);
       $connection = ConnectionManager::get('default');//トランザクション1
        // トランザクション開始2

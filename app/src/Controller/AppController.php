@@ -24,14 +24,11 @@ class AppController extends Controller
           'loginRedirect' => [
             'controller' => 'Startmenus',
             'action' => 'menu'
-      //      'controller' => 'Companies',
-      //      'action' => 'index'
           ],
 
           'logoutRedirect' => [
               'controller' => 'Startmenus',
               'action' => 'menu',
-      //        'home'
           ],
           'authenticate' => [
               'Form' => [
@@ -46,16 +43,6 @@ class AppController extends Controller
   {
     $this->Auth->config('authError', "");
  //   $this->Auth->config('authError', "ログインしてください。");
-//    $this->Auth->allow(['login']);
-
-/*
-    // PC/スマホのview切り替え
-    if ($this->request->isMobile()) {
-        // plugins/Sp/Template内のviewが読み込まれる
-        $this->viewBuilder()->theme('Sp');
-    }
-*/
-
   }
 
 }
