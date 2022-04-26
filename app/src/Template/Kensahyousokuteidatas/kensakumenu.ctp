@@ -29,6 +29,8 @@ echo $this->Html->css('kensahyou');
     <td style='border: none'>　　</td>
     <td style='border: none'><?php echo $this->Html->image('/img/menus/yobidashiikkatsu.gif',array('width'=>'145','height'=>'50','url'=>array('action'=>'kensakuikkatsupre')));?></td>
     <td style='border: none'>　　</td>
+    <td style='border: none'><?php echo $this->Html->image('/img/menus/yobidashikikakugai.gif',array('width'=>'145','height'=>'50','url'=>array('action'=>'kensakukikakugai')));?></td>
+    <td style='border: none'>　　</td>
     <td style='border: none'><?php echo $this->Html->image('/img/menus/kensatyuichiran.gif',array('width'=>'145','height'=>'50','url'=>array('action'=>'kensatyuproducts')));?></td>
   </tr>
 </table>

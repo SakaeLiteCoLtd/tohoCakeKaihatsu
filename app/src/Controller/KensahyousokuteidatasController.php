@@ -8301,4 +8301,78 @@ class KensahyousokuteidatasController extends AppController
 
     }
 
-}
+    public function kensakukikakugai()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+
+      echo "<pre>";//フォームの再読み込みの防止
+      print_r("");
+      echo "</pre>";
+    }
+
+    public function kikakugaiichiran()
+    {
+      $product = $this->Products->newEntity();
+      $this->set('product', $product);
+    
+      $data = $this->request->getData();
+/*
+      echo "<pre>";
+      print_r($data);
+      echo "</pre>";
+  */    
+      $arrkensahyou = array_keys($data, '検査表表示');
+
+      if(isset($arrkensahyou[0])){
+
+        return $this->redirect(['action' => 'kensakuhyouji',
+        's' => $arrkensahyou[0]]);
+
+      }
+
+      $startY = $data['start']['year'];
+      $startM = $data['start']['month'];
+      $startD = $data['start']['day'];
+      $startYMD = $startY."-".$startM."-".$startD." 00:00";
+
+      $endY = $data['end']['year'];
+      $endM = $data['end']['month'];
+      $endD = $data['end']['day'];
+      $endYMD = $endY."-".$endM."-".$endD." 23:59";
+      
+      $InspectionDataResultParents = $this->InspectionDataResultParents->find()
+      ->contain(['ProductConditionParents', 'Products'])
+      ->where(['judge' => 1, 'InspectionDataResultParents.delete_flag' => 0,
+      'datetime >=' => $startYMD, 'datetime <=' => $endYMD])
+      ->order(["datetime"=>"DESC"])->toArray();
+
+      $arrDates = array();
+
+      for($k=0; $k<count($InspectionDataResultParents); $k++){
+
+        $arrDates[] = [
+          "datetime" => $InspectionDataResultParents[$k]['datetime']->format('Y-m-d H:i'),
+          "machine_num" => $InspectionDataResultParents[$k]['product_condition_parent']['machine_num'],
+          "product_name" => $InspectionDataResultParents[$k]['product']['name'],
+          "product_code" => $InspectionDataResultParents[$k]['product']['product_code'],
+          "code" => $InspectionDataResultParents[$k]['datetime']->format('Y-m-d')
+          ."_".$InspectionDataResultParents[$k]['product_condition_parent']['machine_num']
+          ."_".$InspectionDataResultParents[$k]['product']['product_code'],
+        ];
+
+      }
+
+      $this->set('arrDates', $arrDates);
+
+      $mes = "検索期間： ".$startY."-".$startM."-".$startD .' ～ '.$endY."-".$endM."-".$endD;
+      $this->set('mes', $mes);
+
+      echo "<pre>";//フォームの再読み込みの防止
+      print_r("");
+      echo "</pre>";
+
+    }
+
+  }
+
