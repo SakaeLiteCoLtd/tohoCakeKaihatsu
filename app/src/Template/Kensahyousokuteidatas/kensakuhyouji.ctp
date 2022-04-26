@@ -179,8 +179,8 @@ echo $this->Html->css('kensahyou');
   }
   ?>
 
-      <?php if (${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-      && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}): ?>
+      <?php if (${"result_size".$j."_".$i} - 0.001 <= (float)${"size".$i} + (float)${"upper_limit".$i}
+      && ${"result_size".$j."_".$i} + 0.001 >= (float)${"size".$i} + (float)${"lower_limit".$i}): ?>
         <td style='width:80; border-top-style:none'><?= h(${"result_size".$j."_".$i}) ?></td>
       <?php else : ?>
         <td style='width:80; border-top-style:none'><font color="red"><?= h(${"result_size".$j."_".$i}) ?></td>

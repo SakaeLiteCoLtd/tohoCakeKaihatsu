@@ -177,8 +177,8 @@ $mes = "";
   <?php for($i=1; $i<=11; $i++): ?>
     <?php
     if(${"size_name".$i} !== "長さ" && ${"input_type".$i} !== "judge" 
-    && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-    && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+    && ${"result_size".$j."_".$i} - 0.001 <= (float)${"size".$i} + (float)${"upper_limit".$i}
+    && ${"result_size".$j."_".$i} + 0.001 >= (float)${"size".$i} + (float)${"lower_limit".$i}){
       echo '<td style="width:84; border-top-style:none">';
       echo ${"result_size".$j."_".$i} ;
       echo '</td>';

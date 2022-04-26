@@ -684,8 +684,12 @@ class KensahyoukikakusController extends AppController
           if(strlen($data['upper_limit'.$i]) > 0 && strlen($data['lower_limit'.$i]) > 0
            && strlen($data['size'.$i]) > 0 && strlen($data['measuring_instrument'.$i]) > 0){
 
-            $formcheck = 0;
-
+            if($data['size_name'.$i] === "長さ"){
+              $formcheck = 1;
+              $formcheckmess = "長さの規格は製品登録時に登録してください。";
+              $this->set('formcheckmess', $formcheckmess);
+            }
+      
             ${"size_name".$i} = $data['size_name'.$i];
             $this->set('size_name'.$i,${"size_name".$i});
             ${"upper_limit".$i} = sprintf("%.1f", $data['upper_limit'.$i]);
@@ -1742,7 +1746,6 @@ class KensahyoukikakusController extends AppController
       $this->set('product', $product);
 
       $data = $this->request->getData();
-
       $staff_id = $data["staff_id"];
       $this->set('staff_id', $staff_id);
       $staff_name = $data["staff_name"];
@@ -1773,8 +1776,12 @@ class KensahyoukikakusController extends AppController
           if(strlen($data['upper_limit'.$i]) > 0 && strlen($data['lower_limit'.$i]) > 0
            && strlen($data['size'.$i]) > 0 && strlen($data['measuring_instrument'.$i]) > 0){
 
-            $formcheck = 0;
-
+            if($data['size_name'.$i] === "長さ"){
+              $formcheck = 1;
+              $formcheckmess = "長さの規格は製品登録時に登録してください。";
+              $this->set('formcheckmess', $formcheckmess);
+            }
+      
             ${"size_name".$i} = $data['size_name'.$i];
             $this->set('size_name'.$i,${"size_name".$i});
             ${"upper_limit".$i} = sprintf("%.1f", $data['upper_limit'.$i]);

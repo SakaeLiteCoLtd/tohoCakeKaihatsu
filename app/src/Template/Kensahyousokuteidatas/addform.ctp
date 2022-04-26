@@ -500,8 +500,8 @@ var moji = "length"
   
       }
 
-      if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-      && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+      if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} - 0.001 <= (float)${"size".$i} + (float)${"upper_limit".$i}
+      && ${"result_size".$j."_".$i} + 0.001 >= (float)${"size".$i} + (float)${"lower_limit".$i}){
         echo '<td style="width:75; border-top-style:none">';
         echo ${"result_size".$j."_".$i};
         echo '</td>';
@@ -638,8 +638,8 @@ var moji = "length"
 
         }
 
-        if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-        && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+        if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} - 0.001 <= (float)${"size".$i} + (float)${"upper_limit".$i}
+        && ${"result_size".$j."_".$i} + 0.001 >= (float)${"size".$i} + (float)${"lower_limit".$i}){
           echo '<td style="width:75; border-top-style:none">';
           echo ${"result_size".$j."_".$i};
           echo '</td>';

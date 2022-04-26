@@ -1976,8 +1976,8 @@ class KensahyousokuteidatasController extends AppController
           
               }
   
-              if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-              && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+              if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} - 0.001 <= (float)${"size".$i} + (float)${"upper_limit".$i}
+              && ${"result_size".$j."_".$i} + 0.001 >= (float)${"size".$i} + (float)${"lower_limit".$i}){
                 $gouhi_check = $gouhi_check;
               } elseif(${"input_type".$i} == "judge" && ${"result_size".$j."_".$i} < 1) {
                 $gouhi_check = $gouhi_check;
@@ -2415,8 +2415,8 @@ class KensahyousokuteidatasController extends AppController
         
             }
     
-            if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-            && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+            if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} - 0.001 <= (float)${"size".$i} + (float)${"upper_limit".$i}
+            && ${"result_size".$j."_".$i} + 0.001 >= (float)${"size".$i} + (float)${"lower_limit".$i}){
       
               $gouhi_check = $gouhi_check;
 
@@ -2779,8 +2779,8 @@ class KensahyousokuteidatasController extends AppController
         
             }
 
-            if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-            && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+            if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} - 0.001 <= (float)${"size".$i} + (float)${"upper_limit".$i}
+            && ${"result_size".$j."_".$i} + 0.001 >= (float)${"size".$i} + (float)${"lower_limit".$i}){
               $gouhi_check = $gouhi_check;
             } elseif(${"input_type".$i} == "judge" && ${"result_size".$j."_".$i} < 1) {
               $gouhi_check = $gouhi_check;
@@ -2919,8 +2919,8 @@ class KensahyousokuteidatasController extends AppController
         
             }
 
-            if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-            && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+            if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} - 0.001 <= (float)${"size".$i} + (float)${"upper_limit".$i}
+            && ${"result_size".$j."_".$i} + 0.001 >= (float)${"size".$i} + (float)${"lower_limit".$i}){
               $gouhi_check = $gouhi_check;
             } elseif(${"input_type".$i} == "judge" && ${"result_size".$j."_".$i} < 1) {
               $gouhi_check = $gouhi_check;
@@ -3049,8 +3049,8 @@ class KensahyousokuteidatasController extends AppController
         
             }
 
-            if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-            && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+            if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} - 0.001 <= (float)${"size".$i} + (float)${"upper_limit".$i}
+            && ${"result_size".$j."_".$i} + 0.001 >= (float)${"size".$i} + (float)${"lower_limit".$i}){
               $gouhi_check = $gouhi_check;
             } elseif(${"input_type".$i} == "judge" && ${"result_size".$j."_".$i} < 1) {
               $gouhi_check = $gouhi_check;
@@ -3211,8 +3211,8 @@ class KensahyousokuteidatasController extends AppController
         
             }
 
-            if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-            && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+            if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} - 0.001 <= (float)${"size".$i} + (float)${"upper_limit".$i}
+            && ${"result_size".$j."_".$i} + 0.001 >= (float)${"size".$i} + (float)${"lower_limit".$i}){
               $gouhi_check = $gouhi_check;
             } elseif(${"input_type".$i} == "judge" && ${"result_size".$j."_".$i} < 1) {
               $gouhi_check = $gouhi_check;
@@ -3561,8 +3561,8 @@ class KensahyousokuteidatasController extends AppController
       
           }
     
-          if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-          && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+          if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} - 0.001 <= (float)${"size".$i} + (float)${"upper_limit".$i}
+          && ${"result_size".$j."_".$i} + 0.001 >= (float)${"size".$i} + (float)${"lower_limit".$i}){
             $gouhi_check = $gouhi_check;
           } elseif(${"input_type".$i} == "judge" && ${"result_size".$j."_".$i} < 1) {
             $gouhi_check = $gouhi_check;
@@ -3778,8 +3778,8 @@ class KensahyousokuteidatasController extends AppController
       
           }
     
-          if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-          && ${"result_size".$j."_".$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+          if(${"input_type".$i} !== "judge" && ${"result_size".$j."_".$i} - 0.001 <= (float)${"size".$i} + (float)${"upper_limit".$i}
+          && ${"result_size".$j."_".$i} + 0.001 >= (float)${"size".$i} + (float)${"lower_limit".$i}){
             $gouhi_check = $gouhi_check;
           } elseif(${"input_type".$i} == "judge" && ${"result_size".$j."_".$i} < 1) {
             $gouhi_check = $gouhi_check;
@@ -6291,8 +6291,9 @@ class KensahyousokuteidatasController extends AppController
         
             }
     
-            if(${"input_type".$i} !== "judge" && ${"result_size".$n.$i} <= (float)${"size".$i} + (float)${"upper_limit".$i}
-            && ${"result_size".$n.$i} >= (float)${"size".$i} + (float)${"lower_limit".$i}){
+            if(${"input_type".$i} !== "judge" &&
+             ${"result_size".$n.$i} - 0.001 <= (float)${"size".$i} + (float)${"upper_limit".$i}
+            && ${"result_size".$n.$i} + 0.001 >= (float)${"size".$i} + (float)${"lower_limit".$i}){
               $gouhi_check = $gouhi_check;
             } elseif(${"input_type".$i} == "judge" && ${"result_size".$n.$i} < 1) {
               $gouhi_check = $gouhi_check;
